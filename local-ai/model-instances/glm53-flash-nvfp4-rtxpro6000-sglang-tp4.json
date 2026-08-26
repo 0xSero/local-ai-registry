@@ -29,7 +29,8 @@
   "runtime": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "--controller-recipe-id", "glm53-flash-nvfp4-rtxpro6000-sglang-tp4"
+      "--controller-recipe-id",
+      "glm53-flash-nvfp4-rtxpro6000-sglang-tp4"
     ],
     "container_port": 30000,
     "environment": {
@@ -46,7 +47,7 @@
     "host_port": 8000,
     "image": "glm53-flash-nvfp4-sglang:exact-20260826",
     "ipc": "host",
-    "kind": "compose",
+    "kind": "docker",
     "mounts": [
       {
         "read_only": true,
@@ -54,7 +55,11 @@
         "target": "/model"
       }
     ],
-    "shm_size": "32g"
+    "shm_size": "32g",
+    "supervision": "local-studio-controller (systemd user unit local-studio-controller-8080)",
+    "launch_command": "/home/ser/glm53-flash-deploy/launch-studio.sh (foreground docker run, container glm-5.3-flash-sglang-sm120)",
+    "controller_recipe_id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
+    "studio_instance": "llm"
   },
   "capabilities": {
     "chat": true,
@@ -80,24 +85,53 @@
       "date": "2026-08-26T21:07Z",
       "event": "coherence_math",
       "detail": "temp=0 max_tokens=120: reasoning_content clean (verified 17x23 by decomposition), content 'Hello! 17 times 23 equals 391.', finish_reason=stop, 101 completion tokens incl. 88 reasoning tokens.",
-      "metrics": {"completion_tokens": 101, "finish_reason": "stop"}
+      "metrics": {
+        "completion_tokens": 101,
+        "finish_reason": "stop"
+      }
     },
     {
       "date": "2026-08-26T21:15Z",
       "event": "throughput_low_effort_uncapped",
       "detail": "temp=1.0 top_p=0.95, chat_template_kwargs {reasoning_effort:'low'}, no max_tokens cap: FP8-vs-BF16-KV-cache question answered in clean markdown headings/bullets.",
-      "metrics": {"prompt_tokens": 26, "completion_tokens": 203, "wall_s": 1.42, "tok_s": 142.9, "finish_reason": "stop"}
+      "metrics": {
+        "prompt_tokens": 26,
+        "completion_tokens": 203,
+        "wall_s": 1.42,
+        "tok_s": 142.9,
+        "finish_reason": "stop"
+      }
     },
     {
       "date": "2026-08-26T21:17Z",
       "event": "throughput_default_effort_uncapped",
       "detail": "Default (max) reasoning effort, no max_tokens cap: projectile-motion quadratic solved symbolically with LaTeX, t = 2+sqrt(13) = 5.61 s, correct; reasoning/content split via glm45 parser.",
-      "metrics": {"prompt_tokens": 43, "completion_tokens": 1276, "wall_s": 6.15, "tok_s": 207.6, "finish_reason": "stop"}
+      "metrics": {
+        "prompt_tokens": 43,
+        "completion_tokens": 1276,
+        "wall_s": 6.15,
+        "tok_s": 207.6,
+        "finish_reason": "stop"
+      }
     },
     {
       "date": "2026-08-26T21:10Z",
       "event": "gotcha_empty_content_with_caps",
       "detail": "Requests capped at max_tokens 120-900 under default (max) thinking effort all ended finish_reason=length with empty content field: budget consumed inside <think>. Chat template takes reasoning_effort ('low'|'high'; unset => 'max') and clear_thinking; there is no 'thinking': false kwarg."
+    },
+    {
+      "date": "2026-08-26T22:20Z",
+      "event": "studio_ownership_handover",
+      "detail": "Deployment handed to Local Studio: compose launch replaced by foreground wrapper launch-studio.sh; controller instance 'llm' state=ready; stale persisted instance record removed after controller restart. Proxy /v1/chat/completions routes model glm-5.3-flash correctly."
+    },
+    {
+      "date": "2026-08-26T22:25Z",
+      "event": "client_e2e_validation",
+      "detail": "pi 0.84.3 (--provider homelab --model glm-5.3-flash) returned exact probe 'pi-e2e-ok'; omp 18.0.6 default role resolved to homelab/glm-5.3-flash and answered. Root cause of prior client failures: a single invalid 'video' input token in pi models.json zai entry made pi drop ALL custom providers.",
+      "metrics": {
+        "pi_probe": "pi-e2e-ok",
+        "omp_probe": "omp-e2e-ok"
+      }
     }
   ],
   "source": {
