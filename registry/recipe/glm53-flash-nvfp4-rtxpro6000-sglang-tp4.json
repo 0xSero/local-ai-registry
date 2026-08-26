@@ -1,0 +1,122 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Live four-GPU GLM-5.3 Flash configuration with completion, tool, vision, video, context, concurrency, and speed evidence. Candidate until the locally tagged runtime image is published by digest.",
+  "engine": {
+    "graph_mode": "full decode capture bs<=8 with NEXTN target-verify graphs",
+    "name": "sglang",
+    "version": "lmsysorg/sglang:glm-5.3-flash@sha256:3a97bd50034ca60c6e6c86b8e36a73675d261f6a5eb71197796aee5175409290"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--tp-size",
+      "4",
+      "--ep-size",
+      "4",
+      "--context-length",
+      "1048576",
+      "--quantization",
+      "modelopt_fp4",
+      "--attention-backend",
+      "dsa",
+      "--dsa-prefill-backend",
+      "flashinfer_sparse_mla",
+      "--dsa-decode-backend",
+      "flashinfer_sparse_mla",
+      "--linear-attn-backend",
+      "triton",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--moe-runner-backend",
+      "flashinfer_cutlass",
+      "--disable-shared-experts-fusion",
+      "--chunked-prefill-size",
+      "8192",
+      "--max-prefill-tokens",
+      "8192",
+      "--max-running-requests",
+      "8",
+      "--mem-fraction-static",
+      "0.93",
+      "--cuda-graph-max-bs-decode",
+      "8",
+      "--speculative-algorithm",
+      "NEXTN",
+      "--speculative-num-steps",
+      "5",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "6",
+      "--speculative-adaptive",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-multimodal",
+      "--chat-template",
+      "/chat-template.jinja",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000"
+    ],
+    "container_port": 30000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
+      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_OPT_DEEPGEMM_HC_PRENORM": "0",
+      "SGLANG_OPT_FP8_WO_A_GEMM": "0",
+      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "SGLANG_OPT_USE_TOPK_V2": "0",
+      "TORCH_CUDA_ARCH_LIST": "12.0a"
+    },
+    "host_port": 8000,
+    "image": "glm53-flash-nvfp4-sglang:exact-20260826",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+        "target": "/model"
+      }
+    ],
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance": {
+      "completion": true,
+      "tools": true,
+      "video": true,
+      "vision": true
+    },
+    "runtime_pin_missing": "launch.image digest"
+  },
+  "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 15156736,
+    "max_concurrency": 8,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm53-flash-nvfp4-rtxpro6000-sglang-tp4-sweep"
+  ],
+  "status": "candidate"
+}

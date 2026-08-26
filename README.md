@@ -23,9 +23,9 @@ This is the progressive-disclosure rule: index, choice, recipe, then the exact r
 |---|---|---:|
 | `hardware/` | One accelerator or Apple chip and memory configuration | 98 |
 | `model/` | One canonical base model | 69 |
-| `model-instance/` | One downloadable artifact or quantization | 206 |
-| `recipe/` | One artifact × hardware × engine compatibility unit | 249 |
-| `speed-sweeps/` | Benchmark evidence attached to one recipe | 233 |
+| `model-instance/` | One downloadable artifact or quantization | 207 |
+| `recipe/` | One artifact × hardware × engine compatibility unit | 250 |
+| `speed-sweeps/` | Benchmark evidence attached to one recipe | 234 |
 
 The shared contract is defined twice for different consumers: JSON Schema files under [`registry/schema/`](registry/schema/) and TypeScript interfaces in [`registry/schema/types.ts`](registry/schema/types.ts).
 

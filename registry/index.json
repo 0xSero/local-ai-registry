@@ -241,6 +241,7 @@
       "lasimeri-minimax-m2-7-int4-autoround--autoround-int4-w4a16",
       "lasimeri-minimax-m2-7-int4-autoround--autoround-w4a16",
       "lasimeri-minimax-m2-7-int4-autoround--int4-autoround-w4a16",
+      "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
       "liquidai-lfm2-5-2-6b--bf16",
       "liquidai-lfm2-5-8b-a1b--int4",
       "liquidai-lfm2-5-8b-a1b--native",
@@ -452,6 +453,7 @@
       "glm52-nvfp4-aqlm-dgxspark-vllm-tp3",
       "glm52-nvfp4-reap-469b-rtxpro6000-vllm-tp4",
       "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4",
+      "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
       "huihui-qwen3-6-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1",
       "huihui-qwen3-8-27b-abliterated-mlx-8bit-apple-m3-ultra-96gb-mlx-tp1",
       "huihui-qwen3-8-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1",
@@ -699,6 +701,7 @@
       "glm52-nvfp4-aqlm-dgxspark-vllm-tp3-sweep",
       "glm52-nvfp4-reap-469b-rtxpro6000-vllm-tp4-sweep",
       "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4-sweep",
+      "glm53-flash-nvfp4-rtxpro6000-sglang-tp4-sweep",
       "huihui-qwen3-6-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1-sweep",
       "huihui-qwen3-8-27b-abliterated-mlx-8bit-apple-m3-ultra-96gb-mlx-tp1-sweep",
       "huihui-qwen3-8-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1-sweep",
@@ -869,9 +872,9 @@
   "counts": {
     "hardware": 98,
     "model": 69,
-    "model_instance": 206,
-    "recipe": 249,
-    "speed_sweeps": 233
+    "model_instance": 207,
+    "recipe": 250,
+    "speed_sweeps": 234
   },
   "recipes": [
     {
@@ -2095,6 +2098,23 @@
       "id": "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4",
       "launch_kind": "docker-compose",
       "model_instance_id": "0xsero-glm-5-2-reap-nu176-526b--nvfp4-non-uniform-reap",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": true
+      },
+      "engine": "sglang",
+      "hardware_count": 4,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
+      "launch_kind": "docker",
+      "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
       "recipe_source": "0xsero",
       "status": "candidate"
     },
