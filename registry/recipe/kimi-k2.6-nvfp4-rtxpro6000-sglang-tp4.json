@@ -1,0 +1,48 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Pinned-source Kimi K2.6 NVFP4 SGLang TP4 candidate with 256K configured context, FP8 KV, multimodal input, and CUDA graphs. The SGLang image is tag-only, the model revision is absent, and no speed sweep is preserved in the source, so CLI launch remains blocked.",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "0.5.12.post1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "kimi-k2.6-nvfp4-rtxpro6000-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "kimi-k2.6-nvfp4-tp4"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "SGLANG_ENABLE_DEEP_GEMM": "0",
+      "SGLANG_MOE_NVFP4_DISPATCH": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "96g"
+  },
+  "metadata": {},
+  "model_instance_id": "0xsero-kimi-k2-6-519b-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [],
+  "status": "candidate"
+}

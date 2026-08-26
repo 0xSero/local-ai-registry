@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.2rc1.dev215+g32e45636e"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-int4-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmogcx9tt0002jr04w918m9mh",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmogcx9tt0002jr04w918m9mh"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "FLASHINFER",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8_e5m2",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": 1
+      },
+      "hardware_label": "1x RTX 3090 24GB",
+      "notes": "MTP speculative decoding (3 tokens). Greedy decode, ignore_eos=true. Median of 5 runs after 2 warmup; greedy; ignore_eos=true. Actual prompt tokens (server): 527. Decode tok/s stddev: 0.05.",
+      "revision_unpinned": true,
+      "run_id": "cmogcx9tt0002jr04w918m9mh"
+    }
+  },
+  "model_instance_id": "lorbus-qwen3-6-27b-int4-autoround--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

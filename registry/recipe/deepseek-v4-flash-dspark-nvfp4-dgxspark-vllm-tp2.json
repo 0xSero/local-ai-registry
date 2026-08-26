@@ -1,0 +1,60 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Historically accepted DeepSeek-V4-Flash-DSpark NVFP4 across two DGX Spark nodes with TP2, DSpark speculative decoding, NVFP4 DS-MLA KV, and CUDA graphs; awaiting fresh two-node acceptance",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.25.2+anemll-dspark-gx10-0.1.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-flash-dspark-nvfp4-dgxspark-vllm-tp2",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "deepseek-v4-flash-dspark-tp2"
+    },
+    "container_port": 8888,
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_121a",
+      "FLASHINFER_CUDA_ARCH_LIST": "12.1a",
+      "GPU_MEMORY_UTILIZATION": "0.80",
+      "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+      "MAX_MODEL_LEN": "1048576",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "6",
+      "MTP_NUM_TOKENS": "5",
+      "NCCL_IB_DISABLE": "0",
+      "NCCL_NET": "IB",
+      "TORCH_CUDA_ARCH_LIST": "12.1a",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_FLASHINFER_SAMPLER": "1"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-dspark--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 6,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-dspark-nvfp4-dgxspark-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,59 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Saved two-DGX-Spark Inkling Small NVFP4 vLLM profile with MTP1, BF16 KV, SM121 paged-KV overlays, full and piecewise CUDA graphs, and text/image/audio support; blocked from CLI until the host-specific two-node bundle and model revision are independently replayed",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "65b7662d3fcb773afaf751ab29ac6960a0cf011d+sm121-overlays"
+  },
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "inkling-small-nvfp4-dgxspark-vllm-tp2",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "file": "compose.yml",
+      "project_name": "inkling-small-tp2"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_121a",
+      "GPU_MEMORY_UTILIZATION": "0.9",
+      "INKLING_MODEL": "/models/Inkling-Small-NVFP4",
+      "INKLING_VLLM_IMAGE": "local/inkling-vllm:20260812-65b7662d-sm121-paged-a80c4d7-audio1",
+      "KV_CACHE_DTYPE": "auto",
+      "KV_CACHE_MEMORY_BYTES": "29450000000",
+      "MAX_MODEL_LEN": "262144",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "4",
+      "MTP_NUM_TOKENS": "1",
+      "PIPELINE_PARALLEL_SIZE": "1",
+      "SERVED_MODEL_NAME": "inkling-small",
+      "TENSOR_PARALLEL_SIZE": "2"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "thinkingmachines-inkling-small-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 420162,
+    "max_concurrency": 4,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "inkling-small-nvfp4-dgxspark-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

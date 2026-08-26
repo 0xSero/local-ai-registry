@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.1.dev1172+g4a6fd8747.xpu; local vLLM 264c7f2f7; XPU kernels 313156737; oneCCL 48fda4f0e"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "deepseek-v4-flash-fp8-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrquta9905w3lg013m5vxoqx",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU",
+        "flashAttn": false,
+        "gpuLayers": 99,
+        "kvCacheDtype": "f16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Four-B70 single-session DeepSeek V4 Flash K160 DSpark7 record. The guarded greedy target path projects each local 32320-token vocabulary shard, gathers only tiny top-1 value/index pairs, and commits target tokens with a native SYCL rejection op instead of all-gathering and sampling full 129280-token FP32 logits. Three fresh strict suite medians are 80.820052, 76.900178, and 78.287226 tok/s; all 36 requests are cache-zero. Four ordered exact-canary suites pass 24/24. Unsupported sampler settings fail closed to the canonical path. The unchanged K160 target verifies accepted tokens. No aggregate throughput, cache/history reuse, model substitution, or benchmark routing.",
+      "revision_unpinned": false,
+      "run_id": "cmrquta9905w3lg013m5vxoqx"
+    }
+  },
+  "model_instance_id": "0xsero-deepseek-v4-flash-180b--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-fp8-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

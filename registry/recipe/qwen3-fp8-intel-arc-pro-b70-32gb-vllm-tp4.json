@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "g6607a80da (custom)"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-fp8-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmqkf5q9g00vpnv01bs4wzeu0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqkf5q9g00vpnv01bs4wzeu0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "bf16",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 128GB",
+      "notes": "Big reason for the difference: stock vLLM disables graph capture on Intel XPU \u2192 eager-only (~11 tok/s decode). Un-gating XPUGraph (torch.xpu.XPUGraph, Level-Zero command-graph capture) takes single-stream ~11 \u2192 ~102 tok/s (~9.5\u00d7). The gain is command-graph replay eliminating per-kernel host-launch overhead \u2014 torch.compile/Inductor alone adds ~nothing.\n\nCustom (not stock vLLM):\n\nUn-gated XPU graph capture (cudagraph_mode=FULL_DECODE_ONLY, capture ladder [1,2,4,8,16,32,48,100]). Graph-capturable paged-decode kernel. Capture-safe all-reduce in SYCL/ESIMD (Level-Zero IPC peer buffers + custom GPU barrier): stock oneCCL all-reduce corrupts inside a captured graph, and PCIe device-to-device atomics are unreliable on Battlemage \u2192 local-write/remote-read + uncached loads + system_acquire fences.\n\nCeiling: ~104\u2013108 tok/s single-stream is PCIe-bound (all-reduce latency caps it). \n\nCorrectness verified \u2014 GSM8K graph vs eager within noise.",
+      "revision_unpinned": true,
+      "run_id": "cmqkf5q9g00vpnv01bs4wzeu0"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-coder-next--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-fp8-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,52 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Upstream four-Spark TP4/DCP4 candidate; dry-run structure is correct, but two upstream manifest hashes fail and the launcher expects an undocumented flattened overlay layout, so do not recommend or launch until those blockers are resolved",
+  "engine": {
+    "graph_mode": "full",
+    "name": "vllm",
+    "version": "0.27.0 + b12x 334a2d75d166becea0aa640b402d521ea0a290eb"
+  },
+  "hardware_count": 4,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm52-int4-int8mix-dgxspark-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8210,
+    "environment": {
+      "DCP_SIZE": "4",
+      "GPU_MEMORY_UTILIZATION": "0.90",
+      "MAX_MODEL_LEN": "315968",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "16",
+      "MTP_SPEC_TOKENS": "2",
+      "TP_SIZE": "4"
+    },
+    "host_port": 8210,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "file": "sources/github/joesinvestments/glm52-spark-kit/5fcf9cfe45daf66989753dd373a7d10e2d48a890/launch/launch_gx10.sh"
+    },
+    "shm_size": "10g"
+  },
+  "metadata": {},
+  "model_instance_id": "quanttrio-glm-5-2-int4-int8mix--w4a16-int8mix",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 959000,
+    "max_concurrency": 16,
+    "max_context_tokens": 315968,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm52-int4-int8mix-dgxspark-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "mlx-vlm 0.6.3 / mlx 0.32.0.dev20260702+e9463bb (qmv_wide)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-pro-48gb",
+  "id": "gemma-4-31b-v2-int4-apple-m5-pro-48gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr5ezpgk009mq901bsesdvu6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr5ezpgk009mq901bsesdvu6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M5 Pro 48GB",
+      "notes": "Gemma 4 31B (abliterated v2), 4-bit affine gs64 decoder; vision tower + embed/lm_head bf16 per config. MLX MTP speculative decoding via mlx-vlm, official gemma-4-31B-it-assistant drafter, draft-block-size 4 (optimum on this build). Measured on M5 Pro 48GB, macOS 26.5, greedy temp 0. tokSOut = median of 4 timed iterations (range 32.8-35.5), decode throughput over the inter-token window (completion_tokens / (t_last-t_first)) from the OpenAI-compatible stream; ~250-tok code workload, exact usage.completion_tokens. Drafter acceptance ~69.8%, ~3.09 accepted tok/round. Byte-identical to dense greedy (fast-verify patch adds the missing gemma4 speculative_argmax_from_hidden hook: one batched norm->lm_head->softcap over K+1 positions). Speedup vs dense 4-bit (~15 tok/s, ~94% of the 276 GB/s measured-bandwidth ceiling) ~2.2x. peakVramGb is process phys_footprint_peak and includes MLX's Metal buffer cache growing under a 36GB wired limit; true resident weights+drafter+KV ~= 18-20GB (steady footprint 26.5GB). wheel: mlx qmv_wide (PR #3764) built from git main; without it b3 tops out ~24.6 tok/s. Model repo public; base jdfelo/gemma-4-31B-v2 is gated.",
+      "revision_unpinned": true,
+      "run_id": "cmr5ezpgk009mq901bsesdvu6"
+    }
+  },
+  "model_instance_id": "jdfelo-gemma-4-31b-v2-mlx-4bit--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-31b-v2-int4-apple-m5-pro-48gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

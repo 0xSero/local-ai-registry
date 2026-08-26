@@ -1,0 +1,86 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Ornith-1.5-35B-A3B NVFP4 on one RTX PRO 6000 Blackwell Server Edition with FlashInfer CUTLASS MoE, FP8 E4M3 KV, exact 128K context, and four concurrent requests",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "sglang",
+    "version": "0.0.0.dev1+geec794bce"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "ornith15-35b-a3b-nvfp4-rtxpro6000-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+      "--revision",
+      "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+      "--tp",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.87",
+      "--attention-backend",
+      "flashinfer",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--moe-runner-backend",
+      "flashinfer_cutlass"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/opt/sglang/bin/python",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "ornith-ai-ornith-1-5-35b-a3b-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 3377159,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ornith15-35b-a3b-nvfp4-rtxpro6000-sglang-tp1-sweep"
+  ],
+  "status": "validated"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2+rocm723"
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "glm-4-7-flash-gptq-int4-int8mix-radeon-ai-pro-r9700-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmp8gaczm0134o401ct3mdygt",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp8gaczm0134o401ct3mdygt"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 1
+      },
+      "hardware_label": "3x Radeon AI Pro R9700 96GB",
+      "notes": "GLM-4.5-Air GPTQ Int4/Int8Mix native vLLM ROCm source build. Layout=pp3, --tensor-parallel-size 1 --pipeline-parallel-size 3, vLLM quantization=, max-seqs=16, batch-tokens=8192, gpu-mem=0.90, chunked prefill + prefix caching. R9700.",
+      "revision_unpinned": true,
+      "run_id": "cmp8gaczm0134o401ct3mdygt"
+    }
+  },
+  "model_instance_id": "zai-org-glm-4-7-flash--gptq-int4-int8mix",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "glm-4-7-flash-gptq-int4-int8mix-radeon-ai-pro-r9700-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

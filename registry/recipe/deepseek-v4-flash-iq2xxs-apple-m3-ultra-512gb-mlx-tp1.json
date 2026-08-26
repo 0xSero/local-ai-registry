@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": null
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m3-ultra-512gb",
+  "id": "deepseek-v4-flash-iq2xxs-apple-m3-ultra-512gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr0s4bwb00qdld010ax1thwh",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr0s4bwb00qdld010ax1thwh"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": 99,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M3 Ultra 512GB",
+      "notes": "DeepSeek V4 Flash IQ2XXS on custom ds4-server. Full Foundry eval: 35/37 passed (13 core, 15 instruct-15, 9 supplemental). Landing-page and build-hard failed at 8192 token output limit (reasoning model burns tokens on thinking). Steady-state ~33 t/s. Cold start penalty on first request (211s for 462 tokens). Flappy Bird game generated complete and playable. Landing page scored 1/10 on quality review. Not promoted as primary lane.",
+      "revision_unpinned": true,
+      "run_id": "cmr0s4bwb00qdld010ax1thwh"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--iq2xxs",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-iq2xxs-apple-m3-ultra-512gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

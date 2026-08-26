@@ -1,0 +1,62 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Ornith-1.5-35B-A3B EXL3 4 bpw on one RTX 4090 with TabbyAPI, ExLlamaV3, Q6 KV cache, exact 128K requests, and measured C1/C2/C4 acceptance",
+  "engine": {
+    "graph_mode": "piecewise",
+    "name": "tabbyapi",
+    "version": "0.0.1+e632af41"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-4090-24gb",
+  "id": "ornith15-35b-a3b-exl3-4bpw-rtx4090-tabbyapi-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "main.py",
+      "--config",
+      "/app/config.yml"
+    ],
+    "container_port": 5000,
+    "entrypoint": "/opt/venv/bin/python3",
+    "environment": {
+      "NVIDIA_VISIBLE_DEVICES": "all"
+    },
+    "host_port": 5000,
+    "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "~/.cache/inference-index/models/ornith15-35b-a3b",
+        "target": "/workspace/models"
+      },
+      {
+        "read_only": true,
+        "source": "hardware/rtx-4090-24gb/ornith-1.5-35b-a3b/exl3-4bpw/tabbyapi/tp1/config.yml",
+        "target": "/app/config.yml"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "8g"
+  },
+  "metadata": {},
+  "model_instance_id": "ultimatechris-ornith-1-5-35b-a3b-exl3-4bpw--4-bpw",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 532480,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ornith15-35b-a3b-exl3-4bpw-rtx4090-tabbyapi-tp1-sweep"
+  ],
+  "status": "validated"
+}

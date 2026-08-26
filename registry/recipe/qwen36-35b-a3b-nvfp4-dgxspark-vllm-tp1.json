@@ -1,0 +1,95 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "MiaAI-Lab Qwen3.6-35B-A3B NVFP4 single-Spark vLLM profile with FlashInfer B12X, MTP-2, FP8 KV, and CUDA graphs",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.26+gb10"
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen36-35b-a3b-nvfp4-dgxspark-vllm-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "unsloth/Qwen3.6-35B-A3B-NVFP4",
+      "--revision",
+      "739af1e7aac320af1682ed1e0cce369af4c5265d",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8888",
+      "--tensor-parallel-size",
+      "1",
+      "--trust-remote-code",
+      "--moe-backend",
+      "auto",
+      "--gpu-memory-utilization",
+      "0.80",
+      "--linear-backend",
+      "flashinfer_b12x",
+      "--attention-backend",
+      "flashinfer",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "24",
+      "--max-num-batched-tokens",
+      "32768",
+      "--enable-chunked-prefill",
+      "--async-scheduling",
+      "--kv-cache-dtype",
+      "fp8",
+      "--limit-mm-per-prompt",
+      "{\"image\":4}",
+      "--allowed-media-domains",
+      "*",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":2,\"moe_backend\":\"triton\"}",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--enable-auto-tool-choice"
+    ],
+    "container_port": 8888,
+    "entrypoint": "/usr/local/bin/vllm",
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_121a",
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 8888,
+    "image": "ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest@sha256:19627342e1da2607f4db50745dca30e57d7dd0ebff06062f03fd69b43a252931",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "unsloth-qwen3-6-35b-a3b-nvfp4--nvfp4",
+  "recipe_source": "mialabs",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen36-35b-a3b-nvfp4-dgxspark-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

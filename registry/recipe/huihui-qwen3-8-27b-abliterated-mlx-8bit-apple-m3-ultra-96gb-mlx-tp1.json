@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "oMLX 0.6.1 (12249931772fe070fb957a85a65c8f87ea4363b8)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m3-ultra-96gb",
+  "id": "huihui-qwen3-8-27b-abliterated-mlx-8bit-apple-m3-ultra-96gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmszmr4tl0e7gms0182h6xxfw",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmszmr4tl0e7gms0182h6xxfw"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M3 Ultra 96GB",
+      "notes": "One actual warm greedy run from a matched 3-run MTP on/off comparison. Locally assembled target checkpoint adds the byte-compatible Q8 MTP head from bluehawana/Qwen3.8-27B-8bit-MTP-MLX@06089053e7518043651f2a571a150e859c32ad37. Adaptive MTP depths 1..3; 121/181 drafted tokens accepted (66.9%).",
+      "revision_unpinned": false,
+      "run_id": "cmszmr4tl0e7gms0182h6xxfw"
+    }
+  },
+  "model_instance_id": "ailexleon-huihui-qwen3-8-27b-abliterated-mlx-8bit--mlx-8bit",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "huihui-qwen3-8-27b-abliterated-mlx-8bit-apple-m3-ultra-96gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

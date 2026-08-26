@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1-local"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "minimax-m2-7-autoround-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmpfo4frq003cqj015foht8k6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpfo4frq003cqj015foht8k6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "xpu_flash_attention",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Warm steady-state MiniMax M2.7 AutoRound TP4 on 4x Arc Pro B70. One persistent vLLM engine; 2 p512/n1536 warmup requests discarded; 4 measured greedy repeats. Strict quality passed first on the same fresh cache root: raw145 n64/n256 exact hashes, semantic suite, 8-run arithmetic repeat, and extended sixpack. Older 20260519 compile cache was rejected after raw145 n256 hash drift, so this result uses the quality-clean 20260521 cache root. No speculative decoding, expert dropping, sampling change, or power-limit increase.",
+      "revision_unpinned": true,
+      "run_id": "cmpfo4frq003cqj015foht8k6"
+    }
+  },
+  "model_instance_id": "lasimeri-minimax-m2-7-int4-autoround--autoround-int4-w4a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "minimax-m2-7-autoround-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

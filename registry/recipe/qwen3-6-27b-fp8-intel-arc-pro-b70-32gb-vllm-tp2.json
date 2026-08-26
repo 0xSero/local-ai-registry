@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1+local-xpu-block-fp8-requant"
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmorb75xb001ckz0489eqc9se",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmorb75xb001ckz0489eqc9se"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x Intel Arc Pro B70 32GB",
+      "notes": "Official Qwen3.6 27B FP8 Safetensors on two Intel Arc Pro B70 32GB GPUs using vLLM/XPU. This uses a local experimental XPU path that dequantizes the 128x128 block-FP8 checkpoint after load and requantizes to per-channel FP8 W8A16 because current XPU kernels do not provide native block-FP8 W8A8 GEMM for this checkpoint. Latency was 25.464 s for one 512-token prompt plus 512 generated tokens, so tokSOut is outputTokens / end-to-end latency and includes prefill overhead. Fixed 1 GiB KV cache per GPU was used to avoid vLLM/XPU automatic KV profiling OOM. TP4 at the same shape was slower at 26.606 s.",
+      "revision_unpinned": true,
+      "run_id": "cmorb75xb001ckz0489eqc9se"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

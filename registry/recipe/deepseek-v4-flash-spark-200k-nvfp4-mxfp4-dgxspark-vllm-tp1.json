@@ -1,0 +1,52 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Source-backed single-DGX-Spark K160 REAP profile with a 200K context claim, FP8 KV, MTP2, and full/piecewise CUDA graphs. The archived source's optional eager branch is deliberately absent. CLI launch stays blocked because the validated image is a host-local build rather than a published immutable artifact.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.1.dev17016+g27fd665bd.d20260526"
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-flash-spark-200k-nvfp4-mxfp4-dgxspark-vllm-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "deepseek-v4-flash-spark-200k-tp1"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "KV_CACHE_DTYPE": "fp8",
+      "VLLM_ENABLE_DEEPSEEK_V4_SPARSE_MLA_WARMUP": "0",
+      "VLLM_TRITON_MLA_SPARSE": "1",
+      "VLLM_TRITON_MLA_SPARSE_ALLOW_CUDAGRAPH": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "0xsero-deepseek-v4-flash-180b--nvfp4-mxfp4-experts",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 537516,
+    "max_concurrency": 1,
+    "max_context_tokens": 200000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-spark-200k-nvfp4-mxfp4-dgxspark-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

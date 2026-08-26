@@ -1,0 +1,80 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "LFM2.5-2.6B BF16 on one AMD Instinct MI300X with 128K context and four concurrent requests",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "0.5.13.post1.dev20260623+g0460f277b7"
+  },
+  "hardware_count": 1,
+  "hardware_id": "mi300x-192gb",
+  "id": "lfm25-26b-bf16-mi300x-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "amd-rocm",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "LiquidAI/LFM2.5-2.6B",
+      "--revision",
+      "a334ee78cd38458bb71eda24109ac42dcec1309d",
+      "--tp-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.94",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3-thinking",
+      "--tool-call-parser",
+      "lfm2"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/opt/venv/bin/python",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi30x-20260623@sha256:a8320f425ebec3dd2f3330816b65bcef8bd3eadf634f39ebfb84db2ae282b084",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 5078485,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "lfm25-26b-bf16-mi300x-sglang-tp1-sweep"
+  ],
+  "status": "validated"
+}

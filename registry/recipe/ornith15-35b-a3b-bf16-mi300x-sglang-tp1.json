@@ -1,0 +1,90 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Ornith-1.5-35B-A3B BF16 on one AMD Instinct MI300X with exact 128K C1/C2/C4 acceptance",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "0.5.18.dev20260823+gdd15fb57b5"
+  },
+  "hardware_count": 1,
+  "hardware_id": "mi300x-192gb",
+  "id": "ornith15-35b-a3b-bf16-mi300x-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "amd-rocm",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "ornith-ai/Ornith-1.5-35B-A3B",
+      "--revision",
+      "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+      "--served-model-name",
+      "ornith-1.5-35b-a3b",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "262144",
+      "--mem-fraction-static",
+      "0.90",
+      "--max-running-requests",
+      "4",
+      "--attention-backend",
+      "aiter",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--mamba-radix-cache-strategy",
+      "extra_buffer",
+      "--chunked-prefill-size",
+      "2048",
+      "--max-prefill-tokens",
+      "16384",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/opt/venv/bin/python",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi30x-20260823@sha256:8805fe3744f9b549b4e329b37134bce6ce4afd7ec749ea1249507bcbcea10096",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "ornith-ai-ornith-1-5-35b-a3b--bf16",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 2226502,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ornith15-35b-a3b-bf16-mi300x-sglang-tp1-sweep"
+  ],
+  "status": "validated"
+}

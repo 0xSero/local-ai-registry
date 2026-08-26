@@ -1,0 +1,53 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Immutable TP4/DCP4 deployment for the GLM-5.2 MXFP8/NVFP4/NF3 hybrid checkpoint. Recovered Pop evidence pins the image, checkpoint, vLLM, B12X, and FlashInfer and proves coherent long-context generation, but a current exact-config C1/C2/C4 sweep is still required before promotion.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "c382f1d28d5be2f867c216609408bdb424d6049a+b12x-e44cb77777a075790ebe9f7aa9f225d073aea109"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm52-mxfp8-nvfp4-nf3-rtxpro6000-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "glm52-hybrid-nf3-tp4"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HYBRID_KEPT": "b12x_nf3",
+      "HYBRID_NF3": "b12x_nf3",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid--mxfp8-nvfp4-nf3-hybrid",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": 180007,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm52-mxfp8-nvfp4-nf3-rtxpro6000-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

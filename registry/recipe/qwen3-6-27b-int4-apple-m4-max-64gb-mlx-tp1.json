@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "mlx-lm 0.31.3 / mlx 0.31.2 / mlx-metal 0.31.2"
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m4-max-64gb",
+  "id": "qwen3-6-27b-int4-apple-m4-max-64gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmofi32rs000rjx04be81ns5r",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmofi32rs000rjx04be81ns5r"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M4 Max 64GB",
+      "notes": "MLX benchmark Trial 1. TTFT is estimated from prompt_tps and generation_tps, not directly reported by mlx_lm.benchmark. Model config uses 4-bit affine group size 64 with selected 8-bit tensors.",
+      "revision_unpinned": true,
+      "run_id": "cmofi32rs000rjx04be81ns5r"
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-ud-mlx-4bit--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-apple-m4-max-64gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

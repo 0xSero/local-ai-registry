@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5070-ti-16gb",
+  "id": "qwen3-6-35b-reap-pruned-ratio-0-5-nvfp4-rtx-5070-ti-16gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmovdyfee00fhqr01a7r4ggu9",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmovdyfee00fhqr01a7r4ggu9"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "flashinfer_cutlass",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 5070 Ti 16GB",
+      "notes": "RTX 5070 Ti 16 GiB, vLLM with flashinfer-python, flashinfer-cubin, and flashinfer-jit-cache installed to avoid FlashInfer JIT OOM; reported 35,623 FP8 KV-cache tokens. llama-benchy command: uvx llama-benchy --base-url http://0.0.0.0:8000/v1 --depth 0 2048 4096 8096 --tg 128 --latency-mode generation. Depth sweep: pp2048@d2048 20669.58 tok/s, tg128@d2048 132.89 tok/s, TTFR 258.59 ms; pp2048@d4096 18389.86 tok/s, tg128@d4096 131.84 tok/s, TTFR 394.47 ms; pp2048@d8096 16152.89 tok/s, tg128@d8096 131.05 tok/s, TTFR 688.37 ms.",
+      "revision_unpinned": true,
+      "run_id": "cmovdyfee00fhqr01a7r4ggu9"
+    }
+  },
+  "model_instance_id": "sroecker-qwen3-6-35b-reap-pruned-ratio-0-5-nvfp4--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-reap-pruned-ratio-0-5-nvfp4-rtx-5070-ti-16gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,44 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing result. It is evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "0.0.0.dev1+g5f55db35e"
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-8-27b-nvfp4-dgx-spark-gb10-128gb-sglang-tp1-jg9ym3sv",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmtacgjrl01g9li01jg9ym3sv",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtacgjrl01g9li01jg9ym3sv"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Single-stream decode, batch 1, one concurrent request. n=9 generations (3 prompt kinds x 3 repeats), 512 output tokens each, streaming, temperature 0.60 top_p 0.95 top_k 20. Served context length 131072 (this is the CONFIGURED window, not the prompt depth; prompts here are short). mem-fraction-static 0.80, kv-cache-dtype fp8_e4m3, attention backend flashinfer, tp 1, max-running-requests 32. Idle box, one model loaded at a time, all six cells of the battery ran back to back in one session on one machine. Speculative decoding ON: DFlash, draft z-lab/Qwen3.8-27B-DFlash2 rev 50307d4c4cde6860d4eee73e2547cd786fe8e8a4, 8 draft tokens per step, 1 step, eagle_topk 1. Per-workload decode: code 56.45, reasoning 55.86, prose 28.85 tok/s; the headline figure is the mean of all 9. Quantization detail: RadixArk NVFP4 build of the same base model. Served from a local copy; the hub revision was not recorded, so this run pins the checkpoint by its config.json sha256 instead (see config-hashes.txt in the artifact directory). Measured with a 3-prompt-kind by 3-repeat battery; per-run rows, the resolved server args and the launch script are retained locally as speed-rarkfp4-on.json, serverinfo-rarkfp4-on.json and battery.log. Happy to share the raw rows on request.",
+      "revision_unpinned": true,
+      "run_id": "cmtacgjrl01g9li01jg9ym3sv"
+    }
+  },
+  "model_instance_id": "radixark-qwen3-8-27b-nvfp4--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-nvfp4-dgx-spark-gb10-128gb-sglang-tp1-jg9ym3sv-sweep"
+  ],
+  "status": "candidate"
+}

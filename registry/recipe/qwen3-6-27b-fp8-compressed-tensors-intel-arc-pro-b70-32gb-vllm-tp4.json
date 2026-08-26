@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmornlh8g000vkw04yb57ukvl",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmornlh8g000vkw04yb57ukvl"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "xpu_flash_attn2",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Diagnostic FP8 KV-cache run on 4x Intel Arc Pro B70. Static Qwen3.6 27B compressed-tensors FP8 with patched vLLM/XPU FA2, but --kv-cache-dtype fp8 was slower than auto/BF16 KV and vLLM warns FP8 KV may cause accuracy drop without proper scaling. Not recommended for quality-preserving speed; submitted as a negative learning datapoint.",
+      "revision_unpinned": true,
+      "run_id": "cmornlh8g000vkw04yb57ukvl"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--fp8-compressed-tensors",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

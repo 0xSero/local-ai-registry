@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev13 local XPU patch stack"
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-int4-autoround-w4a16-int8-head-int4-draft-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrgn3szj005dmj01u8tel6yd",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrgn3szj005dmj01u8tel6yd"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU / Level Zero",
+        "flashAttn": false,
+        "gpuLayers": 99,
+        "kvCacheDtype": "f16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x Intel Arc Pro B70 32GB",
+      "notes": "Strict fresh-response Qwen3.6 27B INT4 AutoRound TP2 record on two Intel Arc Pro B70 GPUs. Capturing all 48 GDN cores inside surrounding target PIECEWISE segments reduces target graph pieces from 129 to 33. Fixed 12-prompt realistic cold suite, cached_tokens=0 throughout, no cache/history/response reuse, target-verified MTP3, exact canaries + repeat128 + baseline parity + 1K needle all passed. Conservative full-quality result 87.029 tok/s; independent isolated high 87.816; swapped four-GPU crossover favored the candidate in both assignments.",
+      "revision_unpinned": false,
+      "run_id": "cmrgn3szj005dmj01u8tel6yd"
+    }
+  },
+  "model_instance_id": "webhie-qwen3-6-27b-int4-autoround--int4-autoround-w4a16-int8-head-int4-draft",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-autoround-w4a16-int8-head-int4-draft-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

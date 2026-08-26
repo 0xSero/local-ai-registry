@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.x-pr40898-cu130"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3-5-9b-base-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmopmnsgl000akz045cg54q57",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmopmnsgl000akz045cg54q57"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": 999,
+        "kvCacheDtype": "bfloat16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX PRO 6000 Blackwell 96GB",
+      "notes": "Quality leader \u2014 80.0% BFCL (24/30), campaign record. DFlash N=4 + CUDA graphs + greedy (temp=0). Mamba/SSM hybrid architecture. 20/20 tool-call chain completed, 100% tool_call_valid_rate. NOTE: torch.compile is harmful on this architecture (\u221238.6% TPS, \u221210pp BFCL).",
+      "revision_unpinned": true,
+      "run_id": "cmopmnsgl000akz045cg54q57"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-5-9b--bf16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-9b-base-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

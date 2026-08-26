@@ -1,0 +1,110 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "MiaAI-Lab Qwen3.8-27B NVFP4 single-Spark DSpark profile, normalized to preserve CUDA graphs and awaiting index-protocol revalidation",
+  "engine": {
+    "graph_mode": "piecewise",
+    "name": "sglang",
+    "version": "qwen38-27b image"
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen38-27b-nvfp4-dgxspark-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "RadixArk/Qwen3.8-27B-NVFP4",
+      "--revision",
+      "319f741cce68d7914884900c138a1fbb70a42f30",
+      "--served-model-name",
+      "qwen3.8-27b",
+      "--trust-remote-code",
+      "--mem-fraction-static",
+      "0.90",
+      "--attention-backend",
+      "flashinfer",
+      "--chunked-prefill-size",
+      "8192",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--mamba-full-memory-ratio",
+      "4.21",
+      "--mamba-radix-cache-strategy",
+      "extra_buffer_lazy",
+      "--max-mamba-cache-size",
+      "64",
+      "--max-running-requests",
+      "16",
+      "--context-length",
+      "262144",
+      "--speculative-algorithm",
+      "DSPARK",
+      "--speculative-draft-model-path",
+      "RadixArk/Qwen3.8-27B-DSpark",
+      "--speculative-dspark-block-size",
+      "7",
+      "--speculative-draft-model-quantization",
+      "unquant",
+      "--speculative-num-draft-tokens",
+      "8",
+      "--enable-torch-compile",
+      "--torch-compile-max-bs",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--num-continuous-decode-steps",
+      "2",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--enable-metrics",
+      "--enable-cache-report",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8888"
+    ],
+    "container_port": 8888,
+    "environment": {
+      "SGLANG_OPT_MAMBA_SKIP_DECODE_LOCK": "0"
+    },
+    "host_port": 8888,
+    "image": "lmsysorg/sglang:qwen38-27b@sha256:febfb971c7352570fc445c466ebd6ffc9d896024958e544a60f2137fd85856b1",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "radixark-qwen3-8-27b-nvfp4--nvfp4",
+  "recipe_source": "mialabs",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 16,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen38-27b-nvfp4-dgxspark-sglang-tp1-sweep"
+  ],
+  "status": "candidate"
+}

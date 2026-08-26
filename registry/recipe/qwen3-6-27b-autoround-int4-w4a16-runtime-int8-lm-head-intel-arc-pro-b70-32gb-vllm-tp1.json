@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev13+g9557d9108.d20260620 local XPU patch stack"
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr576apv0079q901i6dvsh0l",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr576apv0079q901i6dvsh0l"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU / Level Zero",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x Intel Arc Pro B70 32GB",
+      "notes": "webhie AutoRound variant improves over Intel AutoRound under the same Qwen27 TP1 B70 MTP3/cg8 runtime INT8-LM-head recipe. Strict suite uses each prompt once, cached_tokens=0 for every request, token-id timing for generated tokens 1-100 after TTFT, and verified qwen3_next_mtp speculation. Full quality gate passed and matched the prior Intel INT8-LM-head baseline including repeat32 and 1K needle. Primary run repeated at 64.306 tok/s; initial webhie support row was 63.336 tok/s; same-window Intel control was 62.366 tok/s.",
+      "revision_unpinned": false,
+      "run_id": "cmr576apv0079q901i6dvsh0l"
+    }
+  },
+  "model_instance_id": "webhie-qwen3-6-27b-int4-autoround--autoround-int4-w4a16-runtime-int8-lm-head",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

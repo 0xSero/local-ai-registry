@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1+xpu"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmotql1v60013qy01016jcs7r",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmotql1v60013qy01016jcs7r"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Qwen3.6-27B FP8 compressed-tensors on 4x Arc Pro B70 with vLLM/XPU. Post-reboot rerun after fixing runtime library ordering: venv lib path first, no oneAPI setvars for torch/vLLM. TP4/PP1, XPU FlashAttention2, CCL_ATL_TRANSPORT=ofi, default IPC/topology, n-gram speculative decoding num_speculative_tokens=4 lookup 2/4. Command shape: bench latency, 512 prompt, 512 output, 3 measured iters, 1 warmup, max_model_len=1024, gpu_memory_utilization=0.80.",
+      "revision_unpinned": true,
+      "run_id": "cmotql1v60013qy01016jcs7r"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-compressed-tensors-fp8-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmorre1hq000fi30421gxpv3j",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmorre1hq000fi30421gxpv3j"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "xpu-fa2",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Qwen3.6 27B static FP8 compressed-tensors on 4x Intel Arc Pro B70. vLLM XPU/FA2 with local quality-preserving patches: singleton FP8 attention scales scalar-view for FA2, language-model-only skips vision tower, GDN speculative metadata contiguity fix. N-gram speculative decode with 4 draft tokens, prompt lookup min/max 2/5, 512 prompt / 512 output, 1 warmup + 3 measured iterations. No FP8 KV and no power-limit changes. API backend enum has no xpu value, so backend omitted. Log: /home/steve/bench-results/qwen36-fp8-vllm/vllm-qwen36-fp8-compressed-tensors-tp4-in512-out512-bs1-20260504T221317Z.log",
+      "revision_unpinned": true,
+      "run_id": "cmorre1hq000fi30421gxpv3j"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--compressed-tensors-fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-compressed-tensors-fp8-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

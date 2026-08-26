@@ -1,0 +1,51 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Controller-backed NEXTN candidate. Exact baseline model/image pins and a 144K raw baseline sweep were recovered, but the later NEXTN graft and its 81-94 tok/s summaries are not immutably pinned; baseline evidence does not validate this leaf.",
+  "engine": {
+    "graph_mode": "unknown",
+    "name": "sglang",
+    "version": "0.5.12 fork"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "nex-n2-pro-nvfp4-rtxpro6000-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "nex-n2-pro-nvfp4",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853",
+      "SPEC_ALGO": "NEXTN",
+      "SPEC_NUM_DRAFT_TOKENS": "4"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "controller",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "local-nex-n2-pro-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 103000,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "nex-n2-pro-nvfp4-rtxpro6000-sglang-tp4-sweep"
+  ],
+  "status": "candidate"
+}

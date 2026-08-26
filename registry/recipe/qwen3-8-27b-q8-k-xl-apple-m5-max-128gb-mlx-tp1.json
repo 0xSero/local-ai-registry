@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "omlx"
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-max-128gb",
+  "id": "qwen3-8-27b-q8-k-xl-apple-m5-max-128gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsz807ad0dz3ms01foyas4h6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsz807ad0dz3ms01foyas4h6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M5 Max 128GB",
+      "notes": "Full run: automated running on oMLX \n# Context: Code (Python)\n\n# Single request results\nTest\tTTFT(ms)\tTPOT(ms)\tppTPS\ttgTPS\tE2E(s)\tThroughput\tPeakMem\npp 1024 / tg 128\t1270.1\t25.4\t806.2\t39.6\t4.5\t254.8\t28.8 GB\npp 4096 / tg 128\t5965.9\t29.7\t686.6\t33.9\t9.8\t432.5\t30.3 GB\n\n# Batch results\nBatch\ttgTPS\tppTPS\tavgTTFT(ms)\tE2E(s)\tSpeedup\n1x baseline\t39.6\t806.2\t1270.1\t4.5\t1.00x\n2x\t36.1\t454.2\t3775.6\t11.6\t0.91x\n4x\t58.8\t389.6\t6658.4\t19.2\t1.48x\n8x\t83.7\t312.8\t14553.5\t38.4\t2.11x",
+      "revision_unpinned": true,
+      "run_id": "cmsz807ad0dz3ms01foyas4h6"
+    }
+  },
+  "model_instance_id": "mcsplain-qwen3-8-27b-oq8-mtp--q8-k-xl",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q8-k-xl-apple-m5-max-128gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

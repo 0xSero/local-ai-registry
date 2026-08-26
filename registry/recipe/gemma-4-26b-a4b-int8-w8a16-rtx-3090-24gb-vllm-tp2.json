@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.26.0"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "gemma-4-26b-a4b-int8-w8a16-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cms0ukqq600bys201w618abaa",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms0ukqq600bys201w618abaa"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "triton",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "bf16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Second configuration of the same box: Eagle3 speculative decoding on top of the INT8 W8A16 run already submitted (145.2 t/s, no spec-decode). Drafter RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3 (1.8 GB, speculators format), n=3. tokSOut 162.9 is prose, median of 3 (+12.2% over the non-speculative baseline); the same harness on a code prompt gives 206.2 t/s (+42.0%), since acceptance is far higher on syntactic text -- 46.2% accepted / 2.39 tokens per step on code vs 29.7% / 1.89 on prose. Method: stream:true, temperature 0, ignore_eos + min_tokens==max_tokens forcing exactly 400 tokens; rate = (n-1)/(t_last - t_first) so prefill and ramp are excluded, and n comes from usage.completion_tokens, NOT SSE chunk count -- under spec-decode vLLM packs each step's accepted tokens into one chunk, so counting chunks under-reports by the tokens-per-step factor. Aggregate decode 162.7 / 296.2 / 618.2 t/s at concurrency 1 / 2 / 4, vs 145.2 / 246.0 / 416.9 without spec-decode; --max-num-seqs 4 is a deliberate low-tenant setting, not a hardware limit. n=3 chosen over n=4 (faster single-stream on code at 218.8 t/s) because this endpoint serves parallel traffic and n=3 is clearly better under concurrency. Acceptance falls as num_speculative_tokens rises while tokens-per-step keeps climbing -- tokens/step is what predicts throughput, not accept rate. Costs vs non-speculative: KV pool 507,367 -> 374,279 tokens (still 1.43x full 262144 context), TTFT 38 -> 47 ms, prefill ~5% slower (9318 -> 8865 tok/s at 8k, 6434 at 32k). This same drafter was previously a large net loss on an NVFP4 build of this model; it wins here because int8_per_channel_weight_only quantizes weights only and leaves activations bf16, which is what the speculator was trained against. peakVramGb = 23240 MiB/card x2 at util 0.92. KV cache is bf16 because Gemma 4's interleaved attention routes to vLLM's Triton backend, which needs SM89+ for native FP8 -- unavailable on Ampere. 2x RTX 3090 NVLinked (NV4).",
+      "revision_unpinned": true,
+      "run_id": "cms0ukqq600bys201w618abaa"
+    }
+  },
+  "model_instance_id": "google-gemma-4-26b-a4b-it--int8-w8a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-26b-a4b-int8-w8a16-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

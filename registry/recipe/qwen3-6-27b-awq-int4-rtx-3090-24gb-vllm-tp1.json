@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-awq-int4-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmoft2ti5000lii040g3yxthl",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoft2ti5000lii040g3yxthl"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "2x RTX 3090 NVLink, TP=2, MTP speculative decoding (3 draft tokens, 55.8% acceptance), enforce-eager, AWQ INT4 + BF16 MTP head. Marlin INT4 kernels native on Ampere. Post-reboot clean GPU state.",
+      "revision_unpinned": true,
+      "run_id": "cmoft2ti5000lii040g3yxthl"
+    }
+  },
+  "model_instance_id": "hampsonw-qwen3-6-27b-awq-bf16-int4-mtp-bf16--awq-int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-awq-int4-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

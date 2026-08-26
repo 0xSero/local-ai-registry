@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "gemma-4-26b-a4b-it-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmoz9mgf9001ppd01fsc7a4au",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoz9mgf9001ppd01fsc7a4au"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX PRO 6000 Blackwell 96GB",
+      "notes": "Single-stream baseline on RTX PRO 6000 Blackwell (sm_120). vLLM 0.20.1 default CUDA 13 wheel, torch 2.11.0+cu130. Concurrency sweep on the same endpoint (same prompts, max_tokens=600, temp=0.7): aggregate ~1,048 t/s at c=16 (max-num-seqs), ~1,202 t/s at c=32 with queueing, 0 KV-cache preemptions across 88 requests. Eagle3 spec-decode (RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3, k=3) tested separately on this same NVFP4 target: 27% accept rate, 91 t/s \u2014 net-negative since speculator was trained against BF16 hidden states.",
+      "revision_unpinned": true,
+      "run_id": "cmoz9mgf9001ppd01fsc7a4au"
+    }
+  },
+  "model_instance_id": "nvidia-gemma-4-26b-a4b-nvfp4--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-26b-a4b-it-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

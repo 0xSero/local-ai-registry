@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-fp8-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmofb22uy0004jx04u73naj2s",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmofb22uy0004jx04u73naj2s"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "2x RTX 3090 NVLink, TP=2, MTP speculative decoding (2 draft tokens, 60.7% acceptance), enforce-eager. FP8 emulated via Marlin on Ampere.",
+      "revision_unpinned": true,
+      "run_id": "cmofb22uy0004jx04u73naj2s"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

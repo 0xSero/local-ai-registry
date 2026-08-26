@@ -1,0 +1,59 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": false,
+    "vision": true
+  },
+  "description": "Republished public Qwen3.8-27B AWQ INT4 SGLang TP4 candidate with immutable base images and exact target and DSpark draft revisions. Historical source sweeps remain unaccepted; CLI launch stays blocked until the new image passes an exact-token TP4 replay on four RTX 3090s.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "sglang",
+    "version": "2e7c85da6"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen38-awq-int4-rtx3090-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-lc",
+      "exec /entrypoint.sh"
+    ],
+    "container_port": 8000,
+    "entrypoint": "/bin/bash",
+    "environment": {
+      "DSPARK": "1",
+      "MODELS_DIR": "/models",
+      "PORT": "8000",
+      "TP": "4"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/qwen38-3090-sglang@sha256:cc2bfc369c709c53d239ef2af41d4ae2530904975816bb2ca484188008586ac9",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/inference-index/models/qwen38-3090-sglang",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": 138452,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen38-awq-int4-rtx3090-sglang-tp4-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.24.0"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3060-12gb",
+  "id": "thinkingcap-qwen3-6-27b-w4a16-int4-autoround-rtx-3060-12gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrb3fk6g00ejro01efafa5n2",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrb3fk6g00ejro01efafa5n2"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "FLASH_ATTN",
+        "flashAttn": null,
+        "gpuLayers": 64,
+        "kvCacheDtype": "int8_per_token_head",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3060 12GB",
+      "notes": "Dell Precision T7810, Dual Intel Xeon E5-2650 v4 (2x12c/24t, 2.20GHz), 32GB DDR4 ECC 2133 MT/s (8x4GB), PCIe Gen 3 x16 (8GT/s), both GPUs on NUMA 0 (PHB). vLLM TP=2, --language-model-only, INT8 KV (int8_per_token_head), BF16 Mamba SSM state. Config: CUDA graphs PIECEWISE (8K max context, 4.1x TG boost).",
+      "revision_unpinned": true,
+      "run_id": "cmrb3fk6g00ejro01efafa5n2"
+    }
+  },
+  "model_instance_id": "josefprusa-thinkingcap-qwen3-6-27b-int4-autoround-v1--w4a16-int4-autoround",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "thinkingcap-qwen3-6-27b-w4a16-int4-autoround-rtx-3060-12gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

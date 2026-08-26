@@ -1,0 +1,62 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Live-accepted two-B70 SGLang XPU profile with online layered FP8, FP32 GDN state, the native GDN fast path, XPU decode graphs, and a digest-pinned GHCR image.",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "0.5.13+local-bmg"
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2",
+  "launch": {
+    "accelerator_backend": "intel-xpu",
+    "container_port": 30000,
+    "environment": {
+      "LOAD_FORMAT": "layered_fp8",
+      "MEM_FRACTION_STATIC": "0.9",
+      "MODEL_PATH": "/models/Qwen3.6-35B-A3B",
+      "PORT": "30000",
+      "SGLANG_MAMBA_CONV_DTYPE": "float16",
+      "SGLANG_MAMBA_SSM_DTYPE": "float32",
+      "SGLANG_XPU_ENABLE_GRAPH": "1",
+      "SGLANG_XPU_ESIMD_DECODE": "1",
+      "SGLANG_XPU_ESIMD_MOE": "1",
+      "SGLANG_XPU_ESIMD_MOE_PREFILL": "1",
+      "SGLANG_XPU_FA_ESIMD_QKV": "1",
+      "SGLANG_XPU_GDN_ESIMD": "0",
+      "SGLANG_XPU_GDN_EXTEND_ESIMD": "0",
+      "SGLANG_XPU_GDN_FAST_PATH": "1",
+      "SGLANG_XPU_PREFILL_DPAS": "1",
+      "TP_SIZE": "2",
+      "ZE_AFFINITY_MASK": "0,1"
+    },
+    "host_port": 8010,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "bridge",
+    "script": {
+      "file": "sources/github/qwen36-b70/15166aed68bc25c411e16ddd81621242ba3d6298/sglang/xpu/run_qwen3_6_service.sh"
+    },
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--online-fp8-weights-with-fp16-activations",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2-sweep"
+  ],
+  "status": "validated"
+}

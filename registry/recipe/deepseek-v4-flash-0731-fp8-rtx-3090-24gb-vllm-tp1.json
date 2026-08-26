@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "LimeChain/vllm@ccfeb3a8b (release 4fd0bd1bf)"
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "deepseek-v4-flash-0731-fp8-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsm2bq2c00ljpb0159v0hcbh",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsm2bq2c00ljpb0159v0hcbh"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 1
+      },
+      "hardware_label": "8x RTX 3090 24GB",
+      "notes": "Aggregate end-to-end output throughput p50 across C11 concurrent requests; not per-stream active decode. Five measured rounds after one warm-up; 128 generated tokens/request; four fixed prompts ranged 49-59 tokens (promptTokens reports rounded median 58). Per-session active-output p50: 44.10 tok/s. Exact release: PP8/TP1, DSpark N=5, FP8 KV, 200 W/GPU; zero preemptions, service errors, or GPU/PCIe faults. Public evidence: https://github.com/LimeChain/vllm/tree/deepseek-v4-flash-sm86/release/limechain-sm86/benchmarks/final-c1-c12",
+      "revision_unpinned": false,
+      "run_id": "cmsm2bq2c00ljpb0159v0hcbh"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-fp8-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

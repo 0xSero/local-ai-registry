@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-fp8-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmp4vlcfg000kph01ggawf644",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp4vlcfg000kph01ggawf644"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Lenovo ThinkStation P620 (TR Pro 5955WX, 64 GB DDR4-3200 ECC), 2x RTX 3090 (1x Gigabyte Waterforce Xtreme 3090 Ti + 1x NVIDIA Founders Edition 3090), both PCIe Gen4 x16, both 250 W power cap, ReBAR enabled (BAR1 32 GB each), no NVLink, NODE topology (GPU0 domain 40, GPU1 domain 60). Engine: vLLM 0.20.2 + torch 2.11.0 + CUDA 13.x runtime. Marlin FP8 dequant (Ampere has no native FP8 tensor cores). TP=2 across both cards via NCCL allreduce. MTP n=3 speculative decoding via Qwen-shipped mtp.safetensors weights, acceptance 56.12% (per-position 70.19/54.82/43.35), accept length 2.68. Methodology: vllm bench serve, random 512in/512out, 20 prompts, max-concurrency 1, --save-result. Hardware-delta context: bench-paired no-MTP run on same rig was 44.82 t/s, vs prior PC dual-3090 vLLM FP8 entry at 44.17 t/s (+1.5%, within noise) - confirming PCIe x16 vs x4 contributes ~zero to single-stream throughput. The +75% MTP uplift is all software, not hardware.",
+      "revision_unpinned": true,
+      "run_id": "cmp4vlcfg000kph01ggawf644"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8--33492",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

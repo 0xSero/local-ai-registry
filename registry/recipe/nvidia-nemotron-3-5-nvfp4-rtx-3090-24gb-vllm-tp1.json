@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "nvidia-nemotron-3-5-nvfp4-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsrjci1s008wms01hceajql0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsrjci1s008wms01hceajql0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "CORREGIDO: vLLM 0.27.1, TP2 2x RTX 3090, MoE humming, Mamba flashinfer FP16, KV FP8, prefix caching. Metodologia: texto genuinamente aleatorio (caracteres, sin dedup de bloques), warmup del mismo tamano, mediana de 3 corridas cold. Prompt ~10k tokens: TTFT 1190ms, prefill ~8.4k t/s. Decode 197 t/s (512 tokens).",
+      "revision_unpinned": true,
+      "run_id": "cmsrjci1s008wms01hceajql0"
+    }
+  },
+  "model_instance_id": "nvidia-nvidia-nemotron-3-5-lightning-30b-a3b-nvfp4--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "nvidia-nemotron-3-5-nvfp4-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

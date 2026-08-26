@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "MiaAI-Lab official DeepSeek V4 Flash 0731 NVFP4 across two DGX Sparks with TP2, 1M configured context, MTP-5, NVFP4 DS-MLA KV, and CUDA graphs",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.25.2+anemll-dspark-gx10-0.1.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-flash-0731-nvfp4-dgxspark-vllm-tp2",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8888,
+    "environment": {
+      "DSPARK_REVISION": "9e165c30e2704aec5d9d593cce3eebd58bbef1cb",
+      "GPU_MEMORY_UTILIZATION_TEXT": "0.835",
+      "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+      "MAX_MODEL_LEN": "1048576",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "6",
+      "MTP_NUM_TOKENS": "5",
+      "VLLM_USE_BREAKABLE_CUDAGRAPH": "0"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "env_template": "sources/github/miaai-lab/deepseek-v4-flash-dspark-two-dgx-spark/f104c39a8c6fa68d4ea0b342ad6eed172bc0e635/.env.dspark.example",
+      "file": "sources/github/miaai-lab/deepseek-v4-flash-dspark-two-dgx-spark/f104c39a8c6fa68d4ea0b342ad6eed172bc0e635/start-deepseek-v4-flash-dspark.sh"
+    },
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--nvfp4",
+  "recipe_source": "mialabs",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 6,
+    "max_context_tokens": 899994,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-nvfp4-dgxspark-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

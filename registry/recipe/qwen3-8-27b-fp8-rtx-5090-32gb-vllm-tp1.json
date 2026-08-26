@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.1"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-8-27b-fp8-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmstify5k03m4ms01dz1byloh",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmstify5k03m4ms01dz1byloh"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 1
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "RTX 5090 five-prompt text-only suite: prompts 1-4 single requests and prompt 5 a four-turn session; temperature 0; max output 2048; context limit 8192; weighted client wall-time output throughput across 8 requests. Prompts 1-3 reached the 2048-token output cap; prompt 4 and all prompt 5 turns stopped normally. vLLM eager mode, FP8 KV cache, chunked prefill, max_num_seqs=1, speculative decoding disabled, multimodal image/video limits set to zero. Peak sampled residency 31677 MiB; telemetry average power 195.6 W, peak sampled power 350 W, average temperature 53 C, peak 56 C, average utilization 38 percent. Benchmark artifact: results/qwen38-27b-fp8-rtx5090-20260814-230605-max2048-8k.",
+      "revision_unpinned": true,
+      "run_id": "cmstify5k03m4ms01dz1byloh"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b-fp8--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-fp8-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}
