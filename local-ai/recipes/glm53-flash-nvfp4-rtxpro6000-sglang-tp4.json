@@ -63,7 +63,7 @@
       "--max-running-requests",
       "8",
       "--mem-fraction-static",
-      "0.90",
+      "0.93",
       "--cuda-graph-max-bs-decode",
       "8",
       "--speculative-algorithm",
@@ -84,7 +84,10 @@
       "--host",
       "0.0.0.0",
       "--port",
-      "30000"
+      "30000",
+      "--enable-multimodal",
+      "--chat-template",
+      "/chat-template.jinja"
     ],
     "container_port": 30000,
     "environment": {
@@ -112,7 +115,8 @@
     "supervision": "local-studio-controller (systemd user unit local-studio-controller-8080)",
     "launch_command": "/home/ser/glm53-flash-deploy/launch-studio.sh (foreground docker run, container glm-5.3-flash-sglang-sm120)",
     "controller_recipe_id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
-    "studio_instance": "llm"
+    "studio_instance": "llm",
+    "chat_template_override": "chat-template-mm.jinja (bundle repo): emits <|begin_of_image|><|image|><|end_of_image|> and video/audio markers; stock checkpoint template is text-only and renders an 'unable to process' reminder"
   },
   "serving": {
     "api": "openai/v1",

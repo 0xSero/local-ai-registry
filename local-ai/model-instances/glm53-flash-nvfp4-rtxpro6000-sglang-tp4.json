@@ -21,7 +21,7 @@
     "api": "openai/v1",
     "configured_max_context_tokens": 1048576,
     "configured_max_running_sequences": 8,
-    "measured_kv_cache_tokens": 15156736,
+    "measured_kv_cache_tokens": 4087680,
     "measured_max_context_tokens": 1048576,
     "measured_max_request_concurrency": 1,
     "tensor_parallel": 4
@@ -137,6 +137,16 @@
       "date": "2026-08-26T22:40Z",
       "event": "benchmark_sweep",
       "detail": "9-run sweep: concurrency ladder (1/2/4/8 at low effort, 512-token cap), effort ladder (low/high/max at 1024 cap), 2x 5k-token prefill TTFT. Results in benchmarks block; raw JSON saved on host."
+    },
+    {
+      "date": "2026-08-26T23:45Z",
+      "event": "multimodal_activation",
+      "detail": "mem-fraction-static 0.90->0.93 (KV 3,789,184->4,087,680 tokens/rank); --enable-multimodal + chat-template override emitting real media markers. Vision verified: solid-red PNG answered 'Red'; video verified: 2s solid-blue MP4 answered 'Blue'. Prior blindness root cause: shipped chat_template.jinja is text-only (renders '<reminder>You are unable to process this image...'), so <|image|> spans never entered the prompt."
+    },
+    {
+      "date": "2026-08-26T23:50Z",
+      "event": "decode_tuning_sweep",
+      "detail": "MTP geometry A/B on identical probes: draft=4 worse (138 solo / ~63 per-stream at 8-way vs 142/72 at draft=6); steps=6/draft=7 rejected by engine (NEXTN head depth cap). Kept 5/6. Accept rate improved 0.39-0.49 -> 0.60-0.68 (accept len 2.8-3.0). Sustained uncapped single-stream: 158-182 tok/s (16.3k-token deep probe at 158.6; earlier shorter prose peaked 207.6). Aggregate 8-way ~550 tok/s. NVFP4 KV cache explored: NOT available - kv-cache-dtype choices are auto/fp8_e5m2/fp8_e4m3/bf16 and dsa_backend hard-asserts fp8_e4m3."
     }
   ],
   "source": {
