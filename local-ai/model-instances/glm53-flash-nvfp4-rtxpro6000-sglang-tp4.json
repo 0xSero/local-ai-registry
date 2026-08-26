@@ -132,6 +132,11 @@
         "pi_probe": "pi-e2e-ok",
         "omp_probe": "omp-e2e-ok"
       }
+    },
+    {
+      "date": "2026-08-26T22:40Z",
+      "event": "benchmark_sweep",
+      "detail": "9-run sweep: concurrency ladder (1/2/4/8 at low effort, 512-token cap), effort ladder (low/high/max at 1024 cap), 2x 5k-token prefill TTFT. Results in benchmarks block; raw JSON saved on host."
     }
   ],
   "source": {
@@ -142,5 +147,86 @@
       "README.md"
     ],
     "repository": "https://github.com/0xSero/glm53-flash-nvfp4-sm120-exact-docker"
+  },
+  "benchmarks": {
+    "date": "2026-08-26",
+    "methodology": "OpenAI streaming API against engine port 8000 directly on pop-os (no proxy hop); temperature 1.0, top_p 0.95; fixed technical-essay prompt; max_tokens cap equalizes decode length for the sweep (benchmarking only - server imposes no cap); token counts from usage in final SSE chunk; aggregate tok/s = total completion tokens / batch wall time. Raw results: glm53-flash-deploy/sweep-20260826.json on pop-os.",
+    "decode_concurrency_low_effort_512cap": [
+      {
+        "conc": 1,
+        "aggregate_tok_s": 142.0,
+        "per_stream_tok_s": [
+          141.8
+        ],
+        "ttft_s": 0.124
+      },
+      {
+        "conc": 2,
+        "aggregate_tok_s": 240.4,
+        "per_stream_tok_s": [
+          125.8,
+          120.2
+        ],
+        "ttft_s": 0.252
+      },
+      {
+        "conc": 4,
+        "aggregate_tok_s": 381.8,
+        "per_stream_tok_s": [
+          105.6,
+          103.2,
+          96.8,
+          95.5
+        ],
+        "ttft_s": 0.256
+      },
+      {
+        "conc": 8,
+        "aggregate_tok_s": 550.0,
+        "per_stream_tok_s": [
+          72.3,
+          76.8,
+          68.7,
+          71.6,
+          70.1,
+          78.8,
+          70.5,
+          71.1
+        ],
+        "ttft_s": 0.332
+      }
+    ],
+    "effort_ladder_1024cap_conc1": [
+      {
+        "effort": "low",
+        "tok_s": 154.2
+      },
+      {
+        "effort": "high",
+        "tok_s": 163.0
+      },
+      {
+        "effort": "default_max",
+        "tok_s": 169.4
+      }
+    ],
+    "prefill_5k_token_prompt": {
+      "ttft_cold_s": 0.5,
+      "ttft_warm_prefix_cache_s": 0.13,
+      "approx_prefill_tok_s_cold": 10000,
+      "note": "scheduler logs show 6.4k-18.9k tok/s prefill across mixed workloads"
+    },
+    "mtp_nextn5": {
+      "accept_len_observed": [
+        2.17,
+        3.48
+      ],
+      "accept_rate_observed": [
+        0.39,
+        0.49
+      ],
+      "note": "NEXTN 5-step drafting; per-request variance by task type"
+    },
+    "scaling_note": "Aggregate decode scales ~3.9x from 1 to 8 streams (142->550 tok/s) at low effort; per-stream degrades gracefully to ~70 tok/s at 8-way. Effort level barely changes decode tok/s (154->169 low->max); it changes how many of the generated tokens are hidden reasoning vs visible content."
   }
 }
