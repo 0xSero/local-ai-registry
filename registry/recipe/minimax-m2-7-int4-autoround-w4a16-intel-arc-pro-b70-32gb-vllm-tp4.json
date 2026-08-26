@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1-local"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "minimax-m2-7-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmpgp0mj40036pc01l66mcrle",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpgp0mj40036pc01l66mcrle"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Constrained simple-site quality benchmark, not unconstrained website generation. MiniMax M2.7 AutoRound INT4 on 4x Arc Pro B70, TP4, forced XPU graph with no-op XPU comm capture, scaffolded assistant prefill, tight structured HTML suffix, prefix caching. One validated warmup excluded from measured service throughput. Rerun result: 30/30 accepted, 0 rejects, 100% first-pass, 94.46 effective measured output tok/s; companion run: 94.53 tok/s. Approx prompt/input throughput derived from vLLM progress and prompt length; strict harness validated complete HTML/body, exact list items, required copy, no control chars, no malformed angle markup.",
+      "revision_unpinned": true,
+      "run_id": "cmpgp0mj40036pc01l66mcrle"
+    }
+  },
+  "model_instance_id": "lasimeri-minimax-m2-7-int4-autoround--int4-autoround-w4a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "minimax-m2-7-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

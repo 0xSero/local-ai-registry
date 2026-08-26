@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": null
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m3-ultra-512gb",
+  "id": "glm-5-2-mixed-3-6bit-apple-m3-ultra-512gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmqkshaz80102nv01k4pozupb",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqkshaz80102nv01k4pozupb"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M3 Ultra 512GB",
+      "notes": "Manual Tes GLM-5.2 direct patched MLX trial. Canonical raw/artifact sweep completed 13/13, but PDF Ops scored 24/34 and route is not promoted. LM Studio and mlx_lm server routes failed; direct loader only. Load 80.062s, peak 310.449GB. PDF lanes: public-smoke 2/5, hard 7/8, private 15/21. Token count method: rough fallback after tokenizer failure: ValueError('Tokenizer class TokenizersBackend does not exist or is not currently imported.'). Resubmitted with engineName=mlx and conservative ttftMs=model-load-ms to satisfy LocalMaxxing validation; direct-run TTFT was not measured.",
+      "revision_unpinned": true,
+      "run_id": "cmqkshaz80102nv01k4pozupb"
+    }
+  },
+  "model_instance_id": "pipenetwork-glm-5-2-mlx-mixed-3-6bit--mixed-3-6bit",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "glm-5-2-mixed-3-6bit-apple-m3-ultra-512gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

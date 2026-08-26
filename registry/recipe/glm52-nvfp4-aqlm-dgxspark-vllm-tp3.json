@@ -1,0 +1,57 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "MiaAI-Lab GLM-5.2 hybrid NVFP4+AQLM vision profile across three DGX Sparks with TP3, DCP1, MTP-3, and full CUDA graphs",
+  "engine": {
+    "graph_mode": "full",
+    "name": "vllm",
+    "version": "jarrelscy glm52-sm120 fork"
+  },
+  "hardware_count": 3,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm52-nvfp4-aqlm-dgxspark-vllm-tp3",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8888,
+    "environment": {
+      "DCP_SIZE": "1",
+      "ENABLE_MTP": "1",
+      "GPU_MEM_UTIL": "0.895",
+      "HF_REVISION": "53e0082eedebd806b63e19779c47905937d768ca",
+      "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+      "KV_CACHE_MEMORY_BYTES": "11811160064",
+      "MAX_MODEL_LEN": "348160",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "1",
+      "MTP_SPEC_TOKENS": "3",
+      "TP_SIZE": "3"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "env_template": "sources/github/miaai-lab/glm52-nvfp4-aqlm-triple-dgx-spark/5c85163ccb8d98d395880e71e2dbd03976a3f4ad/.env.example",
+      "file": "sources/github/miaai-lab/glm52-nvfp4-aqlm-triple-dgx-spark/5c85163ccb8d98d395880e71e2dbd03976a3f4ad/start.sh"
+    },
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "jarrelscy-glm-5-2-nvfp4-aqlm-hybrid--nvfp4-hot-experts-aqlm-2-bit-cold-experts",
+  "recipe_source": "mialabs",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 40000,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "glm52-nvfp4-aqlm-dgxspark-vllm-tp3-sweep"
+  ],
+  "status": "candidate"
+}

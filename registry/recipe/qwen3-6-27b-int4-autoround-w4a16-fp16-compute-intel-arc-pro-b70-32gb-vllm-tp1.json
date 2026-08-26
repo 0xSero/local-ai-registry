@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev13 local XPU patch stack"
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-int4-autoround-w4a16-fp16-compute-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrh35ct50092mj01h7jgydqj",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrh35ct50092mj01h7jgydqj"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU / Level Zero graph-safe FlashAttention",
+        "flashAttn": false,
+        "gpuLayers": 99,
+        "kvCacheDtype": "f16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x Intel Arc Pro B70 32GB",
+      "notes": "Strict fresh-response Qwen3.6 27B INT4 AutoRound TP2 record on two Intel Arc Pro B70 GPUs. Exact ReplaySSM pending-metadata and direct-core-output transaction fusions build on the graph-safe FlashAttention full target graph. Fixed 12-prompt realistic cold suite, cached_tokens=0 throughout, no cache/history/response reuse, target-verified MTP3, exact canaries + repeat128 + baseline parity + 1K needle all passed. Both swapped four-GPU crossover assignments favored the candidate; isolated strict confirmation is 95.385 tok/s. Short-context lane only.",
+      "revision_unpinned": false,
+      "run_id": "cmrh35ct50092mj01h7jgydqj"
+    }
+  },
+  "model_instance_id": "webhie-qwen3-6-27b-int4-autoround--int4-autoround-w4a16-fp16-compute",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-autoround-w4a16-fp16-compute-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

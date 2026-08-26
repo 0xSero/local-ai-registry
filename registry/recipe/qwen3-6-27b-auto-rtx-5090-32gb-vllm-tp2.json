@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "21943d4c258983c4b8eb56d50029aca4f18e4629"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-auto-rtx-5090-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmp0j9bx600p4lo011ix4wd1d",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp0j9bx600p4lo011ix4wd1d"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": true,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 5090 64GB",
+      "notes": "This is using MTP 8, but the tok/s drops significantly when your prefill increase.\n At prefill 120,000 the speed generation is 38.07tok/s.\nWithout MTP I get ~70 tok/s",
+      "revision_unpinned": true,
+      "run_id": "cmp0j9bx600p4lo011ix4wd1d"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--auto",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-auto-rtx-5090-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-autoround-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmpw39edi003mr1010ybh0zdl",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpw39edi003mr1010ybh0zdl"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "2x RTX 3090, tensor-parallel TP=2 (48GB combined VRAM). AutoRound INT4 weight quant with MTP speculative decode. peakVramGb is the sum of both cards. Decode measured on a code prompt (MTP favors structured/code). vLLM OpenAI-compatible server.",
+      "revision_unpinned": true,
+      "run_id": "cmpw39edi003mr1010ybh0zdl"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--autoround",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-autoround-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

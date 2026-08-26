@@ -1,0 +1,57 @@
+{
+  "accepted_at": "2026-08-24",
+  "id": "minimax-m3-mxfp4-rtxpro6000-vllm-tp4-sweep",
+  "measured_at": "2026-08-24",
+  "recipe_id": "minimax-m3-mxfp4-rtxpro6000-vllm-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": null,
+      "decode_tok_s": 113.0,
+      "decode_tok_s_per_stream": 113.0,
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "historical",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 4,
+      "context_tokens": null,
+      "decode_tok_s": 184.0,
+      "decode_tok_s_per_stream": 46.0,
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "historical",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 131072,
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 2800.0,
+      "samples": 1,
+      "status": "historical",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": "303701cd177e6adecd4999beb67f4797a24439db",
+    "paths": [
+      "README.md",
+      "Dockerfile",
+      "docker-compose.yml",
+      "scripts/serve.sh",
+      "patches/vllm/models/minimax_m3/nvidia/model.py",
+      "patches/vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_moe/compressed_tensors_moe_w4a4_mxfp4.py"
+    ],
+    "repository": "https://github.com/0xSero/minimax-m3-sm120"
+  }
+}

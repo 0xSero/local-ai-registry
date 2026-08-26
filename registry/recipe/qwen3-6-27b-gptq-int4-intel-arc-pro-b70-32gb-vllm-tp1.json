@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.26.1rc1.dev457+gc810e5ee9.xpu"
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-gptq-int4-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsmekk3p001wo001hksfq66z",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsmekk3p001wo001hksfq66z"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x Intel Arc Pro B70 32GB",
+      "notes": "Single-stream C1. vLLM XPU pinned nightly (vllm/vllm-openai-xpu@sha256:2c427ef477da092eb6f2cdbbbd24950b5fa171565b916db69d4c7bb10e68ca97), vllm-xpu-kernels 0.1.12. Model: llmfan46/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-GPTQ-Int4 (dense 27B, GPTQ-INT4 g128 sym, preserved BF16 MTP head). Patches: patch_mtp_nightly.py + patch_mtp_boundary.py. fp8 KV cache (REQUIRED for dense 128K; fp16 does not fit). MTP4 speculative decode, 1-layer draft. gpu-memory-utilization 0.88, scheduler 8192, max-num-seqs 64, prefix cache on with zero hit delta. tokSOut = client post-first rate at p512/g128, median n=5 (not engine-native decode); tokSPrefill = actual input tokens / client TTFT at p2048/g1, median n=5 (not llama-bench pp). 230W configured cap. E2 provisional self-reported; independent reproduction pending. Measured 2026-08-09 Run 31.",
+      "revision_unpinned": true,
+      "run_id": "cmsmekk3p001wo001hksfq66z"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--gptq-int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-gptq-int4-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

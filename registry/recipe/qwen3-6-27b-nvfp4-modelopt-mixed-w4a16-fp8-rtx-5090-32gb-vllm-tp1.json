@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.24.0"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-modelopt-mixed-w4a16-fp8-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr12irkh010eld01w7zjfjld",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr12irkh010eld01w7zjfjld"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "Official NVIDIA NVFP4 quant of Qwen3.6-27B (modelopt v0.45 MIXED_PRECISION: MLP W4A16_NVFP4, attention FP8, calibrated FP8 KV). vLLM 0.24.0, single-stream (max-num-seqs=1), no spec-decode, max-model-len 148000. Median of 3 (2 warmups), 163-tok prompt / 512 out, client-observed HTTP timing. On consumer Blackwell sm_120 the W4A16 MLP rides the Marlin dequant path (no native FP4 GEMM for weight-only 4-bit). Display attached to the 5090 (~10% pstate cost). tokSOut=decode throughput.",
+      "revision_unpinned": true,
+      "run_id": "cmr12irkh010eld01w7zjfjld"
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-6-27b-nvfp4--nvfp4-modelopt-mixed-w4a16-fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-modelopt-mixed-w4a16-fp8-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

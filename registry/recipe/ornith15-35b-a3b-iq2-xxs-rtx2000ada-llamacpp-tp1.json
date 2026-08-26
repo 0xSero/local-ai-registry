@@ -1,0 +1,69 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Blocked GPU-resident screen for Ornith-1.5-35B-A3B IQ2_XXS on one RTX 2000 Ada. The exact 10,255,140,512-byte GGUF and llama.cpp image are pinned, but no model load, correctness, exact-128K context, KV capacity, or speed evidence exists on this card. CLI launch remains disabled until a funded acceptance window; CPU offload must be recorded as a separate recipe if needed.",
+  "engine": {
+    "graph_mode": "not-applicable",
+    "name": "llama-cpp",
+    "version": "b10481 (25ae3a9b331fffea50ff8d07a5cad34c33f1276f)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-2000-ada-16gb",
+  "id": "ornith15-35b-a3b-iq2-xxs-rtx2000ada-llamacpp-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "/models/Ornith-1.5-35B-A3B-IQ2_XXS.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--ctx-size",
+      "131072",
+      "--parallel",
+      "1",
+      "--n-gpu-layers",
+      "99",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--jinja"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {},
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "~/.cache/inference-index/models/ornith15-iq2-xxs",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "8g"
+  },
+  "metadata": {},
+  "model_instance_id": "bartowski-ornith-1-5-35b-a3b-gguf--iq2-xxs",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [],
+  "status": "candidate"
+}

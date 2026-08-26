@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-fp8-rtx-5090-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmq75ib7200bfqi01ufeyaa4d",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmq75ib7200bfqi01ufeyaa4d"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 5090 64GB",
+      "notes": "b1 single-stream = 179.9 t/s WITH MTP (native mtp.safetensors head; 76% avg draft acceptance, mean accept length 3.28, per-position 0.91/0.76/0.62; output bit-identical via rejection sampling). Base no-MTP b1 = 76 (so MTP = 2.4x). 2x RTX 5090 mem-OC 17001MHz, vLLM cu130 TP=2, Qwen-team Qwen3.6-27B-FP8, --speculative-config method=qwen3_next_mtp num_speculative_tokens=3, max-num-batched-tokens 8192. Serves 256K context. HIGHER-BATCH throughput @256K: b64 = 1172 t/s aggregate.",
+      "revision_unpinned": true,
+      "run_id": "cmq75ib7200bfqi01ufeyaa4d"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8--33492",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-rtx-5090-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

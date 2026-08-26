@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev189+gfb1ac806c"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-35b-a3b-q4-k-m-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmp0td2a600u2lo017bghuh3e",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp0td2a600u2lo017bghuh3e"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": "flash_attn",
+        "flashAttn": true,
+        "gpuLayers": -1,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": 1
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "Real benchmark run on RTX 5090 with vLLM 0.20.2rc1.dev189+gfb1ac806c, greedy decoding (temp=0), 320-token system prompt + 512 output tokens.",
+      "revision_unpinned": true,
+      "run_id": "cmp0td2a600u2lo017bghuh3e"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--q4-k-m",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-q4-k-m-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

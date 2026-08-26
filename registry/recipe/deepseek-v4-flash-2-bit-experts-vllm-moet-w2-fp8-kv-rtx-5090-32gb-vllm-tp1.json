@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrqjkf5v05srlg01by1bes9f",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrqjkf5v05srlg01by1bes9f"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "4x RTX 5090 32GB",
+      "notes": "Methodology disclosure: sustained single-stream decode, server-reported (observed range 209-218; not a protocol mean-of-5 run). DeepSeek-V4-Flash is 284B total / 13B active (checkpoint README + 169GB FP4/FP8 on-disk). Served via the vLLM-Moet fork (kacper-daftcode): 2-bit W2 expert planes streamed from the official FP4/FP8 mixed checkpoint, TP=4, MTP k=2 (78-81% draft acceptance), 262144 ctx, FP8 KV, prefix caching. Prefill ~3.9K t/s sustained. SWE-bench Verified 0:50 slice: 33/50 (66%).",
+      "revision_unpinned": true,
+      "run_id": "cmrqjkf5v05srlg01by1bes9f"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

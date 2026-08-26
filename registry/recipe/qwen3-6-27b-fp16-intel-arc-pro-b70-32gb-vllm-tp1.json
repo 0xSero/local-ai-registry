@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp16-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmq7md30t0008ti017dizp0iw",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmq7md30t0008ti017dizp0iw"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "b1 single-stream WITH MTP on B70 vLLM-XPU. Qwen3.6-27B BF16 (float16 runtime), TP=4 on 4x Intel Arc Pro B70 (Battlemage). Prefill ~2100 tok/s (3-8K prompts; conservative, measured under disk contention). MTP/spec-decode unblocked from userspace: vllm_xpu_kernels v0.1.9 wheel + qwen3_5.py spec-wiring patch (vLLM #43565) + Half-KV; num_speculative_tokens=5, mean accept length 4.04 (88.9% accept at spec=3). 2.9x faster than llama.cpp 27B Q8 (15.6 b1). 256K native context. intel/llm-scaler-vllm:0.14.0-b8.3.",
+      "revision_unpinned": true,
+      "run_id": "cmq7md30t0008ti017dizp0iw"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--fp16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp16-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

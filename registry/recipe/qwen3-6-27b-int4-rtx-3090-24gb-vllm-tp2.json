@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-int4-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmowify5b001lo201eihmasxw",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowify5b001lo201eihmasxw"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Pre-NVLink baseline (PHB topology, NCCL all-reduce). Lorbus AutoRound INT4 quant with BF16 MTP head preserved. Realistic prose workload: 250-word technical analysis prompt, temperature=0, ignore_eos, tg=350 forced, 3 runs (sigma=0.05 t/s). peakVramGb is per-card with TP=2; total across both 3090s is 46.4 GB. MTP lifetime accept ~78%. Full methodology: docs/llm-qwen36-benchmarks.md.",
+      "revision_unpinned": true,
+      "run_id": "cmowify5b001lo201eihmasxw"
+    }
+  },
+  "model_instance_id": "lorbus-qwen3-6-27b-int4-autoround--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

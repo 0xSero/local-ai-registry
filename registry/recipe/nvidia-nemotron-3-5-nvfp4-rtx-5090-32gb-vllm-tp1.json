@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.1"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "nvidia-nemotron-3-5-nvfp4-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsosfdye00a6mp01u15pl06j",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsosfdye00a6mp01u15pl06j"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "DSpark speculative decoding (3 draft tokens); 2 warmups + 5 timed runs, 512 output tokens, median reported. Server configured for 65,536 tokens; separate varied-input validation passed at 64,063 prompt + 128 output tokens.",
+      "revision_unpinned": false,
+      "run_id": "cmsosfdye00a6mp01u15pl06j"
+    }
+  },
+  "model_instance_id": "nvidia-nvidia-nemotron-3-5-lightning-30b-a3b-nvfp4--nvfp4--96390",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "nvidia-nemotron-3-5-nvfp4-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

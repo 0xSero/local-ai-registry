@@ -1,0 +1,44 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing result. It is evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "lucebox",
+    "version": "c994209"
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "deepseek-v4-flash-0731-iq2-xxs-radeon-ai-pro-r9700-32gb-lucebox-tp1-7ibvc9zx",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmta1du8p01anli017ibvc9zx",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmta1du8p01anli017ibvc9zx"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Corrected PR #640 qualification: exact c994209 dual-architecture gfx1151+gfx1201 build; DeepSeek V4 Flash ROCmFP2 target plus DSpark denseF16 draft, q=4/top-k4; R9700 hip:0 plus Strix Halo 8060S hip:1 over Oculink peer access; calibrated hotness profile; actual 10200 MiB expert budget; grouped heterogeneous MMID prefill enabled with expert-major threshold 64; PR #647 cold-input-first disabled; both GGML_BATCH_PEER_COPIES and GGML_CUDA_BATCH_PEER_COPIES disabled; sparse prefill, chunk 2048, context 8192. Protocol: one discarded warmup plus three measured streaming requests at temperature 0, 393 prompt tokens and 128 output tokens. All measured outputs shared SHA-256 0f785a7ffa406498aafb14553966eaed0f52220fed0f7cc016b66921d104d194. Activation trace proved device-resident heterogeneous expert-major prefill. TTFT and rates are client monotonic measurements. Peak VRAM is R9700 workload allocation: max /sys/class/drm/card1/device/mem_info_vram_used minus stable pre-launch driver baseline (27076444160 - 59936768 bytes). Structured hardware names the discrete R9700; Halo participation is disclosed here. Short-context benchmark profile, not a general production configuration.",
+      "revision_unpinned": true,
+      "run_id": "cmta1du8p01anli017ibvc9zx"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--iq2-xxs",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-iq2-xxs-radeon-ai-pro-r9700-32gb-lucebox-tp1-7ibvc9zx-sweep"
+  ],
+  "status": "candidate"
+}

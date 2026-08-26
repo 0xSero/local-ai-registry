@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": null
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-max-128gb",
+  "id": "deepseek-v4-flash-2bit-dq-apple-max-128gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmogo4m0y0004l204qlx8n2nt",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmogo4m0y0004l204qlx8n2nt"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple Max 128GB",
+      "notes": "mlx-lm direct (sustained, 256-tok runs). 284B/13B-active MoE, mixed-precision DQ (2-bit experts, 4-6-8 bit sensitive layers). Required mlx-lm PR #1201 (akashgoswami/add-deepseek-v4) plus local sanitize patches to map HF checkpoint naming -> PR module names and split wo_a [8*1024,4096] across 8 group Linears, plus quantization-config key remap for per-layer 2-bit overrides. Cold-load 25.7s.",
+      "revision_unpinned": true,
+      "run_id": "cmogo4m0y0004l204qlx8n2nt"
+    }
+  },
+  "model_instance_id": "mlx-community-deepseek-v4-flash-2bit-dq--2bit-dq",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-2bit-dq-apple-max-128gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-autoround-int4-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmozt50bb007wlo01sfaws32u",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmozt50bb007wlo01sfaws32u"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 48GB",
+      "notes": "Post-NVLink concurrency=3 aggregate: NVIDIA P3651 2-slot bridge, NV4 (~56 GB/s aggregate). 3 parallel chat completions, ignore_eos + min_tokens=400, temp=0.7. Per-request: ~80-85 t/s each. Pre-NVLink baseline was 199 t/s aggregate; bridge yields +21% here because the all-reduce tensor at this batch size becomes interconnect-bound on PHB. MTP n=3, KV FP8, TP=2 across 2x RTX 3090. Re-run 2026-05-10.",
+      "revision_unpinned": true,
+      "run_id": "cmozt50bb007wlo01sfaws32u"
+    }
+  },
+  "model_instance_id": "lorbus-qwen3-6-27b-int4-autoround--autoround-int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-autoround-int4-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

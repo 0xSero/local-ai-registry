@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "avlp12/mlx-lm glm-5.2-dsa-inference (f48df86)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m3-ultra-512gb",
+  "id": "glm-5-2-2-56bpw-mixed-apple-m3-ultra-512gb-mlx-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr8pgamw00g1qr011f5a05x7",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr8pgamw00g1qr011f5a05x7"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "Apple M3 Ultra 512GB",
+      "notes": "744B MoE (~40B active, glm_moe_dsa). Mixed 2.56bpw (2-bit MoE experts / 4-bit attention / 6-bit embeddings) - fits <=256GB unified memory. Requires the fork branch (IndexShare + indexer fixes; upstream PR #1419). Ships the native MTP layer for --mtp lossless self-speculative decoding.",
+      "revision_unpinned": true,
+      "run_id": "cmr8pgamw00g1qr011f5a05x7"
+    }
+  },
+  "model_instance_id": "avlp12-glm-5-2-alis-mlx-dynamic-2-56bpw--2-56bpw-mixed",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "glm-5-2-2-56bpw-mixed-apple-m3-ultra-512gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

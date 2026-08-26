@@ -1,0 +1,62 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Controller-backed candidate with recovered immutable model, image, vLLM, B12X, and FlashInfer identities. The saved server configuration reports full/piecewise CUDA graphs and 1M context, but no raw client C1/C2/C4 sweep survives, so performance remains unpromoted.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "vLLM e72ad0057b5f382abb40bec1f9d731f6a22600d9; B12X 57422ad9042773165fa0d4e71ae6442fc26b48c9; FlashInfer 25dd814e03791e370f96c3148242f0dc8de504ac"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-0731-fp8-rtxpro6000-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "deepseek-v4-flash",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "B12X_DENSE_SPLITK_TURBO": "1",
+      "B12X_MLA_SM120_PREFILL_F16_ROPE": "1",
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HF_HUB_OFFLINE": "1",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "SYS",
+      "NCCL_PROTO": "LL,LL128,Simple",
+      "NVIDIA_VISIBLE_DEVICES": "GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853,GPU-fa982c97-64af-db6a-2ffb-08380e1f9375",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_CACHE_ROOT": "/cache",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+      "VLLM_USE_B12X_FP8_GEMM": "0",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+      "VLLM_USE_V2_MODEL_RUNNER": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "controller",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 5345692,
+    "max_concurrency": 5,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [],
+  "status": "candidate"
+}

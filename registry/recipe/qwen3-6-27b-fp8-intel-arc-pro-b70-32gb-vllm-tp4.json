@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmork3n3k000ujo04y73lbr1j",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmork3n3k000ujo04y73lbr1j"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "xpu_flash_attn2",
+        "flashAttn": true,
+        "gpuLayers": 999,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Sustained 512-output validation for Qwen3.6 27B static compressed-tensors FP8 W8A8 on 4x Intel Arc Pro B70. vLLM XPU FlashAttention2 path used a local scalar-view patch for singleton compressed-tensors attention descales. Stable 1 warmup + 5 measured latency run. Power limits unchanged. This is effectively tied with the Q4_0 TP3 longer validation while preserving FP8 model fidelity.",
+      "revision_unpinned": true,
+      "run_id": "cmork3n3k000ujo04y73lbr1j"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--fp8--2729",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

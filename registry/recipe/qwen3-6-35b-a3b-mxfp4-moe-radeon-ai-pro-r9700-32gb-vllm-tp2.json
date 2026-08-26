@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.18.1.dev0+gbcf2be961.d20260330"
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-6-35b-a3b-mxfp4-moe-radeon-ai-pro-r9700-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmothmft70007l4041p1sglge",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmothmft70007l4041p1sglge"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "3x Radeon AI Pro R9700 96GB",
+      "notes": "vLLM on 3\u00d7 R9700 (TP=2 cards 0,1). RCCL 7.1.1 jammy preloaded via LD_LIBRARY_PATH (bypasses RCCL 7.2.x gfx1201 tuning-index miss / TP=2 deadlock). TunableOp tuned ~300 rows/rank from cudagraph capture + diverse-load driving. MoE backend Triton (gfx950 gate routes only gfx950 to CK on this vLLM build). MTP=4 spec decoding. tcclaviger/vllm-rocm-rdna4-mxfp4 docker. Best of 3 streaming chat completions, post heavy warmup.",
+      "revision_unpinned": true,
+      "run_id": "cmothmft70007l4041p1sglge"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--mxfp4-moe",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-mxfp4-moe-radeon-ai-pro-r9700-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,61 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Capacity-limited Gemma-4-12B-it NVFP4 candidate on one RTX PRO 4500 Blackwell with the checksum-verified Gemma engine patch, exact 128K C1 acceptance, full decode CUDA graphs through batch size 4, FP8 E4M3 KV, and C2/C4 rejected by the measured 139590-token KV envelope",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "0.0.0.dev1+geec794bce"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "gemma-4-12b-it-nvfp4-rtxpro4500-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-lc",
+      "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.90 --max-running-requests 4 --cuda-graph-max-bs-decode 4 --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/bin/bash",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      },
+      {
+        "read_only": true,
+        "source": "hardware/rtx-pro-4500-blackwell-32gb/gemma-4-12b-it/nvfp4/sglang/tp1/gemma4-engine-patch.diff",
+        "target": "/tmp/gemma4-engine-patch.diff"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "unsloth-gemma-4-12b-it-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 139590,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-12b-it-nvfp4-rtxpro4500-sglang-tp1-sweep"
+  ],
+  "status": "candidate"
+}

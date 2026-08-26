@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "v0.26.1rc1.dev668+g3ee2df303 (XPU)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "nvidia-nemotron-3-5-gptq-int4-g64-sym-local-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmsql0duh00oimr01sgfq0ose",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsql0duh00oimr01sgfq0ose"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "default",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x Intel Arc Pro B70 32GB",
+      "notes": "Self-reported. C1 client post-first decode, exact p512/g128 n=5 median (93.00 t/s, range 92.96-93.03), prefix cache off, XPU graphs (PIECEWISE+FULL compiled). Local symmetric GPTQ INT4 G64 conversion (not an official quant). tokSPrefill is the cold input rate at exact p8192/g128 from median client TTFT (8,368 tok/s, TTFT median 0.9789s, n=3) - a client-observed input rate including scheduling and first-token work, NOT an isolated engine prefill measurement. NO speculative decoding in this config: native MTP was tested and rejected on this stack (0% draft acceptance), N-gram rejected (temperature-0 nondeterminism), DFlash not supported for this model on this stack. 150W configured cap; measured decode draw ~89-90W. KNOWN CAVEAT: temperature-0 deterministic replay does not hold on this stack (XPU compiled-kernel FP race at contested tokens); outputs remain coherent.",
+      "revision_unpinned": true,
+      "run_id": "cmsql0duh00oimr01sgfq0ose"
+    }
+  },
+  "model_instance_id": "nvidia-nvidia-nemotron-3-5-lightning-30b-a3b-bf16--gptq-int4-g64-sym-local",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "nvidia-nemotron-3-5-gptq-int4-g64-sym-local-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

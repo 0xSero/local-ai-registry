@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.22.1rc1.dev357+g74b5964f0"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "diffusiongemma-26b-a4b-it-fp8-dynamic-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmqrwecvn00hnqr0107l5m9m0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqrwecvn00hnqr0107l5m9m0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "TRITON_ATTN",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "DiffusionGemma 26B A4B FP8 dynamic on 2x RTX 3090 via vLLM, tensor parallel 2, full 262144 context, single streaming request, 5 measured 1000-token runs after 1 warmup. PCIe 3.0 host, no NVLink. Performance-window run with GPU power autotune paused and GPUs 8-9 at 280W during a UK heatwave; normal 60C cooling policy throttled this setup, so more testing is planned when ambient temperatures improve.",
+      "revision_unpinned": true,
+      "run_id": "cmqrwecvn00hnqr0107l5m9m0"
+    }
+  },
+  "model_instance_id": "redhatai-diffusiongemma-26b-a4b-it-fp8-dynamic--fp8-dynamic",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "diffusiongemma-26b-a4b-it-fp8-dynamic-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

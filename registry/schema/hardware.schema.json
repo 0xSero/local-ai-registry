@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local-ai-registry.dev/schema/hardware.schema.json",
+  "title": "Hardware",
+  "type": "object",
+  "required": ["schema_version", "id", "vendor", "name", "kind", "accelerator_backend", "memory", "sources"],
+  "properties": {
+    "schema_version": { "const": "local-ai-registry/v1" },
+    "id": { "$ref": "#/$defs/id" },
+    "vendor": { "enum": ["nvidia", "amd", "intel", "apple"] },
+    "name": { "type": "string", "minLength": 1 },
+    "family": { "type": ["string", "null"] },
+    "kind": { "enum": ["discrete", "integrated", "unified"] },
+    "accelerator_backend": { "enum": ["nvidia", "amd-rocm", "intel-xpu", "metal"] },
+    "memory": {
+      "type": "object",
+      "required": ["vram_gb", "vram_type", "bandwidth_gb_per_s", "cpu_memory_gb"],
+      "properties": {
+        "vram_gb": { "type": "number", "exclusiveMinimum": 0 },
+        "vram_type": { "type": ["string", "null"] },
+        "cpu_memory_gb": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+        "bandwidth_gb_per_s": {
+          "oneOf": [
+            { "type": "number", "exclusiveMinimum": 0 },
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["min", "max"],
+              "properties": {
+                "min": { "type": "number", "exclusiveMinimum": 0 },
+                "max": { "type": "number", "exclusiveMinimum": 0 }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "aliases": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "products": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "url"],
+        "properties": { "kind": { "type": "string" }, "url": { "type": "string", "format": "uri" } },
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": { "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" } },
+  "additionalProperties": true
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1-local"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "minimax-m2-7-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmp52gqmb000vo3015qj4kl9t",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp52gqmb000vo3015qj4kl9t"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "triton",
+        "flashAttn": false,
+        "gpuLayers": 0,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "MiniMax M2.7 AutoRound W4A16 on 4x Intel Arc Pro B70 via vLLM/XPU TP4. Mean of two repeat p512/n1536 runs: 61.761 and 61.744 output tok/s, 82.349 and 82.326 total tok/s. Quality smoke passed separately under the same graph/Triton recipe; no speculative decoding, no expert dropping, no power-limit increase. Uses llm-scaler INT4 MoE decode path, MiniMax attention delayed allreduce, TRITON_ATTN, and FULL_DECODE_ONLY XPU graph with non-Inductor CompilationMode.NONE because Inductor compiled decode produced invalid all-NUL output.",
+      "revision_unpinned": true,
+      "run_id": "cmp52gqmb000vo3015qj4kl9t"
+    }
+  },
+  "model_instance_id": "lasimeri-minimax-m2-7-int4-autoround--autoround-w4a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "minimax-m2-7-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

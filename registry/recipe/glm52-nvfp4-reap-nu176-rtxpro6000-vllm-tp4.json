@@ -1,0 +1,51 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Pinned-source non-uniform REAP NU176 candidate for four RTX PRO 6000 Blackwell GPUs. The source reports 262K context, concurrency two, MTP4, and full/piecewise CUDA graphs, but model and image digest pins plus current index acceptance are still missing.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "b12x nonuniform fork 20260705; exact commit unreported"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "glm52-nu176-tp4"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "NCCL_P2P_DISABLE": "1",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "0xsero-glm-5-2-reap-nu176-526b--nvfp4-non-uniform-reap",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

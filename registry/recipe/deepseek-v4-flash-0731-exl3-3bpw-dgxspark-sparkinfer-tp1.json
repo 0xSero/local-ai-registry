@@ -1,0 +1,53 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "MiaAI-Lab single-Spark DeepSeek V4 Flash 0731 EXL3 3.0bpw profile with SparkInfer, DSpark K5, native NVFP4 DS-MLA KV, and graph captures",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "sparkinfer",
+    "version": "NVIDIA vLLM 26.02 base"
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-flash-0731-exl3-3bpw-dgxspark-sparkinfer-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8888,
+    "environment": {
+      "CUDAGRAPH_CAPTURE_SIZES": "6,12,24",
+      "GPU_MEMORY_UTILIZATION": "0.94",
+      "KV_RECORD": "stock432",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "24",
+      "MAX_MODEL_LEN": "384000",
+      "MAX_NUM_BATCHED_TOKENS": "8224",
+      "MAX_NUM_SEQS": "1",
+      "MODEL_REVISION": "22f28d32b9b29b4352eaa380ff8c2c170b2847ab"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "file": "sources/github/miaai-lab/deepseek-v4-flash-one-dgx-spark/76c51c7defffd01025c75daaf241ea323dda4734/start.sh"
+    },
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "0xsero-deepseek-v4-flash-0731-spark--3-0-bpw-reap-k216",
+  "recipe_source": "mialabs",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 370104,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-exl3-3bpw-dgxspark-sparkinfer-tp1-sweep"
+  ],
+  "status": "candidate"
+}

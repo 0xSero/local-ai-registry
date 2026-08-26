@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev13+g9557d9108.d20260620 local XPU patch stack"
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-bf16-scales-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr5iu3gk00bfq901nidgcana",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr5iu3gk00bfq901nidgcana"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU / Level Zero",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x Intel Arc Pro B70 32GB",
+      "notes": "BF16 scale storage for the experimental runtime INT8 LM-head reduced scale bandwidth/format cost while preserving INT8 weights and target-verified qwen3_next_mtp speculation. Three strict fresh BF16-scale runs passed with medians 65.276, 65.005, and 64.864 tok/s; FP32-scale controls in the same windows were 64.234 and 64.090, and a baseline reconfirm was 64.431. Full text quality matched the prior webhie INT8-LM-head baseline including repeat32 and the 1K needle with cached_tokens=0. This is a modest but validated incremental record, not a synthetic/history/cached result.",
+      "revision_unpinned": false,
+      "run_id": "cmr5iu3gk00bfq901nidgcana"
+    }
+  },
+  "model_instance_id": "webhie-qwen3-6-27b-int4-autoround--autoround-int4-w4a16-runtime-int8-lm-head-bf16-scales",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-bf16-scales-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

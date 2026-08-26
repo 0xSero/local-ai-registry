@@ -1,0 +1,69 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Blocked GPU-resident screen for Ornith-1.5-35B-A3B mixed IQ3 on one RTX 4000 Ada. The exact 15,512,189,120-byte GGUF and llama.cpp image are pinned. The prior SGLang attempt never loaded this architecture, so it rejects only that runtime path; this llama.cpp path still needs correctness, exact-128K context, KV capacity, and speed acceptance. CLI launch remains disabled.",
+  "engine": {
+    "graph_mode": "not-applicable",
+    "name": "llama-cpp",
+    "version": "b10481 (25ae3a9b331fffea50ff8d07a5cad34c33f1276f)"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-4000-ada-20gb",
+  "id": "ornith15-35b-a3b-mixed-iq3-rtx4000ada-llamacpp-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "/models/Ornith-1.5-35B-A3B-AD-IQ3_S-IQ3_XXS.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--ctx-size",
+      "131072",
+      "--parallel",
+      "1",
+      "--n-gpu-layers",
+      "99",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--jinja"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {},
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "~/.cache/inference-index/models/ornith15-mixed-iq3",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "8g"
+  },
+  "metadata": {},
+  "model_instance_id": "atomicchat-ornith-1-5-35b-a3b-gguf--mixed-iq3-s-iq3-xxs",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [],
+  "status": "candidate"
+}

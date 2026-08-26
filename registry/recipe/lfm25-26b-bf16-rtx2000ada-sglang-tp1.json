@@ -1,0 +1,86 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Capacity-limited LFM2.5-2.6B BF16 recipe on one RTX 2000 Ada. Exact 128K C1 and C2 passed correctness, timing, cache reporting, and decode CUDA-graph execution; C4 is capacity-rejected because 524,288 tokens exceed the measured 286,188-token pool.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "sglang",
+    "version": "0.0.0.dev1+geec794bce.d20260823"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-2000-ada-16gb",
+  "id": "lfm25-26b-bf16-rtx2000ada-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "LiquidAI/LFM2.5-2.6B",
+      "--revision",
+      "a334ee78cd38458bb71eda24109ac42dcec1309d",
+      "--served-model-name",
+      "lfm2.5-2.6b",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--tp",
+      "1",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.90",
+      "--attention-backend",
+      "flashinfer",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--cuda-graph-max-bs-prefill",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3-thinking",
+      "--tool-call-parser",
+      "lfm2"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/opt/sglang/bin/python",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 286188,
+    "max_concurrency": 2,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "lfm25-26b-bf16-rtx2000ada-sglang-tp1-sweep"
+  ],
+  "status": "validated"
+}

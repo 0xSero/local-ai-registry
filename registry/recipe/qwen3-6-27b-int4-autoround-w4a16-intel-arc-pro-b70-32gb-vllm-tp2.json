@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmoq4e9dw0002js04ledqyycn",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoq4e9dw0002js04ledqyycn"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "flash_attn",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x Intel Arc Pro B70 32GB",
+      "notes": "Best current dual-B70 result. vLLM TP2 non-MTP with XCCL P2P enabled. One warmup, one measured latency bench. Latency 5.22s. MTP was slower in TP2 because XPU graph capture is disabled for communication ops.",
+      "revision_unpinned": true,
+      "run_id": "cmoq4e9dw0002js04ledqyycn"
+    }
+  },
+  "model_instance_id": "lorbus-qwen3-6-27b-int4-autoround--int4-autoround-w4a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

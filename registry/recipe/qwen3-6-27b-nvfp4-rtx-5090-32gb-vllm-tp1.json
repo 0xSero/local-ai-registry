@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "latest"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmpcwpi4a00epnw01gtuxwx2f",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpcwpi4a00epnw01gtuxwx2f"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "flashinfer",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": true,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "vLLM latest w/ NVFP4 (modelopt quant), flashinfer-cutlass GEMM, MTP enabled (4 speculative tokens). Real-world 4096-token decode. Quality 100% (15/15 micro-test). 38.6% faster than llama.cpp Q6_K baseline (102.4 tok/s).",
+      "revision_unpinned": true,
+      "run_id": "cmpcwpi4a00epnw01gtuxwx2f"
+    }
+  },
+  "model_instance_id": "sakamakismile-qwen3-6-27b-text-nvfp4-mtp--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

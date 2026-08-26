@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmq7c8bs300enqi01qk4y2u1t",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmq7c8bs300enqi01qk4y2u1t"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 5090 64GB",
+      "notes": "b1 single-stream = 85.3 t/s. 2x RTX 5090 mem-OC 17001MHz, vLLM cu130 TP=2, sakamakismile NVFP4 27B. HIGHER-BATCH THROUGHPUT: b128 @ 8K ctx = 1383 t/s, b64 @ 256K ctx = 1247 t/s aggregate.",
+      "revision_unpinned": true,
+      "run_id": "cmq7c8bs300enqi01qk4y2u1t"
+    }
+  },
+  "model_instance_id": "sakamakismile-qwen3-6-27b-text-nvfp4-mtp--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.2rc1.dev134+gfe9c3d6c5"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "huihui-qwen3-6-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmotxm0840048qy01oxhgwwt2",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmotxm0840048qy01oxhgwwt2"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 5090 32GB",
+      "notes": "Cold benchmark (May 6, 2026). 8K context (8379 prompt tokens \u2192 200 output). Pure gen speed: 105.3 tok/s (temp=0, greedy decode). Prefill throughput: 10940 tok/s. MTP speculative decoding active (num_speculative_tokens=3). Abliterated model. FP8 KV cache, --enable-chunked-prefill, --enable-prefix-caching. GPU power capped at 450W (down from 600W). Max model len: 131K. Max seqs: 4. GPU mem util: 90%. Docker on Unraid. Endpoint: llm.rohitpaul.com.",
+      "revision_unpinned": true,
+      "run_id": "cmotxm0840048qy01oxhgwwt2"
+    }
+  },
+  "model_instance_id": "sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-mtp--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "huihui-qwen3-6-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

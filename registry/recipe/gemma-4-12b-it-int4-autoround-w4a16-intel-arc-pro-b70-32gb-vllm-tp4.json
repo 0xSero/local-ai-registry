@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev2+gc51df4300.d20260523"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "gemma-4-12b-it-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmq3jm75g000tlj01bx4frdf0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmq3jm75g000tlj01bx4frdf0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 128GB",
+      "notes": "4x Intel Arc Pro B70 production Gemma 4 c8 XPU graph profile. Mean of five c8 runs, 119 prompt tokens and 256 generated tokens per request. No speculative decode; KV cache dtype auto; INT4 AutoRound W4A16 weights; bfloat16 runtime activation dtype. Raw: /mnt/fast-ai/bench-results/gemma4-12b-it-int4-autoround/prod-c8-xpugraph-256o-repeat-20260607T084540Z",
+      "revision_unpinned": true,
+      "run_id": "cmq3jm75g000tlj01bx4frdf0"
+    }
+  },
+  "model_instance_id": "intel-gemma-4-12b-it-int4-autoround--int4-autoround-w4a16",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-12b-it-int4-autoround-w4a16-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

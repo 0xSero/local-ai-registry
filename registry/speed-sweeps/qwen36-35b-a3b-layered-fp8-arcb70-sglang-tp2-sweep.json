@@ -1,0 +1,104 @@
+{
+  "accepted_at": "2026-08-25",
+  "id": "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2-sweep",
+  "measured_at": "2026-08-25",
+  "recipe_id": "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 128,
+      "decode_tok_s": 114.95,
+      "decode_tok_s_per_stream": 114.95,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 58.44,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": 2190.17
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 512,
+      "decode_tok_s": 116.17,
+      "decode_tok_s_per_stream": 116.17,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 58.94,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": 8687.29
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 2048,
+      "decode_tok_s": 113.92,
+      "decode_tok_s_per_stream": 113.92,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 61.95,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": 33060.1
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 8192,
+      "decode_tok_s": 116.35,
+      "decode_tok_s_per_stream": 116.35,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 62.6,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": 130857.58
+    },
+    {
+      "concurrency": 2,
+      "context_tokens": 512,
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": 85.7,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 15724.6
+    },
+    {
+      "concurrency": 4,
+      "context_tokens": 512,
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": 67.8,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 4,
+      "status": "accepted",
+      "ttft_ms_p50": 33694.91
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": 512,
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": 41.75,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 8,
+      "status": "accepted",
+      "ttft_ms_p50": 66860.99
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": "15166aed68bc25c411e16ddd81621242ba3d6298",
+    "paths": [
+      "README.md",
+      "sglang/xpu/run_qwen3_6_service.sh",
+      "sglang/xpu/start_qwen3_6_service.sh",
+      "benchmarks/bench.py",
+      "benchmarks/results/20260825-195430-b70-sglang.json"
+    ],
+    "repository": "https://github.com/0xSero/qwen36-b70"
+  }
+}

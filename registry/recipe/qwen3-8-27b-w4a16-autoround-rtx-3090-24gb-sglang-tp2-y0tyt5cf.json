@@ -1,0 +1,44 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing result. It is evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-sglang-tp2-y0tyt5cf",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmtapc07w0003qq01y0tyt5cf",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtapc07w0003qq01y0tyt5cf"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "hardware_label": "RTX 3090",
+      "notes": "Fastest verified SGLang setup for Qwen3.8-27B W4A16 AutoRound on 2x RTX 3090 with TP2. Uses DFlash speculative decoding with a local W8A16 DFlash2 drafter, 6 draft tokens, and a 40,960-token output-derived curated candidate vocabulary distributed across TP ranks. Candidate selection uses rank-local projection/top-k with compact cross-rank communication. Target execution uses torch.compile, CUDA graphs, selective SM86 W4A8 Marlin MLP kernels, BF16 KV/recurrent state, compiler-safe DFlash causal-convolution verification, and persisted tuned TorchInductor/Triton caches. Measurement is concurrency 1 with 2 warmups and 5 timed 512-token iterations. CUDA peer access and NVLink are unavailable on this PCIe topology, so TP collectives use NCCL's host-mediated path.",
+      "revision_unpinned": true,
+      "run_id": "cmtapc07w0003qq01y0tyt5cf"
+    }
+  },
+  "model_instance_id": "dbirks-qwen3-8-27b-w4a16-autoround--w4a16-autoround",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-sglang-tp2-y0tyt5cf-sweep"
+  ],
+  "status": "candidate"
+}

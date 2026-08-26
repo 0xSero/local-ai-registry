@@ -1,0 +1,100 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Local AI PostgreSQL candidate reconstructed from completed GAIA, GDPVal, and TAU2 evaluations. The exact Qwen launch uses TP2, MTP3, 262K configured context, and 51 running sequences; model and image are pinned, but graph-mode, an on-hardware completion artifact, and speed sweeps remain missing, so CLI launch stays blocked.",
+  "engine": {
+    "graph_mode": "unknown",
+    "name": "vllm",
+    "version": "0.23.0; image build 91df0fad4dc98a67c7659d9dbd915245d5c43d96"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3.6-35b-a3b-nvfp4-rtxpro6000-vllm-tp2-mtp3",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "nvidia/Qwen3.6-35B-A3B-NVFP4",
+      "--served-model-name",
+      "nvidia/Qwen3.6-35B-A3B-NVFP4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--tensor-parallel-size",
+      "2",
+      "--pipeline-parallel-size",
+      "1",
+      "--trust-remote-code",
+      "--enable-chunked-prefill",
+      "--enable-prefix-caching",
+      "--enable-auto-tool-choice",
+      "--enable-prompt-tokens-details",
+      "--enable-force-include-usage",
+      "--enable-request-id-headers",
+      "--enable-log-requests",
+      "--max-num-seqs",
+      "51",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--block-size",
+      "1024",
+      "--async-scheduling",
+      "--enable-auto-tool-choice",
+      "--language-model-only",
+      "--attention-backend",
+      "flashinfer",
+      "--quantization",
+      "modelopt",
+      "--moe-backend",
+      "marlin",
+      "--max-model-len",
+      "262144",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3",
+      "--kv-cache-dtype",
+      "fp8",
+      "--mamba-cache-mode",
+      "align",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\",\"rejection_sample_method\":\"standard\"}"
+    ],
+    "container_port": 8000,
+    "environment": {
+      "FLASHINFER_DISABLE_VERSION_CHECK": "1",
+      "HF_HOME": "/root/.cache/huggingface",
+      "VLLM_FP8_MOE_BACKEND": "flashinfer_cutlass"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/davidmcc73/vllm-openai@sha256:f03040c06dd43c0b48d0b471ae67edcc0c8fe8e63d4f762489d7be0015f527b2",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "nvidia-qwen3-6-35b-a3b-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [],
+  "status": "candidate"
+}

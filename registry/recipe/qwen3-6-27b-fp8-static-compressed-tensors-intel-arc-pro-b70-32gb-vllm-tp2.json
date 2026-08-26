@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-static-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmout3vhy00m6ld01162ujv21",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmout3vhy00m6ld01162ujv21"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "flash_attn",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Capacity-focused negative result for Qwen3.6 27B FP8 on 4x Intel Arc Pro B70. vLLM PP2xTP2 fits 32K context and reports about 1.15M GPU KV-cache tokens, but batch-1 decode is much slower than TP4/PP1. No speculative decoding; target FP8 weights and auto/BF16 KV preserved.",
+      "revision_unpinned": true,
+      "run_id": "cmout3vhy00m6ld01162ujv21"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--fp8-static-compressed-tensors",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-static-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

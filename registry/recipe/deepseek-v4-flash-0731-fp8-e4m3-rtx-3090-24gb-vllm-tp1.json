@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.11.2.dev278+gccfeb3a8 (LimeChain sm86 fork)"
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "deepseek-v4-flash-0731-fp8-e4m3-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmt4pduz2038kpu017qwlshqi",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt4pduz2038kpu017qwlshqi"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "fp8",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 1
+      },
+      "hardware_label": "8x RTX 3090 24GB",
+      "notes": "vLLM LimeChain sm86 fork ccfeb3a8 (0.11.2.dev278) on 8x RTX 3090, PP8, DSpark speculative decoding n=5, FP8 weights + FP8 KV. Median of 6 measured runs (2 warmups), temperature 0, single concurrency. Cold prefill enforced: unique nonce at prompt start each run; vLLM prefix_cache_hits counter delta = 0 verified per measured request (server-wide --enable-prefix-caching active but defeated). TTFT med 267.1ms on ~360-token prompt. Caveat: temperature-zero outputs are not bit-stable across identical prompts on this DSpark build (6 distinct output hashes across 6 runs); repeat-prompt pairs matched in 1 of 2 controls. Engine build is a fork, not stock vLLM. Checkpoint dir DeepSeek-V4-Flash-0731-7872f01b (revision 7872f01b).",
+      "revision_unpinned": false,
+      "run_id": "cmt4pduz2038kpu017qwlshqi"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8-e4m3",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-fp8-e4m3-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

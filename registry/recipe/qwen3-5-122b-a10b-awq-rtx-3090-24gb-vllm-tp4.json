@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.23.0"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-5-122b-a10b-awq-rtx-3090-24gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmrihb8xa01lxmj01kcguv3p4",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrihb8xa01lxmj01kcguv3p4"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "FLASH_ATTN",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x RTX 3090 96GB",
+      "notes": "Built-in MTP head applied recursively (num_speculative_tokens=3), single-stream conc1. Base (no MTP) same config = 94.2 tok/s.",
+      "revision_unpinned": true,
+      "run_id": "cmrihb8xa01lxmj01kcguv3p4"
+    }
+  },
+  "model_instance_id": "cyankiwi-qwen3-5-122b-a10b-awq-4bit--awq",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-122b-a10b-awq-rtx-3090-24gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

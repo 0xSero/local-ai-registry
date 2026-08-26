@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.24.0-nightly"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5060-ti-16gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5060-ti-16gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmr1oksle01gnld01mwjrdfao",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr1oksle01gnld01mwjrdfao"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 5060 Ti 16GB",
+      "notes": "nvidia/Qwen3.6-27B-NVFP4 on dual RTX 5060 Ti (2x16GB Blackwell SM_120). vLLM 0.24.0 nightly. NVFP4 via Marlin dequant (no native FP4 GEMM on GeForce). Eager execution (CUDA graph profiling OOM on tight VRAM budget). TP=2, NCCL P2P disabled, fp8 KV cache, 131k ctx.",
+      "revision_unpinned": true,
+      "run_id": "cmr1oksle01gnld01mwjrdfao"
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-6-27b-nvfp4--nvfp4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5060-ti-16gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

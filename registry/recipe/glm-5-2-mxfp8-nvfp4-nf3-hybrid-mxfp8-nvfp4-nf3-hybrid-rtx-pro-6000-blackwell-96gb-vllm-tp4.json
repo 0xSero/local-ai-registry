@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.11.2.dev279+eldritch.enlightenment.v56a5c3e.kingdom.plus5.71fca68.b12x7bfc945.fi25dd814.cu132.20260706"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm-5-2-mxfp8-nvfp4-nf3-hybrid-mxfp8-nvfp4-nf3-hybrid-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cms8ly48i000tpm01ourxxard",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms8ly48i000tpm01ourxxard"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "B12X_MLA_SPARSE",
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "nvfp4_ds_mla",
+        "mtpEnabled": true,
+        "specDecoding": true,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x RTX PRO 6000 Blackwell 96GB",
+      "notes": "Single-stream text benchmark on four discrete 96 GB PCIe GPUs: 2 warmups followed by 5 measured streaming runs with temperature-0/top-p-1 target sampling and probabilistic MTP-3; median reported (80.24-94.12 output tok/s). Abliterated experimental derivative of the full GLM-5.2 hybrid checkpoint; use requires output review. Runtime is matched to the control: TP4/DCP4, NVFP4 DS-MLA KV, B12X MLA sparse attention/MoE, and prefix caching. Repeated-prompt TTFT is warm-cache. The measured host requires P2P and B12X all-reduce/A2A disabled with ag_rs. Authentication, exact identity, coherent text, automatic tools, streaming, cancellation, and zero restart/OOM passed. Metrics use server usage counters and client-observed token timing.",
+      "revision_unpinned": false,
+      "run_id": "cms8ly48i000tpm01ourxxard"
+    }
+  },
+  "model_instance_id": "jacklarmer-glm-5-2-abliterated-mxfp8-nvfp4-nf3-hybrid--mxfp8-nvfp4-nf3-hybrid",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm-5-2-mxfp8-nvfp4-nf3-hybrid-mxfp8-nvfp4-nf3-hybrid-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

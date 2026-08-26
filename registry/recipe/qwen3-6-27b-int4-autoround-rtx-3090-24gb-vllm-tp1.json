@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.0"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-int4-autoround-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmovvdvve00enp101pbyaewdz",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmovvdvve00enp101pbyaewdz"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "1x RTX 3090 24GB",
+      "notes": "Completeness post from 2026-05-07 LocalMaxxing scout. Local vLLM 0.19.0 on one RTX 3090 GPU4 with AutoRound via inc quantization, fp8_e5m2 KV cache, prefix caching, chunked prefill, MTP speculative decode method=mtp num_speculative_tokens=3, max_num_seqs=1. max_tokens=1000, one warmup plus three measured runs. Mean wall/client rate 61.69 tok/s, decode/output rate 62.35 tok/s, TTFT 172ms. Raw log: /home/mattsav/Documents/data/qwen36_localmaxxing_20260507/qwen36_27b_autoround_vllm_gpu4_mtp_bench1000.log.",
+      "revision_unpinned": true,
+      "run_id": "cmovvdvve00enp101pbyaewdz"
+    }
+  },
+  "model_instance_id": "lorbus-qwen3-6-27b-int4-autoround--int4-autoround",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-int4-autoround-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

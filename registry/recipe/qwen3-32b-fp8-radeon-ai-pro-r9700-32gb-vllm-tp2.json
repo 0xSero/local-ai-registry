@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1+rocm721"
+  },
+  "hardware_count": 2,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-32b-fp8-radeon-ai-pro-r9700-32gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmot59shc0003jr041v5mla33",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmot59shc0003jr041v5mla33"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "derived",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x Radeon AI Pro R9700 64GB",
+      "notes": "Concurrent throughput at batch=4 (matches --max-num-seqs 4). Aggregate output tok/s, best of 3 runs (78.7 / 78.2 / 79.3). Per-request decode ~20 tok/s. RCCL 7.1.1 hotfix for #40980 still in effect.",
+      "revision_unpinned": true,
+      "run_id": "cmot59shc0003jr041v5mla33"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-32b--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-32b-fp8-radeon-ai-pro-r9700-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

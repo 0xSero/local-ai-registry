@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev93+g51f22dcfd"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "gemma-4-31b-int8-rtx-3090-24gb-vllm-tp1",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmovv054b00e7p101qtplty9r",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmovv054b00e7p101qtplty9r"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": null
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Gemma 4 MTP spec decode: target local cyankiwi/gemma-4-31B-it-AWQ-8bit, submitted under official base google/gemma-4-31B-it because exact quant POST returned 500. Docker nightly vLLM TP=2 on 2x RTX 3090, official assistant gg-hf-am/gemma-4-31B-it-assistant, num_speculative_tokens=4, no --enforce-eager. 3 measured streaming runs after 1 warmup, max_tokens=768, temp=0. Decode/output avg 87.67 tok/s; client wall avg 86.58 tok/s; TTFT 110ms.",
+      "revision_unpinned": true,
+      "run_id": "cmovv054b00e7p101qtplty9r"
+    }
+  },
+  "model_instance_id": "google-gemma-4-31b-it--int8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-31b-int8-rtx-3090-24gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

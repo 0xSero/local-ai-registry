@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "v0.20.0"
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-5-27b-int4-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmonup5h60005l404bjxetght",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmonup5h60005l404bjxetght"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Intel AutoRound INT4 quantization on 2x RTX 3090. vLLM v0.20.0. tg32 @ d130000: 45.55 t/s (47.03 peak), TTFR 159,754ms",
+      "revision_unpinned": true,
+      "run_id": "cmonup5h60005l404bjxetght"
+    }
+  },
+  "model_instance_id": "intel-qwen3-5-27b-int4-autoround--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-27b-int4-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

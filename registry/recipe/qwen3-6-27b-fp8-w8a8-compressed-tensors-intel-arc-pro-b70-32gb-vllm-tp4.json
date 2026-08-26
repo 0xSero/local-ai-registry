@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.1"
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-fp8-w8a8-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmorijmiu000kjr04cour40px",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmorijmiu000kjr04cour40px"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "TRITON_ATTN",
+        "flashAttn": false,
+        "gpuLayers": null,
+        "kvCacheDtype": null,
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 4
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Automated B70 optimization run. Static tensor W8A8 FP8 checkpoint loaded from vrfai/Qwen3.6-27B-FP8. vLLM XPU FlashAttention failed on this checkpoint because the Intel XPU FA2 wrapper requires scalar KV descale tensors; rerun used --attention-backend TRITON_ATTN and completed. Latency benchmark: input_len=512, output_len=256, num_iters_warmup=1, num_iters=5, avg_latency=7.7385800618s. tokSOut is output_tokens / avg_latency, so it includes prefill in the measured latency window and is conservative for pure decode.",
+      "revision_unpinned": true,
+      "run_id": "cmorijmiu000kjr04cour40px"
+    }
+  },
+  "model_instance_id": "vrfai-qwen3-6-27b-fp8--fp8-w8a8-compressed-tensors",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-fp8-w8a8-compressed-tensors-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

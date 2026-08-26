@@ -1,0 +1,51 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Pinned-source DeepSeek V4 Flash FP8 SGLang TP4 candidate using the SM120 sparse-decode extension, built-in DeepSeek V4 encoding, EAGLE2, and CUDA graphs. It is intentionally indexed under SGLang. The tag-only image, unpinned model revision, and host-built extension keep CLI launch blocked.",
+  "engine": {
+    "graph_mode": "full",
+    "name": "sglang",
+    "version": "deepseek-v4-blackwell image; exact SGLang commit unreported"
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-fp8-rtxpro6000-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "env_file": "env.example",
+      "file": "compose.yml",
+      "project_name": "deepseek-v4-flash-fp8-sglang-tp4"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "PYTHONPATH": "/dsv4",
+      "SGLANG_ENABLE_SPEC_V2": "True",
+      "SGLANG_ENABLE_THINKING": "1"
+    },
+    "host_port": 8000,
+    "ipc": "host",
+    "kind": "docker-compose",
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {},
+  "model_instance_id": "sgl-project-deepseek-v4-flash-fp8--fp8",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 300000,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-fp8-rtxpro6000-sglang-tp4-sweep"
+  ],
+  "status": "candidate"
+}

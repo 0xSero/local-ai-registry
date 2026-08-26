@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev93+g51f22dcfd"
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-5-122b-a10b-fp8-rtx-3090-24gb-vllm-tp8",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmowtjezk00dho201za7d1kcx",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowtjezk00dho201za7d1kcx"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "FlashAttention",
+        "flashAttn": true,
+        "gpuLayers": null,
+        "kvCacheDtype": "auto",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 8
+      },
+      "hardware_label": "8x RTX 3090 192GB",
+      "notes": "Ampere/RTX 3090 FP8 feasibility datapoint, not a speed-target row. Single-stream 1000-token run on 8x RTX 3090. PCIe 3.0 host, no NVLink. RTX 3090 has no native FP8 path, so vLLM used Marlin weight-only FP8 and throughput was much slower than GPTQ. Temporary model cache was removed after the run; raw evidence retained privately.",
+      "revision_unpinned": true,
+      "run_id": "cmowtjezk00dho201za7d1kcx"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-5-122b-a10b-fp8--fp8",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 8
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-122b-a10b-fp8-rtx-3090-24gb-vllm-tp8-sweep"
+  ],
+  "status": "candidate"
+}

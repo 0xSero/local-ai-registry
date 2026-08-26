@@ -1,0 +1,54 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": null,
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "gemma-4-31b-int4-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "kind": "reference",
+    "run_id": "cmqwk0xm103j4qr01yh0euwks",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqwk0xm103j4qr01yh0euwks"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": null,
+        "flashAttn": null,
+        "gpuLayers": null,
+        "kvCacheDtype": "int8_per_token_head",
+        "mtpEnabled": false,
+        "specDecoding": false,
+        "tensorParallel": 2
+      },
+      "hardware_label": "2x RTX 3090 24GB",
+      "notes": "Code prompt (800 max tokens). Running with Speculative Decoding (MTP) enabled with 4 speculative tokens.",
+      "revision_unpinned": true,
+      "run_id": "cmqwk0xm103j4qr01yh0euwks"
+    }
+  },
+  "model_instance_id": "google-gemma-4-31b-it--int4",
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-31b-int4-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

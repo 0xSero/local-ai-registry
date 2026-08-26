@@ -1,0 +1,79 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Qwen3.6-35B-A3B GPTQ INT4 on one RTX 3090",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.27.1"
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen36-gptq-int4-rtx3090-vllm-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+      "--revision",
+      "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+      "--served-model-name",
+      "Qwen3.6-35B",
+      "--tensor-parallel-size",
+      "1",
+      "--max-model-len",
+      "131072",
+      "--max-num-seqs",
+      "2",
+      "--kv-cache-dtype",
+      "fp8",
+      "--gpu-memory-utilization",
+      "0.97",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3"
+    ],
+    "container_port": 8000,
+    "environment": {
+      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+    },
+    "host_port": 12434,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      },
+      {
+        "read_only": false,
+        "source": "~/.cache/inference-index/vllm",
+        "target": "/root/.cache/vllm"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {},
+  "model_instance_id": "twu31-qwen3-6-35b-a3b-gptq-int4-w4a16-lowlatency--int4-w4a16",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen36-gptq-int4-rtx3090-vllm-tp1-sweep"
+  ],
+  "status": "validated"
+}
