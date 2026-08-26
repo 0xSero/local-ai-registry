@@ -1,0 +1,124 @@
+{
+  "id": "qwen38-27b-nvfp4-dgxspark-sglang-tp4",
+  "model_slug": "qwen3.8-27b",
+  "hardware_slug": "dgx-spark-gb10-128gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "ConnectX-7 RoCEv2 dual-rail 10.10.10.0/24 + 10.10.20.0/24",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "ModelOpt",
+    "precision": "NVFP4",
+    "slug": "nvfp4"
+  },
+  "engine": {
+    "graph_mode": "decode/draft/verify CUDA graphs bs<=4; prefill graphs disabled on this colocated profile",
+    "name": "sglang",
+    "version": "lmsysorg/sglang:qwen38-27b"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 262144,
+    "configured_max_running_sequences": 4,
+    "measured_kv_cache_tokens": 658430,
+    "measured_max_context_tokens": 262144,
+    "measured_max_request_concurrency": 2,
+    "tensor_parallel": 4
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3", "-m", "sglang.launch_server",
+      "--model-path", "RadixArk/Qwen3.8-27B-NVFP4-BF16-LMHead",
+      "--served-model-name", "qwen3.8-27b-sglang",
+      "--trust-remote-code",
+      "--mem-fraction-static", "0.37",
+      "--attention-backend", "flashinfer",
+      "--chunked-prefill-size", "8192",
+      "--disable-prefill-cuda-graph",
+      "--kv-cache-dtype", "fp8_e4m3",
+      "--mamba-ssm-dtype", "bfloat16",
+      "--mamba-full-memory-ratio", "4.21",
+      "--mamba-radix-cache-strategy", "extra_buffer_lazy",
+      "--max-mamba-cache-size", "16",
+      "--max-running-requests", "4",
+      "--context-length", "262144",
+      "--reasoning-parser", "qwen3",
+      "--tool-call-parser", "qwen3_coder",
+      "--sampling-defaults", "model",
+      "--enable-metrics",
+      "--enable-cache-report",
+      "--host", "0.0.0.0",
+      "--port", "8892",
+      "--speculative-algorithm", "DSPARK",
+      "--speculative-draft-model-path", "RadixArk/Qwen3.8-27B-DSpark",
+      "--speculative-dspark-block-size", "7",
+      "--speculative-draft-model-quantization", "unquant",
+      "--speculative-num-draft-tokens", "8",
+      "--enable-torch-compile",
+      "--torch-compile-max-bs", "4",
+      "--cuda-graph-max-bs-decode", "4",
+      "--num-continuous-decode-steps", "2",
+      "--tp-size", "4",
+      "--nnodes", "4",
+      "--dist-init-addr", "10.10.10.11:26000"
+    ],
+    "container_port": 8892,
+    "environment": {
+      "NCCL_IB_HCA": "rocep1s0f1,roceP2p1s0f1",
+      "NCCL_NET": "IB",
+      "NCCL_SOCKET_IFNAME": "enp1s0f1np1",
+      "SGLANG_OPT_MAMBA_SKIP_DECODE_LOCK": "0"
+    },
+    "host_port": 8892,
+    "image": "lmsysorg/sglang:qwen38-27b",
+    "ipc": "host",
+    "kind": "docker",
+    "network_mode": "host",
+    "shm_size": "32g",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "/home/sero/spark/Qwen3.8-27B-SGLang-DGX-Spark/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Live four-Spark Qwen3.8-27B NVFP4 SGLang TP4 colocated with DeepSeek. Container qwen3.8-27b-tp4, API :8892, DSpark speculation, mem-fraction 0.37 because it shared the GB10 with DeepSeek. Image and video inputs were validated. Captured immediately before swapping the cluster to GLM-5.3-Flash.",
+  "traces": [
+    {
+      "date": "2026-08-26T23:21Z",
+      "event": "live_idle_metrics",
+      "detail": "GET /health 200, model qwen3.8-27b-sglang, max_model_len 262144, 0 running. KV FP8 pool 658,430 tokens. Lifetime 88,831 prompt tokens and 14,491 generation tokens. Last spec accept rate 22.9%, mean accept length 2.6. Current gen_throughput 0 because idle.",
+      "metrics": {
+        "configured_context": 262144,
+        "configured_concurrency": 4,
+        "kv_cache_tokens": 658430,
+        "spec_accept_rate": 0.229,
+        "running": 0
+      }
+    },
+    {
+      "date": "2026-08-26T22:42Z",
+      "event": "uncapped_c1_decode_and_media",
+      "detail": "Codex live C1 completion 106.8 tok/s. Inline image and MP4 video requests both succeeded on this loaded checkpoint.",
+      "metrics": {"concurrency": 1, "tok_s": 106.8, "image": true, "video": true}
+    }
+  ],
+  "source": {
+    "accepted_at": "2026-08-26",
+    "paths": [
+      "start-dspark.sh"
+    ],
+    "repository": "https://github.com/MiaAI-Lab/Qwen3.8-27B-SGLang-DGX-Spark"
+  }
+}
