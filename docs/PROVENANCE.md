@@ -38,6 +38,8 @@ Response hashes:
 
 Nine newly observed rows mapped to hardware already supported by this registry and were added as reference-only candidates. One Tesla P100 row was intentionally skipped because that hardware is outside the current workstation/local-device coverage target.
 
+The same-day live GLM-5.3 Flash NVFP4 four-RTX-PRO-6000 record was normalized separately from repository evidence. Its model revision and source bundle commit are pinned and its completion, multimodal, context, concurrency, and speed evidence are retained. It remains a candidate because the locally built launch image is still identified by a mutable tag rather than a published digest.
+
 ## Promotion rule
 
 A candidate becomes validated only when all of these are present:
