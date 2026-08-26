@@ -1,0 +1,112 @@
+{
+  "id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
+  "model_slug": "glm-5.3-flash",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "ModelOpt",
+    "precision": "NVFP4",
+    "slug": "nvfp4"
+  },
+  "engine": {
+    "graph_mode": "full decode capture bs<=8 with NEXTN target-verify graphs",
+    "name": "sglang",
+    "version": "lmsysorg/sglang:glm-5.3-flash@sha256:3a97bd50034ca60c6e6c86b8e36a73675d261f6a5eb71197796aee5175409290"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 1048576,
+    "configured_max_running_sequences": 8,
+    "measured_kv_cache_tokens": 15156736,
+    "measured_max_context_tokens": 1048576,
+    "measured_max_request_concurrency": 1,
+    "tensor_parallel": 4
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id", "glm53-flash-nvfp4-rtxpro6000-sglang-tp4"
+    ],
+    "container_port": 30000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
+      "NVIDIA_VISIBLE_DEVICES": "GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006",
+      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_OPT_DEEPGEMM_HC_PRENORM": "0",
+      "SGLANG_OPT_FP8_WO_A_GEMM": "0",
+      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "SGLANG_OPT_USE_TOPK_V2": "0",
+      "TORCH_CUDA_ARCH_LIST": "12.0a"
+    },
+    "host_port": 8000,
+    "image": "glm53-flash-nvfp4-sglang:exact-20260826",
+    "ipc": "host",
+    "kind": "compose",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+        "target": "/model"
+      }
+    ],
+    "shm_size": "32g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Live Pop!_OS deployment (container glm-5.3-flash-sglang-sm120) using the exact-docker bundle with six SM120 patches baked in (glm5_next model, deepseek_nextn MTP draft, quantization utils + modelopt quant, flash_mla_sm120 kernel, dsa_backend). Six 93 GB schedulers across the four GPUs (mem-fraction-static 0.90). MoE runner is flashinfer_cutlass because FlashInfer CuteDSL MoE only supports datacenter Blackwell majors [10].",
+  "traces": [
+    {
+      "date": "2026-08-26T20:45Z",
+      "event": "startup_failure_cutedsl",
+      "detail": "--moe-runner-backend flashinfer_cutedsl: RuntimeError 'No supported CUDA architectures found for major versions [10]' from flashinfer/fused_moe/cute_dsl/moe_utils.py::_get_moe_utils_module during CuteDslMoEWrapper::run::Swiglu autotune; weights and KV allocation had succeeded."
+    },
+    {
+      "date": "2026-08-26T21:04Z",
+      "event": "startup_success_cutlass",
+      "detail": "--moe-runner-backend flashinfer_cutlass: full load, KV cache fp8_e4m3 3,789,184 tokens per rank (25.62 GiB + 2.33 GiB), NEXTN target-verify CUDA graphs captured for bs [1..8] at num_tokens_per_req=6, 'The server is fired up and ready to roll!', GET /health -> 200."
+    },
+    {
+      "date": "2026-08-26T21:07Z",
+      "event": "coherence_math",
+      "detail": "temp=0 max_tokens=120: reasoning_content clean (verified 17x23 by decomposition), content 'Hello! 17 times 23 equals 391.', finish_reason=stop, 101 completion tokens incl. 88 reasoning tokens.",
+      "metrics": {"completion_tokens": 101, "finish_reason": "stop"}
+    },
+    {
+      "date": "2026-08-26T21:15Z",
+      "event": "throughput_low_effort_uncapped",
+      "detail": "temp=1.0 top_p=0.95, chat_template_kwargs {reasoning_effort:'low'}, no max_tokens cap: FP8-vs-BF16-KV-cache question answered in clean markdown headings/bullets.",
+      "metrics": {"prompt_tokens": 26, "completion_tokens": 203, "wall_s": 1.42, "tok_s": 142.9, "finish_reason": "stop"}
+    },
+    {
+      "date": "2026-08-26T21:17Z",
+      "event": "throughput_default_effort_uncapped",
+      "detail": "Default (max) reasoning effort, no max_tokens cap: projectile-motion quadratic solved symbolically with LaTeX, t = 2+sqrt(13) = 5.61 s, correct; reasoning/content split via glm45 parser.",
+      "metrics": {"prompt_tokens": 43, "completion_tokens": 1276, "wall_s": 6.15, "tok_s": 207.6, "finish_reason": "stop"}
+    },
+    {
+      "date": "2026-08-26T21:10Z",
+      "event": "gotcha_empty_content_with_caps",
+      "detail": "Requests capped at max_tokens 120-900 under default (max) thinking effort all ended finish_reason=length with empty content field: budget consumed inside <think>. Chat template takes reasoning_effort ('low'|'high'; unset => 'max') and clear_thinking; there is no 'thinking': false kwarg."
+    }
+  ],
+  "source": {
+    "accepted_at": "2026-08-26",
+    "paths": [
+      "Dockerfile",
+      "manifest.json",
+      "README.md"
+    ],
+    "repository": "https://github.com/0xSero/glm53-flash-nvfp4-sm120-exact-docker"
+  }
+}
