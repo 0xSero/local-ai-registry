@@ -227,6 +227,39 @@
       ],
       "note": "NEXTN 5-step drafting; per-request variance by task type"
     },
-    "scaling_note": "Aggregate decode scales ~3.9x from 1 to 8 streams (142->550 tok/s) at low effort; per-stream degrades gracefully to ~70 tok/s at 8-way. Effort level barely changes decode tok/s (154->169 low->max); it changes how many of the generated tokens are hidden reasoning vs visible content."
+    "scaling_note": "Aggregate decode scales ~3.9x from 1 to 8 streams (142->550 tok/s) at low effort; per-stream degrades gracefully to ~70 tok/s at 8-way. Effort level barely changes decode tok/s (154->169 low->max); it changes how many of the generated tokens are hidden reasoning vs visible content.",
+    "prefill": [
+      {
+        "prompt_tokens": 2125,
+        "ttft_s": 0.398,
+        "prefill_tok_s": 5344
+      },
+      {
+        "prompt_tokens": 6325,
+        "ttft_s": 0.991,
+        "prefill_tok_s": 6383
+      },
+      {
+        "prompt_tokens": 21407,
+        "ttft_s": 3.411,
+        "prefill_tok_s": 6275
+      },
+      {
+        "prompt_tokens": 53315,
+        "ttft_s": 8.627,
+        "prefill_tok_s": 6180
+      },
+      {
+        "prompt_tokens": 106726,
+        "ttft_s": 17.702,
+        "prefill_tok_s": 6029
+      },
+      {
+        "prompt_tokens": 213094,
+        "ttft_s": 36.85,
+        "prefill_tok_s": 5783
+      }
+    ],
+    "prefill_note": "Unique random corpora, chunked-prefill 8192, max-prefill-tokens 8192; prefill tok/s = prompt_tokens/TTFT (includes tokenize+queue). Holds ~6k tok/s flat to 100k tokens, mild drop at 213k. Earlier 'prefill_5k_token_prompt' entry superseded (its 0.13s warm case was a prefix-cache artifact of a repeated identical prompt)."
   }
 }
