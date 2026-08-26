@@ -1,0 +1,105 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "lfm25-26b-bf16-mi300x-sglang-tp1",
+  "status": "validated",
+  "profile": "tp1",
+  "description": "LFM2.5-2.6B BF16 on one AMD Instinct MI300X with 128K context and four concurrent requests",
+  "model": {
+    "slug": "lfm2.5-2.6b",
+    "name": "LFM2.5-2.6B",
+    "source": "LiquidAI/LFM2.5-2.6B",
+    "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+    "served_name": "LiquidAI/LFM2.5-2.6B"
+  },
+  "weights": {
+    "slug": "bf16",
+    "format": "safetensors",
+    "precision": "BF16",
+    "size_gb": 5.024
+  },
+  "hardware": {
+    "slug": "mi300x-192gb",
+    "accelerator": "AMD Instinct MI300X 192GB",
+    "count": 1,
+    "memory_gb_each": 192,
+    "interconnect": "OAM; single GPU"
+  },
+  "engine": {
+    "name": "sglang",
+    "version": "0.5.13.post1.dev20260623+g0460f277b7",
+    "graph_mode": "full"
+  },
+  "runtime": {
+    "kind": "docker",
+    "image": "lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi30x-20260623@sha256:a8320f425ebec3dd2f3330816b65bcef8bd3eadf634f39ebfb84db2ae282b084",
+    "entrypoint": "/opt/venv/bin/python",
+    "accelerator_backend": "amd-rocm",
+    "container_port": 30000,
+    "host_port": 30000,
+    "ipc": "host",
+    "shm_size": "16g",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "mounts": [
+      {
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "LiquidAI/LFM2.5-2.6B",
+      "--revision",
+      "a334ee78cd38458bb71eda24109ac42dcec1309d",
+      "--tp-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.94",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3-thinking",
+      "--tool-call-parser",
+      "lfm2"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 131072,
+    "measured_max_context_tokens": 131072,
+    "configured_max_running_sequences": 4,
+    "measured_max_request_concurrency": 4,
+    "measured_kv_cache_tokens": 5078485
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/inference-index",
+    "commit": "80cbd244d1607541ac645e60536c89e3f485e5bf",
+    "paths": [
+      "campaigns/runpod-single-gpu-2026-08-23/protocol.md",
+      "campaigns/runpod-single-gpu-2026-08-23/results.csv",
+      "campaigns/runpod-single-gpu-2026-08-23/artifacts/mi300x-192gb"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

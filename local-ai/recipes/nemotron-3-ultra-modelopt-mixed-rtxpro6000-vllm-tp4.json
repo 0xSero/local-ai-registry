@@ -1,0 +1,123 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Controller-backed candidate with an exact model revision and retained server-init proof of TP4, MTP5, FP8 KV, and full/piecewise graphs. Client timings survive only as controller summaries, so the index has not promoted or replayed them.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.22.0"
+  },
+  "hardware": {
+    "accelerator": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition 96GB",
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "memory_gb_each": 96,
+    "slug": "rtx-pro-6000-blackwell-96gb"
+  },
+  "id": "nemotron-3-ultra-modelopt-mixed-rtxpro6000-vllm-tp4",
+  "model": {
+    "name": "Nemotron 3 Ultra",
+    "revision": "11ee45ac279dcc7b05568e06a0535adca8a61ab3",
+    "served_name": "nemotron-3-ultra",
+    "slug": "nemotron-3-ultra",
+    "source": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4"
+  },
+  "profile": "tp4",
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "nemotron-3-ultra"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "nemotron-3-ultra",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853",
+      "ENABLE_CHUNKED_PREFILL": "1",
+      "ENABLE_MAMBA_CACHE_STOCHASTIC_ROUNDING": "1",
+      "ENABLE_MTP": "1",
+      "ENABLE_PREFIX_CACHING": "1",
+      "GLOO_SOCKET_IFNAME": "lo",
+      "GPU_MEMORY_UTILIZATION": "0.97",
+      "MAMBA_BACKEND": "flashinfer",
+      "MAMBA_CACHE_PHILOX_ROUNDS": "5",
+      "MAX_MODEL_LEN": "262144",
+      "MAX_NUM_BATCHED_TOKENS": "1024",
+      "MAX_NUM_SEQS": "2",
+      "MOE_BACKEND": "auto",
+      "NCCL_CUMEM_HOST_ENABLE": "0",
+      "NCCL_DEBUG": "WARN",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_MNNVL_ENABLE": "0",
+      "NCCL_NVLS_ENABLE": "0",
+      "NCCL_P2P_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "PIX",
+      "NCCL_SOCKET_IFNAME": "lo",
+      "NVIDIA_TF32_OVERRIDE": "1",
+      "OMP_NUM_THREADS": "8",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "RUN_FOREGROUND": "1",
+      "SAFETENSORS_FAST_GPU": "1",
+      "TORCH_NCCL_ASYNC_ERROR_HANDLING": "1",
+      "TORCH_NCCL_BLOCKING_WAIT": "1",
+      "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
+      "VLLM_DISABLE_PYNCCL": "0",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "1800",
+      "VLLM_FLASHINFER_ALLREDUCE_BACKEND": "trtllm",
+      "VLLM_FLASHINFER_MOE_BACKEND": "latency",
+      "VLLM_LOGGING_LEVEL": "INFO",
+      "VLLM_SKIP_P2P_CHECK": "0",
+      "VLLM_USE_FLASHINFER_MOE_FP4": "1",
+      "VLLM_USE_FLASHINFER_MOE_FP8": "1",
+      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "host_port": 8000,
+    "image": "controller-managed:vllm",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/Nemotron-3-Ultra",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "schema_version": "inference-index/v1",
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 262144,
+    "configured_max_running_sequences": 2,
+    "measured_kv_cache_tokens": 376988,
+    "measured_max_context_tokens": 261056,
+    "measured_max_request_concurrency": 1,
+    "tensor_parallel": 4
+  },
+  "source": {
+    "accepted_at": "2026-08-24",
+    "commit": "bad6aa3645ec53b1e93f8d6cff9a8882fdf1c201",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json",
+      "sources/tailscale/2026-08-24/pop-controller/PIN-RECOVERY.md"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  },
+  "status": "candidate",
+  "weights": {
+    "format": "ModelOpt mixed quantization",
+    "precision": "NVFP4 mixed",
+    "slug": "modelopt-mixed"
+  }
+}

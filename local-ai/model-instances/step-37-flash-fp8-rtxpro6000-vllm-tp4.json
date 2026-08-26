@@ -1,0 +1,76 @@
+{
+  "id": "step-37-flash-fp8-rtxpro6000-vllm-tp4",
+  "model_slug": "step-3.7-flash",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "safetensors",
+    "precision": "FP8",
+    "slug": "fp8"
+  },
+  "engine": {
+    "graph_mode": "full",
+    "name": "vllm",
+    "version": "controller-managed; captured 2026-08-23"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 262144,
+    "configured_max_running_sequences": 4,
+    "measured_kv_cache_tokens": null,
+    "measured_max_context_tokens": null,
+    "measured_max_request_concurrency": null,
+    "tensor_parallel": 4
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "step37-flash-fp8-vllm"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "step37-flash-fp8-vllm",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853"
+    },
+    "host_port": 8000,
+    "image": "controller-managed:vllm",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/Step-3.7-Flash-FP8",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Controller-backed candidate captured read-only from Pop!_OS. Saved CUDA-graph FP8 profile with MTP-6; index has not rerun it.",
+  "source": {
+    "accepted_at": "2026-08-23",
+    "commit": "8d173c60eb8ac45007aede00893614c20f05c331",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  }
+}

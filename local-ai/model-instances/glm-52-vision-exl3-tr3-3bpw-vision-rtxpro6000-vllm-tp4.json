@@ -1,0 +1,85 @@
+{
+  "id": "glm-52-vision-exl3-tr3-3bpw-vision-rtxpro6000-vllm-tp4",
+  "model_slug": "glm-5.2-vision",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "EXL3 TR3 text + BF16 MoonViT vision graft",
+    "precision": "3.0 bpw text + BF16 vision",
+    "slug": "exl3-tr3-3bpw-vision"
+  },
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "controller-managed; captured 2026-08-23"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 400000,
+    "configured_max_running_sequences": 8,
+    "measured_kv_cache_tokens": 672296,
+    "measured_max_context_tokens": 400000,
+    "measured_max_request_concurrency": 1,
+    "tensor_parallel": 4
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "glm-5.2-exl3-vision"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "glm-5.2-exl3-vision",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006",
+      "NVIDIA_VISIBLE_DEVICES": "GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006",
+      "VLLM_B12X_MLA_CKV_PREFETCH_DEPTH": "0",
+      "VLLM_B12X_MLA_DCP_GATHER_IN_WORKSPACE": "0",
+      "VLLM_DCP_PROJECT_BEFORE_MERGE": "0",
+      "VLLM_DCP_QUERY_SPLIT": "0",
+      "VLLM_DCP_TOPK_OWNER_MERGE": "0",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+      "VLLM_USE_B12X_DCP_A2A": "0"
+    },
+    "host_port": 8000,
+    "image": "local/glm52-exl3-vision@sha256:a914b0117cb6fe42f5528b3f274ca512e97190f90f1d2e3d6f800f6a6088455b",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.2-EXL3-TR3-3.0bpw-Vision",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Controller-backed candidate with recovered composed-checkpoint and local-image identities. Raw 524K-profile context and capability artifacts survive, but the current controller row is a later 400K/FP8 profile, so those older artifacts do not promote this configuration.",
+  "source": {
+    "accepted_at": "2026-08-24",
+    "commit": "bad6aa3645ec53b1e93f8d6cff9a8882fdf1c201",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json",
+      "sources/tailscale/2026-08-24/pop-controller/PIN-RECOVERY.md"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "hy3-fp8-rtxpro6000-vllm-tp4",
+  "model_slug": "hy3",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "safetensors",
+    "precision": "FP8",
+    "slug": "fp8"
+  },
+  "engine": {
+    "graph_mode": "unknown",
+    "name": "vllm",
+    "version": "controller-managed; captured 2026-08-23"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 200000,
+    "configured_max_running_sequences": 16,
+    "measured_kv_cache_tokens": null,
+    "measured_max_context_tokens": null,
+    "measured_max_request_concurrency": null,
+    "tensor_parallel": 4
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "hy3"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "hy3",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "GPU-fa982c97-64af-db6a-2ffb-08380e1f9375,GPU-c6ac75f2-cadf-6ff3-4cab-76c6033c1006,GPU-3cece4bc-432e-705e-7324-3f441d9cb4cc,GPU-7b5db8b3-3a49-c0a7-b8e4-80dc1bd3e853",
+      "FLASHINFER_DISABLE_VERSION_CHECK": "1",
+      "GLOO_SOCKET_IFNAME": "lo",
+      "HF_HOME": "${MODEL_ROOT}/hf",
+      "LD_LIBRARY_PATH": "${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cu13/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cublas/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_cupti/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_nvrtc/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_runtime/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cudnn/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cufft/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cufile/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/curand/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusolver/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusparse/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusparselt/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nccl/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvjitlink/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvshmem/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvtx/lib:",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_DISABLE": "0",
+      "NCCL_P2P_LEVEL": "PIX",
+      "NCCL_SOCKET_IFNAME": "lo",
+      "OMP_NUM_THREADS": "8",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SAFETENSORS_FAST_GPU": "1",
+      "TORCH_NCCL_ASYNC_ERROR_HANDLING": "1",
+      "TORCH_NCCL_BLOCKING_WAIT": "1",
+      "VLLM_USE_V1": "1"
+    },
+    "host_port": 8000,
+    "image": "controller-managed:vllm",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/Hy3-FP8",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Controller-backed candidate captured read-only from Pop!_OS. Saved Pop controller config; candidate pending inference-index acceptance.",
+  "source": {
+    "accepted_at": "2026-08-23",
+    "commit": "8d173c60eb8ac45007aede00893614c20f05c331",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2",
+  "status": "validated",
+  "profile": "tp2",
+  "description": "Live-accepted two-B70 SGLang XPU profile with online layered FP8, FP32 GDN state, the native GDN fast path, XPU decode graphs, and a digest-pinned GHCR image.",
+  "model": {
+    "slug": "qwen3.6-35b-a3b",
+    "name": "Qwen3.6-35B-A3B",
+    "source": "Qwen/Qwen3.6-35B-A3B",
+    "revision": "995ad96eacd98c81ed38be0c5b274b04031597b0",
+    "served_name": "Qwen3.6-35B-A3B"
+  },
+  "weights": {
+    "slug": "layered-fp8",
+    "format": "SGLang layered FP8",
+    "precision": "online FP8 weights with FP16 activations"
+  },
+  "hardware": {
+    "slug": "intel-arc-pro-b70-32gb",
+    "accelerator": "Intel Arc Pro B70 32GB",
+    "count": 2,
+    "memory_gb_each": 32,
+    "interconnect": "PCIe"
+  },
+  "engine": {
+    "name": "sglang",
+    "version": "0.5.13+local-bmg",
+    "graph_mode": "full"
+  },
+  "runtime": {
+    "kind": "script",
+    "launchable_by_cli": true,
+    "image": "ghcr.io/0xsero/qwen36-b70-sglang@sha256:d027487a07e4391562b4460da72bc78008be129d44af540148787e02e3045c08",
+    "accelerator_backend": "intel-xpu",
+    "container_port": 30000,
+    "host_port": 8010,
+    "network_mode": "bridge",
+    "ipc": "host",
+    "shm_size": "16g",
+    "devices": [
+      "/dev/dri"
+    ],
+    "script": {
+      "file": "sources/github/qwen36-b70/15166aed68bc25c411e16ddd81621242ba3d6298/sglang/xpu/run_qwen3_6_service.sh"
+    },
+    "environment": {
+      "LOAD_FORMAT": "layered_fp8",
+      "MEM_FRACTION_STATIC": "0.9",
+      "MODEL_PATH": "/models/Qwen3.6-35B-A3B",
+      "PORT": "30000",
+      "SGLANG_MAMBA_CONV_DTYPE": "float16",
+      "SGLANG_MAMBA_SSM_DTYPE": "float32",
+      "SGLANG_XPU_ENABLE_GRAPH": "1",
+      "SGLANG_XPU_ESIMD_DECODE": "1",
+      "SGLANG_XPU_ESIMD_MOE": "1",
+      "SGLANG_XPU_ESIMD_MOE_PREFILL": "1",
+      "SGLANG_XPU_FA_ESIMD_QKV": "1",
+      "SGLANG_XPU_GDN_FAST_PATH": "1",
+      "SGLANG_XPU_GDN_ESIMD": "0",
+      "SGLANG_XPU_GDN_EXTEND_ESIMD": "0",
+      "SGLANG_XPU_PREFILL_DPAS": "1",
+      "TP_SIZE": "2",
+      "ZE_AFFINITY_MASK": "0,1"
+    },
+    "mounts": [
+      {
+        "source": "~/models",
+        "target": "/models",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "--model-path",
+      "/models/Qwen3.6-35B-A3B",
+      "--tp",
+      "2",
+      "--dtype",
+      "float16",
+      "--quantization",
+      "fp8",
+      "--load-format",
+      "layered_fp8",
+      "--attention-backend",
+      "intel_xpu",
+      "--trust-remote-code",
+      "--mem-fraction-static",
+      "0.9",
+      "--max-mamba-cache-size",
+      "64",
+      "--page-size",
+      "64",
+      "--mamba-scheduler-strategy",
+      "extra_buffer",
+      "--reasoning-parser",
+      "qwen3",
+      "--enable-cache-report",
+      "--enable-metrics"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 2,
+    "configured_max_context_tokens": 262144,
+    "measured_max_context_tokens": 8192,
+    "configured_max_running_sequences": 64,
+    "measured_max_request_concurrency": 8
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": false,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/qwen36-b70",
+    "commit": "15166aed68bc25c411e16ddd81621242ba3d6298",
+    "paths": [
+      "README.md",
+      "sglang/xpu/run_qwen3_6_service.sh",
+      "sglang/xpu/start_qwen3_6_service.sh",
+      "benchmarks/bench.py",
+      "benchmarks/results/20260825-195430-b70-sglang.json"
+    ],
+    "accepted_at": "2026-08-25"
+  }
+}

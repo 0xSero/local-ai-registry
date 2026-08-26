@@ -1,0 +1,126 @@
+{
+  "id": "inkling-small-nvfp4-dgxspark-vllm-tp2",
+  "model_slug": "inkling-small",
+  "hardware_slug": "dgx-spark-gb10-128gb",
+  "hardware_config": {
+    "count": 2,
+    "interconnect": "dual-node ConnectX-7 RoCE",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "slug": "nvfp4",
+    "format": "ModelOpt",
+    "precision": "NVFP4"
+  },
+  "engine": {
+    "name": "vllm",
+    "version": "65b7662d3fcb773afaf751ab29ac6960a0cf011d+sm121-overlays",
+    "graph_mode": "full-and-piecewise"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 2,
+    "configured_max_context_tokens": 262144,
+    "measured_max_context_tokens": 262144,
+    "configured_max_running_sequences": 4,
+    "measured_max_request_concurrency": 4,
+    "measured_kv_cache_tokens": 420162
+  },
+  "runtime": {
+    "kind": "docker-compose",
+    "launchable_by_cli": false,
+    "image": "local/inkling-vllm:20260812-65b7662d-sm121-paged-a80c4d7-audio1",
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "network_mode": "host",
+    "ipc": "host",
+    "shm_size": "64g",
+    "compose": {
+      "file": "compose.yml",
+      "project_name": "inkling-small-tp2"
+    },
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_121a",
+      "GPU_MEMORY_UTILIZATION": "0.9",
+      "INKLING_MODEL": "/models/Inkling-Small-NVFP4",
+      "INKLING_VLLM_IMAGE": "local/inkling-vllm:20260812-65b7662d-sm121-paged-a80c4d7-audio1",
+      "KV_CACHE_DTYPE": "auto",
+      "KV_CACHE_MEMORY_BYTES": "29450000000",
+      "MAX_MODEL_LEN": "262144",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "4",
+      "MTP_NUM_TOKENS": "1",
+      "PIPELINE_PARALLEL_SIZE": "1",
+      "SERVED_MODEL_NAME": "inkling-small",
+      "TENSOR_PARALLEL_SIZE": "2"
+    },
+    "mounts": [
+      {
+        "source": "/home/sero/models/Inkling-Small-NVFP4",
+        "target": "/models/Inkling-Small-NVFP4",
+        "read_only": true
+      },
+      {
+        "source": "~/.cache/huggingface",
+        "target": "/cache/huggingface",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "serve",
+      "/models/Inkling-Small-NVFP4",
+      "--served-model-name",
+      "inkling-small",
+      "--tensor-parallel-size",
+      "2",
+      "--pipeline-parallel-size",
+      "1",
+      "--nnodes",
+      "2",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "4",
+      "--max-num-batched-tokens",
+      "8192",
+      "--kv-cache-dtype",
+      "auto",
+      "--kv-cache-memory-bytes",
+      "29450000000",
+      "--trust-remote-code",
+      "--enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--async-scheduling",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":1}",
+      "--compilation-config",
+      "{\"cudagraph_capture_sizes\":[1,2,3,4,8,16,32,40,48]}",
+      "--reasoning-parser",
+      "inkling",
+      "--tool-call-parser",
+      "inkling",
+      "--enable-auto-tool-choice"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "candidate",
+  "profile": "tp2",
+  "description": "Saved two-DGX-Spark Inkling Small NVFP4 vLLM profile with MTP1, BF16 KV, SM121 paged-KV overlays, full and piecewise CUDA graphs, and text/image/audio support; blocked from CLI until the host-specific two-node bundle and model revision are independently replayed",
+  "source": {
+    "repository": "https://github.com/0xSero/inference-index",
+    "commit": "ad06215e1a31b3196d3aa01faada763ebf76177a",
+    "paths": [
+      "sources/tailscale/2026-08-23/dgx-sparks/inkling-small-nvfp4-spark/recipe.json",
+      "sources/tailscale/2026-08-23/dgx-sparks/inkling-small-nvfp4-spark/docker-compose.yml",
+      "sources/tailscale/2026-08-23/dgx-sparks/inkling-small-nvfp4-spark/Dockerfile",
+      "sources/tailscale/2026-08-23/dgx-sparks/inkling-small-nvfp4-spark/benchmark-results-mtp1.json"
+    ],
+    "accepted_at": "2026-08-23"
+  }
+}

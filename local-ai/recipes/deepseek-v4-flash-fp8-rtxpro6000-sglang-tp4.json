@@ -1,0 +1,111 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "deepseek-v4-flash-fp8-rtxpro6000-sglang-tp4",
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Pinned-source DeepSeek V4 Flash FP8 SGLang TP4 candidate using the SM120 sparse-decode extension, built-in DeepSeek V4 encoding, EAGLE2, and CUDA graphs. It is intentionally indexed under SGLang. The tag-only image, unpinned model revision, and host-built extension keep CLI launch blocked.",
+  "model": {
+    "slug": "deepseek-v4-flash",
+    "name": "DeepSeek V4 Flash FP8",
+    "source": "sgl-project/DeepSeek-V4-Flash-FP8",
+    "revision": null,
+    "served_name": "deepseek-v4-flash"
+  },
+  "weights": {
+    "slug": "fp8",
+    "format": "safetensors",
+    "precision": "FP8"
+  },
+  "hardware": {
+    "slug": "rtx-pro-6000-blackwell-96gb",
+    "accelerator": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition 96GB",
+    "count": 4,
+    "memory_gb_each": 96,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU"
+  },
+  "engine": {
+    "name": "sglang",
+    "version": "deepseek-v4-blackwell image; exact SGLang commit unreported",
+    "graph_mode": "full"
+  },
+  "runtime": {
+    "kind": "docker-compose",
+    "launchable_by_cli": false,
+    "image": "lmsysorg/sglang:deepseek-v4-blackwell",
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "network_mode": "host",
+    "ipc": "host",
+    "shm_size": "64g",
+    "compose": {
+      "file": "compose.yml",
+      "env_file": "env.example",
+      "project_name": "deepseek-v4-flash-fp8-sglang-tp4"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "PYTHONPATH": "/dsv4",
+      "SGLANG_ENABLE_SPEC_V2": "True",
+      "SGLANG_ENABLE_THINKING": "1"
+    },
+    "mounts": [
+      {
+        "source": "${MODEL_DIR}",
+        "target": "/workspace/model",
+        "read_only": true
+      },
+      {
+        "source": "${PATCH_DIR}",
+        "target": "/dsv4",
+        "read_only": true
+      }
+    ],
+    "arguments": [
+      "--tensor-parallel-size",
+      "4",
+      "--context-length",
+      "393216",
+      "--mem-fraction-static",
+      "0.85",
+      "--max-running-requests",
+      "8",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--speculative-algorithm",
+      "EAGLE",
+      "--speculative-num-steps",
+      "1",
+      "--speculative-num-draft-tokens",
+      "2",
+      "--cuda-graph-max-bs",
+      "32"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 4,
+    "configured_max_context_tokens": 393216,
+    "measured_max_context_tokens": 300000,
+    "configured_max_running_sequences": 8,
+    "measured_max_request_concurrency": 1
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/deepseek-v4-flash-sm120",
+    "commit": "c2eac5a9b2b457881d69b1164d909e8beab9286e",
+    "paths": [
+      "README.md",
+      "DEEPSEEK-V4-FLASH.md",
+      "scripts/launch_dsv4_flash_sm120.sh",
+      "scripts/build_in_sglang_docker.sh",
+      "deepseek_v4_kernel/_patch.py"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

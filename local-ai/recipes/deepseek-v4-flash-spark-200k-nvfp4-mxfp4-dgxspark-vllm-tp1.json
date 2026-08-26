@@ -1,0 +1,108 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "deepseek-v4-flash-spark-200k-nvfp4-mxfp4-dgxspark-vllm-tp1",
+  "status": "candidate",
+  "profile": "tp1",
+  "description": "Source-backed single-DGX-Spark K160 REAP profile with a 200K context claim, FP8 KV, MTP2, and full/piecewise CUDA graphs. The archived source's optional eager branch is deliberately absent. CLI launch stays blocked because the validated image is a host-local build rather than a published immutable artifact.",
+  "model": {
+    "slug": "deepseek-v4-flash-spark-200k",
+    "name": "DeepSeek V4 Flash Spark 180B K160 REAP",
+    "source": "0xSero/DeepSeek-V4-Flash-180B",
+    "revision": "7c360e1cd4a5168099dbc54d16d929bf6df04990",
+    "served_name": "DeepSeek-V4-Flash-Spark"
+  },
+  "weights": {
+    "slug": "nvfp4-mxfp4",
+    "format": "safetensors",
+    "precision": "NVFP4/MXFP4 experts"
+  },
+  "hardware": {
+    "slug": "dgx-spark-gb10-128gb",
+    "accelerator": "NVIDIA DGX Spark GB10 128GB unified memory",
+    "count": 1,
+    "memory_gb_each": 128,
+    "interconnect": "on-package CPU-GPU coherent unified memory"
+  },
+  "engine": {
+    "name": "vllm",
+    "version": "0.1.dev17016+g27fd665bd.d20260526",
+    "graph_mode": "full-and-piecewise"
+  },
+  "runtime": {
+    "kind": "docker-compose",
+    "launchable_by_cli": false,
+    "image": "vllm-node-dsv4-cutlass451:latest",
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "network_mode": "host",
+    "ipc": "host",
+    "shm_size": "64g",
+    "compose": {
+      "file": "compose.yml",
+      "env_file": "env.example",
+      "project_name": "deepseek-v4-flash-spark-200k-tp1"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "KV_CACHE_DTYPE": "fp8",
+      "VLLM_ENABLE_DEEPSEEK_V4_SPARSE_MLA_WARMUP": "0",
+      "VLLM_TRITON_MLA_SPARSE": "1",
+      "VLLM_TRITON_MLA_SPARSE_ALLOW_CUDAGRAPH": "1"
+    },
+    "mounts": [
+      {
+        "source": "${MODEL_DIR}",
+        "target": "/workspace/model",
+        "read_only": true
+      }
+    ],
+    "arguments": [
+      "--tensor-parallel-size",
+      "1",
+      "--max-model-len",
+      "200000",
+      "--kv-cache-dtype",
+      "fp8",
+      "--kv-cache-memory-bytes",
+      "6G",
+      "--max-num-batched-tokens",
+      "4096",
+      "--max-num-seqs",
+      "1",
+      "--gpu-memory-utilization",
+      "0.88",
+      "--speculative-config",
+      "{\"method\":\"deepseek_mtp\",\"num_speculative_tokens\":2}",
+      "--compilation-config",
+      "{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"custom_ops\":[\"all\"]}"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 200000,
+    "measured_max_context_tokens": 200000,
+    "configured_max_running_sequences": 1,
+    "measured_max_request_concurrency": 1,
+    "measured_kv_cache_tokens": 537516
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/deepseek-v4-flash-spark-200k",
+    "commit": "2607a8edd63f1befaf51abb9e3f12d6a3dc61d17",
+    "paths": [
+      "EXACT_WORKING_CONFIG.md",
+      "configs/k160-mtp2-200k.env",
+      "scripts/launch_vllm_deepseek_v4_guarded.sh",
+      "evidence/2026-05-27-k160-mtp2-200k.md",
+      "model-cards/Deepseek-V4-Flash-180B-REAP.md"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "id": "glm52-mxfp8-nvfp4-nf3-rtxpro6000-vllm-tp4",
+  "model_slug": "glm-5.2",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "slug": "mxfp8-nvfp4-nf3",
+    "format": "safetensors",
+    "precision": "MXFP8/NVFP4/NF3 hybrid"
+  },
+  "engine": {
+    "name": "vllm",
+    "version": "c382f1d28d5be2f867c216609408bdb424d6049a+b12x-e44cb77777a075790ebe9f7aa9f225d073aea109",
+    "graph_mode": "full-and-piecewise"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 4,
+    "configured_max_context_tokens": 262144,
+    "measured_max_context_tokens": 180007,
+    "configured_max_running_sequences": 8,
+    "measured_max_request_concurrency": null
+  },
+  "runtime": {
+    "kind": "docker-compose",
+    "launchable_by_cli": false,
+    "image": "madeby561/vllm-glm52-nvfp4-nf3-hybrid:v3@sha256:abc45785d6412ba2acf1edf59ccfa7d657ec60961c3d462f9af62a7158f38dea",
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "network_mode": "host",
+    "ipc": "host",
+    "shm_size": "32g",
+    "compose": {
+      "file": "compose.yml",
+      "env_file": "env.example",
+      "project_name": "glm52-hybrid-nf3-tp4"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HYBRID_KEPT": "b12x_nf3",
+      "HYBRID_NF3": "b12x_nf3",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1"
+    },
+    "mounts": [
+      {
+        "source": "${MODEL_DIR}",
+        "target": "/model",
+        "read_only": true
+      }
+    ],
+    "arguments": [
+      "--tensor-parallel-size",
+      "4",
+      "--decode-context-parallel-size",
+      "4",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "8",
+      "--max-num-batched-tokens",
+      "2048",
+      "--max-cudagraph-capture-size",
+      "64",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":5,\"moe_backend\":\"b12x\",\"draft_sample_method\":\"probabilistic\"}"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Immutable TP4/DCP4 deployment for the GLM-5.2 MXFP8/NVFP4/NF3 hybrid checkpoint. Recovered Pop evidence pins the image, checkpoint, vLLM, B12X, and FlashInfer and proves coherent long-context generation, but a current exact-config C1/C2/C4 sweep is still required before promotion.",
+  "source": {
+    "repository": "https://github.com/0xSero/glm52-hybrid-sm120-deploy",
+    "commit": "0549af8caa29636dc17588620ad2e7ff1d9bcc11",
+    "paths": [
+      "README.md",
+      "docker-compose.yml",
+      ".env.example",
+      "deploy.sh"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

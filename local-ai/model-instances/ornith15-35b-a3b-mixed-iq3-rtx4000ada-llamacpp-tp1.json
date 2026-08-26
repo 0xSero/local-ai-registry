@@ -1,0 +1,88 @@
+{
+  "id": "ornith15-35b-a3b-mixed-iq3-rtx4000ada-llamacpp-tp1",
+  "model_slug": "ornith-1.5-35b-a3b",
+  "hardware_slug": "rtx-4000-ada-20gb",
+  "hardware_config": {
+    "count": 1,
+    "interconnect": "PCIe; single GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "slug": "mixed-iq3",
+    "format": "GGUF",
+    "precision": "mixed IQ3_S/IQ3_XXS",
+    "size_gb": 15.51218912
+  },
+  "engine": {
+    "name": "llama-cpp",
+    "version": "b10481 (25ae3a9b331fffea50ff8d07a5cad34c33f1276f)",
+    "graph_mode": "not-applicable"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 131072,
+    "measured_max_context_tokens": null,
+    "configured_max_running_sequences": 1,
+    "measured_max_request_concurrency": null,
+    "measured_kv_cache_tokens": null
+  },
+  "runtime": {
+    "kind": "docker",
+    "launchable_by_cli": false,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "entrypoint": "/app/llama-server",
+    "accelerator_backend": "nvidia",
+    "container_port": 8080,
+    "host_port": 8080,
+    "ipc": "host",
+    "shm_size": "8g",
+    "environment": {},
+    "mounts": [
+      {
+        "source": "~/.cache/inference-index/models/ornith15-mixed-iq3",
+        "target": "/models",
+        "read_only": true
+      }
+    ],
+    "arguments": [
+      "--model",
+      "/models/Ornith-1.5-35B-A3B-AD-IQ3_S-IQ3_XXS.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--ctx-size",
+      "131072",
+      "--parallel",
+      "1",
+      "--n-gpu-layers",
+      "99",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--jinja"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp1",
+  "description": "Blocked GPU-resident screen for Ornith-1.5-35B-A3B mixed IQ3 on one RTX 4000 Ada. The exact 15,512,189,120-byte GGUF and llama.cpp image are pinned. The prior SGLang attempt never loaded this architecture, so it rejects only that runtime path; this llama.cpp path still needs correctness, exact-128K context, KV capacity, and speed acceptance. CLI launch remains disabled.",
+  "source": {
+    "repository": "https://github.com/0xSero/inference-index",
+    "commit": "67b045c5ccad44b2737e807c3bbd43b75031910c",
+    "paths": [
+      "campaigns/runpod-ornith15-35b-2026-08-24/planning/lower-bit-candidates.md",
+      "campaigns/runpod-single-gpu-2026-08-23/artifacts/rtx-4000-ada-20gb/rtx4000ada-fast/capacity-gates.json"
+    ],
+    "accepted_at": "2026-08-25"
+  }
+}

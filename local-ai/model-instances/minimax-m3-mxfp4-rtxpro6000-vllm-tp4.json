@@ -1,0 +1,96 @@
+{
+  "id": "minimax-m3-mxfp4-rtxpro6000-vllm-tp4",
+  "model_slug": "minimax-m3",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 4,
+    "interconnect": "PCIe 5.0 x16; host-mediated multi-GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "slug": "mxfp4",
+    "format": "compressed-tensors safetensors",
+    "precision": "MXFP4"
+  },
+  "engine": {
+    "name": "vllm",
+    "version": "source-built patched image; base commit unreported",
+    "graph_mode": "unknown"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 4,
+    "configured_max_context_tokens": 250000,
+    "measured_max_context_tokens": 250000,
+    "configured_max_running_sequences": 4,
+    "measured_max_request_concurrency": 4
+  },
+  "runtime": {
+    "kind": "docker-compose",
+    "launchable_by_cli": false,
+    "image": "minimax-m3-vllm:latest",
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "network_mode": "host",
+    "ipc": "host",
+    "shm_size": "16g",
+    "compose": {
+      "file": "compose.yml",
+      "env_file": "env.example",
+      "project_name": "minimax-m3-mxfp4-tp4"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+      "VLLM_MXFP4_USE_MARLIN": "1"
+    },
+    "mounts": [
+      {
+        "source": "${MODEL_DIR}",
+        "target": "/model",
+        "read_only": true
+      }
+    ],
+    "arguments": [
+      "--tensor-parallel-size",
+      "4",
+      "--max-model-len",
+      "250000",
+      "--gpu-memory-utilization",
+      "0.95",
+      "--block-size",
+      "128",
+      "--max-num-batched-tokens",
+      "8192",
+      "--max-num-seqs",
+      "4",
+      "--load-format",
+      "fastsafetensors",
+      "--linear-backend",
+      "marlin"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp4",
+  "description": "Pinned-source MiniMax-M3 MXFP4 TP4 candidate with the required sparse-attention, parser, and clamped-SwiGLU patches. The source reports 250K context and multi-request throughput, but its locally built image and model revision are not immutable, so CLI launch and promotion remain blocked.",
+  "source": {
+    "repository": "https://github.com/0xSero/minimax-m3-sm120",
+    "commit": "303701cd177e6adecd4999beb67f4797a24439db",
+    "paths": [
+      "README.md",
+      "Dockerfile",
+      "docker-compose.yml",
+      "scripts/serve.sh",
+      "patches/vllm/models/minimax_m3/nvidia/model.py",
+      "patches/vllm/model_executor/layers/quantization/compressed_tensors/compressed_tensors_moe/compressed_tensors_moe_w4a4_mxfp4.py"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

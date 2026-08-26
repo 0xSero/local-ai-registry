@@ -1,0 +1,74 @@
+{
+  "id": "lfm25-8b-a1b-native-rtxpro6000-vllm-tp1",
+  "model_slug": "lfm2.5-8b-a1b",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 1,
+    "interconnect": "PCIe 5.0 x16",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "safetensors",
+    "precision": "native",
+    "slug": "native"
+  },
+  "engine": {
+    "graph_mode": "unknown",
+    "name": "vllm",
+    "version": "controller-managed; captured 2026-08-23"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 128000,
+    "configured_max_running_sequences": 8,
+    "measured_kv_cache_tokens": null,
+    "measured_max_context_tokens": null,
+    "measured_max_request_concurrency": null,
+    "tensor_parallel": 1
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "lfm25-8b-a1b"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "lfm25-8b-a1b",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:251eba5cc7c12fed0b75da22a9240e582b1c9e39f6fbc064f86781b963bd814f",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/LFM2.5-8B-A1B",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": true,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp1",
+  "description": "Controller-backed candidate with recovered immutable model and image identities. No raw speed sweep or graph evidence was recovered, so it remains blocked from recommendation pending fresh acceptance.",
+  "source": {
+    "accepted_at": "2026-08-24",
+    "commit": "bad6aa3645ec53b1e93f8d6cff9a8882fdf1c201",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json",
+      "sources/tailscale/2026-08-24/pop-controller/PIN-RECOVERY.md"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  }
+}

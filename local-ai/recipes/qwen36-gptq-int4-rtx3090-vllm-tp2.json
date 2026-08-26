@@ -1,0 +1,102 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "qwen36-gptq-int4-rtx3090-vllm-tp2",
+  "status": "validated",
+  "profile": "tp2",
+  "description": "Qwen3.6-35B-A3B GPTQ INT4 on two RTX 3090s",
+  "model": {
+    "slug": "qwen3.6-35b-a3b",
+    "name": "Qwen3.6-35B-A3B",
+    "source": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+    "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+    "served_name": "Qwen3.6-35B"
+  },
+  "weights": {
+    "slug": "gptq-int4",
+    "format": "GPTQ",
+    "precision": "INT4 W4A16",
+    "size_gb": 20
+  },
+  "hardware": {
+    "slug": "rtx-3090-24gb",
+    "accelerator": "NVIDIA GeForce RTX 3090 24GB",
+    "count": 2,
+    "memory_gb_each": 24,
+    "interconnect": "PCIe",
+    "power_limit_w_each": 175
+  },
+  "engine": {
+    "name": "vllm",
+    "version": "0.27.1",
+    "graph_mode": "full-and-piecewise"
+  },
+  "runtime": {
+    "kind": "docker",
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "container_port": 8000,
+    "host_port": 12434,
+    "ipc": "host",
+    "shm_size": "32g",
+    "environment": {
+      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+    },
+    "mounts": [
+      {
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface",
+        "read_only": false
+      },
+      {
+        "source": "~/.cache/inference-index/vllm",
+        "target": "/root/.cache/vllm",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "--model",
+      "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+      "--revision",
+      "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+      "--served-model-name",
+      "Qwen3.6-35B",
+      "--tensor-parallel-size",
+      "2",
+      "--max-model-len",
+      "131072",
+      "--max-num-seqs",
+      "8",
+      "--kv-cache-dtype",
+      "fp8",
+      "--gpu-memory-utilization",
+      "0.97",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 2,
+    "configured_max_context_tokens": 131072,
+    "measured_max_context_tokens": null,
+    "configured_max_running_sequences": 8,
+    "measured_max_request_concurrency": 4
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/omarchy-local-ai",
+    "commit": "0f86cbe7098c259da6588af565076b11c9aba01e",
+    "paths": [
+      "share/registry.json",
+      "docs/acceptance-3090.md"
+    ],
+    "accepted_at": "2026-08-23"
+  }
+}

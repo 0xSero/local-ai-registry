@@ -1,0 +1,107 @@
+{
+  "id": "ornith15-35b-a3b-bf16-mi300x-sglang-tp1",
+  "model_slug": "ornith-1.5-35b-a3b",
+  "hardware_slug": "mi300x-192gb",
+  "hardware_config": {
+    "count": 1,
+    "interconnect": "OAM; single GPU",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "slug": "bf16",
+    "format": "safetensors",
+    "precision": "BF16",
+    "size_gb": 65.5
+  },
+  "engine": {
+    "name": "sglang",
+    "version": "0.5.18.dev20260823+gdd15fb57b5",
+    "graph_mode": "full"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 262144,
+    "measured_max_context_tokens": 131072,
+    "configured_max_running_sequences": 4,
+    "measured_max_request_concurrency": 4,
+    "measured_kv_cache_tokens": 2226502
+  },
+  "runtime": {
+    "kind": "docker",
+    "image": "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi30x-20260823@sha256:8805fe3744f9b549b4e329b37134bce6ce4afd7ec749ea1249507bcbcea10096",
+    "entrypoint": "/opt/venv/bin/python",
+    "accelerator_backend": "amd-rocm",
+    "container_port": 30000,
+    "host_port": 30000,
+    "ipc": "host",
+    "shm_size": "16g",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "mounts": [
+      {
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "ornith-ai/Ornith-1.5-35B-A3B",
+      "--revision",
+      "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+      "--served-model-name",
+      "ornith-1.5-35b-a3b",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "262144",
+      "--mem-fraction-static",
+      "0.90",
+      "--max-running-requests",
+      "4",
+      "--attention-backend",
+      "aiter",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--mamba-radix-cache-strategy",
+      "extra_buffer",
+      "--chunked-prefill-size",
+      "2048",
+      "--max-prefill-tokens",
+      "16384",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "status": "validated",
+  "profile": "tp1",
+  "description": "Ornith-1.5-35B-A3B BF16 on one AMD Instinct MI300X with exact 128K C1/C2/C4 acceptance",
+  "source": {
+    "repository": "https://github.com/0xSero/inference-index",
+    "commit": "6f88276ddaab93b01cb2b5ca98845a06f87f6c58",
+    "paths": [
+      "campaigns/runpod-ornith15-35b-2026-08-24/protocol.md",
+      "campaigns/runpod-ornith15-35b-2026-08-24/results.csv",
+      "campaigns/runpod-ornith15-35b-2026-08-24/artifacts/mi300x-192gb/ornith15-v2-mi300x"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

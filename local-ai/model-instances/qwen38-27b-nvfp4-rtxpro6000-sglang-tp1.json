@@ -1,0 +1,100 @@
+{
+  "id": "qwen38-27b-nvfp4-rtxpro6000-sglang-tp1",
+  "model_slug": "qwen3.8-27b",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 1,
+    "interconnect": "PCIe; single GPU",
+    "power_limit_w_each": 600
+  },
+  "weights": {
+    "slug": "nvfp4",
+    "format": "ModelOpt",
+    "precision": "NVFP4"
+  },
+  "engine": {
+    "name": "sglang",
+    "version": "0.0.0.dev1+geec794bce",
+    "graph_mode": "full-and-piecewise"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 131072,
+    "measured_max_context_tokens": 131072,
+    "configured_max_running_sequences": 4,
+    "measured_max_request_concurrency": 4,
+    "measured_kv_cache_tokens": 1068811
+  },
+  "runtime": {
+    "kind": "docker",
+    "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+    "entrypoint": "/opt/sglang/bin/python",
+    "accelerator_backend": "nvidia",
+    "container_port": 30000,
+    "host_port": 30000,
+    "ipc": "host",
+    "shm_size": "16g",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "mounts": [
+      {
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "RadixArk/Qwen3.8-27B-NVFP4",
+      "--revision",
+      "319f741cce68d7914884900c138a1fbb70a42f30",
+      "--tp",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.87",
+      "--attention-backend",
+      "flashinfer",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder"
+    ]
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "status": "validated",
+  "profile": "tp1",
+  "description": "Qwen3.8-27B NVFP4 on one RTX PRO 6000 Blackwell Server Edition with FP8 E4M3 KV, exact 128K context, and four concurrent requests",
+  "source": {
+    "repository": "https://github.com/0xSero/inference-index",
+    "commit": "9bc508601af50ddc1ff463273966fcf83bcf5b1e",
+    "paths": [
+      "campaigns/runpod-single-gpu-2026-08-23/protocol.md",
+      "campaigns/runpod-single-gpu-2026-08-23/results.csv",
+      "campaigns/runpod-single-gpu-2026-08-23/artifacts/rtx-pro-6000-blackwell-96gb-attempt2/rtxpro6000-smart"
+    ],
+    "accepted_at": "2026-08-24"
+  }
+}

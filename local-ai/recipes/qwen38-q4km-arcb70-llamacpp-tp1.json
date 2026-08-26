@@ -1,0 +1,114 @@
+{
+  "schema_version": "inference-index/v1",
+  "id": "qwen38-q4km-arcb70-llamacpp-tp1",
+  "status": "validated",
+  "profile": "tp1",
+  "description": "Qwen3.8-27B Q4_K_M on one Intel Arc Pro B70 using the digest-pinned llama.cpp SYCL image, one 131K slot, and fresh 8K completion acceptance without speculative decoding",
+  "model": {
+    "slug": "qwen3.8-27b",
+    "name": "Qwen3.8-27B",
+    "source": "ggml-org/Qwen3.8-27B-GGUF",
+    "revision": "0669b98607d47046c7c2b3f801011d54a08cfccf",
+    "served_name": "/models/Qwen3.8-27B-Q4_K_M.gguf"
+  },
+  "weights": {
+    "slug": "q4-k-m",
+    "format": "GGUF",
+    "precision": "Q4_K_M",
+    "size_gb": 19
+  },
+  "hardware": {
+    "slug": "intel-arc-pro-b70-32gb",
+    "accelerator": "Intel Arc Pro B70 32GB",
+    "count": 1,
+    "memory_gb_each": 32,
+    "interconnect": "PCIe"
+  },
+  "engine": {
+    "name": "llama-cpp",
+    "version": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126+b70-patches",
+    "graph_mode": "not-applicable"
+  },
+  "runtime": {
+    "kind": "docker",
+    "launchable_by_cli": true,
+    "image": "ghcr.io/0xsero/qwen38-b70@sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
+    "accelerator_backend": "intel-xpu",
+    "container_port": 8010,
+    "host_port": 8010,
+    "network_mode": "bridge",
+    "ipc": "host",
+    "shm_size": "8g",
+    "devices": [
+      "/dev/dri"
+    ],
+    "environment": {
+      "BATCH": "8192",
+      "CTX_SIZE_OVERRIDE": "131072",
+      "ENABLE_MTP": "0",
+      "ENABLE_VISION": "0",
+      "GPU_COUNT": "1",
+      "MODELS_DIR": "/models",
+      "PARALLEL": "1",
+      "THREADS": "16",
+      "UBATCH": "8192"
+    },
+    "mounts": [
+      {
+        "source": "/dev/dri/by-path",
+        "target": "/dev/dri/by-path",
+        "read_only": true
+      },
+      {
+        "source": "~/.cache/inference-index/models/qwen38-b70",
+        "target": "/models",
+        "read_only": false
+      }
+    ],
+    "arguments": [
+      "--device",
+      "SYCL0",
+      "--gpu-layers",
+      "99",
+      "--flash-attn",
+      "on",
+      "--batch-size",
+      "8192",
+      "--ubatch-size",
+      "8192",
+      "--cache-type-k",
+      "f16",
+      "--cache-type-v",
+      "f16",
+      "--ctx-size",
+      "131072",
+      "--parallel",
+      "1"
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "configured_max_context_tokens": 131072,
+    "measured_max_context_tokens": 8024,
+    "configured_max_running_sequences": 1,
+    "measured_max_request_concurrency": 1
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "source": {
+    "repository": "https://github.com/0xSero/qwen38-b70",
+    "commit": "e8738535c8914a4fe6a54235754e27eeb8078601",
+    "paths": [
+      "Dockerfile",
+      "entrypoint.sh",
+      "docker-compose.yml",
+      "README.md"
+    ],
+    "accepted_at": "2026-08-25"
+  }
+}

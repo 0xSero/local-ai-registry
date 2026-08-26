@@ -1,0 +1,73 @@
+{
+  "id": "qwen36-27b-autoround-int8-rtxpro6000-vllm-tp1",
+  "model_slug": "qwen3.6-27b",
+  "hardware_slug": "rtx-pro-6000-blackwell-96gb",
+  "hardware_config": {
+    "count": 1,
+    "interconnect": "PCIe 5.0 x16",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "AutoRound",
+    "precision": "INT8",
+    "slug": "autoround-int8"
+  },
+  "engine": {
+    "graph_mode": "unknown",
+    "name": "vllm",
+    "version": "controller-managed; captured 2026-08-23"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 262144,
+    "configured_max_running_sequences": 1,
+    "measured_kv_cache_tokens": null,
+    "measured_max_context_tokens": null,
+    "measured_max_request_concurrency": null,
+    "tensor_parallel": 1
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--controller-recipe-id",
+      "qwen36-27b-int8-autoround"
+    ],
+    "container_port": 8000,
+    "controller": {
+      "database": "current",
+      "recipe_id": "qwen36-27b-int8-autoround",
+      "snapshot": "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    },
+    "environment": {},
+    "host_port": 8000,
+    "image": "controller-managed:vllm",
+    "ipc": "host",
+    "kind": "controller",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/Qwen3.6-27B-INT8-AutoRound",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "status": "candidate",
+  "profile": "tp1",
+  "description": "Controller-backed candidate captured read-only from Pop!_OS. Saved Pop controller config; candidate pending inference-index acceptance.",
+  "source": {
+    "accepted_at": "2026-08-23",
+    "commit": "8d173c60eb8ac45007aede00893614c20f05c331",
+    "paths": [
+      "sources/tailscale/2026-08-23/pop-controller/controller-snapshot.json"
+    ],
+    "repository": "https://github.com/0xSero/inference-index"
+  }
+}
