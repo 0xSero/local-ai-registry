@@ -215,6 +215,7 @@
       "0xsero-glm-5-2-nvfp4-reap-469b--nvfp4-reap",
       "0xsero-glm-5-2-reap-nu176-526b--nvfp4-non-uniform-reap",
       "0xsero-glm-5-2-tr3-vision--3-0-bpw-text-bf16-vision",
+      "0xsero-glm-5-3-flash-exl3-q4--exl3-q4",
       "0xsero-kimi-k2-6-519b-nvfp4--nvfp4",
       "0xsero-qwen3-5-122b-a10b-reap-20--awq-w4a16-sym-64x1024-grid8",
       "aeon-7-qwen3-6-27b-aeon-ultimate-uncensored-nvfp4--nvfp4",
@@ -741,6 +742,7 @@
       "glm52-nvfp4-aqlm-dgxspark-vllm-tp3",
       "glm52-nvfp4-reap-469b-rtxpro6000-vllm-tp4",
       "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4",
+      "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
       "glm53-flash-nvfp4-dgxspark-sglang-tp2",
       "glm53-flash-nvfp4-dgxspark-sglang-tp4",
       "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
@@ -1780,6 +1782,7 @@
       "glm52-nvfp4-aqlm-dgxspark-vllm-tp3-sweep",
       "glm52-nvfp4-reap-469b-rtxpro6000-vllm-tp4-sweep",
       "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4-sweep",
+      "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
       "glm53-flash-nvfp4-dgxspark-sglang-tp2-sweep",
       "glm53-flash-nvfp4-dgxspark-sglang-tp4-sweep",
       "glm53-flash-nvfp4-rtxpro6000-sglang-tp4-sweep",
@@ -3303,10 +3306,10 @@
   "counts": {
     "hardware": 100,
     "model": 103,
-    "model_instance": 372,
+    "model_instance": 373,
     "price": 84,
-    "recipe": 1041,
-    "speed_sweeps": 1587
+    "recipe": 1042,
+    "speed_sweeps": 1588
   },
   "recipes": [
     {
@@ -4547,6 +4550,23 @@
       "id": "glm52-nvfp4-reap-nu176-rtxpro6000-vllm-tp4",
       "launch_kind": "docker-compose",
       "model_instance_id": "0xsero-glm-5-2-reap-nu176-526b--nvfp4-non-uniform-reap",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": true
+      },
+      "engine": "sglang",
+      "hardware_count": 4,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
+      "launch_kind": "docker",
+      "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--exl3-q4",
       "recipe_source": "0xsero",
       "status": "candidate"
     },
