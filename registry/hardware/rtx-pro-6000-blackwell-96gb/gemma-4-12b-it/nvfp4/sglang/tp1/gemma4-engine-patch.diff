@@ -1,0 +1,39 @@
+--- /tmp/gemma4_unified.py.orig	2026-08-23 20:25:26.703455135 +0000
++++ python/sglang/srt/models/gemma4_unified.py	2026-08-23 20:35:46.352246434 +0000
+@@ -70,7 +70,12 @@
+
+     def __init__(self, config):
+         super().__init__()
+-        patch_dim = config.model_patch_size**2 * 3  # 48*48*3 = 6912
++        model_patch_size = getattr(config, "model_patch_size", None)
++        if model_patch_size is None:
++            # NVFP4 republished configs carry patch_size*pooling_kernel_size
++            # (16*3=48) instead of the flattened model_patch_size field.
++            model_patch_size = config.patch_size * getattr(config, "pooling_kernel_size", 1)
++        patch_dim = model_patch_size**2 * 3  # 48*48*3 = 6912
+         mm_embed_dim = config.mm_embed_dim
+
+         self.patch_ln1 = nn.LayerNorm(patch_dim)
+@@ -110,7 +115,11 @@
+
+     def __init__(self, multimodal_config, text_config):
+         super().__init__()
+-        self.multimodal_hidden_size = multimodal_config.output_proj_dims
++        self.multimodal_hidden_size = getattr(
++            multimodal_config,
++            "audio_embed_dim",
++            multimodal_config.output_proj_dims,
++        )
+         self.text_hidden_size = text_config.hidden_size
+         self.embedding_pre_projection_norm = Gemma4RMSNorm(
+             self.multimodal_hidden_size,
+@@ -190,7 +199,8 @@
+         )
+
+         text_tie = getattr(text_config, "tie_word_embeddings", True)
+-        if self.pp_group.world_size == 1 and text_tie:
++        self.lm_head_is_tied = self.pp_group.world_size == 1 and text_tie
++        if self.lm_head_is_tied:
+             self.lm_head = self.language_model.embed_tokens
+         elif self.pp_group.is_last_rank:
+             self.lm_head = ParallelLMHead(
