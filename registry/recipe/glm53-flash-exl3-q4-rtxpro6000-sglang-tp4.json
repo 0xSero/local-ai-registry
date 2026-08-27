@@ -5,9 +5,9 @@
     "tools": null,
     "vision": null
   },
-  "description": "Runtime-tested selective EXL3 Q4 deployment on four RTX PRO 6000 Blackwell GPUs. Routed experts in layers 3-44 use 4.0 bpw EXL3; the backbone remains BF16. The accepted TP4/EP1 path keeps full CUDA graphs and FP8 E4M3 KV. Tool and vision execution remain unvalidated, and the locally built runtime image is not yet published by digest, so this remains a candidate.",
+  "description": "Runtime-tested selective EXL3 Q4 deployment on four RTX PRO 6000 Blackwell GPUs. Routed experts in layers 3-44 use 4.0 bpw EXL3; the backbone remains BF16. The accepted TP4/EP1 path keeps full CUDA graphs and FP8 E4M3 KV. A sustained C256, ISL 131, OSL 1024 screen delivered 102,609.85 output tokens/minute. Tool and vision execution remain unvalidated, and the locally built runtime image is not yet published by digest, so this remains a candidate.",
   "engine": {
-    "graph_mode": "full decode and prefill capture at batch size 1",
+    "graph_mode": "full decode capture planned to 256 concurrent requests (runtime-captured graph buckets through batch 62) and full prefill capture at batch size 1",
     "name": "sglang",
     "version": "0.0.0.dev1+gf609d677b with Sparkinfer 1.0.1 selective-EXL3 overlay"
   },
@@ -46,7 +46,7 @@
       "--max-prefill-tokens",
       "256",
       "--max-running-requests",
-      "1",
+      "256",
       "--mem-fraction-static",
       "0.80",
       "--cuda-graph-backend-decode",
@@ -54,7 +54,7 @@
       "--cuda-graph-backend-prefill",
       "full",
       "--cuda-graph-max-bs-decode",
-      "1",
+      "256",
       "--cuda-graph-max-bs-prefill",
       "1",
       "--reasoning-parser",
@@ -115,15 +115,20 @@
       "vision": null
     },
     "benchmark": {
-      "accepted_single_stream_output_tok_s": 73.4979,
-      "matched_ep4_candidate_output_tok_s": 68.4659,
+      "accepted_single_stream_output_tok_s": 73.6191,
+      "cold_1024_token_prefill_tok_s": 827.7402,
+      "max_sustained_output_tok_s": 1710.1642,
+      "max_sustained_output_tokens_per_minute": 102609.852,
+      "max_sustained_total_api_tokens_per_minute": 115736.6983,
+      "max_sustained_profile": "C256, measured ISL 131, requested OSL 1024, warmed shared prefix",
+      "matched_ep4_candidate_output_tok_s": 563.981,
       "mtp5_candidate_output_tok_s": 64.8608
     },
     "checkpoint_layout": "glm53-selective-exl3-tp4-v1",
     "controller_recipe_id": "glm-5.3-flash-exl3-q4",
     "quality_note": "Artifact KLD is held-out BF16-versus-Q4 evaluation. A new full-server aligned-logit KLD run has not been published.",
     "runtime_state": "runtime-tested",
-    "selection": "TP4/EP1 accepted; virtual-slice EP4 and MTP5 candidates rejected for matched decode regressions"
+    "selection": "TP4/EP1 accepted; sustained C256 is the max-output-TPM profile; C32/C64 remain the lower-latency profiles; virtual-slice EP4, MTP5, shared-expert fusion, single-batch overlap, and incomplete GLM-5 Next TBO candidates were rejected"
   },
   "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--selective-exl3-q4",
   "provenance": {
@@ -146,7 +151,7 @@
   "serving": {
     "expert_parallel": 1,
     "kv_cache_dtype": "fp8_e4m3",
-    "max_concurrency": 1,
+    "max_concurrency": 256,
     "max_context_tokens": 262144,
     "tensor_parallel": 4
   },
