@@ -17,6 +17,8 @@ The publication stays outside this repository because it is a private source sna
 
 The public Convex deployment was cross-checked on 2026-08-27. Its active publication is still `pg-20260721-ui-refresh`, with 312 model rows, 1,216 speed runs, and a latest speed point from 2026-07-21. It is a valid published subset but is older than the repeatable-read Postgres snapshot, so it was not used as the refresh authority.
 
+The live public site was independently checked in Brave on 2026-08-27 through the canonical [models](https://local.ai/models) and [hardware](https://local.ai/hardware) routes. Its server-rendered catalog was generated on 2026-08-27 and contained 61 model families, 195 variants, and 12 measured hardware configurations. The live hardware catalog resolves legacy source key `m4_pro_64_20c` to a 48GB M4 Pro and `m3_ultra_512_80c` to a 96GB M3 Ultra with an 80-core GPU. The importer therefore maps the M4 key to the canonical 48GB record and separates the 60-core and 80-core M3 Ultra measurements into exact 96GB hardware records while preserving the original keys in recipe metadata.
+
 ## Recovered OMP normalization
 
 An earlier OMP session had already normalized the local publication and selected LocalMaxxing results, but the generated tree was never committed to the standalone registry. That recovered build contributed 68 models, 202 model instances, 240 recipes, and 224 speed sweeps.
