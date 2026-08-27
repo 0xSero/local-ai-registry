@@ -3,36 +3,28 @@
 import { useRef, useTransition, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
 
+export type SearchFilter = {
+  label: string
+  name: string
+  options: Array<{ label: string; value: string }>
+  value: string
+}
+
 type RegistrySearchProps = {
-  engines: Array<string | number>
-  evidence: string
-  memory: string
+  filters: SearchFilter[]
   query: string
-  recipeFilters: boolean
-  selectedEngine: string
   topic: string
-  validation: string
-  vramOptions: Array<string | number>
 }
 
 const SEARCH_LABELS: Record<string, string> = {
   hardware: "Search hardware",
   models: "Search models",
+  prices: "Search price observations",
   recipes: "Find a model or machine",
   "speed-sweeps": "Search measured speed sweeps",
 }
 
-export function RegistrySearch({
-  engines,
-  evidence,
-  memory,
-  query,
-  recipeFilters,
-  selectedEngine,
-  topic,
-  validation,
-  vramOptions,
-}: RegistrySearchProps) {
+export function RegistrySearch({ filters, query, topic }: RegistrySearchProps) {
   const formRef = useRef<HTMLFormElement>(null)
   const debounceRef = useRef<NodeJS.Timeout | undefined>(undefined)
   const router = useRouter()
@@ -82,47 +74,25 @@ export function RegistrySearch({
         </svg>
         <input
           autoComplete="off"
+          key={`${searchTopic}:${query}`}
           defaultValue={query}
           name="q"
           onInput={searchSoon}
           placeholder={searchLabel}
           type="search"
         />
-        <kbd>⌘ K</kbd>
       </label>
 
-      {recipeFilters && (
-        <div className="compact-filters" aria-label="Recipe filters">
-          <label>
-            <span>Status</span>
-            <select defaultValue={validation} name="validation" onChange={apply}>
-              <option value="">All statuses</option>
-              <option value="validated">Validated · launch-safe</option>
-              <option value="candidate">Candidate or reference</option>
-            </select>
-          </label>
-          <label>
-            <span>Engine</span>
-            <select defaultValue={selectedEngine} name="engine" onChange={apply}>
-              <option value="">Any engine</option>
-              {engines.map((engine) => <option key={engine} value={engine}>{engine}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Memory</span>
-            <select defaultValue={memory} name="min_vram_gb" onChange={apply}>
-              <option value="">Any memory</option>
-              {vramOptions.map((amount) => <option key={amount} value={amount}>At least {amount} GB</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Evidence</span>
-            <select defaultValue={evidence} name="evidence" onChange={apply}>
-              <option value="">Any evidence</option>
-              <option value="true">Measured speed attached</option>
-              <option value="false">No measured speed</option>
-            </select>
-          </label>
+      {filters.length > 0 && (
+        <div className="compact-filters" aria-label={`${searchTopic} filters`}>
+          {filters.map((filter) => (
+            <label key={filter.name}>
+              <span>{filter.label}</span>
+              <select name={filter.name} onChange={apply} value={filter.value}>
+                {filter.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+              </select>
+            </label>
+          ))}
         </div>
       )}
       <noscript><button type="submit">Search</button></noscript>
