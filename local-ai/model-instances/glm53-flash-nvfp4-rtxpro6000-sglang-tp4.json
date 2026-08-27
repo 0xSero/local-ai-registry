@@ -21,7 +21,7 @@
     "api": "openai/v1",
     "configured_max_context_tokens": 1048576,
     "configured_max_running_sequences": 8,
-    "measured_kv_cache_tokens": 4087680,
+    "measured_kv_cache_tokens": 3789184,
     "measured_max_context_tokens": 1048576,
     "measured_max_request_concurrency": 1,
     "tensor_parallel": 4
@@ -147,6 +147,16 @@
       "date": "2026-08-26T23:50Z",
       "event": "decode_tuning_sweep",
       "detail": "MTP geometry A/B on identical probes: draft=4 worse (138 solo / ~63 per-stream at 8-way vs 142/72 at draft=6); steps=6/draft=7 rejected by engine (NEXTN head depth cap). Kept 5/6. Accept rate improved 0.39-0.49 -> 0.60-0.68 (accept len 2.8-3.0). Sustained uncapped single-stream: 158-182 tok/s (16.3k-token deep probe at 158.6; earlier shorter prose peaked 207.6). Aggregate 8-way ~550 tok/s. NVFP4 KV cache explored: NOT available - kv-cache-dtype choices are auto/fp8_e5m2/fp8_e4m3/bf16 and dsa_backend hard-asserts fp8_e4m3."
+    },
+    {
+      "date": "2026-08-27T12:10Z",
+      "event": "kv_headroom_oom_postmortem",
+      "detail": "mem-fraction-static 0.93 caused recurring engine deaths under sustained 8-way long-reasoning load: KDA Triton kernels (chunk_kda_fwd_kernel_intra_sub_chunk / _inter_solve_fused) lazy-load AFTER serving start with only ~0.20 GiB free, then torch.OutOfMemoryError (256 MiB alloc, 211 MiB free) kills the scheduler ~every 17 min. Reverted to validated 0.90 (KV 3,789,184 tokens/rank); engine stable since. The 4.09M-token figure from the earlier trace is superseded - do not raise mem-fraction-static above 0.90 on this model+image unless KDA kernels are pre-warmed.",
+      "metrics": {
+        "crash_period_min": 17,
+        "oom_alloc_mib": 256,
+        "free_at_oom_mib": 212
+      }
     }
   ],
   "source": {
