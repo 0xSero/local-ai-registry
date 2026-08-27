@@ -3,7 +3,7 @@
   "id": "glm53-flash-nvfp4-dgxspark-sglang-tp2",
   "status": "validated",
   "profile": "tp2-ep2",
-  "description": "Validated SGLang GLM-5.3-Flash NVFP4 on two DGX Spark GB10 nodes with TP2/EP2, 131,072-token context, two concurrent requests, 992,128 FP8 KV tokens per rank, NEXTN/MTP5, full decode graphs at batch sizes 1-2, tools, image, and video evidence.",
+  "description": "Validated SGLang GLM-5.3-Flash NVFP4 on two DGX Spark GB10 nodes with TP2/EP2, 262,144-token context, pinned NEXTN 5/6 (adaptive off), online FP8 dense linears, full decode graphs, thinking on. Fastest measured C1 essay 38 tok/s.",
   "engine": {
     "graph_mode": "full target-verify and draft capture bs1-2; KDA hybrid attention automatically leaves prefill capture unavailable",
     "name": "sglang",
@@ -33,7 +33,7 @@
       "--nnodes", "2",
       "--node-rank", "${NODE_RANK}",
       "--dist-init-addr", "${HEAD_FABRIC_ADDRESS}:27000",
-      "--context-length", "131072",
+      "--context-length", "262144",
       "--quantization", "modelopt_fp4",
       "--attention-backend", "dsa",
       "--dsa-prefill-backend", "flashinfer_sparse_mla",
@@ -51,7 +51,6 @@
       "--speculative-num-steps", "5",
       "--speculative-eagle-topk", "1",
       "--speculative-num-draft-tokens", "6",
-      "--speculative-adaptive",
       "--media-url-max-file-size-mb", "1024",
       "--enable-multimodal",
       "--chat-template", "/opt/glm53/chat-template-mm.jinja",
@@ -67,6 +66,8 @@
       "NCCL_IB_HCA": "rocep1s0f1,roceP2p1s0f1",
       "NCCL_NET": "IB",
       "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
+      "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LM_HEAD": "0",
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },
     "host_port": 8000,
@@ -83,10 +84,10 @@
   },
   "serving": {
     "api": "openai/v1",
-    "configured_max_context_tokens": 131072,
+    "configured_max_context_tokens": 262144,
     "configured_max_running_sequences": 2,
-    "measured_kv_cache_tokens": 992128,
-    "measured_max_context_tokens": 131072,
+    "measured_kv_cache_tokens": 1352000,
+    "measured_max_context_tokens": 262144,
     "tensor_parallel": 2
   },
   "weights": {
