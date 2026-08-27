@@ -192,9 +192,12 @@ export default async function Home({ searchParams }: PageProps) {
   const results = queryCompatibility(filters, { limit, offset })
   const facets = getFacets()
   const displayResults = [...results.data].sort((a, b) => Number(b.launchable) - Number(a.launchable))
-  const selectedId = displayResults.some((result) => result.id === value("recipe"))
-    ? value("recipe")
-    : displayResults[0]?.id
+  const requestedRecipe = value("recipe")
+  const selectedId = requestedRecipe === "none"
+    ? undefined
+    : displayResults.some((result) => result.id === requestedRecipe)
+      ? requestedRecipe
+      : requestedRecipe ? undefined : displayResults[0]?.id
   const evidenceByRecipe = new Map(displayResults.map((result) => [result.id, evidenceRows(result)]))
 
   const searchState = new URLSearchParams()
@@ -202,6 +205,10 @@ export default async function Home({ searchParams }: PageProps) {
     const selected = value(key)
     if (selected) searchState.set(key, selected)
   }
+  const selectionState = new URLSearchParams(searchState)
+  if (offset > 0) selectionState.set("offset", String(offset))
+  const collapsedState = new URLSearchParams(selectionState)
+  collapsedState.set("recipe", "none")
   const previousParams = new URLSearchParams(searchState)
   previousParams.set("offset", String(Math.max(0, offset - limit)))
   const nextParams = new URLSearchParams(searchState)
@@ -273,7 +280,7 @@ export default async function Home({ searchParams }: PageProps) {
                       <small>{recipe.engine.version ?? recipe.launch.kind}</small>
                     </div>
                     <div className={`memory-cell ${result.launchable ? "validated" : "candidate"}`}>
-                      <div className="memory-bar" aria-hidden="true"><span style={memoryPercent === null ? undefined : { width: `${memoryPercent}%` }} /></div>
+                      <div className="memory-bar" aria-hidden="true">{memoryPercent === null ? null : <span style={{ width: `${memoryPercent}%` }} />}</div>
                       <small>{typeof weightSize === "number" ? `${weightSize.toLocaleString()} GB weights / ${capacity.toLocaleString()} GB` : `${capacity.toLocaleString()} GB capacity · weight size unknown`}</small>
                     </div>
                     <div className="context-cell">
@@ -288,7 +295,7 @@ export default async function Home({ searchParams }: PageProps) {
                       aria-expanded={selected}
                       aria-label={`${selected ? "Collapse" : "Show"} recipe details for ${model.name} on ${hardware.name}`}
                       className="row-toggle"
-                      href={selected ? `/?${searchState.toString()}` : recipeHref(searchState, result.id)}
+                      href={selected ? `/?${collapsedState.toString()}` : recipeHref(selectionState, result.id)}
                       scroll={false}
                     >
                       <svg aria-hidden="true" viewBox="0 0 20 20"><path d={selected ? "m4 12 6-6 6 6" : "m7 4 6 6-6 6"} /></svg>
