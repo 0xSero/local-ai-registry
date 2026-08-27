@@ -6,6 +6,8 @@ export type FactState = "known" | "unknown" | "unavailable" | "not_applicable"
 export type ContainerState = "digest-pinned" | "mutable" | "indirect" | "none"
 export type ComputePrecision = "fp32" | "tf32" | "fp16" | "bf16" | "fp8" | "fp4" | "int8" | "int4"
 export type ComputeSparsity = "dense" | "structured_2_4" | "unstructured" | "unknown"
+export type BenchmarkRunnerStatus = "available" | "manual"
+export type BenchmarkScoreOrigin = "direct" | "inherited"
 
 export interface Source {
   kind?: string
@@ -240,6 +242,72 @@ export interface PriceRecord {
     snapshot_generated_at: string
     source_error_count: number
   }
+}
+
+export interface Benchmark {
+  schema_version: "local-ai-registry/v1"
+  id: RegistryId
+  name: string
+  category: string
+  description: string
+  link: string
+  aliases: string[]
+  command: string
+  runner: {
+    status: BenchmarkRunnerStatus
+    framework: string
+    task: string | null
+    implementation_url: string
+    command_template: string | null
+  }
+  metric: {
+    name: string
+    unit: string
+    higher_is_better: boolean | null
+  }
+  coverage: {
+    model_count: number
+    model_instance_count: number
+    benchmark_run_count: number
+    direct_run_count: number
+    inherited_run_count: number
+  }
+  provenance: Provenance
+}
+
+export interface BenchmarkRun {
+  schema_version: "local-ai-registry/v1"
+  id: RegistryId
+  benchmark_id: RegistryId
+  model_id: RegistryId
+  model_instance_id: RegistryId
+  score: {
+    value: number
+    metric: string
+    unit: string
+    higher_is_better: boolean | null
+  }
+  score_origin: BenchmarkScoreOrigin
+  inherited_from: {
+    model_id: RegistryId
+    source_model_repository: string
+    source_model_instance_id: RegistryId | null
+    benchmark_run_id: RegistryId | null
+  } | null
+  protocol: {
+    name: string
+    version: string | null
+    split: string | null
+    shots: number | null
+    details: string | null
+  }
+  source: {
+    kind: "model-card" | "research-paper" | "leaderboard"
+    url: string
+    reported_model: string
+    captured_at: string
+  }
+  provenance: Provenance
 }
 
 export interface RegistryIndex {

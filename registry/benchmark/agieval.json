@@ -1,0 +1,48 @@
+{
+  "aliases": [
+    "AGIEval",
+    "agieval"
+  ],
+  "category": "reasoning",
+  "command": "local-ai benchmark run agieval --model-instance <model-instance-id>",
+  "coverage": {
+    "benchmark_run_count": 12,
+    "direct_run_count": 1,
+    "inherited_run_count": 11,
+    "model_count": 2,
+    "model_instance_count": 12
+  },
+  "description": "AGIEval is tracked as a reasoning evaluation reported by registered model sources.",
+  "id": "agieval",
+  "link": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/agieval.html",
+  "metric": {
+    "higher_is_better": true,
+    "name": "reported_score",
+    "unit": "points"
+  },
+  "name": "AGIEval",
+  "provenance": {
+    "captured_at": "2026-08-27T21:11:10Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "commit": "056ca18b649468d9721d080bd80049cdbecec542",
+        "kind": "benchmark-catalog",
+        "url": "https://github.com/0xSero/hf-model-benchmarks"
+      },
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "kind": "benchmark-page",
+        "url": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/agieval.html"
+      }
+    ]
+  },
+  "runner": {
+    "command_template": "lm-eval run --model local-chat-completions --model_args model={served_model},base_url={base_url},num_concurrent=1,max_retries=3 --tasks agieval --apply_chat_template --output_path ./benchmark-results/agieval",
+    "framework": "lm-evaluation-harness",
+    "implementation_url": "https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks",
+    "status": "available",
+    "task": "agieval"
+  },
+  "schema_version": "local-ai-registry/v1"
+}

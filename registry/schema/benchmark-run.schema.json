@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local-ai-registry.dev/schema/benchmark-run.schema.json",
+  "title": "Benchmark run",
+  "type": "object",
+  "required": ["schema_version", "id", "benchmark_id", "model_id", "model_instance_id", "score", "score_origin", "inherited_from", "protocol", "source", "provenance"],
+  "properties": {
+    "schema_version": { "const": "local-ai-registry/v1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*(?:--[a-z0-9][a-z0-9.-]*)*$" },
+    "benchmark_id": { "type": "string" },
+    "model_id": { "type": "string" },
+    "model_instance_id": { "type": "string" },
+    "score": {
+      "type": "object",
+      "required": ["value", "metric", "unit", "higher_is_better"],
+      "properties": {
+        "value": { "type": "number" },
+        "metric": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string", "minLength": 1 },
+        "higher_is_better": { "type": ["boolean", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "score_origin": { "enum": ["direct", "inherited"] },
+    "inherited_from": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["model_id", "source_model_repository", "source_model_instance_id", "benchmark_run_id"],
+          "properties": {
+            "model_id": { "type": "string" },
+            "source_model_repository": { "type": "string", "minLength": 1 },
+            "source_model_instance_id": { "type": ["string", "null"] },
+            "benchmark_run_id": { "type": ["string", "null"] }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "protocol": {
+      "type": "object",
+      "required": ["name", "version", "split", "shots", "details"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": ["string", "null"] },
+        "split": { "type": ["string", "null"] },
+        "shots": { "type": ["integer", "null"], "minimum": 0 },
+        "details": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind", "url", "reported_model", "captured_at"],
+      "properties": {
+        "kind": { "enum": ["model-card", "research-paper", "leaderboard"] },
+        "url": { "type": "string", "format": "uri" },
+        "reported_model": { "type": "string", "minLength": 1 },
+        "captured_at": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "provenance": { "$ref": "common.schema.json#/$defs/provenance" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "score_origin": { "const": "direct" } }, "required": ["score_origin"] },
+      "then": { "properties": { "inherited_from": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "score_origin": { "const": "inherited" } }, "required": ["score_origin"] },
+      "then": { "properties": { "inherited_from": { "type": "object" } } }
+    }
+  ],
+  "additionalProperties": false
+}

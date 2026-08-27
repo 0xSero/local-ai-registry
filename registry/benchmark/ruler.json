@@ -1,0 +1,48 @@
+{
+  "aliases": [
+    "RULER",
+    "ruler"
+  ],
+  "category": "long-context",
+  "command": "local-ai benchmark run ruler --model-instance <model-instance-id>",
+  "coverage": {
+    "benchmark_run_count": 7,
+    "direct_run_count": 2,
+    "inherited_run_count": 5,
+    "model_count": 3,
+    "model_instance_count": 7
+  },
+  "description": "RULER is tracked as a long-context evaluation reported by registered model sources.",
+  "id": "ruler",
+  "link": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/ruler.html",
+  "metric": {
+    "higher_is_better": true,
+    "name": "reported_score",
+    "unit": "points"
+  },
+  "name": "RULER",
+  "provenance": {
+    "captured_at": "2026-08-27T21:11:10Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "commit": "056ca18b649468d9721d080bd80049cdbecec542",
+        "kind": "benchmark-catalog",
+        "url": "https://github.com/0xSero/hf-model-benchmarks"
+      },
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "kind": "benchmark-page",
+        "url": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/ruler.html"
+      }
+    ]
+  },
+  "runner": {
+    "command_template": "lm-eval run --model local-chat-completions --model_args model={served_model},base_url={base_url},num_concurrent=1,max_retries=3 --tasks ruler --apply_chat_template --output_path ./benchmark-results/ruler",
+    "framework": "lm-evaluation-harness",
+    "implementation_url": "https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks",
+    "status": "available",
+    "task": "ruler"
+  },
+  "schema_version": "local-ai-registry/v1"
+}

@@ -1,0 +1,48 @@
+{
+  "aliases": [
+    "AIME 2024",
+    "aime-2024"
+  ],
+  "category": "math",
+  "command": "local-ai benchmark run aime-2024 --model-instance <model-instance-id>",
+  "coverage": {
+    "benchmark_run_count": 0,
+    "direct_run_count": 0,
+    "inherited_run_count": 0,
+    "model_count": 0,
+    "model_instance_count": 0
+  },
+  "description": "AIME 2024 is tracked as a math evaluation reported by registered model sources.",
+  "id": "aime-2024",
+  "link": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/aime-2024.html",
+  "metric": {
+    "higher_is_better": true,
+    "name": "reported_score",
+    "unit": "points"
+  },
+  "name": "AIME 2024",
+  "provenance": {
+    "captured_at": "2026-08-27T21:11:10Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "commit": "056ca18b649468d9721d080bd80049cdbecec542",
+        "kind": "benchmark-catalog",
+        "url": "https://github.com/0xSero/hf-model-benchmarks"
+      },
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "kind": "benchmark-page",
+        "url": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/aime-2024.html"
+      }
+    ]
+  },
+  "runner": {
+    "command_template": "lm-eval run --model local-chat-completions --model_args model={served_model},base_url={base_url},num_concurrent=1,max_retries=3 --tasks aime24 --apply_chat_template --output_path ./benchmark-results/aime-2024",
+    "framework": "lm-evaluation-harness",
+    "implementation_url": "https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks",
+    "status": "available",
+    "task": "aime24"
+  },
+  "schema_version": "local-ai-registry/v1"
+}

@@ -202,7 +202,7 @@ def sanitize_candidates(root):
 
 def rebuild_index(root):
     collections = {}
-    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweeps"):
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmark", "benchmark-run"):
         collections[name] = sorted(path.stem for path in (root / name).glob("*.json"))
     collections["price"] = sorted(
         json.loads(path.read_text())["id"] for path in (root / "price").glob("*/*.json")

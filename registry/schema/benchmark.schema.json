@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local-ai-registry.dev/schema/benchmark.schema.json",
+  "title": "Benchmark",
+  "type": "object",
+  "required": ["schema_version", "id", "name", "category", "description", "link", "aliases", "command", "runner", "metric", "coverage", "provenance"],
+  "properties": {
+    "schema_version": { "const": "local-ai-registry/v1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "link": { "type": "string", "format": "uri" },
+    "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "command": { "type": "string", "minLength": 1 },
+    "runner": {
+      "type": "object",
+      "required": ["status", "framework", "task", "implementation_url", "command_template"],
+      "properties": {
+        "status": { "enum": ["available", "manual"] },
+        "framework": { "type": "string", "minLength": 1 },
+        "task": { "type": ["string", "null"] },
+        "implementation_url": { "type": "string", "format": "uri" },
+        "command_template": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "metric": {
+      "type": "object",
+      "required": ["name", "unit", "higher_is_better"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string", "minLength": 1 },
+        "higher_is_better": { "type": ["boolean", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "coverage": {
+      "type": "object",
+      "required": ["model_count", "model_instance_count", "benchmark_run_count", "direct_run_count", "inherited_run_count"],
+      "properties": {
+        "model_count": { "type": "integer", "minimum": 0 },
+        "model_instance_count": { "type": "integer", "minimum": 0 },
+        "benchmark_run_count": { "type": "integer", "minimum": 0 },
+        "direct_run_count": { "type": "integer", "minimum": 0 },
+        "inherited_run_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "provenance": { "$ref": "common.schema.json#/$defs/provenance" }
+  },
+  "additionalProperties": false
+}

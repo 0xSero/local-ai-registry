@@ -1,0 +1,48 @@
+{
+  "aliases": [
+    "MATH",
+    "math"
+  ],
+  "category": "math",
+  "command": "local-ai benchmark run math --model-instance <model-instance-id>",
+  "coverage": {
+    "benchmark_run_count": 70,
+    "direct_run_count": 9,
+    "inherited_run_count": 61,
+    "model_count": 17,
+    "model_instance_count": 70
+  },
+  "description": "MATH is tracked as a math evaluation reported by registered model sources.",
+  "id": "math",
+  "link": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/math.html",
+  "metric": {
+    "higher_is_better": true,
+    "name": "reported_score",
+    "unit": "points"
+  },
+  "name": "MATH",
+  "provenance": {
+    "captured_at": "2026-08-27T21:11:10Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "commit": "056ca18b649468d9721d080bd80049cdbecec542",
+        "kind": "benchmark-catalog",
+        "url": "https://github.com/0xSero/hf-model-benchmarks"
+      },
+      {
+        "captured_at": "2026-08-27T21:11:10Z",
+        "kind": "benchmark-page",
+        "url": "https://0xsero.github.io/hf-model-benchmarks/benchmarks/math.html"
+      }
+    ]
+  },
+  "runner": {
+    "command_template": "lm-eval run --model local-chat-completions --model_args model={served_model},base_url={base_url},num_concurrent=1,max_retries=3 --tasks hendrycks_math --apply_chat_template --output_path ./benchmark-results/math",
+    "framework": "lm-evaluation-harness",
+    "implementation_url": "https://github.com/EleutherAI/lm-evaluation-harness/tree/main/lm_eval/tasks",
+    "status": "available",
+    "task": "hendrycks_math"
+  },
+  "schema_version": "local-ai-registry/v1"
+}

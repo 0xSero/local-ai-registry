@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 
-COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps")
+COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmark", "benchmark-run")
 SCHEMA = "local-ai-registry/v1"
 FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
@@ -266,6 +266,80 @@ def validate(root):
                 value = row.get(field)
                 if value is not None and (not isinstance(value, (int, float)) or value < 0):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
+
+    for benchmark in data["benchmark"].values():
+        validate_provenance(benchmark.get("provenance"), f"{benchmark.get('id')}", errors)
+        for field in ("name", "category", "description", "link", "command", "runner", "metric", "coverage"):
+            if field not in benchmark:
+                errors.append(f"{benchmark.get('id')}: missing benchmark.{field}")
+        runner = benchmark.get("runner", {})
+        if runner.get("status") not in ("available", "manual"):
+            errors.append(f"{benchmark.get('id')}: invalid benchmark runner status")
+        if runner.get("status") == "available" and not runner.get("command_template"):
+            errors.append(f"{benchmark.get('id')}: available benchmark runner has no command template")
+        if runner.get("status") == "available" and not runner.get("task"):
+            errors.append(f"{benchmark.get('id')}: available benchmark runner has no task")
+        if runner.get("status") == "manual" and (runner.get("task") is not None or runner.get("command_template") is not None):
+            errors.append(f"{benchmark.get('id')}: manual benchmark runner cannot claim a task or command template")
+
+    for run in data["benchmark-run"].values():
+        require_reference(run, "benchmark_id", data["benchmark"], errors)
+        require_reference(run, "model_id", data["model"], errors)
+        require_reference(run, "model_instance_id", data["model-instance"], errors)
+        validate_provenance(run.get("provenance"), f"{run.get('id')}", errors)
+        instance = data["model-instance"].get(run.get("model_instance_id"), {})
+        if instance.get("model_id") != run.get("model_id"):
+            errors.append(f"{run.get('id')}: model_id does not match model instance")
+        score = run.get("score", {})
+        if not isinstance(score.get("value"), (int, float)):
+            errors.append(f"{run.get('id')}: score.value must be numeric")
+        origin = run.get("score_origin")
+        inherited = run.get("inherited_from")
+        if origin == "direct":
+            if inherited is not None:
+                errors.append(f"{run.get('id')}: direct score cannot have inherited_from")
+            if run.get("source", {}).get("url", "").lower() != instance.get("huggingface", {}).get("url", "").lower():
+                errors.append(f"{run.get('id')}: direct score source does not match model instance")
+        elif origin == "inherited":
+            if not isinstance(inherited, dict) or inherited.get("model_id") != run.get("model_id"):
+                errors.append(f"{run.get('id')}: inherited score must identify its origin model")
+        else:
+            errors.append(f"{run.get('id')}: invalid score_origin")
+
+    for run in data["benchmark-run"].values():
+        inherited = run.get("inherited_from")
+        if not isinstance(inherited, dict):
+            continue
+        source_run_id = inherited.get("benchmark_run_id")
+        source_instance_id = inherited.get("source_model_instance_id")
+        if source_run_id is not None and source_run_id not in data["benchmark-run"]:
+            errors.append(f"{run.get('id')}: unresolved inherited benchmark_run_id {source_run_id!r}")
+        elif source_run_id is not None:
+            source_run = data["benchmark-run"][source_run_id]
+            if source_run.get("score_origin") != "direct":
+                errors.append(f"{run.get('id')}: inherited benchmark_run_id is not direct")
+            if source_run.get("benchmark_id") != run.get("benchmark_id"):
+                errors.append(f"{run.get('id')}: inherited benchmark_run_id uses another benchmark")
+        if source_instance_id is not None and source_instance_id not in data["model-instance"]:
+            errors.append(f"{run.get('id')}: unresolved inherited source_model_instance_id {source_instance_id!r}")
+        if source_run_id in data["benchmark-run"] and source_instance_id != data["benchmark-run"][source_run_id].get("model_instance_id"):
+            errors.append(f"{run.get('id')}: inherited source run and model instance disagree")
+
+    runs_by_benchmark = {}
+    for run in data["benchmark-run"].values():
+        runs_by_benchmark.setdefault(run.get("benchmark_id"), []).append(run)
+    for benchmark in data["benchmark"].values():
+        runs = runs_by_benchmark.get(benchmark.get("id"), [])
+        coverage = benchmark.get("coverage", {})
+        expected = {
+            "model_count": len({run.get("model_id") for run in runs}),
+            "model_instance_count": len({run.get("model_instance_id") for run in runs}),
+            "benchmark_run_count": len(runs),
+            "direct_run_count": sum(run.get("score_origin") == "direct" for run in runs),
+            "inherited_run_count": sum(run.get("score_origin") == "inherited" for run in runs),
+        }
+        if coverage != expected:
+            errors.append(f"{benchmark.get('id')}: benchmark coverage is stale")
 
     prices = {}
     for path in sorted((root / "price").glob("*/*.json")):
