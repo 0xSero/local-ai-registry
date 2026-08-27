@@ -1,0 +1,236 @@
+#!/bin/bash
+
+set -euo pipefail
+
+ROOT=${LOCAL_AI_REGISTRY_DIR:-$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)/registry}
+
+fail() {
+  printf 'local-ai: %s\n' "$*" >&2
+  exit 1
+}
+
+need() {
+  command -v "$1" >/dev/null 2>&1 || fail "$1 is required"
+}
+
+record() {
+  local collection=$1 id=$2 path
+  path="$ROOT/$collection/$id.json"
+  [[ -f $path ]] || fail "no $collection record $id"
+  cat "$path"
+}
+
+detect_macos() {
+  local info chip memory id
+  info=$(system_profiler SPHardwareDataType -json)
+  chip=$(jq -r '.SPHardwareDataType[0].chip_type // empty' <<<"$info")
+  memory=$(jq -r '.SPHardwareDataType[0].physical_memory // empty | capture("(?<gb>[0-9]+) GB").gb' <<<"$info")
+  [[ $chip == Apple\ M* && -n $memory ]] || return 1
+  chip=${chip#Apple }
+  chip=$(tr '[:upper:] ' '[:lower:]-' <<<"$chip")
+  id="apple-$chip-${memory}gb"
+  [[ -f $ROOT/hardware/$id.json ]] || return 1
+  printf '%s\n' "$id"
+}
+
+detect_nvidia() {
+  local line name memory records
+  command -v nvidia-smi >/dev/null 2>&1 || return 1
+  line=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | head -1)
+  name=${line%,*}
+  memory=${line##*, }
+  records=$(jq -s '.' "$ROOT"/hardware/*.json)
+  jq -nr --arg name "$name" --argjson memory "$memory" --argjson records "$records" '
+    def norm: ascii_downcase | gsub("nvidia|geforce|workstation edition|generation| "; "") | gsub("[^a-z0-9]"; "");
+    ($memory / 1024 | round) as $gb
+    | [$records[] | select(.vendor == "nvidia" and ((.name | norm) == ($name | norm)) and ((.memory.vram_gb - $gb) | fabs) <= 1)][0].id // empty
+  '
+}
+
+detect_linux_accelerator() {
+  local description
+  command -v lspci >/dev/null 2>&1 || return 1
+  description=$(lspci 2>/dev/null)
+  if command -v rocminfo >/dev/null 2>&1; then
+    description+=$'\n'$(rocminfo 2>/dev/null | awk -F: '/Marketing Name/ {print $2}')
+  fi
+  description=$(tr '[:upper:]' '[:lower:]' <<<"$description")
+  case $description in
+    *"ai pro r9700"*) printf 'radeon-ai-pro-r9700-32gb\n' ;;
+    *"rx 7900 xtx"*) printf 'rx-7900-xtx-24gb\n' ;;
+    *"rx 7900 xt"*) printf 'rx-7900-xt-20gb\n' ;;
+    *"rx 9070 xt"*) printf 'rx-9070-xt-16gb\n' ;;
+    *"rx 7700 xt"*) printf 'rx-7700-xt-12gb\n' ;;
+    *"mi300x"*) printf 'mi300x-192gb\n' ;;
+    *"ryzen ai max+ 395"*|*"radeon 8060s"*) printf 'ryzen-ai-max-plus-395-128gb\n' ;;
+    *"arc pro b70"*) printf 'intel-arc-pro-b70-32gb\n' ;;
+    *"arc pro b60"*) printf 'intel-arc-pro-b60-24gb\n' ;;
+    *) return 1 ;;
+  esac
+}
+
+detect() {
+  local id=${LOCAL_AI_HARDWARE:-}
+  if [[ -n $id ]]; then
+    [[ -f $ROOT/hardware/$id.json ]] || fail "LOCAL_AI_HARDWARE does not match a registry record"
+  elif [[ $(uname -s) == "Darwin" ]]; then
+    id=$(detect_macos) || fail "Apple hardware does not match a registry record"
+  else
+    id=$(detect_nvidia) || id=$(detect_linux_accelerator) || fail "hardware detection failed; set LOCAL_AI_HARDWARE"
+  fi
+  printf '%s\n' "$id"
+}
+
+detect_count() {
+  local first
+  if [[ -n ${LOCAL_AI_HARDWARE_COUNT:-} ]]; then
+    printf '%s\n' "$LOCAL_AI_HARDWARE_COUNT"
+  elif [[ $(uname -s) == "Darwin" ]]; then
+    printf '1\n'
+  elif command -v nvidia-smi >/dev/null 2>&1; then
+    first=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | head -1)
+    nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | awk -v first="$first" '$0 == first {count++} END {print count}'
+  else
+    printf '1\n'
+  fi
+}
+
+list_json() {
+  local hardware=$1 count=${2:-1} target records summary instance model
+  target=$(record hardware "$hardware")
+  records=$(jq -s '.' "$ROOT"/hardware/*.json)
+  while IFS= read -r summary; do
+    [[ -n $summary ]] || continue
+    instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$summary")")
+    model=$(record model "$(jq -r '.model_id' <<<"$instance")")
+    jq -cn --argjson summary "$summary" --argjson instance "$instance" --argjson model "$model" '
+      $summary + {
+        model_id: $model.id,
+        model_name: $model.name,
+        repository: $instance.repository,
+        revision: $instance.revision,
+        precision: $instance.weights.precision
+      }
+    '
+  done < <(jq -c --arg hardware "$hardware" --argjson count "$count" --argjson target "$target" --argjson records "$records" '
+    .recipes[] as $recipe
+    | ($records[] | select(.id == $recipe.hardware_id)) as $recipe_hardware
+    | select(
+        $recipe.hardware_count <= $count
+        and (
+          $recipe.hardware_id == $hardware
+          or (
+            $recipe_hardware.vendor == $target.vendor
+            and $recipe_hardware.accelerator_backend == $target.accelerator_backend
+            and $recipe_hardware.memory.vram_gb <= $target.memory.vram_gb
+          )
+        )
+      )
+    | $recipe + {match: (if $recipe.hardware_id == $hardware then "exact" else "capacity" end)}
+  ' "$ROOT/index.json") | jq -s 'sort_by([.match != "exact", .status != "validated", .model_name, .id])'
+}
+
+list() {
+  local hardware="" json="" arg count
+  for arg in "$@"; do
+    if [[ $arg == "--json" ]]; then
+      json=--json
+    elif [[ -z $hardware ]]; then
+      hardware=$arg
+    else
+      fail "list accepts one hardware id"
+    fi
+  done
+  if [[ -n $hardware ]]; then
+    count=${LOCAL_AI_HARDWARE_COUNT:-1}
+  else
+    hardware=$(detect)
+    count=$(detect_count)
+  fi
+  record hardware "$hardware" >/dev/null
+  local rows
+  rows=$(list_json "$hardware" "$count")
+  if [[ $json == "--json" ]]; then
+    printf '%s\n' "$rows"
+  else
+    jq -r '.[] | [.match, .status, .model_name, (.precision // "unknown"), .engine, .id] | @tsv' <<<"$rows"
+  fi
+}
+
+resolve() {
+  local id=$1 recipe instance model hardware sweeps='[]' sweep_id
+  recipe=$(record recipe "$id")
+  instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$recipe")")
+  model=$(record model "$(jq -r '.model_id' <<<"$instance")")
+  hardware=$(record hardware "$(jq -r '.hardware_id' <<<"$recipe")")
+  while IFS= read -r sweep_id; do
+    [[ -n $sweep_id ]] || continue
+    sweeps=$(jq -cn --argjson rows "$sweeps" --argjson sweep "$(record speed-sweeps "$sweep_id")" '$rows + [$sweep]')
+  done < <(jq -r '.speed_sweeps_ids[]?' <<<"$recipe")
+  jq -n --argjson recipe "$recipe" --argjson instance "$instance" --argjson model "$model" --argjson hardware "$hardware" --argjson sweeps "$sweeps" \
+    '{recipe: $recipe, model_instance: $instance, model: $model, hardware: $hardware, speed_sweeps: $sweeps}'
+}
+
+search() {
+  local query=$1 path id collection
+  rg -ilF --glob '*.json' -- "$query" "$ROOT"/{hardware,model,model-instance,recipe} | while IFS= read -r path; do
+    id=${path##*/}
+    id=${id%.json}
+    collection=${path%/*}
+    collection=${collection##*/}
+    printf '%s\t%s\n' "$collection" "$id"
+  done | sort -u
+}
+
+choose() {
+  local hardware=${1:-} rows choices selected label count
+  local labels=()
+  if [[ -n $hardware ]]; then
+    count=${LOCAL_AI_HARDWARE_COUNT:-1}
+  else
+    hardware=$(detect)
+    count=$(detect_count)
+  fi
+  rows=$(list_json "$hardware" "$count")
+  (( $(jq length <<<"$rows") > 0 )) || fail "no recipes for $hardware"
+  choices=$(jq -r '.[] | "\(.match) · \(.status) · \(.model_name) · \(.precision // "unknown") · \(.engine)\t\(.id)"' <<<"$rows")
+  if command -v gum >/dev/null 2>&1; then
+    selected=$(cut -f1 <<<"$choices" | gum choose --header "Local AI · ${count}× $hardware")
+  else
+    while IFS= read -r label; do
+      labels+=("$label")
+    done < <(cut -f1 <<<"$choices")
+    PS3="Local AI · ${count}× $hardware: "
+    select selected in "${labels[@]}"; do [[ -n $selected ]] && break; done
+  fi
+  selected=$(awk -F '\t' -v label="$selected" '$1 == label {print $2; exit}' <<<"$choices")
+  [[ -n $selected ]] || fail "no recipe selected"
+  resolve "$selected"
+}
+
+usage() {
+  cat <<'EOF'
+Usage: local-ai [command]
+
+  detect                         print the local hardware id
+  list [hardware-id] [--json]    list compatible recipe summaries
+  choose [hardware-id]           choose a recipe in a TUI and resolve it
+  show <recipe-id>               resolve a recipe and its references
+  get <collection> <id>          print one record
+  search <text>                  search all registry records
+EOF
+}
+
+need jq
+[[ -f $ROOT/index.json ]] || fail "registry not found at $ROOT"
+
+case ${1:-choose} in
+  detect) detect ;;
+  list) shift; list "$@" ;;
+  choose) choose "${2:-}" ;;
+  show) (( $# == 2 )) || fail "show requires a recipe id"; resolve "$2" ;;
+  get) (( $# == 3 )) || fail "get requires a collection and id"; record "$2" "$3" ;;
+  search) (( $# == 2 )) || fail "search requires one text query"; need rg; search "$2" ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac

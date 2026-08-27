@@ -50,6 +50,20 @@ python3 scripts/validate_registry.py
 
 The validator checks IDs, references, counts, status boundaries, pinned validated artifacts, positive evidence values, and the CUDA-graph policy. `curate_registry.py` is deterministic and rebuilds the compact index after data changes.
 
+## Local CLI
+
+`bin/local-ai` reads the standalone tree directly. It detects Apple Silicon on macOS and NVIDIA, AMD, or Intel accelerators on Linux, counts identical NVIDIA devices, finds exact or capacity-compatible recipes, and resolves only the records selected by the user.
+
+```bash
+bin/local-ai detect
+bin/local-ai list --json
+bin/local-ai choose
+bin/local-ai search qwen
+bin/local-ai show <recipe-id>
+```
+
+The default `choose` command uses `gum` when available and a numbered terminal menu otherwise. Capacity matches are recommendations, not claims that another hardware profile's benchmark applies unchanged. Candidate recipes remain inspectable but are never presented as validated launch contracts. Set `LOCAL_AI_HARDWARE` and `LOCAL_AI_HARDWARE_COUNT` to override detection.
+
 ## Source layout
 
 `registry/` is the new normalized contract. `local-ai/` is the earlier denormalized dataset retained temporarily for the existing local Omarchy playground consumer and its newer live-machine evidence. It is not the schema for new imports.
