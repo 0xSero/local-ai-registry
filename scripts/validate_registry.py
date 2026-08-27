@@ -175,6 +175,20 @@ def validate_container(recipe, errors):
         errors.append(f"{identifier}: container state none must not carry runtime/image/digest/compose_file")
 
 
+def validate_launch_assets(root, recipe, errors):
+    identifier = recipe.get("id")
+    launch = recipe.get("launch", {})
+    if recipe.get("status") != "validated" or launch.get("kind") != "docker":
+        return
+    paths = [mount.get("source") for mount in launch.get("mounts", []) if isinstance(mount, dict)]
+    for value in filter(None, paths):
+        if value.startswith(("/", "~/", "${")):
+            continue
+        path = (root / value).resolve()
+        if root.resolve() not in path.parents or not path.is_file():
+            errors.append(f"{identifier}: launch asset is missing or outside registry: {value}")
+
+
 def validate(root):
     errors = []
     data = {name: load_collection(root, name, errors) for name in COLLECTIONS}
@@ -212,6 +226,7 @@ def validate(root):
         validate_provenance(recipe.get("provenance"), f"{recipe.get('id')}", errors)
         validate_facts(recipe, errors)
         validate_container(recipe, errors)
+        validate_launch_assets(root, recipe, errors)
         for sweep_id in recipe.get("speed_sweeps_ids", []):
             if sweep_id not in data["speed-sweeps"]:
                 errors.append(f"{recipe['id']}: unresolved speed_sweeps_ids {sweep_id!r}")
