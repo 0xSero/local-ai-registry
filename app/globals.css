@@ -414,9 +414,19 @@ code, pre, kbd, .mono-label, .row-status, .topic-total, .pagination { font-famil
 .data-row { display: grid; padding: 9px 0; border-bottom: 1px solid var(--line); grid-template-columns: minmax(130px, 0.28fr) minmax(0, 1fr); gap: 14px; }
 .data-row dt { color: var(--muted); font-family: var(--font-mono); font-size: 0.63rem; text-transform: lowercase; }
 .data-row dd { min-width: 0; margin: 0; font-size: 0.72rem; overflow-wrap: anywhere; }
-.data-row .data-tree { margin-top: -9px; }
-.data-list { margin: 0; padding-left: 18px; }
-.data-list > li + li { margin-top: 6px; }
+.data-tree-nested { border-top: 0; }
+.data-tree-nested > .data-row { display: block; padding: 9px 0; }
+.data-tree-nested > .data-row > dt { margin-bottom: 4px; color: color-mix(in srgb, var(--muted) 80%, transparent); }
+.data-branch { min-width: 0; }
+.data-branch > summary { display: flex; width: fit-content; align-items: center; gap: 8px; color: var(--muted); cursor: pointer; font-family: var(--font-mono); font-size: 0.63rem; list-style: none; }
+.data-branch > summary::-webkit-details-marker { display: none; }
+.data-branch > summary::before { content: "+"; display: grid; width: 15px; height: 15px; place-items: center; border: 1px solid currentColor; font-size: 0.68rem; line-height: 1; }
+.data-branch[open] > summary::before { content: "−"; }
+.data-branch-body { max-width: 100%; margin-top: 8px; padding: 0 0 0 14px; border-left: 1px solid var(--line); }
+.data-list { margin: 0; padding: 0; list-style: none; }
+.data-list > li + li { margin-top: 8px; }
+.data-list > li > .data-branch { padding: 8px 10px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 86%, transparent); }
+.data-link { display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; white-space: nowrap; }
 .long-value { max-width: 100%; }
 .long-value summary { overflow: hidden; cursor: pointer; font-weight: 520; text-overflow: ellipsis; white-space: nowrap; }
 pre { max-width: 100%; padding: 14px; overflow: auto; color: var(--cream-ink); background: var(--cream); white-space: pre-wrap; }

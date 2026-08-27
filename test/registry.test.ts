@@ -96,26 +96,27 @@ test("recipe detail progressively resolves related records and speed evidence", 
     "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
   )
   assert.ok(detail)
-  assert.equal(detail.launchable, true)
-  const recipe = detail.recipe
-  assert.ok(recipe && typeof recipe === "object" && "status" in recipe && "launch" in recipe)
-  assert.equal(recipe.status, "validated")
-  const launch = recipe.launch
+  assert.equal(detail.status, "validated")
+  const launch = detail.launch
   assert.ok(launch && typeof launch === "object" && "kind" in launch)
   assert.equal(launch.kind, "docker")
 
-  const instance = detail.model_instance
-  assert.ok(
-    instance &&
-    typeof instance === "object" &&
-    "hugging_face_url" in instance &&
-    "huggingface" in instance,
-  )
-  const huggingface = instance.huggingface
-  assert.ok(huggingface && typeof huggingface === "object" && "url" in huggingface)
-  assert.equal(instance.hugging_face_url, huggingface.url)
+  const registry = detail.registry
+  assert.ok(registry && typeof registry === "object" && "launchable" in registry)
+  assert.equal(registry.launchable, true)
 
-  const sweeps = detail.speed_sweeps
+  const relationships = detail.relationships
+  assert.ok(
+    relationships &&
+    typeof relationships === "object" &&
+    "model_instance" in relationships &&
+    "speed_sweeps" in relationships,
+  )
+  const instance = relationships.model_instance
+  assert.ok(instance && typeof instance === "object" && "href" in instance)
+  assert.equal(instance.href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
+
+  const sweeps = relationships.speed_sweeps
   assert.ok(Array.isArray(sweeps))
   assert.equal(sweeps.length, 1)
 })
