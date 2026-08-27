@@ -22,10 +22,10 @@ This is the progressive-disclosure rule: index, choice, recipe, then the exact r
 | Collection | Meaning | Current count |
 |---|---|---:|
 | `hardware/` | One accelerator or Apple chip and memory configuration | 98 |
-| `model/` | One canonical base model | 69 |
-| `model-instance/` | One downloadable artifact or quantization | 207 |
-| `recipe/` | One artifact × hardware × engine compatibility unit | 250 |
-| `speed-sweeps/` | Benchmark evidence attached to one recipe | 234 |
+| `model/` | One canonical base model | 103 |
+| `model-instance/` | One downloadable artifact or quantization | 372 |
+| `recipe/` | One artifact × hardware × engine compatibility unit | 1,039 |
+| `speed-sweeps/` | Benchmark evidence attached to one recipe | 1,585 |
 
 The shared contract is defined twice for different consumers: JSON Schema files under [`registry/schema/`](registry/schema/) and TypeScript interfaces in [`registry/schema/types.ts`](registry/schema/types.ts).
 
@@ -33,7 +33,7 @@ The shared contract is defined twice for different consumers: JSON Schema files 
 
 `validated` means the model revision and runtime are pinned and the launch contract has acceptance evidence. `candidate` means the registry has useful compatibility or speed evidence but cannot yet promise a reproducible launch.
 
-LocalMaxxing imports are always `candidate` and `launch.kind: "reference"`. Their human-supplied commands are deliberately not copied into the executable contract. Promotion requires a separately curated, pinned recipe and a real completion plus speed acceptance.
+LocalMaxxing and local.ai Postgres imports are always `candidate` and `launch.kind: "reference"`. Their source commands are deliberately not copied into the executable contract. Promotion requires a separately curated, pinned recipe and a real completion plus speed acceptance.
 
 ## Hardware coverage
 
@@ -44,6 +44,14 @@ Apple product names are discovery aliases; compatibility keys are chip plus unif
 ## Validate
 
 ```bash
+python3 scripts/curate_registry.py
+python3 scripts/validate_registry.py
+```
+
+To refresh measured Mac compatibility from a local.ai publication snapshot, import its compact `pg_read_models.jsonl` and `pg_read_speed_runs.jsonl` views before rebuilding the index:
+
+```bash
+python3 scripts/import_postgres_publication.py ~/local-ai-data/private/publication-<timestamp>
 python3 scripts/curate_registry.py
 python3 scripts/validate_registry.py
 ```
