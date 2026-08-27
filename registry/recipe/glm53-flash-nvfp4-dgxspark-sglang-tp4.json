@@ -1,0 +1,140 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP4/EP4 across four DGX Spark GB10 nodes with 1,048,576-token context, C8 acceptance and soak, NEXTN speculation, full decode CUDA graphs, tools, image, and video evidence.",
+  "engine": {
+    "graph_mode": "full target-verify and draft capture bs1-8; KDA hybrid attention automatically leaves prefill capture unavailable",
+    "name": "sglang",
+    "version": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b"
+  },
+  "hardware_count": 4,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm53-flash-nvfp4-dgxspark-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--tp-size",
+      "4",
+      "--ep-size",
+      "4",
+      "--nnodes",
+      "4",
+      "--node-rank",
+      "${NODE_RANK}",
+      "--dist-init-addr",
+      "${HEAD_FABRIC_ADDRESS}:27000",
+      "--context-length",
+      "1048576",
+      "--quantization",
+      "modelopt_fp4",
+      "--attention-backend",
+      "dsa",
+      "--dsa-prefill-backend",
+      "flashinfer_sparse_mla",
+      "--dsa-decode-backend",
+      "flashinfer_sparse_mla",
+      "--linear-attn-backend",
+      "triton",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--moe-runner-backend",
+      "flashinfer_cutlass",
+      "--disable-shared-experts-fusion",
+      "--chunked-prefill-size",
+      "8192",
+      "--max-prefill-tokens",
+      "8192",
+      "--max-running-requests",
+      "8",
+      "--mem-fraction-static",
+      "0.90",
+      "--cuda-graph-max-bs-decode",
+      "8",
+      "--speculative-algorithm",
+      "NEXTN",
+      "--speculative-num-steps",
+      "5",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "6",
+      "--speculative-adaptive",
+      "--media-url-max-file-size-mb",
+      "1024",
+      "--enable-multimodal",
+      "--chat-template",
+      "/opt/glm53/chat-template-mm.jinja",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+    ],
+    "container_port": 8000,
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_121a",
+      "FLASHINFER_CUDA_ARCH_LIST": "12.1a",
+      "NCCL_IB_HCA": "rocep1s0f1,roceP2p1s0f1",
+      "NCCL_NET": "IB",
+      "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
+      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "TORCH_CUDA_ARCH_LIST": "12.1a"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+        "target": "/model"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/glm53-flash-spark",
+        "target": "/root/.cache"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {
+    "acceptance": {
+      "completion": true,
+      "image": true,
+      "soak": true,
+      "tool_call": true,
+      "video": true
+    },
+    "image_platform_manifest": "sha256:7aff51ea7050480dc47137055b5201b73e23e7803d9439233742cab65e3e5609",
+    "kv_cache_tokens_per_rank": 5621568,
+    "model_revision": "9e0d74e3cef17f634e84fb8e2223707e02616290",
+    "request_policy": "uncapped natural-stop requests"
+  },
+  "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 5621568,
+    "max_concurrency": 8,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm53-flash-nvfp4-dgxspark-sglang-tp4-sweep"
+  ],
+  "status": "validated"
+}

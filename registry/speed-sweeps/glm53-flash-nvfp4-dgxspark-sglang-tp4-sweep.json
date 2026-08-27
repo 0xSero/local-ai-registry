@@ -1,0 +1,64 @@
+{
+  "accepted_at": "2026-08-27",
+  "id": "glm53-flash-nvfp4-dgxspark-sglang-tp4-sweep",
+  "measured_at": "2026-08-27",
+  "recipe_id": "glm53-flash-nvfp4-dgxspark-sglang-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 1048576,
+      "decode_tok_s": 22.69,
+      "decode_tok_s_per_stream": 22.69,
+      "output_tokens": 124,
+      "peak_power_w": 29.94,
+      "peak_temperature_c": 53,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": 1048576,
+      "decode_tok_s": 82.37,
+      "decode_tok_s_per_stream": 10.3,
+      "output_tokens": 2709,
+      "peak_power_w": 34.38,
+      "peak_temperature_c": 59,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 8,
+      "status": "accepted",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": 1048576,
+      "decode_tok_s": 67.38,
+      "decode_tok_s_per_stream": 8.42,
+      "measurement_seconds": 86.102,
+      "output_tokens": 5802,
+      "peak_power_w": 34.98,
+      "peak_temperature_c": 66,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 8,
+      "status": "accepted-soak",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": "dfb1bb7e45c20058d37df7a39cceda45a9d216a8",
+    "paths": [
+      "Dockerfile",
+      "compose.yaml",
+      "launch-spark.sh",
+      "manifest.json",
+      "chat-template-mm.jinja",
+      "patches/"
+    ],
+    "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121"
+  }
+}
