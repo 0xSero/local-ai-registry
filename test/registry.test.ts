@@ -2,10 +2,13 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import {
+  collectionCounts,
   getEntityDetail,
   isLaunchable,
   listHardware,
   listModelInstances,
+  listModels,
+  listSpeedSweeps,
   queryCompatibility,
 } from "../lib/registry"
 
@@ -128,4 +131,21 @@ test("combined search matches model and hardware fields in one query", () => {
     assert.equal(item.speed_evidence.available, true)
     assert.ok(item.speed_evidence.count > 0)
   }
+})
+
+test("navigable topic collections expose real registry records", () => {
+  const counts = collectionCounts()
+  const models = listModels({}, { limit: 5, offset: 0 })
+  const hardware = listHardware({}, { limit: 5, offset: 0 })
+  const sweeps = listSpeedSweeps({}, { limit: 5, offset: 0 })
+  const recipes = queryCompatibility({}, { limit: 5, offset: 0 })
+
+  assert.equal(models.total, counts.model)
+  assert.equal(hardware.total, counts.hardware)
+  assert.equal(sweeps.total, counts.speed_sweeps)
+  assert.equal(recipes.total, counts.recipe)
+  assert.ok(models.data.length > 0)
+  assert.ok(hardware.data.length > 0)
+  assert.ok(sweeps.data.length > 0)
+  assert.ok(recipes.data.length > 0)
 })

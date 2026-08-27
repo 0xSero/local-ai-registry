@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
 import Link from "next/link"
 import type { ReactNode } from "react"
 
 import "./globals.css"
+
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
   title: "Local AI Registry",
@@ -12,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header className="site-header">
           <Link className="wordmark" href="/">
             <span className="wordmark-mark" aria-hidden="true">LAI</span>

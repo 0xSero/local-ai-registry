@@ -1,14 +1,21 @@
 import Link from "next/link"
 
+import { DataTree } from "@/app/components/data-tree"
+import { ModalCloseButton, RecordModal } from "@/app/components/record-modal"
 import { RegistrySearch } from "@/app/components/registry-search"
 import {
+  collectionCounts,
+  getEntityDetail,
   getFacets,
   getSpeedSweep,
+  listHardware,
+  listModels,
+  listSpeedSweeps,
   queryCompatibility,
   type CompatibilityFilters,
   type CompatibilityResult,
 } from "@/lib/registry"
-import type { SpeedRow } from "@/registry/schema/types"
+import type { SpeedRow, SpeedSweep } from "@/registry/schema/types"
 
 export const dynamic = "force-dynamic"
 
@@ -16,156 +23,110 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
+type Topic = "recipes" | "hardware" | "models" | "speed-sweeps"
+
 type EvidenceRow = SpeedRow & {
   sweepId: string
 }
 
-type SpeedDisplay = {
-  label: string
-  value: number
-} | null
+const TOPICS: Array<{ key: Topic; label: string; countKey: string }> = [
+  { key: "recipes", label: "Recipes", countKey: "recipe" },
+  { key: "hardware", label: "Hardware", countKey: "hardware" },
+  { key: "models", label: "Models", countKey: "model" },
+  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps" },
+]
+
+function validTopic(value: string): Topic | "" {
+  return TOPICS.some((topic) => topic.key === value) ? value as Topic : ""
+}
 
 function numberField(record: Record<string, unknown>, key: string): number | null {
   const value = record[key]
   return typeof value === "number" && Number.isFinite(value) ? value : null
 }
 
-function stringField(record: Record<string, unknown>, key: string): string | null {
-  const value = record[key]
-  return typeof value === "string" && value.trim() ? value : null
-}
-
 function formatTokens(value: number | null): string {
-  if (value === null) return "Context unknown"
+  if (value === null) return "Unknown context"
   if (value >= 1024) {
     const thousands = value / 1024
-    return `${Number.isInteger(thousands) ? thousands : thousands.toFixed(1)}K context`
+    return `${Number.isInteger(thousands) ? thousands : thousands.toFixed(1)}K`
   }
-  return `${value.toLocaleString()} context`
+  return value.toLocaleString()
 }
 
 function formatRate(value: number): string {
   return value.toLocaleString(undefined, { maximumFractionDigits: 1 })
 }
 
-function evidenceRows(result: CompatibilityResult): EvidenceRow[] {
+function recipeEvidence(result: CompatibilityResult): EvidenceRow[] {
   return result.recipe.speed_sweeps_ids.flatMap((sweepId) => {
     const sweep = getSpeedSweep(sweepId)
     return sweep ? sweep.rows.map((row) => ({ ...row, sweepId })) : []
   })
 }
 
-function primarySpeed(rows: EvidenceRow[]): SpeedDisplay {
-  const measured = rows.flatMap((row) => {
-    if (typeof row.decode_tok_s_per_stream === "number") {
-      return [{ label: "decode / stream", value: row.decode_tok_s_per_stream }]
-    }
-    if (typeof row.decode_tok_s === "number") return [{ label: "decode", value: row.decode_tok_s }]
-    if (typeof row.prefill_tok_s === "number") return [{ label: "prefill", value: row.prefill_tok_s }]
-    return []
+function peakRecipeSpeed(result: CompatibilityResult): number | null {
+  const values = recipeEvidence(result).flatMap((row) => {
+    const value = row.decode_tok_s_per_stream ?? row.decode_tok_s ?? row.prefill_tok_s
+    return typeof value === "number" ? [value] : []
   })
-  return measured.sort((a, b) => b.value - a.value)[0] ?? null
+  return values.length > 0 ? Math.max(...values) : null
 }
 
-function recipeHref(params: URLSearchParams, recipeId: string): string {
-  const selected = new URLSearchParams(params)
-  selected.set("recipe", recipeId)
-  const query = selected.toString()
+function peakSweepSpeed(sweep: SpeedSweep): number | null {
+  const values = sweep.rows.flatMap((row) => {
+    const value = row.decode_tok_s_per_stream ?? row.decode_tok_s ?? row.prefill_tok_s
+    return typeof value === "number" ? [value] : []
+  })
+  return values.length > 0 ? Math.max(...values) : null
+}
+
+function hrefWithRecord(state: URLSearchParams, id: string): string {
+  const selected = new URLSearchParams(state)
+  selected.set("record", id)
+  return `/?${selected.toString()}`
+}
+
+function stateHref(state: URLSearchParams): string {
+  const query = state.toString()
   return query ? `/?${query}` : "/"
 }
 
-function InlineRecipeDetail({ result, rows }: { result: CompatibilityResult; rows: EvidenceRow[] }) {
-  const { hardware, model_instance: instance, recipe } = result
-  const launch = recipe.launch as Record<string, unknown>
-  const serving = recipe.serving
-  const container = recipe.launch.container
-  const entrypoint = stringField(launch, "entrypoint")
-  const explicitCommand = stringField(launch, "launch_command")
-  const args = Array.isArray(launch.arguments)
-    ? launch.arguments.filter((value): value is string => typeof value === "string")
-    : []
-  const launchLine = explicitCommand ?? ([entrypoint, ...args].filter(Boolean).join(" ") || null)
-  const maxContext = numberField(serving, "max_context_tokens")
-  const maxConcurrency = numberField(serving, "max_concurrency")
-  const tensorParallel = numberField(serving, "tensor_parallel")
-  const sources = container.source.filter((source) => source.url || source.repository)
+function recordTitle(detail: Record<string, unknown>, fallback: string): string {
+  if (typeof detail.name === "string") return detail.name
+  if (typeof detail.repository === "string") return detail.repository
+  const model = detail.model
+  if (model && typeof model === "object" && "name" in model && typeof model.name === "string") return model.name
+  if (typeof detail.id === "string") return detail.id
+  return fallback
+}
 
+function RecipeRows({ data, state }: { data: CompatibilityResult[]; state: URLSearchParams }) {
   return (
-    <section className="recipe-detail" aria-label={`Selected recipe details for ${result.model.name} on ${hardware.name}`}>
-      {!result.launchable && (
-        <p className="boundary-note">
-          This record is {recipe.status === "candidate" ? "a candidate" : "reference-only"}. Its source data is visible, but it is not marked launch-safe.
-        </p>
-      )}
-      <div className="detail-columns">
-        <section>
-          <h4>Hugging Face</h4>
-          <a href={instance.hugging_face_url} rel="noreferrer" target="_blank">
-            {instance.repository}
-            <span className="external-mark" aria-hidden="true">↗</span>
-          </a>
-          <p>{instance.huggingface.link_type === "repository" ? "Exact repository" : "Search fallback, not an exact repository"} · {instance.huggingface.status}</p>
-          {instance.revision && <p>Revision <code>{instance.revision}</code></p>}
-        </section>
-
-        <section>
-          <h4>Container provenance</h4>
-          <p>{container.runtime ?? "No container runtime"} · {container.state}</p>
-          {container.image && <code className="breakable">{container.image}</code>}
-          {!container.image && container.digest && <code className="breakable">{container.digest}</code>}
-          {sources.map((source, index) => {
-            const href = source.url ?? source.repository
-            return href ? <a className="source-link" href={href} key={`${href}-${index}`} rel="noreferrer" target="_blank">Provenance source <span aria-hidden="true">↗</span></a> : null
-          })}
-        </section>
-
-        <section>
-          <h4>Launch details</h4>
-          <dl className="compact-data">
-            <div><dt>Kind</dt><dd>{recipe.launch.kind}</dd></div>
-            <div><dt>Engine</dt><dd>{recipe.engine.name}{recipe.engine.version ? ` ${recipe.engine.version}` : ""}</dd></div>
-            <div><dt>Hardware</dt><dd>{recipe.hardware_count} × {hardware.name}</dd></div>
-            <div><dt>Context</dt><dd>{maxContext === null ? "Unknown" : maxContext.toLocaleString()}</dd></div>
-            <div><dt>Concurrency</dt><dd>{maxConcurrency ?? "Unknown"}</dd></div>
-            {tensorParallel !== null && <div><dt>Tensor parallel</dt><dd>{tensorParallel}</dd></div>}
-          </dl>
-          {launchLine && <div className="launch-line"><span>{explicitCommand ? "Launch command" : "Entrypoint + arguments"}</span><code>{launchLine}</code></div>}
-        </section>
-
-        <section>
-          <h4>Measured speed</h4>
-          {rows.length > 0 ? (
-            <div className="speed-table-wrap">
-              <table>
-                <thead><tr><th>Context</th><th>C</th><th>Output</th><th>Rate</th></tr></thead>
-                <tbody>
-                  {rows.map((row, index) => {
-                    const rate = row.decode_tok_s_per_stream ?? row.decode_tok_s ?? row.prefill_tok_s
-                    const rateKind = typeof row.decode_tok_s_per_stream === "number"
-                      ? "decode/stream"
-                      : typeof row.decode_tok_s === "number" ? "decode" : "prefill"
-                    return (
-                      <tr key={`${row.sweepId}-${index}`}>
-                        <td>{row.context_tokens?.toLocaleString() ?? "—"}</td>
-                        <td>{row.concurrency ?? "—"}</td>
-                        <td>{row.output_tokens?.toLocaleString() ?? "—"}</td>
-                        <td>{typeof rate === "number" ? `${formatRate(rate)} ${rateKind}` : "—"}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-          ) : <p>No measured speed is attached to this recipe.</p>}
-          {recipe.speed_sweeps_ids.map((id) => <Link className="source-link" href={`/speed-sweeps/${id}`} key={id}>Open measured evidence</Link>)}
-        </section>
-      </div>
-      <div className="detail-footer">
-        <code>{result.id}</code>
-        <Link href={`/recipes/${result.id}`}>Open complete record</Link>
-        <a href={`/api/v1/recipes/${result.id}`}>JSON API</a>
-      </div>
-    </section>
+    <div className="browser-list recipe-browser-list">
+      {data.map((result) => {
+        const context = numberField(result.recipe.serving, "max_context_tokens")
+        const speed = peakRecipeSpeed(result)
+        const status = result.launchable
+          ? "validated"
+          : result.recipe.launch.kind === "reference" ? "reference" : "candidate"
+        return (
+          <Link className="browser-row recipe-browser-row" href={hrefWithRecord(state, result.id)} key={result.id} scroll={false}>
+            <span className={`status-mark ${result.launchable ? "validated" : "candidate"}`} aria-hidden="true" />
+            <span className="row-primary">
+              <strong>{result.model.name}</strong>
+              <small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small>
+            </span>
+            <span><strong>{result.hardware.name}</strong><small>{result.recipe.hardware_count} × {result.hardware.memory.vram_gb} GB</small></span>
+            <span><strong>{result.recipe.engine.name}</strong><small>{result.recipe.launch.kind}</small></span>
+            <span><strong>{formatTokens(context)}</strong><small>context</small></span>
+            <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>{result.speed_evidence.available ? "measured" : "no evidence"}</small></span>
+            <span className={`row-status ${result.launchable ? "validated" : "candidate"}`}>{status}</span>
+            <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+          </Link>
+        )
+      })}
+    </div>
   )
 }
 
@@ -175,147 +136,209 @@ export default async function Home({ searchParams }: PageProps) {
     const selected = params[key]
     return Array.isArray(selected) ? selected[0] : selected ?? ""
   }
-  const query = value("q") || [value("model"), value("hardware")].filter(Boolean).join(" ")
+
+  const topic = validTopic(value("topic"))
+  const query = value("q")
   const validation = value("validation")
-  const filters: CompatibilityFilters = {
+  const offset = Math.max(0, Number(value("offset")) || 0)
+  const limit = topic === "recipes" ? 24 : 32
+  const pagination = { limit, offset }
+  const facets = getFacets()
+  const counts = collectionCounts()
+
+  const recipeFilters: CompatibilityFilters = {
     engine: value("engine"),
     evidence: value("evidence"),
-    hardware: value("q") ? "" : value("hardware"),
-    launchable: validation === "validated" ? "true" : validation === "candidate" ? "false" : value("launchable"),
+    launchable: validation === "validated" ? "true" : validation === "candidate" ? "false" : "",
     min_vram_gb: value("min_vram_gb"),
-    model: value("q") ? "" : value("model"),
-    q: value("q"),
-    status: value("status"),
+    q: query,
   }
-  const offset = Math.max(0, Number(value("offset")) || 0)
-  const limit = 24
-  const results = queryCompatibility(filters, { limit, offset })
-  const facets = getFacets()
-  const displayResults = [...results.data].sort((a, b) => Number(b.launchable) - Number(a.launchable))
-  const requestedRecipe = value("recipe")
-  const selectedId = requestedRecipe === "none"
-    ? undefined
-    : displayResults.some((result) => result.id === requestedRecipe)
-      ? requestedRecipe
-      : requestedRecipe ? undefined : displayResults[0]?.id
-  const evidenceByRecipe = new Map(displayResults.map((result) => [result.id, evidenceRows(result)]))
+  const overviewRecipes = queryCompatibility({ launchable: "true" }, { limit: 8, offset: 0 })
+  const recipeResults = topic === "recipes" ? queryCompatibility(recipeFilters, pagination) : { data: [], total: 0 }
+  const hardwareResults = topic === "hardware" ? listHardware({ q: query }, pagination) : { data: [], total: 0 }
+  const modelResults = topic === "models" ? listModels({ q: query }, pagination) : { data: [], total: 0 }
+  const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query }, pagination) : { data: [], total: 0 }
 
-  const searchState = new URLSearchParams()
-  for (const key of ["q", "validation", "engine", "min_vram_gb", "evidence", "model", "hardware", "launchable", "status"]) {
-    const selected = value(key)
-    if (selected) searchState.set(key, selected)
+  const viewState = new URLSearchParams()
+  if (topic) viewState.set("topic", topic)
+  if (query) viewState.set("q", query)
+  if (topic === "recipes") {
+    for (const key of ["validation", "engine", "min_vram_gb", "evidence"]) {
+      const selected = value(key)
+      if (selected) viewState.set(key, selected)
+    }
   }
-  const selectionState = new URLSearchParams(searchState)
-  if (offset > 0) selectionState.set("offset", String(offset))
-  const collapsedState = new URLSearchParams(selectionState)
-  collapsedState.set("recipe", "none")
-  const previousParams = new URLSearchParams(searchState)
-  previousParams.set("offset", String(Math.max(0, offset - limit)))
-  const nextParams = new URLSearchParams(searchState)
-  nextParams.set("offset", String(offset + limit))
-  const hasSearch = searchState.size > 0
+  if (offset > 0) viewState.set("offset", String(offset))
+
+  const selectedRecord = topic && value("record") ? getEntityDetail(topic, value("record")) : undefined
+  const closeHref = stateHref(viewState)
+  const selectedTitle = selectedRecord ? recordTitle(selectedRecord, value("record")) : ""
+  const total = topic === "recipes"
+    ? recipeResults.total
+    : topic === "hardware"
+      ? hardwareResults.total
+      : topic === "models"
+        ? modelResults.total
+        : topic === "speed-sweeps" ? sweepResults.total : 0
+  const topicLabel = TOPICS.find((item) => item.key === topic)?.label
+
+  const pageState = new URLSearchParams(viewState)
+  pageState.delete("offset")
+  const previousState = new URLSearchParams(pageState)
+  previousState.set("offset", String(Math.max(0, offset - limit)))
+  const nextState = new URLSearchParams(pageState)
+  nextState.set("offset", String(offset + limit))
 
   return (
     <main className="registry-main">
-      <section className="search-area" aria-labelledby="registry-results-heading">
-        <RegistrySearch
-          engines={facets.recipes.engine}
-          evidence={value("evidence")}
-          memory={value("min_vram_gb")}
-          query={query}
-          selectedEngine={value("engine")}
-          validation={validation}
-          vramOptions={facets.hardware.vram_gb}
-        />
-      </section>
+      <nav aria-label="Registry collections" className="topic-tabs">
+        {TOPICS.map((item) => (
+          <Link aria-current={topic === item.key ? "page" : undefined} href={`/?topic=${item.key}`} key={item.key}>
+            {item.label}
+          </Link>
+        ))}
+      </nav>
 
-      <section className="results" aria-live="polite">
-        <div className="results-heading">
-          <h1 id="registry-results-heading">{results.total.toLocaleString()} compatible recipe{results.total === 1 ? "" : "s"}</h1>
-          {hasSearch && <Link className="clear-link" href="/">Clear filters</Link>}
-        </div>
-
-        {results.data.length === 0 ? (
-          <div className="empty-state">
-            <h2>No recipes match this search.</h2>
-            <p>Try fewer terms or remove one filter.</p>
-          </div>
-        ) : (
-          <div className="result-list">
-            {displayResults.map((result) => {
-              const { hardware, model, model_instance: instance, recipe } = result
-              const selected = result.id === selectedId
-              const rows = evidenceByRecipe.get(result.id) ?? []
-              const speed = primarySpeed(rows)
-              const capacity = hardware.memory.vram_gb * recipe.hardware_count
-              const weightSize = instance.weights.size_gb
-              const memoryPercent = typeof weightSize === "number" && capacity > 0
-                ? Math.min(100, Math.round((weightSize / capacity) * 100))
-                : null
-              const context = numberField(recipe.serving, "max_context_tokens")
-              const concurrency = numberField(recipe.serving, "max_concurrency")
-              const trustLabel = result.launchable
-                ? "Validated, launch-safe"
-                : recipe.launch.kind === "reference"
-                  ? "Reference only, not launch-safe"
-                  : "Candidate, not launch-safe"
-
+      {!topic ? (
+        <>
+          <header className="overview-heading">
+            <span className="mono-label">READ-ONLY / SOURCE-BACKED</span>
+            <h1>Registry index</h1>
+          </header>
+          <section className="overview-search" aria-label="Search recipes">
+            <RegistrySearch
+              engines={facets.recipes.engine}
+              evidence=""
+              memory=""
+              query=""
+              recipeFilters={false}
+              selectedEngine=""
+              topic=""
+              validation=""
+              vramOptions={facets.hardware.vram_gb}
+            />
+          </section>
+          <nav aria-label="Registry topic counts" className="topic-index">
+            {TOPICS.map((item, index) => {
+              const count = counts[item.countKey]
               return (
-                <article className={`result-unit${selected ? " selected" : ""}`} key={result.id}>
-                  <div className="result-row">
-                    <div className="model-cell">
-                      <span className={`status-dot ${result.launchable ? "validated" : "candidate"}`} aria-hidden="true" />
-                      <div>
-                        <Link href={`/models/${model.id}`}>{model.name}</Link>
-                        <span className="sr-only">{trustLabel}</span>
-                        <small>{instance.weights.precision ?? instance.weights.format ?? "Precision unknown"}</small>
-                      </div>
-                    </div>
-                    <div className="hardware-cell">
-                      <Link href={`/hardware/${hardware.id}`}>{hardware.name}</Link>
-                      <small>{recipe.hardware_count > 1 ? `${recipe.hardware_count} × ` : ""}{hardware.memory.vram_gb} GB {hardware.memory.vram_type ?? ""}</small>
-                    </div>
-                    <div className="engine-cell">
-                      <span>{recipe.engine.name}</span>
-                      <small>{recipe.engine.version ?? recipe.launch.kind}</small>
-                    </div>
-                    <div className={`memory-cell ${result.launchable ? "validated" : "candidate"}`}>
-                      <div className="memory-bar" aria-hidden="true">{memoryPercent === null ? null : <span style={{ width: `${memoryPercent}%` }} />}</div>
-                      <small>{typeof weightSize === "number" ? `${weightSize.toLocaleString()} GB weights / ${capacity.toLocaleString()} GB` : `${capacity.toLocaleString()} GB capacity · weight size unknown`}</small>
-                    </div>
-                    <div className="context-cell">
-                      <span>{formatTokens(context)}</span>
-                      <small>{concurrency === null ? "Concurrency unknown" : `C${concurrency} max`}</small>
-                    </div>
-                    <div className="speed-cell">
-                      <span>{speed ? `${formatRate(speed.value)} tok/s` : "No measurement"}</span>
-                      <small>{speed?.label ?? "No speed evidence"}</small>
-                    </div>
-                    <Link
-                      aria-expanded={selected}
-                      aria-label={`${selected ? "Collapse" : "Show"} recipe details for ${model.name} on ${hardware.name}`}
-                      className="row-toggle"
-                      href={selected ? `/?${collapsedState.toString()}` : recipeHref(selectionState, result.id)}
-                      scroll={false}
-                    >
-                      <svg aria-hidden="true" viewBox="0 0 20 20"><path d={selected ? "m4 12 6-6 6 6" : "m7 4 6 6-6 6"} /></svg>
-                    </Link>
-                  </div>
-                  {selected && <InlineRecipeDetail result={result} rows={rows} />}
-                </article>
+                <Link href={`/?topic=${item.key}`} key={item.key}>
+                  <span className="mono-label">0{index + 1}</span>
+                  <strong>{item.label}</strong>
+                  <span>{typeof count === "number" ? count.toLocaleString() : "—"}</span>
+                </Link>
               )
             })}
-          </div>
-        )}
-
-        {(offset > 0 || offset + limit < results.total) && (
-          <nav className="pagination" aria-label="Recipe result pages">
-            {offset > 0 ? <Link href={`/?${previousParams}`}>Previous</Link> : <span />}
-            <span>{offset + 1}–{Math.min(offset + limit, results.total)} of {results.total}</span>
-            {offset + limit < results.total ? <Link href={`/?${nextParams}`}>Next</Link> : <span />}
           </nav>
-        )}
-      </section>
+          <section className="overview-recipes">
+            <div className="section-heading">
+              <div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div>
+              <Link href="/?topic=recipes&validation=validated">View all</Link>
+            </div>
+            <RecipeRows data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&validation=validated")} />
+          </section>
+        </>
+      ) : (
+        <>
+          <header className="topic-heading">
+            <div>
+              <span className="mono-label">COLLECTION / {topic.toUpperCase()}</span>
+              <h1>{topicLabel}</h1>
+            </div>
+            <span className="topic-total">{total.toLocaleString()} records</span>
+          </header>
+          <section className="topic-search" aria-label={`${topicLabel} search`}>
+            <RegistrySearch
+              engines={facets.recipes.engine}
+              evidence={value("evidence")}
+              memory={value("min_vram_gb")}
+              query={query}
+              recipeFilters={topic === "recipes"}
+              selectedEngine={value("engine")}
+              topic={topic}
+              validation={validation}
+              vramOptions={facets.hardware.vram_gb}
+            />
+          </section>
+
+          {topic === "recipes" && <RecipeRows data={recipeResults.data} state={viewState} />}
+
+          {topic === "hardware" && (
+            <div className="browser-list collection-list">
+              {hardwareResults.data.map((hardware) => (
+                <Link className="browser-row collection-row" href={hrefWithRecord(viewState, hardware.id)} key={hardware.id} scroll={false}>
+                  <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
+                  <span><strong>{hardware.vendor}</strong><small>{hardware.kind}</small></span>
+                  <span><strong>{hardware.memory.vram_gb} GB</strong><small>{hardware.memory.vram_type ?? "Memory type unknown"}</small></span>
+                  <span><strong>{hardware.accelerator_backend}</strong><small>backend</small></span>
+                  <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {topic === "models" && (
+            <div className="browser-list collection-list">
+              {modelResults.data.map((model) => (
+                <Link className="browser-row collection-row" href={hrefWithRecord(viewState, model.id)} key={model.id} scroll={false}>
+                  <span className="row-primary"><strong>{model.name}</strong><small>{model.id}</small></span>
+                  <span><strong>{model.family}</strong><small>family</small></span>
+                  <span><strong>{model.architecture ?? "Unknown"}</strong><small>architecture</small></span>
+                  <span><strong>{model.params ?? "—"}</strong><small>parameters</small></span>
+                  <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {topic === "speed-sweeps" && (
+            <div className="browser-list collection-list">
+              {sweepResults.data.map((sweep) => {
+                const speed = peakSweepSpeed(sweep)
+                return (
+                  <Link className="browser-row collection-row" href={hrefWithRecord(viewState, sweep.id)} key={sweep.id} scroll={false}>
+                    <span className="row-primary"><strong>{sweep.id}</strong><small>{sweep.recipe_id}</small></span>
+                    <span><strong>{sweep.measured_at ?? "Unknown"}</strong><small>measured</small></span>
+                    <span><strong>{sweep.rows.length}</strong><small>points</small></span>
+                    <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>peak recorded</small></span>
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
+
+          {total === 0 && <div className="empty-state"><h2>No records found.</h2><p>Clear the search or remove a recipe filter.</p></div>}
+
+          {(offset > 0 || offset + limit < total) && (
+            <nav aria-label={`${topicLabel} pages`} className="pagination">
+              {offset > 0 ? <Link href={stateHref(previousState)}>Previous</Link> : <span />}
+              <span>{offset + 1}–{Math.min(offset + limit, total)} of {total}</span>
+              {offset + limit < total ? <Link href={stateHref(nextState)}>Next</Link> : <span />}
+            </nav>
+          )}
+        </>
+      )}
+
+      {selectedRecord && topic && (
+        <RecordModal closeHref={closeHref} titleId="record-modal-title">
+          <header className="record-modal-header">
+            <div>
+              <span className="mono-label">{topic.toUpperCase()} / RECORD</span>
+              <h2 id="record-modal-title">{selectedTitle}</h2>
+              <code>{value("record")}</code>
+            </div>
+            <ModalCloseButton className="modal-close" closeHref={closeHref} label="Close record details">Close</ModalCloseButton>
+          </header>
+          <div className="record-modal-body">
+            <DataTree value={selectedRecord} />
+          </div>
+          <footer className="record-modal-footer">
+            <a href={`/api/v1/${topic}/${value("record")}`}>JSON API</a>
+            <Link href={`/${topic}/${value("record")}`}>Permanent record URL</Link>
+          </footer>
+        </RecordModal>
+      )}
     </main>
   )
 }
