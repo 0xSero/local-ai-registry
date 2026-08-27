@@ -191,6 +191,57 @@ export interface SpeedSweep {
   facts?: Record<string, Fact>
 }
 
+export interface PriceObservation {
+  retailer: string
+  title: string
+  condition: "new" | "refurbished" | "used"
+  amount: number
+  currency: string
+  in_stock: boolean | null
+  quantity: number | null
+  url: string
+  observed_at: string
+}
+
+export interface PriceRecord {
+  schema_version: "local-ai-registry/v1"
+  id: RegistryId
+  product: {
+    id: string
+    name: string
+    category: string
+  }
+  region: {
+    code: string
+    name: string
+    currency: string
+  }
+  hardware: Array<{
+    id: RegistryId
+    match_scope: "exact" | "family"
+  }>
+  observed_at: string
+  summary: {
+    listing_count: number
+    retailer_count: number
+    in_stock_count: number
+    lowest_new: number | null
+    lowest_refurbished: number | null
+    lowest_used: number | null
+  }
+  observations: PriceObservation[]
+  verification: {
+    state: "candidate"
+    method: string
+    rejected_observations: number
+  }
+  provenance: {
+    scanner: string
+    snapshot_generated_at: string
+    source_error_count: number
+  }
+}
+
 export interface RegistryIndex {
   schema_version: "local-ai-registry/v1"
   resolver_rule: string
