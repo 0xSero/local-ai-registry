@@ -2,16 +2,20 @@
 
 The registry separates observed source data from audited launch contracts. Source presence proves that a model/hardware/engine combination was reported or measured; it does not by itself make that combination safe or reproducible to run.
 
-## Recovered local publication
+## Current local.ai publication
 
-The most complete local database publication is `pg-20260820T063452765Z`, captured from the public read schema on 2026-08-20. Its manifest records:
+The current database publication is `pg-20260827T060320709Z`, captured from a read-only repeatable-read transaction on 2026-08-27. Its manifest records:
 
-- 280 model rows, SHA-256 `da051cfd1f5473ed74dbb55c43dfb0605a6ac6e59ca02979c08381f96c48dad8`
-- 15 hardware rows, SHA-256 `71b0196f61ab0b6e368d0060a7e0df54e694f1289cb91d72cc4dfd82b1499ca0`
-- 2,534 speed-run rows, SHA-256 `3d7ca14b4c05afc828f877d7859c4f28faa948ced2e48b8e4247f69b0cf7501c`
-- 537 weighted-frontier rows, SHA-256 `59eb966866a3c45211b22682c2092f498dfeac13c3412103e6e0709b059f4aa5`
+- 353 public model rows, SHA-256 `1813c8556be979b81abd22377cee42ea851cbdeaa6310563f0189677e99e7831`
+- 3,797 public speed-run rows, SHA-256 `1e43ef6ef4232b93066c74c0e1b9d881dbda530a03a3d2991b6cec63f62da8f6`
+- latest evaluation run at `2026-08-26T18:30:28.412Z`
+- latest speed point at `2026-08-26T11:24:21.520Z`
 
-The publication stays outside this repository because it is a private raw snapshot. Only normalized public facts and evidence rows are committed here.
+The upstream audit counted 374 models, 4,113 speed sweeps, 707,032 sweep points, and 5,228 inference configurations before public-release filtering. The registry imports 1,349 real Mac runs across nine exact Apple hardware keys and excludes all synthetic M5 Ultra rows. Those runs collapse into 787 artifact × hardware × engine candidates with separate evidence records for each source run.
+
+The publication stays outside this repository because it is a private source snapshot. Only normalized public facts and evidence rows are committed here. The hardware read view currently has schema drift against `eval_config`, so hardware identity comes from the exact measured `hardware_key` on each speed run and resolves only through the explicit mapping in `scripts/import_postgres_publication.py`.
+
+The public Convex deployment was cross-checked on 2026-08-27. Its active publication is still `pg-20260721-ui-refresh`, with 312 model rows, 1,216 speed runs, and a latest speed point from 2026-07-21. It is a valid published subset but is older than the repeatable-read Postgres snapshot, so it was not used as the refresh authority.
 
 ## Recovered OMP normalization
 
@@ -23,9 +27,9 @@ It was treated as an import candidate, not as final truth. This pass corrected t
 - LocalMaxxing commands became non-executable `reference` launches;
 - capabilities from unverified candidates became `null` rather than guessed booleans.
 
-## Live database regression
+## Database source boundary
 
-The configured read-only Postgres endpoint was checked in a read-only transaction on 2026-08-26. It currently exposes 12 model rows, no inference configurations, 29 evaluation runs with a latest timestamp of 2026-07-24, and no speed-sweep tables. The live endpoint therefore cannot replace the more complete 2026-08-20 local publication. No database URL or credential is stored here.
+The local.ai Postgres source is accessed only by the external ETL workflow. No database URL or credential is stored here. The importer accepts the compact, checksummed publication directory and never opens a database connection itself.
 
 ## LocalMaxxing refresh
 
