@@ -1,0 +1,92 @@
+{
+  "accepted_at": null,
+  "id": "inkling-small-nvfp4-rtxpro6000-sglang-tp2-sweep",
+  "measured_at": "2026-08-26",
+  "recipe_id": "inkling-small-nvfp4-rtxpro6000-sglang-tp2",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 30,
+      "context_tokens_note": "estimated prompt length (bench JSON records no prompt_tokens)",
+      "decode_tok_s": 117.8,
+      "decode_tok_s_per_stream": 117.8,
+      "effective_tok_s_incl_ttft": 114.7,
+      "output_tokens": 224,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "prompt_class": "short",
+      "samples": 2,
+      "status": "measured",
+      "ttft_ms_p50": 60
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 40,
+      "context_tokens_note": "estimated prompt length (bench JSON records no prompt_tokens)",
+      "decode_tok_s": 116.0,
+      "decode_tok_s_per_stream": 116.0,
+      "effective_tok_s_incl_ttft": 115.6,
+      "output_tokens": 1528,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "prompt_class": "reasoning",
+      "samples": 2,
+      "status": "measured",
+      "ttft_ms_p50": 60
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 40,
+      "context_tokens_note": "estimated prompt length (bench JSON records no prompt_tokens)",
+      "decode_tok_s": 115.6,
+      "decode_tok_s_per_stream": 115.6,
+      "effective_tok_s_incl_ttft": 115.2,
+      "output_tokens": 1747,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "prompt_class": "analytical",
+      "samples": 2,
+      "status": "measured",
+      "ttft_ms_p50": 63
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 50,
+      "context_tokens_note": "estimated prompt length (bench JSON records no prompt_tokens)",
+      "decode_tok_s": 115.2,
+      "decode_tok_s_per_stream": 115.2,
+      "effective_tok_s_incl_ttft": 115.0,
+      "output_tokens": 2500,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "prompt_class": "long_2500cap",
+      "samples": 2,
+      "status": "measured",
+      "ttft_ms_p50": 62
+    },
+    {
+      "concurrency": 4,
+      "context_tokens": 40,
+      "context_tokens_note": "estimated prompt length (bench JSON records no prompt_tokens)",
+      "decode_tok_s": 306.6,
+      "decode_tok_s_per_stream": 84.2,
+      "effective_tok_s_incl_ttft": 306.6,
+      "output_tokens": 1824,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "prompt_class": "reasoning_x4",
+      "samples": 1,
+      "status": "measured",
+      "ttft_ms_p50": 320
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "kind": "submitter",
+    "methodology": "OpenAI /v1/chat/completions, streaming (SSE) with usage in the final chunk; temperature 0.7 / top_p 0.8; four prompt classes x 2 runs (short 400 cap, reasoning, analytical, long 2500 cap); effective tok/s = completion_tokens (reasoning + content, from usage) / wall incl. TTFT; TTFT = first streamed delta of content or reasoning; decode tok/s excludes TTFT; 4-way concurrency on the reasoning prompt, aggregate = total completion tokens / batch wall. Idle server, GPUs at the 300 W Max-Q limit. Raw JSON + script in the source repo benchmarks/.",
+    "paths": [
+      "benchmarks/inkling-small-nvfp4-tp2-tps-20260826.json"
+    ],
+    "url": "https://github.com/ppickle1989/sm120-sglang-recipes"
+  }
+}
