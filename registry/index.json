@@ -387,6 +387,7 @@
       "qwen-agentworld-35b-a3b",
       "qwen-qwen3-235b-a22b",
       "qwen-qwen3-8-27b",
+      "qwen-qwen3-8-flash-next",
       "qwen2-5-0-5b",
       "qwen2-5-14b",
       "qwen2-5-32b",
@@ -1589,6 +1590,8 @@
       "unsloth-qwen3-8-27b-gguf-qwen3-8-27b-q4-k-m-gguf--unknown",
       "unsloth-qwen3-8-27b-nvfp4--nvfp4",
       "unsloth-qwen3-8-flash-next-gguf--iq4-xs",
+      "unsloth-qwen3-8-flash-next-gguf--ud-iq1-s",
+      "unsloth-qwen3-8-flash-next-gguf--ud-q3-k-xl",
       "unsloth-qwen3-8-flash-next-gguf--unsloth-dynamic-iq3-xxs",
       "unsloth-qwen3-8-flash-next-gguf--unsloth-dynamic-iq4-xs",
       "unsloth-qwen3-8b-gguf--q4-1",
@@ -3927,7 +3930,9 @@
       "qwen3-8-flash-next-int4-apple-m3-ultra-512gb-mlx-tp1",
       "qwen3-8-flash-next-iq4-xs-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
       "qwen3-8-flash-next-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1",
       "qwen3-8-flash-next-ud-iq3-xxs-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
+      "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod",
       "qwen3-8-flash-next-unsloth-dynamic-iq3-xxs-rtx-3090-24gb-llama-cpp-tp2",
       "qwen3-8-flash-next-unsloth-dynamic-iq4-xs-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
       "qwen3-8-flash-next-unsloth-dynamic-q3-k-xl-rtx-3090-24gb-llama-cpp-tp2",
@@ -6725,7 +6730,9 @@
       "qwen3-8-flash-next-int4-apple-m3-ultra-512gb-mlx-tp1-sweep",
       "qwen3-8-flash-next-iq4-xs-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-sweep",
       "qwen3-8-flash-next-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep",
+      "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1-sweep",
       "qwen3-8-flash-next-ud-iq3-xxs-radeon-ai-pro-r9700-32gb-llama-cpp-tp3-sweep",
+      "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod-sweep",
       "qwen3-8-flash-next-unsloth-dynamic-iq3-xxs-rtx-3090-24gb-llama-cpp-tp2-sweep",
       "qwen3-8-flash-next-unsloth-dynamic-iq4-xs-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep",
       "qwen3-8-flash-next-unsloth-dynamic-q3-k-xl-rtx-3090-24gb-llama-cpp-tp2-sweep",
@@ -6815,11 +6822,11 @@
   "counts": {
     "benchmarks": 97,
     "hardware": 100,
-    "model": 283,
-    "model_instance": 1148,
+    "model": 284,
+    "model_instance": 1150,
     "price": 130,
-    "recipe": 2250,
-    "speed_sweeps": 2789
+    "recipe": 2252,
+    "speed_sweeps": 2791
   },
   "recipes": [
     {
@@ -43510,6 +43517,23 @@
     },
     {
       "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "llama-cpp",
+      "hardware_count": 1,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1",
+      "launch_kind": "native",
+      "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-iq1-s",
+      "recipe_source": "sxuff",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
         "chat": null,
         "reasoning": null,
         "tools": null,
@@ -43523,6 +43547,23 @@
       "launch_kind": "reference",
       "model_instance_id": "qwen-qwen3-8-flash-next--ud-iq3-xxs",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": true
+      },
+      "engine": "llama-cpp",
+      "hardware_count": 1,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod",
+      "launch_kind": "native",
+      "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-q3-k-xl",
+      "recipe_source": "sxuff",
       "status": "candidate"
     },
     {
