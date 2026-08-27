@@ -585,6 +585,7 @@
       "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
       "deepseek-v4-flash-0731-exl3-3bpw-dgxspark-sparkinfer-tp1",
       "deepseek-v4-flash-0731-fp8-e4m3-rtx-3090-24gb-vllm-tp1",
+      "deepseek-v4-flash-0731-fp8-fp4-rtxpro6000-sglang-tp2",
       "deepseek-v4-flash-0731-fp8-rtx-3090-24gb-vllm-tp1",
       "deepseek-v4-flash-0731-fp8-rtxpro6000-vllm-tp4",
       "deepseek-v4-flash-0731-iq2-xxs-radeon-ai-pro-r9700-32gb-lucebox-tp1-7ibvc9zx",
@@ -662,6 +663,7 @@
       "huihui-qwen3-8-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1",
       "hy3-fp8-rtxpro6000-vllm-tp4",
       "inkling-small-nvfp4-dgxspark-vllm-tp2",
+      "inkling-small-nvfp4-rtxpro6000-sglang-tp2",
       "kimi-k2-5-int4-rtx-pro-6000-blackwell-96gb-sglang-tp8",
       "kimi-k2.6-nvfp4-rtxpro6000-sglang-tp4",
       "lfm2-5-8b-a1b-base-int4-apple-m5-pro-48gb-mlx-tp1",
@@ -1626,6 +1628,7 @@
       "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep",
       "deepseek-v4-flash-0731-exl3-3bpw-dgxspark-sparkinfer-tp1-sweep",
       "deepseek-v4-flash-0731-fp8-e4m3-rtx-3090-24gb-vllm-tp1-sweep",
+      "deepseek-v4-flash-0731-fp8-fp4-rtxpro6000-sglang-tp2-sweep",
       "deepseek-v4-flash-0731-fp8-rtx-3090-24gb-vllm-tp1-sweep",
       "deepseek-v4-flash-0731-iq2-xxs-radeon-ai-pro-r9700-32gb-lucebox-tp1-7ibvc9zx-sweep",
       "deepseek-v4-flash-0731-nvfp4-dgxspark-vllm-tp2-sweep",
@@ -1698,6 +1701,7 @@
       "huihui-qwen3-8-27b-abliterated-mlx-8bit-apple-m3-ultra-96gb-mlx-tp1-sweep",
       "huihui-qwen3-8-27b-abliterated-nvfp4-rtx-5090-32gb-vllm-tp1-sweep",
       "inkling-small-nvfp4-dgxspark-vllm-tp2-sweep",
+      "inkling-small-nvfp4-rtxpro6000-sglang-tp2-sweep",
       "kimi-k2-5-int4-rtx-pro-6000-blackwell-96gb-sglang-tp8-sweep",
       "lfm2-5-8b-a1b-base-int4-apple-m5-pro-48gb-mlx-tp1-sweep",
       "lfm2-5-8b-a1b-iq4-xs-rx-7700-xt-12gb-vllm-tp1-sweep",
@@ -3214,8 +3218,8 @@
     "hardware": 100,
     "model": 103,
     "model_instance": 372,
-    "recipe": 1039,
-    "speed_sweeps": 1585
+    "recipe": 1041,
+    "speed_sweeps": 1587
   },
   "recipes": [
     {
@@ -3267,6 +3271,23 @@
       "launch_kind": "reference",
       "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8-e4m3",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 2,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "deepseek-v4-flash-0731-fp8-fp4-rtxpro6000-sglang-tp2",
+      "launch_kind": "docker",
+      "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8",
+      "recipe_source": "ppickle1989",
       "status": "candidate"
     },
     {
@@ -4576,6 +4597,23 @@
       "launch_kind": "docker-compose",
       "model_instance_id": "thinkingmachines-inkling-small-nvfp4--nvfp4",
       "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 2,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "inkling-small-nvfp4-rtxpro6000-sglang-tp2",
+      "launch_kind": "docker",
+      "model_instance_id": "thinkingmachines-inkling-small-nvfp4--nvfp4",
+      "recipe_source": "ppickle1989",
       "status": "candidate"
     },
     {
