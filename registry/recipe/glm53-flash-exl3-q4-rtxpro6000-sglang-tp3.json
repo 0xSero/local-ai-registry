@@ -1,0 +1,78 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Three-GPU compatibility record for the selective EXL3 Q4 artifact. This is deliberately non-launchable: the published checkpoint is sealed as four independently rotated tensor-parallel slices and the loader requires TP4. Mapping four slices to three 96 GB GPUs would place two prepared slices, projected at 106.36 GB before KV cache and workspace, on one GPU.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "selective-EXL3 TP3 adaptation not implemented"
+  },
+  "facts": {},
+  "hardware_count": 3,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-27T23:45:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-blocked-compatibility-record",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-27T23:45:00Z",
+          "kind": "artifact-contract",
+          "url": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "reason": "blocked-by-tp4-checkpoint-contract-and-asymmetric-prepared-weight-capacity",
+    "url": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+  },
+  "metadata": {
+    "compatibility_state": "blocked",
+    "evidence": {
+      "artifact_bytes": 187376244600,
+      "artifact_tensor_parallel_size": 4,
+      "loader_contract": "TP=4 with EP=1 or EP=4",
+      "observed_prepared_weight_gb_per_four_gpu_rank": 53.18,
+      "projected_double_slice_weight_gb_on_one_three_gpu_rank": 106.36
+    },
+    "required_work": [
+      "define a nonuniform four-logical-slice to three-physical-rank execution layout",
+      "preserve each independently rotated source slice without concatenation",
+      "fit the double-slice rank plus KV and workspace below 96 GB",
+      "pass real-weight parity and full CUDA-graph capture",
+      "run endpoint, completion, quality, and matched speed acceptance"
+    ]
+  },
+  "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--selective-exl3-q4",
+  "provenance": {
+    "captured_at": "2026-08-27T23:45:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T23:45:00Z",
+        "kind": "artifact-contract",
+        "url": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3-sweep"
+  ],
+  "status": "candidate"
+}

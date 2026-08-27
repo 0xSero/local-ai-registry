@@ -47,8 +47,9 @@ test("candidate and reference recipes are never launchable", () => {
   assert.equal(result.total, 0)
 })
 
-test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP2", () => {
+test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2", () => {
   const fourGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4")
+  const threeGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3")
   const twoGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2")
   const fourGpuSweep = getEntityDetail(
     "speed-sweeps",
@@ -58,10 +59,16 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP2", () =>
     "speed-sweeps",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2-sweep",
   )
+  const threeGpuSweep = getEntityDetail(
+    "speed-sweeps",
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3-sweep",
+  )
 
   assert.ok(fourGpu && typeof fourGpu === "object")
+  assert.ok(threeGpu && typeof threeGpu === "object")
   assert.ok(twoGpu && typeof twoGpu === "object")
   assert.ok(fourGpuSweep && typeof fourGpuSweep === "object")
+  assert.ok(threeGpuSweep && typeof threeGpuSweep === "object")
   assert.ok(twoGpuSweep && typeof twoGpuSweep === "object")
 
   const four = fourGpu as {
@@ -76,7 +83,14 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP2", () =>
     metadata: { compatibility_state: string }
     status: string
   }
+  const three = threeGpu as {
+    hardware_count: number
+    launch: { kind: string }
+    metadata: { compatibility_state: string }
+    status: string
+  }
   const fourSweep = fourGpuSweep as { rows: Array<{ status?: string; decode_tok_s?: number }> }
+  const threeSweep = threeGpuSweep as { rows: Array<{ decode_tok_s?: number | null }> }
   const twoSweep = twoGpuSweep as { rows: Array<{ decode_tok_s?: number | null }> }
 
   assert.equal(four.hardware_count, 4)
@@ -85,6 +99,12 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP2", () =>
   assert.equal(four.serving.tensor_parallel, 4)
   assert.ok(fourSweep.rows.some((row) =>
     row.status === "accepted-matched-screen" && row.decode_tok_s === 73.4979))
+
+  assert.equal(three.hardware_count, 3)
+  assert.equal(three.status, "candidate")
+  assert.equal(three.launch.kind, "reference")
+  assert.equal(three.metadata.compatibility_state, "blocked")
+  assert.ok(threeSweep.rows.every((row) => row.decode_tok_s == null))
 
   assert.equal(two.hardware_count, 2)
   assert.equal(two.status, "candidate")
