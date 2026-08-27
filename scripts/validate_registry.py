@@ -63,9 +63,9 @@ def validate(root):
         kind = launch.get("kind")
         if status not in ("candidate", "validated"):
             errors.append(f"{recipe['id']}: invalid status {status!r}")
-        if recipe.get("recipe_source") == "localmaxxing":
+        if recipe.get("recipe_source") in ("localmaxxing", "exo-postgres"):
             if status != "candidate" or kind != "reference":
-                errors.append(f"{recipe['id']}: LocalMaxxing rows must be reference-only candidates")
+                errors.append(f"{recipe['id']}: observed imports must be reference-only candidates")
             if "command_snippet" in json.dumps(launch).lower():
                 errors.append(f"{recipe['id']}: candidate launch contains a command snippet")
         if status == "validated":
