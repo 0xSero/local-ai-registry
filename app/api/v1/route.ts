@@ -3,6 +3,8 @@ import { NextResponse } from "next/server"
 import { collectionCounts } from "@/lib/registry"
 
 const routes = {
+  benchmark_runs: "/api/v1/benchmark-runs",
+  benchmarks: "/api/v1/benchmarks",
   compatibility: "/api/v1/compatibility",
   facets: "/api/v1/facets",
   hardware: "/api/v1/hardware",

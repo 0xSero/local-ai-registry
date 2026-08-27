@@ -5,9 +5,12 @@ import { ModalCloseButton, RecordModal } from "@/app/components/record-modal"
 import { RegistrySearch, type SearchFilter } from "@/app/components/registry-search"
 import {
   collectionCounts,
+  getBenchmark,
   getEntityDetail,
   getFacets,
   getSpeedSweep,
+  listBenchmarkRuns,
+  listBenchmarks,
   listHardware,
   listModels,
   listPrices,
@@ -26,7 +29,7 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
-type Topic = "recipes" | "hardware" | "models" | "prices" | "speed-sweeps"
+type Topic = "recipes" | "hardware" | "models" | "benchmarks" | "benchmark-runs" | "prices" | "speed-sweeps"
 
 type EvidenceRow = SpeedRow & {
   sweepId: string
@@ -42,6 +45,8 @@ const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; descri
   { key: "recipes", label: "Recipes", countKey: "recipe", description: "Browse model × hardware compatibility by hardware or by model, with engine, launch status, and evidence." },
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
+  { key: "benchmarks", label: "Benchmarks", countKey: "benchmark", description: "The 100 most relevant evaluations for registered models, ranked by score coverage with reproducible runner status." },
+  { key: "benchmark-runs", label: "Benchmark Runs", countKey: "benchmark_run", description: "Model-instance × benchmark scores with direct and inherited evidence kept visibly distinct." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
   { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps", description: "Measured inference evidence connected back to the recipe that produced it." },
 ]
@@ -258,6 +263,18 @@ export default async function Home({ searchParams }: PageProps) {
     family: value("family"),
     q: query,
   }, pagination) : { data: [], total: 0 }
+  const benchmarkResults = topic === "benchmarks" ? listBenchmarks({
+    category: value("category"),
+    min_model_count: value("min_model_count"),
+    q: query,
+    runner_status: value("runner_status"),
+  }, pagination) : { data: [], total: 0 }
+  const benchmarkRunResults = topic === "benchmark-runs" ? listBenchmarkRuns({
+    benchmark_id: value("benchmark_id"),
+    model_id: value("model_id"),
+    q: query,
+    score_origin: value("score_origin"),
+  }, pagination) : { data: [], total: 0 }
   const priceResults = topic === "prices" ? listPrices({
     category: value("category"),
     condition: value("condition"),
@@ -271,6 +288,8 @@ export default async function Home({ searchParams }: PageProps) {
 
   const filterKeys: Partial<Record<Topic, string[]>> = {
     hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
+    benchmarks: ["category", "runner_status", "min_model_count"],
+    "benchmark-runs": ["benchmark_id", "model_id", "score_origin"],
     models: ["family", "architecture"],
     prices: ["region", "category", "condition", "retailer", "in_stock"],
     recipes: ["by", "hardware_id", "model_id", "validation", "engine", "evidence"],
@@ -289,15 +308,16 @@ export default async function Home({ searchParams }: PageProps) {
   const selectedRecord = detailCollection && value("record") ? getEntityDetail(detailCollection, value("record")) : undefined
   const closeHref = stateHref(viewState)
   const selectedTitle = selectedRecord ? recordTitle(selectedRecord, value("record")) : ""
-  const total = topic === "recipes"
-    ? recipeResults.total
-    : topic === "hardware"
-      ? hardwareResults.total
-      : topic === "models"
-        ? modelResults.total
-        : topic === "prices"
-          ? priceResults.total
-          : topic === "speed-sweeps" ? sweepResults.total : 0
+  const totals: Partial<Record<Topic, number>> = {
+    benchmarks: benchmarkResults.total,
+    "benchmark-runs": benchmarkRunResults.total,
+    hardware: hardwareResults.total,
+    models: modelResults.total,
+    prices: priceResults.total,
+    recipes: recipeResults.total,
+    "speed-sweeps": sweepResults.total,
+  }
+  const total = topic ? totals[topic] ?? 0 : 0
   const topicLabel = TOPICS.find((item) => item.key === topic)?.label
   const topicDescription = TOPICS.find((item) => item.key === topic)?.description
 
@@ -333,13 +353,25 @@ export default async function Home({ searchParams }: PageProps) {
     { label: "Retailer", name: "retailer", value: value("retailer"), options: facetOptions(facets.prices.retailer, "Any retailer") },
     { label: "Availability", name: "in_stock", value: value("in_stock"), options: facetOptions(["true", "false", "unknown"], "Any availability", (item) => item === "true" ? "In stock" : item === "false" ? "Out of stock" : "Unknown stock") },
   ]
-  const topicFilters = topic === "recipes"
-    ? recipeSearchFilters
-    : topic === "hardware"
-      ? hardwareSearchFilters
-      : topic === "models"
-        ? modelSearchFilters
-        : topic === "prices" ? priceSearchFilters : []
+  const benchmarkSearchFilters: SearchFilter[] = [
+    { label: "Category", name: "category", value: value("category"), options: facetOptions(facets.benchmarks.category, "Any category") },
+    { label: "Runner", name: "runner_status", value: value("runner_status"), options: facetOptions(facets.benchmarks.runner_status, "Any runner state") },
+    { label: "Coverage", name: "min_model_count", value: value("min_model_count"), options: facetOptions([1, 3, 5, 10], "Any coverage", (item) => `${item}+ models`) },
+  ]
+  const benchmarkRunSearchFilters: SearchFilter[] = [
+    { label: "Benchmark", name: "benchmark_id", value: value("benchmark_id"), options: [{ label: "All benchmarks", value: "" }, ...listBenchmarks({}, { limit: 100, offset: 0 }).data.map((benchmark) => ({ label: benchmark.name, value: benchmark.id }))] },
+    { label: "Model", name: "model_id", value: value("model_id"), options: [{ label: "All models", value: "" }, ...listModels({}, { limit: 200, offset: 0 }).data.map((model) => ({ label: model.name, value: model.id }))] },
+    { label: "Score origin", name: "score_origin", value: value("score_origin"), options: facetOptions(facets.benchmark_runs.score_origin, "Direct and inherited") },
+  ]
+  const filtersByTopic: Partial<Record<Topic, SearchFilter[]>> = {
+    benchmarks: benchmarkSearchFilters,
+    "benchmark-runs": benchmarkRunSearchFilters,
+    hardware: hardwareSearchFilters,
+    models: modelSearchFilters,
+    prices: priceSearchFilters,
+    recipes: recipeSearchFilters,
+  }
+  const topicFilters = topic ? filtersByTopic[topic] ?? [] : []
 
   return (
     <main className="registry-main">
@@ -412,6 +444,51 @@ export default async function Home({ searchParams }: PageProps) {
                     <span><strong>{model.family}</strong><small>family</small></span>
                     <span><strong>{model.architecture ?? "Unknown"}</strong><small>architecture</small></span>
                     <span><strong>{model.params ?? "—"}</strong><small>parameters</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </article>
+                )
+              })}
+            </div>
+          )}
+          {topic === "benchmarks" && (
+            <div className="browser-list collection-list">
+              {benchmarkResults.data.map((benchmark) => {
+                const tags: RowTag[] = [
+                  { label: benchmark.category, name: "category", value: benchmark.category },
+                  { label: benchmark.runner.status, name: "runner_status", value: benchmark.runner.status },
+                  { label: `${benchmark.coverage.model_count}+ models`, name: "min_model_count", value: String(benchmark.coverage.model_count) },
+                ]
+                return (
+                  <article className="browser-row collection-row" key={benchmark.id}>
+                    <Link aria-label={`Open ${benchmark.name}`} className="row-open" href={hrefWithRecord(viewState, benchmark.id)} scroll={false} />
+                    <span className="row-primary"><strong>{benchmark.name}</strong><small>{benchmark.id}</small></span>
+                    <span><strong>{benchmark.category}</strong><small>category</small></span>
+                    <span><strong>{benchmark.coverage.model_count}</strong><small>models with scores</small></span>
+                    <span><strong>{benchmark.coverage.benchmark_run_count}</strong><small>model-instance runs</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </article>
+                )
+              })}
+            </div>
+          )}
+          {topic === "benchmark-runs" && (
+            <div className="browser-list collection-list">
+              {benchmarkRunResults.data.map((run) => {
+                const benchmark = getBenchmark(run.benchmark_id)
+                const tags: RowTag[] = [
+                  { label: run.score_origin, name: "score_origin", value: run.score_origin },
+                  { label: run.benchmark_id, name: "benchmark_id", value: run.benchmark_id },
+                  { label: run.model_id, name: "model_id", value: run.model_id },
+                ]
+                return (
+                  <article className="browser-row collection-row" key={run.id}>
+                    <Link aria-label={`Open ${run.id}`} className="row-open" href={hrefWithRecord(viewState, run.id)} scroll={false} />
+                    <span className="row-primary"><strong>{benchmark?.name ?? run.benchmark_id}</strong><small>{run.model_instance_id}</small></span>
+                    <span><strong>{run.score.value.toLocaleString()}</strong><small>{run.score.metric}</small></span>
+                    <span><strong>{run.score_origin}</strong><small>score origin</small></span>
+                    <span><strong>{run.model_id}</strong><small>origin model</small></span>
                     <TaxonomyTags state={viewState} tags={tags} />
                     <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
                   </article>

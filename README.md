@@ -15,6 +15,12 @@ index.json
     speed_sweeps_ids[] -> speed-sweeps/<id>.json
   price/<product-id>/<region>.json
     hardware[].id      -> hardware/<id>.json
+  benchmark/<id>.json
+    command            -> local-ai benchmark run <id> --model-instance <id>
+  benchmark-run/<id>.json
+    benchmark_id       -> benchmark/<id>.json
+    model_id           -> model/<id>.json
+    model_instance_id  -> model-instance/<id>.json
 ```
 
 This is the progressive-disclosure rule: index, choice, then the exact record and immediate references needed for the selected view. The API adds compact `relationships` links to the same records used by the site; it does not maintain a second UI-specific dataset or recursively embed the entire graph.
@@ -28,6 +34,8 @@ This is the progressive-disclosure rule: index, choice, then the exact record an
 | `model-instance/` | One downloadable artifact or quantization |
 | `recipe/` | One artifact × hardware × engine compatibility unit |
 | `speed-sweeps/` | Benchmark evidence attached to one recipe |
+| `benchmark/` | Evaluation definitions, runner availability, links, and score coverage |
+| `benchmark-run/` | Sourced scores attached to model instances, explicitly direct or inherited |
 | `price/<product-id>/` | Current retailer observations split by region and native currency |
 
 Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
@@ -84,6 +92,8 @@ Versioned JSON routes live under `/api/v1`. `GET` and `HEAD` are supported. Muta
 | `/api/v1/recipes` and `/api/v1/recipes/:id` | Compatibility units and fully resolved details |
 | `/api/v1/compatibility` | Model × hardware compatibility query |
 | `/api/v1/speed-sweeps` and `/api/v1/speed-sweeps/:id` | Measured speed evidence |
+| `/api/v1/benchmarks` and `/api/v1/benchmarks/:id` | Benchmark definitions, commands, runner contracts, and coverage |
+| `/api/v1/benchmark-runs` and `/api/v1/benchmark-runs/:id` | Direct and inherited model-instance scores with source provenance |
 
 List routes accept `limit` (maximum 100) and `offset`. Common compatibility filters are `model`, `hardware`, `model_id`, `model_instance_id`, `hardware_id`, `status`, `launchable`, `engine`, `launch_kind`, `precision`, `instance_kind`, `vendor`, `backend`, `min_vram_gb`, `max_vram_gb`, `hardware_count`, `evidence`, and the tri-state capability filters `chat`, `reasoning`, `tools`, and `vision`. Capability values are `true`, `false`, or `unknown`. Model-instance lists also accept `huggingface_status` and `huggingface_link_type`.
 
@@ -94,6 +104,8 @@ curl 'http://localhost:3000/api/v1/models?q=gemma'
 curl 'http://localhost:3000/api/v1/hardware?vendor=nvidia&min_vram_gb=48'
 curl 'http://localhost:3000/api/v1/prices?region=US&condition=new&in_stock=true'
 curl 'http://localhost:3000/api/v1/model-instances?huggingface_link_type=search&limit=10'
+curl 'http://localhost:3000/api/v1/benchmarks?runner_status=available&min_model_count=10'
+curl 'http://localhost:3000/api/v1/benchmark-runs?benchmark_id=mmlu-pro&score_origin=direct'
 curl 'http://localhost:3000/api/v1/compatibility?model=gemma&hardware=rtx%20pro%206000&launchable=true'
 curl 'http://localhost:3000/api/v1/recipes/gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1'
 ```
@@ -123,6 +135,16 @@ python3 scripts/curate_registry.py
 python3 scripts/validate_registry.py
 ```
 
+To rebuild the top-100 evaluation index and its model-card-backed score records from the benchmark catalog:
+
+```bash
+python3 scripts/import_benchmark_catalog.py --source ~/projects/hf-model-benchmarks
+python3 scripts/curate_registry.py --index-only
+python3 scripts/validate_registry.py
+```
+
+The importer ranks evaluation families by coverage of models already registered here, then by catalog-wide model coverage. A directly observed score belongs only to the exact artifact repository cited by its source model card. Other artifacts of the same canonical model may expose that score as `inherited`, but cannot present it as an evaluation of the artifact itself. See [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) for the contract and contribution rules.
+
 The validator checks IDs, references, counts, status boundaries, pinned validated artifacts, positive evidence values, and the CUDA-graph policy. `curate_registry.py` is deterministic and rebuilds the compact index after data changes.
 
 ## Local CLI
@@ -135,6 +157,11 @@ bin/local-ai list --json
 bin/local-ai choose
 bin/local-ai search qwen
 bin/local-ai show <recipe-id>
+bin/local-ai benchmark list
+bin/local-ai benchmark show mmlu-pro
+bin/local-ai benchmark runs mmlu-pro
+bin/local-ai benchmark command mmlu-pro <model-instance-id>
+bin/local-ai benchmark run mmlu-pro <model-instance-id>
 ```
 
 The default `choose` command uses `gum` when available and a numbered terminal menu otherwise. Capacity matches are recommendations, not claims that another hardware profile's benchmark applies unchanged. Candidate recipes remain inspectable but are never presented as validated launch contracts. Set `LOCAL_AI_HARDWARE` and `LOCAL_AI_HARDWARE_COUNT` to override detection.

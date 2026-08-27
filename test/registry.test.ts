@@ -3,10 +3,14 @@ import test from "node:test"
 
 import {
   collectionCounts,
+  getBenchmark,
+  getBenchmarkRun,
   getEntityDetail,
   getFacets,
   isLaunchable,
   listHardware,
+  listBenchmarkRuns,
+  listBenchmarks,
   marketPriceCount,
   listModelInstances,
   listModels,
@@ -14,6 +18,60 @@ import {
   listSpeedSweeps,
   queryCompatibility,
 } from "../lib/registry"
+
+test("benchmark catalog exposes a top-100 index and sourced model-instance runs", () => {
+  const counts = collectionCounts()
+  const benchmarks = listBenchmarks({}, { limit: 100, offset: 0 })
+  const runs = listBenchmarkRuns({}, { limit: 2_000, offset: 0 })
+
+  assert.equal(counts.benchmark, 100)
+  assert.equal(benchmarks.total, 100)
+  assert.equal(runs.total, counts.benchmark_run)
+  assert.ok(runs.total > 1_000)
+  assert.ok(benchmarks.data.every((benchmark) => benchmark.link.startsWith("https://")))
+  assert.ok(benchmarks.data.every((benchmark) => benchmark.command.includes(benchmark.id)))
+  assert.ok(benchmarks.data.every((benchmark) => benchmark.coverage.benchmark_run_count > 0 || benchmark.coverage.model_count === 0))
+})
+
+test("benchmark search sorts by registry model coverage and composes filters", () => {
+  const benchmarks = listBenchmarks({}, { limit: 100, offset: 0 }).data
+  assert.ok(benchmarks.every((benchmark, index) => index === 0 || benchmarks[index - 1].coverage.model_count >= benchmark.coverage.model_count))
+
+  const available = listBenchmarks(
+    { min_model_count: "10", runner_status: "available" },
+    { limit: 100, offset: 0 },
+  )
+  assert.ok(available.total > 0)
+  assert.ok(available.data.every((benchmark) => benchmark.coverage.model_count >= 10 && benchmark.runner.status === "available"))
+})
+
+test("inherited benchmark scores remain visibly distinct from direct observations", () => {
+  const direct = listBenchmarkRuns({ score_origin: "direct" }, { limit: 1, offset: 0 }).data[0]
+  const inherited = listBenchmarkRuns({ score_origin: "inherited" }, { limit: 1, offset: 0 }).data[0]
+
+  assert.ok(direct)
+  assert.ok(inherited)
+  assert.equal(direct.inherited_from, null)
+  assert.ok(inherited.inherited_from)
+  assert.equal(inherited.inherited_from.model_id, inherited.model_id)
+  assert.notEqual(inherited.inherited_from.source_model_instance_id, inherited.model_instance_id)
+  assert.ok(inherited.provenance.sources.some((source) => source.kind === "model-card"))
+})
+
+test("benchmark details resolve runs, models, and model instances", () => {
+  const benchmark = getBenchmark("mmlu-pro")
+  assert.ok(benchmark)
+  const run = listBenchmarkRuns({ benchmark_id: benchmark.id }, { limit: 1, offset: 0 }).data[0]
+  assert.ok(run)
+  assert.ok(getBenchmarkRun(run.id))
+
+  const detail = getEntityDetail("benchmarks", benchmark.id)
+  assert.ok(detail && typeof detail === "object" && "relationships" in detail)
+  const relationships = detail.relationships
+  assert.ok(relationships && typeof relationships === "object" && "benchmark_runs" in relationships)
+  assert.ok(Array.isArray(relationships.benchmark_runs))
+  assert.equal(relationships.benchmark_runs.length, benchmark.coverage.benchmark_run_count)
+})
 
 test("model and hardware searches intersect on compatible recipes", () => {
   const result = queryCompatibility(

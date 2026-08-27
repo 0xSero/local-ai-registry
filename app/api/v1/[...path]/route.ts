@@ -6,6 +6,8 @@ import {
   getFacets,
   getRegistryIndex,
   listHardware,
+  listBenchmarkRuns,
+  listBenchmarks,
   listModelInstances,
   listModels,
   listPrices,
@@ -106,6 +108,12 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
 
   if (resource === "models") {
     return listResponse(request, listModels(selectedFilters, page), page)
+  }
+  if (resource === "benchmarks") {
+    return listResponse(request, listBenchmarks(selectedFilters, page), page)
+  }
+  if (resource === "benchmark-runs") {
+    return listResponse(request, listBenchmarkRuns(selectedFilters, page), page)
   }
   if (resource === "model-instances") {
     return listResponse(request, listModelInstances(selectedFilters, page), page)

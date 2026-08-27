@@ -17,6 +17,8 @@ type RegistrySearchProps = {
 }
 
 const SEARCH_LABELS: Record<string, string> = {
+  benchmarks: "Search benchmarks",
+  "benchmark-runs": "Search benchmark runs",
   hardware: "Search hardware",
   models: "Search models",
   prices: "Search price observations",

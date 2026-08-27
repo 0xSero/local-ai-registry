@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 
 import type {
+  Benchmark,
+  BenchmarkRun,
   Hardware,
   Model,
   ModelInstance,
@@ -92,6 +94,8 @@ type RecordLink = {
 }
 
 type Dataset = {
+  benchmarkRuns: Map<string, BenchmarkRun>
+  benchmarks: Map<string, Benchmark>
   hardware: Map<string, Hardware>
   index: RegistryIndex
   instances: Map<string, RegistryModelInstance>
@@ -128,6 +132,8 @@ function dataset(): Dataset {
   const index = readJson<RegistryIndex>("index.json")
   cachedDataset = {
     hardware: loadCollection<Hardware>(index, "hardware"),
+    benchmarkRuns: new Map(),
+    benchmarks: loadCollection<Benchmark>(index, "benchmark"),
     index,
     instances: loadCollection<RegistryModelInstance>(index, "model-instance"),
     models: loadCollection<Model>(index, "model"),
@@ -146,7 +152,7 @@ function dataset(): Dataset {
 }
 
 function cachedRecord<T>(
-  collection: "recipe" | "speed-sweeps",
+  collection: "benchmark-run" | "recipe" | "speed-sweeps",
   id: string,
   cache: Map<string, T>,
 ): T | undefined {
@@ -181,6 +187,14 @@ export function getRecipe(id: string): Recipe | undefined {
 
 export function getSpeedSweep(id: string): SpeedSweep | undefined {
   return cachedRecord("speed-sweeps", id, dataset().sweeps)
+}
+
+export function getBenchmark(id: string): Benchmark | undefined {
+  return dataset().benchmarks.get(id)
+}
+
+export function getBenchmarkRun(id: string): BenchmarkRun | undefined {
+  return cachedRecord("benchmark-run", id, dataset().benchmarkRuns)
 }
 
 export function modelInstanceResult(instance: RegistryModelInstance): ModelInstanceResult {
@@ -412,6 +426,47 @@ export function listSpeedSweeps(filters: Record<string, string>, pagination: Pag
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
 
+export function listBenchmarks(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().benchmarks.values()]
+    .filter((benchmark) => {
+      if (!contains(benchmark, filters.q)) return false
+      if (!equals(benchmark.category, filters.category)) return false
+      if (!equals(benchmark.runner.status, filters.runner_status)) return false
+      if (!numericFilter(benchmark.coverage.model_count, filters.min_model_count, filters.max_model_count)) return false
+      return true
+    })
+    .sort((left, right) =>
+      right.coverage.model_count - left.coverage.model_count ||
+      right.coverage.benchmark_run_count - left.coverage.benchmark_run_count ||
+      left.name.localeCompare(right.name),
+    )
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+function benchmarkRuns(): BenchmarkRun[] {
+  return dataset().index.collections["benchmark-run"].flatMap((id) => {
+    const run = getBenchmarkRun(id)
+    return run ? [run] : []
+  })
+}
+
+export function listBenchmarkRuns(filters: Record<string, string>, pagination: Pagination) {
+  const all = benchmarkRuns()
+    .filter((run) =>
+      contains(run, filters.q) &&
+      equals(run.benchmark_id, filters.benchmark_id) &&
+      equals(run.model_id, filters.model_id) &&
+      equals(run.model_instance_id, filters.model_instance_id) &&
+      equals(run.score_origin, filters.score_origin),
+    )
+    .sort((left, right) =>
+      left.benchmark_id.localeCompare(right.benchmark_id) ||
+      right.score.value - left.score.value ||
+      left.model_instance_id.localeCompare(right.model_instance_id),
+    )
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
 function recipeRowsForModel(modelId: string): CompatibilityRow[] {
   const instanceIds = new Set(
     [...dataset().instances.values()]
@@ -472,6 +527,9 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
         hardware: hardwareLinksForRows(rows),
         model_instances: instances.map((instance) => recordLink("model-instances", instance.id, instance.repository)),
         recipes: rows.map(recipeLink),
+        benchmark_runs: benchmarkRuns()
+          .filter((run) => run.model_id === id)
+          .map((run) => recordLink("benchmark-runs", run.id)),
       },
     }
   }
@@ -485,6 +543,9 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
         hardware: hardwareLinksForRows(data.index.recipes.filter((row) => row.model_instance_id === id)),
         model: recordLink("models", instance.model_id, data.models.get(instance.model_id)?.name),
         recipes: data.index.recipes.filter((row) => row.model_instance_id === id).map(recipeLink),
+        benchmark_runs: benchmarkRuns()
+          .filter((run) => run.model_instance_id === id)
+          .map((run) => recordLink("benchmark-runs", run.id)),
       },
     }
   }
@@ -551,6 +612,41 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     }
   }
 
+  if (collection === "benchmarks") {
+    const benchmark = data.benchmarks.get(id)
+    if (!benchmark) return undefined
+    const runs = benchmarkRuns().filter((run) => run.benchmark_id === id)
+    const modelLinks = new Map<string, RecordLink>()
+    const instanceLinks = new Map<string, RecordLink>()
+    for (const run of runs) {
+      const model = data.models.get(run.model_id)
+      const instance = data.instances.get(run.model_instance_id)
+      if (model) modelLinks.set(model.id, recordLink("models", model.id, model.name))
+      if (instance) instanceLinks.set(instance.id, recordLink("model-instances", instance.id, instance.repository))
+    }
+    return {
+      ...benchmark,
+      relationships: {
+        benchmark_runs: runs.map((run) => recordLink("benchmark-runs", run.id)),
+        model_instances: [...instanceLinks.values()],
+        models: [...modelLinks.values()],
+      },
+    }
+  }
+
+  if (collection === "benchmark-runs") {
+    const run = getBenchmarkRun(id)
+    if (!run) return undefined
+    return {
+      ...run,
+      relationships: {
+        benchmark: recordLink("benchmarks", run.benchmark_id, data.benchmarks.get(run.benchmark_id)?.name),
+        model: recordLink("models", run.model_id, data.models.get(run.model_id)?.name),
+        model_instance: recordLink("model-instances", run.model_instance_id, data.instances.get(run.model_instance_id)?.repository),
+      },
+    }
+  }
+
   return undefined
 }
 
@@ -593,6 +689,13 @@ export function getFacets() {
       hardware_count: unique(data.index.recipes.map((recipe) => recipe.hardware_count)),
       launch_kind: unique(data.index.recipes.map((recipe) => recipe.launch_kind)),
       status: unique(data.index.recipes.map((recipe) => recipe.status)),
+    },
+    benchmarks: {
+      category: unique([...data.benchmarks.values()].map((benchmark) => benchmark.category)),
+      runner_status: unique([...data.benchmarks.values()].map((benchmark) => benchmark.runner.status)),
+    },
+    benchmark_runs: {
+      score_origin: unique(benchmarkRuns().map((run) => run.score_origin)),
     },
   }
 }

@@ -182,6 +182,56 @@ search() {
   done | sort -u
 }
 
+benchmark_list() {
+  local json=${1:-}
+  if [[ $json == "--json" ]]; then
+    jq -s 'sort_by([-.coverage.model_count, -.coverage.benchmark_run_count, .name])' "$ROOT"/benchmark/*.json
+  else
+    jq -sr '. | sort_by([-.coverage.model_count, -.coverage.benchmark_run_count, .name])[] | [.id, .name, .category, .coverage.model_count, .coverage.benchmark_run_count, .runner.status] | @tsv' "$ROOT"/benchmark/*.json
+  fi
+}
+
+benchmark_runs() {
+  local benchmark_id=${1:-} model_instance_id=${2:-}
+  jq -s --arg benchmark "$benchmark_id" --arg instance "$model_instance_id" '
+    map(select(($benchmark == "" or .benchmark_id == $benchmark) and ($instance == "" or .model_instance_id == $instance)))
+    | sort_by([.benchmark_id, -.score.value, .model_instance_id])
+  ' "$ROOT"/benchmark-run/*.json
+}
+
+benchmark_command() {
+  local benchmark_id=$1 model_instance_id=$2 benchmark instance template served base_url
+  benchmark=$(record benchmark "$benchmark_id")
+  instance=$(record model-instance "$model_instance_id")
+  [[ $(jq -r '.runner.status' <<<"$benchmark") == "available" ]] || fail "${benchmark_id} requires its reference protocol: $(jq -r '.runner.implementation_url' <<<"$benchmark")"
+  template=$(jq -r '.runner.command_template' <<<"$benchmark")
+  served=$(jq -r '.served_name // .repository' <<<"$instance")
+  base_url=${LOCAL_AI_BASE_URL:-http://127.0.0.1:8000/v1/chat/completions}
+  jq -nr --arg template "$template" --arg served "$served" --arg base "$base_url" '
+    $template | gsub("\\{served_model\\}"; $served) | gsub("\\{base_url\\}"; $base)
+  '
+}
+
+benchmark() {
+  local action=${1:-list} benchmark_id model_instance_id command
+  case $action in
+    list) benchmark_list "${2:-}" ;;
+    show) (( $# == 2 )) || fail "benchmark show requires a benchmark id"; record benchmark "$2" ;;
+    runs) benchmark_runs "${2:-}" "${3:-}" ;;
+    command)
+      (( $# == 3 )) || fail "benchmark command requires a benchmark id and model-instance id"
+      benchmark_command "$2" "$3"
+      ;;
+    run)
+      (( $# == 3 )) || fail "benchmark run requires a benchmark id and model-instance id"
+      command=$(benchmark_command "$2" "$3")
+      need lm-eval
+      exec /bin/bash -lc "$command"
+      ;;
+    *) fail "unknown benchmark action $action" ;;
+  esac
+}
+
 choose() {
   local hardware=${1:-} rows choices selected label count
   local labels=()
@@ -218,6 +268,12 @@ Usage: local-ai [command]
   show <recipe-id>               resolve a recipe and its references
   get <collection> <id>          print one record
   search <text>                  search all registry records
+  benchmark list [--json]        list benchmark definitions by registry coverage
+  benchmark show <id>            print one benchmark definition
+  benchmark runs [id] [instance] list benchmark runs
+  benchmark command <id> <instance>
+                                 print the reproducible evaluator command
+  benchmark run <id> <instance> run an available evaluator
 EOF
 }
 
@@ -231,6 +287,7 @@ case ${1:-choose} in
   show) (( $# == 2 )) || fail "show requires a recipe id"; resolve "$2" ;;
   get) (( $# == 3 )) || fail "get requires a collection and id"; record "$2" "$3" ;;
   search) (( $# == 2 )) || fail "search requires one text query"; need rg; search "$2" ;;
+  benchmark) shift; benchmark "$@" ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;
 esac
