@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Qwen3.8 Flash-Next UD-IQ1_S on one DGX Spark with a pinned native llama.cpp build, 262,144 total context tokens, eight slots, checksum-verified shards, and measured cold/warm evidence from 512 to 32,000 input tokens",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama-cpp",
+    "version": "bea3b12daee45876b0129a3602dc8f534ce30bf0"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "${MODEL_ROOT}/UD-IQ1_S/Qwen3.8-Flash-Next-UD-IQ1_S-00001-of-00003.gguf",
+      "-c",
+      "262144",
+      "-np",
+      "8",
+      "--no-kv-unified",
+      "-b",
+      "2048",
+      "-ub",
+      "64",
+      "-ngl",
+      "99",
+      "-ot",
+      "per_layer_token_embd=CPU",
+      "--cache-prompt",
+      "--cache-reuse",
+      "0",
+      "--slot-prompt-similarity",
+      "0.10",
+      "--cache-ram",
+      "0",
+      "--no-cache-idle-slots",
+      "--no-context-shift",
+      "--load-mode",
+      "mmap",
+      "--metrics",
+      "--slots",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8001",
+      "--no-webui"
+    ],
+    "build": {
+      "cmake_definitions": [
+        "GGML_NATIVE=ON",
+        "GGML_CUDA=ON",
+        "GGML_CURL=ON",
+        "GGML_RPC=ON",
+        "LLAMA_BUILD_UI=OFF",
+        "CMAKE_BUILD_TYPE=Release",
+        "CMAKE_CUDA_ARCHITECTURES=121a-real"
+      ],
+      "commit": "bea3b12daee45876b0129a3602dc8f534ce30bf0",
+      "cuda_architecture": "121a-real",
+      "fetch": [
+        "git",
+        "-C",
+        "${LLAMA_ROOT}",
+        "fetch",
+        "--depth=1",
+        "origin",
+        "bea3b12daee45876b0129a3602dc8f534ce30bf0"
+      ],
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "source_recipe_commit": "04f227bf18171568714a81c16bff57b6d62e8dbe",
+      "verify": "FETCH_HEAD must equal bea3b12daee45876b0129a3602dc8f534ce30bf0 before checkout and build"
+    },
+    "container": {
+      "captured_at": "2026-08-27T16:04:03Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "native llama.cpp build and systemd user service; no container is used",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-27T16:04:03Z",
+          "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+          "kind": "recipe-launch",
+          "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark",
+          "url": "https://github.com/sxuff/qwen38-flash-next-dgx-spark/tree/ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b"
+        }
+      ],
+      "state": "none"
+    },
+    "executable": "${LLAMA_ROOT}/build-gb10-pr27742/bin/llama-server",
+    "host_port": 8001,
+    "kind": "native",
+    "model_entry": "UD-IQ1_S/Qwen3.8-Flash-Next-UD-IQ1_S-00001-of-00003.gguf",
+    "network_mode": "localhost",
+    "source": {
+      "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+      "paths": [
+        "manifests/q1-iq1s.json",
+        "results/q1-iq1s.json",
+        "scripts/download_model.py",
+        "scripts/run_server.sh",
+        "scripts/install_service.sh",
+        "systemd/qwen38-flash-next-llama.service"
+      ],
+      "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark"
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "checksum_verified": true,
+      "completion": true,
+      "exact_q3_output_matches": 4,
+      "quality_cases_passed": 4,
+      "quality_cases_total": 4
+    },
+    "measurement_scope": {
+      "batches": 32,
+      "cold_warm_pairs": 60,
+      "output_tokens_per_request": 256,
+      "request_rows": 120
+    },
+    "runtime_scope": "Q1 speed evidence and launch are pinned to llama.cpp bea3b12daee45876b0129a3602dc8f534ce30bf0. The registry build contract fetches that immutable SHA directly and does not depend on the historical source script's mutable pull/27742/head ref.",
+    "safety": {
+      "host_swap_growth_bytes": 29167616,
+      "maximum_service_swap_bytes": 0,
+      "minimum_mem_available_bytes": 64950276096,
+      "safety_incident": false
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-iq1-s",
+  "provenance": {
+    "captured_at": "2026-08-27T16:04:03Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T16:04:03Z",
+        "commit": "04f227bf18171568714a81c16bff57b6d62e8dbe",
+        "kind": "submitter-launch",
+        "paths": [
+          "manifests/q1-iq1s.json",
+          "results/q1-iq1s.json",
+          "scripts/build_llama.sh",
+          "scripts/download_model.py",
+          "scripts/run_server.sh",
+          "scripts/install_service.sh",
+          "systemd/qwen38-flash-next-llama.service"
+        ],
+        "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark",
+        "url": "https://github.com/sxuff/qwen38-flash-next-dgx-spark/tree/04f227bf18171568714a81c16bff57b6d62e8dbe"
+      },
+      {
+        "captured_at": "2026-08-27T16:04:03Z",
+        "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+        "kind": "submitter-evidence",
+        "paths": [
+          "results/q1-iq1s.json",
+          "results/q3-q3kxl.json",
+          "tests/test_recipe.py"
+        ],
+        "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark",
+        "url": "https://github.com/sxuff/qwen38-flash-next-dgx-spark/tree/ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b"
+      }
+    ]
+  },
+  "recipe_source": "sxuff",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "api": "openai/v1",
+    "bind": "127.0.0.1:8001",
+    "context_tokens_per_slot": 32768,
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": true
+  },
+  "description": "Qwen3.8 Flash-Next UD-Q3_K_XL on one DGX Spark with pinned native llama.cpp, one 65,536-token slot, ngram-mod speculation, and a separately pinned F16 projector for verified native vision",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama-cpp",
+    "version": "b8bdf73bb9baf044caadd33be2a51be70156ec57"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "${MODEL_ROOT}/UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00001-of-00003.gguf",
+      "--mmproj",
+      "${MODEL_ROOT}/mmproj-F16.gguf",
+      "-c",
+      "65536",
+      "-np",
+      "1",
+      "--no-kv-unified",
+      "-b",
+      "512",
+      "-ub",
+      "64",
+      "-ngl",
+      "99",
+      "-ot",
+      "per_layer_token_embd=CPU",
+      "--cache-prompt",
+      "--cache-reuse",
+      "0",
+      "--slot-prompt-similarity",
+      "0.10",
+      "--cache-ram",
+      "0",
+      "--no-cache-idle-slots",
+      "--no-context-shift",
+      "--load-mode",
+      "mmap",
+      "--spec-type",
+      "ngram-mod",
+      "--spec-ngram-mod-n-match",
+      "24",
+      "--spec-ngram-mod-n-min",
+      "48",
+      "--spec-ngram-mod-n-max",
+      "64",
+      "--metrics",
+      "--slots",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8001",
+      "--no-webui"
+    ],
+    "build": {
+      "commit": "b8bdf73bb9baf044caadd33be2a51be70156ec57",
+      "cuda_architecture": "121",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "source_recipe_commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b"
+    },
+    "container": {
+      "captured_at": "2026-08-27T16:04:03Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "native llama.cpp build and systemd user service; no container is used",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-27T16:04:03Z",
+          "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+          "kind": "recipe-launch",
+          "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark",
+          "url": "https://github.com/sxuff/qwen38-flash-next-dgx-spark/tree/ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b"
+        }
+      ],
+      "state": "none"
+    },
+    "executable": "${LLAMA_ROOT}/build-gb10-pr27742/bin/llama-server",
+    "host_port": 8001,
+    "kind": "native",
+    "model_entry": "UD-Q3_K_XL/Qwen3.8-Flash-Next-UD-Q3_K_XL-00001-of-00003.gguf",
+    "network_mode": "localhost",
+    "projector": {
+      "bytes": 904004000,
+      "filename": "mmproj-F16.gguf",
+      "repository": "unsloth/Qwen3.8-Flash-Next-GGUF",
+      "revision": "824f539b2710e5a9e47af4952cf6578cf5ee8932",
+      "sha256": "1f7b7f0b984cf065c604360c29c8098362ed61b290db0ff12c6f360bb1a8a980"
+    },
+    "source": {
+      "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+      "paths": [
+        "manifests/q3-q3kxl.json",
+        "manifests/q3-mmproj-f16.json",
+        "results/q3-q3kxl.json",
+        "results/q3-q3kxl-ngram-mod.json",
+        "results/q3-q3kxl-vision.json",
+        "scripts/build_llama.sh",
+        "scripts/download_model.py",
+        "scripts/run_server.sh",
+        "scripts/install_service.sh",
+        "systemd/qwen38-flash-next-llama.service",
+        "tests/test_recipe.py"
+      ],
+      "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark"
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "checksum_verified": true,
+      "completion": true,
+      "hermes_vision_round_trip": true,
+      "service_swap_bytes": 0,
+      "vision_direct_api_cases_passed": 2,
+      "vision_direct_api_cases_total": 2
+    },
+    "historical_quality_gate": {
+      "cases_passed": 4,
+      "cases_total": 4,
+      "runtime_commit": "bea3b12daee45876b0129a3602dc8f534ce30bf0",
+      "scope_note": "This quality gate predates the b8bdf73 runtime used by the current ngram-mod and vision evidence; it is retained as historical evidence and does not establish current-runtime reasoning or tool capability."
+    },
+    "speculation": {
+      "accepted_tokens": 2992,
+      "completion_tokens_per_arm": 3496,
+      "draft_tokens": 4416,
+      "exact_output_matches": 4,
+      "paired_cases": 4,
+      "repetitions": 1,
+      "scope_note": "The paired sweep covers copy-heavy Python, copy-heavy JSON, a structured transform, and a novel-code control. It does not establish the same speedup for unrelated prompts.",
+      "wall_speedup_x": 2.490983400874034
+    },
+    "vision_scope_note": "Native image input passed two bounded direct API cases and one Hermes vision-tool round trip; this is not a broad visual benchmark and does not measure video input."
+  },
+  "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-q3-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-27T16:04:03Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T16:04:03Z",
+        "commit": "ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b",
+        "kind": "submitter-launch-and-evidence",
+        "paths": [
+          "manifests/q3-q3kxl.json",
+          "manifests/q3-mmproj-f16.json",
+          "results/q3-q3kxl.json",
+          "results/q3-q3kxl-ngram-mod.json",
+          "results/q3-q3kxl-vision.json",
+          "scripts/build_llama.sh",
+          "scripts/download_model.py",
+          "scripts/run_server.sh",
+          "scripts/install_service.sh",
+          "systemd/qwen38-flash-next-llama.service",
+          "tests/test_recipe.py"
+        ],
+        "repository": "https://github.com/sxuff/qwen38-flash-next-dgx-spark",
+        "url": "https://github.com/sxuff/qwen38-flash-next-dgx-spark/tree/ad2eeba5dc89c2dfafcab2c0f442b57c7370e61b"
+      }
+    ]
+  },
+  "recipe_source": "sxuff",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "api": "openai/v1",
+    "bind": "127.0.0.1:8001",
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "speculative_decode": "ngram-mod",
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod-sweep"
+  ],
+  "status": "candidate"
+}
