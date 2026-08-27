@@ -1,19 +1,71 @@
-# GLM-5.3 Flash EXL3 Q4: two- and four-GPU status
+# GLM-5.3 Flash EXL3 Q4 on RTX PRO 6000 Blackwell
 
-The public artifact is [`0xSero/GLM-5.3-Flash-EXL3-Q4`](https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4), pinned here at revision `99cccdf0e8741715662c383828a9ea601990c125`.
+The public artifact is [`0xSero/GLM-5.3-Flash-EXL3-Q4`](https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4), pinned here at revision `99cccdf0e8741715662c383828a9ea601990c125`. It stores routed experts in layers 3-44 at 4.0 bpw EXL3 and preserves the backbone in BF16.
 
-## Four RTX PRO 6000 Blackwell GPUs
+## Accepted four-GPU runtime
 
-The TP4/EP1 SGLang path is runtime-tested with CUDA graphs enabled, FP8 E4M3 KV, a 262,144-token configured context, model discovery, endpoint health, and a generated completion. Its accepted matched 256-token prose screen produced 73.4979 output tokens per second. A virtual-slice EP4 candidate produced 68.4659 output tokens per second and was rejected as a 6.85% regression. An MTP5 candidate was also rejected.
+The accepted runtime uses four RTX PRO 6000 Blackwell 96 GB GPUs, SGLang TP4/EP1, FP8 E4M3 KV, a 262,144-token configured context, and full CUDA graphs for decode and prefill. It passed model discovery, endpoint health, and generated-completion checks. GPU power limits were not changed.
 
-The recipe remains `candidate`, rather than `validated`, because its locally built runtime image has not been published by content digest and tool/vision execution has not been accepted.
+The highest measured output-throughput profile used 256 concurrent requests, a warmed shared prefix, a measured input sequence length (ISL) of 131 tokens per request, and a requested output sequence length (OSL) of 1,024 tokens per request:
 
-## Two RTX PRO 6000 Blackwell GPUs
+| Profile | Client output tok/s | Output tok/min | Total API tok/min | Median active decode/user | Median TTFT |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| C32, cold, ISL 128, OSL 256 | 763.74 | 45,824 | 68,731 | 30.40 tok/s | 2.30 s |
+| C64, warm, ISL 131, OSL 1,024 | 1,183.66 | 71,019 | 80,105 | 28.90 tok/s | 2.80 s |
+| C128, warm, ISL 131, OSL 1,024 | 1,423.86 | 85,432 | 96,361 | 28.38 tok/s | 38.46 s |
+| **C256, warm, ISL 131, OSL 1,024** | **1,710.16** | **102,610** | **115,737** | **31.61 tok/s** | **68.68 s** |
 
-There is no honest working TP2 recipe yet. The checkpoint metadata fixes `tensor_parallel_size` at 4 and uses independently rotated rank slices. The current loader therefore cannot simply change `--tp-size 4` to `--tp-size 2`.
+The C256 row is the maximum-throughput profile, not the lowest-latency profile. All 256 requests completed and returned 262,144 completion tokens in 153.29 seconds. Its p95 time to first token (TTFT) was 104.37 seconds. C32 or C64 is the more useful operating point when interactive latency matters.
 
-A correct TP2 adaptation would pair sealed source ranks 0+1 and 2+3, preserve each rotation as a virtual slice, and expand top-8 routing to top-16 before the two physical ranks reduce their partial outputs. The four-GPU runtime measured 53.18 GB of prepared weights per rank for one 288-slice kernel slab. Pairing two slabs projects to roughly 106.36 GB per physical rank before KV cache and runtime workspace, which is already above 96 GB.
+The earlier approximately 900 tok/s observation is also reproduced and explained: at C32, the SGLang engine gauge reported 858.65 generation tok/s while the client observed 763.74 output tok/s over the complete batch. Engine gauges and client end-to-end throughput measure different boundaries.
 
-For that reason the TP2 registry row is a non-launchable compatibility record with a blocked sweep, not fabricated throughput. A future TP2 claim requires a lower-memory packing path or offload design, real-weight parity, full load, CUDA-graph capture, endpoint acceptance, and a fresh speed sweep.
+## ISL, OSL, cache, prefill, decode, and TPM
 
-No power-limit changes are part of either recipe.
+- **ISL** is the measured input sequence length, including chat-template tokens.
+- **OSL** is the requested output sequence length. Completed output tokens are taken from server-reported usage.
+- **TTFT** is time to first generated token.
+- **Client output tok/s** is all completed output tokens divided by batch wall time.
+- **Output TPM** is client output tok/s multiplied by 60.
+- **Total API TPM** includes prompt and output tokens. It is not a decode-only capacity number.
+- **Active decode/user** measures a stream only while it is emitting tokens; it excludes that request's queueing and TTFT.
+
+A cold ISL 1,024 / OSL 1 request measured 827.74 server prefill-compute tok/s. Repeating an approximately 1,022-token prefix produced a 93.75% instantaneous device-cache hit rate: 960 device-hit tokens and 64 newly computed tokens, with 466.78 ms TTFT. In the C256 run, cumulative SGLang counters recorded 32,768 device-hit tokens and 16,384 prefill-compute tokens, an effective 66.67% device-hit share. The instantaneous cache gauge returned to zero after the queue drained, so the counter-derived value is the meaningful batch result.
+
+The reproducible runner is [`scripts/benchmark_openai_chat.py`](../scripts/benchmark_openai_chat.py). It uses OpenAI-compatible streaming requests, `/tokenize`, server-reported usage, and SGLang Prometheus counter deltas. It sends `max_completion_tokens` so the requested OSL is explicit.
+
+## Concurrency sweep
+
+The cold ISL 128 / OSL 256 client output sweep was:
+
+| Concurrency | Output tok/s | Output tok/min | Median active decode/user | Median TTFT |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 73.62 | 4,417 | 79.03 tok/s | 0.24 s |
+| 2 | 116.67 | 7,000 | 63.03 tok/s | 0.33 s |
+| 4 | 214.05 | 12,843 | 62.26 tok/s | 0.67 s |
+| 8 | 384.95 | 23,097 | 55.42 tok/s | 0.70 s |
+| 16 | 496.98 | 29,819 | 38.20 tok/s | 1.54 s |
+| 32 | 763.74 | 45,824 | 30.40 tok/s | 2.30 s |
+| 64 | 812.03 | 48,722 | 20.91 tok/s | 3.73 s |
+| 128 | 798.05 | 47,883 | 17.26 tok/s | 19.33 s |
+
+Longer outputs amortize queueing and prefill overhead, which is why the sustained OSL 1,024 sweep reaches 100,000 output tokens/minute while the short OSL 256 sweep does not.
+
+## Rejected candidates
+
+- Virtual-slice EP4 reached 563.98 output tok/s at C64, versus 812.03 tok/s for TP4/EP1, and was rejected.
+- NEXTN MTP5 reached 64.86 tok/s at C1 and regressed the non-speculative path.
+- Single-batch overlap reached 792.01 tok/s at C64 and regressed the 812.03 tok/s baseline.
+- Shared-expert fusion changes the expected expert geometry and was rejected by the loader.
+- Two-batch overlap with data-parallel attention advanced through graph capture after a narrow state-vector patch, then failed because upstream SGLang does not implement the GLM-5 Next decoder-layer operation decomposition. No eager fallback was used.
+
+## Three- and two-GPU compatibility
+
+There is no honest working three- or two-GPU recipe for this artifact. The checkpoint metadata fixes tensor parallelism at four and contains four independently rotated rank slices. The current loader requires TP4.
+
+The four-GPU runtime prepared approximately 53.18 GB of weights per rank. Any direct 3-GPU mapping must place two logical slices on one physical GPU, while a 2-GPU mapping must place two slices on each GPU. Either case projects to approximately 106.36 GB on the double-slice GPU before KV cache and runtime workspace, already above the 96 GB physical capacity.
+
+The TP3 and TP2 registry rows are therefore non-launchable compatibility records with blocked sweeps, not fabricated throughput. A future claim requires a lower-memory nonuniform packing or offload design, preservation of the four independent rotations, real-weight parity, full CUDA-graph capture, endpoint acceptance, and a fresh matched sweep.
+
+## Evidence boundary
+
+The artifact card reports held-out BF16-to-Q4 forward KL divergence of 0.06579, 91.7% top-1 agreement, and a 2.38% perplexity delta. A new full-server aligned-logit KLD run has not been published. The recipe remains `candidate`, rather than `validated`, because the locally built runtime image has not been published by content digest and tool/vision execution has not been accepted.
