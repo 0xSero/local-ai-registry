@@ -114,3 +114,18 @@ test("recipe detail progressively resolves related records and speed evidence", 
   assert.ok(Array.isArray(sweeps))
   assert.equal(sweeps.length, 1)
 })
+
+test("combined search matches model and hardware fields in one query", () => {
+  const result = queryCompatibility(
+    { evidence: "true", q: "gemma rtx 3090" },
+    { limit: 100, offset: 0 },
+  )
+
+  assert.ok(result.total > 0)
+  for (const item of result.data) {
+    assert.match(item.model.name, /gemma/i)
+    assert.match(item.hardware.name, /rtx.*3090/i)
+    assert.equal(item.speed_evidence.available, true)
+    assert.ok(item.speed_evidence.count > 0)
+  }
+})
