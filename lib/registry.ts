@@ -96,6 +96,13 @@ export type PriceResult = {
 type RegistryRecord = Record<string, unknown>
 type CompatibilityRow = RegistryIndex["recipes"][number]
 
+type RecordLink = {
+  api: string
+  href: string
+  id: string
+  name?: string
+}
+
 type Dataset = {
   hardware: Map<string, Hardware>
   index: RegistryIndex
@@ -395,19 +402,58 @@ function recipeRowsForModel(modelId: string): CompatibilityRow[] {
   return dataset().index.recipes.filter((row) => instanceIds.has(row.model_instance_id))
 }
 
+function recordLink(collection: string, id: string, name?: string): RecordLink {
+  return {
+    api: `/api/v1/${collection}/${id}`,
+    href: `/${collection}/${id}`,
+    id,
+    ...(name ? { name } : {}),
+  }
+}
+
+function recipeLink(row: CompatibilityRow): RecordLink & Pick<CompatibilityRow, "engine" | "hardware_count" | "status"> {
+  return {
+    ...recordLink("recipes", row.id),
+    engine: row.engine,
+    hardware_count: row.hardware_count,
+    status: row.status,
+  }
+}
+
+function modelLinksForRows(rows: CompatibilityRow[]): RecordLink[] {
+  const links = new Map<string, RecordLink>()
+  for (const row of rows) {
+    const instance = dataset().instances.get(row.model_instance_id)
+    const model = instance ? dataset().models.get(instance.model_id) : undefined
+    if (model) links.set(model.id, recordLink("models", model.id, model.name))
+  }
+  return [...links.values()]
+}
+
+function hardwareLinksForRows(rows: CompatibilityRow[]): RecordLink[] {
+  const links = new Map<string, RecordLink>()
+  for (const row of rows) {
+    const hardware = dataset().hardware.get(row.hardware_id)
+    if (hardware) links.set(hardware.id, recordLink("hardware", hardware.id, hardware.name))
+  }
+  return [...links.values()]
+}
+
 export function getEntityDetail(collection: string, id: string): RegistryRecord | undefined {
   const data = dataset()
 
   if (collection === "models") {
     const model = data.models.get(id)
     if (!model) return undefined
-    const instances = [...data.instances.values()]
-      .filter((instance) => instance.model_id === id)
-      .map(modelInstanceResult)
+    const instances = [...data.instances.values()].filter((instance) => instance.model_id === id)
+    const rows = recipeRowsForModel(id)
     return {
       ...model,
-      model_instances: instances,
-      recipes: recipeRowsForModel(id),
+      relationships: {
+        hardware: hardwareLinksForRows(rows),
+        model_instances: instances.map((instance) => recordLink("model-instances", instance.id, instance.repository)),
+        recipes: rows.map(recipeLink),
+      },
     }
   }
 
@@ -416,17 +462,24 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     if (!instance) return undefined
     return {
       ...modelInstanceResult(instance),
-      model: data.models.get(instance.model_id) ?? null,
-      recipes: data.index.recipes.filter((row) => row.model_instance_id === id),
+      relationships: {
+        hardware: hardwareLinksForRows(data.index.recipes.filter((row) => row.model_instance_id === id)),
+        model: recordLink("models", instance.model_id, data.models.get(instance.model_id)?.name),
+        recipes: data.index.recipes.filter((row) => row.model_instance_id === id).map(recipeLink),
+      },
     }
   }
 
   if (collection === "hardware") {
     const hardware = data.hardware.get(id)
     if (!hardware) return undefined
+    const rows = data.index.recipes.filter((row) => row.hardware_id === id)
     return {
       ...hardware,
-      recipes: data.index.recipes.filter((row) => row.hardware_id === id),
+      relationships: {
+        models: modelLinksForRows(rows),
+        recipes: rows.map(recipeLink),
+      },
     }
   }
 
@@ -435,13 +488,18 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     if (!row) return undefined
     const result = compatibilityResult(row)
     if (!result) return undefined
-    const recipe = result.recipe
     return {
-      ...result,
-      speed_sweeps: recipe.speed_sweeps_ids.flatMap((sweepId) => {
-        const sweep = getSpeedSweep(sweepId)
-        return sweep ? [sweep] : []
-      }),
+      ...result.recipe,
+      registry: {
+        launchable: result.launchable,
+        speed_evidence: result.speed_evidence,
+      },
+      relationships: {
+        hardware: recordLink("hardware", result.hardware.id, result.hardware.name),
+        model: recordLink("models", result.model.id, result.model.name),
+        model_instance: recordLink("model-instances", result.model_instance.id, result.model_instance.repository),
+        speed_sweeps: result.recipe.speed_sweeps_ids.map((sweepId) => recordLink("speed-sweeps", sweepId)),
+      },
     }
   }
 
@@ -451,7 +509,9 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     const recipe = getRecipe(sweep.recipe_id)
     return {
       ...sweep,
-      recipe: recipe ?? null,
+      relationships: {
+        recipe: recipe ? recordLink("recipes", recipe.id) : null,
+      },
     }
   }
 
