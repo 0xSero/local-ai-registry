@@ -1,0 +1,45 @@
+{
+  "accepted_at": null,
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
+  "measured_at": "2026-08-27",
+  "recipe_id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": null,
+      "decode_tok_s": 77.2,
+      "decode_tok_s_per_stream": 77.2,
+      "output_tokens": 3071,
+      "peak_vram_gb": 79,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "observed",
+      "thinking": true,
+      "ttft_ms_p50": 579,
+      "note": "Thinking-on essay soak, decode CUDA graphs on, server gen throughput ~77 tok/s"
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": null,
+      "decode_tok_s": 440.0,
+      "decode_tok_s_per_stream": 53.4,
+      "output_tokens": 17431,
+      "peak_vram_gb": 79,
+      "prefill_tok_s": null,
+      "samples": 8,
+      "status": "observed",
+      "thinking": true,
+      "ttft_ms_p50": 4210,
+      "note": "Thinking-on concurrent soak, decode graphs bs=8, server gen throughput 435-443 tok/s"
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "paths": [
+      "sglang-exl3-overlay/",
+      "local-studio-handoff/relaunch-exl3-c8.sh"
+    ],
+    "repository": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+  }
+}

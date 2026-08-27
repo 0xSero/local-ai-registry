@@ -6,42 +6,27 @@
   "rows": [
     {
       "concurrency": 1,
-      "context_tokens": 131072,
-      "decode_tok_s": 17.49,
-      "decode_tok_s_per_stream": 17.49,
-      "output_tokens": 134,
-      "peak_power_w": 34.51,
-      "peak_temperature_c": 53,
-      "peak_vram_gb": null,
-      "prefill_tok_s": null,
-      "samples": 1,
-      "status": "accepted",
-      "ttft_ms_p50": null
-    },
-    {
-      "concurrency": 2,
-      "context_tokens": 131072,
-      "decode_tok_s": 30.72,
-      "decode_tok_s_per_stream": 15.36,
-      "output_tokens": 548,
-      "peak_power_w": 37.74,
-      "peak_temperature_c": 56,
+      "context_tokens": 262144,
+      "decode_tok_s": 38.12,
+      "decode_tok_s_per_stream": 38.12,
+      "output_tokens": null,
       "peak_vram_gb": null,
       "prefill_tok_s": null,
       "samples": 2,
       "status": "accepted",
-      "ttft_ms_p50": null
+      "thinking": true,
+      "ttft_ms_p50": null,
+      "note": "Thinking-on essay, CUDA graphs on, NEXTN pinned 5/6. Peak sample 38.46 tok/s; remeasure 38.12."
     }
   ],
   "schema_version": "local-ai-registry/v1",
   "source": {
     "commit": "dfb1bb7e45c20058d37df7a39cceda45a9d216a8",
     "paths": [
-      "Dockerfile",
       "compose.yaml",
       "launch-spark.sh",
-      "manifest.json",
-      "chat-template-mm.jinja",
+      "profiles/tp2.env",
+      "scripts/studio-up-tp2.sh",
       "patches/"
     ],
     "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121"

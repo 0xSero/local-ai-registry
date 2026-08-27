@@ -1,0 +1,128 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Working four-GPU GLM-5.3 Flash EXL3 Q4 on RTX PRO 6000 Blackwell. SGLang TP4/EP1, DSA sparse MLA, FP8 KV, full decode CUDA graphs at batch sizes 1-8. Prefill graph max-bs stays 1 (DSA prefill capture crashes). No MTP on this recipe. Thinking-on C1 77 tok/s and C8 440 tok/s. Candidate until the staging image is digest-pinned. Overlay requires TP=4; there is no working 2-GPU EXL3 launch.",
+  "engine": {
+    "graph_mode": "full decode capture bs=[1,2,4,8]; prefill backend full at max-bs 1 only",
+    "name": "sglang",
+    "version": "glm53-flash-sglang-exl3:stage-20260827-r6"
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path", "/model",
+      "--served-model-name", "glm-5.3-flash-exl3-q4",
+      "--tp-size", "4",
+      "--ep-size", "1",
+      "--quantization", "exl3",
+      "--context-length", "262144",
+      "--kv-cache-dtype", "fp8_e4m3",
+      "--attention-backend", "dsa",
+      "--dsa-prefill-backend", "flashinfer_sparse_mla",
+      "--dsa-decode-backend", "flashinfer_sparse_mla",
+      "--linear-attn-backend", "triton",
+      "--disable-shared-experts-fusion",
+      "--chunked-prefill-size", "256",
+      "--max-prefill-tokens", "256",
+      "--max-running-requests", "8",
+      "--mem-fraction-static", "0.80",
+      "--cuda-graph-backend-decode", "full",
+      "--cuda-graph-backend-prefill", "full",
+      "--cuda-graph-max-bs-decode", "8",
+      "--cuda-graph-max-bs-prefill", "1",
+      "--chat-template", "/chat-template.jinja",
+      "--reasoning-parser", "glm45",
+      "--tool-call-parser", "glm47",
+      "--enable-metrics",
+      "--host", "0.0.0.0",
+      "--port", "8000"
+    ],
+    "container": {
+      "captured_at": "2026-08-27T21:55:00.000Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "glm53-flash-sglang-exl3:stage-20260827-r6",
+      "reason": "image-tag-without-content-digest",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T21:55:00.000Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
+      "SGLANG_EXL3_MAX_BATCH_TOKENS": "256",
+      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_OPT_DEEPGEMM_HC_PRENORM": "0",
+      "SGLANG_OPT_FP8_WO_A_GEMM": "0",
+      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "SGLANG_OPT_USE_TOPK_V2": "0",
+      "TORCH_CUDA_ARCH_LIST": "12.0a"
+    },
+    "host_port": 8000,
+    "image": "glm53-flash-sglang-exl3:stage-20260827-r6",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-EXL3-Q4",
+        "target": "/model"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance": {
+      "completion": true,
+      "thinking_on": true
+    },
+    "request_policy": "uncapped natural-stop requests; do not send max_tokens",
+    "runtime_pin_missing": "launch.image digest",
+    "notes": [
+      "Do not raise --cuda-graph-max-bs-prefill above 1 (DeepseekSparseAttnBackend prefill graph capture crash).",
+      "Do not enable NEXTN until GLM-5 Next TP draft graphs are proven on this overlay.",
+      "EP4 candidate was slower (~71 tok/s C1) and is not this recipe.",
+      "Selective EXL3 overlay cannot launch at TP=2."
+    ]
+  },
+  "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--exl3-q4",
+  "provenance": {
+    "captured_at": "2026-08-27T21:55:00.000Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T21:55:00.000Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4,
+    "expert_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep"
+  ],
+  "status": "candidate"
+}
