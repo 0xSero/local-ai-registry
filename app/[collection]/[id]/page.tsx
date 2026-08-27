@@ -19,6 +19,23 @@ type DetailProps = {
   params: Promise<{ collection: string; id: string }>
 }
 
+type HuggingFaceDisplay = {
+  linkType: "repository" | "search"
+  status: "known" | "unknown" | "unavailable"
+  url: string
+}
+
+function readHuggingFace(record: Record<string, unknown>): HuggingFaceDisplay | null {
+  const value = record.huggingface
+  if (!value || typeof value !== "object") return null
+  if (!("url" in value) || !("status" in value) || !("link_type" in value)) return null
+  const { link_type: linkType, status, url } = value
+  if (typeof url !== "string" || url.length === 0) return null
+  if (status !== "known" && status !== "unknown" && status !== "unavailable") return null
+  if (linkType !== "repository" && linkType !== "search") return null
+  return { linkType, status, url }
+}
+
 export async function generateMetadata({ params }: DetailProps): Promise<Metadata> {
   const { collection, id } = await params
   if (!COLLECTION_LABELS[collection]) return { title: "Record not found" }
@@ -37,11 +54,10 @@ export default async function DetailPage({ params }: DetailProps) {
 
   const title = String(detail.name ?? detail.repository ?? detail.id ?? id)
   const instance = collection === "model-instances" ? detail : null
-  const huggingFaceUrl = instance && typeof instance.hugging_face_url === "string"
-    ? instance.hugging_face_url
-    : null
-  const artifactUrl = instance && typeof instance.url === "string" ? instance.url : null
-  const artifactResolution = instance ? String(instance.artifact_resolution) : null
+  const huggingFace = instance ? readHuggingFace(instance) : null
+  if (instance && !huggingFace) {
+    throw new Error(`Model instance '${id}' lacks its authoritative Hugging Face identity`)
+  }
 
   return (
     <main className="detail-page">
@@ -60,16 +76,19 @@ export default async function DetailPage({ params }: DetailProps) {
         </div>
       </header>
 
-      {instance && (
-        <section className="artifact-resolution" aria-label="Artifact resolution">
-          <p className="eyebrow">Canonical artifact link from this model-instance body</p>
-          {huggingFaceUrl ? (
-            <a href={huggingFaceUrl} rel="noreferrer" target="_blank">{huggingFaceUrl} ↗</a>
-          ) : artifactResolution === "non_hugging_face" && artifactUrl ? (
-            <p>Non-Hugging-Face artifact: <a href={artifactUrl}>{artifactUrl}</a></p>
-          ) : (
-            <p className="unknown">No canonical Hugging Face URL is resolved for this artifact.</p>
-          )}
+      {huggingFace && (
+        <section className="artifact-resolution" aria-label="Hugging Face identity">
+          <p className="eyebrow">Authoritative Hugging Face link from this model-instance body</p>
+          <a href={huggingFace.url} rel="noreferrer" target="_blank">{huggingFace.url} ↗</a>
+          <dl className="artifact-fields">
+            <div><dt>Status</dt><dd>{huggingFace.status}</dd></div>
+            <div><dt>Link type</dt><dd>{huggingFace.linkType}</dd></div>
+          </dl>
+          <p className="link-explanation">
+            {huggingFace.linkType === "repository"
+              ? "Exact Hugging Face repository link."
+              : "Hugging Face search fallback; not an exact repository link."}
+          </p>
         </section>
       )}
 
