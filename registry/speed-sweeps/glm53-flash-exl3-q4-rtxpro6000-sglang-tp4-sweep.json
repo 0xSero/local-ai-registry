@@ -1,0 +1,72 @@
+{
+  "accepted_at": "2026-08-27",
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
+  "measured_at": "2026-08-27",
+  "recipe_id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 29,
+      "decode_tok_s": 73.4979,
+      "decode_tok_s_per_stream": 73.4979,
+      "elapsed_s": 3.483093,
+      "engine_decode_tok_s": 97.0524,
+      "expert_parallel": 1,
+      "output_tokens": 256,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "accepted-matched-screen",
+      "ttft_ms_p50": 225.98
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 29,
+      "decode_tok_s": 68.4659,
+      "decode_tok_s_per_stream": 68.4659,
+      "elapsed_s": 3.739085,
+      "engine_decode_tok_s": 88.5637,
+      "expert_parallel": 4,
+      "output_tokens": 256,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "rejected-matched-regression",
+      "ttft_ms_p50": 167.07
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 29,
+      "decode_tok_s": 65.9656,
+      "decode_tok_s_per_stream": 65.9656,
+      "elapsed_s": 3.88081,
+      "output_tokens": 256,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "observed-earlier-tp4-ep1-baseline",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 29,
+      "decode_tok_s": 64.8608,
+      "decode_tok_s_per_stream": 64.8608,
+      "elapsed_s": 3.946916,
+      "output_tokens": 256,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "speculation": "NEXTN MTP5",
+      "status": "rejected-speculation-regression",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "artifact": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4",
+    "artifact_revision": "99cccdf0e8741715662c383828a9ea601990c125",
+    "method": "Matched 256-token prose decode screens against one warmed runtime. Client output rate is completion tokens divided by wall time; engine decode throughput is retained separately when emitted by SGLang.",
+    "runtime_image": "glm53-flash-sglang-exl3:stage-20260827-r6"
+  }
+}
