@@ -19,13 +19,15 @@ This is the progressive-disclosure rule: index, choice, recipe, then the exact r
 
 ## Collections
 
-| Collection | Meaning | Current count |
-|---|---|---:|
-| `hardware/` | One accelerator or Apple chip and memory configuration | 100 |
-| `model/` | One canonical base model | 103 |
-| `model-instance/` | One downloadable artifact or quantization | 372 |
-| `recipe/` | One artifact × hardware × engine compatibility unit | 1,039 |
-| `speed-sweeps/` | Benchmark evidence attached to one recipe | 1,585 |
+| Collection | Meaning |
+|---|---|
+| `hardware/` | One accelerator or Apple chip and memory configuration |
+| `model/` | One canonical base model |
+| `model-instance/` | One downloadable artifact or quantization |
+| `recipe/` | One artifact × hardware × engine compatibility unit |
+| `speed-sweeps/` | Benchmark evidence attached to one recipe |
+
+Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
 
 The shared contract is defined twice for different consumers: JSON Schema files under [`registry/schema/`](registry/schema/) and TypeScript interfaces in [`registry/schema/types.ts`](registry/schema/types.ts).
 
