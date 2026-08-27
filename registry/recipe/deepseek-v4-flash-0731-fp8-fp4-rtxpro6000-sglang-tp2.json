@@ -11,6 +11,7 @@
     "name": "sglang",
     "version": "lmsysorg/sglang:dev-cu13-inkling-dspark@sha256:fbea1a4e25b26660dbc2384a27ead8817e9b7670f257b5c3143e0450d14524d7 (stock; SGLang commit b7252cc6b0c78b25ecea7ee5efa91a6ae37d0f19); no patches"
   },
+  "facts": {},
   "hardware_count": 2,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "deepseek-v4-flash-0731-fp8-fp4-rtxpro6000-sglang-tp2",
@@ -41,6 +42,22 @@
       "--port",
       "8011"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:fbea1a4e25b26660dbc2384a27ead8817e9b7670f257b5c3143e0450d14524d7",
+      "image": "lmsysorg/sglang:dev-cu13-inkling-dspark@sha256:fbea1a4e25b26660dbc2384a27ead8817e9b7670f257b5c3143e0450d14524d7",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/ppickle1989/sm120-sglang-recipes"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8011,
     "environment": {
       "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
@@ -131,6 +148,16 @@
     ]
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/ppickle1989/sm120-sglang-recipes"
+      }
+    ]
+  },
   "recipe_source": "ppickle1989",
   "schema_version": "local-ai-registry/v1",
   "serving": {

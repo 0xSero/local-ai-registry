@@ -11,6 +11,78 @@
     "name": "vllm",
     "version": "0.23.0; image build 91df0fad4dc98a67c7659d9dbd915245d5c43d96"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "speed_sweeps_ids": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 8,
   "hardware_id": "b200-180gb",
   "id": "glm-5.2-nvfp4-b200-vllm-tp8-mtp5",
@@ -58,6 +130,22 @@
       "--speculative-config",
       "{\"method\":\"mtp\",\"num_speculative_tokens\":5,\"rejection_sample_method\":\"standard\"}"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:f03040c06dd43c0b48d0b471ae67edcc0c8fe8e63d4f762489d7be0015f527b2",
+      "image": "ghcr.io/davidmcc73/vllm-openai@sha256:f03040c06dd43c0b48d0b471ae67edcc0c8fe8e63d4f762489d7be0015f527b2",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8000,
     "environment": {
       "HF_HOME": "/root/.cache/huggingface"
@@ -78,6 +166,16 @@
   },
   "metadata": {},
   "model_instance_id": "nvidia-glm-5-2-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

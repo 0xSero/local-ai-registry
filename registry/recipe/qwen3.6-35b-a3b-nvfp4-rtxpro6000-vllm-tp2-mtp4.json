@@ -11,6 +11,78 @@
     "name": "vllm",
     "version": "0.23.0; image build 91df0fad4dc98a67c7659d9dbd915245d5c43d96"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "speed_sweeps_ids": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 2,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3.6-35b-a3b-nvfp4-rtxpro6000-vllm-tp2-mtp4",
@@ -65,6 +137,22 @@
       "--speculative-config",
       "{\"method\":\"mtp\",\"num_speculative_tokens\":4,\"moe_backend\":\"triton\",\"rejection_sample_method\":\"standard\"}"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:f03040c06dd43c0b48d0b471ae67edcc0c8fe8e63d4f762489d7be0015f527b2",
+      "image": "ghcr.io/davidmcc73/vllm-openai@sha256:f03040c06dd43c0b48d0b471ae67edcc0c8fe8e63d4f762489d7be0015f527b2",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8000,
     "environment": {
       "FLASHINFER_DISABLE_VERSION_CHECK": "1",
@@ -87,6 +175,16 @@
   },
   "metadata": {},
   "model_instance_id": "nvidia-qwen3-6-35b-a3b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

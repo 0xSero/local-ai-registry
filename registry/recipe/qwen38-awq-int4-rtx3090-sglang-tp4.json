@@ -11,6 +11,36 @@
     "name": "sglang",
     "version": "2e7c85da6"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 4,
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen38-awq-int4-rtx3090-sglang-tp4",
@@ -20,6 +50,22 @@
       "-lc",
       "exec /entrypoint.sh"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:cc2bfc369c709c53d239ef2af41d4ae2530904975816bb2ca484188008586ac9",
+      "image": "ghcr.io/0xsero/qwen38-3090-sglang@sha256:cc2bfc369c709c53d239ef2af41d4ae2530904975816bb2ca484188008586ac9",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8000,
     "entrypoint": "/bin/bash",
     "environment": {
@@ -44,6 +90,16 @@
   },
   "metadata": {},
   "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
