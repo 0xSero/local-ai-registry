@@ -10,15 +10,19 @@ import type {
   SpeedSweep,
 } from "@/registry/schema/types"
 
-export type ArtifactResolution =
-  | "hugging_face"
-  | "non_hugging_face"
-  | "unresolved"
-  | "invalid_url"
+export type HuggingFaceIdentity = {
+  link_type: "repository" | "search"
+  status: "known" | "unknown" | "unavailable"
+  url: string
+  [key: string]: unknown
+}
 
-export type ModelInstanceResult = ModelInstance & {
-  artifact_resolution: ArtifactResolution
-  hugging_face_url: string | null
+type RegistryModelInstance = Omit<ModelInstance, "huggingface"> & {
+  huggingface: HuggingFaceIdentity
+}
+
+export type ModelInstanceResult = RegistryModelInstance & {
+  hugging_face_url: string
 }
 
 export type CompatibilityFilters = {
@@ -79,7 +83,7 @@ type CompatibilityRow = RegistryIndex["recipes"][number]
 type Dataset = {
   hardware: Map<string, Hardware>
   index: RegistryIndex
-  instances: Map<string, ModelInstance>
+  instances: Map<string, RegistryModelInstance>
   models: Map<string, Model>
   recipes: Map<string, Recipe>
   sweeps: Map<string, SpeedSweep>
@@ -113,7 +117,7 @@ function dataset(): Dataset {
   cachedDataset = {
     hardware: loadCollection<Hardware>(index, "hardware"),
     index,
-    instances: loadCollection<ModelInstance>(index, "model-instance"),
+    instances: loadCollection<RegistryModelInstance>(index, "model-instance"),
     models: loadCollection<Model>(index, "model"),
     recipes: new Map(),
     sweeps: new Map(),
@@ -143,7 +147,7 @@ export function getModel(id: string): Model | undefined {
   return dataset().models.get(id)
 }
 
-export function getModelInstance(id: string): ModelInstance | undefined {
+export function getModelInstance(id: string): RegistryModelInstance | undefined {
   return dataset().instances.get(id)
 }
 
@@ -159,30 +163,14 @@ export function getSpeedSweep(id: string): SpeedSweep | undefined {
   return cachedRecord("speed-sweeps", id, dataset().sweeps)
 }
 
-export function modelInstanceResult(instance: ModelInstance): ModelInstanceResult {
-  const bodyUrl = typeof instance.url === "string" ? instance.url : null
-  if (!bodyUrl) {
-    return {
-      ...instance,
-      artifact_resolution: "unresolved",
-      hugging_face_url: null,
-    }
+export function modelInstanceResult(instance: RegistryModelInstance): ModelInstanceResult {
+  if (instance.huggingface.url.length === 0) {
+    throw new Error(`Model instance '${instance.id}' has an empty authoritative Hugging Face URL`)
   }
 
-  try {
-    const hostname = new URL(bodyUrl).hostname.toLowerCase()
-    const isHuggingFace = hostname === "huggingface.co" || hostname === "www.huggingface.co"
-    return {
-      ...instance,
-      artifact_resolution: isHuggingFace ? "hugging_face" : "non_hugging_face",
-      hugging_face_url: isHuggingFace ? bodyUrl : null,
-    }
-  } catch {
-    return {
-      ...instance,
-      artifact_resolution: "invalid_url",
-      hugging_face_url: null,
-    }
+  return {
+    ...instance,
+    hugging_face_url: instance.huggingface.url,
   }
 }
 
@@ -327,7 +315,8 @@ export function listModelInstances(filters: Record<string, string>, pagination: 
         equals(instance.kind, filters.kind) &&
         equals(instance.weights.precision, filters.precision) &&
         equals(instance.weights.format, filters.format) &&
-        equals(instance.artifact_resolution, filters.artifact_resolution),
+        equals(instance.huggingface.status, filters.huggingface_status) &&
+        equals(instance.huggingface.link_type, filters.huggingface_link_type),
     )
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
@@ -441,7 +430,8 @@ export function getFacets() {
       family: unique([...data.models.values()].map((model) => model.family)),
     },
     model_instances: {
-      artifact_resolution: unique([...data.instances.values()].map((instance) => modelInstanceResult(instance).artifact_resolution)),
+      huggingface_link_type: unique([...data.instances.values()].map((instance) => instance.huggingface.link_type)),
+      huggingface_status: unique([...data.instances.values()].map((instance) => instance.huggingface.status)),
       format: unique([...data.instances.values()].map((instance) => instance.weights.format)),
       kind: unique([...data.instances.values()].map((instance) => instance.kind)),
       precision: unique([...data.instances.values()].map((instance) => instance.weights.precision)),

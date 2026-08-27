@@ -215,13 +215,14 @@ export default async function Home({ searchParams }: PageProps) {
                   <div className="artifact-link">
                     <strong>Model instance:</strong>{" "}
                     <Link href={`/model-instances/${instance.id}`}>{instance.repository}</Link>
-                    {instance.hugging_face_url ? (
-                      <a href={instance.hugging_face_url} rel="noreferrer" target="_blank">Hugging Face ↗</a>
-                    ) : instance.artifact_resolution === "non_hugging_face" && instance.url ? (
-                      <a href={instance.url} rel="noreferrer" target="_blank">Non-Hugging-Face artifact ↗</a>
-                    ) : (
-                      <span className="unknown">Canonical Hugging Face URL unresolved</span>
-                    )}
+                    <a href={instance.hugging_face_url} rel="noreferrer" target="_blank">
+                      {instance.huggingface.link_type === "repository"
+                        ? "Hugging Face repository ↗"
+                        : "Hugging Face search fallback ↗"}
+                    </a>
+                    <span className="link-meta">
+                      {instance.huggingface.status} · {instance.huggingface.link_type}
+                    </span>
                   </div>
 
                   {image && (

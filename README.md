@@ -79,18 +79,19 @@ Versioned JSON routes live under `/api/v1`. `GET` and `HEAD` are supported. Muta
 | `/api/v1/compatibility` | Model × hardware compatibility query |
 | `/api/v1/speed-sweeps` and `/api/v1/speed-sweeps/:id` | Measured speed evidence |
 
-List routes accept `limit` (maximum 100) and `offset`. Common compatibility filters are `model`, `hardware`, `model_id`, `model_instance_id`, `hardware_id`, `status`, `launchable`, `engine`, `launch_kind`, `precision`, `instance_kind`, `vendor`, `backend`, `min_vram_gb`, `max_vram_gb`, `hardware_count`, `evidence`, and the tri-state capability filters `chat`, `reasoning`, `tools`, and `vision`. Capability values are `true`, `false`, or `unknown`.
+List routes accept `limit` (maximum 100) and `offset`. Common compatibility filters are `model`, `hardware`, `model_id`, `model_instance_id`, `hardware_id`, `status`, `launchable`, `engine`, `launch_kind`, `precision`, `instance_kind`, `vendor`, `backend`, `min_vram_gb`, `max_vram_gb`, `hardware_count`, `evidence`, and the tri-state capability filters `chat`, `reasoning`, `tools`, and `vision`. Capability values are `true`, `false`, or `unknown`. Model-instance lists also accept `huggingface_status` and `huggingface_link_type`.
 
 Examples:
 
 ```bash
 curl 'http://localhost:3000/api/v1/models?q=gemma'
 curl 'http://localhost:3000/api/v1/hardware?vendor=nvidia&min_vram_gb=48'
+curl 'http://localhost:3000/api/v1/model-instances?huggingface_link_type=search&limit=10'
 curl 'http://localhost:3000/api/v1/compatibility?model=gemma&hardware=rtx%20pro%206000&launchable=true'
 curl 'http://localhost:3000/api/v1/recipes/gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1'
 ```
 
-Every model-instance object adds `hugging_face_url`, derived only from that model-instance record's `url`, plus `artifact_resolution`. `hugging_face_url` is `null` for unresolved, invalid, or explicitly non-Hugging-Face artifacts; the API never guesses a URL from `repository`. Full records remain nested in detail and compatibility responses, so newly sourced pricing, availability, bandwidth, precision-specific compute, container provenance, and explicit unknown fields pass through without an application schema update.
+Every model-instance body carries an authoritative `huggingface` object with a nonempty `url`, `status`, and `link_type`. API model-instance results also expose `hugging_face_url` as the exact value of `huggingface.url`. A `repository` link type is an exact Hugging Face repository; a `search` link type is an explicitly labeled search fallback, not an artifact claim. The API preserves both types and their status and never derives a Hugging Face link from the model-instance `repository` text or legacy `url`. Full records remain nested in detail and compatibility responses, so newly sourced pricing, availability, bandwidth, precision-specific compute, container provenance, and explicit unknown fields pass through without an application schema update.
 
 ## Validate
 

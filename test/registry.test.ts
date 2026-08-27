@@ -25,7 +25,8 @@ test("model and hardware searches intersect on compatible recipes", () => {
     assert.equal(item.launchable, true)
     assert.match(item.model.name, /gemma-4-12b-it/i)
     assert.match(item.hardware.name, /rtx pro 6000 blackwell/i)
-    assert.match(String(item.model_instance.hugging_face_url), /^https:\/\/huggingface\.co\//)
+    assert.equal(item.model_instance.hugging_face_url, item.model_instance.huggingface.url)
+    assert.match(item.model_instance.hugging_face_url, /^https:\/\/huggingface\.co\//)
   }
 })
 
@@ -40,24 +41,36 @@ test("candidate and reference recipes are never launchable", () => {
   assert.equal(result.total, 0)
 })
 
-test("model-instance results derive Hugging Face state only from body URL", () => {
-  const unresolved = listModelInstances(
-    { q: "agents-a1-q4km" },
+test("repository link results expose the authoritative body identity", () => {
+  const result = listModelInstances(
+    { huggingface_link_type: "repository", q: "unsloth/gemma-4-12b-it-NVFP4" },
     { limit: 10, offset: 0 },
   )
-  assert.equal(unresolved.total, 1)
-  assert.equal(unresolved.data[0].url, null)
-  assert.equal(unresolved.data[0].hugging_face_url, null)
-  assert.equal(unresolved.data[0].artifact_resolution, "unresolved")
+  const exact = result.data.find((item) => item.id === "unsloth-gemma-4-12b-it-nvfp4--nvfp4")
 
-  const resolved = listModelInstances(
-    { q: "unsloth/gemma-4-12b-it-NVFP4" },
+  assert.ok(exact)
+  assert.equal(exact.huggingface.link_type, "repository")
+  assert.equal(exact.huggingface.status, "known")
+  assert.equal(exact.huggingface.repository, "unsloth/gemma-4-12b-it-NVFP4")
+  assert.equal(exact.hugging_face_url, exact.huggingface.url)
+  assert.equal(exact.hugging_face_url, "https://huggingface.co/unsloth/gemma-4-12b-it-NVFP4")
+})
+
+test("search fallback results stay distinct from repository links", () => {
+  const result = listModelInstances(
+    { huggingface_link_type: "search", q: "agents-a1-q4km" },
     { limit: 10, offset: 0 },
   )
-  assert.ok(resolved.total >= 1)
-  const exact = resolved.data.find((item) => item.id === "unsloth-gemma-4-12b-it-nvfp4--nvfp4")
-  assert.equal(exact?.hugging_face_url, exact?.url)
-  assert.equal(exact?.artifact_resolution, "hugging_face")
+
+  assert.equal(result.total, 1)
+  const fallback = result.data[0]
+  assert.equal(fallback.repository, "agents-a1-q4km")
+  assert.equal(fallback.url, null)
+  assert.equal(fallback.huggingface.repository, null)
+  assert.equal(fallback.huggingface.link_type, "search")
+  assert.equal(fallback.huggingface.status, "unavailable")
+  assert.equal(fallback.hugging_face_url, fallback.huggingface.url)
+  assert.equal(fallback.hugging_face_url, "https://huggingface.co/models?search=agents-a1-q4km")
 })
 
 test("hardware filters use normalized vendor and memory fields", () => {
@@ -87,8 +100,15 @@ test("recipe detail progressively resolves related records and speed evidence", 
   assert.equal(launch.kind, "docker")
 
   const instance = detail.model_instance
-  assert.ok(instance && typeof instance === "object" && "hugging_face_url" in instance)
-  assert.match(String(instance.hugging_face_url), /^https:\/\/huggingface\.co\//)
+  assert.ok(
+    instance &&
+    typeof instance === "object" &&
+    "hugging_face_url" in instance &&
+    "huggingface" in instance,
+  )
+  const huggingface = instance.huggingface
+  assert.ok(huggingface && typeof huggingface === "object" && "url" in huggingface)
+  assert.equal(instance.hugging_face_url, huggingface.url)
 
   const sweeps = detail.speed_sweeps
   assert.ok(Array.isArray(sweeps))
