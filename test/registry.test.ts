@@ -4,10 +4,12 @@ import test from "node:test"
 import {
   collectionCounts,
   getEntityDetail,
+  getFacets,
   isLaunchable,
   listHardware,
   listModelInstances,
   listModels,
+  listPrices,
   listSpeedSweeps,
   queryCompatibility,
 } from "../lib/registry"
@@ -148,4 +150,79 @@ test("navigable topic collections expose real registry records", () => {
   assert.ok(hardware.data.length > 0)
   assert.ok(sweeps.data.length > 0)
   assert.ok(recipes.data.length > 0)
+})
+
+test("virtual Prices topic exposes every real price observation", () => {
+  const prices = listPrices({}, { limit: 200, offset: 0 })
+  const facets = getFacets()
+
+  assert.equal(prices.total, 123)
+  assert.equal(prices.data.length, 123)
+  assert.equal(new Set(prices.data.map((result) => result.hardware_id)).size, 85)
+  assert.ok(prices.data.every(({ price }) => price.currency === "USD" && price.unit === "one_time"))
+  assert.equal(Math.min(...prices.data.map(({ price }) => price.amount)), 299)
+  assert.equal(Math.max(...prices.data.map(({ price }) => price.amount)), 6999)
+  assert.deepEqual(facets.prices.vendor, ["amd", "apple", "intel", "nvidia"])
+  assert.deepEqual(facets.prices.kind, ["current_street", "CURRENT_SYSTEM_PRICE", "MSRP"])
+  assert.deepEqual(facets.prices.scope, [
+    "current_system_price",
+    "manufacturer_launch_price",
+    "representative_product_starting_price",
+  ])
+})
+
+test("price filters compose across vendor taxonomy and maximum amount", () => {
+  const sample = listPrices({}, { limit: 1, offset: 0 }).data[0]
+  assert.ok(sample)
+
+  const filtered = listPrices(
+    {
+      kind: sample.price.kind,
+      max_price: String(sample.price.amount),
+      scope: sample.price.scope,
+      vendor: sample.hardware.vendor,
+    },
+    { limit: 200, offset: 0 },
+  )
+  assert.ok(filtered.total > 0)
+  for (const result of filtered.data) {
+    assert.equal(result.hardware.vendor, sample.hardware.vendor)
+    assert.equal(result.price.kind, sample.price.kind)
+    assert.equal(result.price.scope, sample.price.scope)
+    assert.ok(result.price.amount <= sample.price.amount)
+  }
+})
+
+test("hardware topic filters vendor backend memory and priced state", () => {
+  const filtered = listHardware(
+    { backend: "nvidia", min_vram_gb: "24", priced_only: "true", vendor: "nvidia" },
+    { limit: 200, offset: 0 },
+  )
+  assert.ok(filtered.total > 0)
+  for (const hardware of filtered.data) {
+    assert.equal(hardware.vendor, "nvidia")
+    assert.equal(hardware.accelerator_backend, "nvidia")
+    assert.ok(hardware.memory.vram_gb >= 24)
+    assert.ok((hardware.commercial?.prices.length ?? 0) > 0)
+  }
+})
+
+test("model topic filters family and architecture together", () => {
+  const models = listModels({}, { limit: 200, offset: 0 })
+  const sample = models.data.find((model) => model.architecture !== null)
+  assert.ok(sample)
+
+  const filtered = listModels(
+    { architecture: sample.architecture ?? "", family: sample.family },
+    { limit: 200, offset: 0 },
+  )
+  assert.ok(filtered.total > 0)
+  for (const model of filtered.data) {
+    assert.equal(model.family, sample.family)
+    assert.equal(model.architecture, sample.architecture)
+  }
+
+  const unknown = listModels({ architecture: "unknown" }, { limit: 200, offset: 0 })
+  assert.ok(unknown.total > 0)
+  assert.ok(unknown.data.every((model) => model.architecture === null))
 })

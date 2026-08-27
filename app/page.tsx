@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { DataTree } from "@/app/components/data-tree"
 import { ModalCloseButton, RecordModal } from "@/app/components/record-modal"
-import { RegistrySearch } from "@/app/components/registry-search"
+import { RegistrySearch, type SearchFilter } from "@/app/components/registry-search"
 import {
   collectionCounts,
   getEntityDetail,
@@ -10,10 +10,13 @@ import {
   getSpeedSweep,
   listHardware,
   listModels,
+  listPrices,
   listSpeedSweeps,
   queryCompatibility,
   type CompatibilityFilters,
   type CompatibilityResult,
+  type PriceObservation,
+  type PriceResult,
 } from "@/lib/registry"
 import type { SpeedRow, SpeedSweep } from "@/registry/schema/types"
 
@@ -23,18 +26,31 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
-type Topic = "recipes" | "hardware" | "models" | "speed-sweeps"
+type Topic = "recipes" | "hardware" | "models" | "prices" | "speed-sweeps"
 
 type EvidenceRow = SpeedRow & {
   sweepId: string
 }
 
-const TOPICS: Array<{ key: Topic; label: string; countKey: string }> = [
+type RowTag = {
+  label: string
+  name: string
+  value: string
+}
+
+const TOPICS: Array<{ key: Topic; label: string; countKey: string | null }> = [
   { key: "recipes", label: "Recipes", countKey: "recipe" },
   { key: "hardware", label: "Hardware", countKey: "hardware" },
   { key: "models", label: "Models", countKey: "model" },
+  { key: "prices", label: "Prices", countKey: null },
   { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps" },
 ]
+
+const USD_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  maximumFractionDigits: 0,
+  style: "currency",
+})
 
 function validTopic(value: string): Topic | "" {
   return TOPICS.some((topic) => topic.key === value) ? value as Topic : ""
@@ -56,6 +72,15 @@ function formatTokens(value: number | null): string {
 
 function formatRate(value: number): string {
   return value.toLocaleString(undefined, { maximumFractionDigits: 1 })
+}
+
+function formatAmount(amount: number, currency: string): string {
+  return currency === "USD" ? USD_FORMATTER.format(amount) : `${currency} ${amount.toLocaleString()}`
+}
+
+function observedDate(price: PriceObservation): string {
+  if (price.as_of) return price.as_of
+  return price.captured_at ? price.captured_at.slice(0, 10) : "Unknown"
 }
 
 function recipeEvidence(result: CompatibilityResult): EvidenceRow[] {
@@ -87,6 +112,14 @@ function hrefWithRecord(state: URLSearchParams, id: string): string {
   return `/?${selected.toString()}`
 }
 
+function hrefWithFilter(state: URLSearchParams, name: string, value: string): string {
+  const selected = new URLSearchParams(state)
+  selected.delete("record")
+  selected.delete("offset")
+  selected.set(name, value)
+  return `/?${selected.toString()}`
+}
+
 function stateHref(state: URLSearchParams): string {
   const query = state.toString()
   return query ? `/?${query}` : "/"
@@ -101,29 +134,74 @@ function recordTitle(detail: Record<string, unknown>, fallback: string): string 
   return fallback
 }
 
+function facetOptions(values: Array<string | number>, allLabel: string, format: (value: string | number) => string = String): SearchFilter["options"] {
+  return [{ label: allLabel, value: "" }, ...values.map((value) => ({ label: format(value), value: String(value) }))]
+}
+
+function TaxonomyTags({ state, tags }: { state: URLSearchParams; tags: RowTag[] }) {
+  return (
+    <span className="taxonomy-tags">
+      {tags.slice(0, 4).map((tag) => (
+        <Link aria-label={`Filter by ${tag.label}`} href={hrefWithFilter(state, tag.name, tag.value)} key={`${tag.name}:${tag.value}`}>
+          {tag.label}
+        </Link>
+      ))}
+    </span>
+  )
+}
+
 function RecipeRows({ data, state }: { data: CompatibilityResult[]; state: URLSearchParams }) {
   return (
     <div className="browser-list recipe-browser-list">
       {data.map((result) => {
         const context = numberField(result.recipe.serving, "max_context_tokens")
         const speed = peakRecipeSpeed(result)
-        const status = result.launchable
-          ? "validated"
-          : result.recipe.launch.kind === "reference" ? "reference" : "candidate"
+        const validation = result.launchable ? "validated" : "candidate"
+        const tags: RowTag[] = [
+          { label: validation, name: "validation", value: validation },
+          { label: result.recipe.engine.name, name: "engine", value: result.recipe.engine.name },
+          { label: result.speed_evidence.available ? "measured" : "unmeasured", name: "evidence", value: String(result.speed_evidence.available) },
+          { label: `${result.hardware.memory.vram_gb} GB+`, name: "min_vram_gb", value: String(result.hardware.memory.vram_gb) },
+        ]
         return (
-          <Link className="browser-row recipe-browser-row" href={hrefWithRecord(state, result.id)} key={result.id} scroll={false}>
+          <article className="browser-row recipe-browser-row" key={result.id}>
+            <Link aria-label={`Open ${result.model.name} recipe`} className="row-open" href={hrefWithRecord(state, result.id)} scroll={false} />
             <span className={`status-mark ${result.launchable ? "validated" : "candidate"}`} aria-hidden="true" />
-            <span className="row-primary">
-              <strong>{result.model.name}</strong>
-              <small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small>
-            </span>
+            <span className="row-primary"><strong>{result.model.name}</strong><small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small></span>
             <span><strong>{result.hardware.name}</strong><small>{result.recipe.hardware_count} × {result.hardware.memory.vram_gb} GB</small></span>
             <span><strong>{result.recipe.engine.name}</strong><small>{result.recipe.launch.kind}</small></span>
             <span><strong>{formatTokens(context)}</strong><small>context</small></span>
             <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>{result.speed_evidence.available ? "measured" : "no evidence"}</small></span>
-            <span className={`row-status ${result.launchable ? "validated" : "candidate"}`}>{status}</span>
+            <TaxonomyTags state={state} tags={tags} />
             <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
-          </Link>
+          </article>
+        )
+      })}
+    </div>
+  )
+}
+
+function PriceRows({ data, state }: { data: PriceResult[]; state: URLSearchParams }) {
+  return (
+    <div className="browser-list collection-list">
+      {data.map(({ hardware, id, price }) => {
+        const tags: RowTag[] = [
+          { label: hardware.vendor, name: "vendor", value: hardware.vendor },
+          { label: price.kind, name: "kind", value: price.kind },
+          { label: price.scope, name: "scope", value: price.scope },
+          { label: `≤ ${formatAmount(price.amount, price.currency)}`, name: "max_price", value: String(price.amount) },
+        ]
+        return (
+          <article className="browser-row price-row" key={id}>
+            <Link aria-label={`Open ${hardware.name} hardware record`} className="row-open" href={hrefWithRecord(state, hardware.id)} scroll={false} />
+            <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
+            <span><strong>{formatAmount(price.amount, price.currency)}</strong><small>{price.unit}</small></span>
+            <span><strong>{price.kind}</strong><small>{price.scope}</small></span>
+            <span><strong>{observedDate(price)}</strong><small>as of / captured</small></span>
+            <span><strong>{price.source.publisher ?? price.source.kind ?? "Unknown"}</strong><small>source publisher</small></span>
+            <TaxonomyTags state={state} tags={tags} />
+            <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+          </article>
         )
       })}
     </div>
@@ -155,22 +233,45 @@ export default async function Home({ searchParams }: PageProps) {
   }
   const overviewRecipes = queryCompatibility({ launchable: "true" }, { limit: 8, offset: 0 })
   const recipeResults = topic === "recipes" ? queryCompatibility(recipeFilters, pagination) : { data: [], total: 0 }
-  const hardwareResults = topic === "hardware" ? listHardware({ q: query }, pagination) : { data: [], total: 0 }
-  const modelResults = topic === "models" ? listModels({ q: query }, pagination) : { data: [], total: 0 }
+  const hardwareResults = topic === "hardware" ? listHardware({
+    backend: value("backend"),
+    min_vram_gb: value("min_vram_gb"),
+    priced_only: value("priced_only"),
+    q: query,
+    vendor: value("vendor"),
+  }, pagination) : { data: [], total: 0 }
+  const modelResults = topic === "models" ? listModels({
+    architecture: value("architecture"),
+    family: value("family"),
+    q: query,
+  }, pagination) : { data: [], total: 0 }
+  const priceResults = topic === "prices" ? listPrices({
+    kind: value("kind"),
+    max_price: value("max_price"),
+    q: query,
+    scope: value("scope"),
+    vendor: value("vendor"),
+  }, pagination) : { data: [], total: 0 }
+  const priceTotal = topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total
   const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query }, pagination) : { data: [], total: 0 }
 
+  const filterKeys: Partial<Record<Topic, string[]>> = {
+    hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
+    models: ["family", "architecture"],
+    prices: ["vendor", "kind", "scope", "max_price"],
+    recipes: ["validation", "engine", "min_vram_gb", "evidence"],
+  }
   const viewState = new URLSearchParams()
   if (topic) viewState.set("topic", topic)
   if (query) viewState.set("q", query)
-  if (topic === "recipes") {
-    for (const key of ["validation", "engine", "min_vram_gb", "evidence"]) {
-      const selected = value(key)
-      if (selected) viewState.set(key, selected)
-    }
+  for (const key of topic ? filterKeys[topic] ?? [] : []) {
+    const selected = value(key)
+    if (selected) viewState.set(key, selected)
   }
   if (offset > 0) viewState.set("offset", String(offset))
 
-  const selectedRecord = topic && value("record") ? getEntityDetail(topic, value("record")) : undefined
+  const detailCollection = topic === "prices" ? "hardware" : topic
+  const selectedRecord = detailCollection && value("record") ? getEntityDetail(detailCollection, value("record")) : undefined
   const closeHref = stateHref(viewState)
   const selectedTitle = selectedRecord ? recordTitle(selectedRecord, value("record")) : ""
   const total = topic === "recipes"
@@ -179,7 +280,9 @@ export default async function Home({ searchParams }: PageProps) {
       ? hardwareResults.total
       : topic === "models"
         ? modelResults.total
-        : topic === "speed-sweeps" ? sweepResults.total : 0
+        : topic === "prices"
+          ? priceResults.total
+          : topic === "speed-sweeps" ? sweepResults.total : 0
   const topicLabel = TOPICS.find((item) => item.key === topic)?.label
 
   const pageState = new URLSearchParams(viewState)
@@ -189,127 +292,139 @@ export default async function Home({ searchParams }: PageProps) {
   const nextState = new URLSearchParams(pageState)
   nextState.set("offset", String(offset + limit))
 
+  const recipeSearchFilters: SearchFilter[] = [
+    { label: "Status", name: "validation", value: validation, options: facetOptions(["validated", "candidate"], "All statuses", (item) => item === "validated" ? "Validated · launch-safe" : "Candidate or reference") },
+    { label: "Engine", name: "engine", value: value("engine"), options: facetOptions(facets.recipes.engine, "Any engine") },
+    { label: "Memory", name: "min_vram_gb", value: value("min_vram_gb"), options: facetOptions(facets.hardware.vram_gb, "Any memory", (item) => `At least ${item} GB`) },
+    { label: "Evidence", name: "evidence", value: value("evidence"), options: facetOptions(["true", "false"], "Any evidence", (item) => item === "true" ? "Measured speed attached" : "No measured speed") },
+  ]
+  const hardwareSearchFilters: SearchFilter[] = [
+    { label: "Vendor", name: "vendor", value: value("vendor"), options: facetOptions(facets.hardware.vendor, "Any vendor") },
+    { label: "Backend", name: "backend", value: value("backend"), options: facetOptions(facets.hardware.backend, "Any backend") },
+    { label: "Memory", name: "min_vram_gb", value: value("min_vram_gb"), options: facetOptions(facets.hardware.vram_gb, "Any memory", (item) => `At least ${item} GB`) },
+    { label: "Pricing", name: "priced_only", value: value("priced_only"), options: facetOptions(["true"], "All hardware", () => "Priced only") },
+  ]
+  const modelSearchFilters: SearchFilter[] = [
+    { label: "Family", name: "family", value: value("family"), options: facetOptions(facets.models.family, "Any family") },
+    { label: "Architecture", name: "architecture", value: value("architecture"), options: facetOptions(facets.models.architecture, "Any architecture") },
+  ]
+  const priceSearchFilters: SearchFilter[] = [
+    { label: "Vendor", name: "vendor", value: value("vendor"), options: facetOptions(facets.prices.vendor, "Any vendor") },
+    { label: "Price kind", name: "kind", value: value("kind"), options: facetOptions(facets.prices.kind, "Any price kind") },
+    { label: "Price scope", name: "scope", value: value("scope"), options: facetOptions(facets.prices.scope, "Any price scope") },
+    { label: "Maximum price", name: "max_price", value: value("max_price"), options: facetOptions(facets.prices.amount, "Any price", (item) => `Up to ${USD_FORMATTER.format(Number(item))}`) },
+  ]
+  const topicFilters = topic === "recipes"
+    ? recipeSearchFilters
+    : topic === "hardware"
+      ? hardwareSearchFilters
+      : topic === "models"
+        ? modelSearchFilters
+        : topic === "prices" ? priceSearchFilters : []
+
   return (
     <main className="registry-main">
       <nav aria-label="Registry collections" className="topic-tabs">
         {TOPICS.map((item) => (
-          <Link aria-current={topic === item.key ? "page" : undefined} href={`/?topic=${item.key}`} key={item.key}>
-            {item.label}
-          </Link>
+          <Link aria-current={topic === item.key ? "page" : undefined} href={`/?topic=${item.key}`} key={item.key}>{item.label}</Link>
         ))}
       </nav>
 
       {!topic ? (
         <>
-          <header className="overview-heading">
-            <span className="mono-label">READ-ONLY / SOURCE-BACKED</span>
-            <h1>Registry index</h1>
-          </header>
-          <section className="overview-search" aria-label="Search recipes">
-            <RegistrySearch
-              engines={facets.recipes.engine}
-              evidence=""
-              memory=""
-              query=""
-              recipeFilters={false}
-              selectedEngine=""
-              topic=""
-              validation=""
-              vramOptions={facets.hardware.vram_gb}
-            />
-          </section>
+          <header className="overview-heading"><span className="mono-label">READ-ONLY / SOURCE-BACKED</span><h1>Registry index</h1></header>
+          <section className="overview-search" aria-label="Search recipes"><RegistrySearch filters={[]} query="" topic="" /></section>
           <nav aria-label="Registry topic counts" className="topic-index">
             {TOPICS.map((item, index) => {
-              const count = counts[item.countKey]
+              const count = item.key === "prices" ? priceTotal : item.countKey ? counts[item.countKey] : undefined
               return (
                 <Link href={`/?topic=${item.key}`} key={item.key}>
-                  <span className="mono-label">0{index + 1}</span>
-                  <strong>{item.label}</strong>
-                  <span>{typeof count === "number" ? count.toLocaleString() : "—"}</span>
+                  <span className="mono-label">0{index + 1}</span><strong>{item.label}</strong><span>{typeof count === "number" ? count.toLocaleString() : "—"}</span>
                 </Link>
               )
             })}
           </nav>
           <section className="overview-recipes">
-            <div className="section-heading">
-              <div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div>
-              <Link href="/?topic=recipes&validation=validated">View all</Link>
-            </div>
+            <div className="section-heading"><div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div><Link href="/?topic=recipes&validation=validated">View all</Link></div>
             <RecipeRows data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&validation=validated")} />
           </section>
         </>
       ) : (
         <>
-          <header className="topic-heading">
-            <div>
-              <span className="mono-label">COLLECTION / {topic.toUpperCase()}</span>
-              <h1>{topicLabel}</h1>
-            </div>
-            <span className="topic-total">{total.toLocaleString()} records</span>
-          </header>
-          <section className="topic-search" aria-label={`${topicLabel} search`}>
-            <RegistrySearch
-              engines={facets.recipes.engine}
-              evidence={value("evidence")}
-              memory={value("min_vram_gb")}
-              query={query}
-              recipeFilters={topic === "recipes"}
-              selectedEngine={value("engine")}
-              topic={topic}
-              validation={validation}
-              vramOptions={facets.hardware.vram_gb}
-            />
-          </section>
+          <header className="topic-heading"><div><span className="mono-label">COLLECTION / {topic.toUpperCase()}</span><h1>{topicLabel}</h1></div><span className="topic-total">{total.toLocaleString()} records</span></header>
+          <section className="topic-search" aria-label={`${topicLabel} search`}><RegistrySearch filters={topicFilters} query={query} topic={topic} /></section>
 
           {topic === "recipes" && <RecipeRows data={recipeResults.data} state={viewState} />}
-
           {topic === "hardware" && (
             <div className="browser-list collection-list">
-              {hardwareResults.data.map((hardware) => (
-                <Link className="browser-row collection-row" href={hrefWithRecord(viewState, hardware.id)} key={hardware.id} scroll={false}>
-                  <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
-                  <span><strong>{hardware.vendor}</strong><small>{hardware.kind}</small></span>
-                  <span><strong>{hardware.memory.vram_gb} GB</strong><small>{hardware.memory.vram_type ?? "Memory type unknown"}</small></span>
-                  <span><strong>{hardware.accelerator_backend}</strong><small>backend</small></span>
-                  <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
-                </Link>
-              ))}
+              {hardwareResults.data.map((hardware) => {
+                const hasPrices = (hardware.commercial?.prices.length ?? 0) > 0
+                const tags: RowTag[] = [
+                  { label: hardware.vendor, name: "vendor", value: hardware.vendor },
+                  { label: hardware.accelerator_backend, name: "backend", value: hardware.accelerator_backend },
+                  { label: `${hardware.memory.vram_gb} GB+`, name: "min_vram_gb", value: String(hardware.memory.vram_gb) },
+                  ...(hasPrices ? [{ label: "priced", name: "priced_only", value: "true" }] : []),
+                ]
+                return (
+                  <article className="browser-row collection-row" key={hardware.id}>
+                    <Link aria-label={`Open ${hardware.name}`} className="row-open" href={hrefWithRecord(viewState, hardware.id)} scroll={false} />
+                    <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
+                    <span><strong>{hardware.vendor}</strong><small>{hardware.kind}</small></span>
+                    <span><strong>{hardware.memory.vram_gb} GB</strong><small>{hardware.memory.vram_type ?? "Memory type unknown"}</small></span>
+                    <span><strong>{hardware.accelerator_backend}</strong><small>backend</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </article>
+                )
+              })}
             </div>
           )}
-
           {topic === "models" && (
             <div className="browser-list collection-list">
-              {modelResults.data.map((model) => (
-                <Link className="browser-row collection-row" href={hrefWithRecord(viewState, model.id)} key={model.id} scroll={false}>
-                  <span className="row-primary"><strong>{model.name}</strong><small>{model.id}</small></span>
-                  <span><strong>{model.family}</strong><small>family</small></span>
-                  <span><strong>{model.architecture ?? "Unknown"}</strong><small>architecture</small></span>
-                  <span><strong>{model.params ?? "—"}</strong><small>parameters</small></span>
-                  <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
-                </Link>
-              ))}
+              {modelResults.data.map((model) => {
+                const tags: RowTag[] = [
+                  { label: model.family, name: "family", value: model.family },
+                  { label: model.architecture ?? "unknown", name: "architecture", value: model.architecture ?? "unknown" },
+                ]
+                return (
+                  <article className="browser-row collection-row" key={model.id}>
+                    <Link aria-label={`Open ${model.name}`} className="row-open" href={hrefWithRecord(viewState, model.id)} scroll={false} />
+                    <span className="row-primary"><strong>{model.name}</strong><small>{model.id}</small></span>
+                    <span><strong>{model.family}</strong><small>family</small></span>
+                    <span><strong>{model.architecture ?? "Unknown"}</strong><small>architecture</small></span>
+                    <span><strong>{model.params ?? "—"}</strong><small>parameters</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </article>
+                )
+              })}
             </div>
           )}
-
+          {topic === "prices" && <PriceRows data={priceResults.data} state={viewState} />}
           {topic === "speed-sweeps" && (
             <div className="browser-list collection-list">
               {sweepResults.data.map((sweep) => {
                 const speed = peakSweepSpeed(sweep)
+                const tags: RowTag[] = [
+                  { label: sweep.recipe_id, name: "q", value: sweep.recipe_id },
+                  ...(sweep.measured_at ? [{ label: sweep.measured_at, name: "q", value: sweep.measured_at }] : []),
+                ]
                 return (
-                  <Link className="browser-row collection-row" href={hrefWithRecord(viewState, sweep.id)} key={sweep.id} scroll={false}>
+                  <article className="browser-row collection-row" key={sweep.id}>
+                    <Link aria-label={`Open ${sweep.id}`} className="row-open" href={hrefWithRecord(viewState, sweep.id)} scroll={false} />
                     <span className="row-primary"><strong>{sweep.id}</strong><small>{sweep.recipe_id}</small></span>
                     <span><strong>{sweep.measured_at ?? "Unknown"}</strong><small>measured</small></span>
                     <span><strong>{sweep.rows.length}</strong><small>points</small></span>
                     <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>peak recorded</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
                     <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
-                  </Link>
+                  </article>
                 )
               })}
             </div>
           )}
 
-          {total === 0 && <div className="empty-state"><h2>No records found.</h2><p>Clear the search or remove a recipe filter.</p></div>}
-
+          {total === 0 && <div className="empty-state"><h2>No records found.</h2><p>Clear the search or remove a filter.</p></div>}
           {(offset > 0 || offset + limit < total) && (
             <nav aria-label={`${topicLabel} pages`} className="pagination">
               {offset > 0 ? <Link href={stateHref(previousState)}>Previous</Link> : <span />}
@@ -320,22 +435,16 @@ export default async function Home({ searchParams }: PageProps) {
         </>
       )}
 
-      {selectedRecord && topic && (
+      {selectedRecord && detailCollection && (
         <RecordModal closeHref={closeHref} titleId="record-modal-title">
           <header className="record-modal-header">
-            <div>
-              <span className="mono-label">{topic.toUpperCase()} / RECORD</span>
-              <h2 id="record-modal-title">{selectedTitle}</h2>
-              <code>{value("record")}</code>
-            </div>
+            <div><span className="mono-label">{detailCollection.toUpperCase()} / RECORD</span><h2 id="record-modal-title">{selectedTitle}</h2><code>{value("record")}</code></div>
             <ModalCloseButton className="modal-close" closeHref={closeHref} label="Close record details">Close</ModalCloseButton>
           </header>
-          <div className="record-modal-body">
-            <DataTree value={selectedRecord} />
-          </div>
+          <div className="record-modal-body"><DataTree value={selectedRecord} /></div>
           <footer className="record-modal-footer">
-            <a href={`/api/v1/${topic}/${value("record")}`}>JSON API</a>
-            <Link href={`/${topic}/${value("record")}`}>Permanent record URL</Link>
+            <a href={`/api/v1/${detailCollection}/${value("record")}`}>JSON API</a>
+            <Link href={`/${detailCollection}/${value("record")}`}>Permanent record URL</Link>
           </footer>
         </RecordModal>
       )}
