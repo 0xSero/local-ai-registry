@@ -13,9 +13,9 @@ SOURCE = "exo-postgres"
 HARDWARE = {
     "m3_24_10c": "apple-m3-24gb",
     "m3_max_128_40c": "apple-m3-max-128gb",
-    "m3_ultra_96_60c": "apple-m3-ultra-96gb",
-    "m3_ultra_512_80c": "apple-m3-ultra-512gb",
-    "m4_pro_64_20c": "apple-m4-pro-64gb",
+    "m3_ultra_96_60c": "apple-m3-ultra-96gb-60c",
+    "m3_ultra_512_80c": "apple-m3-ultra-96gb-80c",
+    "m4_pro_64_20c": "apple-m4-pro-48gb",
     "m4_max_36_32c": "apple-m4-max-36gb",
     "m4_max_128_40c": "apple-m4-max-128gb",
     "m5_pro_64_20c": "apple-m5-pro-64gb",
