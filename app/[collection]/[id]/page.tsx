@@ -70,7 +70,7 @@ export default async function DetailPage({ params }: DetailProps) {
         <code>{id}</code>
         <div className="detail-actions">
           <a href={`/api/v1/${collection}/${id}`}>JSON API</a>
-          <Link href={`/?${collection === "hardware" ? "hardware" : "model"}=${encodeURIComponent(title)}`}>
+          <Link href={`/?q=${encodeURIComponent(title)}`}>
             Find compatibility
           </Link>
         </div>
