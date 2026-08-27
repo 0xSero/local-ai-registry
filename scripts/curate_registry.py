@@ -204,6 +204,9 @@ def rebuild_index(root):
     collections = {}
     for name in ("hardware", "model", "model-instance", "recipe", "speed-sweeps"):
         collections[name] = sorted(path.stem for path in (root / name).glob("*.json"))
+    collections["price"] = sorted(
+        json.loads(path.read_text())["id"] for path in (root / "price").glob("*/*.json")
+    )
     recipes = []
     for path in sorted((root / "recipe").glob("*.json")):
         recipe = json.loads(path.read_text())
@@ -221,7 +224,7 @@ def rebuild_index(root):
         })
     write(root / "index.json", {
         "schema_version": SCHEMA,
-        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in collection names become hyphens.",
+        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in collection names become hyphens. Resolve price ids from price/<product-id>/<region>.json.",
         "collections": collections,
         "counts": {name.replace("-", "_"): len(ids) for name, ids in collections.items()},
         "recipes": recipes,

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local-ai-registry.dev/schema/price.schema.json",
+  "title": "Regional market price record",
+  "type": "object",
+  "required": ["schema_version", "id", "product", "region", "hardware", "observed_at", "summary", "observations", "verification", "provenance"],
+  "properties": {
+    "schema_version": { "const": "local-ai-registry/v1" },
+    "id": { "type": "string" },
+    "product": {
+      "type": "object",
+      "required": ["id", "name", "category"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" }
+      }
+    },
+    "region": {
+      "type": "object",
+      "required": ["code", "name", "currency"],
+      "properties": {
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "currency": { "type": "string" }
+      }
+    },
+    "hardware": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "match_scope"],
+        "properties": {
+          "id": { "type": "string" },
+          "match_scope": { "enum": ["exact", "family"] }
+        }
+      }
+    },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "summary": { "type": "object" },
+    "observations": { "type": "array", "items": { "type": "object" } },
+    "verification": { "type": "object" },
+    "provenance": { "type": "object" }
+  },
+  "additionalProperties": false
+}

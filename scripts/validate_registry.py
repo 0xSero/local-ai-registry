@@ -252,6 +252,39 @@ def validate(root):
                 if value is not None and (not isinstance(value, (int, float)) or value < 0):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
 
+    prices = {}
+    for path in sorted((root / "price").glob("*/*.json")):
+        try:
+            record = json.loads(path.read_text())
+        except json.JSONDecodeError as error:
+            errors.append(f"{path}: invalid JSON: {error}")
+            continue
+        identifier = record.get("id")
+        if identifier in prices:
+            errors.append(f"{path}: duplicate id {identifier}")
+        prices[identifier] = record
+        if record.get("schema_version") != SCHEMA:
+            errors.append(f"{path}: schema_version must be {SCHEMA}")
+        if not record.get("observations"):
+            errors.append(f"{identifier}: price record has no observations")
+        if not valid_timestamp(record.get("observed_at")):
+            errors.append(f"{identifier}: observed_at must be RFC3339 UTC")
+        currency = (record.get("region") or {}).get("currency")
+        for hardware in record.get("hardware", []):
+            if hardware.get("id") not in data["hardware"]:
+                errors.append(f"{identifier}: unresolved hardware {hardware.get('id')!r}")
+            if hardware.get("match_scope") not in ("exact", "family"):
+                errors.append(f"{identifier}: invalid hardware match_scope")
+        for observation in record.get("observations", []):
+            if observation.get("currency") != currency:
+                errors.append(f"{identifier}: observation currency does not match region")
+            if not isinstance(observation.get("amount"), (int, float)) or observation["amount"] <= 0:
+                errors.append(f"{identifier}: observation amount must be positive")
+            if not valid_timestamp(observation.get("observed_at")):
+                errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
+            if not isinstance(observation.get("url"), str) or not re.match(r"^https?://", observation["url"]):
+                errors.append(f"{identifier}: observation URL is malformed")
+
     index_path = root / "index.json"
     try:
         index = json.loads(index_path.read_text())
@@ -268,11 +301,16 @@ def validate(root):
         count_key = name.replace("-", "_")
         if index.get("counts", {}).get(count_key) != len(expected):
             errors.append(f"index.json: {count_key} count is stale")
+    expected_prices = sorted(identifier for identifier in prices if identifier)
+    if index.get("collections", {}).get("price") != expected_prices:
+        errors.append("index.json: price collection is stale")
+    if index.get("counts", {}).get("price") != len(expected_prices):
+        errors.append("index.json: price count is stale")
 
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
-    counts = " ".join(f"{name}={len(data[name])}" for name in COLLECTIONS)
+    counts = " ".join(f"{name}={len(data[name])}" for name in COLLECTIONS) + f" price={len(prices)}"
     print(f"registry valid: {counts}")
     return 0
 
