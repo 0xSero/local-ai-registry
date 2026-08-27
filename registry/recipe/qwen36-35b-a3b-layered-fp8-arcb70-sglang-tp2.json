@@ -46,27 +46,67 @@
   "id": "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2",
   "launch": {
     "accelerator_backend": "intel-xpu",
+    "arguments": [
+      "--model-path",
+      "Qwen/Qwen3.6-35B-A3B",
+      "--revision",
+      "995ad96eacd98c81ed38be0c5b274b04031597b0",
+      "--tp",
+      "2",
+      "--dtype",
+      "float16",
+      "--quantization",
+      "fp8",
+      "--load-format",
+      "layered_fp8",
+      "--attention-backend",
+      "intel_xpu",
+      "--trust-remote-code",
+      "--mem-fraction-static",
+      "0.9",
+      "--max-mamba-cache-size",
+      "64",
+      "--page-size",
+      "64",
+      "--mamba-scheduler-strategy",
+      "extra_buffer",
+      "--reasoning-parser",
+      "qwen3",
+      "--enable-cache-report",
+      "--enable-metrics",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000"
+    ],
+    "cap_add": [
+      "SYS_PTRACE"
+    ],
     "container": {
       "captured_at": "2026-08-27T06:04:13.773Z",
       "compose_file": null,
-      "digest": null,
-      "image": null,
-      "reason": "non-container-launch-kind",
-      "runtime": null,
+      "digest": "sha256:d027487a07e4391562b4460da72bc78008be129d44af540148787e02e3045c08",
+      "image": "ghcr.io/0xsero/qwen36-b70-sglang@sha256:d027487a07e4391562b4460da72bc78008be129d44af540148787e02e3045c08",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-08-27T06:04:13.773Z",
           "kind": "recipe-launch",
-          "url": "https://github.com/0xSero/local-ai-registry"
+          "url": "https://github.com/0xSero/qwen36-b70"
         }
       ],
-      "state": "none"
+      "state": "digest-pinned"
     },
     "container_port": 30000,
+    "devices": [
+      "/dev/dri"
+    ],
     "environment": {
+      "HF_HOME": "/root/.cache/huggingface",
       "LOAD_FORMAT": "layered_fp8",
       "MEM_FRACTION_STATIC": "0.9",
-      "MODEL_PATH": "/models/Qwen3.6-35B-A3B",
+      "MODEL_PATH": "Qwen/Qwen3.6-35B-A3B",
       "PORT": "30000",
       "SGLANG_MAMBA_CONV_DTYPE": "float16",
       "SGLANG_MAMBA_SSM_DTYPE": "float32",
@@ -83,13 +123,31 @@
       "ZE_AFFINITY_MASK": "0,1"
     },
     "host_port": 8010,
+    "image": "ghcr.io/0xsero/qwen36-b70-sglang@sha256:d027487a07e4391562b4460da72bc78008be129d44af540148787e02e3045c08",
     "ipc": "host",
-    "kind": "script",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "/dev/dri/by-path",
+        "target": "/dev/dri/by-path"
+      },
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
     "network_mode": "bridge",
-    "script": {
-      "file": "sources/github/qwen36-b70/15166aed68bc25c411e16ddd81621242ba3d6298/sglang/xpu/run_qwen3_6_service.sh"
+    "security_opt": [
+      "seccomp=unconfined"
+    ],
+    "shm_size": "16g",
+    "source": {
+      "commit": "15166aed68bc25c411e16ddd81621242ba3d6298",
+      "repository": "https://github.com/0xSero/qwen36-b70"
     },
-    "shm_size": "16g"
+    "validated_from": "sglang/xpu/run_qwen3_6_service.sh"
   },
   "metadata": {},
   "model_instance_id": "qwen-qwen3-6-35b-a3b--online-fp8-weights-with-fp16-activations",
@@ -99,7 +157,7 @@
       {
         "captured_at": "2026-08-27T06:04:13.773Z",
         "kind": "normalized-recipe",
-        "url": "https://github.com/0xSero/local-ai-registry"
+        "url": "https://github.com/0xSero/qwen36-b70"
       }
     ]
   },

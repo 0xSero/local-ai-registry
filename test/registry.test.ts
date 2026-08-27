@@ -47,6 +47,14 @@ test("candidate and reference recipes are never launchable", () => {
   assert.equal(result.total, 0)
 })
 
+test("validated recipes for the Omarchy GPUs use Docker", () => {
+  for (const hardware_id of ["rtx-3090-24gb", "intel-arc-pro-b70-32gb"]) {
+    const result = queryCompatibility({ hardware_id, status: "validated" }, { limit: 100, offset: 0 })
+    assert.ok(result.total > 0)
+    assert.ok(result.data.every((item) => item.recipe.launch.kind === "docker" && item.launchable))
+  }
+})
+
 test("repository link results expose the authoritative body identity", () => {
   const result = listModelInstances(
     { huggingface_link_type: "repository", q: "unsloth/gemma-4-12b-it-NVFP4" },
