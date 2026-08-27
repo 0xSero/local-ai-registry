@@ -77,6 +77,22 @@ export type CompatibilityResult = {
   }
 }
 
+type HardwarePrice = NonNullable<Hardware["commercial"]>["prices"][number]
+
+export type PriceObservation = HardwarePrice & {
+  as_of?: string | null
+  configuration?: string | null
+  kind: string
+  scope: string
+}
+
+export type PriceResult = {
+  hardware: Hardware
+  hardware_id: string
+  id: string
+  price: PriceObservation
+}
+
 type RegistryRecord = Record<string, unknown>
 type CompatibilityRow = RegistryIndex["recipes"][number]
 
@@ -300,7 +316,7 @@ export function listModels(filters: Record<string, string>, pagination: Paginati
     (model) =>
       contains(model, filters.q) &&
       equals(model.family, filters.family) &&
-      equals(model.architecture, filters.architecture),
+      (filters.architecture === "unknown" ? model.architecture === null : equals(model.architecture, filters.architecture)),
   )
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
@@ -322,14 +338,39 @@ export function listModelInstances(filters: Record<string, string>, pagination: 
 }
 
 export function listHardware(filters: Record<string, string>, pagination: Pagination) {
-  const all = [...dataset().hardware.values()].filter(
-    (hardware) =>
+  const all = [...dataset().hardware.values()].filter((hardware) => {
+    const hasPrices = (hardware.commercial?.prices.length ?? 0) > 0
+    return (
       contains(hardware, filters.q) &&
       equals(hardware.vendor, filters.vendor) &&
       equals(hardware.accelerator_backend, filters.backend) &&
       equals(hardware.kind, filters.kind) &&
       equals(hardware.family, filters.family) &&
-      numericFilter(hardware.memory.vram_gb, filters.min_vram_gb, filters.max_vram_gb),
+      numericFilter(hardware.memory.vram_gb, filters.min_vram_gb, filters.max_vram_gb) &&
+      booleanFilter(hasPrices, filters.priced_only)
+    )
+  })
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+function priceResults(): PriceResult[] {
+  return [...dataset().hardware.values()].flatMap((hardware) =>
+    (hardware.commercial?.prices ?? []).map((price, index) => ({
+      hardware,
+      hardware_id: hardware.id,
+      id: `${hardware.id}:${index}`,
+      price: price as PriceObservation,
+    })),
+  )
+}
+
+export function listPrices(filters: Record<string, string>, pagination: Pagination) {
+  const all = priceResults().filter(({ hardware, price }) =>
+    contains([hardware, price], filters.q) &&
+    equals(hardware.vendor, filters.vendor) &&
+    equals(price.kind, filters.kind) &&
+    equals(price.scope, filters.scope) &&
+    numericFilter(price.amount, filters.min_price, filters.max_price),
   )
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
@@ -424,9 +465,10 @@ function unique(values: Array<string | number | null | undefined>): Array<string
 
 export function getFacets() {
   const data = dataset()
+  const prices = priceResults()
   return {
     models: {
-      architecture: unique([...data.models.values()].map((model) => model.architecture)),
+      architecture: unique([...data.models.values()].map((model) => model.architecture ?? "unknown")),
       family: unique([...data.models.values()].map((model) => model.family)),
     },
     model_instances: {
@@ -441,6 +483,13 @@ export function getFacets() {
       kind: unique([...data.hardware.values()].map((hardware) => hardware.kind)),
       vendor: unique([...data.hardware.values()].map((hardware) => hardware.vendor)),
       vram_gb: unique([...data.hardware.values()].map((hardware) => hardware.memory.vram_gb)),
+    },
+    prices: {
+      amount: unique(prices.map(({ price }) => price.amount)),
+      currency: unique(prices.map(({ price }) => price.currency)),
+      kind: unique(prices.map(({ price }) => price.kind)),
+      scope: unique(prices.map(({ price }) => price.scope)),
+      vendor: unique(prices.map(({ hardware }) => hardware.vendor)),
     },
     recipes: {
       engine: unique(data.index.recipes.map((recipe) => recipe.engine)),
