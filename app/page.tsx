@@ -39,7 +39,7 @@ type RowTag = {
 }
 
 const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; description: string }> = [
-  { key: "recipes", label: "Recipes", countKey: "recipe", description: "Model × hardware × engine compatibility, with launch status and evidence." },
+  { key: "recipes", label: "Recipes", countKey: "recipe", description: "Browse model × hardware compatibility by hardware or by model, with engine, launch status, and evidence." },
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
@@ -147,7 +147,7 @@ function TaxonomyTags({ state, tags }: { state: URLSearchParams; tags: RowTag[] 
   )
 }
 
-function RecipeRows({ data, state }: { data: CompatibilityResult[]; state: URLSearchParams }) {
+function RecipeRows({ by, data, state }: { by: "hardware" | "model"; data: CompatibilityResult[]; state: URLSearchParams }) {
   return (
     <div className="browser-list recipe-browser-list">
       {data.map((result) => {
@@ -164,8 +164,17 @@ function RecipeRows({ data, state }: { data: CompatibilityResult[]; state: URLSe
           <article className="browser-row recipe-browser-row" key={result.id}>
             <Link aria-label={`Open ${result.model.name} recipe`} className="row-open" href={hrefWithRecord(state, result.id)} scroll={false} />
             <span className={`status-mark ${result.launchable ? "validated" : "candidate"}`} aria-hidden="true" />
-            <span className="row-primary"><strong>{result.model.name}</strong><small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small></span>
-            <span><strong>{result.hardware.name}</strong><small>{result.recipe.hardware_count} × {result.hardware.memory.vram_gb} GB</small></span>
+            {by === "hardware" ? (
+              <>
+                <span className="row-primary"><strong>{result.hardware.name}</strong><small>{result.recipe.hardware_count} × {result.hardware.memory.vram_gb} GB</small></span>
+                <span><strong>{result.model.name}</strong><small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small></span>
+              </>
+            ) : (
+              <>
+                <span className="row-primary"><strong>{result.model.name}</strong><small>{result.model_instance.weights.precision ?? result.model_instance.weights.format ?? "Unknown precision"}</small></span>
+                <span><strong>{result.hardware.name}</strong><small>{result.recipe.hardware_count} × {result.hardware.memory.vram_gb} GB</small></span>
+              </>
+            )}
             <span><strong>{result.recipe.engine.name}</strong><small>{result.recipe.launch.kind}</small></span>
             <span><strong>{formatTokens(context)}</strong><small>context</small></span>
             <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>{result.speed_evidence.available ? "measured" : "no evidence"}</small></span>
@@ -218,6 +227,7 @@ export default async function Home({ searchParams }: PageProps) {
   const topic = validTopic(value("topic"))
   const query = value("q")
   const validation = value("validation")
+  const recipeBrowse = value("by") === "model" ? "model" : "hardware"
   const offset = Math.max(0, Number(value("offset")) || 0)
   const limit = topic === "recipes" ? 24 : 32
   const pagination = { limit, offset }
@@ -227,9 +237,12 @@ export default async function Home({ searchParams }: PageProps) {
   const recipeFilters: CompatibilityFilters = {
     engine: value("engine"),
     evidence: value("evidence"),
+    hardware_id: value("hardware_id"),
     launchable: validation === "validated" ? "true" : validation === "candidate" ? "false" : "",
     min_vram_gb: value("min_vram_gb"),
+    model_id: value("model_id"),
     q: query,
+    sort_by: recipeBrowse,
   }
   const overviewRecipes = queryCompatibility({ launchable: "true" }, { limit: 8, offset: 0 })
   const recipeResults = topic === "recipes" ? queryCompatibility(recipeFilters, pagination) : { data: [], total: 0 }
@@ -260,10 +273,11 @@ export default async function Home({ searchParams }: PageProps) {
     hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
     models: ["family", "architecture"],
     prices: ["region", "category", "condition", "retailer", "in_stock"],
-    recipes: ["validation", "engine", "min_vram_gb", "evidence"],
+    recipes: ["by", "hardware_id", "model_id", "validation", "engine", "evidence"],
   }
   const viewState = new URLSearchParams()
   if (topic) viewState.set("topic", topic)
+  if (topic === "recipes") viewState.set("by", recipeBrowse)
   if (query) viewState.set("q", query)
   for (const key of topic ? filterKeys[topic] ?? [] : []) {
     const selected = value(key)
@@ -295,9 +309,11 @@ export default async function Home({ searchParams }: PageProps) {
   nextState.set("offset", String(offset + limit))
 
   const recipeSearchFilters: SearchFilter[] = [
+    { label: "Browse", name: "by", value: recipeBrowse, options: [{ label: "By hardware", value: "hardware" }, { label: "By model", value: "model" }] },
+    { label: "Hardware", name: "hardware_id", value: value("hardware_id"), options: [{ label: "All hardware", value: "" }, ...listHardware({}, { limit: 200, offset: 0 }).data.map((hardware) => ({ label: hardware.name, value: hardware.id }))] },
+    { label: "Model", name: "model_id", value: value("model_id"), options: [{ label: "All models", value: "" }, ...listModels({}, { limit: 200, offset: 0 }).data.map((model) => ({ label: model.name, value: model.id }))] },
     { label: "Status", name: "validation", value: validation, options: facetOptions(["validated", "candidate"], "All statuses", (item) => item === "validated" ? "Validated · launch-safe" : "Candidate or reference") },
     { label: "Engine", name: "engine", value: value("engine"), options: facetOptions(facets.recipes.engine, "Any engine") },
-    { label: "Memory", name: "min_vram_gb", value: value("min_vram_gb"), options: facetOptions(facets.hardware.vram_gb, "Any memory", (item) => `At least ${item} GB`) },
     { label: "Evidence", name: "evidence", value: value("evidence"), options: facetOptions(["true", "false"], "Any evidence", (item) => item === "true" ? "Measured speed attached" : "No measured speed") },
   ]
   const hardwareSearchFilters: SearchFilter[] = [
@@ -349,7 +365,7 @@ export default async function Home({ searchParams }: PageProps) {
           </nav>
           <section className="overview-recipes">
             <div className="section-heading"><div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div><Link href="/?topic=recipes&validation=validated">View all</Link></div>
-            <RecipeRows data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&validation=validated")} />
+            <RecipeRows by="model" data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&by=model&validation=validated")} />
           </section>
         </>
       ) : (
@@ -357,7 +373,7 @@ export default async function Home({ searchParams }: PageProps) {
           <header className="topic-heading"><div><span className="mono-label">COLLECTION / {topic.toUpperCase()}</span><h1>{topicLabel}</h1><p className="topic-description">{topicDescription}</p></div><span className="topic-total">{total.toLocaleString()} records</span></header>
           <section className="topic-search" aria-label={`${topicLabel} search`}><RegistrySearch filters={topicFilters} query={query} topic={topic} /></section>
 
-          {topic === "recipes" && <RecipeRows data={recipeResults.data} state={viewState} />}
+          {topic === "recipes" && <RecipeRows by={recipeBrowse} data={recipeResults.data} state={viewState} />}
           {topic === "hardware" && (
             <div className="browser-list collection-list">
               {hardwareResults.data.map((hardware) => {
