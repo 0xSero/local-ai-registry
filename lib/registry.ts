@@ -45,6 +45,7 @@ export type CompatibilityFilters = {
   precision?: string
   q?: string
   reasoning?: string
+  sort_by?: string
   status?: string
   tools?: string
   vendor?: string
@@ -303,7 +304,22 @@ export function queryCompatibility(
   filters: CompatibilityFilters,
   pagination: Pagination,
 ): { data: CompatibilityResult[]; total: number } {
-  const rows = matchingCompatibilityRows(filters)
+  const data = dataset()
+  const primary = filters.sort_by === "model" ? "model" : "hardware"
+  const rows = matchingCompatibilityRows(filters).sort((left, right) => {
+    const leftInstance = data.instances.get(left.model_instance_id)
+    const rightInstance = data.instances.get(right.model_instance_id)
+    const leftModel = leftInstance ? data.models.get(leftInstance.model_id)?.name ?? leftInstance.model_id : left.model_instance_id
+    const rightModel = rightInstance ? data.models.get(rightInstance.model_id)?.name ?? rightInstance.model_id : right.model_instance_id
+    const leftHardware = data.hardware.get(left.hardware_id)?.name ?? left.hardware_id
+    const rightHardware = data.hardware.get(right.hardware_id)?.name ?? right.hardware_id
+    const leftKeys = primary === "hardware" ? [leftHardware, leftModel] : [leftModel, leftHardware]
+    const rightKeys = primary === "hardware" ? [rightHardware, rightModel] : [rightModel, rightHardware]
+    return leftKeys[0].localeCompare(rightKeys[0], undefined, { numeric: true })
+      || leftKeys[1].localeCompare(rightKeys[1], undefined, { numeric: true })
+      || left.engine.localeCompare(right.engine)
+      || left.id.localeCompare(right.id)
+  })
   const selected = rows.slice(pagination.offset, pagination.offset + pagination.limit)
   return {
     data: selected.flatMap((row) => {

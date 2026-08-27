@@ -137,6 +137,23 @@ test("combined search matches model and hardware fields in one query", () => {
   }
 })
 
+test("recipe browsing sorts by hardware or model before pagination", () => {
+  const byHardware = queryCompatibility({ sort_by: "hardware" }, { limit: 100, offset: 0 }).data
+  const byModel = queryCompatibility({ sort_by: "model" }, { limit: 100, offset: 0 }).data
+
+  const ordered = (items: typeof byHardware, primary: "hardware" | "model") => items.every((item, index) => {
+    if (index === 0) return true
+    const previous = items[index - 1]
+    const first = primary === "hardware" ? [previous.hardware.name, item.hardware.name] : [previous.model.name, item.model.name]
+    const second = primary === "hardware" ? [previous.model.name, item.model.name] : [previous.hardware.name, item.hardware.name]
+    const order = first[0].localeCompare(first[1], undefined, { numeric: true })
+    return order < 0 || (order === 0 && second[0].localeCompare(second[1], undefined, { numeric: true }) <= 0)
+  })
+
+  assert.equal(ordered(byHardware, "hardware"), true)
+  assert.equal(ordered(byModel, "model"), true)
+})
+
 test("navigable topic collections expose real registry records", () => {
   const counts = collectionCounts()
   const models = listModels({}, { limit: 5, offset: 0 })
