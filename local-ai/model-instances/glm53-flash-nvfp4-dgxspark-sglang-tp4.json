@@ -4,7 +4,7 @@
   "hardware_slug": "dgx-spark-gb10-128gb",
   "hardware_config": {
     "count": 4,
-    "interconnect": "ConnectX-7 RoCEv2 dual-rail 10.10.10.0/24 + 10.10.20.0/24",
+    "interconnect": "ConnectX-7 RoCEv2 dual-rail fabric",
     "power_limit_w_each": null
   },
   "weights": {
@@ -15,15 +15,15 @@
   "engine": {
     "graph_mode": "full decode/target-verify/draft capture bs<=8 with NEXTN; prefill graphs disabled (KDA hybrid)",
     "name": "sglang",
-    "version": "lmsysorg/sglang:glm-5.3-flash@sha256:989e2fff092e628d0449f6fa1c80e59af9b3e0b41f621a57d87bf8d6cba9ad23"
+    "version": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b"
   },
   "serving": {
     "api": "openai/v1",
     "configured_max_context_tokens": 1048576,
     "configured_max_running_sequences": 8,
-    "measured_kv_cache_tokens": 5484352,
+    "measured_kv_cache_tokens": 5621568,
     "measured_max_context_tokens": 1048576,
-    "measured_max_request_concurrency": 1,
+    "measured_max_request_concurrency": 8,
     "tensor_parallel": 4
   },
   "runtime": {
@@ -56,6 +56,7 @@
       "--speculative-adaptive",
       "--media-url-max-file-size-mb", "1024",
       "--enable-multimodal",
+      "--chat-template", "/opt/glm53/chat-template-mm.jinja",
       "--reasoning-parser", "glm45",
       "--tool-call-parser", "glm47",
       "--host", "0.0.0.0",
@@ -88,7 +89,7 @@
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },
     "host_port": 8888,
-    "image": "lmsysorg/sglang:glm-5.3-flash@sha256:989e2fff092e628d0449f6fa1c80e59af9b3e0b41f621a57d87bf8d6cba9ad23",
+    "image": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
     "ipc": "host",
     "kind": "docker",
     "network_mode": "host",
@@ -100,11 +101,11 @@
     "mounts": [
       {
         "read_only": true,
-        "source": "/home/sero/models/GLM-5.3-Flash-NVFP4",
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
         "target": "/model"
       }
     ],
-    "launch_command": "docker compose --env-file profiles/tp4.env up -d on spark-2822 rank0 after workers ranks 3,2,1; bundle https://github.com/0xSero/glm-5.3-flash-sglang-sm121 with SM120 patches bind-mounted. Rank 3 (spark-de5c) must set NCCL_SOCKET_IFNAME=GLOO_SOCKET_IFNAME=enP2p1s0f1np1 because its 10.10.10.14 address lives on the swapped NIC.",
+    "launch_command": "Use compose.yaml with profiles/tp4.env.example from the pinned source repository; set each node rank and fabric interface locally, then start worker ranks before rank zero.",
     "container_name": "glm53-flash-spark-tp4-rank{0-3}"
   },
   "capabilities": {
@@ -113,9 +114,9 @@
     "tools": true,
     "vision": true
   },
-  "status": "candidate",
+  "status": "validated",
   "profile": "tp4",
-  "description": "Live four-DGX-Spark GLM-5.3-Flash NVFP4 SGLang TP4/EP4 on the MikroTik ConnectX-7 fabric. Replaced DeepSeek V4 Flash 0731 (:8888) and Qwen3.8-27B (:8892). linux/arm64 SGLang glm-5.3-flash platform image, 1,048,576 context, C8, mem-fraction 0.90, NEXTN 5/6, flashinfer_cutlass MoE, flashinfer_sparse_mla DSA, fp8_e4m3 KV 5,484,352 tokens/rank. Decode CUDA graphs captured bs<=8.",
+  "description": "Validated four-DGX-Spark GLM-5.3-Flash NVFP4 SGLang TP4/EP4 on a ConnectX-7 fabric. Immutable ARM64 image, 1,048,576 context, C8, NEXTN 5/6, flashinfer_cutlass MoE, flashinfer_sparse_mla DSA, 5,621,568 FP8 KV tokens/rank, and full decode graphs at batch sizes 1-8.",
   "traces": [
     {
       "date": "2026-08-27T00:56Z",
@@ -153,6 +154,47 @@
         "configured_concurrency": 8,
         "measured_concurrency": 1
       }
+    },
+    {
+      "date": "2026-08-27T02:05Z",
+      "event": "immutable_digest_startup",
+      "detail": "Immutable GHCR digest accepted with 1,048,576-token context, eight running requests, 5,621,568 FP8 KV tokens per rank, full target-verify/draft graph capture at batch sizes 1-8, and no eager or graph-disable launch option.",
+      "metrics": {
+        "base_weight_load_s": 302.56,
+        "base_weight_memory_gb_per_rank": 43.15,
+        "draft_weight_load_s": 39.92,
+        "kv_tokens_per_rank": 5621568
+      }
+    },
+    {
+      "date": "2026-08-27T02:07Z",
+      "event": "uncapped_c1_c8",
+      "detail": "Natural-stop requests with no max-token field. C1 and all eight C8 streams returned non-empty coherent output with finish_reason=stop.",
+      "metrics": {
+        "c1_completion_tokens": 124,
+        "c1_wall_s": 5.465,
+        "c1_tok_s": 22.69,
+        "c8_completion_tokens": 2709,
+        "c8_wall_s": 32.887,
+        "c8_aggregate_tok_s": 82.37,
+        "peak_temperature_c": [59, 57, 56, 54],
+        "peak_power_w": [34.38, 31.96, 31.67, 31.91]
+      }
+    },
+    {
+      "date": "2026-08-27T02:10Z",
+      "event": "uncapped_c8_soak_and_multimodal",
+      "detail": "C8 sustained window completed naturally on all streams; structured tool call, image recognition, and inline MP4 understanding also passed.",
+      "metrics": {
+        "completion_tokens": 5802,
+        "wall_s": 86.102,
+        "aggregate_tok_s": 67.38,
+        "peak_temperature_c": [66, 62, 62, 59],
+        "peak_power_w": [34.98, 32.0, 31.65, 31.45],
+        "image": true,
+        "video": true,
+        "tool_call": true
+      }
     }
   ],
   "source": {
@@ -160,9 +202,12 @@
     "paths": [
       "compose.yaml",
       "launch-spark.sh",
-      "profiles/tp4.env",
+      "manifest.json",
+      "chat-template-mm.jinja",
+      "profiles/tp4.env.example",
       "patches/"
     ],
+    "commit": "dfb1bb7e45c20058d37df7a39cceda45a9d216a8",
     "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121"
   }
 }

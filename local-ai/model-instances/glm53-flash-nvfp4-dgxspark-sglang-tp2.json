@@ -1,0 +1,84 @@
+{
+  "id": "glm53-flash-nvfp4-dgxspark-sglang-tp2",
+  "model_slug": "glm-5.3-flash",
+  "hardware_slug": "dgx-spark-gb10-128gb",
+  "hardware_config": {
+    "count": 2,
+    "interconnect": "ConnectX-7 RoCEv2 dual-rail fabric",
+    "power_limit_w_each": null
+  },
+  "weights": {
+    "format": "ModelOpt",
+    "precision": "NVFP4",
+    "slug": "nvfp4"
+  },
+  "engine": {
+    "graph_mode": "full target-verify and draft capture bs1-2; KDA hybrid attention automatically leaves prefill capture unavailable",
+    "name": "sglang",
+    "version": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b"
+  },
+  "serving": {
+    "api": "openai/v1",
+    "configured_max_context_tokens": 131072,
+    "configured_max_running_sequences": 2,
+    "measured_kv_cache_tokens": 992128,
+    "measured_max_context_tokens": 131072,
+    "measured_max_request_concurrency": 2,
+    "tensor_parallel": 2
+  },
+  "runtime": {
+    "accelerator_backend": "nvidia",
+    "container_port": 8000,
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
+    "ipc": "host",
+    "kind": "docker",
+    "network_mode": "host",
+    "shm_size": "64g",
+    "launch_command": "Use compose.yaml with profiles/tp2.env.example from the pinned source repository; set each node rank and fabric interface locally, then start the worker rank before rank zero."
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "status": "validated",
+  "profile": "tp2",
+  "description": "Validated two-DGX-Spark GLM-5.3-Flash NVFP4 SGLang TP2/EP2 with 131,072-token context, C2, 992,128 FP8 KV tokens/rank, NEXTN MTP5, and full decode CUDA graphs.",
+  "traces": [
+    {
+      "date": "2026-08-27T01:48Z",
+      "event": "immutable_digest_startup",
+      "detail": "Immutable GHCR digest accepted with 120 checkpoint shards, 131,072-token context, two running requests, 992,128 FP8 KV tokens per rank, and full graph capture at batch sizes 1-2.",
+      "metrics": {"weight_load_s": 623.88, "weight_memory_gb_per_rank": 88.06, "kv_tokens_per_rank": 992128}
+    },
+    {
+      "date": "2026-08-27T01:50Z",
+      "event": "uncapped_c1_c2",
+      "detail": "Natural-stop requests with no max-token field. C1 and both C2 streams returned coherent output with finish_reason=stop.",
+      "metrics": {
+        "c1_completion_tokens": 134,
+        "c1_wall_s": 7.662,
+        "c1_tok_s": 17.49,
+        "c2_completion_tokens": 548,
+        "c2_wall_s": 17.836,
+        "c2_aggregate_tok_s": 30.72,
+        "peak_temperature_c": [54, 56],
+        "peak_power_w": [37.74, 37.10]
+      }
+    },
+    {
+      "date": "2026-08-27T01:54Z",
+      "event": "multimodal_and_tools",
+      "detail": "Structured tool call, image recognition, and inline MP4 understanding passed.",
+      "metrics": {"image": true, "video": true, "tool_call": true}
+    }
+  ],
+  "source": {
+    "accepted_at": "2026-08-27",
+    "commit": "dfb1bb7e45c20058d37df7a39cceda45a9d216a8",
+    "paths": ["compose.yaml", "launch-spark.sh", "manifest.json", "chat-template-mm.jinja", "profiles/tp2.env.example", "patches/"],
+    "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121"
+  }
+}

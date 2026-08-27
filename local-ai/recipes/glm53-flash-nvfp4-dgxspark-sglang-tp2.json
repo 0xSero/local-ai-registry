@@ -1,17 +1,17 @@
 {
   "schema_version": "inference-index/v1",
-  "id": "glm53-flash-nvfp4-dgxspark-sglang-tp4",
+  "id": "glm53-flash-nvfp4-dgxspark-sglang-tp2",
   "status": "validated",
-  "profile": "tp4-ep4",
-  "description": "Validated SGLang GLM-5.3-Flash NVFP4 on four DGX Spark GB10 nodes with TP4/EP4 over ConnectX-7 RoCEv2. DSA attention with Triton linear attention, 5,621,568 FP8 KV tokens per rank, NEXTN/MTP5 speculative decoding, full decode graphs at batch sizes 1-8, tools, image, and video acceptance.",
+  "profile": "tp2-ep2",
+  "description": "Validated SGLang GLM-5.3-Flash NVFP4 on two DGX Spark GB10 nodes with TP2/EP2, 131,072-token context, two concurrent requests, 992,128 FP8 KV tokens per rank, NEXTN/MTP5, full decode graphs at batch sizes 1-2, tools, image, and video evidence.",
   "engine": {
-    "graph_mode": "full decode capture bs<=8 (NEXTN target-verify); prefill graphs disabled (KDA hybrid)",
+    "graph_mode": "full target-verify and draft capture bs1-2; KDA hybrid attention automatically leaves prefill capture unavailable",
     "name": "sglang",
     "version": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b"
   },
   "hardware": {
     "accelerator": "NVIDIA DGX Spark GB10 128GB unified memory",
-    "count": 4,
+    "count": 2,
     "interconnect": "ConnectX-7 RoCEv2 dual-rail fabric",
     "memory_gb_each": 128,
     "slug": "dgx-spark-gb10-128gb"
@@ -28,12 +28,12 @@
     "arguments": [
       "--model-path", "/model",
       "--served-model-name", "glm-5.3-flash",
-      "--tp-size", "4",
-      "--ep-size", "4",
-      "--nnodes", "4",
+      "--tp-size", "2",
+      "--ep-size", "2",
+      "--nnodes", "2",
       "--node-rank", "${NODE_RANK}",
-      "--dist-init-addr", "10.10.10.11:27000",
-      "--context-length", "1048576",
+      "--dist-init-addr", "${HEAD_FABRIC_ADDRESS}:27000",
+      "--context-length", "131072",
       "--quantization", "modelopt_fp4",
       "--attention-backend", "dsa",
       "--dsa-prefill-backend", "flashinfer_sparse_mla",
@@ -42,11 +42,11 @@
       "--kv-cache-dtype", "fp8_e4m3",
       "--moe-runner-backend", "flashinfer_cutlass",
       "--disable-shared-experts-fusion",
-      "--chunked-prefill-size", "8192",
-      "--max-prefill-tokens", "8192",
-      "--max-running-requests", "8",
+      "--chunked-prefill-size", "4096",
+      "--max-prefill-tokens", "4096",
+      "--max-running-requests", "2",
       "--mem-fraction-static", "0.90",
-      "--cuda-graph-max-bs-decode", "8",
+      "--cuda-graph-max-bs-decode", "2",
       "--speculative-algorithm", "NEXTN",
       "--speculative-num-steps", "5",
       "--speculative-eagle-topk", "1",
@@ -58,45 +58,36 @@
       "--reasoning-parser", "glm45",
       "--tool-call-parser", "glm47",
       "--host", "0.0.0.0",
-      "--port", "8888"
+      "--port", "8000"
     ],
-    "container_port": 8888,
+    "container_port": 8000,
     "environment": {
-      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "CUTE_DSL_ARCH": "sm_121a",
       "FLASHINFER_CUDA_ARCH_LIST": "12.1a",
       "NCCL_IB_HCA": "rocep1s0f1,roceP2p1s0f1",
       "NCCL_NET": "IB",
-      "NCCL_SOCKET_IFNAME": "enp1s0f1np1",
-      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
-      "SGLANG_OPT_DEEPGEMM_HC_PRENORM": "0",
-      "SGLANG_OPT_FP8_WO_A_GEMM": "0",
-      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
-      "SGLANG_OPT_USE_TOPK_V2": "0",
+      "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },
-    "host_port": 8888,
+    "host_port": 8000,
     "image": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
     "ipc": "host",
     "kind": "docker",
-    "network_mode": "host",
-    "shm_size": "64g",
+    "launch_command": "Use compose.yaml with profiles/tp2.env.example from the pinned source repository; set each node rank and fabric interface locally, then start the worker rank before rank zero.",
     "mounts": [
-      {
-        "read_only": true,
-        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
-        "target": "/model"
-      }
+      {"read_only": true, "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4", "target": "/model"},
+      {"read_only": false, "source": "${CACHE_ROOT}/glm53-flash-spark", "target": "/root/.cache"}
     ],
-    "launch_command": "Use compose.yaml with profiles/tp4.env.example from the pinned source repository; set each node rank and fabric interface locally, then start worker ranks before rank zero."
+    "network_mode": "host",
+    "shm_size": "64g"
   },
   "serving": {
     "api": "openai/v1",
-    "configured_max_context_tokens": 1048576,
-    "configured_max_running_sequences": 8,
-    "measured_kv_cache_tokens": 5621568,
-    "measured_max_context_tokens": 1048576,
-    "tensor_parallel": 4
+    "configured_max_context_tokens": 131072,
+    "configured_max_running_sequences": 2,
+    "measured_kv_cache_tokens": 992128,
+    "measured_max_context_tokens": 131072,
+    "tensor_parallel": 2
   },
   "weights": {
     "format": "safetensors",
@@ -105,18 +96,9 @@
   },
   "source": {
     "accepted_at": "2026-08-27",
-    "paths": [
-      "compose.yaml",
-      "launch-spark.sh",
-      "manifest.json",
-      "chat-template-mm.jinja",
-      "patches/"
-    ],
-    "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121",
-    "references": {
-      "model_instance": "glm53-flash-nvfp4-dgxspark-sglang-tp4",
-      "validation_note": "Validated live on four DGX Spark GB10 nodes with the immutable GHCR digest; traces are recorded on the linked model-instance record."
-    }
+    "commit": "dfb1bb7e45c20058d37df7a39cceda45a9d216a8",
+    "paths": ["compose.yaml", "launch-spark.sh", "manifest.json", "chat-template-mm.jinja", "patches/"],
+    "repository": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121"
   },
   "capabilities": {
     "chat": true,
