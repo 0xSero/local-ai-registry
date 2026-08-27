@@ -2,6 +2,10 @@ export type RegistryId = string
 export type RecipeStatus = "candidate" | "validated"
 export type LaunchKind = "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
 export type Capability = boolean | null
+export type FactState = "known" | "unknown" | "unavailable" | "not_applicable"
+export type ContainerState = "digest-pinned" | "mutable" | "indirect" | "none"
+export type ComputePrecision = "fp32" | "tf32" | "fp16" | "bf16" | "fp8" | "fp4" | "int8" | "int4"
+export type ComputeSparsity = "dense" | "structured_2_4" | "unstructured" | "unknown"
 
 export interface Source {
   kind?: string
@@ -9,6 +13,45 @@ export interface Source {
   repository?: string | null
   commit?: string | null
   paths?: string[] | null
+  captured_at?: string
+  publisher?: string
+  retrieved_from?: string
+}
+
+export interface Provenance {
+  sources: Source[]
+  captured_at: string
+}
+
+export interface Fact<T = unknown> {
+  value?: T
+  state: FactState
+  reason?: string | { code: string; detail: string }
+  note?: string
+  scope?: string
+  unit?: string
+  as_of?: string
+  provenance: Provenance
+}
+
+export interface HuggingFaceIdentity {
+  repository: string | null
+  url: string
+  status: "known" | "unknown" | "unavailable"
+  link_type: "repository" | "search"
+  reason: string | { code: string; detail: string }
+  provenance: Provenance
+}
+
+export interface ContainerProvenance {
+  state: ContainerState
+  runtime: "docker" | "docker-compose" | null
+  image: string | null
+  digest: string | null
+  compose_file: string | null
+  source: Source[]
+  captured_at: string
+  reason: string
 }
 
 export interface Hardware {
@@ -28,6 +71,15 @@ export interface Hardware {
   aliases: string[]
   products: string[]
   sources: Source[]
+  commercial?: { availability: Fact; prices: Array<{ amount: number; currency: string; unit: string; region?: string | null; source: Source; captured_at: string }> }
+  accelerator?: Record<string, unknown>
+  compute?: {
+    stats: Partial<Record<ComputePrecision, Partial<Record<ComputeSparsity, { value?: number | null; state: FactState; reason?: string | { code: string; detail: string }; provenance: Provenance; unit: string }>>>>
+    [key: string]: unknown
+  }
+  captured_at?: string
+  provenance?: Provenance
+  facts?: Record<string, Fact>
 }
 
 export interface Model {
@@ -39,6 +91,9 @@ export interface Model {
   active_params: number | null
   architecture: string | null
   url: string | null
+  huggingface: HuggingFaceIdentity
+  provenance: Provenance
+  facts: Record<string, Fact>
 }
 
 export interface ModelInstance {
@@ -58,6 +113,9 @@ export interface ModelInstance {
     publication_id?: string
   }
   kind: "base" | "quant" | "fine-tune"
+  huggingface: HuggingFaceIdentity
+  provenance: Provenance
+  facts: Record<string, Fact>
 }
 
 export interface Recipe {
@@ -70,11 +128,13 @@ export interface Recipe {
   hardware_id: RegistryId
   hardware_count: number
   engine: { name: string; version: string | null; graph_mode: string | null; [key: string]: unknown }
-  launch: { kind: LaunchKind; [key: string]: unknown }
+  launch: { kind: LaunchKind; container: ContainerProvenance; [key: string]: unknown }
   serving: Record<string, unknown>
   capabilities: { chat: Capability; reasoning: Capability; tools: Capability; vision: Capability }
   speed_sweeps_ids: RegistryId[]
   metadata: Record<string, unknown>
+  provenance: Provenance
+  facts: Record<string, Fact>
 }
 
 export interface SpeedRow {
@@ -127,6 +187,8 @@ export interface SpeedSweep {
   source: Source | null
   metrics?: SpeedMetrics
   rows: SpeedRow[]
+  provenance?: Provenance
+  facts?: Record<string, Fact>
 }
 
 export interface RegistryIndex {

@@ -59,3 +59,13 @@ A candidate becomes validated only when all of these are present:
 7. no eager-mode or CUDA-graph-disabling workaround.
 
 Until then, the candidate is searchable and useful as evidence, but clients must not offer its Run action.
+
+## Enrichment contract
+
+Model, model-instance, and recipe records carry a `provenance` object with one or more source URLs and a UTC `captured_at` timestamp. Sourced values that can be absent or ambiguous are represented in the `facts` map as `{state, reason, provenance}`; `known` facts also carry `value`. The permitted states are `known`, `unknown`, `unavailable`, and `not_applicable`. A JSON `null` or empty value without a matching fact is not an explanation of absence and fails validation for enriched records.
+
+Every model and model-instance carries a `huggingface` identity object. A public owner/repository is represented by its canonical `https://huggingface.co/<owner>/<repo>` URL and is only marked `known` after a primary Hub lookup. Non-Hugging-Face or unresolved artifacts retain their original identity and use an explicit `unavailable` or `unknown` status with a precise Hub search URL; a search result is never presented as a repository match.
+
+Hardware records may carry sourced commercial availability/prices and precision-specific accelerator compute under `compute.stats`, keyed by precision (`fp32`, `tf32`, `fp16`, `bf16`, `fp8`, `fp4`, `int8`, `int4`) and sparsity (`dense`, `structured_2_4`, `unstructured`, `unknown`). Missing published throughput is an explicit unknown fact; it is never inferred from a neighboring precision or marketing peak expressed in another unit. Memory bandwidth uses `memory.bandwidth_gb_per_s` and is either a positive value, a bounded positive range, or an explicitly sourced unknown.
+
+Every recipe launch carries `launch.container`. Its state is `digest-pinned`, `mutable`, `indirect`, or `none`, with runtime, image/digest or compose-file details, source, reason, and capture time. Reference-only, controller, and native-script launches use `none` unless their existing launch data proves a container. Docker tags without content digests are `mutable`; compose launches are `indirect` unless a resolved digest is present. A candidate remains a candidate regardless of its evidence, and no container image is invented for it. Only validated recipes may be launchable, and their promotion requirements above remain unchanged.

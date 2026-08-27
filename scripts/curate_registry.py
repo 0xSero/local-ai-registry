@@ -179,6 +179,7 @@ def sanitize_candidates(root):
             continue
         metadata = recipe.setdefault("metadata", {}).setdefault("localmaxxing", {})
         run_id = metadata.get("run_id")
+        existing_container = recipe.get("launch", {}).get("container")
         recipe["status"] = "candidate"
         recipe["launch"] = {
             "kind": "reference",
@@ -186,6 +187,8 @@ def sanitize_candidates(root):
             "run_id": run_id,
             "url": f"https://www.localmaxxing.com/en/runs/{run_id}" if run_id else "https://www.localmaxxing.com/en/leaderboard",
         }
+        if existing_container:
+            recipe["launch"]["container"] = existing_container
         recipe["capabilities"] = {key: None for key in ("chat", "reasoning", "tools", "vision")}
         recipe["schema_version"] = SCHEMA
         write(path, recipe)
@@ -228,10 +231,12 @@ def rebuild_index(root):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("root", nargs="?", default="registry")
+    parser.add_argument("--index-only", action="store_true", help="rebuild index without rewriting collection records")
     args = parser.parse_args()
     root = Path(args.root)
-    curate_hardware(root)
-    sanitize_candidates(root)
+    if not args.index_only:
+        curate_hardware(root)
+        sanitize_candidates(root)
     rebuild_index(root)
 
 
