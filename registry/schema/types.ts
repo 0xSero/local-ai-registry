@@ -49,7 +49,14 @@ export interface ModelInstance {
   url?: string | null
   revision: string | null
   served_name: string | null
-  weights: { format: string | null; precision: string | null; size_gb: number | null }
+  weights: {
+    format: string | null
+    precision: string | null
+    size_gb: number | null
+    artifact?: string
+    source?: string
+    publication_id?: string
+  }
   kind: "base" | "quant" | "fine-tune"
 }
 
@@ -83,6 +90,34 @@ export interface SpeedRow {
   status: string
 }
 
+export interface SpeedMetrics {
+  inference_engine_version?: string | null
+  concurrency?: number | null
+  decode_mode?: string | null
+  point_count?: number | null
+  max_prompt_tokens?: number | null
+  max_context_tokens?: number | null
+  peak_generation_tps?: number | null
+  peak_prompt_tps?: number | null
+  peak_memory_bytes?: string | null
+  base_memory_bytes?: string | null
+  base_memory_context_tokens?: number | null
+  decode8k_tps?: number | null
+  decode8k_context_tokens?: number | null
+  decode32k_tps?: number | null
+  decode32k_context_tokens?: number | null
+  decode_max_context_tps?: number | null
+  decode_max_context_tokens?: number | null
+  ttft32k_seconds?: number | null
+  ttft32k_context_tokens?: number | null
+  ttft32k_cached_prompt_tokens?: number | null
+  memory8k_bytes?: string | null
+  memory8k_context_tokens?: number | null
+  memory_max_context_bytes?: string | null
+  memory_max_context_tokens?: number | null
+  latest_point_at?: string | null
+}
+
 export interface SpeedSweep {
   schema_version: "local-ai-registry/v1"
   id: RegistryId
@@ -90,6 +125,7 @@ export interface SpeedSweep {
   measured_at: string | null
   accepted_at: string | null
   source: Source | null
+  metrics?: SpeedMetrics
   rows: SpeedRow[]
 }
 
