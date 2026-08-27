@@ -47,6 +47,59 @@ test("candidate and reference recipes are never launchable", () => {
   assert.equal(result.total, 0)
 })
 
+test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP2", () => {
+  const fourGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4")
+  const twoGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2")
+  const fourGpuSweep = getEntityDetail(
+    "speed-sweeps",
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
+  )
+  const twoGpuSweep = getEntityDetail(
+    "speed-sweeps",
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2-sweep",
+  )
+
+  assert.ok(fourGpu && typeof fourGpu === "object")
+  assert.ok(twoGpu && typeof twoGpu === "object")
+  assert.ok(fourGpuSweep && typeof fourGpuSweep === "object")
+  assert.ok(twoGpuSweep && typeof twoGpuSweep === "object")
+
+  const four = fourGpu as {
+    hardware_count: number
+    launch: { kind: string }
+    serving: { tensor_parallel: number }
+    status: string
+  }
+  const two = twoGpu as {
+    hardware_count: number
+    launch: { kind: string }
+    metadata: { compatibility_state: string }
+    status: string
+  }
+  const fourSweep = fourGpuSweep as { rows: Array<{ status?: string; decode_tok_s?: number }> }
+  const twoSweep = twoGpuSweep as { rows: Array<{ decode_tok_s?: number | null }> }
+
+  assert.equal(four.hardware_count, 4)
+  assert.equal(four.status, "candidate")
+  assert.equal(four.launch.kind, "docker")
+  assert.equal(four.serving.tensor_parallel, 4)
+  assert.ok(fourSweep.rows.some((row) =>
+    row.status === "accepted-matched-screen" && row.decode_tok_s === 73.4979))
+
+  assert.equal(two.hardware_count, 2)
+  assert.equal(two.status, "candidate")
+  assert.equal(two.launch.kind, "reference")
+  assert.equal(two.metadata.compatibility_state, "blocked")
+  assert.ok(twoSweep.rows.every((row) => row.decode_tok_s === null))
+
+  for (const record of [fourGpu, twoGpu, fourGpuSweep, twoGpuSweep]) {
+    const serialized = JSON.stringify(record)
+    assert.doesNotMatch(serialized, /\/home\//)
+    assert.doesNotMatch(serialized, /tailadb/i)
+    assert.doesNotMatch(serialized, /GPU-[0-9a-f-]{20,}/i)
+  }
+})
+
 test("validated recipes for the Omarchy GPUs use Docker", () => {
   for (const hardware_id of ["rtx-3090-24gb", "intel-arc-pro-b70-32gb"]) {
     const result = queryCompatibility({ hardware_id, status: "validated" }, { limit: 100, offset: 0 })
