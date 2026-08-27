@@ -13,9 +13,11 @@ index.json
       model_id         -> model/<id>.json
     hardware_id        -> hardware/<id>.json
     speed_sweeps_ids[] -> speed-sweeps/<id>.json
+  price/<product-id>/<region>.json
+    hardware[].id      -> hardware/<id>.json
 ```
 
-This is the progressive-disclosure rule: index, choice, recipe, then the exact records that recipe references. There is no recursive tree endpoint and no duplicated embedded model or hardware object.
+This is the progressive-disclosure rule: index, choice, then the exact record and immediate references needed for the selected view. The API adds compact `relationships` links to the same records used by the site; it does not maintain a second UI-specific dataset or recursively embed the entire graph.
 
 ## Collections
 
@@ -26,6 +28,7 @@ This is the progressive-disclosure rule: index, choice, recipe, then the exact r
 | `model-instance/` | One downloadable artifact or quantization |
 | `recipe/` | One artifact × hardware × engine compatibility unit |
 | `speed-sweeps/` | Benchmark evidence attached to one recipe |
+| `price/<product-id>/` | Current retailer observations split by region and native currency |
 
 Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
 
@@ -36,6 +39,8 @@ The shared contract is defined twice for different consumers: JSON Schema files 
 `validated` means the model revision and runtime are pinned and the launch contract has acceptance evidence. `candidate` means the registry has useful compatibility or speed evidence but cannot yet promise a reproducible launch.
 
 LocalMaxxing and local.ai Postgres imports are always `candidate` and `launch.kind: "reference"`. Their source commands are deliberately not copied into the executable contract. Promotion requires a separately curated, pinned recipe and a real completion plus speed acceptance.
+
+Regional price records are observations, not universal hardware values. A product can link to an exact hardware specification or to a compatible hardware family when a listing does not identify memory capacity. Every observation preserves retailer, condition, stock state, native currency, direct URL, and fetch time. Scanner matches remain `candidate`; launch prices and MSRP stay as historical hardware metadata and do not populate the market-price collection.
 
 ## Hardware coverage
 
@@ -75,6 +80,7 @@ Versioned JSON routes live under `/api/v1`. `GET` and `HEAD` are supported. Muta
 | `/api/v1/models` and `/api/v1/models/:id` | Canonical models and model details |
 | `/api/v1/model-instances` and `/api/v1/model-instances/:id` | Downloadable artifacts and quantizations |
 | `/api/v1/hardware` and `/api/v1/hardware/:id` | Accelerator profiles and specifications |
+| `/api/v1/prices` and `/api/v1/prices/:id` | Regional market observations and linked hardware specifications |
 | `/api/v1/recipes` and `/api/v1/recipes/:id` | Compatibility units and fully resolved details |
 | `/api/v1/compatibility` | Model × hardware compatibility query |
 | `/api/v1/speed-sweeps` and `/api/v1/speed-sweeps/:id` | Measured speed evidence |
@@ -86,6 +92,7 @@ Examples:
 ```bash
 curl 'http://localhost:3000/api/v1/models?q=gemma'
 curl 'http://localhost:3000/api/v1/hardware?vendor=nvidia&min_vram_gb=48'
+curl 'http://localhost:3000/api/v1/prices?region=US&condition=new&in_stock=true'
 curl 'http://localhost:3000/api/v1/model-instances?huggingface_link_type=search&limit=10'
 curl 'http://localhost:3000/api/v1/compatibility?model=gemma&hardware=rtx%20pro%206000&launchable=true'
 curl 'http://localhost:3000/api/v1/recipes/gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1'
@@ -97,6 +104,14 @@ Every model-instance body carries an authoritative `huggingface` object with a n
 
 ```bash
 python3 scripts/curate_registry.py
+python3 scripts/validate_registry.py
+```
+
+To refresh regional market data from a fresh scanner snapshot, import the snapshot before rebuilding and validating the index:
+
+```bash
+python3 scripts/import_market_snapshot.py ~/projects/local-ai-scanner-cli/cache/latest.json
+python3 scripts/curate_registry.py --index-only
 python3 scripts/validate_registry.py
 ```
 
