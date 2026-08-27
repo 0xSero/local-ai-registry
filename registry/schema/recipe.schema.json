@@ -3,7 +3,7 @@
   "$id": "https://local-ai-registry.dev/schema/recipe.schema.json",
   "title": "Recipe",
   "type": "object",
-  "required": ["schema_version", "id", "recipe_source", "status", "model_instance_id", "hardware_id", "hardware_count", "engine", "launch", "serving", "capabilities", "speed_sweeps_ids", "metadata"],
+  "required": ["schema_version", "id", "recipe_source", "status", "model_instance_id", "hardware_id", "hardware_count", "engine", "launch", "serving", "capabilities", "speed_sweeps_ids", "metadata", "provenance", "facts"],
   "properties": {
     "schema_version": { "const": "local-ai-registry/v1" },
     "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9.-]*$" },
@@ -26,7 +26,10 @@
     "launch": {
       "type": "object",
       "required": ["kind"],
-      "properties": { "kind": { "enum": ["reference", "docker", "docker-compose", "controller", "script", "native"] } },
+      "properties": {
+        "kind": { "enum": ["reference", "docker", "docker-compose", "controller", "script", "native"] },
+        "container": { "$ref": "common.schema.json#/$defs/container" }
+      },
       "additionalProperties": true
     },
     "serving": { "type": "object" },
@@ -42,7 +45,9 @@
       "additionalProperties": false
     },
     "speed_sweeps_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "metadata": { "type": "object" }
+    "metadata": { "type": "object" },
+    "provenance": { "$ref": "common.schema.json#/$defs/provenance" },
+    "facts": { "$ref": "common.schema.json#/$defs/facts" }
   },
   "allOf": [
     {

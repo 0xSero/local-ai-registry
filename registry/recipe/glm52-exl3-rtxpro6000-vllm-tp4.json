@@ -11,6 +11,36 @@
     "name": "vllm",
     "version": "0.11.2.dev280+gilded.gnosis.v20.vllmb46c3aa.si35aebc6.fi801d57a.cu132.20260730.r12"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 4,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "glm52-exl3-rtxpro6000-vllm-tp4",
@@ -20,6 +50,22 @@
       "-lc",
       "mkdir -p /tmp/glm52-candidate && cp /usr/local/bin/serve-glm52-v19.sh /usr/local/bin/serve-glm52-v16.sh /usr/local/bin/glm52-pcie-runtime-env.sh /usr/local/bin/glm52-dcp-prefill-policy.sh /usr/local/bin/glm52-pcie-calibration.py /tmp/glm52-candidate/ && sed -i \"s|exec /usr/local/bin/serve-glm52-v16.sh|exec /tmp/glm52-candidate/serve-glm52-v16.sh|\" /tmp/glm52-candidate/serve-glm52-v19.sh && sed -i \"s/export VLLM_ENABLE_PCIE_ALLREDUCE=1/export VLLM_ENABLE_PCIE_ALLREDUCE=0/\" /tmp/glm52-candidate/glm52-pcie-runtime-env.sh && export GLM52_SERVER=/tmp/glm52-candidate/serve-glm52-v19.sh && exec /usr/local/bin/serve-gilded-gnosis.sh"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:bcd65c13076b00cf7804001ce70085453de958b082897b9674a26d9fab4d436a",
+      "image": "voipmonitor/vllm:gilded-gnosis-v20-vllmb46c3aa-si35aebc6-fi801d57a-cu132-20260730-r12@sha256:bcd65c13076b00cf7804001ce70085453de958b082897b9674a26d9fab4d436a",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8000,
     "environment": {
       "ASYNC_SCHEDULING": "0",
@@ -81,6 +127,16 @@
   },
   "metadata": {},
   "model_instance_id": "brandonmusic-glm-5-2-exl3-tr3-3-0bpw--3-0-bpw",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

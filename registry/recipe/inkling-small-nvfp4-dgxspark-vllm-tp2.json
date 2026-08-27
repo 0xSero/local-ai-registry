@@ -11,6 +11,22 @@
     "name": "vllm",
     "version": "65b7662d3fcb773afaf751ab29ac6960a0cf011d+sm121-overlays"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 2,
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "inkling-small-nvfp4-dgxspark-vllm-tp2",
@@ -19,6 +35,22 @@
     "compose": {
       "file": "compose.yml",
       "project_name": "inkling-small-tp2"
+    },
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": "compose.yml",
+      "digest": null,
+      "image": null,
+      "reason": "compose-manifest-resolves-image-outside-normalized-record",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "indirect"
     },
     "container_port": 8000,
     "environment": {
@@ -44,6 +76,16 @@
   },
   "metadata": {},
   "model_instance_id": "thinkingmachines-inkling-small-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

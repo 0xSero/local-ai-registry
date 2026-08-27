@@ -11,6 +11,36 @@
     "name": "llama-cpp",
     "version": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126+b70-patches"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 2,
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen38-q4km-arcb70-llamacpp-tp2",
@@ -19,6 +49,22 @@
     "compose": {
       "file": "compose.yml",
       "project_name": "qwen38-b70-tp2"
+    },
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": "compose.yml",
+      "digest": null,
+      "image": null,
+      "reason": "compose-manifest-resolves-image-outside-normalized-record",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "indirect"
     },
     "container_port": 8010,
     "environment": {
@@ -41,6 +87,16 @@
   },
   "metadata": {},
   "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

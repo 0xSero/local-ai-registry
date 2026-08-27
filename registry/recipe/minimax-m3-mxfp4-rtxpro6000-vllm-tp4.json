@@ -11,6 +11,36 @@
     "name": "vllm",
     "version": "source-built patched image; base commit unreported"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 4,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "minimax-m3-mxfp4-rtxpro6000-vllm-tp4",
@@ -20,6 +50,22 @@
       "env_file": "env.example",
       "file": "compose.yml",
       "project_name": "minimax-m3-mxfp4-tp4"
+    },
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": "compose.yml",
+      "digest": null,
+      "image": null,
+      "reason": "compose-manifest-resolves-image-outside-normalized-record",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "indirect"
     },
     "container_port": 8000,
     "environment": {
@@ -35,6 +81,16 @@
   },
   "metadata": {},
   "model_instance_id": "olka-fi-minimax-m3-mxfp4--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {

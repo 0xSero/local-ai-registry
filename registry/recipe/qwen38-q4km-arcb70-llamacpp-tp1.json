@@ -11,6 +11,36 @@
     "name": "llama-cpp",
     "version": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126+b70-patches"
   },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
   "hardware_count": 1,
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen38-q4km-arcb70-llamacpp-tp1",
@@ -36,6 +66,22 @@
       "--parallel",
       "1"
     ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
+      "image": "ghcr.io/0xsero/qwen38-b70@sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8010,
     "environment": {
       "BATCH": "8192",
@@ -69,6 +115,16 @@
   },
   "metadata": {},
   "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
