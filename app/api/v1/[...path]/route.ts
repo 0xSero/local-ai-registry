@@ -8,6 +8,7 @@ import {
   listHardware,
   listModelInstances,
   listModels,
+  listPrices,
   listSpeedSweeps,
   queryCompatibility,
   type CompatibilityFilters,
@@ -111,6 +112,9 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
   }
   if (resource === "hardware") {
     return listResponse(request, listHardware(selectedFilters, page), page)
+  }
+  if (resource === "prices") {
+    return listResponse(request, listPrices(selectedFilters, page), page)
   }
   if (resource === "recipes" || resource === "compatibility") {
     return listResponse(

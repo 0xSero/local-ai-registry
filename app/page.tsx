@@ -12,10 +12,10 @@ import {
   listModels,
   listPrices,
   listSpeedSweeps,
+  marketPriceCount,
   queryCompatibility,
   type CompatibilityFilters,
   type CompatibilityResult,
-  type PriceObservation,
   type PriceResult,
 } from "@/lib/registry"
 import type { SpeedRow, SpeedSweep } from "@/registry/schema/types"
@@ -38,12 +38,12 @@ type RowTag = {
   value: string
 }
 
-const TOPICS: Array<{ key: Topic; label: string; countKey: string | null }> = [
-  { key: "recipes", label: "Recipes", countKey: "recipe" },
-  { key: "hardware", label: "Hardware", countKey: "hardware" },
-  { key: "models", label: "Models", countKey: "model" },
-  { key: "prices", label: "Prices", countKey: null },
-  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps" },
+const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; description: string }> = [
+  { key: "recipes", label: "Recipes", countKey: "recipe", description: "Model × hardware × engine compatibility, with launch status and evidence." },
+  { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
+  { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
+  { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
+  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps", description: "Measured inference evidence connected back to the recipe that produced it." },
 ]
 
 const USD_FORMATTER = new Intl.NumberFormat("en-US", {
@@ -76,11 +76,6 @@ function formatRate(value: number): string {
 
 function formatAmount(amount: number, currency: string): string {
   return currency === "USD" ? USD_FORMATTER.format(amount) : `${currency} ${amount.toLocaleString()}`
-}
-
-function observedDate(price: PriceObservation): string {
-  if (price.as_of) return price.as_of
-  return price.captured_at ? price.captured_at.slice(0, 10) : "Unknown"
 }
 
 function recipeEvidence(result: CompatibilityResult): EvidenceRow[] {
@@ -128,6 +123,8 @@ function stateHref(state: URLSearchParams): string {
 function recordTitle(detail: Record<string, unknown>, fallback: string): string {
   if (typeof detail.name === "string") return detail.name
   if (typeof detail.repository === "string") return detail.repository
+  const product = detail.product
+  if (product && typeof product === "object" && "name" in product && typeof product.name === "string") return product.name
   const model = detail.model
   if (model && typeof model === "object" && "name" in model && typeof model.name === "string") return model.name
   if (typeof detail.id === "string") return detail.id
@@ -184,21 +181,24 @@ function RecipeRows({ data, state }: { data: CompatibilityResult[]; state: URLSe
 function PriceRows({ data, state }: { data: PriceResult[]; state: URLSearchParams }) {
   return (
     <div className="browser-list collection-list">
-      {data.map(({ hardware, id, price }) => {
+      {data.map((record) => {
+        const amount = record.summary.lowest_new ?? record.summary.lowest_refurbished ?? record.summary.lowest_used
+        const condition = record.summary.lowest_new !== null
+          ? "new"
+          : record.summary.lowest_refurbished !== null ? "refurbished" : record.summary.lowest_used !== null ? "used" : "unavailable"
         const tags: RowTag[] = [
-          { label: hardware.vendor, name: "vendor", value: hardware.vendor },
-          { label: price.kind, name: "kind", value: price.kind },
-          { label: price.scope, name: "scope", value: price.scope },
-          { label: `≤ ${formatAmount(price.amount, price.currency)}`, name: "max_price", value: String(price.amount) },
+          { label: record.region.code, name: "region", value: record.region.code },
+          { label: record.product.category, name: "category", value: record.product.category },
+          { label: condition, name: "condition", value: condition },
         ]
         return (
-          <article className="browser-row price-row" key={id}>
-            <Link aria-label={`Open ${hardware.name} hardware record`} className="row-open" href={hrefWithRecord(state, hardware.id)} scroll={false} />
-            <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
-            <span><strong>{formatAmount(price.amount, price.currency)}</strong><small>{price.unit}</small></span>
-            <span><strong>{price.kind}</strong><small>{price.scope}</small></span>
-            <span><strong>{observedDate(price)}</strong><small>as of / captured</small></span>
-            <span><strong>{price.source.publisher ?? price.source.kind ?? "Unknown"}</strong><small>source publisher</small></span>
+          <article className="browser-row price-row" key={record.id}>
+            <Link aria-label={`Open ${record.product.name} market observations`} className="row-open" href={hrefWithRecord(state, record.id)} scroll={false} />
+            <span className="row-primary"><strong>{record.product.name}</strong><small>{record.product.id}</small></span>
+            <span><strong>{amount === null ? "No available listing" : formatAmount(amount, record.region.currency)}</strong><small>lowest available · {condition}</small></span>
+            <span><strong>{record.region.name}</strong><small>{record.region.currency}</small></span>
+            <span><strong>{record.observed_at.slice(0, 10)}</strong><small>observed</small></span>
+            <span><strong>{record.summary.listing_count} listings</strong><small>{record.summary.retailer_count} retailers</small></span>
             <TaxonomyTags state={state} tags={tags} />
             <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
           </article>
@@ -246,19 +246,20 @@ export default async function Home({ searchParams }: PageProps) {
     q: query,
   }, pagination) : { data: [], total: 0 }
   const priceResults = topic === "prices" ? listPrices({
-    kind: value("kind"),
-    max_price: value("max_price"),
+    category: value("category"),
+    condition: value("condition"),
+    in_stock: value("in_stock"),
     q: query,
-    scope: value("scope"),
-    vendor: value("vendor"),
+    region: value("region"),
+    retailer: value("retailer"),
   }, pagination) : { data: [], total: 0 }
-  const priceTotal = topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total
+  const priceTotal = counts.price ?? (topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total)
   const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query }, pagination) : { data: [], total: 0 }
 
   const filterKeys: Partial<Record<Topic, string[]>> = {
     hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
     models: ["family", "architecture"],
-    prices: ["vendor", "kind", "scope", "max_price"],
+    prices: ["region", "category", "condition", "retailer", "in_stock"],
     recipes: ["validation", "engine", "min_vram_gb", "evidence"],
   }
   const viewState = new URLSearchParams()
@@ -270,7 +271,7 @@ export default async function Home({ searchParams }: PageProps) {
   }
   if (offset > 0) viewState.set("offset", String(offset))
 
-  const detailCollection = topic === "prices" ? "hardware" : topic
+  const detailCollection = topic
   const selectedRecord = detailCollection && value("record") ? getEntityDetail(detailCollection, value("record")) : undefined
   const closeHref = stateHref(viewState)
   const selectedTitle = selectedRecord ? recordTitle(selectedRecord, value("record")) : ""
@@ -284,6 +285,7 @@ export default async function Home({ searchParams }: PageProps) {
           ? priceResults.total
           : topic === "speed-sweeps" ? sweepResults.total : 0
   const topicLabel = TOPICS.find((item) => item.key === topic)?.label
+  const topicDescription = TOPICS.find((item) => item.key === topic)?.description
 
   const pageState = new URLSearchParams(viewState)
   pageState.delete("offset")
@@ -309,10 +311,11 @@ export default async function Home({ searchParams }: PageProps) {
     { label: "Architecture", name: "architecture", value: value("architecture"), options: facetOptions(facets.models.architecture, "Any architecture") },
   ]
   const priceSearchFilters: SearchFilter[] = [
-    { label: "Vendor", name: "vendor", value: value("vendor"), options: facetOptions(facets.prices.vendor, "Any vendor") },
-    { label: "Price kind", name: "kind", value: value("kind"), options: facetOptions(facets.prices.kind, "Any price kind") },
-    { label: "Price scope", name: "scope", value: value("scope"), options: facetOptions(facets.prices.scope, "Any price scope") },
-    { label: "Maximum price", name: "max_price", value: value("max_price"), options: facetOptions(facets.prices.amount, "Any price", (item) => `Up to ${USD_FORMATTER.format(Number(item))}`) },
+    { label: "Region", name: "region", value: value("region"), options: facetOptions(facets.prices.region, "Any region") },
+    { label: "Category", name: "category", value: value("category"), options: facetOptions(facets.prices.category, "Any category") },
+    { label: "Condition", name: "condition", value: value("condition"), options: facetOptions(facets.prices.condition, "Any condition") },
+    { label: "Retailer", name: "retailer", value: value("retailer"), options: facetOptions(facets.prices.retailer, "Any retailer") },
+    { label: "Availability", name: "in_stock", value: value("in_stock"), options: facetOptions(["true", "false", "unknown"], "Any availability", (item) => item === "true" ? "In stock" : item === "false" ? "Out of stock" : "Unknown stock") },
   ]
   const topicFilters = topic === "recipes"
     ? recipeSearchFilters
@@ -351,14 +354,14 @@ export default async function Home({ searchParams }: PageProps) {
         </>
       ) : (
         <>
-          <header className="topic-heading"><div><span className="mono-label">COLLECTION / {topic.toUpperCase()}</span><h1>{topicLabel}</h1></div><span className="topic-total">{total.toLocaleString()} records</span></header>
+          <header className="topic-heading"><div><span className="mono-label">COLLECTION / {topic.toUpperCase()}</span><h1>{topicLabel}</h1><p className="topic-description">{topicDescription}</p></div><span className="topic-total">{total.toLocaleString()} records</span></header>
           <section className="topic-search" aria-label={`${topicLabel} search`}><RegistrySearch filters={topicFilters} query={query} topic={topic} /></section>
 
           {topic === "recipes" && <RecipeRows data={recipeResults.data} state={viewState} />}
           {topic === "hardware" && (
             <div className="browser-list collection-list">
               {hardwareResults.data.map((hardware) => {
-                const hasPrices = (hardware.commercial?.prices.length ?? 0) > 0
+                const hasPrices = marketPriceCount(hardware.id) > 0
                 const tags: RowTag[] = [
                   { label: hardware.vendor, name: "vendor", value: hardware.vendor },
                   { label: hardware.accelerator_backend, name: "backend", value: hardware.accelerator_backend },

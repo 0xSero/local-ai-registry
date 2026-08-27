@@ -11,6 +11,7 @@ const COLLECTION_LABELS: Record<string, string> = {
   hardware: "Hardware",
   "model-instances": "Model instance",
   models: "Model",
+  prices: "Regional market price",
   recipes: "Recipe",
   "speed-sweeps": "Speed evidence",
 }
@@ -41,7 +42,8 @@ export async function generateMetadata({ params }: DetailProps): Promise<Metadat
   if (!COLLECTION_LABELS[collection]) return { title: "Record not found" }
   const detail = getEntityDetail(collection, id)
   if (!detail) return { title: "Record not found" }
-  const title = String(detail.name ?? detail.repository ?? detail.id ?? id)
+  const product = detail.product && typeof detail.product === "object" && "name" in detail.product ? detail.product.name : null
+  const title = String(detail.name ?? detail.repository ?? product ?? detail.id ?? id)
   return { title: `${title} · Local AI Registry` }
 }
 
@@ -52,7 +54,8 @@ export default async function DetailPage({ params }: DetailProps) {
   const detail = getEntityDetail(collection, id)
   if (!detail) notFound()
 
-  const title = String(detail.name ?? detail.repository ?? detail.id ?? id)
+  const product = detail.product && typeof detail.product === "object" && "name" in detail.product ? detail.product.name : null
+  const title = String(detail.name ?? detail.repository ?? product ?? detail.id ?? id)
   const instance = collection === "model-instances" ? detail : null
   const huggingFace = instance ? readHuggingFace(instance) : null
   if (instance && !huggingFace) {

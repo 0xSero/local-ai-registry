@@ -5,6 +5,7 @@ import type {
   Hardware,
   Model,
   ModelInstance,
+  PriceRecord,
   Recipe,
   RegistryIndex,
   SpeedSweep,
@@ -77,21 +78,7 @@ export type CompatibilityResult = {
   }
 }
 
-type HardwarePrice = NonNullable<Hardware["commercial"]>["prices"][number]
-
-export type PriceObservation = HardwarePrice & {
-  as_of?: string | null
-  configuration?: string | null
-  kind: string
-  scope: string
-}
-
-export type PriceResult = {
-  hardware: Hardware
-  hardware_id: string
-  id: string
-  price: PriceObservation
-}
+export type PriceResult = PriceRecord
 
 type RegistryRecord = Record<string, unknown>
 type CompatibilityRow = RegistryIndex["recipes"][number]
@@ -108,6 +95,7 @@ type Dataset = {
   index: RegistryIndex
   instances: Map<string, RegistryModelInstance>
   models: Map<string, Model>
+  prices: Map<string, PriceRecord>
   recipes: Map<string, Recipe>
   sweeps: Map<string, SpeedSweep>
 }
@@ -142,6 +130,14 @@ function dataset(): Dataset {
     index,
     instances: loadCollection<RegistryModelInstance>(index, "model-instance"),
     models: loadCollection<Model>(index, "model"),
+    prices: new Map(
+      (index.collections.price ?? []).map((id) => {
+        const separator = id.lastIndexOf("--")
+        const productId = id.slice(0, separator)
+        const region = id.slice(separator + 2)
+        return [id, readJson<PriceRecord>("price", productId, `${region}.json`)]
+      }),
+    ),
     recipes: new Map(),
     sweeps: new Map(),
   }
@@ -346,7 +342,7 @@ export function listModelInstances(filters: Record<string, string>, pagination: 
 
 export function listHardware(filters: Record<string, string>, pagination: Pagination) {
   const all = [...dataset().hardware.values()].filter((hardware) => {
-    const hasPrices = (hardware.commercial?.prices.length ?? 0) > 0
+    const hasPrices = marketPriceCount(hardware.id) > 0
     return (
       contains(hardware, filters.q) &&
       equals(hardware.vendor, filters.vendor) &&
@@ -360,25 +356,32 @@ export function listHardware(filters: Record<string, string>, pagination: Pagina
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
 
+function priceAmount(record: PriceRecord): number | null {
+  return record.summary.lowest_new ?? record.summary.lowest_refurbished ?? record.summary.lowest_used
+}
+
 function priceResults(): PriceResult[] {
-  return [...dataset().hardware.values()].flatMap((hardware) =>
-    (hardware.commercial?.prices ?? []).map((price, index) => ({
-      hardware,
-      hardware_id: hardware.id,
-      id: `${hardware.id}:${index}`,
-      price: price as PriceObservation,
-    })),
-  )
+  return [...dataset().prices.values()]
+}
+
+export function marketPriceCount(hardwareId: string): number {
+  return priceResults().filter((record) => record.hardware.some((hardware) => hardware.id === hardwareId)).length
 }
 
 export function listPrices(filters: Record<string, string>, pagination: Pagination) {
-  const all = priceResults().filter(({ hardware, price }) =>
-    contains([hardware, price], filters.q) &&
-    equals(hardware.vendor, filters.vendor) &&
-    equals(price.kind, filters.kind) &&
-    equals(price.scope, filters.scope) &&
-    numericFilter(price.amount, filters.min_price, filters.max_price),
-  )
+  const all = priceResults().filter((record) => {
+    const amount = priceAmount(record)
+    return (
+      contains(record, filters.q) &&
+      equals(record.product.category, filters.category) &&
+      equals(record.region.code, filters.region) &&
+      equals(record.region.currency, filters.currency) &&
+      (!filters.condition || record.observations.some((observation) => equals(observation.condition, filters.condition))) &&
+      (!filters.retailer || record.observations.some((observation) => equals(observation.retailer, filters.retailer))) &&
+      (!filters.in_stock || record.observations.some((observation) => booleanFilter(observation.in_stock, filters.in_stock))) &&
+      (amount === null ? !filters.min_price && !filters.max_price : numericFilter(amount, filters.min_price, filters.max_price))
+    )
+  })
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
 
@@ -478,7 +481,24 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
       ...hardware,
       relationships: {
         models: modelLinksForRows(rows),
+        prices: priceResults()
+          .filter((record) => record.hardware.some((candidate) => candidate.id === id))
+          .map((record) => recordLink("prices", record.id, `${record.product.name} · ${record.region.code}`)),
         recipes: rows.map(recipeLink),
+      },
+    }
+  }
+
+  if (collection === "prices") {
+    const price = data.prices.get(id)
+    if (!price) return undefined
+    return {
+      ...price,
+      relationships: {
+        hardware: price.hardware.map(({ id: hardwareId, match_scope }) => ({
+          ...recordLink("hardware", hardwareId, data.hardware.get(hardwareId)?.name),
+          match_scope,
+        })),
       },
     }
   }
@@ -545,11 +565,12 @@ export function getFacets() {
       vram_gb: unique([...data.hardware.values()].map((hardware) => hardware.memory.vram_gb)),
     },
     prices: {
-      amount: unique(prices.map(({ price }) => price.amount)),
-      currency: unique(prices.map(({ price }) => price.currency)),
-      kind: unique(prices.map(({ price }) => price.kind)),
-      scope: unique(prices.map(({ price }) => price.scope)),
-      vendor: unique(prices.map(({ hardware }) => hardware.vendor)),
+      amount: unique(prices.map(priceAmount)),
+      category: unique(prices.map((price) => price.product.category)),
+      condition: unique(prices.flatMap((price) => price.observations.map((observation) => observation.condition))),
+      currency: unique(prices.map((price) => price.region.currency)),
+      region: unique(prices.map((price) => price.region.code)),
+      retailer: unique(prices.flatMap((price) => price.observations.map((observation) => observation.retailer))),
     },
     recipes: {
       engine: unique(data.index.recipes.map((recipe) => recipe.engine)),

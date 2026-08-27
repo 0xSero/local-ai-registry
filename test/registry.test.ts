@@ -7,6 +7,7 @@ import {
   getFacets,
   isLaunchable,
   listHardware,
+  marketPriceCount,
   listModelInstances,
   listModels,
   listPrices,
@@ -153,44 +154,43 @@ test("navigable topic collections expose real registry records", () => {
   assert.ok(recipes.data.length > 0)
 })
 
-test("virtual Prices topic exposes every real price observation", () => {
+test("Prices topic exposes regional market records without flattening currencies", () => {
   const prices = listPrices({}, { limit: 200, offset: 0 })
   const facets = getFacets()
 
-  assert.equal(prices.total, 123)
-  assert.equal(prices.data.length, 123)
-  assert.equal(new Set(prices.data.map((result) => result.hardware_id)).size, 85)
-  assert.ok(prices.data.every(({ price }) => price.currency === "USD" && price.unit === "one_time"))
-  assert.equal(Math.min(...prices.data.map(({ price }) => price.amount)), 299)
-  assert.equal(Math.max(...prices.data.map(({ price }) => price.amount)), 6999)
-  assert.deepEqual(facets.prices.vendor, ["amd", "apple", "intel", "nvidia"])
-  assert.deepEqual(facets.prices.kind, ["current_street", "CURRENT_SYSTEM_PRICE", "MSRP"])
-  assert.deepEqual(facets.prices.scope, [
-    "current_system_price",
-    "manufacturer_launch_price",
-    "representative_product_starting_price",
-  ])
+  assert.equal(prices.total, 84)
+  assert.equal(prices.data.length, 84)
+  assert.equal(new Set(prices.data.map((record) => record.product.id)).size, 33)
+  assert.equal(prices.data.reduce((count, record) => count + record.observations.length, 0), 896)
+  assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
+  assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
+  assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
+  assert.deepEqual(facets.prices.condition, ["new", "refurbished", "used"])
 })
 
-test("price filters compose across vendor taxonomy and maximum amount", () => {
-  const sample = listPrices({}, { limit: 1, offset: 0 }).data[0]
+test("market filters compose across region, category, condition, and retailer", () => {
+  const sample = listPrices({}, { limit: 200, offset: 0 }).data.find((record) => record.observations.some((observation) => observation.in_stock === true))
   assert.ok(sample)
+  const observation = sample.observations.find((candidate) => candidate.in_stock === true)
+  assert.ok(observation)
 
   const filtered = listPrices(
     {
-      kind: sample.price.kind,
-      max_price: String(sample.price.amount),
-      scope: sample.price.scope,
-      vendor: sample.hardware.vendor,
+      category: sample.product.category,
+      condition: observation.condition,
+      in_stock: "true",
+      region: sample.region.code,
+      retailer: observation.retailer,
     },
     { limit: 200, offset: 0 },
   )
   assert.ok(filtered.total > 0)
-  for (const result of filtered.data) {
-    assert.equal(result.hardware.vendor, sample.hardware.vendor)
-    assert.equal(result.price.kind, sample.price.kind)
-    assert.equal(result.price.scope, sample.price.scope)
-    assert.ok(result.price.amount <= sample.price.amount)
+  for (const record of filtered.data) {
+    assert.equal(record.product.category, sample.product.category)
+    assert.equal(record.region.code, sample.region.code)
+    assert.ok(record.observations.some((candidate) => candidate.condition === observation.condition))
+    assert.ok(record.observations.some((candidate) => candidate.retailer === observation.retailer))
+    assert.ok(record.observations.some((candidate) => candidate.in_stock === true))
   }
 })
 
@@ -204,7 +204,7 @@ test("hardware topic filters vendor backend memory and priced state", () => {
     assert.equal(hardware.vendor, "nvidia")
     assert.equal(hardware.accelerator_backend, "nvidia")
     assert.ok(hardware.memory.vram_gb >= 24)
-    assert.ok((hardware.commercial?.prices.length ?? 0) > 0)
+    assert.ok(marketPriceCount(hardware.id) > 0)
   }
 })
 
