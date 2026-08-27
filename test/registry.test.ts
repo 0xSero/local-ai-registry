@@ -53,6 +53,11 @@ test("validated recipes for the Omarchy GPUs use Docker", () => {
     assert.ok(result.total > 0)
     assert.ok(result.data.every((item) => item.recipe.launch.kind === "docker" && item.launchable))
   }
+  const detail = getEntityDetail("recipes", "qwen38-q4km-arcb70-llamacpp-tp1")
+  assert.ok(detail && typeof detail === "object" && "capabilities" in detail)
+  const capabilities = detail.capabilities
+  assert.ok(capabilities && typeof capabilities === "object" && "tools" in capabilities)
+  assert.equal(capabilities.tools, true)
 })
 
 test("repository link results expose the authoritative body identity", () => {
