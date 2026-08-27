@@ -92,7 +92,7 @@ def write(path, value):
 
 
 def title_chip(chip):
-    return "Apple " + " ".join(part.upper() if part.startswith("m") else part.title() for part in chip.split("-"))
+    return "Apple " + " ".join(part.upper() if re.fullmatch(r"m\d+", part) else part.title() for part in chip.split("-"))
 
 
 def hardware_record(identifier, vendor, name, backend, kind, memory, source, **extra):
