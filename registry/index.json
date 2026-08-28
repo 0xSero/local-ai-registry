@@ -244,6 +244,7 @@
       "bonsai-27b-q1-0-dspark-bf16--q1-0",
       "bonsai-27b-q1-0-dspark-q4-1--q1-0",
       "brandonmusic-glm-5-2-exl3-tr3-3-0bpw--3-0-bpw",
+      "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
       "brooooooklyn-qwen3-6-35b-a3b-ud-q8-k-xl-mlx--q8-k-xl",
       "cyankiwi-gemma-4-26b-a4b-it-awq-4bit--int4",
       "cyankiwi-glm-4-5-air-awq-4bit--awq-4bit",
@@ -746,6 +747,7 @@
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2",
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3",
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4",
+      "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp2",
       "glm53-flash-nvfp4-dgxspark-sglang-tp2",
       "glm53-flash-nvfp4-dgxspark-sglang-tp4",
       "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
@@ -1789,6 +1791,7 @@
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2-sweep",
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3-sweep",
       "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
+      "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp2-sweep",
       "glm53-flash-nvfp4-dgxspark-sglang-tp2-sweep",
       "glm53-flash-nvfp4-dgxspark-sglang-tp4-sweep",
       "glm53-flash-nvfp4-rtxpro6000-sglang-tp4-sweep",
@@ -3312,10 +3315,10 @@
   "counts": {
     "hardware": 100,
     "model": 103,
-    "model_instance": 373,
+    "model_instance": 374,
     "price": 84,
-    "recipe": 1045,
-    "speed_sweeps": 1591
+    "recipe": 1046,
+    "speed_sweeps": 1592
   },
   "recipes": [
     {
@@ -4626,6 +4629,23 @@
       "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--selective-exl3-q4",
       "recipe_source": "0xsero",
       "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 2,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp2",
+      "launch_kind": "docker",
+      "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
     },
     {
       "capabilities": {
