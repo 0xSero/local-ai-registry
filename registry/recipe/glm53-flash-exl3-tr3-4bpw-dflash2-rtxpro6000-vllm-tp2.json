@@ -5,7 +5,7 @@
     "tools": true,
     "vision": false
   },
-  "description": "Validated language-only GLM-5.3 Flash TR3 EXL3 4bpw recipe for two RTX PRO 6000 Blackwell GPUs. Uses TP2/EP2/DCP2, B12X sparse MLA, NVFP4 MLA KV, DFlash2 with seven draft tokens, and full-and-piecewise CUDA graphs. Live acceptance covered exact served identity, stop completion, automatic tool calling, 96K context, C1/C2/C4 decode and prefill, and a 140,764-token near-capacity C4 KV load.",
+  "description": "Publisher-qualified language-only GLM-5.3 Flash TR3 EXL3 4bpw recipe for two RTX PRO 6000 Blackwell GPUs. Uses TP2/EP2/DCP2, B12X sparse MLA, NVFP4 MLA KV, external DFlash2 with seven draft tokens, and full-and-piecewise CUDA graphs. Speed evidence uses the model card's sustained streaming methodology; C2/C4 rows are intentionally omitted because the card marks them capacity-limited rather than throughput claims.",
   "engine": {
     "graph_mode": "full-and-piecewise CUDA graphs; DFlash2 full graph capture",
     "name": "vllm",
@@ -132,7 +132,14 @@
     },
     "dflash_accepted_tokens_after_sweep": 4395,
     "full_context_resident_concurrency": 1.5365853658536586,
-    "power_limit_w_each": 275
+    "local_power_limit_w_each": 275,
+    "published_benchmark_conditions": {
+      "gpu_count": 2,
+      "gpu_power_limit_w_each": 600,
+      "memory_clock_offset_mhz": 6000,
+      "published_kv_cache_tokens": 184619,
+      "sustained_decode": true
+    }
   },
   "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
   "provenance": {
