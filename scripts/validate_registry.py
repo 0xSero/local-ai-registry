@@ -219,6 +219,9 @@ def validate(root):
         validate_huggingface(record, errors)
         validate_provenance(record.get("provenance"), f"{record.get('id')}", errors)
         validate_facts(record, errors)
+        params = record.get("params")
+        if not isinstance(params, (int, float)) or params <= 0:
+            errors.append(f"{record.get('id')}: model params must be positive")
 
     for recipe in data["recipe"].values():
         require_reference(recipe, "model_instance_id", data["model-instance"], errors)

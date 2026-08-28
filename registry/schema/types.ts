@@ -87,7 +87,7 @@ export interface Model {
   id: RegistryId
   family: string
   name: string
-  params: number | null
+  params: number
   active_params: number | null
   architecture: string | null
   url: string | null
