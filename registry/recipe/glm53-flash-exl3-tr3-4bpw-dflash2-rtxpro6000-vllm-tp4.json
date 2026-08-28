@@ -1,6 +1,6 @@
 {
   "capabilities": {"chat": true, "reasoning": true, "tools": true, "vision": false},
-  "description": "Runtime-validated experimental four-GPU extension of the publisher-qualified TP2 GLM-5.3 Flash TR3 EXL3 4bpw profile. Uses TP4/EP4/DCP4, B12X sparse MLA, NVFP4 MLA KV, external DFlash2-7, and full-and-piecewise CUDA graphs. CUDA_DEVICE_MAX_CONNECTIONS=1 and an explicit 1-64 capture set prevent a multi-stream B12X graph-warmup race while retaining the complete C8 DFlash graph shape.",
+  "description": "Runtime-validated four-GPU 499,968-token extension of the publisher-qualified GLM-5.3 Flash TR3 EXL3 4bpw profile. Uses TP4/EP4/DCP4, B12X sparse MLA, NVFP4 MLA KV, external DFlash2-7, and full-and-piecewise CUDA graphs. CUDA_DEVICE_MAX_CONNECTIONS=1 and an explicit 1-64 capture set prevent a multi-stream B12X graph-warmup race while retaining the complete C8 DFlash graph shape.",
   "engine": {
     "graph_mode": "full-and-piecewise CUDA graphs through 64 target tokens; DFlash2 full graph capture through 8 requests",
     "name": "vllm",
@@ -19,8 +19,8 @@
       "--decode-context-parallel-size", "4", "--dcp-comm-backend", "a2a",
       "--dtype", "bfloat16", "--load-format", "safetensors",
       "--moe-backend", "b12x", "--attention-backend", "B12X_MLA_SPARSE",
-      "--kv-cache-dtype", "nvfp4_ds_mla", "--max-model-len", "98304",
-      "--max-num-batched-tokens", "2048", "--max-num-seqs", "8",
+      "--kv-cache-dtype", "nvfp4_ds_mla", "--max-model-len", "499968",
+      "--max-num-batched-tokens", "1024", "--max-num-seqs", "8",
       "--compilation-config", "{\"cudagraph_capture_sizes\":[1,2,4,8,16,24,32,40,48,56,64]}",
       "--gpu-memory-utilization", "0.986", "--enable-chunked-prefill",
       "--no-enable-prefix-caching", "--generation-config", "/model",
@@ -61,19 +61,21 @@
     "shm_size": "32g"
   },
   "metadata": {
-    "acceptance": {"completion": true, "c8_all_streams_active": true, "cuda_graph_capture": true, "dflash_active": true, "health": true, "model_discovery": true, "tools": true},
+    "acceptance": {"completion": true, "c8_all_streams_active": true, "cuda_graph_capture": true, "dflash_active": true, "health": true, "long_context_prompt_tokens": 496045, "model_discovery": true, "omp_end_to_end": true, "tools": true},
     "benchmark": {
       "c1_decode_tok_s": 185.29807143721484,
       "c2_aggregate_decode_tok_s": 243.8190265956469,
       "c4_aggregate_decode_tok_s": 327.3226035726145,
       "c8_aggregate_decode_tok_s": 345.0298724017142,
-      "method": "concurrent streaming finite burst, 512 completion tokens per stream, OpenAI usage accounting"
+      "method": "concurrent streaming finite burst, 512 completion tokens per stream, OpenAI usage accounting",
+      "profile_note": "C1-C8 speed sweep was measured on the earlier 98,304-token profile with a 2,048-token scheduler chunk. After promotion to the 499,968-token profile and 1,024-token chunk, C8 was revalidated with all streams active at 229.59 aggregate tok/s over 64 completion tokens per stream."
     },
     "checkpoint_target_tensor_parallel": 2,
     "experimental_runtime_tensor_parallel": 4,
-    "full_context_resident_concurrency": 35.0235595703125,
-    "kv_cache_memory_gib_per_gpu": 48.56,
-    "kv_headroom_note": "The allocated KV memory already exceeds the runtime's post-capture full-utilization estimate; a larger allocation was rejected as unsafe.",
+    "full_context_resident_concurrency": 21.73,
+    "kv_cache_memory_gib_per_gpu": 47.33,
+    "kv_headroom_note": "The validated 499,968-token profile allocated 10,862,941 KV tokens and reports 21.73 full-context resident requests, exceeding the requested C8 capacity.",
+    "long_context_acceptance": {"completion_tokens": 8, "elapsed_seconds": 383.5423291250481, "finish_reason": "length", "prompt_tokens": 496045, "uncached": true},
     "local_power_limit_w_each": 275,
     "runtime_state": "runtime-tested"
   },
@@ -87,7 +89,7 @@
   },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
-  "serving": {"kv_cache_tokens": 3442980, "max_concurrency": 8, "max_context_tokens": 98304, "tensor_parallel": 4},
+  "serving": {"kv_cache_tokens": 10862941, "max_concurrency": 8, "max_context_tokens": 499968, "tensor_parallel": 4},
   "speed_sweeps_ids": ["glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp4-sweep"],
   "status": "validated"
 }
