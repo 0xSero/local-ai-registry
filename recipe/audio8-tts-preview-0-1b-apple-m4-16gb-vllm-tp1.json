@@ -1,0 +1,84 @@
+{
+  "schema_version": "local-ai-registry/v1",
+  "id": "audio8-tts-preview-0-1b-apple-m4-16gb-vllm-tp1",
+  "recipe_source": "local-studio",
+  "status": "candidate",
+  "description": "Audio8-TTS-Preview-0.1b on 1× Apple M4 16GB via vllm",
+  "model_instance_id": "audio8-audio8-tts-preview-0-1b",
+  "hardware_id": "apple-m4-16gb",
+  "hardware_count": 1,
+  "engine": {
+    "name": "vllm",
+    "version": null,
+    "graph_mode": null
+  },
+  "launch": {
+    "kind": "controller",
+    "accelerator_backend": "metal",
+    "controller": {
+      "recipe_id": "audio8-tts-preview-0-1b",
+      "recipe_name": "Audio8-TTS-Preview-0.1b"
+    },
+    "image": null,
+    "digest": null,
+    "arguments": [
+      "/models",
+      "--served-model-name",
+      "Audio8-TTS-Preview-0.1b",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.9",
+      "--max-num-seqs",
+      "256",
+      "--trust-remote-code"
+    ],
+    "container_port": 8000,
+    "host_port": 8000,
+    "environment": {},
+    "mounts": [
+      {
+        "target": "/models",
+        "read_only": true
+      }
+    ]
+  },
+  "serving": {
+    "api": "openai/v1",
+    "tensor_parallel": 1,
+    "pipeline_parallel": 1,
+    "configured_max_context_tokens": 32768,
+    "configured_max_running_sequences": 256,
+    "gpu_memory_utilization": 0.9,
+    "served_model_name": "Audio8-TTS-Preview-0.1b"
+  },
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "speed_sweeps_ids": [],
+  "metadata": {
+    "local_studio": {
+      "recipe_id": "audio8-tts-preview-0-1b",
+      "recipe_name": "Audio8-TTS-Preview-0.1b",
+      "unmeasured": true
+    }
+  },
+  "provenance": {
+    "sources": [
+      {
+        "kind": "local-studio",
+        "url": "https://github.com/sybil-solutions/local-studio",
+        "captured_at": "2026-08-28T17:53:38.491Z"
+      }
+    ],
+    "captured_at": "2026-08-28T17:53:38.491Z"
+  },
+  "facts": {}
+}
