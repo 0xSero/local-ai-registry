@@ -58,13 +58,31 @@ Longer outputs amortize queueing and prefill overhead, which is why the sustaine
 - Shared-expert fusion changes the expected expert geometry and was rejected by the loader.
 - Two-batch overlap with data-parallel attention advanced through graph capture after a narrow state-vector patch, then failed because upstream SGLang does not implement the GLM-5 Next decoder-layer operation decomposition. No eager fallback was used.
 
-## Three- and two-GPU compatibility
+## Accepted three-GPU pipeline runtime
 
-There is no honest working three- or two-GPU recipe for this artifact. The checkpoint metadata fixes tensor parallelism at four and contains four independently rotated rank slices. The current loader requires TP4.
+The earlier capacity conclusion applied to **TP3**, not to pipeline parallelism. A TP1/PP3/EP1 overlay now assigns complete transformer layers to each of three GPUs and executes the checkpoint's four independently rotated logical slices inside every owned routed-expert layer. This preserves the sealed tensor semantics without putting two complete TP4 ranks on one card.
 
-The four-GPU runtime prepared approximately 53.18 GB of weights per rank. Any direct 3-GPU mapping must place two logical slices on one physical GPU, while a 2-GPU mapping must place two slices on each GPU. Either case projects to approximately 106.36 GB on the double-slice GPU before KV cache and runtime workspace, already above the 96 GB physical capacity.
+The measured prepared-weight allocation was 61.67 GB, 73.32 GB, and 74.49 GB across the three stages. With 64 mamba-state slots, FP8 E4M3 KV, and full decode CUDA graphs captured at batch sizes 1/2/4/8/16, the post-capture free-memory floor was 10.40 GB. Health, model discovery, and an explicit `READY` completion all passed.
 
-The TP3 and TP2 registry rows are therefore non-launchable compatibility records with blocked sweeps, not fabricated throughput. A future claim requires a lower-memory nonuniform packing or offload design, preservation of the four independent rotations, real-weight parity, full CUDA-graph capture, endpoint acceptance, and a fresh matched sweep.
+| PP3 profile | Client output tok/s | Output tok/min | Total API tok/min | Cache state |
+| --- | ---: | ---: | ---: | --- |
+| C1, OSL 256 | 22.60 | 1,356 | — | cold |
+| C8, OSL 256 | 117.37 | 7,042 | — | shared prefix |
+| C16, OSL 256 | 120.74 | 7,244 | — | first shared-prefix screen |
+| **C32, OSL 256** | **176.82** | **10,609** | **12,101** | unique prefixes, 0% cache hit |
+| **C32, OSL 256** | **203.78** | **12,227** | **13,755** | warmed shared prefix |
+
+PP3 is a capacity recipe, not a replacement for the four-GPU throughput profile. Pipeline stages serialize each token, and each stage runs four virtual EXL3 slices, so the accepted three-GPU ceiling is materially below TP4.
+
+Prefill CUDA graphs were explicitly requested, but SGLang rejected them because GLM-5.3's hybrid KDA/DSA layers do not satisfy the Standard-GQA prefill graph contract. Decode remained fully graphed; no eager flag or CUDA-graph-disable flag was used.
+
+## TP3, two GPUs, and stock ExLlamaV3
+
+The original TP3 record remains correctly blocked: the artifact is four independently rotated tensor-parallel slices and cannot be reinterpreted as three ordinary TP ranks. The new working path is PP3, not TP3.
+
+The current SGLang virtual-slice implementation prepares 209.48 GB across its three stages before cache, so its unchanged PP2 layout does not fit in two 96 GB cards. PP2 still needs lower-memory preparation, staged-payload release, or CPU offload before it can be claimed.
+
+ExLlamaV3 supports layer splitting in general, but its stock architecture registry does not currently include GLM-5 Next, and this checkpoint uses a custom four-rank-sliced EXL3 contract. A native ExLlamaV3 two- or three-GPU path therefore requires both a GLM-5 Next architecture adapter and execution that preserves all four independent slice rotations; it is not a command-line switch for this artifact.
 
 ## Evidence boundary
 
