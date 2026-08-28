@@ -18,11 +18,26 @@ export type HuggingFaceIdentity = {
   [key: string]: unknown
 }
 
+export type ModelInstanceCreditIdentity = {
+  link_type: HuggingFaceIdentity["link_type"]
+  publisher: string | null
+  repository: string | null
+  status: HuggingFaceIdentity["status"]
+  url: string
+}
+
+export type ModelInstanceCredits = {
+  artifact: ModelInstanceCreditIdentity
+  base_model: ModelInstanceCreditIdentity | null
+  provenance: ModelInstance["provenance"]
+}
+
 type RegistryModelInstance = Omit<ModelInstance, "huggingface"> & {
   huggingface: HuggingFaceIdentity
 }
 
 export type ModelInstanceResult = RegistryModelInstance & {
+  credits: ModelInstanceCredits
   hugging_face_url: string
 }
 
@@ -183,13 +198,30 @@ export function getSpeedSweep(id: string): SpeedSweep | undefined {
   return cachedRecord("speed-sweeps", id, dataset().sweeps)
 }
 
+function creditIdentity(identity: Pick<HuggingFaceIdentity, "link_type" | "status" | "url"> & { repository?: unknown }): ModelInstanceCreditIdentity {
+  const repository = typeof identity.repository === "string" && identity.repository.includes("/") ? identity.repository : null
+  return {
+    link_type: identity.link_type,
+    publisher: repository?.split("/")[0] ?? null,
+    repository,
+    status: identity.status,
+    url: identity.url,
+  }
+}
+
 export function modelInstanceResult(instance: RegistryModelInstance): ModelInstanceResult {
   if (instance.huggingface.url.length === 0) {
     throw new Error(`Model instance '${instance.id}' has an empty authoritative Hugging Face URL`)
   }
 
+  const model = dataset().models.get(instance.model_id)
   return {
     ...instance,
+    credits: {
+      artifact: creditIdentity(instance.huggingface),
+      base_model: model ? creditIdentity(model.huggingface) : null,
+      provenance: instance.provenance,
+    },
     hugging_face_url: instance.huggingface.url,
   }
 }
