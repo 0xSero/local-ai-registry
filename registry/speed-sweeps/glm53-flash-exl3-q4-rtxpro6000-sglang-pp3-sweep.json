@@ -1,0 +1,89 @@
+{
+  "accepted_at": "2026-08-27",
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3-sweep",
+  "measured_at": "2026-08-27",
+  "recipe_id": "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3",
+  "rows": [
+    {
+      "cache_hit_rate": 0.0,
+      "concurrency": 1,
+      "context_tokens": 32,
+      "decode_tok_s": 22.5958,
+      "decode_tok_s_per_stream": 22.5958,
+      "elapsed_s": 11.329524,
+      "output_tokens": 256,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 1,
+      "status": "accepted-c1-baseline",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": 32,
+      "decode_tok_s": 117.3689,
+      "decode_tok_s_per_stream": 14.6711,
+      "elapsed_s": 17.44926,
+      "output_tokens": 256,
+      "output_tokens_per_minute": 7042.1324,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 8,
+      "status": "accepted-shared-prefix",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 16,
+      "context_tokens": 32,
+      "decode_tok_s": 120.7353,
+      "decode_tok_s_per_stream": 7.5459,
+      "elapsed_s": 33.925449,
+      "output_tokens": 256,
+      "output_tokens_per_minute": 7244.1193,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 16,
+      "status": "accepted-first-cold-shared-prefix",
+      "ttft_ms_p50": null
+    },
+    {
+      "cache_hit_rate": 0.0,
+      "concurrency": 32,
+      "context_tokens": 36,
+      "decode_tok_s": 176.824,
+      "decode_tok_s_per_stream": 5.5257,
+      "elapsed_s": 46.328556,
+      "engine_decode_tok_s": 184.9881,
+      "output_tokens": 256,
+      "output_tokens_per_minute": 10609.4392,
+      "peak_vram_gb": 87.02,
+      "prefill_tok_s": null,
+      "samples": 32,
+      "status": "accepted-cold-unique-prefix-throughput",
+      "total_api_tokens_per_minute": 12101.3916,
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 32,
+      "context_tokens": 32,
+      "decode_tok_s": 203.78,
+      "decode_tok_s_per_stream": 6.3681,
+      "elapsed_s": 40.200209,
+      "engine_decode_tok_s": 209.741,
+      "output_tokens": 256,
+      "output_tokens_per_minute": 12226.8022,
+      "peak_vram_gb": 87.02,
+      "prefill_tok_s": null,
+      "samples": 32,
+      "status": "accepted-warm-shared-prefix-throughput",
+      "total_api_tokens_per_minute": 13755.1524,
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "artifact": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4",
+    "artifact_revision": "99cccdf0e8741715662c383828a9ea601990c125",
+    "method": "OpenAI-compatible max_completion_tokens requests against the accepted TP1/PP3/EP1 runtime. Cold C32 used unique prompt prefixes and measured a zero cache-hit gauge; warm C32 reused the shared prefix. Client throughput is completed output tokens divided by batch wall time."
+  }
+}

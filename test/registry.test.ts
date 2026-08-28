@@ -47,13 +47,18 @@ test("candidate and reference recipes are never launchable", () => {
   assert.equal(result.total, 0)
 })
 
-test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2", () => {
+test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3 and TP2", () => {
   const fourGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4")
+  const threeGpuPp = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3")
   const threeGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3")
   const twoGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2")
   const fourGpuSweep = getEntityDetail(
     "speed-sweeps",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
+  )
+  const threeGpuPpSweep = getEntityDetail(
+    "speed-sweeps",
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3-sweep",
   )
   const twoGpuSweep = getEntityDetail(
     "speed-sweeps",
@@ -65,9 +70,11 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2
   )
 
   assert.ok(fourGpu && typeof fourGpu === "object")
+  assert.ok(threeGpuPp && typeof threeGpuPp === "object")
   assert.ok(threeGpu && typeof threeGpu === "object")
   assert.ok(twoGpu && typeof twoGpu === "object")
   assert.ok(fourGpuSweep && typeof fourGpuSweep === "object")
+  assert.ok(threeGpuPpSweep && typeof threeGpuPpSweep === "object")
   assert.ok(threeGpuSweep && typeof threeGpuSweep === "object")
   assert.ok(twoGpuSweep && typeof twoGpuSweep === "object")
 
@@ -83,6 +90,13 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2
     metadata: { compatibility_state: string }
     status: string
   }
+  const threePp = threeGpuPp as {
+    hardware_count: number
+    launch: { kind: string }
+    metadata: { acceptance: { generated_completion: boolean } }
+    serving: { pipeline_parallel: number; tensor_parallel: number }
+    status: string
+  }
   const three = threeGpu as {
     hardware_count: number
     launch: { kind: string }
@@ -90,6 +104,7 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2
     status: string
   }
   const fourSweep = fourGpuSweep as { rows: Array<{ status?: string; decode_tok_s?: number }> }
+  const threePpSweep = threeGpuPpSweep as { rows: Array<{ status?: string; decode_tok_s?: number }> }
   const threeSweep = threeGpuSweep as { rows: Array<{ decode_tok_s?: number | null }> }
   const twoSweep = twoGpuSweep as { rows: Array<{ decode_tok_s?: number | null }> }
 
@@ -99,6 +114,15 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2
   assert.equal(four.serving.tensor_parallel, 4)
   assert.ok(fourSweep.rows.some((row) =>
     row.status === "accepted-matched-screen" && row.decode_tok_s === 73.4979))
+
+  assert.equal(threePp.hardware_count, 3)
+  assert.equal(threePp.status, "candidate")
+  assert.equal(threePp.launch.kind, "docker")
+  assert.equal(threePp.serving.tensor_parallel, 1)
+  assert.equal(threePp.serving.pipeline_parallel, 3)
+  assert.equal(threePp.metadata.acceptance.generated_completion, true)
+  assert.ok(threePpSweep.rows.some((row) =>
+    row.status === "accepted-cold-unique-prefix-throughput" && row.decode_tok_s === 176.824))
 
   assert.equal(three.hardware_count, 3)
   assert.equal(three.status, "candidate")
@@ -112,7 +136,7 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 from blocked TP3 and TP2
   assert.equal(two.metadata.compatibility_state, "blocked")
   assert.ok(twoSweep.rows.every((row) => row.decode_tok_s === null))
 
-  for (const record of [fourGpu, twoGpu, fourGpuSweep, twoGpuSweep]) {
+  for (const record of [fourGpu, threeGpuPp, twoGpu, fourGpuSweep, threeGpuPpSweep, twoGpuSweep]) {
     const serialized = JSON.stringify(record)
     assert.doesNotMatch(serialized, /\/home\//)
     assert.doesNotMatch(serialized, /tailadb/i)
