@@ -170,6 +170,12 @@ test("repository link results expose the authoritative body identity", () => {
   assert.equal(exact.huggingface.repository, "unsloth/gemma-4-12b-it-NVFP4")
   assert.equal(exact.hugging_face_url, exact.huggingface.url)
   assert.equal(exact.hugging_face_url, "https://huggingface.co/unsloth/gemma-4-12b-it-NVFP4")
+  assert.equal(exact.credits.artifact.publisher, "unsloth")
+  assert.equal(exact.credits.artifact.repository, "unsloth/gemma-4-12b-it-NVFP4")
+  assert.equal(exact.credits.artifact.status, "known")
+  assert.equal(exact.credits.base_model?.publisher, "google")
+  assert.equal(exact.credits.base_model?.repository, "google/gemma-4-12B-it")
+  assert.ok(exact.credits.provenance.sources.length > 0)
 })
 
 test("search fallback results stay distinct from repository links", () => {
@@ -187,6 +193,9 @@ test("search fallback results stay distinct from repository links", () => {
   assert.equal(fallback.huggingface.status, "unavailable")
   assert.equal(fallback.hugging_face_url, fallback.huggingface.url)
   assert.equal(fallback.hugging_face_url, "https://huggingface.co/models?search=agents-a1-q4km")
+  assert.equal(fallback.credits.artifact.publisher, null)
+  assert.equal(fallback.credits.artifact.repository, null)
+  assert.equal(fallback.credits.artifact.status, "unavailable")
 })
 
 test("hardware filters use normalized vendor and memory fields", () => {
