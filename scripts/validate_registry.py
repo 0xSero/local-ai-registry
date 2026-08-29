@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 
-COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps")
+COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks")
 SCHEMA = "local-ai-registry/v1"
 FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
@@ -269,6 +269,14 @@ def validate(root):
                 value = row.get(field)
                 if value is not None and (not isinstance(value, (int, float)) or value < 0):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
+
+    for benchmark in data.get("benchmarks", {}).values():
+        if not benchmark.get("name"):
+            errors.append(f"{benchmark['id']}: benchmark has no name")
+        for row in benchmark.get("rows", []):
+            score = row.get("score")
+            if score is not None and (not isinstance(score, (int, float)) or score < 0):
+                errors.append(f"{benchmark['id']}: score must be non-negative or null")
 
     prices = {}
     for path in sorted((root / "price").glob("*/*.json")):

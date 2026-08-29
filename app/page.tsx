@@ -9,6 +9,7 @@ import {
   getFacets,
   getSpeedSweep,
   listHardware,
+  listBenchmarks,
   listModels,
   listPrices,
   listSpeedSweeps,
@@ -26,7 +27,7 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
-type Topic = "recipes" | "hardware" | "models" | "prices" | "speed-sweeps"
+type Topic = "recipes" | "hardware" | "models" | "prices" | "benchmarks" | "speed-sweeps"
 
 type EvidenceRow = SpeedRow & {
   sweepId: string
@@ -43,7 +44,8 @@ const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; descri
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
-  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps", description: "Measured inference evidence connected back to the recipe that produced it." },
+  { key: "benchmarks", label: "Leaderboards", countKey: "benchmarks", description: "Scraped public quality scores from GitHub Pages leaderboards such as Terminal-Bench 2.1. These are not local speed measurements." },
+  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps", description: "Measured token/s evidence connected back to the recipe that produced it. These are not public quality leaderboards." },
 ]
 
 const USD_FORMATTER = new Intl.NumberFormat("en-US", {
@@ -99,6 +101,13 @@ function peakSweepSpeed(sweep: SpeedSweep): number | null {
     return typeof value === "number" ? [value] : []
   })
   return values.length > 0 ? Math.max(...values) : null
+}
+
+function topicHref(key: Topic, query = ""): string {
+  const selected = new URLSearchParams()
+  selected.set("topic", key)
+  if (query) selected.set("q", query)
+  return `/?${selected.toString()}`
 }
 
 function hrefWithRecord(state: URLSearchParams, id: string): string {
@@ -267,13 +276,26 @@ export default async function Home({ searchParams }: PageProps) {
     retailer: value("retailer"),
   }, pagination) : { data: [], total: 0 }
   const priceTotal = counts.price ?? (topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total)
-  const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query }, pagination) : { data: [], total: 0 }
+  const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query, recipe_id: value("recipe_id") }, pagination) : { data: [], total: 0 }
+  const benchmarkResults = topic === "benchmarks" ? listBenchmarks({ q: query, category: value("category") }, pagination) : { data: [], total: 0 }
+  const matchCounts = !topic && query
+    ? {
+        recipes: queryCompatibility({ q: query }, { limit: 1, offset: 0 }).total,
+        hardware: listHardware({ q: query }, { limit: 1, offset: 0 }).total,
+        models: listModels({ q: query }, { limit: 1, offset: 0 }).total,
+        prices: listPrices({ q: query }, { limit: 1, offset: 0 }).total,
+        benchmarks: listBenchmarks({ q: query }, { limit: 1, offset: 0 }).total,
+        "speed-sweeps": listSpeedSweeps({ q: query }, { limit: 1, offset: 0 }).total,
+      }
+    : null
 
   const filterKeys: Partial<Record<Topic, string[]>> = {
     hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
     models: ["family", "architecture"],
     prices: ["region", "category", "condition", "retailer", "in_stock"],
     recipes: ["by", "hardware_id", "model_id", "validation", "engine", "evidence"],
+    benchmarks: ["category"],
+    "speed-sweeps": ["recipe_id"],
   }
   const viewState = new URLSearchParams()
   if (topic) viewState.set("topic", topic)
@@ -297,7 +319,7 @@ export default async function Home({ searchParams }: PageProps) {
         ? modelResults.total
         : topic === "prices"
           ? priceResults.total
-          : topic === "speed-sweeps" ? sweepResults.total : 0
+          : topic === "benchmarks" ? benchmarkResults.total : topic === "speed-sweeps" ? sweepResults.total : 0
   const topicLabel = TOPICS.find((item) => item.key === topic)?.label
   const topicDescription = TOPICS.find((item) => item.key === topic)?.description
 
@@ -333,40 +355,53 @@ export default async function Home({ searchParams }: PageProps) {
     { label: "Retailer", name: "retailer", value: value("retailer"), options: facetOptions(facets.prices.retailer, "Any retailer") },
     { label: "Availability", name: "in_stock", value: value("in_stock"), options: facetOptions(["true", "false", "unknown"], "Any availability", (item) => item === "true" ? "In stock" : item === "false" ? "Out of stock" : "Unknown stock") },
   ]
+  const benchmarkSearchFilters: SearchFilter[] = [
+    { label: "Category", name: "category", value: value("category"), options: facetOptions(facets.benchmarks.category, "Any category") },
+  ]
   const topicFilters = topic === "recipes"
     ? recipeSearchFilters
     : topic === "hardware"
       ? hardwareSearchFilters
       : topic === "models"
         ? modelSearchFilters
-        : topic === "prices" ? priceSearchFilters : []
+        : topic === "prices"
+          ? priceSearchFilters
+          : topic === "benchmarks"
+            ? benchmarkSearchFilters
+            : []
 
   return (
     <main className="registry-main">
       <nav aria-label="Registry collections" className="topic-tabs">
         {TOPICS.map((item) => (
-          <Link aria-current={topic === item.key ? "page" : undefined} href={`/?topic=${item.key}`} key={item.key}>{item.label}</Link>
+          <Link aria-current={topic === item.key ? "page" : undefined} href={topicHref(item.key, query)} key={item.key}>{item.label}</Link>
         ))}
       </nav>
 
       {!topic ? (
         <>
           <header className="overview-heading"><span className="mono-label">READ-ONLY / SOURCE-BACKED</span><h1>Registry index</h1></header>
-          <section className="overview-search" aria-label="Search recipes"><RegistrySearch filters={[]} query="" topic="" /></section>
+          <section className="overview-search" aria-label="Search the registry"><RegistrySearch filters={[]} query={query} topic="" /></section>
           <nav aria-label="Registry topic counts" className="topic-index">
             {TOPICS.map((item, index) => {
-              const count = item.key === "prices" ? priceTotal : item.countKey ? counts[item.countKey] : undefined
+              const count = matchCounts
+                ? matchCounts[item.key]
+                : item.key === "prices" ? priceTotal : item.countKey ? counts[item.countKey] : undefined
               return (
-                <Link href={`/?topic=${item.key}`} key={item.key}>
+                <Link href={topicHref(item.key, query)} key={item.key}>
                   <span className="mono-label">0{index + 1}</span><strong>{item.label}</strong><span>{typeof count === "number" ? count.toLocaleString() : "—"}</span>
                 </Link>
               )
             })}
           </nav>
-          <section className="overview-recipes">
-            <div className="section-heading"><div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div><Link href="/?topic=recipes&validation=validated">View all</Link></div>
-            <RecipeRows by="model" data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&by=model&validation=validated")} />
-          </section>
+          {query ? (
+            <p className="topic-description">Matching records stay in their collection. Open Leaderboards for public scores such as Terminal-Bench 2.1, or Speed Sweeps for measured tok/s.</p>
+          ) : (
+            <section className="overview-recipes">
+              <div className="section-heading"><div><span className="mono-label">VALIDATED / LAUNCH-SAFE</span><h2>Launch-safe recipes</h2></div><Link href="/?topic=recipes&validation=validated">View all</Link></div>
+              <RecipeRows by="model" data={overviewRecipes.data} state={new URLSearchParams("topic=recipes&by=model&validation=validated")} />
+            </section>
+          )}
         </>
       ) : (
         <>
@@ -420,13 +455,33 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
           )}
           {topic === "prices" && <PriceRows data={priceResults.data} state={viewState} />}
+          {topic === "benchmarks" && (
+            <div className="browser-list collection-list">
+              {benchmarkResults.data.map((benchmark) => {
+                const top = benchmark.rows[0]
+                const tags: RowTag[] = [
+                  ...(benchmark.category ? [{ label: benchmark.category, name: "category", value: benchmark.category }] : []),
+                ]
+                return (
+                  <article className="browser-row collection-row" key={benchmark.id}>
+                    <Link aria-label={`Open ${benchmark.id}`} className="row-open" href={hrefWithRecord(viewState, benchmark.id)} scroll={false} />
+                    <span className="row-primary"><strong>{benchmark.name}</strong><small>{benchmark.id}</small></span>
+                    <span><strong>{benchmark.category ?? "Unknown"}</strong><small>category</small></span>
+                    <span><strong>{benchmark.rows.length}</strong><small>scored models</small></span>
+                    <span><strong>{top ? (top.score === null ? "—" : formatRate(top.score)) : "—"}</strong><small>top score</small></span>
+                    <TaxonomyTags state={viewState} tags={tags} />
+                    <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
+                  </article>
+                )
+              })}
+            </div>
+          )}
           {topic === "speed-sweeps" && (
             <div className="browser-list collection-list">
               {sweepResults.data.map((sweep) => {
                 const speed = peakSweepSpeed(sweep)
                 const tags: RowTag[] = [
-                  { label: sweep.recipe_id, name: "q", value: sweep.recipe_id },
-                  ...(sweep.measured_at ? [{ label: sweep.measured_at, name: "q", value: sweep.measured_at }] : []),
+                  { label: sweep.recipe_id, name: "recipe_id", value: sweep.recipe_id },
                 ]
                 return (
                   <article className="browser-row collection-row" key={sweep.id}>
