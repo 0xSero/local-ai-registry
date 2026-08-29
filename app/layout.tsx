@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono"
 
 export const metadata: Metadata = {
   title: "Local AI Registry",
-  description: "Search local model artifacts, hardware compatibility, launch recipes, and measured speed.",
+  description: "Search local model artifacts, hardware compatibility, launch recipes, public leaderboard scores, and measured speed sweeps.",
 }
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

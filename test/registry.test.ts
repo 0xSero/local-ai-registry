@@ -3,9 +3,11 @@ import test from "node:test"
 
 import {
   collectionCounts,
+  getBenchmark,
   getEntityDetail,
   getFacets,
   isLaunchable,
+  listBenchmarks,
   listHardware,
   marketPriceCount,
   listModelInstances,
@@ -215,15 +217,15 @@ test("recipe detail progressively resolves related records and speed evidence", 
     "recipes",
     "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
   )
-  assert.ok(detail)
+  if (!detail) throw new Error("recipe detail not found")
   assert.equal(detail.status, "validated")
   const launch = detail.launch
   assert.ok(launch && typeof launch === "object" && "kind" in launch)
-  assert.equal(launch.kind, "docker")
+  assert.equal((launch as { kind: string }).kind, "docker")
 
   const registry = detail.registry
   assert.ok(registry && typeof registry === "object" && "launchable" in registry)
-  assert.equal(registry.launchable, true)
+  assert.equal((registry as { launchable: boolean }).launchable, true)
 
   const relationships = detail.relationships
   assert.ok(
@@ -232,11 +234,11 @@ test("recipe detail progressively resolves related records and speed evidence", 
     "model_instance" in relationships &&
     "speed_sweeps" in relationships,
   )
-  const instance = relationships.model_instance
+  const instance = (relationships as { model_instance: unknown }).model_instance
   assert.ok(instance && typeof instance === "object" && "href" in instance)
-  assert.equal(instance.href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
+  assert.equal((instance as { href: string }).href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
 
-  const sweeps = relationships.speed_sweeps
+  const sweeps = (relationships as { speed_sweeps: unknown }).speed_sweeps
   assert.ok(Array.isArray(sweeps))
   assert.equal(sweeps.length, 1)
 })
@@ -290,25 +292,70 @@ test("navigable topic collections expose real registry records", () => {
   assert.ok(recipes.data.length > 0)
 })
 
+test("scraped benchmark leaderboards expose quality scores separate from speed sweeps", () => {
+  const counts = collectionCounts()
+  const benchmarks = listBenchmarks({}, { limit: 200, offset: 0 })
+  const sweeps = listSpeedSweeps({}, { limit: 5, offset: 0 })
+
+  assert.equal(benchmarks.total, counts.benchmarks)
+  assert.ok(benchmarks.total >= 100)
+  assert.ok(sweeps.total > 0)
+  assert.ok(sweeps.data.every((sweep) => !("rows" in sweep && Array.isArray(sweep.rows) && sweep.rows.some((row) => "variant" in row))))
+
+  const mmlu = getBenchmark("mmlu")
+  assert.ok(mmlu)
+  assert.equal(mmlu.name, "MMLU")
+  assert.ok(mmlu.rows.length > 0)
+  assert.ok(mmlu.rows.every((row) => row.score === null || (row.score >= 0 && row.score <= 100)))
+  assert.ok(mmlu.rows.every((row) => typeof row.root === "string" && row.root.length > 0))
+
+  const terminalBench = getBenchmark("terminal-bench-2.1")
+  assert.ok(terminalBench)
+  assert.equal(terminalBench.name, "Terminal-Bench 2.1")
+  assert.equal(terminalBench.category, "agentic-coding")
+  assert.equal(terminalBench.rows.length, 17)
+  assert.equal(terminalBench.source.kind, "leaderboard-scrape")
+  assert.ok(terminalBench.source.paths?.includes("benchmarks/terminal-bench-2.1.html"))
+
+  const detail = getEntityDetail("benchmarks", "terminal-bench-2.1")
+  assert.ok(detail && typeof detail === "object")
+  assert.equal((detail as { id: string }).id, "terminal-bench-2.1")
+  assert.equal(getEntityDetail("benchmark", "terminal-bench-2.1"), undefined)
+  assert.equal(getEntityDetail("speed-sweeps", "terminal-bench-2.1"), undefined)
+
+  const agentic = listBenchmarks({ category: "agentic-coding" }, { limit: 50, offset: 0 })
+  assert.ok(agentic.data.some((benchmark) => benchmark.id === "terminal-bench-2.1"))
+  assert.ok(agentic.data.every((benchmark) => benchmark.category === "agentic-coding"))
+
+  const query = listBenchmarks({ q: "terminal-bench-2.1" }, { limit: 10, offset: 0 })
+  assert.ok(query.data.some((benchmark) => benchmark.id === "terminal-bench-2.1"))
+  const sweepQuery = listSpeedSweeps({ q: "terminal-bench-2.1" }, { limit: 10, offset: 0 })
+  assert.equal(sweepQuery.total, 0)
+})
+
 test("Prices topic exposes regional market records without flattening currencies", () => {
-  const prices = listPrices({}, { limit: 200, offset: 0 })
+  const prices = listPrices({}, { limit: 500, offset: 0 })
   const facets = getFacets()
 
-  assert.equal(prices.total, 84)
-  assert.equal(prices.data.length, 84)
-  assert.equal(new Set(prices.data.map((record) => record.product.id)).size, 33)
-  assert.equal(prices.data.reduce((count, record) => count + record.observations.length, 0), 896)
+  assert.ok(prices.total >= 100)
+  assert.equal(prices.data.length, prices.total)
+  assert.ok(new Set(prices.data.map((record) => record.product.id)).size >= 45)
+  assert.ok(prices.data.reduce((count, record) => count + record.observations.length, 0) >= 1000)
   assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
   assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
   assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
   assert.deepEqual(facets.prices.condition, ["new", "refurbished", "used"])
+  assert.ok(prices.data.some((record) => record.product.id === "rtx-5060"))
+  assert.ok(prices.data.some((record) => record.product.id === "intel-arc-pro-b70"))
+  assert.ok(prices.data.some((record) => record.product.id === "rx-9070-xt"))
+  assert.ok(prices.data.some((record) => record.product.id === "rtx-pro-4000-blackwell"))
 })
 
 test("market filters compose across region, category, condition, and retailer", () => {
   const sample = listPrices({}, { limit: 200, offset: 0 }).data.find((record) => record.observations.some((observation) => observation.in_stock === true))
-  assert.ok(sample)
+  if (!sample) throw new Error("no in-stock price sample found")
   const observation = sample.observations.find((candidate) => candidate.in_stock === true)
-  assert.ok(observation)
+  if (!observation) throw new Error("no in-stock observation found")
 
   const filtered = listPrices(
     {
@@ -347,7 +394,7 @@ test("hardware topic filters vendor backend memory and priced state", () => {
 test("model topic filters family and architecture together", () => {
   const models = listModels({}, { limit: 200, offset: 0 })
   const sample = models.data.find((model) => model.architecture !== null)
-  assert.ok(sample)
+  if (!sample) throw new Error("no architecture sample found")
 
   const filtered = listModels(
     { architecture: sample.architecture ?? "", family: sample.family },

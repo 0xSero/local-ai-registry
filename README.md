@@ -1,6 +1,6 @@
 # Local AI Registry
 
-A hardware-aware registry of local model artifacts, launch recipes, and measured speed. The standalone registry is data first: clients can read it from disk, serve it as static JSON, or resolve it over any static HTTP host.
+A hardware-aware registry of local model artifacts, launch recipes, measured speed sweeps, and public quality leaderboards. The standalone registry is data first: clients can read it from disk, serve it as static JSON, or resolve it over any static HTTP host.
 
 ## Start here
 
@@ -27,7 +27,8 @@ This is the progressive-disclosure rule: index, choice, then the exact record an
 | `model/` | One canonical base model |
 | `model-instance/` | One downloadable artifact or quantization |
 | `recipe/` | One artifact × hardware × engine compatibility unit |
-| `speed-sweeps/` | Benchmark evidence attached to one recipe |
+| `speed-sweeps/` | Measured inference evidence attached to one recipe |
+| `benchmarks/` | Scraped public leaderboard scores per benchmark, keyed by model variant |
 | `price/<product-id>/` | Current retailer observations split by region and native currency |
 
 Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
@@ -84,6 +85,7 @@ Versioned JSON routes live under `/api/v1`. `GET` and `HEAD` are supported. Muta
 | `/api/v1/recipes` and `/api/v1/recipes/:id` | Compatibility units and fully resolved details |
 | `/api/v1/compatibility` | Model × hardware compatibility query |
 | `/api/v1/speed-sweeps` and `/api/v1/speed-sweeps/:id` | Measured speed evidence |
+| `/api/v1/benchmarks` and `/api/v1/benchmarks/:id` | Scraped public leaderboard scores |
 
 List routes accept `limit` (maximum 100) and `offset`. Common compatibility filters are `model`, `hardware`, `model_id`, `model_instance_id`, `hardware_id`, `status`, `launchable`, `engine`, `launch_kind`, `precision`, `instance_kind`, `vendor`, `backend`, `min_vram_gb`, `max_vram_gb`, `hardware_count`, `evidence`, and the tri-state capability filters `chat`, `reasoning`, `tools`, and `vision`. Capability values are `true`, `false`, or `unknown`. Model-instance lists also accept `huggingface_status` and `huggingface_link_type`.
 
@@ -107,10 +109,10 @@ python3 scripts/curate_registry.py
 python3 scripts/validate_registry.py
 ```
 
-To refresh regional market data from a fresh scanner snapshot, import the snapshot before rebuilding and validating the index:
+To refresh regional market data from a fresh scanner snapshot, import the snapshot before rebuilding and validating the index. Pass `--replace` only when the snapshot is a complete scan that should wipe previous market records:
 
 ```bash
-python3 scripts/import_market_snapshot.py ~/projects/local-ai-scanner-cli/cache/latest.json
+python3 scripts/import_market_snapshot.py ~/projects/local-ai-scanner-cli/cache/latest.json --replace
 python3 scripts/curate_registry.py --index-only
 python3 scripts/validate_registry.py
 ```
@@ -122,6 +124,25 @@ python3 scripts/import_postgres_publication.py ~/local-ai-data/private/publicati
 python3 scripts/curate_registry.py
 python3 scripts/validate_registry.py
 ```
+
+To refresh the scraped public leaderboard scores from the HF Model & Benchmark Matrix scrape, import before rebuilding and validating the index:
+
+```bash
+python3 scripts/import_hf_benchmarks.py ~/projects/hf-model-benchmarks
+python3 scripts/curate_registry.py --index-only
+python3 scripts/validate_registry.py
+```
+
+To add more retailer observations on top of an existing market snapshot (without wiping regions the scanner already covered):
+
+```bash
+python3 scripts/fetch_extra_prices.py --out /tmp/extra-prices.json
+python3 scripts/import_market_snapshot.py /tmp/extra-prices.json
+python3 scripts/curate_registry.py --index-only
+python3 scripts/validate_registry.py
+```
+
+Benchmark scores are reported measurements from public leaderboards. They never attach to recipes or affect launch validation; a leaderboard row proves what was reported for a model variant, not that a local run reproduces it.
 
 The validator checks IDs, references, counts, status boundaries, pinned validated artifacts, positive evidence values, and the CUDA-graph policy. `curate_registry.py` is deterministic and rebuilds the compact index after data changes.
 
@@ -141,7 +162,7 @@ The default `choose` command uses `gum` when available and a numbered terminal m
 
 ## Source layout
 
-`registry/` is the new normalized contract. `local-ai/` is the earlier denormalized dataset retained temporarily for the existing local Omarchy playground consumer and its newer live-machine evidence. It is not the schema for new imports.
+`registry/` is the only dataset and the schema for new imports. The earlier denormalized `local-ai/` tree was removed: the website, the API, and the Omarchy panel all read `registry/` directly. Measured local inference evidence lives in `speed-sweeps/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmarks/` and never attach to recipes.
 
 Data provenance and recovery decisions are in [`docs/PROVENANCE.md`](docs/PROVENANCE.md). The behavior-only product prompt for a registry browser is in [`docs/UI_BEHAVIOR_PROMPT.md`](docs/UI_BEHAVIOR_PROMPT.md).
 

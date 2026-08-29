@@ -242,6 +242,30 @@ export interface PriceRecord {
   }
 }
 
+export interface BenchmarkScoreRow {
+  rank: number
+  variant: string | null
+  root: string | null
+  org: string | null
+  score: number | null
+  conf?: string | null
+  context?: string | null
+  [key: string]: unknown
+}
+
+export interface Benchmark {
+  schema_version: "local-ai-registry/v1"
+  id: RegistryId
+  name: string
+  category: string | null
+  source: {
+    kind: string
+    url: string | null
+    paths: string[]
+  }
+  rows: BenchmarkScoreRow[]
+}
+
 export interface RegistryIndex {
   schema_version: "local-ai-registry/v1"
   resolver_rule: string
