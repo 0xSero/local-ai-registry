@@ -13,7 +13,18 @@ const COLLECTION_LABELS: Record<string, string> = {
   models: "Model",
   prices: "Regional market price",
   recipes: "Recipe",
-  "speed-sweeps": "Speed evidence",
+  benchmarks: "Leaderboard",
+  "speed-sweeps": "Speed sweep",
+}
+
+const COLLECTION_TOPICS: Record<string, string> = {
+  hardware: "hardware",
+  "model-instances": "recipes",
+  models: "models",
+  prices: "prices",
+  recipes: "recipes",
+  benchmarks: "benchmarks",
+  "speed-sweeps": "speed-sweeps",
 }
 
 type DetailProps = {
@@ -62,10 +73,20 @@ export default async function DetailPage({ params }: DetailProps) {
     throw new Error(`Model instance '${id}' lacks its authoritative Hugging Face identity`)
   }
 
+  const topic = COLLECTION_TOPICS[collection]
+  const collectionHref = `/?topic=${encodeURIComponent(topic)}`
+  const recipeSearchHref = `/?topic=recipes&q=${encodeURIComponent(title)}`
+  const collectionSearchHref = `${collectionHref}&q=${encodeURIComponent(title)}`
+  const showRecipeSearch = collection === "recipes" || collection === "hardware" || collection === "models" || collection === "model-instances"
+
   return (
     <main className="detail-page">
       <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/">Search</Link><span>/</span><span>{collectionLabel}</span>
+        <Link href="/">Registry</Link>
+        <span>/</span>
+        <Link href={collectionHref}>{collectionLabel}</Link>
+        <span>/</span>
+        <span>{title}</span>
       </nav>
       <header className="detail-header">
         <p className="eyebrow">{collectionLabel}</p>
@@ -73,9 +94,11 @@ export default async function DetailPage({ params }: DetailProps) {
         <code>{id}</code>
         <div className="detail-actions">
           <a href={`/api/v1/${collection}/${id}`}>JSON API</a>
-          <Link href={`/?q=${encodeURIComponent(title)}`}>
-            Find compatibility
-          </Link>
+          {showRecipeSearch ? (
+            <Link href={recipeSearchHref}>Find compatible recipes</Link>
+          ) : (
+            <Link href={collectionSearchHref}>Back to {collectionLabel.toLowerCase()} search</Link>
+          )}
         </div>
       </header>
 

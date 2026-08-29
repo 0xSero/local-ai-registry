@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 
 import type {
+  Benchmark,
   Hardware,
   Model,
   ModelInstance,
@@ -90,7 +91,7 @@ export type CompatibilityResult = {
     available: boolean
     count: number
     detail_urls: string[]
-    sweep_ids: string[]
+    speed_sweeps_ids: string[]
   }
 }
 
@@ -113,6 +114,7 @@ type Dataset = {
   models: Map<string, Model>
   prices: Map<string, PriceRecord>
   recipes: Map<string, Recipe>
+  benchmarks: Map<string, Benchmark>
   sweeps: Map<string, SpeedSweep>
 }
 
@@ -155,13 +157,14 @@ function dataset(): Dataset {
       }),
     ),
     recipes: new Map(),
+    benchmarks: loadCollection<Benchmark>(index, "benchmarks"),
     sweeps: new Map(),
   }
   return cachedDataset
 }
 
 function cachedRecord<T>(
-  collection: "recipe" | "speed-sweeps",
+  collection: "speed-sweeps" | "recipe",
   id: string,
   cache: Map<string, T>,
 ): T | undefined {
@@ -196,6 +199,17 @@ export function getRecipe(id: string): Recipe | undefined {
 
 export function getSpeedSweep(id: string): SpeedSweep | undefined {
   return cachedRecord("speed-sweeps", id, dataset().sweeps)
+}
+
+export function getBenchmark(id: string): Benchmark | undefined {
+  return dataset().benchmarks.get(id)
+}
+
+export function listBenchmarks(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().benchmarks.values()]
+    .filter((benchmark) => contains(benchmark, filters.q) && equals(benchmark.category, filters.category))
+    .sort((left, right) => left.name.localeCompare(right.name, undefined, { numeric: true }) || left.id.localeCompare(right.id))
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
 
 function creditIdentity(identity: Pick<HuggingFaceIdentity, "link_type" | "status" | "url"> & { repository?: unknown }): ModelInstanceCreditIdentity {
@@ -319,7 +333,7 @@ function compatibilityResult(row: CompatibilityRow): CompatibilityResult | undef
     speed_evidence: {
       available: row.has_evidence,
       count: recipe.speed_sweeps_ids.length,
-      sweep_ids: recipe.speed_sweeps_ids,
+      speed_sweeps_ids: recipe.speed_sweeps_ids,
       detail_urls: recipe.speed_sweeps_ids.map((id) => `/api/v1/speed-sweeps/${id}`),
     },
     links: {
@@ -583,6 +597,12 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     }
   }
 
+  if (collection === "benchmarks") {
+    const benchmark = dataset().benchmarks.get(id)
+    if (!benchmark) return undefined
+    return { ...benchmark }
+  }
+
   return undefined
 }
 
@@ -625,6 +645,9 @@ export function getFacets() {
       hardware_count: unique(data.index.recipes.map((recipe) => recipe.hardware_count)),
       launch_kind: unique(data.index.recipes.map((recipe) => recipe.launch_kind)),
       status: unique(data.index.recipes.map((recipe) => recipe.status)),
+    },
+    benchmarks: {
+      category: unique([...data.benchmarks.values()].map((benchmark) => benchmark.category)),
     },
   }
 }

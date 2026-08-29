@@ -9,6 +9,7 @@ import {
   listModelInstances,
   listModels,
   listPrices,
+  listBenchmarks,
   listSpeedSweeps,
   queryCompatibility,
   type CompatibilityFilters,
@@ -122,6 +123,9 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
       queryCompatibility(selectedFilters as CompatibilityFilters, page),
       page,
     )
+  }
+  if (resource === "benchmarks") {
+    return listResponse(request, listBenchmarks(selectedFilters, page), page)
   }
   if (resource === "speed-sweeps") {
     return listResponse(request, listSpeedSweeps(selectedFilters, page), page)

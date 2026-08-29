@@ -26,6 +26,6 @@ Support direct links to any hardware, model, model instance, recipe, or speed sw
 
 Handle offline and partial-data states. Cache the last valid index and records for read-only browsing. If a refresh fails, preserve the previous cache and report the failing URL and time. If a reference is missing, show the broken field and ID without hiding the rest of the record. Never replace an existing valid cache with an incomplete response.
 
-Expose the registry version, source base URL or local path, record counts, last successful refresh, and validation status. Provide a raw-data mode that shows the exact JSON for the current record and a reference trace that explains each fetch from `recipe` to `model-instance`, `model`, `hardware`, and `speed-sweeps`.
+Expose the registry version, source base URL or local path, record counts, last successful refresh, and validation status. Provide a raw-data mode that shows the exact JSON for the current record and a reference trace that explains each fetch from `recipe` to `model-instance`, `model`, `hardware`, and `speed-sweeps`. Public quality leaderboards such as Terminal-Bench 2.1 are a separate `benchmarks` collection and must not be mixed with measured speed sweeps.
 
 The application succeeds when a new user can open it, see what their machine can run, search the broader registry, compare the evidence, copy useful identifiers and configuration, and start one validated local model without editing configuration files or understanding the registry internals.

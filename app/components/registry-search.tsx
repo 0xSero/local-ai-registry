@@ -21,6 +21,7 @@ const SEARCH_LABELS: Record<string, string> = {
   models: "Search models",
   prices: "Search price observations",
   recipes: "Find a model or machine",
+  benchmarks: "Search leaderboard scores",
   "speed-sweeps": "Search measured speed sweeps",
 }
 
@@ -51,8 +52,8 @@ export function RegistrySearch({ filters, query, topic }: RegistrySearchProps) {
     debounceRef.current = setTimeout(apply, 240)
   }
 
-  const searchTopic = topic || "recipes"
-  const searchLabel = SEARCH_LABELS[searchTopic] ?? "Search registry"
+  const searchTopic = topic
+  const searchLabel = SEARCH_LABELS[searchTopic] ?? "Search the registry"
 
   return (
     <form
