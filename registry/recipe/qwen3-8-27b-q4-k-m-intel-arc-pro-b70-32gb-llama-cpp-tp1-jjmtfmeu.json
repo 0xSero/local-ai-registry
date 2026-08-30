@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10255+ SYCL (071327508) build-sycl-0804"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-jjmtfmeu",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmst4iust02r7ms01jjmtfmeu"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmst4iust02r7ms01jjmtfmeu",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmst4iust02r7ms01jjmtfmeu"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.8-27B (dense 27B, hybrid GDN linear+full attention, MTP head not in GGUF quant). Community quant unsloth/Qwen3.8-27B-GGUF Q4_K_M (SHA-256 7b2aec3b...cc89f1b) -- weights released 2026-08-14T15:00Z, benched same day. 230W cap (stock). llama-bench tg128 mean 22.30 t/s (+/-0.01, n=5, C1, cold cache). Cold input pp8192 mean 1121.40 t/s (+/-1.89, n=5); pp512 778.80 / pp2048 1115.99 / pp4096 1137.02. Load at -c 131072 verified, 10.2 GiB VRAM free after load. KV q8_0 K + q4_1 V, FA on. Correctness: coherent smoke 5/5, deterministic replay pass, token exactness pass; reference parity not run. Cross-cap note: at matched 150W cap this model runs tg128 mean 17.78 (n=5, separate submission); prior Qwen3.6-27B Q4_K_M ran tg128 21.3 mean (n=3, 150W, Run 9) -- comparisons across caps are directional only. Dense power scaling 150->230W measured +25% decode on this model.",
+      "observed_command": "llama-server -m Qwen3.8-27B-Q4_K_M.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -b 8192 -ub 4096 -t 8 --no-mmap -dev SYCL0",
+      "run_id": "cmst4iust02r7ms01jjmtfmeu",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-ncmoe",
+          "0",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q4_1",
+          "-c",
+          "131072",
+          "-b",
+          "8192",
+          "-ub",
+          "4096",
+          "-t",
+          "8",
+          "--no-mmap",
+          "-dev",
+          "SYCL0"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmst4iust02r7ms01jjmtfmeu"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-jjmtfmeu-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,207 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "unknown"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "ling-2-6-flash-modelopt-fp4-experts-only-b16-rtx-pro-6000-blackwell-96gb-sglang-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmowsfxrj00bso2014kgqb6l8"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmowsfxrj00bso2014kgqb6l8",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowsfxrj00bso2014kgqb6l8"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Automated 32k/64k Pro 6000 batch benchmark. Local model: Ling 2.6 Flash NVFP4 Experts Only b16 at /LINUX/Models/inclusionAI/Ling-2.6-flash-NVFP4-EXPERTS-ONLY-c64s512-b16.",
+      "observed_command": "CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 /home/espen/.local/share/rtxbench/venvs/sglang/bin/python -m sglang.launch_server --model-path /LINUX/Models/inclusionAI/Ling-2.6-flash-NVFP4-EXPERTS-ONLY-c64s512-b16 --served-model-name ling-2-6-flash-nvfp4-experts-b16 --host 127.0.0.1 --port 8001 --context-length 32768 --mem-fraction-static 0.86 --trust-remote-code --quantization modelopt_fp4 --enable-metrics --chat-template /home/espen/Code/vllm-studio/data/templates/ling-copilot-stable-chat_template.jinja --tool-call-parser qwen --chunked-prefill-size 2048 --disable-radix-cache --attention-backend triton --decode-attention-backend flashinfer --moe-runner-backend auto --fp4-gemm-backend flashinfer_cutlass --cuda-graph-max-bs 1 --cuda-graph-bs 1 --skip-server-warmup --max-running-requests 1",
+      "run_id": "cmowsfxrj00bso2014kgqb6l8",
+      "tokenized": {
+        "arguments": [
+          "/home/espen/.local/share/rtxbench/venvs/sglang/bin/python",
+          "-m",
+          "sglang.launch_server",
+          "--model-path",
+          "/LINUX/Models/inclusionAI/Ling-2.6-flash-NVFP4-EXPERTS-ONLY-c64s512-b16",
+          "--served-model-name",
+          "ling-2-6-flash-nvfp4-experts-b16",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8001",
+          "--context-length",
+          "32768",
+          "--mem-fraction-static",
+          "0.86",
+          "--trust-remote-code",
+          "--quantization",
+          "modelopt_fp4",
+          "--enable-metrics",
+          "--chat-template",
+          "/home/espen/Code/vllm-studio/data/templates/ling-copilot-stable-chat_template.jinja",
+          "--tool-call-parser",
+          "qwen",
+          "--chunked-prefill-size",
+          "2048",
+          "--disable-radix-cache",
+          "--attention-backend",
+          "triton",
+          "--decode-attention-backend",
+          "flashinfer",
+          "--moe-runner-backend",
+          "auto",
+          "--fp4-gemm-backend",
+          "flashinfer_cutlass",
+          "--cuda-graph-max-bs",
+          "1",
+          "--cuda-graph-bs",
+          "1",
+          "--skip-server-warmup",
+          "--max-running-requests",
+          "1"
+        ],
+        "environment": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "inclusionai-ling-2-6-flash--modelopt-fp4-experts-only-b16",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmowsfxrj00bso2014kgqb6l8"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ling-2-6-flash-modelopt-fp4-experts-only-b16-rtx-pro-6000-blackwell-96gb-sglang-tp1-sweep"
+  ],
+  "status": "candidate"
+}

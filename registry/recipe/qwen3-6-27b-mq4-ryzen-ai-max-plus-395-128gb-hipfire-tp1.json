@@ -1,0 +1,183 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "0.3.0+98d3567"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-6-27b-mq4-ryzen-ai-max-plus-395-128gb-hipfire-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms8cugd000ezpf019okstvtr"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms8cugd000ezpf019okstvtr",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms8cugd000ezpf019okstvtr"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "Single client, single GPU, non-batched. NOT tensor-parallel, NOT pipeline-parallel, NOT a batched serve: one request at a time via the standalone dflash_spec_demo binary, not an HTTP server. Integrated Radeon 8060S (gfx1151, RDNA3.5) in a Ryzen AI MAX+ 395; the iGPU addresses 103.1 GB of the unified pool, ~30 GB remains to the host. Host also has 3 dGPUs; only the iGPU is used here. RDNA3.5 counterpart to our gfx1201 and gfx1100 entries.\nPure DFlash speculative decode: 5-layer trained draft head, B=16, adaptive-B 8..16 settled at 16. No MTP, n-gram, prompt-lookup, tree or CASK. Greedy temp 0.0, deterministic. Every rep: tau=11.3846, accept_rate=0.7590, emitted=162, EOS reached.\n5 fresh-process reps after one discarded JIT warmup, GPU-lock serialized, clocks untouched: 111.96/111.96/111.96/111.88/112.37 -> median 111.96, spread 0.44%.\nHIPFIRE_HFQ4G256_LDSSTAGE=1 (default off) is live on RDNA3.5 via the gfx11 sibling path: same-binary A/B gives 99.09 off (3 reps, 0.07% spread), i.e. +12.99% -- the largest of the three archs measured (+9.06% gfx1201, +10.60% gfx1100), consistent with staging trading DRAM traffic for LDS reuse on the most bandwidth-limited part. Routing verified: gemm_gate_up_hfq4g256_wmma_ldsstage.hsaco (17040 B) + gemm_hfq4g256_residual_wmma_ldsstage.hsaco (22288 B) under .hipfire_kernels/gfx1151/. HIPFIRE_Q8_PREFILL_M4=0 is gfx12-gated, inert here, set for command parity.\nNOT bit-exact by construction: LDS staging reorders f32 K-accumulation. Output still matched our gfx1201/gfx1100 runs byte-for-byte (md5 4d3a55e4), tau equal to 4 decimals across all three; one prompt at temp 0, not a quality result.\nQuantized artifact: schuttdev/hipfire-qwen3.6-27b @ f9b326a657f1 (qwen3.6-27b.mq4).\nProvenance: tree 98d3567e29500326cb0b6313b79648c9510b249e (beta); trunk sha256 86a5f80fd29d545a; draft md5 204c4c4c; prompt md5 253c7ac5; ROCm/HIP 7.14. peakVramGb = 17180 MiB per runtime.",
+      "observed_command": "HIP_VISIBLE_DEVICES=1 HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_Q8_PREFILL_M4=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.6-27b-awq.mq4 --draft ~/.hipfire/models/qwen36-27b-dflash-mq4.hf4 --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 2048",
+      "run_id": "cms8cugd000ezpf019okstvtr",
+      "tokenized": {
+        "arguments": [
+          "./target/release/examples/dflash_spec_demo",
+          "--target",
+          "~/.hipfire/models/qwen3.6-27b-awq.mq4",
+          "--draft",
+          "~/.hipfire/models/qwen36-27b-dflash-mq4.hf4",
+          "--prompt-file",
+          "benchmarks/prompts/merge_sort_thinking_off.txt",
+          "--max",
+          "256",
+          "--temp",
+          "0.0",
+          "--no-chatml",
+          "--kv-mode",
+          "q8",
+          "--ctx",
+          "2048"
+        ],
+        "environment": {
+          "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+          "HIPFIRE_Q8_PREFILL_M4": "0",
+          "HIP_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--mq4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms8cugd000ezpf019okstvtr"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-mq4-ryzen-ai-max-plus-395-128gb-hipfire-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,192 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.2rc1.dev213+g9558f4390.d20260426"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmouqgx9q00jtld01ajgiran7"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmouqgx9q00jtld01ajgiran7",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmouqgx9q00jtld01ajgiran7"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Qwen3.5-27B root model with AxionML NVFP4 weights on NVIDIA DGX Spark GB10. FlashQLA V2 HKV-output prefill integration, BK=128/BV=128, prefix caching disabled, chunked prefill enabled. N=30 at pp=2048/tg=32/c=1: tokSPrefill mean 3132.10 tok/s, median 3131.06, std 6.72; tokSOut mean 11.49 tok/s; TTFT mean 658.47 ms. Server logs confirmed [flashqla-v2] active and short-decode-preserve-coherence. Full Docker reproduction, patches, commands, and raw JSON: https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/vllm-prefill-flashqla-hkv-spark . By @banana_baeee.",
+      "observed_command": "VLLM_NVFP4_GEMM_BACKEND=cutlass FLASHQLA_HKV_O_BK=128 FLASHQLA_HKV_O_BV=128 vllm serve /models/AxionML-Qwen3.5-27B-NVFP4 --host 127.0.0.1 --port 8000 --trust-remote-code --max-model-len 4096 --served-model-name qwen35-27b-axionml-nvfp4 --generation-config vllm --load-format fastsafetensors --attention-backend FLASH_ATTN --gpu-memory-utilization 0.90 --max-num-batched-tokens 8192 --max-num-seqs 1 --enable-chunked-prefill",
+      "run_id": "cmouqgx9q00jtld01ajgiran7",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/models/AxionML-Qwen3.5-27B-NVFP4",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8000",
+          "--trust-remote-code",
+          "--max-model-len",
+          "4096",
+          "--served-model-name",
+          "qwen35-27b-axionml-nvfp4",
+          "--generation-config",
+          "vllm",
+          "--load-format",
+          "fastsafetensors",
+          "--attention-backend",
+          "FLASH_ATTN",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-num-seqs",
+          "1",
+          "--enable-chunked-prefill"
+        ],
+        "environment": {
+          "FLASHQLA_HKV_O_BK": "128",
+          "FLASHQLA_HKV_O_BV": "128",
+          "VLLM_NVFP4_GEMM_BACKEND": "cutlass"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-5-27b--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmouqgx9q00jtld01ajgiran7"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "lfm2-5-8b-a1b-q4-k-m-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt1xl3kj08f0mv015i8944of"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt1xl3kj08f0mv015i8944of",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt1xl3kj08f0mv015i8944of"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "Sparse MoE: 8B total, ~1B active per token, which is why decode is far above what an 8B dense model manages on this card. Fully GPU-resident at 128K context in 6546 MiB, leaving ~3 GB spare on a 10GB card. Measured on an RTX 3080 10GB. Decode is the MEDIAN of 3 reps, not the best. Prompt is deliberately non-repetitive (repeated filler inflates decode on speculative setups by ~25%) and ignore_eos is set so output token count is identical across runs. Peak VRAM 6546 MiB with 212 MiB host-shared; elevated host-shared only indicates spill when the decode rate drops with it.",
+      "observed_command": "llama-server \\\n  -m LFM2.5-8B-A1B-Q4_K_M.gguf \\\n  --host 127.0.0.1 --port 8099 \\\n  --device CUDA0 --n-gpu-layers 99 \\\n  --ctx-size 128000 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 --cache-type-v q8_0 \\\n  --parallel 1 --jinja \\\n  --spec-type none",
+      "run_id": "cmt1xl3kj08f0mv015i8944of",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "LFM2.5-8B-A1B-Q4_K_M.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8099",
+          "--device",
+          "CUDA0",
+          "--n-gpu-layers",
+          "99",
+          "--ctx-size",
+          "128000",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt1xl3kj08f0mv015i8944of"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 128000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "lfm2-5-8b-a1b-q4-k-m-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

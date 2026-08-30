@@ -1,0 +1,193 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-62k8tt93",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqw0fns0034zqr0162k8tt93"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqw0fns0034zqr0162k8tt93",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqw0fns0034zqr0162k8tt93"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "PrismaSCOUT mixed BF16/NVFP4 (~5.5 bit avg). MTP\u00d71 speculative decoding. marlin MoE backend. ~21 GB weights. DeltaNet layers give 4\u00d7 smaller KV cache.",
+      "observed_command": "vllm serve rdtand/Qwen3.6-27B-PrismaSCOUT-Blackwell-NVFP4-BF16-vllm --port 8000 --trust-remote-code --quantization compressed-tensors --max-model-len 262144 --gpu-memory-utilization 0.60 --max-num-seqs 4 --max-num-batched-tokens 8192 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --kv-cache-dtype fp8 --attention-backend flashinfer --speculative-config {method:mtp,num_speculative_tokens:1} --moe-backend marlin",
+      "run_id": "cmqw0fns0034zqr0162k8tt93",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "rdtand/Qwen3.6-27B-PrismaSCOUT-Blackwell-NVFP4-BF16-vllm",
+          "--port",
+          "8000",
+          "--trust-remote-code",
+          "--quantization",
+          "compressed-tensors",
+          "--max-model-len",
+          "262144",
+          "--gpu-memory-utilization",
+          "0.60",
+          "--max-num-seqs",
+          "4",
+          "--max-num-batched-tokens",
+          "8192",
+          "--reasoning-parser",
+          "qwen3",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--enable-prefix-caching",
+          "--enable-chunked-prefill",
+          "--kv-cache-dtype",
+          "fp8",
+          "--attention-backend",
+          "flashinfer",
+          "--speculative-config",
+          "{method:mtp,num_speculative_tokens:1}",
+          "--moe-backend",
+          "marlin"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "rdtand-qwen3-6-27b-prismascout-blackwell-nvfp4-bf16-vllm--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqw0fns0034zqr0162k8tt93"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-62k8tt93-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,174 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.11.2.dev280"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm-5-2-mxfp8-nvfp4-nf3-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrq0hblz05n6lg01cswo0exb"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrq0hblz05n6lg01cswo0exb",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrq0hblz05n6lg01cswo0exb"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Fresh LocalMaxxing remote contract: one untimed warmup plus three timed streaming iterations; median reported; temperature 0; 256 max/output tokens; decode measured first-to-last streamed token. Decode throughput and TTFT are from this fresh run. Prefill is intentionally omitted: the CLI-style prompt_tokens/TTFT estimate used a 34-token default prompt and was dominated by fixed request overhead. A separate OLS estimate over 1,147 real Hybrid requests is 3,149 tok/s (R^2 0.828); methodology: https://services.turquoisebay.ai/share/glm52-official-api-vs-hybrid/",
+      "observed_command": "vllm serve madeby561/GLM-5.2-MXFP8-NVFP4-NF3-Hybrid --tensor-parallel-size 4 --decode-context-parallel-size 1 --max-model-len 131072 --gpu-memory-utilization 0.95 --enable-prefix-caching",
+      "run_id": "cmrq0hblz05n6lg01cswo0exb",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "madeby561/GLM-5.2-MXFP8-NVFP4-NF3-Hybrid",
+          "--tensor-parallel-size",
+          "4",
+          "--decode-context-parallel-size",
+          "1",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.95",
+          "--enable-prefix-caching"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid--mxfp8-nvfp4-nf3",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrq0hblz05n6lg01cswo0exb"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "glm-5-2-mxfp8-nvfp4-nf3-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

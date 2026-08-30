@@ -1,0 +1,219 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "am17an/mtp (upstream PR #22673)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-iq4-xs-rtx-3090-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmpa2l8j704qho401hmhgyeoe"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmpa2l8j704qho401hmhgyeoe",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpa2l8j704qho401hmhgyeoe"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "MTP (Multi-Token Prediction) benchmark on unsloth/Qwen3.6-27B-MTP-GGUF IQ4_XS. Full grid search of 16 configs (n_max: 2/4/6/8/16 \u00d7 p_min: 0.35/0.50/0.75 + baseline). Best: --spec-draft-n-max 2 --spec-draft-p-min 0.50 at 40.8 tok/s (1.47x vs 27.8 baseline no-MTP). n_max=16 was slower than baseline (27.0 tok/s). llama.cpp upstream PR #22673, am17an/mtp branch. Server restarted between each config. 256 output tokens, single request, temperature=1.0 (non-greedy). MTP acceptance rate ~75% at n_max=2. Build commit: upstream llama.cpp from mid-May 2026.",
+      "observed_command": "~/llama-cpp-mtp/build/bin/llama-server --prio 3 --ctx-size 131072 --flash-attn on --cache-type-k q4_0 --cache-type-v q4_0 --no-mmap --n-gpu-layers auto --model /mnt/g/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-IQ4_XS.gguf --offline --temperature 1.0 --top-k 20 --top-p 0.95 --min-p 0.0 --repeat-penalty 1.0 --presence-penalty 1.5 --ctx-checkpoints 4 --checkpoint-every-n-tokens 8192 --cache-ram 4096 --kv-unified --parallel 1 --mmproj /mnt/g/models/unsloth/Qwen3.6-27B-MTP-GGUF/mmproj-BF16.gguf --no-mmproj-offload --image-min-tokens 1024 --reasoning on --chat-template-kwargs '{\"preserve_thinking\":true}' --reasoning-budget 8192 --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.50 --spec-draft-n-min 2",
+      "run_id": "cmpa2l8j704qho401hmhgyeoe",
+      "tokenized": {
+        "arguments": [
+          "~/llama-cpp-mtp/build/bin/llama-server",
+          "--prio",
+          "3",
+          "--ctx-size",
+          "131072",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0",
+          "--no-mmap",
+          "--n-gpu-layers",
+          "auto",
+          "--model",
+          "/mnt/g/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-IQ4_XS.gguf",
+          "--offline",
+          "--temperature",
+          "1.0",
+          "--top-k",
+          "20",
+          "--top-p",
+          "0.95",
+          "--min-p",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "--presence-penalty",
+          "1.5",
+          "--ctx-checkpoints",
+          "4",
+          "--checkpoint-every-n-tokens",
+          "8192",
+          "--cache-ram",
+          "4096",
+          "--kv-unified",
+          "--parallel",
+          "1",
+          "--mmproj",
+          "/mnt/g/models/unsloth/Qwen3.6-27B-MTP-GGUF/mmproj-BF16.gguf",
+          "--no-mmproj-offload",
+          "--image-min-tokens",
+          "1024",
+          "--reasoning",
+          "on",
+          "--chat-template-kwargs",
+          "{\"preserve_thinking\":true}",
+          "--reasoning-budget",
+          "8192",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-p-min",
+          "0.50",
+          "--spec-draft-n-min",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-mtp-gguf--iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmpa2l8j704qho401hmhgyeoe"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2048,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-iq4-xs-rtx-3090-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

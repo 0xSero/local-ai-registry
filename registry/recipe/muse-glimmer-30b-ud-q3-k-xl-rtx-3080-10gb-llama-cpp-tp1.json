@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "muse-glimmer-30b-ud-q3-k-xl-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy7g9830ct8ms014824moau"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy7g9830ct8ms014824moau",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy7g9830ct8ms014824moau"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "Muse-Glimmer-30B UD-Q3_K_XL (12.44 GiB), 52 layers. Does NOT fit 10GB: 40 layers on GPU, 12 on CPU (planned offload, not driver paging - shared host mem stays at 124 MiB). Those 12 CPU layers cost dearly: 13.78 tok/s, and PCIe rx peaks at 20.3 GB/s streaming them every token. ngl 36 measured 9.83 tok/s, so each GPU layer is worth ~1 tok/s here; ngl 40 leaves 632 MiB headroom and is the practical ceiling. Medians of 2 reps. If you have 10GB, a smaller fully-resident quant beats this by 5x. Headless 3080 (both displays on the 7900X iGPU; desktop holds ~64 MiB on the card). Workload: single non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off, medians of 3 reps (2 where noted). Prefill/decode from llama-server timings; TTFT measured client-side on a streaming request. Prompt token counts differ per model because tokenizers differ. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, driver 591.86, PCIe 4.0 x16, stock 370 W.",
+      "observed_command": "llama-server -m Muse-Glimmer-30B-UD-Q3_K_XL.gguf -c 16384 -ngl 40 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type none",
+      "run_id": "cmsy7g9830ct8ms014824moau",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Muse-Glimmer-30B-UD-Q3_K_XL.gguf",
+          "-c",
+          "16384",
+          "-ngl",
+          "40",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-muse-glimmer-30b-gguf--ud-q3-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy7g9830ct8ms014824moau"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 16384,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-ud-q3-k-xl-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

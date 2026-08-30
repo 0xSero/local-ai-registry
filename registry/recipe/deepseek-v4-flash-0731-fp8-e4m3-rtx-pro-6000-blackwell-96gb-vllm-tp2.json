@@ -1,0 +1,197 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.11.2.dev279+eldritch.enlightenment.v45c1582.b12xf3686b5.cu132.20260704"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-0731-fp8-e4m3-rtx-pro-6000-blackwell-96gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsb828qn0061qd01l1fsm6pa"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsb828qn0061qd01l1fsm6pa",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsb828qn0061qd01l1fsm6pa"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "First DeepSeek-V4-Flash-0731 (re-post-trained, same 284B/13B arch) on 2x RTX PRO 6000 Blackwell (SM120). Backend: FLASHINFER_MLA_SPARSE_DSV4 attn + flashinfer_cutlass MoE (voipmonitor 'lucifer-cutlass'), NOT b12x. Native DSpark draft head, K5 (dspark_block_size=5 is baked into config.json = hard ceiling).\n\nWORKLOAD: tokSOut 276.0 is single-stream CODE generation, to stay comparable with the other 2x RTX PRO 6000 DSpark runs here. Same runs gave prose 149.8 and math 285.8 t/s - prose is ~46% below code on this stack, so workload choice dominates any hardware difference.\n\nMETHOD: greedy (temp 0), thinking=false, two-point decode (64 vs 896 max_tokens on a prefix-warmed identical prompt) so prefill cancels. Mean of 3 runs; spread ~7%. Code prompt = 'commented B-tree with insert/search/delete plus a test harness'. tokSPrefill measured separately as TTFT on a 107,016-token prompt (10.24 s). Short-prompt TTFT 63 ms. peakVramGb is PER CARD, measured: 96799/96917 MiB of 97887 MiB at gpu-memory-utilization 0.93.\n\nVS PREDECESSOR: re-benched the older DeepSeek-V4-Flash-DSpark checkpoint on this exact stack, same session, fresh-vs-fresh, 3 runs each: code 262.6 / prose 155.0 / math 274.9. So 0731 is ~5% faster on code, ~4% on math, ~3% slower on prose - net a wash. 0731 ran on a COLD JIT/autotune cache vs the predecessor's warm one, so it's if anything understated. Spec acceptance unchanged: 48.6% (2.43 per 5-token draft) vs 49.9% (2.50).\n\nCONTEXT: server configured at the full 262144 (not 2048), and the decode figure above is with that KV budget allocated. Cold prefill of a 211,722-token prompt takes 34.6 s (~6.1k tok/s - prefill throughput degrades with length; the 10.4k tok/s above is at 107k). A repeat of the same prompt returns in 0.9 s on the prefix cache. Config allows 1M, but fp8 weights (~81 GiB/card at TP2) cap usable KV at 256k on 2 cards.\n\nHOST: ASRock Rack TURIND8UD-2T, Turin ES 64c/128t, 125 GB, Deb13, drv 590.48.01, TP2 over PCIe Gen5 P2P (no NVLink), 600 W/card.",
+      "observed_command": "vllm serve deepseek-ai/DeepSeek-V4-Flash-0731 --tensor-parallel-size 2 --decode-context-parallel-size 1 --kv-cache-dtype fp8 --block-size 256 --gpu-memory-utilization 0.93 --max-model-len 262144 --max-num-seqs 64 --max-num-batched-tokens 8192 --max-cudagraph-capture-size 512 --compilation-config '{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"custom_ops\":[\"all\"]}' --async-scheduling --enable-chunked-prefill --enable-flashinfer-autotune --tokenizer-mode deepseek_v4 --speculative-config '{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"draft_sample_method\":\"probabilistic\"}' --attention-backend FLASHINFER_MLA_SPARSE_DSV4 --kernel-config.moe_backend flashinfer_cutlass --enable-prefix-caching",
+      "run_id": "cmsb828qn0061qd01l1fsm6pa",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "--tensor-parallel-size",
+          "2",
+          "--decode-context-parallel-size",
+          "1",
+          "--kv-cache-dtype",
+          "fp8",
+          "--block-size",
+          "256",
+          "--gpu-memory-utilization",
+          "0.93",
+          "--max-model-len",
+          "262144",
+          "--max-num-seqs",
+          "64",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-cudagraph-capture-size",
+          "512",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"custom_ops\":[\"all\"]}",
+          "--async-scheduling",
+          "--enable-chunked-prefill",
+          "--enable-flashinfer-autotune",
+          "--tokenizer-mode",
+          "deepseek_v4",
+          "--speculative-config",
+          "{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"draft_sample_method\":\"probabilistic\"}",
+          "--attention-backend",
+          "FLASHINFER_MLA_SPARSE_DSV4",
+          "--kernel-config.moe_backend",
+          "flashinfer_cutlass",
+          "--enable-prefix-caching"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8-e4m3",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsb828qn0061qd01l1fsm6pa"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-fp8-e4m3-rtx-pro-6000-blackwell-96gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

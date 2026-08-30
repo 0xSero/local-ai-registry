@@ -1,0 +1,238 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.1.dev1+g075d645af"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "muse-glimmer-30b-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsnghgre00e0o001qeoj0m0o"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsnghgre00e0o001qeoj0m0o",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsnghgre00e0o001qeoj0m0o"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "NVFP4 weight-only Marlin target with DFlash 10 tokens, the best confirmed single-stream setting. Vision remained enabled; the same target/drafter vision path passed a real PNG smoke test during this sweep. BS8 683.7 tok/s, alt config for Best BS8: 7 draft tokens, 816.5 tok/s aggregate (102.1 per stream); single 148.1 tok/s",
+      "observed_command": "cd {PROJECT_ROOT} && source .venv-vllm/bin/activate && MAX_JOBS=4 NVCC_THREADS=2 TORCH_CUDA_ARCH_LIST=12.0a VLLM_USE_DEEP_GEMM=0 HF_HOME={PROJECT_ROOT}/.cache/huggingface XDG_CACHE_HOME={PROJECT_ROOT}/.cache vllm serve {PROJECT_ROOT}/models/preyazz-muse-glimmer-30b-nvfp4 --served-model-name muse-glimmer --host 127.0.0.1 --port 8000 --tensor-parallel-size 1 --gpu-memory-utilization 0.90 --max-model-len 32768 --max-num-seqs 8 --max-num-batched-tokens 32768 --enable-auto-tool-choice --tool-call-parser muse_glimmer --reasoning-parser muse_glimmer --generation-config auto --speculative-config '{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":10}'",
+      "run_id": "cmsnghgre00e0o001qeoj0m0o",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "{PROJECT_ROOT}/models/preyazz-muse-glimmer-30b-nvfp4",
+          "--served-model-name",
+          "muse-glimmer",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8000",
+          "--tensor-parallel-size",
+          "1",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-model-len",
+          "32768",
+          "--max-num-seqs",
+          "8",
+          "--max-num-batched-tokens",
+          "32768",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "muse_glimmer",
+          "--reasoning-parser",
+          "muse_glimmer",
+          "--generation-config",
+          "auto",
+          "--speculative-config",
+          "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":10}"
+        ],
+        "environment": {
+          "HF_HOME": "{PROJECT_ROOT}/.cache/huggingface",
+          "MAX_JOBS": "4",
+          "NVCC_THREADS": "2",
+          "TORCH_CUDA_ARCH_LIST": "12.0a",
+          "VLLM_USE_DEEP_GEMM": "0",
+          "XDG_CACHE_HOME": "{PROJECT_ROOT}/.cache"
+        },
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "cd",
+            "{PROJECT_ROOT}"
+          ],
+          [
+            "source",
+            ".venv-vllm/bin/activate"
+          ],
+          [
+            "vllm",
+            "serve",
+            "{PROJECT_ROOT}/models/preyazz-muse-glimmer-30b-nvfp4",
+            "--served-model-name",
+            "muse-glimmer",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "8000",
+            "--tensor-parallel-size",
+            "1",
+            "--gpu-memory-utilization",
+            "0.90",
+            "--max-model-len",
+            "32768",
+            "--max-num-seqs",
+            "8",
+            "--max-num-batched-tokens",
+            "32768",
+            "--enable-auto-tool-choice",
+            "--tool-call-parser",
+            "muse_glimmer",
+            "--reasoning-parser",
+            "muse_glimmer",
+            "--generation-config",
+            "auto",
+            "--speculative-config",
+            "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":10}"
+          ]
+        ]
+      }
+    }
+  },
+  "model_instance_id": "preyazz-muse-glimmer-30b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsnghgre00e0o001qeoj0m0o"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

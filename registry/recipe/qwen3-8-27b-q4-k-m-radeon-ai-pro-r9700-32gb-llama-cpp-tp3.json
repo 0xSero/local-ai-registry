@@ -1,0 +1,212 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10434"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-8-27b-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsvu2c7q08dhms01lqgs3oyg"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsvu2c7q08dhms01lqgs3oyg",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsvu2c7q08dhms01lqgs3oyg"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "stew675 rdna-boosts fork + ROCm 7.14 TheRock, 2x R9700 -sm tensor, MTP draft n-max 2, GGML_CUDA_ALLREDUCE=internal over GPU P2P (kernel 7.1.8). Was 28.4 layer-split.",
+      "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec --compute-only /home/mikekey/Experiments/llama.cpp-rdna/build-rocm-tweaked714/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -sm tensor -m /home/mikekey/models/Qwen3.8-27B-Q4_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 2 --reasoning-format auto --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 -ctk q8_0 -ctv q8_0 -ts 1/1 -np 1 -c 262144",
+      "run_id": "cmsvu2c7q08dhms01lqgs3oyg",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/.config/llama-swap/gpu-order.sh",
+          "exec",
+          "--compute-only",
+          "/home/mikekey/Experiments/llama.cpp-rdna/build-rocm-tweaked714/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "--no-webui",
+          "-ngl",
+          "99",
+          "--jinja",
+          "--flash-attn",
+          "auto",
+          "--cache-reuse",
+          "256",
+          "--prio",
+          "3",
+          "-sm",
+          "tensor",
+          "-m",
+          "/home/mikekey/models/Qwen3.8-27B-Q4_K_M.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--presence-penalty",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-ts",
+          "1/1",
+          "-np",
+          "1",
+          "-c",
+          "262144"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsvu2c7q08dhms01lqgs3oyg"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 829,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp3-sweep"
+  ],
+  "status": "candidate"
+}

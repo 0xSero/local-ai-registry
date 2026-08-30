@@ -1,0 +1,179 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Official mlx.fast Gemma 4 26B A4B cohort score on the organizer M5 Max 128GB box. Candidate evidence, not a digest-pinned launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "gemma4-26b-a4b-mlx-v1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:28:11Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-max-128gb",
+  "id": "gemma-4-26b-a4b-it-qat-4bit-apple-m5-max-128gb-mlxfast-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:28:11Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:28:11Z",
+          "kind": "recipe-launch",
+          "url": "https://www.yukon.org/mlxfast"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "source": "mlxfast",
+    "url": "https://www.yukon.org/mlxfast"
+  },
+  "metadata": {
+    "mlxfast": {
+      "engine_repository": "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine",
+      "leaderboard": "https://www.yukon.org/mlxfast",
+      "observed_command": "git clone https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine && ./tools/fetch-benchd.sh && ./setup.sh && ./setup-gemma4-assistant.sh",
+      "official_hardware": "organizer M5 Max 128GB",
+      "solver": "samfenwick",
+      "tokenized": {
+        "arguments": [
+          "./setup-gemma4-assistant.sh"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "git",
+            "clone",
+            "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"
+          ],
+          [
+            "./tools/fetch-benchd.sh"
+          ],
+          [
+            "./setup.sh"
+          ],
+          [
+            "./setup-gemma4-assistant.sh"
+          ]
+        ]
+      },
+      "track_id": "gemma4-26b-a4b-mlx-v1"
+    }
+  },
+  "model_instance_id": "mlx-community-gemma-4-26b-a4b-it-qat-4bit--4bit",
+  "provenance": {
+    "captured_at": "2026-08-30T09:28:11Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:28:11Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.yukon.org/mlxfast"
+      }
+    ]
+  },
+  "recipe_source": "mlxfast",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-26b-a4b-it-qat-4bit-apple-m5-max-128gb-mlxfast-tp1-sweep"
+  ],
+  "status": "candidate"
+}
