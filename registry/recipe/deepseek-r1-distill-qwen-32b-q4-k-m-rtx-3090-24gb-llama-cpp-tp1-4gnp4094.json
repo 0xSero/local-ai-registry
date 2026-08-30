@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "deepseek-r1-distill-qwen-32b-q4-k-m-rtx-3090-24gb-llama-cpp-tp1-4gnp4094",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "DeepSeek-R1-Distill-Qwen-32B-Q4_K_M.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "999",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-fitt",
+      "1024",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

@@ -101,6 +101,27 @@
   "hardware_id": "rtx-5060-ti-16gb",
   "id": "qwen3-6-27b-q3-k-s-rtx-5060-ti-16gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      ".buildbinReleasellama-cli.exe",
+      "-m",
+      ".modelsQwen3.6-27B-TQ3_4SQwen3.6-27B-TQ3_4S.gguf",
+      "--jinja",
+      "-ngl",
+      "99",
+      "-c",
+      "32768",
+      "-ctk",
+      "q4_0",
+      "-ctv",
+      "tq3_0",
+      "-fa",
+      "on",
+      "--reasoning",
+      "on",
+      "--reasoning-budget",
+      "-1",
+      "-i"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

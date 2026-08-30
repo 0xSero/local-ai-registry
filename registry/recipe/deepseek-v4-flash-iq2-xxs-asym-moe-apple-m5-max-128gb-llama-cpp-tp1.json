@@ -101,6 +101,18 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "deepseek-v4-flash-iq2-xxs-asym-moe-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "ds4-server",
+      "--model",
+      "ds4flash.gguf",
+      "--ctx",
+      "32768",
+      "(antirez/ds4",
+      "DwarfStar",
+      "native",
+      "Metal",
+      "engine"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -120,6 +132,33 @@
     "kind": "reference",
     "run_id": "cmqpiopug00ouqo01gtohwf4l",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "ds4-server",
+        "--model",
+        "ds4flash.gguf",
+        "--ctx",
+        "32768",
+        "(antirez/ds4",
+        "DwarfStar",
+        "native",
+        "Metal",
+        "engine"
+      ],
+      [
+        "q2-imatrix",
+        "IQ2_XXS",
+        "GGUF",
+        "from",
+        "antirez/deepseek-v4-gguf"
+      ],
+      [
+        "in-memory",
+        "KV,",
+        "no",
+        "MTP)"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmqpiopug00ouqo01gtohwf4l"
   },
   "metadata": {

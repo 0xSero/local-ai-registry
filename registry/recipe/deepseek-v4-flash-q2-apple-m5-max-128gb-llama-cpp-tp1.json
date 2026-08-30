@@ -101,6 +101,23 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "deepseek-v4-flash-q2-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Huihui-DeepSeek-V4-Flash-BF16-abliterated-ds4-Q2.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8089",
+      "-ngl",
+      "99",
+      "-c",
+      "4096",
+      "--flash-attn",
+      "on",
+      "--temp",
+      "0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +134,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8089,
+    "host_port": 8089,
     "kind": "reference",
     "run_id": "cms0nfewo009rs2011l53fkr5",
     "source": "localmaxxing",

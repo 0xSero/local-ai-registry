@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-6-27b-q4-k-m-rtx-3060-12gb-llama-cpp-tp2-q71kmv7o",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "Qwopus-27B-Q4_K_M.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "64",
+      "-sm",
+      "layer",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

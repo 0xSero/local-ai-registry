@@ -18,6 +18,7 @@ export function HuggingFaceCard({ identity, title = "Hugging Face model card" }:
   return (
     <section aria-label={title} className="hf-card">
       <p className="eyebrow">{title}</p>
+      <h3>Identity</h3>
       <a href={identity.url} rel="noreferrer" target="_blank">{identity.url}</a>
       <dl>
         <div><dt>Repository</dt><dd>{identity.repository ?? "Not an exact repository"}</dd></div>

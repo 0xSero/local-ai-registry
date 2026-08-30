@@ -101,6 +101,21 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "muse-glimmer-30b-fp8-radeon-ai-pro-r9700-32gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "Muse-Glimmer-30B",
+      "-tp",
+      "2",
+      "--quantization",
+      "fp8",
+      "--disable-custom-all-reduce",
+      "--compilation-config",
+      "{\"cudagraph_mode\":\"NONE\"}",
+      "--speculative-config",
+      "dflash",
+      "k=15"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

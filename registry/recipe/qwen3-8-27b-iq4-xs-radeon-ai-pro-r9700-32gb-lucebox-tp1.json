@@ -101,6 +101,28 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-8-27b-iq4-xs-radeon-ai-pro-r9700-32gb-lucebox-tp1",
   "launch": {
+    "arguments": [
+      "/home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server",
+      "/home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf",
+      "--draft",
+      "/home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf",
+      "--draft-block-size",
+      "16",
+      "--max-ctx",
+      "131072",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8086",
+      "--target-device",
+      "hip:0",
+      "--draft-device",
+      "hip:0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +139,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8086,
+    "host_port": 8086,
     "kind": "reference",
     "run_id": "cmt7on43l0055nn013h1hif2u",
     "source": "localmaxxing",

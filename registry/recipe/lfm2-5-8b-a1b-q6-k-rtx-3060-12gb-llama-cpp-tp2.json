@@ -101,6 +101,23 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "lfm2-5-8b-a1b-q6-k-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--model",
+      "LFM2.5-8B-A1B-Q6_K.gguf",
+      "--ctx-size",
+      "128000",
+      "--n-gpu-layers",
+      "99",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "--split-mode",
+      "layer"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

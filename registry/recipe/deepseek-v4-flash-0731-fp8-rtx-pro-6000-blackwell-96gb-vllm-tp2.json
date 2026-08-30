@@ -101,6 +101,25 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "deepseek-v4-flash-0731-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "--tensor-parallel-size",
+      "2",
+      "--gpu-memory-utilization",
+      "0.9465",
+      "--max-num-seqs",
+      "16",
+      "--kv-cache-dtype",
+      "fp8",
+      "--attention-backend",
+      "FLASHINFER_MLA_SPARSE_DSV4",
+      "--enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--speculative-config",
+      "{method:dspark,num_speculative_tokens:5}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

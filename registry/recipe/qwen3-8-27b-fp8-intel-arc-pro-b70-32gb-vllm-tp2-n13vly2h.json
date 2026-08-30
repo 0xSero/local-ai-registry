@@ -101,6 +101,9 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2-n13vly2h",
   "launch": {
+    "arguments": [
+      "repro/qwen38-27b-fp8-vllm-tp2-asrock-b70/run-w8a16-dynamic-mtp-server.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +119,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "MODEL_DIR": "/path/to/qwen3.8-27b-fp8",
+      "VLLM_CACHE_DIR": "/path/to/new-dynamic-mtp-cache"
     },
     "kind": "reference",
     "run_id": "cmtb5n45n0021qq01n13vly2h",

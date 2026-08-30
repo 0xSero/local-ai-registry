@@ -101,6 +101,26 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "gemma-4-e4b-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "build-vulkan-sdk2binllama-bench.exe",
+      "-m",
+      "gemma-4-E4B-it-Q4_K_M.gguf",
+      "-dev",
+      "Vulkan0",
+      "-ngl",
+      "99",
+      "-fa",
+      "1",
+      "-p",
+      "512",
+      "-n",
+      "512",
+      "-r",
+      "5",
+      "-o",
+      "md",
+      "--progress"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

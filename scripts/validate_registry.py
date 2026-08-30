@@ -128,6 +128,46 @@ def validate_huggingface(record, errors):
         errors.append(f"{label}: invalid link_type")
 
 
+def validate_tokenized_launch(recipe, errors):
+    identifier = recipe.get("id")
+    launch = recipe.get("launch") or {}
+    launch_text = json.dumps(launch).lower()
+    if "command_snippet" in launch_text:
+        errors.append(f"{identifier}: launch contains a command snippet")
+    arguments = launch.get("arguments")
+    if arguments is not None:
+        if not isinstance(arguments, list) or not all(isinstance(item, str) for item in arguments):
+            errors.append(f"{identifier}: launch.arguments must be a string array")
+    environment = launch.get("environment")
+    if environment is not None:
+        if not isinstance(environment, dict) or not all(
+            isinstance(key, str) and isinstance(value, str) for key, value in environment.items()
+        ):
+            errors.append(f"{identifier}: launch.environment must be a string map")
+    steps = launch.get("steps")
+    if steps is not None:
+        if not isinstance(steps, list) or not all(
+            isinstance(step, list) and all(isinstance(token, str) for token in step) for step in steps
+        ):
+            errors.append(f"{identifier}: launch.steps must be an argv array list")
+        elif any("&&" in token for step in steps for token in step):
+            errors.append(f"{identifier}: launch.steps still contains a shell && chain")
+    source = recipe.get("recipe_source")
+    if source in ("localmaxxing", "mlxfast", "exo-postgres"):
+        if isinstance(arguments, list) and any("&&" in item for item in arguments):
+            errors.append(f"{identifier}: launch.arguments still contains a shell && chain")
+        metadata = (recipe.get("metadata") or {}).get("localmaxxing" if source == "localmaxxing" else "mlxfast") or {}
+        snippet = metadata.get("observed_command") if isinstance(metadata, dict) else None
+        if (
+            isinstance(snippet, str)
+            and " " in snippet.strip()
+            and isinstance(arguments, list)
+            and len(arguments) == 1
+            and arguments[0].strip() == snippet.strip()
+        ):
+            errors.append(f"{identifier}: observed command was copied as a single launch argument")
+
+
 def validate_container(recipe, errors):
     identifier = recipe.get("id")
     launch = recipe.get("launch", {})
@@ -241,16 +281,12 @@ def validate(root):
         if recipe.get("recipe_source") in ("localmaxxing", "exo-postgres"):
             if status != "candidate" or kind != "reference":
                 errors.append(f"{recipe['id']}: observed imports must be reference-only candidates")
-            if "command_snippet" in json.dumps(launch).lower():
-                errors.append(f"{recipe['id']}: candidate launch contains a command snippet")
         if recipe.get("recipe_source") == "mlxfast":
             if status != "candidate" or kind != "reference":
                 errors.append(f"{recipe['id']}: mlx.fast imports must be reference-only candidates")
             if recipe.get("hardware_id") != "apple-m5-max-128gb":
                 errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
-            launch_text = json.dumps(launch).lower()
-            if "arguments" in launch or "setup.sh" in launch_text or "command_snippet" in launch_text:
-                errors.append(f"{recipe['id']}: mlx.fast launch must not carry a command snippet")
+        validate_tokenized_launch(recipe, errors)
         if recipe.get("recipe_source") == "omlx":
             errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":

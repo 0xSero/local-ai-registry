@@ -101,6 +101,25 @@
   "hardware_id": "apple-m5-pro-24gb",
   "id": "nvidia-nemotron-3-nano-4b-bf16-q8-0-apple-m5-pro-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "/lmstudio-community/NVIDIA-Nemotron-3-Nano-4B-GGUF/NVIDIA-Nemotron-3-Nano-4B-Q8_0.gguf",
+      " -ngl",
+      "999",
+      " -b",
+      "2048",
+      " -ub",
+      "512",
+      " -d",
+      "3584",
+      " -pg",
+      "512,128",
+      " -r",
+      "5",
+      " -o",
+      "json"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

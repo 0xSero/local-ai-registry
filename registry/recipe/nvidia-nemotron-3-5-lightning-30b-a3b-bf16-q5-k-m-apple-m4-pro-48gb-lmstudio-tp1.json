@@ -101,6 +101,18 @@
   "hardware_id": "apple-m4-pro-48gb",
   "id": "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-q5-k-m-apple-m4-pro-48gb-lmstudio-tp1",
   "launch": {
+    "arguments": [
+      "lms",
+      "load",
+      "nvidia-nemotron-3.5-lightning-30b-a3b",
+      "--context-length",
+      "64000",
+      "--parallel",
+      "4",
+      "--identifier",
+      "benchmark-nemotron35-lightning",
+      "--yes"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,9 +129,34 @@
       ],
       "state": "none"
     },
+    "container_port": 1234,
+    "host_port": 1234,
     "kind": "reference",
     "run_id": "cmsqri91u00qomr01tr6ckfzy",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "lms",
+        "server",
+        "start",
+        "--port",
+        "1234",
+        "--bind",
+        "127.0.0.1"
+      ],
+      [
+        "lms",
+        "load",
+        "nvidia-nemotron-3.5-lightning-30b-a3b",
+        "--context-length",
+        "64000",
+        "--parallel",
+        "4",
+        "--identifier",
+        "benchmark-nemotron35-lightning",
+        "--yes"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmsqri91u00qomr01tr6ckfzy"
   },
   "metadata": {

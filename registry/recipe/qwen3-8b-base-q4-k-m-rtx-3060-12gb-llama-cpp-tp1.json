@@ -101,6 +101,26 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-8b-base-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "36",
+      "-sm",
+      "layer",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

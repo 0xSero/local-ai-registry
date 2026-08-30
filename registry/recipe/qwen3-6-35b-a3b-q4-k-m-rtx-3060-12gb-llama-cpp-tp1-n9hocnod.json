@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-6-35b-a3b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1-n9hocnod",
   "launch": {
+    "arguments": [
+      "/home/aarkanum/llama.cpp/build/bin/llama-bench",
+      "-m",
+      "/media/aarkanum/external/ollama-models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "99",
+      "-fa",
+      "on",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "--n-cpu-moe",
+      "48",
+      "-o",
+      "json"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

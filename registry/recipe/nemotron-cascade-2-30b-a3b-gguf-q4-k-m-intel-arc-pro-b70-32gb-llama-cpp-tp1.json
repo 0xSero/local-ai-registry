@@ -101,6 +101,26 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "nemotron-cascade-2-30b-a3b-gguf-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "/mnt/usb-models/llm-models/nemotron-cascade-2-30b-a3b-gguf/nvidia_Nemotron-Cascade-2-30B-A3B-Q4_K_M.gguf",
+      "-c",
+      "2048",
+      "-ngl",
+      "99",
+      "-b",
+      "1024",
+      "-ub",
+      "256",
+      "-fa",
+      "on",
+      "--ctx-checkpoints",
+      "0",
+      "--jinja",
+      "--reasoning",
+      "off"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

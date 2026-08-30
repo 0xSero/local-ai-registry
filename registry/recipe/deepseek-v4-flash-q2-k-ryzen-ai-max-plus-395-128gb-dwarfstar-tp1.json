@@ -101,6 +101,19 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "deepseek-v4-flash-q2-k-ryzen-ai-max-plus-395-128gb-dwarfstar-tp1",
   "launch": {
+    "arguments": [
+      "ds4-server",
+      "-m",
+      "DeepSeek-V4-Flash-Layers37-42Q4KExperts-OtherExpertLayersIQ2XXSGateUp-Q2KDown-AProjQ8-SExpQ8-OutQ8-chat-v2-imatrix-fixed.gguf",
+      "--mtp",
+      "DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf",
+      "--ctx",
+      "16384",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +130,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmrgn4jtk005hmj01022ts8t3",
     "source": "localmaxxing",

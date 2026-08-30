@@ -101,6 +101,28 @@
   "hardware_id": "apple-m3-ultra-512gb",
   "id": "qwen3-6-27b-q4-k-m-apple-m3-ultra-512gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "/opt/homebrew/bin/llama-server",
+      "-m",
+      "/Volumes/Extreme",
+      "Pro/Lilly-transfer/localmaxxing-candidates/unsloth__Qwen3.6-27B-GGUF/Qwen3.6-27B-Q4_K_M.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8097",
+      "-ngl",
+      "99",
+      "--fit",
+      "off",
+      "-c",
+      "8192",
+      "-fa",
+      "on",
+      "--reasoning",
+      "off",
+      "--reasoning-format",
+      "none"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +139,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8097,
+    "host_port": 8097,
     "kind": "reference",
     "run_id": "cmosdf7mh0001jv04b7msa20p",
     "source": "localmaxxing",

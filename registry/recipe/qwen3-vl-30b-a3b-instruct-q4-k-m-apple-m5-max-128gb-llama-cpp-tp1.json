@@ -101,6 +101,23 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "qwen3-vl-30b-a3b-instruct-q4-k-m-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3VL-30B-A3B-Instruct-Q4_K_M.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8089",
+      "-ngl",
+      "99",
+      "-c",
+      "8192",
+      "--flash-attn",
+      "on",
+      "--temp",
+      "0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +134,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8089,
+    "host_port": 8089,
     "kind": "reference",
     "run_id": "cms0p66c900axs201zp6tqey8",
     "source": "localmaxxing",

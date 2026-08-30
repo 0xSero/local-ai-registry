@@ -101,6 +101,25 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-8-27b-mq4v2-ryzen-ai-max-plus-395-128gb-hipfire-tp1",
   "launch": {
+    "arguments": [
+      "dflash_spec_demo",
+      "--target",
+      "qwen3.8-27b.mq4-xt",
+      "--draft",
+      "qwen38-27b-dflash-mq4.hfq",
+      "--prompt-file",
+      "merge_sort_thinking_off.txt",
+      "--max",
+      "256",
+      "--temp",
+      "0.0",
+      "--no-chatml",
+      "--kv-mode",
+      "q8",
+      "--ctx",
+      "4096",
+      "--no-adaptive-b"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +135,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+      "HIPFIRE_VERIFY_GRAPH": "0"
     },
     "kind": "reference",
     "run_id": "cmt6wvmy40003o9019eyb86nz",

@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-6-27b-q1-0-rtx-3090-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "Bonsai-27B-Q1_0.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "64",
+      "-fa",
+      "on",
+      "-ctk",
+      "q4_0",
+      "-ctv",
+      "q4_0",
+      "-fitt",
+      "1024",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

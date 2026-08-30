@@ -101,6 +101,26 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "ornith-1-5-35b-a3b-bf16-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--jinja",
+      "--flash-attn",
+      "auto",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-ts",
+      "1/1/0.8",
+      "-np",
+      "1",
+      "-c",
+      "262144",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "2"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

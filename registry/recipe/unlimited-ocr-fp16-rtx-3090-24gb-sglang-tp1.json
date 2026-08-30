@@ -101,6 +101,17 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "unlimited-ocr-fp16-rtx-3090-24gb-sglang-tp1",
   "launch": {
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "baidu/Unlimited-OCR",
+      "--port",
+      "30001",
+      "--host",
+      "0.0.0.0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +128,8 @@
       ],
       "state": "none"
     },
+    "container_port": 30001,
+    "host_port": 30001,
     "kind": "reference",
     "run_id": "cmqwkq5tz03jrqr012wkfy7f3",
     "source": "localmaxxing",

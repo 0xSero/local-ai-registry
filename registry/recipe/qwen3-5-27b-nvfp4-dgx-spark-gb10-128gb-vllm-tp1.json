@@ -101,6 +101,33 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "/models/AxionML-Qwen3.5-27B-NVFP4",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8000",
+      "--trust-remote-code",
+      "--max-model-len",
+      "4096",
+      "--served-model-name",
+      "qwen35-27b-axionml-nvfp4",
+      "--generation-config",
+      "vllm",
+      "--load-format",
+      "fastsafetensors",
+      "--attention-backend",
+      "FLASH_ATTN",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-num-batched-tokens",
+      "8192",
+      "--max-num-seqs",
+      "1",
+      "--enable-chunked-prefill"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -117,6 +144,13 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "environment": {
+      "FLASHQLA_HKV_O_BK": "128",
+      "FLASHQLA_HKV_O_BV": "128",
+      "VLLM_NVFP4_GEMM_BACKEND": "cutlass"
+    },
+    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmouqgx9q00jtld01ajgiran7",
     "source": "localmaxxing",

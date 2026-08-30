@@ -101,6 +101,29 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-gptq-int4-draft-int4-rtn-intel-arc-pro-b70-32gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "/model",
+      "--quantization",
+      "gptq",
+      "--dtype",
+      "float16",
+      "--max-model-len",
+      "131072",
+      "--gpu-memory-utilization",
+      "0.88",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-num-seqs",
+      "64",
+      "--max-num-batched-tokens",
+      "8192",
+      "--no-enable-prefix-caching",
+      "--language-model-only",
+      "--speculative-config",
+      "{method:mtp,num_speculative_tokens:4}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +139,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "B70_DRAFT_LMHEAD_INT4": "1",
+      "B70_DRAFT_MTP_INT4": "1"
     },
     "kind": "reference",
     "run_id": "cmszpqy000e8fms014ty6i5x3",

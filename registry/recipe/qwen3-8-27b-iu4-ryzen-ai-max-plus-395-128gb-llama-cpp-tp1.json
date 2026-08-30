@@ -101,6 +101,9 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-8-27b-iu4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "./run-kairic-edge-lucebox.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,7 +120,17 @@
       ],
       "state": "none"
     },
+    "environment": {
+      "CACHE_RAM": "8192",
+      "CONTEXT": "32768",
+      "PORT": "18087",
+      "ROCR_VISIBLE_DEVICES": "1"
+    },
     "kind": "reference",
+    "notes": [
+      "llama-server: -dev ROCm0 -ngl 999 -c 32768 -b 2048 -ub 512 -fa on -ctk f16 -ctv f16 -np 1 --kairic-edge --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0 --temp 0 --top-p 1 --top-k 0 --min-p 0",
+      "request: max_tokens=512, cache_prompt=false; one warmup discarded, then three measured runs"
+    ],
     "run_id": "cmt5yl3p2000blk01hiumzfjw",
     "source": "localmaxxing",
     "url": "https://www.localmaxxing.com/en/runs/cmt5yl3p2000blk01hiumzfjw"

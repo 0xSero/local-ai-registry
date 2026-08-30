@@ -101,6 +101,26 @@
   "hardware_id": "rtx-3080-10gb",
   "id": "qwen3-6-27b-q1-0-rtx-3080-10gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Bonsai-27B-Q1_0.gguf",
+      "-c",
+      "32768",
+      "-ngl",
+      "99",
+      "-fa",
+      "on",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "--parallel",
+      "1",
+      "--jinja",
+      "--spec-type",
+      "none"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

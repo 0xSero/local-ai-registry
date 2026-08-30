@@ -101,6 +101,19 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-8-27b-int4-rtx-3090-24gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "/root/.cache/huggingface/qwen3.8-27b-autoround-int4",
+      "--quantization",
+      "auto_round",
+      "--tensor-parallel-size",
+      "2",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

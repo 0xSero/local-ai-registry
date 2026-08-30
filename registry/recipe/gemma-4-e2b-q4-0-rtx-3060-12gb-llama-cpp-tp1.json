@@ -101,6 +101,23 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-e2b-q4-0-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "gemma-4-E2B_q4_0-it.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "99",
+      "-fa",
+      "on",
+      "-r",
+      "3",
+      "-o",
+      "json"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

@@ -101,6 +101,40 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-8-flash-next-iq4-xs-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+      "--device",
+      "ROCm0,ROCm1",
+      "--tensor-split",
+      "0.45,0.55",
+      "--split-mode",
+      "layer",
+      "--main-gpu",
+      "1",
+      "--n-gpu-layers",
+      "99",
+      "--ctx-size",
+      "32768",
+      "--parallel",
+      "1",
+      "--threads",
+      "32",
+      "--threads-batch",
+      "32",
+      "--ubatch-size",
+      "1024",
+      "--jinja",
+      "--flash-attn",
+      "on",
+      "--load-mode",
+      "none",
+      "--spec-type",
+      "none",
+      "--reasoning",
+      "off"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +150,9 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "LLAMA_QWEN4EXP_QSA_MIN_KV": "32768"
     },
     "kind": "reference",
     "run_id": "cmtbqjvpj003bqq01595qg0db",

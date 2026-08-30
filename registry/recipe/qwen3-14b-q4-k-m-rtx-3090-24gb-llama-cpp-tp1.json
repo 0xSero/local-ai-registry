@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-14b-q4-k-m-rtx-3090-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "Qwen3-14B-Q4_K_M.gguf",
+      "-p",
+      "1024",
+      "-n",
+      "128",
+      "-ngl",
+      "999",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-fitt",
+      "1024",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

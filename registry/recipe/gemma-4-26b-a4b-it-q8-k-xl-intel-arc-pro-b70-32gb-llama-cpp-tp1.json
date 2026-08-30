@@ -101,6 +101,9 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "gemma-4-26b-a4b-it-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "scripts/run-gemma4-26b-first-baseline.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +119,18 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "BATCH_SIZE": "1024",
+      "EXTRA_LLAMA_ARGS": "--parallel 1 --cache-ram 0 --spec-type draft-mtp --spec-draft-model /mnt/fast-ai/llm-models/gemma4-26b-a4b-it-q8-gguf/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf --spec-draft-n-max 3 --spec-draft-device SYCL0 --spec-draft-ngl all --spec-draft-type-k f16 --spec-draft-type-v f16 --spec-draft-n-min 2 --spec-draft-p-min 0.0475 --no-spec-draft-backend-sampling --spec-draft-threads 32 --spec-draft-threads-batch 32 --ctx-checkpoints 0",
+      "GPU_INDEX": "0",
+      "LABEL": "gemma4-q8-gpu0-finalpostnorm-reproexact-full512-20260701T084728Z",
+      "LLAMA_SERVER": "/home/steve/src/llama.cpp-gemma-record-repro-c926/build-sycl-b70-aot-bmg-g31-q8reorder-vdr2/bin/llama-server",
+      "POLL": "100",
+      "PORT": "18530",
+      "REALISTIC_GATE": "1",
+      "REALISTIC_METRIC_TOKENS": "100",
+      "UBATCH_SIZE": "1024"
     },
     "kind": "reference",
     "run_id": "cmr1u77na01k2ld01kalwzs1e",

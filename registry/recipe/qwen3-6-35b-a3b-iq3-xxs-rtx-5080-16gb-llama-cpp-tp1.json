@@ -101,6 +101,25 @@
   "hardware_id": "rtx-5080-16gb",
   "id": "qwen3-6-35b-a3b-iq3-xxs-rtx-5080-16gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "/llama.cpp/build/bin/llama-server",
+      "-m",
+      "Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf",
+      "-ngl",
+      "99",
+      "-np",
+      "1",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "--ctx-size",
+      "131072",
+      "--host",
+      "0.0.0.0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

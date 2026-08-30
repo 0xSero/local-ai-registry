@@ -101,6 +101,27 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-5-35b-a3b-base-q5-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-35B-A3B-UD-Q5_K_M.gguf",
+      "-ngl",
+      "99",
+      "-ncmoe",
+      "0",
+      "-fa",
+      "on",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q4_1",
+      "-c",
+      "262144",
+      "-b",
+      "8192",
+      "-ub",
+      "4096"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

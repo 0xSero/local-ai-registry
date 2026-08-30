@@ -101,6 +101,20 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-35b-a3b-q4-k-s-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "-b",
+      "1024",
+      "-ub",
+      "1024",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "-sm",
+      "row",
+      "-ot",
+      "blk\\.(3[3-9])\\.ffn_.*_exps=CPU"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

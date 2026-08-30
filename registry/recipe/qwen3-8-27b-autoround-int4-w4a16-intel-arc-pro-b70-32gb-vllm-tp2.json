@@ -101,6 +101,16 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-autoround-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "--dtype",
+      "float16",
+      "--tensor-parallel-size",
+      "2",
+      "--max-model-len",
+      "2048",
+      "--max-num-seqs",
+      "1"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +126,14 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "VALIDATION_DETERMINISTIC_GREEDY_MARGIN": "0.03125",
+      "VALIDATION_GDN_NATIVE_SPEC_RECURRENT_SERIAL_EXACT": "0",
+      "VALIDATION_LM_HEAD_INT8": "1",
+      "VALIDATION_NUM_SPECULATIVE_TOKENS": "5",
+      "VLLM_XPU_GDN_SPEC_PERSISTENT_SCRATCH": "0",
+      "cudagraph_capture_sizes": "[6]"
     },
     "kind": "reference",
     "run_id": "cmszbkxco0e11ms01l2rixxbt",

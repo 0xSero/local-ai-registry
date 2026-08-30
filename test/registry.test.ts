@@ -460,7 +460,7 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   assert.ok(detail && typeof detail === "object")
   const record = detail as {
     hardware_id: string
-    launch: { kind: string }
+    launch: { arguments?: string[]; kind: string; steps?: string[][] }
     recipe_source: string
     registry: { launchable: boolean }
     relationships: { model: { id: string } }
@@ -472,7 +472,12 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   assert.equal(record.hardware_id, "apple-m5-max-128gb")
   assert.equal(record.registry.launchable, false)
   assert.equal(record.relationships.model.id, "gemma-4-26b-a4b-it")
-  assert.ok(!("arguments" in record.launch))
+  assert.ok(Array.isArray(record.launch.steps))
+  assert.equal(record.launch.steps?.length, 4)
+  assert.equal(record.launch.steps?.[0]?.[0], "git")
+  assert.equal(record.launch.arguments?.[0], "./setup-gemma4-assistant.sh")
+  assert.doesNotMatch(JSON.stringify(record.launch), /&&/)
+  assert.doesNotMatch(JSON.stringify(record.launch).toLowerCase(), /command_snippet/)
 
   const instance = getEntityDetail("model-instances", "mlx-community-gemma-4-26b-a4b-it-qat-4bit--4bit") as {
     huggingface: { repository: string; status: string }
@@ -483,6 +488,28 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   assert.equal(instance.revision, "0e3cbab38ce568cf6e23543010d08d03b731910c")
   assert.equal(instance.huggingface.status, "known")
   assert.equal(instance.huggingface.repository, "mlx-community/gemma-4-26B-A4B-it-qat-4bit")
+})
+
+test("observed LocalMaxxing commands are tokenized onto reference launches", () => {
+  const llama = getEntityDetail("recipes", "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1") as {
+    launch: { arguments?: string[]; environment?: Record<string, string>; kind: string }
+    recipe_source: string
+    status: string
+  }
+  const vllm = getEntityDetail("recipes", "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1") as {
+    launch: { arguments?: string[]; environment?: Record<string, string>; host_port?: number }
+  }
+  assert.equal(llama.recipe_source, "localmaxxing")
+  assert.equal(llama.status, "candidate")
+  assert.equal(llama.launch.kind, "reference")
+  assert.equal(llama.launch.arguments?.[0], "llama-bench")
+  assert.ok(llama.launch.arguments?.includes("-ngl"))
+  assert.doesNotMatch(JSON.stringify(llama.launch), /&&/)
+  assert.doesNotMatch(JSON.stringify(llama.launch).toLowerCase(), /command_snippet/)
+  assert.equal(vllm.launch.arguments?.[0], "vllm")
+  assert.equal(vllm.launch.arguments?.[1], "serve")
+  assert.equal(vllm.launch.host_port, 8000)
+  assert.equal(vllm.launch.environment?.VLLM_NVFP4_GEMM_BACKEND, "cutlass")
 })
 
 test("observed LocalMaxxing and Postgres recipes stay reference-only candidates", () => {

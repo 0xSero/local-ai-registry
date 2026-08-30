@@ -101,6 +101,26 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "glm-4-7-flash-q5-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--model",
+      "/path/to/GLM-4.7-Flash-Q5_K_M.gguf",
+      "--alias",
+      "glm-4.7-flash-q5km",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8096",
+      "-ngl",
+      "99",
+      "-c",
+      "131072",
+      "-n",
+      "8192",
+      "--reasoning",
+      "off",
+      "--jinja"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +137,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8096,
+    "host_port": 8096,
     "kind": "reference",
     "run_id": "cmsr37a3800zcmr01tdifp568",
     "source": "localmaxxing",

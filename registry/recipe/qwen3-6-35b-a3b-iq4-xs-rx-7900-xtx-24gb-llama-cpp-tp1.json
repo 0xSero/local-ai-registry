@@ -101,6 +101,9 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-35b-a3b-iq4-xs-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "/app/llama.cpp/build/bin/llama-server"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,9 +120,73 @@
       ],
       "state": "none"
     },
+    "container_port": 8001,
+    "host_port": 8001,
     "kind": "reference",
     "run_id": "cmolw295o000tju04uiwr820b",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "/app/llama.cpp/build/bin/llama-server"
+      ],
+      [
+        "--models-dir",
+        "/models"
+      ],
+      [
+        "--port",
+        "8001"
+      ],
+      [
+        "--host",
+        "0.0.0.0"
+      ],
+      [
+        "-ngl",
+        "99"
+      ],
+      [
+        "--flash-attn",
+        "on"
+      ],
+      [
+        "--cont-batching"
+      ],
+      [
+        "--no-mmap"
+      ],
+      [
+        "--threads",
+        "30"
+      ],
+      [
+        "--cache-type-k",
+        "q4_0"
+      ],
+      [
+        "--cache-type-v",
+        "q4_0"
+      ],
+      [
+        "--mlock"
+      ],
+      [
+        "--batch-size",
+        "4096"
+      ],
+      [
+        "--ubatch-size",
+        "4096"
+      ],
+      [
+        "--models-max",
+        "1"
+      ],
+      [
+        "--parallel",
+        "1"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmolw295o000tju04uiwr820b"
   },
   "metadata": {

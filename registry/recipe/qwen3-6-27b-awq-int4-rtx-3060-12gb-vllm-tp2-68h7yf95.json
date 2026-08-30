@@ -101,6 +101,23 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-6-27b-awq-int4-rtx-3060-12gb-vllm-tp2-68h7yf95",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "--language-model-only",
+      "--quantization",
+      "awq",
+      "--kv-cache-dtype",
+      "fp8",
+      "--mamba-ssm-cache-dtype",
+      "bfloat16",
+      "--enforce-eager",
+      "--enable-prefix-caching",
+      "--enable-chunked-prefill",
+      "--block-size",
+      "16",
+      "--disable-custom-all-reduce"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

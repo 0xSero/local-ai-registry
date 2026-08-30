@@ -17,7 +17,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from collections import defaultdict
+from tokenize_observed_command import merge_launch, parse_observed_command
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -420,6 +420,15 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
         sweep_id = f"{recipe_id}-sweep"
         url = f"{LMX}/en/runs/{run_id}"
         flags = row.get("engineFlags") or {}
+        snippet = flags.get("commandSnippet")
+        launch = {
+            "kind": "reference",
+            "source": "localmaxxing",
+            "run_id": run_id,
+            "url": url,
+            "container": container_none(url),
+        }
+        merge_launch(launch, parse_observed_command(snippet if isinstance(snippet, str) else None))
         recipe = {
             "schema_version": SCHEMA,
             "id": recipe_id,
@@ -434,13 +443,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
                 "version": engine.get("engineVersion"),
                 "graph_mode": None,
             },
-            "launch": {
-                "kind": "reference",
-                "source": "localmaxxing",
-                "run_id": run_id,
-                "url": url,
-                "container": container_none(url),
-            },
+            "launch": launch,
             "serving": {
                 "tensor_parallel": count,
                 "max_context_tokens": row.get("contextLength"),
@@ -671,6 +674,7 @@ def import_mlxfast(registry: Registry) -> None:
         print("mlxfast: Hub lookup rate-limited; using track-pinned public revision")
     engine_url = "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"
     board_url = "https://www.yukon.org/mlxfast"
+    observed = "git clone https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine && ./tools/fetch-benchd.sh && ./setup.sh && ./setup-gemma4-assistant.sh"
     instance_id = registry.ensure_instance(
         repo,
         "gemma-4-26b-a4b-it",
@@ -684,6 +688,13 @@ def import_mlxfast(registry: Registry) -> None:
         print("mlxfast already present")
         return
     sweep_id = f"{recipe_id}-sweep"
+    launch = {
+        "kind": "reference",
+        "source": "mlxfast",
+        "url": board_url,
+        "container": container_none(board_url),
+    }
+    merge_launch(launch, parse_observed_command(observed))
     recipe = {
         "schema_version": SCHEMA,
         "id": recipe_id,
@@ -694,12 +705,7 @@ def import_mlxfast(registry: Registry) -> None:
         "hardware_id": hardware_id,
         "hardware_count": 1,
         "engine": {"name": "mlx", "version": "gemma4-26b-a4b-mlx-v1", "graph_mode": None},
-        "launch": {
-            "kind": "reference",
-            "source": "mlxfast",
-            "url": board_url,
-            "container": container_none(board_url),
-        },
+        "launch": launch,
         "serving": {
             "tensor_parallel": 1,
             "max_context_tokens": 262144,
@@ -715,7 +721,7 @@ def import_mlxfast(registry: Registry) -> None:
                 "leaderboard": board_url,
                 "official_hardware": "organizer M5 Max 128GB",
                 "solver": "samfenwick",
-                "observed_command": "git clone https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine && ./tools/fetch-benchd.sh && ./setup.sh && ./setup-gemma4-assistant.sh",
+                "observed_command": observed,
             }
         },
         "provenance": provenance("normalized-recipe", board_url),

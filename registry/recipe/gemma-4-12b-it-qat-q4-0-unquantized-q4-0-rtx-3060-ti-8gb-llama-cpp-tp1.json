@@ -101,6 +101,23 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "gemma-4-12b-it-qat-q4-0-unquantized-q4-0-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-hf",
+      "google/gemma-4-12B-it-qat-q4_0-gguf",
+      "-hff",
+      "gemma-4-12b-it-qat-q4_0.gguf",
+      "-ngl",
+      "99",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-r",
+      "10",
+      "-o",
+      "md"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

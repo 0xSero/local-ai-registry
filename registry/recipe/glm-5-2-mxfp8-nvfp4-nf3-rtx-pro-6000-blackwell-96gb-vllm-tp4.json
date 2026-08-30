@@ -101,6 +101,20 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "glm-5-2-mxfp8-nvfp4-nf3-rtx-pro-6000-blackwell-96gb-vllm-tp4",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "madeby561/GLM-5.2-MXFP8-NVFP4-NF3-Hybrid",
+      "--tensor-parallel-size",
+      "4",
+      "--decode-context-parallel-size",
+      "1",
+      "--max-model-len",
+      "131072",
+      "--gpu-memory-utilization",
+      "0.95",
+      "--enable-prefix-caching"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

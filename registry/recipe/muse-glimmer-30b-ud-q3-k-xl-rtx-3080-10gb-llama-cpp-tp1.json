@@ -101,6 +101,26 @@
   "hardware_id": "rtx-3080-10gb",
   "id": "muse-glimmer-30b-ud-q3-k-xl-rtx-3080-10gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Muse-Glimmer-30B-UD-Q3_K_XL.gguf",
+      "-c",
+      "16384",
+      "-ngl",
+      "40",
+      "-fa",
+      "on",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "--parallel",
+      "1",
+      "--jinja",
+      "--spec-type",
+      "none"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

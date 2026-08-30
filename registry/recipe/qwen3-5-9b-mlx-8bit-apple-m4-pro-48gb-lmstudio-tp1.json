@@ -101,6 +101,18 @@
   "hardware_id": "apple-m4-pro-48gb",
   "id": "qwen3-5-9b-mlx-8bit-apple-m4-pro-48gb-lmstudio-tp1",
   "launch": {
+    "arguments": [
+      "lms",
+      "load",
+      "qwen3.5-9b-mlx",
+      "--context-length",
+      "249088",
+      "--parallel",
+      "4",
+      "--identifier",
+      "benchmark-qwen35-9b-mlx",
+      "--yes"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,9 +129,34 @@
       ],
       "state": "none"
     },
+    "container_port": 1234,
+    "host_port": 1234,
     "kind": "reference",
     "run_id": "cmsqri99300qsmr01n12gjgvh",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "lms",
+        "server",
+        "start",
+        "--port",
+        "1234",
+        "--bind",
+        "127.0.0.1"
+      ],
+      [
+        "lms",
+        "load",
+        "qwen3.5-9b-mlx",
+        "--context-length",
+        "249088",
+        "--parallel",
+        "4",
+        "--identifier",
+        "benchmark-qwen35-9b-mlx",
+        "--yes"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmsqri99300qsmr01n12gjgvh"
   },
   "metadata": {

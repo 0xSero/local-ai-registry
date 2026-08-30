@@ -101,6 +101,25 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-8-27b-mq4v2-radeon-ai-pro-r9700-32gb-hipfire-tp1",
   "launch": {
+    "arguments": [
+      "./target/release/examples/dflash_spec_demo",
+      "--target",
+      "/home/kaden/qcal/q38.mq4v2.mq4",
+      "--draft",
+      "/home/kaden/.hipfire/models/qwen38-27b-dflash2-mq4v2.hfq",
+      "--prompt-file",
+      "benchmarks/prompts/merge_sort_thinking_off.txt",
+      "--max",
+      "256",
+      "--temp",
+      "0.0",
+      "--no-chatml",
+      "--kv-mode",
+      "q8",
+      "--ctx",
+      "4096",
+      "--no-adaptive-b"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +135,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+      "HIPFIRE_VERIFY_GRAPH": "0"
     },
     "kind": "reference",
     "run_id": "cmt0pjfxq0f4xms01naomo76q",

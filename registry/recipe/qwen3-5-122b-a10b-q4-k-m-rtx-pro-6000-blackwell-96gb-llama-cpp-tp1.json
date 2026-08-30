@@ -101,6 +101,34 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-5-122b-a10b-q4-k-m-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "/usr/local/bin/llama-server",
+      "-m",
+      "/LINUX/Models/0xSero/Qwen3.5-122B-A10B-REAP-20-GGUF/Qwen3.5-122B-A10B-REAP-20-Q4_K_M.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8001",
+      "--ctx-size",
+      "32768",
+      "--alias",
+      "qwen3-5-122b-a10b-reap",
+      "-ngl",
+      "999",
+      "--flash-attn",
+      "on",
+      "--batch-size",
+      "512",
+      "--ubatch-size",
+      "512",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "--parallel",
+      "1",
+      "--jinja"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +145,12 @@
       ],
       "state": "none"
     },
+    "container_port": 8001,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "1"
+    },
+    "host_port": 8001,
     "kind": "reference",
     "run_id": "cmows6h8l00ayo201qj3poozm",
     "source": "localmaxxing",

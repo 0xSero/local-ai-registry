@@ -101,6 +101,10 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "gemma-4-12b-q4-k-m-dgx-spark-gb10-128gb-lmstudio-tp1",
   "launch": {
+    "arguments": [
+      "max_tokens",
+      "512"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -120,6 +124,32 @@
     "kind": "reference",
     "run_id": "cmqdwa20m00n2mp01f41powhb",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "LM",
+        "Studio",
+        "runtime",
+        "llama.cpp-linux-arm64-nvidia-cuda13",
+        "v2.20.1"
+      ],
+      [
+        "model",
+        "google/gemma-4-12b",
+        "Q4_K_M"
+      ],
+      [
+        "ctx",
+        "66861"
+      ],
+      [
+        "temp",
+        "0"
+      ],
+      [
+        "max_tokens",
+        "512"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmqdwa20m00n2mp01f41powhb"
   },
   "metadata": {

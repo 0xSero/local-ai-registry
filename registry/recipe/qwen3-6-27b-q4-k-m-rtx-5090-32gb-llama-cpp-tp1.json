@@ -101,6 +101,25 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-27b-q4-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "python3",
+      "scripts/run.py",
+      "--raw",
+      "--prompt",
+      "$(cat merge_sort_thinking_off.txt)",
+      "--n-gen",
+      "256",
+      "--target",
+      "models/Qwen3.6-27B-Q4_K_M.gguf",
+      "--draft",
+      "models/draft-3.6",
+      "--budget",
+      "16",
+      "--max-ctx",
+      "1024",
+      "--fa-window",
+      "0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +135,9 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "DFLASH27B_TOKENIZER": "Qwen/Qwen3.6-27B"
     },
     "kind": "reference",
     "run_id": "cmph5zm7j00gwpc0104tq6x4m",

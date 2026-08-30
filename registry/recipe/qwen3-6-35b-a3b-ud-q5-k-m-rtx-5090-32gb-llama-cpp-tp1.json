@@ -101,6 +101,22 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-35b-a3b-ud-q5-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--hf-repo",
+      "unsloth/Qwen3.6-35B-A3B-GGUF",
+      "--alias",
+      "qwen3.6-35b-a3b-q5km",
+      "-ngl",
+      "99",
+      "-c",
+      "65536",
+      "-n",
+      "8192",
+      "--reasoning",
+      "off",
+      "--jinja"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

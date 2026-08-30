@@ -101,6 +101,26 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "deepseek-v4-flash-fp8-dgx-spark-gb10-128gb-vllm-tp1-nzqc7c66",
   "launch": {
+    "arguments": [
+      "python",
+      "-m",
+      "vllm.entrypoints.openai.api_server",
+      "--model",
+      "0xSero/DeepSeek-V4-Flash-180B",
+      "--served-model-name",
+      "DeepSeek-V4-Flash-Spark",
+      "--max-model-len",
+      "200000",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-num-seqs",
+      "1",
+      "--gpu-memory-utilization",
+      "0.88",
+      "--enable-prefix-caching",
+      "--speculative-config",
+      "{method:deepseek_mtp,num_speculative_tokens:2}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,

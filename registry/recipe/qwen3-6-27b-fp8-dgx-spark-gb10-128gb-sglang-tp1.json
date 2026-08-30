@@ -101,6 +101,19 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-6-27b-fp8-dgx-spark-gb10-128gb-sglang-tp1",
   "launch": {
+    "arguments": [
+      "python",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/home/radar/models/Qwen3.6-27B-FP8",
+      "--fp8-gemm-backend",
+      "triton",
+      "--attention-backend",
+      "triton",
+      "--context-length",
+      "65536"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,

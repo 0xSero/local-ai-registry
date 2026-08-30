@@ -101,6 +101,16 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-6-27b-q4-k-m-rtx-3090-24gb-llama-cpp-tp1-psyar5ci",
   "launch": {
+    "arguments": [
+      "uv",
+      "run",
+      "scripts/run.py",
+      "--prompt",
+      "def fibonacci(n):",
+      "--max-ctx",
+      "131072",
+      "--kv-q4"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

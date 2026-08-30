@@ -101,6 +101,33 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-35b-a3b-mq4r-rx-7900-xtx-24gb-hipfire-tp1",
   "launch": {
+    "arguments": [
+      "hipfire",
+      "serve",
+      "--model",
+      "~/.hipfire/models/qwen3.6-35b-a3b.mq4r",
+      "--mtp",
+      "~/.hipfire/models/qwen3.6-35b-a3b.mtp",
+      "--mtp-ngram",
+      "--ngram-match",
+      "24",
+      "--ngram-min",
+      "48",
+      "--ngram-max",
+      "64",
+      "--prompt-file",
+      "benchmarks/prompts/code_edit_rewrite_copy.txt",
+      "--max-tokens",
+      "256",
+      "--max-seq",
+      "4096",
+      "--kv",
+      "q8",
+      "--temperature",
+      "0",
+      "--mode",
+      "battery"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +143,9 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "DEVICE": "0"
     },
     "kind": "reference",
     "run_id": "cmsnp3cmd00nyo001yvkgm3tq",

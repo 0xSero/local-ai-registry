@@ -101,6 +101,33 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-uncensored-int4-autoround-gptq-int4-intel-arc-pro-b70-32gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "johannrplaster/Qwen3.8-27B-Uncensored-int4-AutoRound",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "19622",
+      "--served-model-name",
+      "Qwen3.8-27B-UNC-G128-AR",
+      "--tensor-parallel-size",
+      "2",
+      "--dtype",
+      "float16",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "1",
+      "--max-num-batched-tokens",
+      "8192",
+      "--gpu-memory-utilization",
+      "0.95",
+      "--quantization",
+      "gptq",
+      "--speculative-config",
+      "{\"method\":\"qwen3_5_mtp\",\"num_speculative_tokens\":3}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +144,13 @@
       ],
       "state": "none"
     },
+    "container_port": 19622,
+    "environment": {
+      "CCL_TOPO_P2P_ACCESS": "0",
+      "VLLM_XPU_HOST_STAGED_COLLECTIVES": "1",
+      "VLLM_XPU_LM_HEAD_INT8": "1"
+    },
+    "host_port": 19622,
     "kind": "reference",
     "run_id": "cmt0vu76q0fvtms017exhssx9",
     "source": "localmaxxing",

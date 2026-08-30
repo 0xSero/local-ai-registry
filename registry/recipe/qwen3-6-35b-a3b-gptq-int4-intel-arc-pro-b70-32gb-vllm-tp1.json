@@ -101,6 +101,24 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-gptq-int4-intel-arc-pro-b70-32gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "/model",
+      "--quantization",
+      "gptq",
+      "--dtype",
+      "float16",
+      "--max-model-len",
+      "16384",
+      "--max-num-seqs",
+      "64",
+      "--max-num-batched-tokens",
+      "8192",
+      "--served-model-name",
+      "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+      "--language-model-only"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

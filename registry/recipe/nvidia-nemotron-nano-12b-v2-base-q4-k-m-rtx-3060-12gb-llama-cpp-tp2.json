@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "nvidia-nemotron-nano-12b-v2-base-q4-k-m-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "nvidia_NVIDIA-Nemotron-Nano-9B-v2-Q4_K_M.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "56",
+      "-sm",
+      "layer",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

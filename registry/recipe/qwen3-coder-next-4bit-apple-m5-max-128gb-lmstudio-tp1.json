@@ -101,6 +101,17 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "qwen3-coder-next-4bit-apple-m5-max-128gb-lmstudio-tp1",
   "launch": {
+    "arguments": [
+      "lms",
+      "load",
+      "qwen/qwen3-coder-next",
+      "--context-length",
+      "8192",
+      "--parallel",
+      "1",
+      "--gpu",
+      "max"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -120,6 +131,26 @@
     "kind": "reference",
     "run_id": "cmoq5mt94000iky04gpzs449x",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "lms",
+        "load",
+        "qwen/qwen3-coder-next",
+        "--context-length",
+        "8192",
+        "--parallel",
+        "1",
+        "--gpu",
+        "max"
+      ],
+      [
+        "LM",
+        "Studio",
+        "/api/v0/chat/completions",
+        "temperature=0",
+        "max_tokens=256"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmoq5mt94000iky04gpzs449x"
   },
   "metadata": {

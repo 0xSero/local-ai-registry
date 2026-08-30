@@ -101,6 +101,26 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-35b-a3b-unsloth-dynamic-q4-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--hf-repo",
+      "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M",
+      "--alias",
+      "qwen3.6-35b-a3b-q4km",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8094",
+      "-ngl",
+      "99",
+      "-c",
+      "32768",
+      "-n",
+      "8192",
+      "--reasoning",
+      "off",
+      "--jinja"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +137,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8094,
+    "host_port": 8094,
     "kind": "reference",
     "run_id": "cmsr2sdro00z2mr01qfavvmdn",
     "source": "localmaxxing",

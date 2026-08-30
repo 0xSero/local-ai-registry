@@ -101,6 +101,25 @@
   "hardware_id": "rtx-5070-12gb",
   "id": "qwen3-8-27b-ud-iq2-xxs-rtx-5070-12gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "Qwen3.8-27B-UD-IQ2_XXS.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-b",
+      "2048",
+      "-ub",
+      "512",
+      "-ngl",
+      "-1",
+      "-o",
+      "json",
+      "-r",
+      "1"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

@@ -101,6 +101,27 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "glm-5-2-ud-iq4-xs-rtx-pro-6000-blackwell-96gb-llama-cpp-tp4",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--model",
+      "GLM-5.2-UD-IQ4_XS-00001-of-00009.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8001",
+      "--alias",
+      "GLM-5.2-UD-IQ4_XS",
+      "--ctx-size",
+      "65536",
+      "--n-gpu-layers",
+      "999",
+      "--parallel",
+      "1",
+      "--flash-attn",
+      "on",
+      "--jinja",
+      "--metrics"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +138,12 @@
       ],
       "state": "none"
     },
+    "container_port": 8001,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "LD_LIBRARY_PATH": "~/code/ggml-org/llama.cpp/build/bin"
+    },
+    "host_port": 8001,
     "kind": "reference",
     "run_id": "cmr1ipwec01eeld01nn27xd9d",
     "source": "localmaxxing",

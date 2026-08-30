@@ -101,6 +101,21 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-5-35b-a3b-ud-q4-k-xl-dgx-spark-gb10-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--model",
+      "Qwen3.5-35B-A3B-UD-Q4_K_XL.gguf",
+      "--ctx-size",
+      "262144",
+      "--parallel",
+      "1",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,

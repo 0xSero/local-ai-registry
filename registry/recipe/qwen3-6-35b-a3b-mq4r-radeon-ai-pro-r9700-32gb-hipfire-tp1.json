@@ -101,6 +101,26 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-6-35b-a3b-mq4r-radeon-ai-pro-r9700-32gb-hipfire-tp1",
   "launch": {
+    "arguments": [
+      "python3",
+      "scripts/lmx_continuous_batch.py",
+      "--model",
+      "qwen3.6-35b-a3b.mq4r",
+      "--prompt-file",
+      "benchmarks/prompts/merge_sort_thinking_off.txt",
+      "--batch-size",
+      "64",
+      "--requests",
+      "64",
+      "--runs",
+      "3",
+      "--max-tokens",
+      "128",
+      "--max-seq",
+      "4096",
+      "--device",
+      "1"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

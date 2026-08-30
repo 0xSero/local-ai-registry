@@ -101,6 +101,9 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-27b-int4-autoround-w4a16-int8-head-int4-draft-intel-arc-pro-b70-32gb-vllm-tp1-u760xh0t",
   "launch": {
+    "arguments": [
+      "experiments/qwen36-27b-autoround-int4-b70/scripts/run-vllm-candidate.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +119,30 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "COMPILATION_CONFIG": "{\"cudagraph_mode\":\"PIECEWISE\",\"max_cudagraph_capture_size\":8}",
+      "GPU_INDEX": "0",
+      "MAX_MODEL_LEN": "2048",
+      "MAX_NUM_BATCHED_TOKENS": "1024",
+      "MODEL_DIR": "/mnt/fast-ai/llm-cache/hf/hub/models--webhie--Qwen3.6-27B-int4-AutoRound/snapshots/f5750c90b3776db658594df5fe8051098226dd8e",
+      "NUM_SPECULATIVE_TOKENS": "3",
+      "PORT": "19642",
+      "QWEN36_27B_ENABLE_MTP": "1",
+      "QWEN36_27B_ENABLE_XPU_GRAPH": "1",
+      "VLLM_XPU_DRAFT_LM_HEAD_INT4": "1",
+      "VLLM_XPU_DRAFT_LM_HEAD_INT4_GROUP_SIZE": "128",
+      "VLLM_XPU_DRAFT_LM_HEAD_INT4_SCALE_DTYPE": "bf16",
+      "VLLM_XPU_GDN_NONSPEC_POSTPROCESS_ACCEPTED_STATE": "0",
+      "VLLM_XPU_GDN_PROMOTE_ACCEPTED_SPEC_STATE": "1",
+      "VLLM_XPU_GDN_REPLAYSSM_COMMIT_IN_FORWARD": "1",
+      "VLLM_XPU_GDN_REPLAYSSM_SLOT_MGMT_TORCH_FALLBACK": "1",
+      "VLLM_XPU_GDN_REPLAYSSM_SPEC": "1",
+      "VLLM_XPU_GDN_REPLAYSSM_SPEC_CACHE_LEN": "8",
+      "VLLM_XPU_GDN_REPLAYSSM_STAGE_CONV_TORCH_FALLBACK": "0",
+      "VLLM_XPU_GDN_REPLAYSSM_TORCH_FALLBACK": "0",
+      "VLLM_XPU_LM_HEAD_INT8": "1",
+      "VLLM_XPU_LM_HEAD_INT8_SCALE_DTYPE": "bf16"
     },
     "kind": "reference",
     "run_id": "cmr9atqb800msqr01u760xh0t",

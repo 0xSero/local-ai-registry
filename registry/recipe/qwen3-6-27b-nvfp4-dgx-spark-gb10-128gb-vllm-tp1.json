@@ -101,6 +101,9 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "```"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -117,9 +120,186 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "environment": {
+      "DFLASH_MODEL": "${DFLASH_MODEL:-$HOME/models/Qwen3.6-27B-DFlash}",
+      "ENABLE_THINKING": "${ENABLE_THINKING:-1}",
+      "EXTRA_FLAGS": "()",
+      "GPU_MEM_UTIL": "${GPU_MEM_UTIL:-0.92}",
+      "MAX_BATCH_TOKENS": "${MAX_BATCH_TOKENS:-4096}",
+      "MAX_MODEL_LEN": "${MAX_MODEL_LEN:-262144}",
+      "MAX_NUM_SEQS": "${MAX_NUM_SEQS:-8}",
+      "MODEL_PATH": "${MODEL_PATH:-$HOME/models/Qwen3.6-27B-NVFP4}",
+      "REASONING_FLAG": "",
+      "SERVED_NAME": "${SERVED_NAME:-qwen36-27b}",
+      "SPEC_CONFIG": "{\"method\":\"mtp\",\"num_speculative_tokens\":${SPEC_TOKENS}}",
+      "SPEC_METHOD": "${SPEC_METHOD:-mtp}",
+      "SPEC_TOKENS": "${SPEC_TOKENS:-2}",
+      "THINK_KWARGS": "{\"enable_thinking\": false}",
+      "VENV_DIR": "${VENV_DIR:-./<local-dir>}",
+      "VLLM_BIN": "$VENV_DIR/bin/vllm"
+    },
+    "host_port": 8000,
     "kind": "reference",
+    "notes": [
+      "Prevent OpenBLAS/MKL from spawning too many threads (crashes under systemd)",
+      "--- Paths ---",
+      "--- Speculative decoding ---",
+      "--- Thinking mode ---",
+      "--- Serving ---",
+      "--- Optional flags ---",
+      "--- Launch ---"
+    ],
     "run_id": "cmri5obsn016xmj01joh0exn5",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "``",
+        "\ufeffexport",
+        "CUTE_DSL_ARCH=${CUTE_DSL_ARCH:-sm_121a}"
+      ],
+      [
+        "export",
+        "OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-1}"
+      ],
+      [
+        "export",
+        "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}"
+      ],
+      [
+        "export",
+        "MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}"
+      ],
+      [
+        "export",
+        "RAYON_NUM_THREADS=${RAYON_NUM_THREADS:-1}"
+      ],
+      [
+        "export",
+        "TOKENIZERS_PARALLELISM=${TOKENIZERS_PARALLELISM:-false}"
+      ],
+      [
+        "#",
+        "see",
+        "unsloth",
+        "recipe",
+        "(https://unsloth.ai/docs/models/qwen3.6#dgx-spark-with-nvfp4-quants)"
+      ],
+      [
+        "if",
+        "[",
+        "$SPEC_METHOD",
+        "=",
+        "dflash",
+        "]"
+      ],
+      [
+        "then"
+      ],
+      [
+        "else"
+      ],
+      [
+        "fi"
+      ],
+      [
+        "if",
+        "[",
+        "$ENABLE_THINKING",
+        "=",
+        "1",
+        "]"
+      ],
+      [
+        "then"
+      ],
+      [
+        "else"
+      ],
+      [
+        "fi"
+      ],
+      [
+        "if",
+        "[",
+        "${LANGUAGE_ONLY:-1}",
+        "=",
+        "1",
+        "]"
+      ],
+      [
+        "then"
+      ],
+      [
+        "EXTRA_FLAGS+=(--language-model-only)"
+      ],
+      [
+        "fi"
+      ],
+      [
+        "if",
+        "[",
+        "${CHUNKED_PREFILL:-1}",
+        "=",
+        "1",
+        "]"
+      ],
+      [
+        "[",
+        "$MAX_NUM_SEQS",
+        "-gt",
+        "1",
+        "]"
+      ],
+      [
+        "then"
+      ],
+      [
+        "EXTRA_FLAGS+=(--enable-chunked-prefill)"
+      ],
+      [
+        "fi"
+      ],
+      [
+        "exec",
+        "$VLLM_BIN",
+        "serve",
+        "$MODEL_PATH",
+        "--served-model-name",
+        "$SERVED_NAME",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--tensor-parallel-size",
+        "1",
+        "--gpu-memory-utilization",
+        "$GPU_MEM_UTIL",
+        "--max-model-len",
+        "$MAX_MODEL_LEN",
+        "--max-num-batched-tokens",
+        "$MAX_BATCH_TOKENS",
+        "--max-num-seqs",
+        "$MAX_NUM_SEQS",
+        "--trust-remote-code",
+        "--speculative-config",
+        "$SPEC_CONFIG",
+        "--enable-auto-tool-choice",
+        "--tool-call-parser",
+        "qwen3_coder",
+        "$REASONING_FLAG",
+        "--default-chat-template-kwargs",
+        "$THINK_KWARGS",
+        "${OVERRIDE_GENERATION_CONFIG:+--override-generation-config",
+        "$OVERRIDE_GENERATION_CONFIG}",
+        "${EXTRA_FLAGS[@]}",
+        "--seed",
+        "0"
+      ],
+      [
+        "```"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmri5obsn016xmj01joh0exn5"
   },
   "metadata": {

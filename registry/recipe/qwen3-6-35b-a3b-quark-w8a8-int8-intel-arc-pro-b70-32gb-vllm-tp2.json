@@ -101,6 +101,11 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-quark-w8a8-int8-intel-arc-pro-b70-32gb-vllm-tp2",
   "launch": {
+    "arguments": [
+      "bash",
+      "scripts/run-qwen36-ablation-candidate.sh",
+      "prefill-safe-int8-mixed-workspace-async-tp2-smoke"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +121,29 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "ABLATION_RUN_QUALITY": "0",
+      "COLOR_REPEATS": "16",
+      "COMPILATION_CONFIG": "{\"cudagraph_mode\":\"PIECEWISE\"}",
+      "GPU_MEMORY_UTILIZATION": "0.90",
+      "JSON_REPEATS": "16",
+      "MAX_NUM_SEQS": "24",
+      "METRICS_REPEATS": "1",
+      "ONEAPI_DEVICE_SELECTOR": "level_zero:0,1",
+      "SERVER_LAUNCHER": "scripts/launch-qwen36-quark-int8-accepted.sh",
+      "TP_SIZE": "2",
+      "VLLM_EXTRA_ARGS": "--uvicorn-log-level warning",
+      "VLLM_XPU_DISABLE_PREFILL_CUDAGRAPH_REPLAY": "1",
+      "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+      "VLLM_XPU_FORCE_GRAPH_WITH_COMM": "1",
+      "VLLM_XPU_GDN_NATIVE_FALLBACK": "prefill",
+      "VLLM_XPU_GDN_PREFILL_RECURRENT_FALLBACK": "1",
+      "VLLM_XPU_GRAPH_NOOP_COMM_CAPTURE": "1",
+      "VLLM_XPU_GREEDY_SAMPLE_TOPK_FALLBACK": "1",
+      "VLLM_XPU_INT8_MOE_MIXED_WORKSPACE": "1",
+      "XPU_GRAPH": "1",
+      "ZE_AFFINITY_MASK": "0,1"
     },
     "kind": "reference",
     "run_id": "cmqq4mwgm00yiqo0133bj962q",

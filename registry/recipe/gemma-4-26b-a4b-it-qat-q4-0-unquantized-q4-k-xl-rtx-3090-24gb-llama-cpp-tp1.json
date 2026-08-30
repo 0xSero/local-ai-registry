@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "gemma-4-26b-a4b-it-qat-q4-0-unquantized-q4-k-xl-rtx-3090-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf",
+      "-p",
+      "1024",
+      "-n",
+      "128",
+      "-ngl",
+      "999",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-fitt",
+      "1024",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

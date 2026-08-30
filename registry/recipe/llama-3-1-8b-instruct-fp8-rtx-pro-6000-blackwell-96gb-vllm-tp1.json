@@ -101,6 +101,28 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "llama-3-1-8b-instruct-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "nvidia/Llama-3.1-8B-Instruct-FP8",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8000",
+      "--served-model-name",
+      "nvidia/Llama-3.1-8B-Instruct-FP8",
+      "--trust-remote-code",
+      "--generation-config",
+      "vllm",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-num-batched-tokens",
+      "8192",
+      "--max-num-seqs",
+      "4"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +139,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmsoxtuma00ftmp01axh5avuw",
     "source": "localmaxxing",

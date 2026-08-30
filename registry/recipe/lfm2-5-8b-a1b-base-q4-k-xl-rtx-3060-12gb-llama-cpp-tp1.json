@@ -101,6 +101,15 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "lfm2-5-8b-a1b-base-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "LFM2.5-8B-A1B-UD-Q4_K_XL.gguf",
+      "-c",
+      "4096",
+      "--port",
+      "8080"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +126,11 @@
       ],
       "state": "none"
     },
+    "container_port": 8080,
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "1"
+    },
+    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmqg6k2i80001p201f9yugzx1",
     "source": "localmaxxing",

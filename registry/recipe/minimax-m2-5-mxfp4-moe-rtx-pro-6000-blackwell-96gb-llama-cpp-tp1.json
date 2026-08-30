@@ -101,6 +101,26 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "minimax-m2-5-mxfp4-moe-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "MiniMax-M2.5-REAP-MXFP4_MOE.gguf",
+      "--jinja",
+      "--chat-template-file",
+      "minimax-m2.5-nothink.jinja",
+      "--reasoning-budget",
+      "0",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "-c",
+      "131072",
+      "-np",
+      "1",
+      "-ngl",
+      "999"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

@@ -101,6 +101,23 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-6-27b-nvfp4-rtx-pro-6000-blackwell-96gb-tensorrt-llm-tp1",
   "launch": {
+    "arguments": [
+      "trtllm-serve",
+      "--model",
+      "nvidia/Qwen3.6-27B-NVFP4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8090",
+      "--max_batch_size",
+      "1",
+      "--max_num_tokens",
+      "4096",
+      "--max_seq_len",
+      "131072",
+      "--served_model_name",
+      "qwen3.6-27b-nvfp4-trtllm"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +134,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8090,
+    "host_port": 8090,
     "kind": "reference",
     "run_id": "cmsovenrm00djmp013kbi4jf0",
     "source": "localmaxxing",

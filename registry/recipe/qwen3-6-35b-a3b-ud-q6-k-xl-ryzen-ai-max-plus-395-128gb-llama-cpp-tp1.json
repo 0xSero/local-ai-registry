@@ -101,6 +101,29 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-6-35b-a3b-ud-q6-k-xl-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-35B-A3B-UD-Q6_K_XL.gguf",
+      "-c",
+      "32768",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "--no-context-shift",
+      "-b",
+      "2048",
+      "-ub",
+      "2048",
+      "--metrics",
+      "--parallel",
+      "8"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +140,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmofabj2r0003l4043o4pjtu7",
     "source": "localmaxxing",

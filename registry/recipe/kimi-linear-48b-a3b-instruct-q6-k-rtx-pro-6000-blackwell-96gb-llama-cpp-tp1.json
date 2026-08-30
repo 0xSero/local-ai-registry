@@ -101,6 +101,21 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "kimi-linear-48b-a3b-instruct-q6-k-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "--model",
+      "Kimi-Linear-48B-A3B-Instruct-{quant}.gguf",
+      "--ctx-size",
+      "262144",
+      "--gpu-layers",
+      "999",
+      "--flash-attn",
+      "on",
+      "--parallel",
+      "1",
+      "--cont-batching",
+      "--jinja"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

@@ -101,6 +101,23 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-27b-dflash-q4-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "build/test_dflash",
+      "Qwen3.6-27B-Q4_K_M.gguf",
+      "z-lab/Qwen3.6-27B-DFlash",
+      "--fast-rollback",
+      "--ddtree",
+      "--ddtree-budget=22",
+      "--max-ctx=1024",
+      "(rebuild",
+      "for",
+      "sm_120:",
+      "cmake",
+      "-DCMAKE_CUDA_ARCHITECTURES=120",
+      "-DGGML_CUDA_GRAPHS=ON",
+      "-DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.9/bin/nvcc",
+      "-DCMAKE_CUDA_HOST_COMPILER=/usr/bin/gcc-12)"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

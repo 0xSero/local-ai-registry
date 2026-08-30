@@ -101,6 +101,23 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-8-27b-iq1-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.8-27B-UD-IQ1_M.gguf",
+      "--model-draft",
+      "mtp-Qwen3.8-27B-Q4_0.gguf",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "2",
+      "--flash-attn",
+      "on",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

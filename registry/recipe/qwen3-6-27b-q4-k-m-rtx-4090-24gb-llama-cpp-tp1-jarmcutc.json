@@ -101,6 +101,33 @@
   "hardware_id": "rtx-4090-24gb",
   "id": "qwen3-6-27b-q4-k-m-rtx-4090-24gb-llama-cpp-tp1-jarmcutc",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-27B-Q4_K_M.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-ngl",
+      "99",
+      "-c",
+      "90200",
+      "-b",
+      "2048",
+      "-ub",
+      "512",
+      "--flash-attn",
+      "on",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "-np",
+      "1",
+      "--jinja",
+      "--no-mmap"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,9 +144,44 @@
       ],
       "state": "none"
     },
+    "container_port": 8080,
+    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmolvxd82000alb04jarmcutc",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "Launch",
+        "command:"
+      ],
+      [
+        "llama-server",
+        "-m",
+        "Qwen3.6-27B-Q4_K_M.gguf",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080",
+        "-ngl",
+        "99",
+        "-c",
+        "90200",
+        "-b",
+        "2048",
+        "-ub",
+        "512",
+        "--flash-attn",
+        "on",
+        "--cache-type-k",
+        "q8_0",
+        "--cache-type-v",
+        "q8_0",
+        "-np",
+        "1",
+        "--jinja",
+        "--no-mmap"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmolvxd82000alb04jarmcutc"
   },
   "metadata": {

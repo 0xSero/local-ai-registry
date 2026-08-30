@@ -101,6 +101,16 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "granite-4-2-8b-q4-k-s-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-quantize",
+      "--imatrix",
+      "imatrix-granite42-mixed.gguf",
+      "--token-embedding-type",
+      "q5_k",
+      "bf16.gguf",
+      "out.gguf",
+      "Q4_K_S"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -120,6 +130,32 @@
     "kind": "reference",
     "run_id": "cmt8zl9b300ikli01o2v42b0q",
     "source": "localmaxxing",
+    "steps": [
+      [
+        "llama-quantize",
+        "--imatrix",
+        "imatrix-granite42-mixed.gguf",
+        "--token-embedding-type",
+        "q5_k",
+        "bf16.gguf",
+        "out.gguf",
+        "Q4_K_S"
+      ],
+      [
+        "bench:",
+        "llama-bench",
+        "-p",
+        "512",
+        "-n",
+        "128",
+        "-ngl",
+        "99",
+        "-fa",
+        "on",
+        "-r",
+        "3"
+      ]
+    ],
     "url": "https://www.localmaxxing.com/en/runs/cmt8zl9b300ikli01o2v42b0q"
   },
   "metadata": {

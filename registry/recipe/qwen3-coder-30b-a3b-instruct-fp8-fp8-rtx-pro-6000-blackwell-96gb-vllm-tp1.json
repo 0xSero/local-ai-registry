@@ -101,6 +101,28 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-coder-30b-a3b-instruct-fp8-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8000",
+      "--served-model-name",
+      "Qwen/Qwen3-Coder-30B-A3B-Instruct-FP8",
+      "--trust-remote-code",
+      "--generation-config",
+      "vllm",
+      "--max-model-len",
+      "32768",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-num-batched-tokens",
+      "8192",
+      "--max-num-seqs",
+      "4"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +139,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8000,
+    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmsoxtt1l00f9mp0185rby2p4",
     "source": "localmaxxing",

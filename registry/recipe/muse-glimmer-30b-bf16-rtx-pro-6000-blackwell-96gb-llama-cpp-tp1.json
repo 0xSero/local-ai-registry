@@ -101,6 +101,26 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "muse-glimmer-30b-bf16-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "/home/<USER>/models/Muse-Glimmer-30B-GGUF-BF16/Muse-Glimmer-30B-BF16-00001-of-00002.gguf",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8094",
+      "-ngl",
+      "99",
+      "-c",
+      "131072",
+      "-n",
+      "16000",
+      "--reasoning",
+      "off",
+      "--jinja",
+      "--alias",
+      "muse-bf16-llamacpp"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +137,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8094,
+    "host_port": 8094,
     "kind": "reference",
     "run_id": "cmsoveowo00dsmp01cf38c65a",
     "source": "localmaxxing",

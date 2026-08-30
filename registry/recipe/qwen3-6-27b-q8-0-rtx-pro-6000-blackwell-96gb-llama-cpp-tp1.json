@@ -101,6 +101,27 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-6-27b-q8-0-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-27B-MTP-Q8_0.gguf",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "2",
+      "--reasoning-format",
+      "auto",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-c",
+      "262144",
+      "-np",
+      "1",
+      "-ngl",
+      "999"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

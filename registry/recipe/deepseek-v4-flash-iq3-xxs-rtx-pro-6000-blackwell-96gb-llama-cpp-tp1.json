@@ -101,6 +101,28 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "deepseek-v4-flash-iq3-xxs-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "DeepSeek-V4-Flash-custom-iq3down.gguf",
+      "-c",
+      "262144",
+      "-ngl",
+      "99",
+      "-np",
+      "1",
+      "-b",
+      "2048",
+      "-ub",
+      "512",
+      "--spec-type",
+      "dsv4-mtp",
+      "--cache-reuse",
+      "256",
+      "--no-mmap",
+      "--flash-attn",
+      "on"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +138,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "DSV4_MTP_GGUF": "DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf",
+      "DSV4_MTP_SPEC": "1"
     },
     "kind": "reference",
     "run_id": "cmrch4u4u00hro201qqq1pwiz",

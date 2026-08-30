@@ -101,6 +101,35 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-6-35b-a3b-ud-q4-k-xl-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+      "-ngl",
+      "99",
+      "--split-mode",
+      "tensor",
+      "--tensor-split",
+      "1,1",
+      "-c",
+      "90112",
+      "-ctk",
+      "q4_0",
+      "-ctv",
+      "q4_0",
+      "--cache-type-k-draft",
+      "q4_0",
+      "--cache-type-v-draft",
+      "q4_0",
+      "-np",
+      "1",
+      "-fa",
+      "on",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "2"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +145,9 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "GGML_CUDA_ALLREDUCE": "internal"
     },
     "kind": "reference",
     "run_id": "cmteqha6p0034n0016to5zgpe",

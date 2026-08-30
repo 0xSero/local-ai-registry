@@ -101,6 +101,26 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "glm-5-1-iq1-s-rtx-3090-24gb-llama-cpp-tp8",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "/data/models/glm51-gguf/bartowski-zai-org-glm51-iq1s/zai-org_GLM-5.1-IQ1_S-00001-of-00004.gguf",
+      "-c",
+      "8192",
+      "-np",
+      "4",
+      "-ngl",
+      "999",
+      "--split-mode",
+      "layer",
+      "--tensor-split",
+      "1,1,1,1,1,1,1,1",
+      "-fa",
+      "-ctk",
+      "q4_0",
+      "-ctv",
+      "q4_0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +136,9 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "2,3,4,5,6,7,8,9"
     },
     "kind": "reference",
     "run_id": "cmowl7a7m0048o201d2d6f0hu",

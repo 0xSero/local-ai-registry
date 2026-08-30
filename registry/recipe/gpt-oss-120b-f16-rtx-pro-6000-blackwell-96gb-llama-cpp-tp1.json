@@ -101,6 +101,21 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "gpt-oss-120b-f16-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "gpt-oss-120b-F16.gguf",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-c",
+      "131072",
+      "-np",
+      "1",
+      "-ngl",
+      "999"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

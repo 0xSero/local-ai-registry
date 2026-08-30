@@ -101,6 +101,9 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-o1ragvte",
   "launch": {
+    "arguments": [
+      "repro/qwen38-27b-q4km-tp1-b70/run-server.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +119,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "BUILD_DIR": "/path/to/llama.cpp/build-sycl-aot-bmg-g31",
+      "MODEL_DIR": "/path/to/qwen3.8-27b-q4km"
     },
     "kind": "reference",
     "run_id": "cmt9m8i0b00z3li01o1ragvte",

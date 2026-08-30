@@ -101,6 +101,27 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-26b-a4b-it-qat-q4-0-unquantized-q4-k-m-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
+    "arguments": [
+      "llama-bench",
+      "-m",
+      "gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf",
+      "-p",
+      "512",
+      "-n",
+      "128",
+      "-ngl",
+      "30",
+      "-sm",
+      "layer",
+      "-fa",
+      "on",
+      "-ctk",
+      "f16",
+      "-ctv",
+      "f16",
+      "-r",
+      "5"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

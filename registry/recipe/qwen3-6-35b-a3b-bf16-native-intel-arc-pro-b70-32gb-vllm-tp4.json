@@ -101,6 +101,32 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-bf16-native-intel-arc-pro-b70-32gb-vllm-tp4",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "qwen36-35b-a3b-bf16-hf",
+      "--tensor-parallel-size",
+      "4",
+      "--dtype",
+      "bfloat16",
+      "--enable-prefix-caching",
+      "--mamba-cache-mode",
+      "align",
+      "--max-model-len",
+      "65536",
+      "--max-num-seqs",
+      "8",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-num-batched-tokens",
+      "8192",
+      "--trust-remote-code",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--compilation-config",
+      "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +142,10 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+      "ZE_AFFINITY_MASK": "0,2,3,4"
     },
     "kind": "reference",
     "run_id": "cmqszbv1q012hqr01fsmv2wnu",

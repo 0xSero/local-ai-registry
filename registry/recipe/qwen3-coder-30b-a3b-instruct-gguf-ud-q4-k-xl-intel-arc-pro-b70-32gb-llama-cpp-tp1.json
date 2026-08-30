@@ -101,6 +101,26 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-coder-30b-a3b-instruct-gguf-ud-q4-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "/mnt/usb-models/llm-models/qwen3-coder-30b-a3b-instruct-gguf/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf",
+      "-c",
+      "4096",
+      "-ngl",
+      "99",
+      "-b",
+      "1024",
+      "-ub",
+      "256",
+      "-fa",
+      "on",
+      "--ctx-checkpoints",
+      "0",
+      "--jinja",
+      "--reasoning",
+      "off"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

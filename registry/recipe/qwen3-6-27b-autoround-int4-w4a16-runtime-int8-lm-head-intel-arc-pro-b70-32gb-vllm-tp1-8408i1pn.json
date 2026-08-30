@@ -101,6 +101,9 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-intel-arc-pro-b70-32gb-vllm-tp1-8408i1pn",
   "launch": {
+    "arguments": [
+      "experiments/qwen36-27b-autoround-int4-b70/scripts/serve-vllm.sh"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +119,19 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "COMPILATION_CONFIG": "{\"cudagraph_mode\":\"PIECEWISE\",\"max_cudagraph_capture_size\":8}",
+      "GPU_INDEX": "2",
+      "MAX_MODEL_LEN": "2048",
+      "MAX_NUM_BATCHED_TOKENS": "1024",
+      "NUM_SPECULATIVE_TOKENS": "3",
+      "PORT": "19412",
+      "QWEN36_27B_ENABLE_MTP": "1",
+      "QWEN36_27B_ENABLE_XPU_GRAPH": "1",
+      "VLLM_XPU_GDN_NONSPEC_POSTPROCESS_ACCEPTED_STATE": "0",
+      "VLLM_XPU_GDN_PROMOTE_ACCEPTED_SPEC_STATE": "1",
+      "VLLM_XPU_LM_HEAD_INT8": "1"
     },
     "kind": "reference",
     "run_id": "cmr4zkcxb003yq9018408i1pn",

@@ -101,6 +101,24 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-8-27b-mq4-rx-7900-xtx-24gb-hipfire-tp1",
   "launch": {
+    "arguments": [
+      "dflash_spec_demo",
+      "--target",
+      "qwen3.8-27b.mq4",
+      "--draft",
+      "qwen36-27b-dflash-mq4.hfq",
+      "--prompt-file",
+      "merge_sort_thinking_off.txt",
+      "--max",
+      "256",
+      "--temp",
+      "0",
+      "--kv-mode",
+      "asym3",
+      "--no-chatml",
+      "--ctx",
+      "2048"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -116,6 +134,11 @@
         }
       ],
       "state": "none"
+    },
+    "environment": {
+      "HIPFIRE_GRAPH": "1",
+      "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+      "HIP_VISIBLE_DEVICES": "0"
     },
     "kind": "reference",
     "run_id": "cmt1ff27w00ydmv01drv7z4np",

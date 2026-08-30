@@ -5,6 +5,8 @@ import json
 import re
 from pathlib import Path
 
+from tokenize_observed_command import TOKENIZED_LAUNCH_FIELDS
+
 
 SCHEMA = "local-ai-registry/v1"
 APPLE_SOURCE = "https://support.apple.com/specs/mac"
@@ -179,7 +181,8 @@ def sanitize_candidates(root):
             continue
         metadata = recipe.setdefault("metadata", {}).setdefault("localmaxxing", {})
         run_id = metadata.get("run_id")
-        existing_container = recipe.get("launch", {}).get("container")
+        existing = recipe.get("launch") or {}
+        existing_container = existing.get("container")
         recipe["status"] = "candidate"
         recipe["launch"] = {
             "kind": "reference",
@@ -189,6 +192,9 @@ def sanitize_candidates(root):
         }
         if existing_container:
             recipe["launch"]["container"] = existing_container
+        for key in TOKENIZED_LAUNCH_FIELDS:
+            if key in existing:
+                recipe["launch"][key] = existing[key]
         recipe["capabilities"] = {key: None for key in ("chat", "reasoning", "tools", "vision")}
         recipe["schema_version"] = SCHEMA
         write(path, recipe)

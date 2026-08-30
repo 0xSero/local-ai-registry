@@ -101,6 +101,23 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "huihui-qwen3-6-27b-abliterated-q4-k-m-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3.6-27B-abliterated-Fable-opus4.8-cyber.Q4_K_M.MTP.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8089",
+      "-ngl",
+      "99",
+      "-c",
+      "8192",
+      "--flash-attn",
+      "on",
+      "--temp",
+      "0"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +134,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8089,
+    "host_port": 8089,
     "kind": "reference",
     "run_id": "cms0n8ehb009is20154g86frf",
     "source": "localmaxxing",

@@ -101,6 +101,21 @@
   "hardware_id": "apple-m3-ultra-512gb",
   "id": "qwen3-coder-next-q5-k-xl-apple-m3-ultra-512gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "llama-server",
+      "-m",
+      "Qwen3-Coder-Next-UD-Q5_K_XL-00001-of-00003.gguf",
+      "-c",
+      "32768",
+      "--port",
+      "8081",
+      "-ngl",
+      "99",
+      "-fa",
+      "on",
+      "--fit",
+      "off"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -117,6 +132,8 @@
       ],
       "state": "none"
     },
+    "container_port": 8081,
+    "host_port": 8081,
     "kind": "reference",
     "run_id": "cmofnviki000ll704ogjm0ei2",
     "source": "localmaxxing",

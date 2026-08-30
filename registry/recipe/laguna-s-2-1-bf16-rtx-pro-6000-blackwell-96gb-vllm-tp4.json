@@ -101,6 +101,20 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "laguna-s-2-1-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp4",
   "launch": {
+    "arguments": [
+      "vllm",
+      "serve",
+      "poolside/Laguna-S-2.1-DFlash",
+      "--tensor-parallel-size",
+      "4",
+      "--gpu-memory-utilization",
+      "0.9",
+      "--max-num-seqs",
+      "8",
+      "--enable-prefix-caching",
+      "--speculative-config",
+      "{method:dflash,num_speculative_tokens:7}"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

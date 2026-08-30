@@ -101,6 +101,21 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-8-27b-q6-k-rtx-5090-32gb-lmstudio-tp1",
   "launch": {
+    "arguments": [
+      "llama-bench-build/build/bin/Release/llama-bench.exe",
+      "-m",
+      "~/.cache/lm-studio/models/unsloth/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q6_K.gguf",
+      "-p",
+      "512",
+      "-n",
+      "512",
+      "-b",
+      "1",
+      "-ngl",
+      "999",
+      "-r",
+      "3"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

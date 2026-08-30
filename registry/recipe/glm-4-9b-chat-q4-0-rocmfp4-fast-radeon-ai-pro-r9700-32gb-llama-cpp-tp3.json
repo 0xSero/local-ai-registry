@@ -101,6 +101,27 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "glm-4-9b-chat-q4-0-rocmfp4-fast-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
   "launch": {
+    "arguments": [
+      "/home/mikekey/Experiments/ROCmFPX/build-rdna4/bin/llama-server",
+      "--port",
+      "${PORT}",
+      "--host",
+      "0.0.0.0",
+      "--no-webui",
+      "--device",
+      "ROCm0",
+      "-ngl",
+      "999",
+      "--jinja",
+      "-fa",
+      "on",
+      "-m",
+      "/home/mikekey/models/gguf/glm/glm-4-9b-chat-Q4_0_ROCMFP4_FAST.gguf",
+      "-np",
+      "1",
+      "-c",
+      "65536"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,

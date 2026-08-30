@@ -101,6 +101,23 @@
   "hardware_id": "apple-m4-pro-24gb",
   "id": "qwen3-5-4b-bf16-apple-m4-pro-24gb-llama-cpp-tp1",
   "launch": {
+    "arguments": [
+      "./build/bin/llama-bench",
+      "-m",
+      "./Qwen3.5-4B-BF16.gguf",
+      "-ngl",
+      "99",
+      "-b",
+      "512",
+      "-d",
+      "512",
+      "-p",
+      "512",
+      "-fa",
+      "1",
+      "-n",
+      "1024"
+    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
