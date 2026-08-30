@@ -544,7 +544,7 @@ export default async function Home({ searchParams }: PageProps) {
           </header>
           <div className="record-modal-body">
             <HuggingFaceCard identity={recordHuggingFace(selectedRecord) as { link_type?: string; reason?: string; repository?: string | null; status?: string; url?: string } | null} />
-            {(detailCollection === "recipes" || detailCollection === "recipe") && (
+            {detailCollection === "recipes" && (
               <>
                 <p className="trust-note">
                   {selectedRecord.status === "validated" && selectedRecord.registry && typeof selectedRecord.registry === "object" && "launchable" in selectedRecord.registry && selectedRecord.registry.launchable
