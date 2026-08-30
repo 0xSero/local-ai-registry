@@ -1,8 +1,19 @@
 import { ConfigurationCard, configurationFromRecipe } from "@/app/components/configuration-card"
+import { CopyActions } from "@/app/components/copy-actions"
 import { DataTree } from "@/app/components/data-tree"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
+import { RecordEvidence } from "@/app/components/record-evidence"
+import { RecordFacts } from "@/app/components/record-facts"
 import { RelatedRecords } from "@/app/components/related-records"
-import { displayRecord, huggingFaceIdentity, relatedGroups, recipeIsLaunchable } from "@/app/lib/record-view"
+import {
+  copyItems,
+  displayRecord,
+  huggingFaceIdentity,
+  recordDescription,
+  recordFacts,
+  relatedGroups,
+  recipeIsLaunchable,
+} from "@/app/lib/record-view"
 
 export function RecordBody({
   collection,
@@ -15,10 +26,16 @@ export function RecordBody({
 }) {
   const recipe = collection === "recipes"
   const config = recipe ? configurationFromRecipe(record) : null
+  const description = recordDescription(record)
+  const facts = recordFacts(collection, record)
   const groups = relatedGroups(record)
+  const copies = copyItems(collection, record)
   const tree = displayRecord(record)
   return (
     <>
+      {description && <p className="record-lede">{description}</p>}
+      <CopyActions items={copies} />
+      <RecordFacts facts={facts} />
       <HuggingFaceCard identity={huggingFaceIdentity(record)} />
       {config && (
         <>
@@ -30,12 +47,13 @@ export function RecordBody({
           <ConfigurationCard config={config} />
         </>
       )}
+      <RecordEvidence collection={collection} record={record} />
       <RelatedRecords groups={groups} />
       {variant === "page" ? (
         <section className="record-sheet">
           <div className="record-sheet-heading">
-            <h2>Complete normalized record</h2>
-            <p>Launch contracts, Hub identity, and related records are shown above. Remaining fields stay in page flow.</p>
+            <h2>Remaining fields</h2>
+            <p>Identity, launch, related records, and measured speed are shown above. This is the rest of the normalized record.</p>
           </div>
           <DataTree value={tree} />
         </section>

@@ -77,6 +77,10 @@ export function collectionHref(collection: string): string {
   return topic ? topicHref(topic) : "/"
 }
 
+export function recordHref(collection: string, id: string): string {
+  return `/${collection}/${id}`
+}
+
 export function hrefWithRecord(state: URLSearchParams, id: string): string {
   const selected = new URLSearchParams(state)
   selected.set("record", id)
