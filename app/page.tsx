@@ -285,7 +285,7 @@ export default async function Home({ searchParams }: PageProps) {
         models: listModels({ q: query }, { limit: 1, offset: 0 }).total,
         prices: listPrices({ q: query }, { limit: 1, offset: 0 }).total,
         benchmarks: listBenchmarks({ q: query }, { limit: 1, offset: 0 }).total,
-        "speed-sweeps": listSpeedSweeps({ q: query }, { limit: 1, offset: 0 }).total,
+        "speed-sweeps": undefined as number | undefined,
       }
     : null
 

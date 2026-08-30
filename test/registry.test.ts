@@ -298,7 +298,8 @@ test("scraped benchmark leaderboards expose quality scores separate from speed s
   const sweeps = listSpeedSweeps({}, { limit: 5, offset: 0 })
 
   assert.equal(benchmarks.total, counts.benchmarks)
-  assert.ok(benchmarks.total >= 100)
+  assert.ok(benchmarks.total >= 90)
+  assert.ok(benchmarks.data.every((benchmark) => benchmark.rows.length > 0))
   assert.ok(sweeps.total > 0)
   assert.ok(sweeps.data.every((sweep) => !("rows" in sweep && Array.isArray(sweep.rows) && sweep.rows.some((row) => "variant" in row))))
 

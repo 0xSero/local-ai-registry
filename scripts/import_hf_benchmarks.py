@@ -65,6 +65,8 @@ def import_page(matrix, page, meta, root):
     benchmark_id = page.stem
     html = page.read_text()
     rows = parse_rows(html)
+    if not rows:
+        return 0
     info = meta.get(benchmark_id, {})
     write(root / "benchmarks" / f"{benchmark_id}.json", {
         "schema_version": SCHEMA,
