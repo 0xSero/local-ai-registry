@@ -695,19 +695,10 @@ def import_mlxfast(registry: Registry) -> None:
         "hardware_count": 1,
         "engine": {"name": "mlx", "version": "gemma4-26b-a4b-mlx-v1", "graph_mode": None},
         "launch": {
-            "kind": "native",
-            "arguments": ["./setup.sh"],
-            "url": engine_url,
-            "container": {
-                "state": "none",
-                "runtime": None,
-                "image": None,
-                "digest": None,
-                "compose_file": None,
-                "source": [now_source("recipe-launch", engine_url)],
-                "captured_at": CAPTURED,
-                "reason": "non-container-launch-kind",
-            },
+            "kind": "reference",
+            "source": "mlxfast",
+            "url": board_url,
+            "container": container_none(board_url),
         },
         "serving": {
             "tensor_parallel": 1,

@@ -468,10 +468,11 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   }
   assert.equal(record.recipe_source, "mlxfast")
   assert.equal(record.status, "candidate")
-  assert.equal(record.launch.kind, "native")
+  assert.equal(record.launch.kind, "reference")
   assert.equal(record.hardware_id, "apple-m5-max-128gb")
   assert.equal(record.registry.launchable, false)
   assert.equal(record.relationships.model.id, "gemma-4-26b-a4b-it")
+  assert.ok(!("arguments" in record.launch))
 
   const instance = getEntityDetail("model-instances", "mlx-community-gemma-4-26b-a4b-it-qat-4bit--4bit") as {
     huggingface: { repository: string; status: string }

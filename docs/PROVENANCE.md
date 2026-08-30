@@ -50,7 +50,7 @@ A later LocalMaxxing refresh mapped NVIDIA GB10 / DGX Spark UNIFIED 128GB rows o
 
 oMLX `omlx serve` templates were rejected. They copied a native command onto Apple SKUs that had some other MLX evidence, without a measured oMLX run on those chips.
 
-mlx.fast official Gemma 4 26B A4B scores from [yukon.org/mlxfast](https://www.yukon.org/mlxfast) attach to canonical `gemma-4-26b-a4b-it` through Hub-confirmed `mlx-community/gemma-4-26B-A4B-it-qat-4bit` revision `0e3cbab38ce568cf6e23543010d08d03b731910c`. Hardware is `apple-m5-max-128gb` only. The recipe stays `candidate` because the Swift/Metal engine is not digest-pinned. Observed setup stays in metadata; the registry does not offer Run.
+mlx.fast official Gemma 4 26B A4B scores from [yukon.org/mlxfast](https://www.yukon.org/mlxfast) attach to canonical `gemma-4-26b-a4b-it` through Hub-confirmed `mlx-community/gemma-4-26B-A4B-it-qat-4bit` revision `0e3cbab38ce568cf6e23543010d08d03b731910c`. Hardware is `apple-m5-max-128gb` only. The recipe is a reference-only candidate: observed setup stays in metadata, and the launch object does not carry a command.
 
 ## Promotion rule
 
