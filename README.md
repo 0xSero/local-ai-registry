@@ -162,7 +162,7 @@ The default `choose` command uses `gum` when available and a numbered terminal m
 
 ## Source layout
 
-`registry/` is the only dataset and the schema for new imports. The earlier denormalized `local-ai/` tree was removed: the website, the API, and the Omarchy panel all read `registry/` directly. Measured local inference evidence lives in `speed-sweeps/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmarks/` and never attach to recipes.
+`registry/` is the normalized contract and the schema for new imports. Measured local inference evidence lives in `speed-sweeps/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmarks/` and never attach to recipes. `local-ai/` is the earlier denormalized dataset retained temporarily for existing consumers; it is not the schema for new imports.
 
 Data provenance and recovery decisions are in [`docs/PROVENANCE.md`](docs/PROVENANCE.md). The behavior-only product prompt for a registry browser is in [`docs/UI_BEHAVIOR_PROMPT.md`](docs/UI_BEHAVIOR_PROMPT.md).
 
