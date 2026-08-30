@@ -1,0 +1,207 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "inkling-exp"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 6,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "inkling-small-iq4-xs-rtx-3090-24gb-llama-cpp-tp6",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms90mh5r0045pm01lf9n6cre"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms90mh5r0045pm01lf9n6cre",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms90mh5r0045pm01lf9n6cre"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": null,
+      "observed_command": "llama-server --model /mnt/nvme/models/unsloth/Inkling-Small-GGUF/UD-IQ4_XS/Inkling-Small-UD-IQ4_XS-00001-of-00004.gguf --alias inkling-small-ud-iq4-xs --host 0.0.0.0 --port 18081 --ctx-size 262144 --parallel 1 --device CUDA0,CUDA1,CUDA2,CUDA3,CUDA4,CUDA5 --split-mode layer --tensor-split 8,7,7,7,7,7 --n-gpu-layers all --flash-attn on --cache-type-k f16 --cache-type-v f16 --batch-size 2048 --ubatch-size 8 --threads 24 --threads-batch 48 --temp 1.0 --top-p 1.0 --min-p 0.0 --cache-prompt --metrics --jinja --slots",
+      "run_id": "cms90mh5r0045pm01lf9n6cre",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "/mnt/nvme/models/unsloth/Inkling-Small-GGUF/UD-IQ4_XS/Inkling-Small-UD-IQ4_XS-00001-of-00004.gguf",
+          "--alias",
+          "inkling-small-ud-iq4-xs",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "18081",
+          "--ctx-size",
+          "262144",
+          "--parallel",
+          "1",
+          "--device",
+          "CUDA0,CUDA1,CUDA2,CUDA3,CUDA4,CUDA5",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "8,7,7,7,7,7",
+          "--n-gpu-layers",
+          "all",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--batch-size",
+          "2048",
+          "--ubatch-size",
+          "8",
+          "--threads",
+          "24",
+          "--threads-batch",
+          "48",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "1.0",
+          "--min-p",
+          "0.0",
+          "--cache-prompt",
+          "--metrics",
+          "--jinja",
+          "--slots"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-inkling-small-gguf--iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms90mh5r0045pm01lf9n6cre"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 6
+  },
+  "speed_sweeps_ids": [
+    "inkling-small-iq4-xs-rtx-3090-24gb-llama-cpp-tp6-sweep"
+  ],
+  "status": "candidate"
+}

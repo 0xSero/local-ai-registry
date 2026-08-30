@@ -1,0 +1,187 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "1e5ad35-2026-05-10-built-from-master"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "mimo-v2-5-q4-k-m-gguf-dgx-spark-gb10-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmozdo5940030q201948atk3q"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmozdo5940030q201948atk3q",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmozdo5940030q201948atk3q"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "MiMo V2.5 (309.77B params, 51 layers, MoE) Q4_K_M GGUF on dual NVIDIA DGX Spark cluster via llama.cpp RPC backend. tokSOut=16.08 t/s median c=1 (5 runs max_tokens=256, mean 16.4, stdev 0.91). Aggregate at c=4 concurrent ~32 t/s (8.15 per stream). TTFR 606ms median. Context 1M (5x what M2.7 supports on same cluster). Built from ggml-org/llama.cpp master commit 1e5ad35 with GGML_RPC=ON GGML_CUDA=ON sm_121a target. Includes PR 22493 (model arch May 7) + PR 22812 (FA kernels May 9). Layer split: 50/52 layers offloaded, CUDA0 80.6 GiB on Spark 2 + RPC0 98.3 GiB on Spark 1 over QSFP56 200G. AesSedai vision branch not used (text-only).",
+      "observed_command": "llama-server -m MiMo-V2.5-Q4_K_M-00001-of-00005.gguf --host 0.0.0.0 --port 10000 --ctx-size 1000000 -np 4 --n-gpu-layers 999 --rpc 192.168.101.1:50052 --threads 8 --threads-batch 8 -fa 1 --batch-size 2048 --ubatch-size 512",
+      "run_id": "cmozdo5940030q201948atk3q",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "MiMo-V2.5-Q4_K_M-00001-of-00005.gguf",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "10000",
+          "--ctx-size",
+          "1000000",
+          "-np",
+          "4",
+          "--n-gpu-layers",
+          "999",
+          "--rpc",
+          "192.168.101.1:50052",
+          "--threads",
+          "8",
+          "--threads-batch",
+          "8",
+          "-fa",
+          "1",
+          "--batch-size",
+          "2048",
+          "--ubatch-size",
+          "512"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "bartowski-mimo-v2-5-gguf--q4-k-m-gguf",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmozdo5940030q201948atk3q"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 1000000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "mimo-v2-5-q4-k-m-gguf-dgx-spark-gb10-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

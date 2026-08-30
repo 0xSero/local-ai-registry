@@ -1,0 +1,194 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm-main d272418f4 (XPU graph + PatchB)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-35b-a3b-fp8-online-fp8-kv-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqsyq9lt011rqr010otg1494"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqsyq9lt011rqr010otg1494",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqsyq9lt011rqr010otg1494"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "b1 DECODE = 110.73 t/s (corrected after-first-token, mean-of-5, temp 0, deterministic 110.71-110.76). Qwen3.6-35B-A3B online-FP8 + FP8-KV on 2x Intel Arc Pro B70 (TP=2) via vLLM-XPU graph-mode (FULL_DECODE_ONLY, vllm-main d272418f4 + PatchB kernel). Cold prefill ~6000 tok/s; align prefix-cache + qwen3_coder tool-calling. Higher-batch aggregate (1 TP=2 instance): b8=592, b16=598, b24=603 tok/s. Stability: ~20h continuous SWE-bench-Verified-500 agentic load, zero corruption/repetition. (A native-BF16 TP=4 config reaches 120.76 b1 -- separate entry.) HP B70 variant excluded; no power-limit changes.",
+      "observed_command": "ZE_AFFINITY_MASK=0,2 VLLM_XPU_ENABLE_XPU_GRAPH=1 vllm serve qwen36-35b-a3b-bf16-hf --quantization fp8 --kv-cache-dtype fp8 --enable-prefix-caching --mamba-cache-mode align --tensor-parallel-size 2 --dtype float16 --max-model-len 65536 --max-num-seqs 8 --gpu-memory-utilization 0.90 --max-num-batched-tokens 8192 --trust-remote-code --enable-auto-tool-choice --tool-call-parser qwen3_coder --compilation-config '{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}'",
+      "run_id": "cmqsyq9lt011rqr010otg1494",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "qwen36-35b-a3b-bf16-hf",
+          "--quantization",
+          "fp8",
+          "--kv-cache-dtype",
+          "fp8",
+          "--enable-prefix-caching",
+          "--mamba-cache-mode",
+          "align",
+          "--tensor-parallel-size",
+          "2",
+          "--dtype",
+          "float16",
+          "--max-model-len",
+          "65536",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-num-batched-tokens",
+          "8192",
+          "--trust-remote-code",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}"
+        ],
+        "environment": {
+          "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+          "ZE_AFFINITY_MASK": "0,2"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--fp8-online-fp8-kv",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqsyq9lt011rqr010otg1494"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-fp8-online-fp8-kv-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

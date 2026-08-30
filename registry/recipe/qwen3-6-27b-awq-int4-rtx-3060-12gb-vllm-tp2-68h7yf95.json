@@ -1,0 +1,177 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3060-12gb",
+  "id": "qwen3-6-27b-awq-int4-rtx-3060-12gb-vllm-tp2-68h7yf95",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr8nahgf00f7qr0168h7yf95"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr8nahgf00f7qr0168h7yf95",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr8nahgf00f7qr0168h7yf95"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3060",
+      "notes": "Dell Precision T7810, Dual Intel Xeon E5-2650 v4 (2x12c/24t, 2.20GHz), 32GB DDR4 ECC 2133 MT/s (8x4GB), PCIe Gen 3 x16. vLLM --language-model-only (loads text part of multimodal model, skips visual encoder). No vLLM patches needed! FP8 KV cache + BF16 Mamba SSM state. Max context 8800 tokens (vLLM correctly counts 16 attn layers, not 64). enable-prefix-caching, enable-chunked-prefill, block-size=16, disable-custom-all-reduce.",
+      "observed_command": "vllm serve --language-model-only --quantization awq --kv-cache-dtype fp8 --mamba-ssm-cache-dtype bfloat16 --enforce-eager --enable-prefix-caching --enable-chunked-prefill --block-size 16 --disable-custom-all-reduce",
+      "run_id": "cmr8nahgf00f7qr0168h7yf95",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "--language-model-only",
+          "--quantization",
+          "awq",
+          "--kv-cache-dtype",
+          "fp8",
+          "--mamba-ssm-cache-dtype",
+          "bfloat16",
+          "--enforce-eager",
+          "--enable-prefix-caching",
+          "--enable-chunked-prefill",
+          "--block-size",
+          "16",
+          "--disable-custom-all-reduce"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "quanttrio-qwen3-6-27b-awq--awq-int4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr8nahgf00f7qr0168h7yf95"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4104,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-awq-int4-rtx-3060-12gb-vllm-tp2-68h7yf95-sweep"
+  ],
+  "status": "candidate"
+}

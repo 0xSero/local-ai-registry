@@ -1,0 +1,210 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9976 (e3546c794) local SYCL Xe2 M6 BMG AOT build with fused Q6_K draft LM-head top-1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-q4-0-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrjbx8bc02g8mj01yzz2v701"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrjbx8bc02g8mj01yzz2v701",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrjbx8bc02g8mj01yzz2v701"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "One active generation on one Intel Arc Pro B70. The fixed realistic cold suite passed with cached_tokens=0 for all 12 prompts. Native DFlash accepted tokens are verified by the unchanged Q4_0 target. This row adds a fused, exact Q6_K x Q8_1 M=6 draft LM-head top-1 boundary to the promoted 187-projection Xe2 verifier and GDN snapshot-cache fusion. The exact matching AOT control reproduced 44.2205 tok/s, making this confirmed 47.8188 tok/s result a measured 8.14% end-to-end fusion gain and an 8.05% improvement over the prior 44.2554 tok/s LocalMaxxing record. The first independent strict candidate also passed at 47.1143 tok/s. The fused path fails closed and re-decodes ordinary logits after compact-read failure.",
+      "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:* ZE_AFFINITY_MASK=2 GGML_SYCL_ENABLE_GRAPH=0 GGML_SYCL_XE2_Q4_M6_FFN=1 GGML_SYCL_XE2_Q4_M6_PACK_LIMIT=187 GGML_SYCL_XE2_Q4_M6_GATE_UP=1 GGML_SYCL_FUSE_GDN_CACHE=1 LLAMA_DFLASH_FUSED_TOP1=1 GGML_SYCL_XE2_Q6_M6_TOP1=1 llama-server -m Qwen3.6-27B-Q4_0.gguf -dev SYCL0 -ngl 99 -c 4096 -np 1 -b 1024 -ub 256 -ctk q8_0 -ctv q8_0 -fa on --spec-type draft-dflash --spec-draft-model Qwen3.6-27B-DFlash-Q8_0.gguf --spec-draft-type-k f16 --spec-draft-type-v f16 --spec-draft-n-max 5 --cache-ram 0 --ctx-checkpoints 0 -fit off",
+      "run_id": "cmrjbx8bc02g8mj01yzz2v701",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-Q4_0.gguf",
+          "-dev",
+          "SYCL0",
+          "-ngl",
+          "99",
+          "-c",
+          "4096",
+          "-np",
+          "1",
+          "-b",
+          "1024",
+          "-ub",
+          "256",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-fa",
+          "on",
+          "--spec-type",
+          "draft-dflash",
+          "--spec-draft-model",
+          "Qwen3.6-27B-DFlash-Q8_0.gguf",
+          "--spec-draft-type-k",
+          "f16",
+          "--spec-draft-type-v",
+          "f16",
+          "--spec-draft-n-max",
+          "5",
+          "--cache-ram",
+          "0",
+          "--ctx-checkpoints",
+          "0",
+          "-fit",
+          "off"
+        ],
+        "environment": {
+          "GGML_SYCL_ENABLE_GRAPH": "0",
+          "GGML_SYCL_FUSE_GDN_CACHE": "1",
+          "GGML_SYCL_XE2_Q4_M6_FFN": "1",
+          "GGML_SYCL_XE2_Q4_M6_GATE_UP": "1",
+          "GGML_SYCL_XE2_Q4_M6_PACK_LIMIT": "187",
+          "GGML_SYCL_XE2_Q6_M6_TOP1": "1",
+          "LLAMA_DFLASH_FUSED_TOP1": "1",
+          "ONEAPI_DEVICE_SELECTOR": "level_zero:*",
+          "ZE_AFFINITY_MASK": "2"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--q4-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrjbx8bc02g8mj01yzz2v701"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-q4-0-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

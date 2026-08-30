@@ -1,0 +1,188 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "ROCmFPX fork (charlie12345/ROCmFPX) gfx1201 build"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "deepseek-v4-flash-0731-mxfp4-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt4wezih03agpu01797e8l9m"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt4wezih03agpu01797e8l9m",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt4wezih03agpu01797e8l9m"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "DeepSeek V4 Flash ROCmFP2, HYBRID dual-device: AMD Radeon AI PRO R9700 (gfx1201, 32GB) = hip:0 as primary compute device, PLUS the Ryzen AI Max 395 Strix Halo integrated GPU (Radeon 8060S, gfx1151) = hip:1 sharing 128GB unified system memory, connected over Oculink with GPU peer access enabled. The hardware schema is a discriminated union and cannot express discrete+unified together, so only the R9700 is listed in the gpus array; the iGPU's participation is disclosed here. Weights DeepSeek-V4-Flash-ROCMFP2-STRIX.gguf (102.3 GB, engine-native ROCmFP2 format; no matching LocalMaxxing quant enum, MXFP4 chosen as nearest FP4 label) + DSpark speculative draft DeepSeek-V4-Flash-DSpark-draft-Q4RMFP4-denseF16.gguf (11.3 GB, q=4). Decode-only measurement: median of 3 timed 128-token generations after 2 warmups, temperature 0, ~1956-token prompt, single concurrency, server-authoritative timing: 51.7 / 52.0 / 52.0 tok/s (median 52.0). DSpark acceptance ~0.99, outputs byte-identical across runs. IMPORTANT APPROXIMATION: this run used top-4 experts/token to reproduce a published headline figure; the quality-default 6-experts/token profile measured ~45.5 tok/s on the same rig. Prefill throughput, TTFT, power draw and peak VRAM were not recorded for this run, and the source blog's 415 tok/s prefill was NOT reproduced (decode only). Cold-prefill enforcement was not instrumented.",
+      "observed_command": "llama-server (ROCmFPX gfx1201) --model DeepSeek-V4-Flash-ROCMFP2-STRIX.gguf --model-draft DeepSeek-V4-Flash-DSpark-draft-Q4RMFP4-denseF16.gguf -ngl 99 -c 32768 --draft-p-min 0.60 (R9700=hip:0, Strix Halo iGPU=hip:1, peer access enabled, DSpark q=4, top-4 experts/token) --port 18085",
+      "run_id": "cmt4wezih03agpu01797e8l9m",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "(ROCmFPX",
+          "gfx1201)",
+          "--model",
+          "DeepSeek-V4-Flash-ROCMFP2-STRIX.gguf",
+          "--model-draft",
+          "DeepSeek-V4-Flash-DSpark-draft-Q4RMFP4-denseF16.gguf",
+          "-ngl",
+          "99",
+          "-c",
+          "32768",
+          "--draft-p-min",
+          "0.60",
+          "(R9700=hip:0,",
+          "Strix",
+          "Halo",
+          "iGPU=hip:1,",
+          "peer",
+          "access",
+          "enabled,",
+          "DSpark",
+          "q=4,",
+          "top-4",
+          "experts/token)",
+          "--port",
+          "18085"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt4wezih03agpu01797e8l9m"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-mxfp4-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

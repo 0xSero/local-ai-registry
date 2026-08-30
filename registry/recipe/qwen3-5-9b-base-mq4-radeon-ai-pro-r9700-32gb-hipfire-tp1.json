@@ -1,0 +1,181 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "0.2.0+4840f0b6"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-5-9b-base-mq4-radeon-ai-pro-r9700-32gb-hipfire-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmpdzu8ig00sbpd01dsdrf3zr"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmpdzu8ig00sbpd01dsdrf3zr",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpdzu8ig00sbpd01dsdrf3zr"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "hipfire @ 4840f0b6 (master post-sync 2026-05-20)\nprompt: merge_sort thinking-OFF (md5=253c7ac50857fe6d0e10fb0d2c5e35c0)\n  benchmarks/prompts/merge_sort_thinking_off.txt (27 input tokens)\ndecode mode: DFlash speculative (adaptive block_size, mean B=16)\n  drafter: qwen35-9b-dflash-mq4.hfq (z-lab Qwen3.5-DFlash native head, MQ4 weights)\n  target: qwen3.5-9b.mq4 (MQ4 weights)\nkv_cache: q8\nprompt_normalize: true (default since 2026-04-26)\n\u03c4: 13.1818   accept_rate: 0.8788\noutput: 256 tokens emitted\nAR baseline (same binary same hardware, --ar-baseline): 99.39 tok/s \u2014 DFlash speedup 3.74x\nHardware: single R9700, ROCm 7.x, hiptrx host (HIP_VISIBLE_DEVICES=0)\nGPU coordination: dedicated host (hiptrx), no concurrent GPU load",
+      "observed_command": "HIP_VISIBLE_DEVICES=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.5-9b.mq4 --draft ~/.hipfire/models/qwen35-9b-dflash-mq4.hfq --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 4096",
+      "run_id": "cmpdzu8ig00sbpd01dsdrf3zr",
+      "tokenized": {
+        "arguments": [
+          "./target/release/examples/dflash_spec_demo",
+          "--target",
+          "~/.hipfire/models/qwen3.5-9b.mq4",
+          "--draft",
+          "~/.hipfire/models/qwen35-9b-dflash-mq4.hfq",
+          "--prompt-file",
+          "benchmarks/prompts/merge_sort_thinking_off.txt",
+          "--max",
+          "256",
+          "--temp",
+          "0.0",
+          "--no-chatml",
+          "--kv-mode",
+          "q8",
+          "--ctx",
+          "4096"
+        ],
+        "environment": {
+          "HIP_VISIBLE_DEVICES": "0"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-5-9b--mq4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmpdzu8ig00sbpd01dsdrf3zr"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-9b-base-mq4-radeon-ai-pro-r9700-32gb-hipfire-tp1-sweep"
+  ],
+  "status": "candidate"
+}

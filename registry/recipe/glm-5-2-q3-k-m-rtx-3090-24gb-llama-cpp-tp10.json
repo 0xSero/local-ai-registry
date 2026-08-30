@@ -1,0 +1,183 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9738 (upstream commit e27f30859)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 10,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "glm-5-2-q3-k-m-rtx-3090-24gb-llama-cpp-tp10",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqqqup2b01a2qo01lwvrysjs"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqqqup2b01a2qo01lwvrysjs",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqqqup2b01a2qo01lwvrysjs"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "GLM-5.2 REAP50 Q3_K_M GGUF on 10x RTX 3090 via llama.cpp CUDA, 262144 context, q4_0 K/V cache, server-side reasoning disabled, single streaming request, 5 measured 1000-token runs after 1 warmup. PCIe 3.0 host, no NVLink. Real-use note: in day-to-day local agent and chat workflows, this GLM-5.2 trial did not perform as well as the restored Qwen 27B coordinator despite the benchmark result.",
+      "observed_command": "llama-server --ctx-size 262144 --cache-type-k q4_0 --cache-type-v q4_0 --parallel 1 --flash-attn on --split-mode layer --tensor-split 1,1,1,1,1,1,1,1,1,1 --n-gpu-layers 999 --jinja --reasoning off --no-webui",
+      "run_id": "cmqqqup2b01a2qo01lwvrysjs",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--ctx-size",
+          "262144",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0",
+          "--parallel",
+          "1",
+          "--flash-attn",
+          "on",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "1,1,1,1,1,1,1,1,1,1",
+          "--n-gpu-layers",
+          "999",
+          "--jinja",
+          "--reasoning",
+          "off",
+          "--no-webui"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "pipenetwork-glm-5-2-reap50-q3-k-m-gguf--q3-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqqqup2b01a2qo01lwvrysjs"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 10
+  },
+  "speed_sweeps_ids": [
+    "glm-5-2-q3-k-m-rtx-3090-24gb-llama-cpp-tp10-sweep"
+  ],
+  "status": "candidate"
+}

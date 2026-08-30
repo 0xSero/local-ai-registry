@@ -39,7 +39,7 @@ The shared contract is defined twice for different consumers: JSON Schema files 
 
 `validated` means the model revision and runtime are pinned and the launch contract has acceptance evidence. `candidate` means the registry has useful compatibility or speed evidence but cannot yet promise a reproducible launch.
 
-LocalMaxxing and local.ai Postgres imports are always `candidate` and `launch.kind: "reference"`. Their source commands are deliberately not copied into the executable contract. Promotion requires a separately curated, pinned recipe and a real completion plus speed acceptance.
+LocalMaxxing, local.ai Postgres, and mlx.fast imports are always `candidate` and `launch.kind: "reference"`. Observed source commands stay in metadata. When they can be split faithfully they also appear as `metadata.<source>.tokenized` argv, environment, and steps. That split is a mechanical rendering, unverified against the engine CLI, and does not satisfy promotion criterion 3. mlx.fast official scores attach only to `apple-m5-max-128gb`. Speculative engine docs without a measured SKU, including oMLX serve templates, are not imported. Promotion requires a separately curated, pinned recipe and a real completion plus speed acceptance.
 
 Regional price records are observations, not universal hardware values. A product can link to an exact hardware specification or to a compatible hardware family when a listing does not identify memory capacity. Every observation preserves retailer, condition, stock state, native currency, direct URL, and fetch time. Scanner matches remain `candidate`; launch prices and MSRP stay as historical hardware metadata and do not populate the market-price collection.
 

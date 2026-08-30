@@ -1,0 +1,184 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.25.1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-puvumomq",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsng2oee00dno001puvumomq"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsng2oee00dno001puvumomq",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsng2oee00dno001puvumomq"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "Method: 8 single-turn requests, streaming, batch size 1, temperature 0, engine confirmed idle first (vllm:num_requests_running = 0). 3093 generated tokens in 25.59 s wall. TTFT is the median of the 8 (range 64-112 ms). Peak VRAM and power are peaks from nvidia-smi sampled every 1.5 s during the run.\n\nPrefill tok/s left blank on purpose: prompts averaged only 29 tokens, so TTFT is dominated by request overhead, not prefill throughput. Any prefill number derived from it would be meaningless.\n\nSpeculative decoding is ON and this matters for comparison: MTP (qwen3_5_mtp draft) with num_speculative_tokens=3, measured 76.2% draft acceptance / 2.29 accepted tokens per round. That is why output tok/s exceeds the ~81 tok/s naive ceiling implied by this card's memory bandwidth for a 27B NVFP4 weight read per token. Also enabled: --kv-cache-dtype fp8 and --enable-prefix-caching (prefix caching contributes nothing here - every prompt is distinct).\n\nRuns in an unprivileged Proxmox VE 9.2 LXC with GPU passthrough, gpu-memory-utilization 0.94, max context 131072, max 4 concurrent sequences (this run used 1). The card is currently link-trained at PCIe x8 instead of x16 (unresolved hardware issue); that affects model load time, not decode.",
+      "observed_command": "vllm serve --model unsloth/Qwen3.6-27B-NVFP4 --served-model-name qwen3.6-27b --max-model-len 131072 --gpu-memory-utilization 0.94 --max-num-seqs 4 --kv-cache-dtype fp8 --enable-prefix-caching --speculative-config '{\"method\": \"qwen3_5_mtp\", \"num_speculative_tokens\": 3}' --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder",
+      "run_id": "cmsng2oee00dno001puvumomq",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "--model",
+          "unsloth/Qwen3.6-27B-NVFP4",
+          "--served-model-name",
+          "qwen3.6-27b",
+          "--max-model-len",
+          "131072",
+          "--gpu-memory-utilization",
+          "0.94",
+          "--max-num-seqs",
+          "4",
+          "--kv-cache-dtype",
+          "fp8",
+          "--enable-prefix-caching",
+          "--speculative-config",
+          "{\"method\": \"qwen3_5_mtp\", \"num_speculative_tokens\": 3}",
+          "--reasoning-parser",
+          "qwen3",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsng2oee00dno001puvumomq"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-puvumomq-sweep"
+  ],
+  "status": "candidate"
+}

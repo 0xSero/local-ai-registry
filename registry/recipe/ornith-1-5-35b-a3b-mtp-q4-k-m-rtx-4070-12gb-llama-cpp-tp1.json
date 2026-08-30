@@ -1,0 +1,192 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-4070-12gb",
+  "id": "ornith-1-5-35b-a3b-mtp-q4-k-m-rtx-4070-12gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtdepcyz0046lm017yukjybs"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtdepcyz0046lm017yukjybs",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtdepcyz0046lm017yukjybs"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 4070",
+      "notes": null,
+      "observed_command": "/usr/bin/llama-server -m /mnt/llm-data/hub/models/ornith-1.5-35b/Ornith-1.5-35B-MTP-Q4_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-p-min 0.7 -ngl 99 --n-cpu-moe 24 -c 32768 -fa on --jinja -np 1 -ctk q4_0 -ctv q4_0 -b 2048 -ub 1024 --reasoning on",
+      "run_id": "cmtdepcyz0046lm017yukjybs",
+      "tokenized": {
+        "arguments": [
+          "/usr/bin/llama-server",
+          "-m",
+          "/mnt/llm-data/hub/models/ornith-1.5-35b/Ornith-1.5-35B-MTP-Q4_K_M.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "--spec-draft-p-min",
+          "0.7",
+          "-ngl",
+          "99",
+          "--n-cpu-moe",
+          "24",
+          "-c",
+          "32768",
+          "-fa",
+          "on",
+          "--jinja",
+          "-np",
+          "1",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-b",
+          "2048",
+          "-ub",
+          "1024",
+          "--reasoning",
+          "on"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "mradermacher-ornith-1-5-35b-a3b-mtp-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtdepcyz0046lm017yukjybs"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2048,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ornith-1-5-35b-a3b-mtp-q4-k-m-rtx-4070-12gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

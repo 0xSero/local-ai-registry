@@ -1,0 +1,176 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev13+g9557d9108.d20260620 local XPU patch stack"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-intel-arc-pro-b70-32gb-vllm-tp1-8408i1pn",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr4zkcxb003yq9018408i1pn"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr4zkcxb003yq9018408i1pn",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr4zkcxb003yq9018408i1pn"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.6 27B AutoRound INT4 one-B70 vLLM/XPU strict fresh-response result with default-off runtime INT8 lm_head projection enabled (VLLM_XPU_LM_HEAD_INT8=1). This is labeled separately from the original BF16-LM-head AutoRound quantization: the BF16 lm_head remains resident, but the projection uses a transient per-output-channel INT8 weight copy plus per-token INT8 activation quantization. Primary metric is median generated-token throughput for tokens 1-100 after TTFT across the fixed realistic prompt suite. Each prompt was sent once; cached_tokens=0 for every request; no prompt/KV cache reuse, context checkpoints, response reuse, n-gram/history acceleration, or warmed repeated prompts. qwen3_next_mtp accepted tokens are verified by the target model. Full quality gate passed and matched baseline, including 32-repeat stability and the 1K long-context needle. Same-window BF16-lm-head control was 53.33 tok/s; INT8 repeat was 62.28 tok/s.",
+      "observed_command": "GPU_INDEX=2 PORT=19412 MAX_MODEL_LEN=2048 MAX_NUM_BATCHED_TOKENS=1024 QWEN36_27B_ENABLE_MTP=1 NUM_SPECULATIVE_TOKENS=3 QWEN36_27B_ENABLE_XPU_GRAPH=1 VLLM_XPU_GDN_PROMOTE_ACCEPTED_SPEC_STATE=1 VLLM_XPU_GDN_NONSPEC_POSTPROCESS_ACCEPTED_STATE=0 VLLM_XPU_LM_HEAD_INT8=1 COMPILATION_CONFIG='{\"cudagraph_mode\":\"PIECEWISE\",\"max_cudagraph_capture_size\":8}' experiments/qwen36-27b-autoround-int4-b70/scripts/serve-vllm.sh",
+      "run_id": "cmr4zkcxb003yq9018408i1pn",
+      "tokenized": {
+        "arguments": [
+          "experiments/qwen36-27b-autoround-int4-b70/scripts/serve-vllm.sh"
+        ],
+        "environment": {
+          "COMPILATION_CONFIG": "{\"cudagraph_mode\":\"PIECEWISE\",\"max_cudagraph_capture_size\":8}",
+          "GPU_INDEX": "2",
+          "MAX_MODEL_LEN": "2048",
+          "MAX_NUM_BATCHED_TOKENS": "1024",
+          "NUM_SPECULATIVE_TOKENS": "3",
+          "PORT": "19412",
+          "QWEN36_27B_ENABLE_MTP": "1",
+          "QWEN36_27B_ENABLE_XPU_GRAPH": "1",
+          "VLLM_XPU_GDN_NONSPEC_POSTPROCESS_ACCEPTED_STATE": "0",
+          "VLLM_XPU_GDN_PROMOTE_ACCEPTED_SPEC_STATE": "1",
+          "VLLM_XPU_LM_HEAD_INT8": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "intel-qwen3-6-27b-int4-autoround--autoround-int4-w4a16-runtime-int8-lm-head",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr4zkcxb003yq9018408i1pn"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-autoround-int4-w4a16-runtime-int8-lm-head-intel-arc-pro-b70-32gb-vllm-tp1-8408i1pn-sweep"
+  ],
+  "status": "candidate"
+}

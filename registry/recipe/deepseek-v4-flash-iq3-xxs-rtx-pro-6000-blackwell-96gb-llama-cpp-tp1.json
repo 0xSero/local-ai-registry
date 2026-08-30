@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "dsv4 fork + in-graph K=1 MTP + prefill kernel patches (batched indexer top-k, compact MoE work-list)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-iq3-xxs-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrch4u4u00hro201qqq1pwiz"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrch4u4u00hro201qqq1pwiz",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrch4u4u00hro201qqq1pwiz"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Full 284B-A13B MoE resident on ONE 96GB card with in-graph K=1 MTP speculative decoding: the DS4 graph drafts its own next token each decode (antirez's 3.8GB MTP module side-loaded) and the server verifies it in a constant nt=2 batch. Draft acceptance 75-83%, ~1.45x over the same quant without MTP (42-47 t/s). Decode is steady-state from a 10-hour soak: 80.8 t/s held across a continuous 47K-token generation at temp 0. Prefill re-measured after two custom CUDA prefill patches in the fork (batched lightning-indexer top-k, fixing a >1M-kernel launch storm; compact MoE stream-k work-list, fixing last-wave quantization): 15.6K-token prompt at 1688 t/s (was 486 pre-patch, ~3.5x). Custom mixed quant (2.58bpw): antirez q2 imatrix recipe with ffn_down_exps upgraded Q2_K -> IQ3_XXS (wikitext PPL 4.505 vs 4.717 stock). Fork lineage: fairydreaming dsv4 graph/kernels + K=1 MTP ported from alesha-pro ds4-longctx. HumanEval+ pass@1 93.1% (official localmaxxing eval shard run, this quant, temp 0). Aider polyglot (Python, diff): pass@2 64.7%. Fork: github.com/sigkaiser/llama.cpp (mtp-k1 branch). Quant: hf.co/starvingcheetah/DeepSeek-V4-Flash-custom-iq3down-GGUF.",
+      "observed_command": "DSV4_MTP_GGUF=DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf DSV4_MTP_SPEC=1 llama-server -m DeepSeek-V4-Flash-custom-iq3down.gguf -c 262144 -ngl 99 -np 1 -b 2048 -ub 512 --spec-type dsv4-mtp --cache-reuse 256 --no-mmap --flash-attn on",
+      "run_id": "cmrch4u4u00hro201qqq1pwiz",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "DeepSeek-V4-Flash-custom-iq3down.gguf",
+          "-c",
+          "262144",
+          "-ngl",
+          "99",
+          "-np",
+          "1",
+          "-b",
+          "2048",
+          "-ub",
+          "512",
+          "--spec-type",
+          "dsv4-mtp",
+          "--cache-reuse",
+          "256",
+          "--no-mmap",
+          "--flash-attn",
+          "on"
+        ],
+        "environment": {
+          "DSV4_MTP_GGUF": "DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf",
+          "DSV4_MTP_SPEC": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--iq3-xxs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrch4u4u00hro201qqq1pwiz"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-iq3-xxs-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

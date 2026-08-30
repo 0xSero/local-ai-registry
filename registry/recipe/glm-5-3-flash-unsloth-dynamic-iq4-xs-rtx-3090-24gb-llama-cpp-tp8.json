@@ -1,0 +1,233 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10667-2e0e57f1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "glm-5-3-flash-unsloth-dynamic-iq4-xs-rtx-3090-24gb-llama-cpp-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtc0g6680041qq01j6ruzjdg"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtc0g6680041qq01j6ruzjdg",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtc0g6680041qq01j6ruzjdg"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Exact Unsloth UD-IQ4_XS GGUF; custom MTP candidate binary; quant repo revision ac47690c15c8. Two warmups and six sequential 512-token measured runs at temperature 0. Server --cache-prompt was enabled, but cache_prompt=false was sent per request; cached_tokens=0 and timings.cache_n=0 in every measured run. tokSTotal follows the current API wording: (prompt+output tokens)/client end-to-end seconds. Temperature-zero output hashes: 1 unique across 6 runs. MTP draft acceptance: 1752/2616 (0.6697). Service PID/config stable=True; benchmark incidents=0; systemd restarts=0; suspicious benchmark-window log lines=0. Per-GPU power values are medians of each run's mean active draw; peak VRAM is summed across GPUs.",
+      "observed_command": "/mnt/nvme/src/llama.cpp-glm53-mtp-candidate/build-cuda-nccl/bin/llama-server --model /mnt/nvme/models/unsloth/GLM-5.3-Flash-GGUF/UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00001-of-00005.gguf --alias glm-5.3-flash-ud-iq4-xs --device CUDA5,CUDA6,CUDA7,CUDA4,CUDA3,CUDA2,CUDA1,CUDA0 --split-mode layer --tensor-split 8,5,6,5,5,6,6,6 --n-gpu-layers all --n-cpu-moe 0 --fit off --load-mode mmap --ctx-size 131072 --parallel 1 --no-kv-unified --batch-size 2048 --ubatch-size 32 --cache-type-k f16 --cache-type-v f16 --flash-attn off --threads 8 --threads-batch 24 --cache-prompt --cache-ram 0 --no-cache-idle-slots --ctx-checkpoints 4 --checkpoint-min-step 8192 --metrics --slots --host 192.168.178.61 --port 18082 --temp 0 --top-p 1 --top-k 0 --min-p 0 --reasoning on --reasoning-effort low --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-n-min 1 --no-spec-draft-backend-sampling",
+      "run_id": "cmtc0g6680041qq01j6ruzjdg",
+      "tokenized": {
+        "arguments": [
+          "/mnt/nvme/src/llama.cpp-glm53-mtp-candidate/build-cuda-nccl/bin/llama-server",
+          "--model",
+          "/mnt/nvme/models/unsloth/GLM-5.3-Flash-GGUF/UD-IQ4_XS/GLM-5.3-Flash-UD-IQ4_XS-00001-of-00005.gguf",
+          "--alias",
+          "glm-5.3-flash-ud-iq4-xs",
+          "--device",
+          "CUDA5,CUDA6,CUDA7,CUDA4,CUDA3,CUDA2,CUDA1,CUDA0",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "8,5,6,5,5,6,6,6",
+          "--n-gpu-layers",
+          "all",
+          "--n-cpu-moe",
+          "0",
+          "--fit",
+          "off",
+          "--load-mode",
+          "mmap",
+          "--ctx-size",
+          "131072",
+          "--parallel",
+          "1",
+          "--no-kv-unified",
+          "--batch-size",
+          "2048",
+          "--ubatch-size",
+          "32",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--flash-attn",
+          "off",
+          "--threads",
+          "8",
+          "--threads-batch",
+          "24",
+          "--cache-prompt",
+          "--cache-ram",
+          "0",
+          "--no-cache-idle-slots",
+          "--ctx-checkpoints",
+          "4",
+          "--checkpoint-min-step",
+          "8192",
+          "--metrics",
+          "--slots",
+          "--host",
+          "192.168.178.61",
+          "--port",
+          "18082",
+          "--temp",
+          "0",
+          "--top-p",
+          "1",
+          "--top-k",
+          "0",
+          "--min-p",
+          "0",
+          "--reasoning",
+          "on",
+          "--reasoning-effort",
+          "low",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-n-min",
+          "1",
+          "--no-spec-draft-backend-sampling"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-glm-5-3-flash-gguf--unsloth-dynamic-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtc0g6680041qq01j6ruzjdg"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 8
+  },
+  "speed_sweeps_ids": [
+    "glm-5-3-flash-unsloth-dynamic-iq4-xs-rtx-3090-24gb-llama-cpp-tp8-sweep"
+  ],
+  "status": "candidate"
+}

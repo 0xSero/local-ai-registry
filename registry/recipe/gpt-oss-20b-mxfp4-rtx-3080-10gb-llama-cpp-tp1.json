@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "gpt-oss-20b-mxfp4-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt6lu7cs008mlk0129wtmtlb"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt6lu7cs008mlk0129wtmtlb",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt6lu7cs008mlk0129wtmtlb"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "First RTX 3080 10GB entry for gpt-oss-20b. The 12.1 GB MXFP4 build does not fit a 10GB card outright, so it runs via --n-cpu-moe 9 (experts of the first 9 of 24 layers on CPU). TUNING NOTE: fewer offloaded layers is NOT automatically better. --n-cpu-moe 7 keeps more experts on the GPU but tips into host spill (574 MiB shared) and is worse on every axis: 43.9 tok/s decode, 404 tok/s prefill, 6190 ms TTFT. Backing off to 9 removes the spill (126 MiB shared) and gives 57.1 / 1463 / 1558 ms -- decode +30%, prefill 3.6x, TTFT 4x. VARIANCE: CPU-offloaded MoE decode is unstable here; five reps gave 62.2 / 32.9 / 61.7 / 50.3 / 57.1 tok/s, so treat 57.1 as a median rather than a repeatable figure. Also note ~1.2 GB of this card's VRAM is held by the Windows desktop (dwm + explorer) at idle, which moves the spill threshold between runs. Measured on an RTX 3080 10GB. Decode is the MEDIAN of 5 reps, not the best. Prompt is deliberately non-repetitive (repeated filler inflates decode on speculative setups by ~25%) and ignore_eos is set so output token count is identical across runs. Peak VRAM 9485 MiB with 126 MiB host-shared; elevated host-shared only indicates spill when the decode rate drops with it.",
+      "observed_command": "llama-server \\\n  -m gpt-oss-20b-MXFP4.gguf \\\n  --host 127.0.0.1 --port 8099 \\\n  --device CUDA0 --n-gpu-layers 99 \\\n  --ctx-size 32768 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 --cache-type-v q8_0 \\\n  --parallel 1 --jinja \\\n  --spec-type none",
+      "run_id": "cmt6lu7cs008mlk0129wtmtlb",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gpt-oss-20b-MXFP4.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8099",
+          "--device",
+          "CUDA0",
+          "--n-gpu-layers",
+          "99",
+          "--ctx-size",
+          "32768",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ggml-org-gpt-oss-20b-gguf--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt6lu7cs008mlk0129wtmtlb"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gpt-oss-20b-mxfp4-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

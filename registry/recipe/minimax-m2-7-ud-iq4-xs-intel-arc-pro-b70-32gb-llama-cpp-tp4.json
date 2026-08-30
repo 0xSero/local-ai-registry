@@ -1,0 +1,212 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "ik_llama.cpp patched 2026-05-08"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "minimax-m2-7-ud-iq4-xs-intel-arc-pro-b70-32gb-llama-cpp-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmox103ol0040ml019yzs6gvs"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmox103ol0040ml019yzs6gvs",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmox103ol0040ml019yzs6gvs"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "MiniMax M2.7 UD-IQ4_XS GGUF, 4x Intel Arc Pro B70, software-only SYCL/RPC layer split. Current best GGUF path: fast IQ4_XS MUL_MAT_ID, runtime MMV row grouping Y=2, fused RMSNorm enabled, DNN disabled, ubatch 64. r5 p0/n64 avg 17.697772 tok/s, samples 17.5369,17.7524,17.7386,17.7282,17.7328. Deterministic 16-token greedy generation matched the previous fused-RMS-disabled Y=2 baseline byte-for-byte. Same weights, F16 KV, no speculative decoding, no GPU power-limit changes.",
+      "observed_command": "GGML_SYCL_FAST_MUL_MAT_ID_IQ4_XS=1 GGML_SYCL_MMV_Y_RUNTIME=2 GGML_SYCL_DISABLE_DNN=1 llama-bench -m MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf -rpc 127.0.0.1:50100|0,127.0.0.1:50101|0,127.0.0.1:50102|0,127.0.0.1:50103|0 -p 0 -n 64 -r 5 -ngl 99 -sm layer -ts 1/1/1/1 -fa 0 -nkvo 0 -ub 64 -ctk f16 -ctv f16 -t 4 -w 0 -mmp 1 -rtr 1 -fmoe 1 -no-mmad 0 -muge 1 -sas 0 -o json",
+      "run_id": "cmox103ol0040ml019yzs6gvs",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf",
+          "-rpc",
+          "127.0.0.1:50100|0,127.0.0.1:50101|0,127.0.0.1:50102|0,127.0.0.1:50103|0",
+          "-p",
+          "0",
+          "-n",
+          "64",
+          "-r",
+          "5",
+          "-ngl",
+          "99",
+          "-sm",
+          "layer",
+          "-ts",
+          "1/1/1/1",
+          "-fa",
+          "0",
+          "-nkvo",
+          "0",
+          "-ub",
+          "64",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-t",
+          "4",
+          "-w",
+          "0",
+          "-mmp",
+          "1",
+          "-rtr",
+          "1",
+          "-fmoe",
+          "1",
+          "-no-mmad",
+          "0",
+          "-muge",
+          "1",
+          "-sas",
+          "0",
+          "-o",
+          "json"
+        ],
+        "environment": {
+          "GGML_SYCL_DISABLE_DNN": "1",
+          "GGML_SYCL_FAST_MUL_MAT_ID_IQ4_XS": "1",
+          "GGML_SYCL_MMV_Y_RUNTIME": "2"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "minimaxai-minimax-m2-7--ud-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmox103ol0040ml019yzs6gvs"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "minimax-m2-7-ud-iq4-xs-intel-arc-pro-b70-32gb-llama-cpp-tp4-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9769 (c926ad098), IntelLLVM 2026.0.0"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "gemma-4-26b-a4b-it-ud-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr47ivql0045nv011pfdjlaa"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr47ivql0045nv011pfdjlaa",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr47ivql0045nv011pfdjlaa"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Gemma 4 26B A4B Q8 long-context service smoke on one Intel Arc Pro B70 using llama.cpp/SYCL. This is a prompt-processing and near-32K long-context decode result, not the short-context 124.977 tok/s LocalMaxxing record. Shape: fixed deterministic long-context suite case lc-24000-late, actual prompt_tokens=32571, completion_tokens=76, contextLength=32768, batchSize=1, temperature=0, seed=1, cached_tokens=0, exact JSON retrieval fields passed, unique prompt hash. tokSPrefill is prompt_tokens / TTFT approximation; tokSOut is generated-token decode throughput after TTFT; tokSTotal is (prompt_tokens + output_tokens) / wall time. MTP/speculation is draft-only from local Q4_0 MTP draft; accepted tokens are verified by the UD-Q8_K_XL target/verifier. No prompt cache, KV cache reuse, context checkpoints, response reuse, n-gram/history acceleration, or warmed repeated prompt is used. Supporting service ladder on 2026-07-02 passed 32/32 long-context rows across four independent one-B70 lanes with cached_tokens=0 and exact JSON validation; average lane median prefill was 1192.965 tok/s and average lane median long-context decode was 131.786 tok/s. Evidence: https://github.com/steveseguin/b70-optimization-lab/blob/8723f783fa904092dcc019272f7abff939879f39/data/gemma4-26b-prod-service-32k-smoke-20260703T002811Z.json and deployment notes at https://github.com/steveseguin/b70-optimization-lab/blob/8723f783fa904092dcc019272f7abff939879f39/results/gemma4-26b-a4b-q8-b70/production-service.md",
+      "observed_command": "GPU_INDEX=0 PORT=19350 GEMMA4_26B_PROFILE=service scripts/serve-gemma4-26b-q8-production.sh; python3 scripts/bench-openai-long-context-suite.py --base-url http://127.0.0.1:19350 --model gemma4-26b-a4b-q8 --suite repro/gemma4-26b-a4b-q8-b70/long-context-suite-v1.json --case-id lc-24000-late --max-tokens 96",
+      "run_id": "cmr47ivql0045nv011pfdjlaa",
+      "tokenized": {
+        "arguments": [
+          "scripts/serve-gemma4-26b-q8-production.sh;",
+          "python3",
+          "scripts/bench-openai-long-context-suite.py",
+          "--base-url",
+          "http://127.0.0.1:19350",
+          "--model",
+          "gemma4-26b-a4b-q8",
+          "--suite",
+          "repro/gemma4-26b-a4b-q8-b70/long-context-suite-v1.json",
+          "--case-id",
+          "lc-24000-late",
+          "--max-tokens",
+          "96"
+        ],
+        "environment": {
+          "GEMMA4_26B_PROFILE": "service",
+          "GPU_INDEX": "0",
+          "PORT": "19350"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-gemma-4-26b-a4b-it-gguf--ud-q8-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr47ivql0045nv011pfdjlaa"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-26b-a4b-it-ud-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

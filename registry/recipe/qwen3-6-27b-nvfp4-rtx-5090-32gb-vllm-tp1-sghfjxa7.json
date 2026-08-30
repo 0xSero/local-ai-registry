@@ -1,0 +1,185 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.24.0"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-sghfjxa7",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr2iwjkx06copi01sghfjxa7"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr2iwjkx06copi01sghfjxa7",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr2iwjkx06copi01sghfjxa7"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "Automated import from local Hermes benchmark JSON nvidia-Qwen3.6-27B-NVFP4-vllm0.24.0-20260630-152900.json. tokSOut/tokSPrefill are medians from matched prompts; TTFT is from the streaming case. Temperature 0 benchmark requests. FlashInfer sampler disabled in launcher; TRITON_ATTN/CUTLASS path. Local filesystem paths redacted from commandSnippet.",
+      "observed_command": "vllm serve nvidia/Qwen3.6-27B-NVFP4 --served-model-name nvidia/Qwen3.6-27B-NVFP4 --generation-config vllm --max-model-len 131072 --max-num-seqs 64 --gpu-memory-utilization 0.90 --kv-cache-dtype fp8 --attention-backend TRITON_ATTN --linear-backend cutlass --moe-backend cutlass --language-model-only --trust-remote-code",
+      "run_id": "cmr2iwjkx06copi01sghfjxa7",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "nvidia/Qwen3.6-27B-NVFP4",
+          "--served-model-name",
+          "nvidia/Qwen3.6-27B-NVFP4",
+          "--generation-config",
+          "vllm",
+          "--max-model-len",
+          "131072",
+          "--max-num-seqs",
+          "64",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--kv-cache-dtype",
+          "fp8",
+          "--attention-backend",
+          "TRITON_ATTN",
+          "--linear-backend",
+          "cutlass",
+          "--moe-backend",
+          "cutlass",
+          "--language-model-only",
+          "--trust-remote-code"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-6-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr2iwjkx06copi01sghfjxa7"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-sghfjxa7-sweep"
+  ],
+  "status": "candidate"
+}

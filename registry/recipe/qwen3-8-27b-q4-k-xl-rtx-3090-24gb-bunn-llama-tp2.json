@@ -1,0 +1,200 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "bunn-llama",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-8-27b-q4-k-xl-rtx-3090-24gb-bunn-llama-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmswepd2r08pzms011etmnl7c"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmswepd2r08pzms011etmnl7c",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmswepd2r08pzms011etmnl7c"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Engine requested as buun-llama; LocalMaxxing canonical enum is bunn-llama. Setup: buun-llama-cpp CUDA/NCCL tensor parallel on 2x RTX 3090, Qwen3.8-27B Q4_K_XL target plus Q8_0 MTP sidecar on CUDA1. Benchmark used --no-cache-prompt, 1,044 prompt tokens, 2 warmups, 5 timed 512-token streaming iterations. Server flags: -m /home/lotto/Downloads/Qwen3.8-27B-UD-Q4_K_XL.gguf -md /home/lotto/models/Qwen3.8-27B-MTP-GGUF/Qwen3.8-27B-MTP-ONLY-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0 -dev CUDA0,CUDA1 -devd CUDA1 -ngl all -ngld all -sm tensor -ts 1,1 -mg 0 -c 8192 -ct f16 -fa on -np 1 --no-cache-prompt --host 127.0.0.1 --port 8087. tokSPrefill is estimated from TTFT and includes request/scheduling/first-decode/streaming overhead.",
+      "observed_command": "/home/lotto/.local/bin/buun-llama-server -m /home/lotto/Downloads/Qwen3.8-27B-UD-Q4_K_XL.gguf -md /home/lotto/models/Qwen3.8-27B-MTP-GGUF/Qwen3.8-27B-MTP-ONLY-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0 -dev CUDA0,CUDA1 -devd CUDA1 -ngl all -ngld all -sm tensor -ts 1,1 -mg 0 -c 8192 -ct f16 -fa on -np 1 --no-cache-prompt --host 127.0.0.1 --port 8087",
+      "run_id": "cmswepd2r08pzms011etmnl7c",
+      "tokenized": {
+        "arguments": [
+          "/home/lotto/.local/bin/buun-llama-server",
+          "-m",
+          "/home/lotto/Downloads/Qwen3.8-27B-UD-Q4_K_XL.gguf",
+          "-md",
+          "/home/lotto/models/Qwen3.8-27B-MTP-GGUF/Qwen3.8-27B-MTP-ONLY-Q8_0.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-p-min",
+          "0",
+          "-dev",
+          "CUDA0,CUDA1",
+          "-devd",
+          "CUDA1",
+          "-ngl",
+          "all",
+          "-ngld",
+          "all",
+          "-sm",
+          "tensor",
+          "-ts",
+          "1,1",
+          "-mg",
+          "0",
+          "-c",
+          "8192",
+          "-ct",
+          "f16",
+          "-fa",
+          "on",
+          "-np",
+          "1",
+          "--no-cache-prompt",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8087"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-gguf--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmswepd2r08pzms011etmnl7c"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-k-xl-rtx-3090-24gb-bunn-llama-tp2-sweep"
+  ],
+  "status": "candidate"
+}

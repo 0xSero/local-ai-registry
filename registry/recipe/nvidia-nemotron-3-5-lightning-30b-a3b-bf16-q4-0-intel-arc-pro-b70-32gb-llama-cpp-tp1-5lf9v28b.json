@@ -1,0 +1,191 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b306 SYCL (f785fc9ea) + custom Mamba2 kernel fusion + MMQ/XMX dispatch"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-q4-0-intel-arc-pro-b70-32gb-llama-cpp-tp1-5lf9v28b",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsp78jxo00mhmp015lf9v28b"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsp78jxo00mhmp015lf9v28b",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsp78jxo00mhmp015lf9v28b"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Nemotron 3.5 Lightning 30B-A3B (hybrid Mamba2-Transformer MoE, 128 experts/7 active). Q4_0 quantization (17.44 GiB, requantized from Q4_K_M). Decode with native MTP speculative decoding (draft-mtp, n-max=4, 95-99% acceptance, n=5 median). No-spec decode: 68.0 t/s. Q4_0 delivers +78% over Q4_K_M (38->68 t/s no-spec) due to simpler GEMV dequantization. Measured power: 134.0W avg (cap 230W). GPU temp: ~64C. Custom kernel fusion: ssm_conv bias+SiLU, ssm_scan dt_bias+D*x, MMQ/XMX dispatch override. Build: llama.cpp SYCL f785fc9ea. KV: q8_0/q4_1, FA on.",
+      "observed_command": "llama-server -m Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 16384 -b 8192 -ub 4096 -t 8 --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0.75 -dev SYCL0",
+      "run_id": "cmsp78jxo00mhmp015lf9v28b",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf",
+          "-ngl",
+          "99",
+          "-ncmoe",
+          "0",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q4_1",
+          "-c",
+          "16384",
+          "-b",
+          "8192",
+          "-ub",
+          "4096",
+          "-t",
+          "8",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "4",
+          "--spec-draft-p-min",
+          "0.75",
+          "-dev",
+          "SYCL0"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "nvidia-nvidia-nemotron-3-5-lightning-30b-a3b-bf16--q4-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsp78jxo00mhmp015lf9v28b"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 16384,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-q4-0-intel-arc-pro-b70-32gb-llama-cpp-tp1-5lf9v28b-sweep"
+  ],
+  "status": "candidate"
+}

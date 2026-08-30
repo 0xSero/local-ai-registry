@@ -1,0 +1,196 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "3edc3d3"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "kat-coder-v2-5-dev-q4-0-rocmfp4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsgeticj016app01cmkk2c7m"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsgeticj016app01cmkk2c7m",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsgeticj016app01cmkk2c7m"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "ROCmFPX fork (build-strix-vulkan) on Framework Desktop Strix Halo 128G unified, via llama-swap. Median of 3.",
+      "observed_command": "/home/mikekey/ROCmFPX/build-strix-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 -dev Vulkan0 -ngl 999 --flash-attn on --jinja --reasoning-format auto --temp 0.8 --top-p 0.9 --top-k 20 --presence-penalty 1.5 -ctk f16 -ctv f16 -np 1 -c 262144 --chat-template-kwargs '{\"preserve_thinking\": true}' -m /home/mikekey/models/gguf/kwaipilot/KAT-Coder-V2.5-Dev-Q4_0_ROCMFP4.gguf",
+      "run_id": "cmsgeticj016app01cmkk2c7m",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/ROCmFPX/build-strix-vulkan/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "-dev",
+          "Vulkan0",
+          "-ngl",
+          "999",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "0.8",
+          "--top-p",
+          "0.9",
+          "--top-k",
+          "20",
+          "--presence-penalty",
+          "1.5",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-np",
+          "1",
+          "-c",
+          "262144",
+          "--chat-template-kwargs",
+          "{\"preserve_thinking\": true}",
+          "-m",
+          "/home/mikekey/models/gguf/kwaipilot/KAT-Coder-V2.5-Dev-Q4_0_ROCMFP4.gguf"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "kwaipilot-kat-coder-v2-5-dev--q4-0-rocmfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsgeticj016app01cmkk2c7m"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 787,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "kat-coder-v2-5-dev-q4-0-rocmfp4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

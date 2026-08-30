@@ -1,0 +1,173 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "ROCmFPX Kairic Edge v1.2 (205a3e5f40e5542e2f2eb68e3d3f81f918b1d895)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-27b-iu4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt5yl3p2000blk01hiumzfjw"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt5yl3p2000blk01hiumzfjw",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt5yl3p2000blk01hiumzfjw"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "Forced 512-token natural-prose workload on the Radeon 8060S iGPU (gfx1151) of a BOSGAME M5 Ryzen AI MAX+ 395 with 128GB unified memory. The discrete R9700 was present but idle and not used; ROCR_VISIBLE_DEVICES selected the physical iGPU. Kairic Edge IU4 model plus its published FFN/GDN/GDN-output sidecars, safe strict-compact M65 verifier, n-gram speculation, and MTP4. One warmup discarded, then three measured decode results: 89.9854 / 90.1352 / 92.4784 tok/s; submitted value is the median 90.1352. Total throughput 94.5068 tok/s is the median of each measured request's (prompt + completion tokens) / client wall time. Draft acceptance was 482/534 = 90.26%; all three 512-token outputs were byte-identical and visibly coherent. This result benefits heavily from Kairic's n-gram/speculative path and should not be read as universal model throughput. Per-request prompt caching was disabled. Peak sampled iGPU socket graphics package power during the overall battery was 128.081W, but power is omitted from the structured metric because it was not isolated to this workload. Runtime used a portable ROCm 7.14/GCC 15 build of Kairic v1.2 rather than the author's certified ROCm 7.15/GCC 13 toolchain.",
+      "observed_command": "ROCR_VISIBLE_DEVICES=1 CONTEXT=32768 CACHE_RAM=8192 PORT=18087 ./run-kairic-edge-lucebox.sh\n# llama-server: -dev ROCm0 -ngl 999 -c 32768 -b 2048 -ub 512 -fa on -ctk f16 -ctv f16 -np 1 --kairic-edge --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0 --temp 0 --top-p 1 --top-k 0 --min-p 0\n# request: max_tokens=512, cache_prompt=false; one warmup discarded, then three measured runs",
+      "run_id": "cmt5yl3p2000blk01hiumzfjw",
+      "tokenized": {
+        "arguments": [
+          "./run-kairic-edge-lucebox.sh"
+        ],
+        "environment": {
+          "CACHE_RAM": "8192",
+          "CONTEXT": "32768",
+          "PORT": "18087",
+          "ROCR_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful",
+        "notes": [
+          "llama-server: -dev ROCm0 -ngl 999 -c 32768 -b 2048 -ub 512 -fa on -ctk f16 -ctv f16 -np 1 --kairic-edge --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0 --temp 0 --top-p 1 --top-k 0 --min-p 0",
+          "request: max_tokens=512, cache_prompt=false; one warmup discarded, then three measured runs"
+        ]
+      }
+    }
+  },
+  "model_instance_id": "jcbtc-qwen3-8-27b-iu4-kairic-edge--iu4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt5yl3p2000blk01hiumzfjw"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-iu4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

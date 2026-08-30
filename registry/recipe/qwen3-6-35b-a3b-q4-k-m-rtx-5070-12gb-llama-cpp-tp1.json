@@ -1,0 +1,203 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "QuinsZouls llama.cpp llama-next fork, llama-server version 9265, commit 1e5a46dccb8dd9b8d52817030cf4e334f76a8725"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5070-12gb",
+  "id": "qwen3-6-35b-a3b-q4-k-m-rtx-5070-12gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmp7ni9vb00byo40126r1j4tf"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmp7ni9vb00byo40126r1j4tf",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp7ni9vb00byo40126r1j4tf"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5070",
+      "notes": "move from 5200 to 6000 MT/s for DDR5 raised tok/s 2-3/s",
+      "observed_command": "& \"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\tools\\quins-llama-cpp-turboquant-build\\bin\\llama-server.exe\" `\n  --model \"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\models\\Qwen3.6-35B-A3B-MTP-GGUF\\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf\" `\n  --host 127.0.0.1 `\n  --port 8080 `\n  --ctx-size 64000 `\n  --cache-type-k q8_0 `\n  --cache-type-v q8_0 `\n  --reasoning on `\n  --n-cpu-moe 30 `\n  --gpu-layers 99 `\n  --flash-attn on `\n  --parallel 1 `\n  --cache-ram 0 `\n  --spec-type mtp `\n  --spec-draft-n-max 2 `\n  --temp 0.6 `\n  --top-p 0.95 `\n  --top-k 20 `\n  --min-p 0.0 `\n  --presence-penalty 0.0 `\n  --repeat-penalty 1.0\n",
+      "run_id": "cmp7ni9vb00byo40126r1j4tf",
+      "tokenized": {
+        "arguments": [
+          "\"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\tools\\quins-llama-cpp-turboquant-build\\bin\\llama-server.exe\"",
+          "--model",
+          "\"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\models\\Qwen3.6-35B-A3B-MTP-GGUF\\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf\"",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8080",
+          "--ctx-size",
+          "64000",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--reasoning",
+          "on",
+          "--n-cpu-moe",
+          "30",
+          "--gpu-layers",
+          "99",
+          "--flash-attn",
+          "on",
+          "--parallel",
+          "1",
+          "--cache-ram",
+          "0",
+          "--spec-type",
+          "mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--temp",
+          "0.6",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--presence-penalty",
+          "0.0",
+          "--repeat-penalty",
+          "1.0"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-35b-a3b-mtp-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmp7ni9vb00byo40126r1j4tf"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 64000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-q4-k-m-rtx-5070-12gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

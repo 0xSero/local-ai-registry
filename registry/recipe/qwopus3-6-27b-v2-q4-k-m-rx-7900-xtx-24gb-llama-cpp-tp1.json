@@ -1,0 +1,196 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rx-7900-xtx-24gb",
+  "id": "qwopus3-6-27b-v2-q4-k-m-rx-7900-xtx-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqjwj0hs00rxnv01jiyom8x2"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqjwj0hs00rxnv01jiyom8x2",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqjwj0hs00rxnv01jiyom8x2"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "RX 7900 XTX",
+      "notes": "Benchmark via localmaxx-bench CLI. MTP speculative decoding (draft-mtp, n_max=2). Q8_0 KV cache. ROCm backend on Ubuntu 26.04. Flags auto-detected from service file.",
+      "observed_command": "-m /home/ghazni/models/Qwopus3.6-27B-Coder-MTP-Q4_K_M.gguf --host 0.0.0.0 --port 8080 -ngl 99 --no-mmap -c 150000 -fa on -ctk q8_0 -ctv q8_0 --reasoning on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 -fit off Restart=on-failure RestartSec=10 StandardOutput=append:/home/ghazni/llama-coder-server.log StandardError=append:/home/ghazni/llama-coder-server.log TimeoutStartSec=300 '[Install]' WantedBy=multi-user.target",
+      "run_id": "cmqjwj0hs00rxnv01jiyom8x2",
+      "tokenized": {
+        "arguments": [
+          "-m",
+          "/home/ghazni/models/Qwopus3.6-27B-Coder-MTP-Q4_K_M.gguf",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8080",
+          "-ngl",
+          "99",
+          "--no-mmap",
+          "-c",
+          "150000",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--reasoning",
+          "on",
+          "-np",
+          "1",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "-fit",
+          "off",
+          "Restart=on-failure",
+          "RestartSec=10",
+          "StandardOutput=append:/home/ghazni/llama-coder-server.log",
+          "StandardError=append:/home/ghazni/llama-coder-server.log",
+          "TimeoutStartSec=300",
+          "[Install]",
+          "WantedBy=multi-user.target"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "jackrong-qwopus3-6-27b-coder-mtp-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqjwj0hs00rxnv01jiyom8x2"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwopus3-6-27b-v2-q4-k-m-rx-7900-xtx-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

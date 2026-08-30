@@ -1,0 +1,184 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx",
+    "version": "mlx-vlm 0.6.3"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-max-128gb",
+  "id": "gpt-oss-20b-mxfp4-apple-m5-max-128gb-mlx-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqszh407012sqr01oer5egep"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqszh407012sqr01oer5egep",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqszh407012sqr01oer5egep"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "M5 Max",
+      "notes": "Aggregate end-to-end throughput across 16 concurrent streams (256 max_tokens each, distinct prompts so no prefix-cache reuse), mlx-vlm 0.6.3 server continuous batching. Weights: mlx-community/gpt-oss-20b-MXFP4-Q8 (native MXFP4). tokSOut = aggregate output tok/s; per-stream median ~24 tok/s. Reproducible (382-389 across two runs). Peak unified memory ~12.3 GB (RSS). Apple M5 Max / 128GB, macOS 27.0. Single-stream (bs=1) ~126 tok/s.",
+      "observed_command": "mlx_vlm.server --model mlx-community/gpt-oss-20b-MXFP4-Q8 --port 8125 --max-kv-size 16384  # 16 concurrent streams, 256 max_tokens each, temperature 0.7, continuous batching (default), no prompt cache",
+      "run_id": "cmqszh407012sqr01oer5egep",
+      "tokenized": {
+        "arguments": [
+          "mlx_vlm.server",
+          "--model",
+          "mlx-community/gpt-oss-20b-MXFP4-Q8",
+          "--port",
+          "8125",
+          "--max-kv-size",
+          "16384",
+          "#",
+          "16",
+          "concurrent",
+          "streams,",
+          "256",
+          "max_tokens",
+          "each,",
+          "temperature",
+          "0.7,",
+          "continuous",
+          "batching",
+          "(default),",
+          "no",
+          "prompt",
+          "cache"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "openai-gpt-oss-20b--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqszh407012sqr01oer5egep"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 16,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gpt-oss-20b-mxfp4-apple-m5-max-128gb-mlx-tp1-sweep"
+  ],
+  "status": "candidate"
+}

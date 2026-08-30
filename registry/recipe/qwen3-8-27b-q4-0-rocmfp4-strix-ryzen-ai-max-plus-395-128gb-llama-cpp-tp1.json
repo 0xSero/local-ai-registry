@@ -1,0 +1,194 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "ROCmFPX b9219 / 1faa48eef / ROCm 7.2.4"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-27b-q4-0-rocmfp4-strix-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmstq9z3803q3ms01f0r9qsko"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmstq9z3803q3ms01f0r9qsko",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmstq9z3803q3ms01f0r9qsko"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "Corrected independent Horizon Strix Halo reproduction from internal NVMe-backed Btrfs storage. Exact STRIX base plus Q4_0 MTP draft head; Kyuz0 ROCmFP4 toolbox runtime b9219 / 1faa48eef / ROCm 7.2.4. Median of 3 measured runs after 1 warmup, using fixed cache-busting operator-style ~8K prompts shared across configurations, cache_prompt=false, greedy sampling (temperature 0/top_k 1), ignore_eos=true, and exactly 256 generated tokens. Native decode runs: 23.88, 23.22, 24.08 tok/s; median 23.88. Measured MTP acceptance: 0.567, 0.536, 0.567; median 0.567. No-MTP control was 13.34 tok/s, so n-max 3 improved decode by 78.95%; n-max 2 was 22.66 and n-max 4 was 21.86 tok/s. A pinned newer b9311 build regressed to 23.33 tok/s (23.50 with GPU_MAX_HW_QUEUES=2), so b9219 remains the best verified runtime. Internal cold readiness was 4.222 s. Publisher SHA256SUMS passed after relocation. A bounded Hermes operator workflow completed 9 tool calls, computed and matched SHA-256 and byte count, wrote a report, and read it back; final content was correct. The earlier external-drive measurements are superseded by this corrected internal-storage run.",
+      "observed_command": "llama-server -m Qwen3.8-27B-Q4_0_ROCMFP4_STRIX.gguf --spec-type draft-mtp --spec-draft-model mtp-Qwen3.8-27B-Q4_0.gguf --spec-draft-ngl 99 --spec-draft-device ROCm0 --spec-draft-n-max 3 --spec-draft-n-min 0 --spec-draft-p-min 0.0 -ngl 999 -fa 1 --no-mmap --jinja -fit off --parallel 1 -dev ROCm0 -c 65536 --metrics",
+      "run_id": "cmstq9z3803q3ms01f0r9qsko",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-Q4_0_ROCMFP4_STRIX.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-model",
+          "mtp-Qwen3.8-27B-Q4_0.gguf",
+          "--spec-draft-ngl",
+          "99",
+          "--spec-draft-device",
+          "ROCm0",
+          "--spec-draft-n-max",
+          "3",
+          "--spec-draft-n-min",
+          "0",
+          "--spec-draft-p-min",
+          "0.0",
+          "-ngl",
+          "999",
+          "-fa",
+          "1",
+          "--no-mmap",
+          "--jinja",
+          "-fit",
+          "off",
+          "--parallel",
+          "1",
+          "-dev",
+          "ROCm0",
+          "-c",
+          "65536",
+          "--metrics"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "kingjones777-qwen3-8-27b-rocmfp4-strix-mtp-gguf--q4-0-rocmfp4-strix",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmstq9z3803q3ms01f0r9qsko"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-0-rocmfp4-strix-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

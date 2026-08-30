@@ -1,0 +1,187 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9fee29e9435f; oneAPI 2026.1.1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "lfm2-5-2-6b-q8-0-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt9m8h6i00ymli018jvpod9i"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt9m8h6i00ymli018jvpod9i",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt9m8h6i00ymli018jvpod9i"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "LFM2.5 2.6B Q8_0 target-only on one Intel Arc Pro B70 with stock pinned llama.cpp SYCL. Fresh cold 12-prompt suite, 512-token responses, conventional 99-interval median, cache_prompt=false and cached_tokens=0; second fresh server measured 132.467576 tok/s. Reproducible model pin, build, commands, and measured depth/prefill curves: https://neural.download/models/lfm25-26b-q8-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/lfm25-26b-q8-b70. No lab performance patch is required for this package.",
+      "observed_command": "llama-server -m LFM2.5-2.6B-Q8_0.gguf --reasoning off -c 8192 -ctk f16 -ctv f16 --device SYCL0 -ngl 99 -fa auto --parallel 1 --cache-ram 0 --ctx-checkpoints 0 --fit off",
+      "run_id": "cmt9m8h6i00ymli018jvpod9i",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "LFM2.5-2.6B-Q8_0.gguf",
+          "--reasoning",
+          "off",
+          "-c",
+          "8192",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "--device",
+          "SYCL0",
+          "-ngl",
+          "99",
+          "-fa",
+          "auto",
+          "--parallel",
+          "1",
+          "--cache-ram",
+          "0",
+          "--ctx-checkpoints",
+          "0",
+          "--fit",
+          "off"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt9m8h6i00ymli018jvpod9i"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "lfm2-5-2-6b-q8-0-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

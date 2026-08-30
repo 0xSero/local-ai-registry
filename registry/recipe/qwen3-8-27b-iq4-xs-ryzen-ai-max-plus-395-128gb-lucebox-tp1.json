@@ -1,0 +1,185 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "lucebox",
+    "version": "f686c447f067a04ea100a996e4c826e8cc4decc1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-27b-iq4-xs-ryzen-ai-max-plus-395-128gb-lucebox-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt7on4h50059nn01bkp53rrp"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt7on4h50059nn01bkp53rrp",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt7on4h50059nn01bkp53rrp"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "Lucebox-native DFlash2 Qwen3.8-27B target. Task: count_to_30. One discarded warmup + three measured requests, median rates/timing; greedy decode (temperature omitted); target 27-token prompt -> 110 output tokens; 131072 context; batch 1. Target IQ4_XS GGUF with Q8_0 DFlash2 draft, DFlash2 spec-decode confirmed in server journal; identical output hashes across measured repetitions. Placement: Radeon 8060S iGPU (gfx1151) at PCIe 0000:c7:00.0, unified memory, weights streamed from system RAM; Q8 K/V cache. Peak VRAM is the maximum dflash_server DRM-client workload allocation (vram+gtt) on 0000:c7:00.0; power is peak observed GPU power. tokSOut uses server decode timing, tokSPrefill server prefill timing, tokSTotal client dispatch-to-DONE wall time.",
+      "observed_command": "HIP_VISIBLE_DEVICES=1 /home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server /home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf --draft /home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf --draft-block-size 16 --max-ctx 131072 --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8087 --target-device hip:0 --draft-device hip:0",
+      "run_id": "cmt7on4h50059nn01bkp53rrp",
+      "tokenized": {
+        "arguments": [
+          "/home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server",
+          "/home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf",
+          "--draft",
+          "/home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf",
+          "--draft-block-size",
+          "16",
+          "--max-ctx",
+          "131072",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8087",
+          "--target-device",
+          "hip:0",
+          "--draft-device",
+          "hip:0"
+        ],
+        "environment": {
+          "HIP_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-gguf--iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt7on4h50059nn01bkp53rrp"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-iq4-xs-ryzen-ai-max-plus-395-128gb-lucebox-tp1-sweep"
+  ],
+  "status": "candidate"
+}
