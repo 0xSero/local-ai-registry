@@ -60,6 +60,15 @@
       }
     },
     {
+      "if": { "properties": { "recipe_source": { "const": "mlxfast" } }, "required": ["recipe_source"] },
+      "then": {
+        "properties": {
+          "status": { "const": "candidate" },
+          "hardware_id": { "const": "apple-m5-max-128gb" }
+        }
+      }
+    },
+    {
       "if": { "properties": { "status": { "const": "validated" } }, "required": ["status"] },
       "then": { "properties": { "launch": { "not": { "properties": { "kind": { "const": "reference" } }, "required": ["kind"] } } } }
     }

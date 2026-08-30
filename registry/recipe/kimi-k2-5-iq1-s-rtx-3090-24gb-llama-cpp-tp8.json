@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "8178 (3e6ab244a)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "kimi-k2-5-iq1-s-rtx-3090-24gb-llama-cpp-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmowla4rq004io201otfp0rdo"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmowla4rq004io201otfp0rdo",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowla4rq004io201otfp0rdo"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Kimi-K2.5 IQ1_S GGUF feasibility row on 8x RTX 3090. Full offload did not fit; first stable route used n_gpu_layers=48 with substantial CPU offload, so this is not a speed-match row. 3 measured 512-token runs after 1 warmup; wall tok/s varied 6.21, 6.44, 3.94. Raw log: /home/mattsav/Documents/data/glm51_8x3090_20260507/kimi_k25_iq1s_8x_ngl48_b512_bench512.log",
+      "observed_command": "CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9 llama-server -m /data/models/kimi-k25-gguf/bartowski-moonshotai-kimi-k25-iq1s/moonshotai_Kimi-K2.5-IQ1_S-00001-of-00006.gguf -c 4096 -b 512 -ub 128 -ngl 48 --split-mode layer --tensor-split 1,1,1,1,1,1,1,1 -fa -ctk q4_0 -ctv q4_0",
+      "run_id": "cmowla4rq004io201otfp0rdo"
+    }
+  },
+  "model_instance_id": "bartowski-moonshotai-kimi-k2-5-gguf--iq1-s",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmowla4rq004io201otfp0rdo"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 8
+  },
+  "speed_sweeps_ids": [
+    "kimi-k2-5-iq1-s-rtx-3090-24gb-llama-cpp-tp8-sweep"
+  ],
+  "status": "candidate"
+}

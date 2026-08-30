@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.28.1rc1.dev125+g85872952a.glm53sm86"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "glm-5-3-flash-awq-4bit-rtx-3090-24gb-vllm-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtebgn9q006clm01eray6kbm"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtebgn9q006clm01eray6kbm",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtebgn9q006clm01eray6kbm"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "AWQ W4A16 routed-expert checkpoint at HF revision ac8c3e52fd4f; local target-only view omits optional NextN draft shards, so speculative decoding is off. Custom SM86 vLLM fork, TP8+EP8, Triton sparse MLA, Marlin MoE, FP8 KV, piecewise CUDA graphs. Two 64-token warmups and six sequential 512-token measurements; temperature 0, seed 260829, ignore_eos=true. Prefix caching is enabled by the engine; each request used a unique cache_salt and every Prometheus cached-token/hit delta was zero. tokSOut is client steady-state; tokSTotal=(prompt+output)/client E2E per current API wording. Temperature-zero hashes: 6 unique/6; all six runs exhausted the 512-token budget in reasoning_content before visible content. PID/config stable=True; restarts unchanged=True; runner incidents=0; benchmark-window service/kernel suspicious lines=0/0. Per-GPU power is median of each run's mean active draw; peak VRAM is summed across all GPUs.",
+      "observed_command": "/home/thread/venvs/vllm-glm53-sm86-85872952/bin/python /home/thread/venvs/vllm-glm53-sm86-85872952/bin/vllm serve /mnt/nvme/models/wtdcode/GLM-5.3-Flash-AWQ-W4A16-target-only --served-model-name glm-5.3-flash-awq-sm86-test --host 127.0.0.1 --port 18083 --tensor-parallel-size 8 --pipeline-parallel-size 1 --distributed-executor-backend mp --enable-expert-parallel --enable-ep-weight-filter --all2all-backend allgather_reducescatter --disable-custom-all-reduce --language-model-only --load-format safetensors --safetensors-load-strategy lazy --max-parallel-loading-workers 1 --attention-backend TRITON_MLA_SPARSE --dtype bfloat16 --kv-cache-dtype fp8 --max-model-len 204800 --max-num-seqs 1 --max-num-batched-tokens 256 --enable-chunked-prefill --block-size 128 --kv-cache-memory-bytes 1298373120 --kernel-config {\"moe_backend\":\"marlin\",\"enable_flashinfer_autotune\":false} --compilation-config {\"mode\":\"VLLM_COMPILE\",\"cudagraph_mode\":\"PIECEWISE\",\"cudagraph_capture_sizes\":[1],\"max_cudagraph_capture_size\":1} --enable-auto-tool-choice --tool-call-parser glm47 --reasoning-parser glm47",
+      "run_id": "cmtebgn9q006clm01eray6kbm"
+    }
+  },
+  "model_instance_id": "wtdcode-glm-5-3-flash-awq-w4a16--awq-4bit",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtebgn9q006clm01eray6kbm"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 204800,
+    "tensor_parallel": 8
+  },
+  "speed_sweeps_ids": [
+    "glm-5-3-flash-awq-4bit-rtx-3090-24gb-vllm-tp8-sweep"
+  ],
+  "status": "candidate"
+}

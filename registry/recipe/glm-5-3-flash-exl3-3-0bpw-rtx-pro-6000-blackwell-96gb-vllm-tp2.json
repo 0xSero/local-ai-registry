@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.1.dev20111+g7f1e92bec.d20260827"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm-5-3-flash-exl3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmteqhpnj003an001xz0us0uj"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmteqhpnj003an001xz0us0uj",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmteqhpnj003an001xz0us0uj"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Automated 3-run llama-benchy 0.4.0 measurement of the custom selective EXL3 3.0bpw artifact. Fixed 512-token prompt and 1024-token output, batch 1, cold prefix cache, exact output length, temperature=0. Output 193.80 \u00b1 12.60 tok/s; prefill 3,712.33 \u00b1 207.24 tok/s; TTFT 177.14 \u00b1 8.03 ms; peak one-second output 281 \u00b1 47 tok/s. Logical checkpoint TP4 is folded onto two physical TP workers (two serialized 512-wide K3 slices per GPU). DFlash2 TP2 speculative decoding uses seven draft tokens and CUDA graphs. GPU power values are means during samples at >=50% utilization. Peak VRAM is the sum of per-card peaks. GPU 0 also drives the Hyprland desktop. Experimental custom loader; source checkpoint revision 8b099bf276507a17faea920deff3f62d5597fb52 preserved unchanged.",
+      "observed_command": "python -m vllm.entrypoints.openai.api_server --model /home/rarri/ai/spikes/001-selective-exl3-loader/model-view --served-model-name GLM-5.3-Flash-EXL3-3.0bpw --host 0.0.0.0 --port 8012 --language-model-only --tensor-parallel-size 2 --dtype bfloat16 --load-format safetensors --moe-backend b12x --attention-backend FLASHINFER_MLA_SPARSE_SM120 --kv-cache-dtype fp8_ds_mla --max-model-len 8192 --max-num-batched-tokens 1024 --max-num-seqs 1 --gpu-memory-utilization 0.90 --enable-chunked-prefill --reasoning-parser glm45 --enable-auto-tool-choice --tool-call-parser glm47 --disable-custom-all-reduce --speculative-config '{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7,\"draft_tensor_parallel_size\":2,\"draft_sample_method\":\"probabilistic\",\"kv_cache_dtype\":\"auto\"}' --no-enable-prefix-caching",
+      "run_id": "cmteqhpnj003an001xz0us0uj"
+    }
+  },
+  "model_instance_id": "zai-org-glm-5-3-flash--exl3-3-0bpw",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmteqhpnj003an001xz0us0uj"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "glm-5-3-flash-exl3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

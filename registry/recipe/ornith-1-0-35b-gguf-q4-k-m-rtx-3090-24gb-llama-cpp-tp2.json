@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "8655 (277ff5fff)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "ornith-1-0-35b-gguf-q4-k-m-rtx-3090-24gb-llama-cpp-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqw5k4t4039gqr014q060hv2"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqw5k4t4039gqr014q060hv2",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqw5k4t4039gqr014q060hv2"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Ornith-1.0 35B GGUF Q4_K_M on 2x RTX 3090 via llama.cpp CUDA, full 262144 context, q4_0 KV cache, flash-attn, no prompt cache, single streaming request, 5 measured 1000-token runs after 1 warmup, no-thinking template forced with chat_template_kwargs enable_thinking=false. layer split 1,1. Performance-window run with GPU power autotune paused and test GPUs capped at 350W. Peak temperatures were 81C and 79C; no hardware slowdown and only one software thermal sample observed. PCIe 3.0 host, no NVLink.",
+      "observed_command": "llama-server --model ornith-1.0-35b-Q4_K_M.gguf --ctx-size 262144 --cache-type-k q4_0 --cache-type-v q4_0 --parallel 1 --batch-size 1024 --ubatch-size 256 --flash-attn on --n-gpu-layers 999 --split-mode layer --tensor-split 1,1 --jinja --reasoning-format deepseek --reasoning auto --no-cache-prompt --cache-ram 0",
+      "run_id": "cmqw5k4t4039gqr014q060hv2"
+    }
+  },
+  "model_instance_id": "ornith-ai-ornith-1-0-35b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqw5k4t4039gqr014q060hv2"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "ornith-1-0-35b-gguf-q4-k-m-rtx-3090-24gb-llama-cpp-tp2-sweep"
+  ],
+  "status": "candidate"
+}

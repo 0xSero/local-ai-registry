@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "Lucebox-Hub dflash 79fe738 (Luce-Org/llama.cpp@luce-dflash fork)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-q4-k-m-rtx-5090-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmph5zm7j00gwpc0104tq6x4m"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmph5zm7j00gwpc0104tq6x4m",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmph5zm7j00gwpc0104tq6x4m"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "Lucebox-Hub test_dflash on RTX 5090 (Blackwell sm_120). 10-run validation: mean 222.64, best 228.56, min 214.33, std 4.06 tok/s. Same merge_sort thinking-off prompt class (25 input tokens, 256 forced output tokens, temp=0) as the hipfire reference. DFlash speculative decoding + DDTree (budget=16) + fast-rollback. Block-diffusion draft from z-lab/Qwen3.6-27B-DFlash (3.46GB BF16). Mean acceptance length 8.83 tokens/step, 55.2% accept rate, 29 draft steps for 256 tokens. AR baseline same hardware: 72.7 tok/s (llama.cpp mainline UD-Q4_K_XL) -> 3.14x speedup.",
+      "observed_command": "DFLASH27B_TOKENIZER=Qwen/Qwen3.6-27B python3 scripts/run.py --raw --prompt \"$(cat merge_sort_thinking_off.txt)\" --n-gen 256 --target models/Qwen3.6-27B-Q4_K_M.gguf --draft models/draft-3.6 --budget 16 --max-ctx 1024 --fa-window 0",
+      "run_id": "cmph5zm7j00gwpc0104tq6x4m"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmph5zm7j00gwpc0104tq6x4m"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 1024,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-q4-k-m-rtx-5090-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

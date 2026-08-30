@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.25.1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "laguna-s-2-1-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms0kp9j8007ls201cb2gwbcf"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms0kp9j8007ls201cb2gwbcf",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms0kp9j8007ls201cb2gwbcf"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Laguna-S-2.1 (MoE, NVFP4, 118B) on GB10 Grace Blackwell 128GB unified memory. Conthroughput run: 4 concurrent requests, 128 output tokens each. 2 warmup + 3 measured batches, median reported. Aggregate output 214.85 tok/s (2.1x single-stream 101.44). Per-stream decode drops to 54.69 tok/s under load. DFlash speculative decoding (15 spec tokens) shows less batching benefit than non-spec lanes because draft model contention reduces speculation effectiveness. Consistent at batch=4: 198.93-216.14 tok/s. Batch=8 was inconsistent (133-375 tok/s) due to draft model scheduling.",
+      "observed_command": "vllm serve Laguna-S-2.1-NVFP4 --served-model-name scholar laguna --speculative-config {\"model\":\"Laguna-S-2.1-DFlash-NVFP4\",\"num_speculative_tokens\":15} --enable-auto-tool-choice --tool-call-parser poolside_v1 --reasoning-parser poolside_v1 --max-num-seqs 32 --max-model-len 262144 --gpu-memory-utilization 0.85 --enable-chunked-prefill --async-scheduling --enable-prefix-caching --host 0.0.0.0 --port 8104",
+      "run_id": "cms0kp9j8007ls201cb2gwbcf"
+    }
+  },
+  "model_instance_id": "poolside-laguna-s-2-1-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms0kp9j8007ls201cb2gwbcf"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "laguna-s-2-1-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

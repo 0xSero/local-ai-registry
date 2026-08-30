@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "_beellama-preview-v0.3.2-bin-win-cuda-13.1-x64"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "gemma-4-31b-it-qat-q4-0-unquantized-q4-k-xl-rtx-5090-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqyxx9c901nyoe01tdp4i4hx"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqyxx9c901nyoe01tdp4i4hx",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqyxx9c901nyoe01tdp4i4hx"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "Did couple runs and hits 190 to 205t/s as total t/s. Windows eats 2Gb Vram on default.\nprompt was \"Write a Python function that calculates the Fibonacci sequence up to the nth number. Include type hints and docstrings. Then explain the time complexity.\" with output cut when 2048 tokens hit.",
+      "observed_command": "llama-server.exe -m \"E:/LLM/gemma-4-31B-it-qat-UD-Q4_K_XL.gguf\" --model-draft \"E:/LLM/draft/mtp-gemma-4-31B-it.gguf\" --mmproj \"E:/LLM/mmproj-F16_gat.gguf\" --spec-type draft-mtp --spec-draft-n-max 8 --spec-draft-n-min 3 --port 8080 -ngl all --spec-draft-ngl all -b 2048 -ub 256 --ctx-size 200000  --cache-type-k q5_0 --cache-type-v q5_0 --flash-attn on --cache-ram 0 --jinja --no-mmap --mlock --no-host --metrics --log-timestamps --log-prefix --log-colors off --reasoning off \n",
+      "run_id": "cmqyxx9c901nyoe01tdp4i4hx"
+    }
+  },
+  "model_instance_id": "unsloth-gemma-4-31b-it-qat-gguf--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqyxx9c901nyoe01tdp4i4hx"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 200000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-31b-it-qat-q4-0-unquantized-q4-k-xl-rtx-5090-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

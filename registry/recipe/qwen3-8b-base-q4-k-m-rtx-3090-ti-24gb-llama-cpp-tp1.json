@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b1-6217b49 (CUDA)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-ti-24gb",
+  "id": "qwen3-8b-base-q4-k-m-rtx-3090-ti-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmogsu1xc000mjv04iforumvd"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmogsu1xc000mjv04iforumvd",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmogsu1xc000mjv04iforumvd"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090 Ti",
+      "notes": "Qwen 3-8B Q4_K_M via llama-server on single RTX 3090 Ti (slot 1 Gen4 x16). Bench: vllm bench serve openai-chat random 512/512 num-prompts 20 concurrency 1 --ignore-eos. TPOT 7.29 ms, ITL 7.34 ms \u2014 8B Q4 is HBM-bandwidth-saturated on 3090 Ti at ~135 t/s decode. KV q8_0, ngl 999, fa on, no spec decode. ~5 GB on disk, ~7 GB peak VRAM. **+51% output throughput vs M3 Ultra entry (88.25 t/s) on the same model+quant** \u2014 Ti's 1008 GB/s HBM2 + tensor cores beat M3 Ultra's unified-memory bandwidth on dense 8B inference.",
+      "observed_command": "llama-server -m Qwen3-8B-Q4_K_M.gguf --alias qwen3-8b-q4 -ngl 999 -fa 1 --no-mmap -c 8192 -ctk q8_0 -ctv q8_0 -b 2048 -ub 2048 --metrics --jinja --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --host 127.0.0.1 --port 8003",
+      "run_id": "cmogsu1xc000mjv04iforumvd"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8b--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmogsu1xc000mjv04iforumvd"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8b-base-q4-k-m-rtx-3090-ti-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

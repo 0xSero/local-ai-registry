@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "ling-3-0-tiny-q8-0-rtx-3090-24gb-llama-cpp-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsoz8tkw00gfmp01qy5xymx7"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsoz8tkw00gfmp01qy5xymx7",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsoz8tkw00gfmp01qy5xymx7"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Q8_0 on pinned llama.cpp PR 26608 commit d8d862521, CUDA, 2x RTX 3090, all layers GPU-offloaded with 1:1 layer split, 131072 server context, flash attention. Prefill and decode are llama-bench pp2048/tg256 means over 5 repetitions after default warmup: 9243.21531 prompt tok/s and 232.774459 output tok/s. TTFT is median of 5 streaming endpoint requests after 2 warmups with prompt caching explicitly disabled: 47.77 ms (range 47.71-47.97 ms). The endpoint TTFT prompt was 42 actual tokens. Remote semantic decode was 224.4 tok/s median; llama-bench sustained decode is submitted as tokSOut.",
+      "observed_command": "/home/lotto/llama.cpp-ling3/build/bin/llama-bench --offline -m /home/lotto/models/Ling-3.0-tiny-GGUF/Ling-3.0-tiny-Q8_0.gguf -p 2048 -n 256 -b 2048 -ub 512 -ngl 999 -dev CUDA0,CUDA1 -sm layer -ts 1/1 -fa on -r 5 -o json",
+      "run_id": "cmsoz8tkw00gfmp01qy5xymx7"
+    }
+  },
+  "model_instance_id": "mike0021-ling-3-0-tiny-gguf--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsoz8tkw00gfmp01qy5xymx7"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2048,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "ling-3-0-tiny-q8-0-rtx-3090-24gb-llama-cpp-tp2-sweep"
+  ],
+  "status": "candidate"
+}

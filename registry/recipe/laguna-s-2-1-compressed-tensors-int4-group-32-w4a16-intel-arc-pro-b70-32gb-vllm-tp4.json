@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.1.dev1172+g4a6fd8747.xpu; local source ef334233deabeaeedb607056a2db1c90edb3887c; XPU kernels 4772f727590c51b72add79350b913d098cf67872"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "laguna-s-2-1-compressed-tensors-int4-group-32-w4a16-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrzrd4tf001ipa013xpx4kid"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrzrd4tf001ipa013xpx4kid",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrzrd4tf001ipa013xpx4kid"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Verified strict graph-vs-graph A1-B1-B2-A2 persistent exact-attention metadata record candidate. The submitted 94.92003934159611 tok/s is the lower of two exact fresh candidate starts (other 95.06654837534518), +2.991% over approved record cmrzjb7i906x4o401egrnm05m. Metadata-on beat both adjacent metadata-off graph controls, 13/13 rows in each pair, while saving 0.911 and 1.648 ms per aggregate DFlash target cycle. All 52 requests were bitwise token-identical to canonical q1 and cached_tokens=0; long-next and rollover passed on every leg. First lazy graph capture remained inside every leg's first measured cold request. No cache, prior-history acceleration, response reuse, warm-up generation, retry, qualification timing, or aggregate replica throughput.",
+      "observed_command": "experiments/laguna-s-2.1-xpu-b70/tools/run_laguna_m8_metadata_formal_crossover_leg.sh candidate B1 RUN_DIR",
+      "run_id": "cmrzrd4tf001ipa013xpx4kid"
+    }
+  },
+  "model_instance_id": "poolside-laguna-s-2-1-int4--compressed-tensors-int4-group-32-w4a16",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrzrd4tf001ipa013xpx4kid"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "laguna-s-2-1-compressed-tensors-int4-group-32-w4a16-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

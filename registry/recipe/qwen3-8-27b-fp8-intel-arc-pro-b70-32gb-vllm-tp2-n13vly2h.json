@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.2rc1.dev77+gac7509e2b; XPU kernels 1e90ffa672; neural.download W8A16+active-width+active-Mamba overlay 2b79af686423"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2-n13vly2h",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtb5n45n0021qq01n13vly2h"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtb5n45n0021qq01n13vly2h",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtb5n45n0021qq01n13vly2h"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.8 27B official FP8 target on two Intel Arc Pro B70 cards with the neural.download block-W8A16, active-width GDN, and active-Mamba allocation patches. Dynamic service uses the publisher MTP layer serially to depth 8 for one active request and depth 1 under load; every accepted draft token is verified by the unchanged official FP8 target. Fixed 12-prompt cold realistic suite, one unique request each, 128 outputs, streamed token-ID timing, prefix cache disabled, cached_tokens=0 for all requests. Conventional 99-interval median was 58.537756 tok/s on this submitted cold server; an independent second cold server measured 58.244309 tok/s. Exact evidence, patches, commands, cold-start timing, and the separately scoped 146.814418 tok/s high-acceptance fixture are in the linked result packet.",
+      "observed_command": "MODEL_DIR=/path/to/qwen3.8-27b-fp8 VLLM_CACHE_DIR=/path/to/new-dynamic-mtp-cache repro/qwen38-27b-fp8-vllm-tp2-asrock-b70/run-w8a16-dynamic-mtp-server.sh",
+      "run_id": "cmtb5n45n0021qq01n13vly2h"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b-fp8--fp8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtb5n45n0021qq01n13vly2h"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 256,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2-n13vly2h-sweep"
+  ],
+  "status": "candidate"
+}

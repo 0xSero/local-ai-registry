@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10690-db2bf4143"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-8-27b-q8-0-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtdfljvx004dlm0125ofpfqd"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtdfljvx004dlm0125ofpfqd",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtdfljvx004dlm0125ofpfqd"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "llama-benchy 0.4.0 depth-ladder (pp2520 tg240, no-cache, runs=2+warmup) at depth 8192. rdna-boosts rebased onto master 50f068fff (b10690, incl. PR #27742), ROCm 7.14 TheRock, gfx1201, draft-mtp-adaptive MTP, tensor split over 2 compute cards. New: P2P peer access (ACS redirect) + butterfly allreduce \u2014 RCCL allreduce costs 20% decode on small MTP payloads. +4.6% tg over prior best 56.61, +11.5% over pre-rebase 53.13.",
+      "observed_command": "llama-server -m Qwen3.8-27B-Q8_0.gguf --spec-type draft-mtp-adaptive -sm tensor -ts 1/1 -ngl 99 --flash-attn auto -ctk f16 -ctv f16 -c 262144 (GGML_CUDA_ALLREDUCE=internal + GGML_CUDA_P2P=1, pci=disable_acs_redir live, 2 of 3 GPUs visible)",
+      "run_id": "cmtdfljvx004dlm0125ofpfqd"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtdfljvx004dlm0125ofpfqd"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 10952,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q8-0-radeon-ai-pro-r9700-32gb-llama-cpp-tp3-sweep"
+  ],
+  "status": "candidate"
+}

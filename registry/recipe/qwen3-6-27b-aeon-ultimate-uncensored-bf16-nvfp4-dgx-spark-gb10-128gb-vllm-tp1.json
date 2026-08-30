@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "v0.20.2rc1.dev166+gf6490a284 / ghcr.io/aeon-7/vllm-aeon-ultimate-dflash:qwen36-v4"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-27b-aeon-ultimate-uncensored-bf16-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmp80i0ga00kqo401df6kjnfq"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmp80i0ga00kqo401df6kjnfq",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp80i0ga00kqo401df6kjnfq"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Qwen3.6 AEON combined FlashQLA+DFlash balanced tg128/pp2048 grid on spark-3; cell=dflash/think-on/code; llama-benchy 0.3.7, --pp 2048 --tg 128 --depth 0 --concurrency 1 --runs 30, first sample dropped in summary n=29; raw receipts and commands: https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/qwen36-aeon-combined-flashqla-dflash-spark/results/tg128-pp2048-code-prose-think-grid-20260516_054837/dflash/think-on/code/measured/pp2048-tg128-c1-n30.json; summary/package: https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/qwen36-aeon-combined-flashqla-dflash-spark/submission-tg128-pp2048-balanced-20260516. Matched AR baseline for this cell: 12.04 tok/s decode, 2790.38 tok/s prefill.",
+      "observed_command": "vllm serve /models/aeon-xs --served-model-name aeon-ultimate qwen36-ultimate aeon-fast aeon-deep qwen36-ultimate-xs --host 0.0.0.0 --port 8000 --tensor-parallel-size 1 --dtype auto --quantization modelopt --kv-cache-dtype auto --max-model-len 262144 --max-num-seqs 64 --max-num-batched-tokens 32768 --gpu-memory-utilization 0.85 --enable-chunked-prefill --no-enable-prefix-caching --generation-config vllm --load-format safetensors --trust-remote-code --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --attention-backend flash_attn --compilation-config \\{\\\"inductor_compile_config\\\":\\{\\\"combo_kernels\\\":false\\,\\\"benchmark_combo_kernel\\\":false\\}\\} --limit-mm-per-prompt \\{\\\"image\\\":4\\,\\\"video\\\":2\\} --mm-encoder-tp-mode data --mm-processor-cache-type shm --mm-shm-cache-max-object-size-mb 256 --speculative-config \\{\\\"method\\\":\\\"dflash\\\"\\,\\\"model\\\":\\\"/models/dflash-drafter\\\"\\,\\\"num_speculative_tokens\\\":15\\,\\\"attention_backend\\\":\\\"FLASH_ATTN\\\"\\}",
+      "run_id": "cmp80i0ga00kqo401df6kjnfq"
+    }
+  },
+  "model_instance_id": "aeon-7-qwen3-6-27b-aeon-ultimate-uncensored-multimodal-nvfp4-mtp-xs--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmp80i0ga00kqo401df6kjnfq"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-aeon-ultimate-uncensored-bf16-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

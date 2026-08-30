@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10079"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-max-128gb",
+  "id": "qwen3-6-35b-a3b-q6-k-p-apple-m5-max-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms0rbqc700bgs201zchaje6n"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms0rbqc700bgs201zchaje6n",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms0rbqc700bgs201zchaje6n"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "metal",
+      "hardware_label": "M5 Max",
+      "notes": "Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive (Q6_K_P, 29GB on disk) on Apple M5 Max 128GB unified memory. llama.cpp b10079 with Metal backend, all layers on GPU, flash attention. 556-token prompt, 128 output tokens, temperature=0, 2 warmup + 5 measured runs (median). Consistent: 98.08-100.16 tok/s. 35B-A3B MoE (3B active params) at Q6_K_P higher-precision quant.",
+      "observed_command": "llama-server -m Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q6_K_P.gguf --host 127.0.0.1 --port 8089 -ngl 99 -c 8192 --flash-attn on --temp 0",
+      "run_id": "cms0rbqc700bgs201zchaje6n"
+    }
+  },
+  "model_instance_id": "hauhaucs-qwen3-6-35b-a3b-uncensored-hauhaucs-aggressive--q6-k-p",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms0rbqc700bgs201zchaje6n"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-q6-k-p-apple-m5-max-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

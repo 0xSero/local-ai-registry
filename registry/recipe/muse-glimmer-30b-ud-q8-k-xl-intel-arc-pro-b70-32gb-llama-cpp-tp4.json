@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "10433; 030ebb558 + Muse TP4/WOQ patch 3965702b96fe"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "muse-glimmer-30b-ud-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmss8515c00n0ms01n3begqgg"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmss8515c00n0ms01n3begqgg",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmss8515c00n0ms01n3begqgg"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Muse-Glimmer-30B UD-Q8_K_XL on four Intel Arc Pro B70 GPUs, TP4, one cold request at a time. Primary result is the median across a frozen 15-prompt suite for the 99 inter-token intervals between generated-token events 1 and 100 after TTFT: 161.900 tok/s; p10 108.574, mean 175.813, prompt-bootstrap one-sided 95% lower bound 127.082. Every prompt ran exactly once, all reported cached_tokens=0, and no prompt/KV/context/response/ngram/history reuse was used. Pretrained BF16 DFlash proposals are verified by the declared Q8 target; no drafter training was performed. Runtime uses fixed-N16 BF16-activation/S8 group32 oneDNN WOQ and distributed ARGMAX. This is a target-verified Q8 result, not BF16/lossless or universally token-exact; two deterministic structured tasks were exact while prose can take target-approved near-tie branches. Full natural-completion median after TTFT was 68.586 tok/s. Complete patches, configs, hashes, raw evidence, and runnable repro are in results/muse-glimmer-30b-q8-woq-b70 and repro/muse-glimmer-30b-q8-woq-b70-100tps-20260813.",
+      "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:0,1,2,3 GGML_SYCL_Q8_0_WOQ_BF16=1 GGML_SYCL_Q8_0_WOQ_FIXED16=1 GGML_SYCL_BF16_GRAPH_CONVERSION_CACHE=0 GGML_META_PARALLEL_SUBMIT=1 GGML_SYCL_COMM_ARGMAX=1 LLAMA_DFLASH_TP_GREEDY=1 LLAMA_TP_BACKEND_SAMPLING=1 llama-server -m Muse-Glimmer-30B-UD-Q8_K_XL.gguf -ngl 99 -c 32768 --parallel 1 -b 1024 -ub 1024 -fa on -sm tensor -bs -lv 4 --spec-type draft-dflash --spec-draft-model dflash-bf16.gguf --spec-draft-n-max 15 --spec-draft-p-min 0 --spec-draft-ngl 99",
+      "run_id": "cmss8515c00n0ms01n3begqgg"
+    }
+  },
+  "model_instance_id": "unsloth-muse-glimmer-30b-gguf--ud-q8-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmss8515c00n0ms01n3begqgg"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-ud-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp4-sweep"
+  ],
+  "status": "candidate"
+}

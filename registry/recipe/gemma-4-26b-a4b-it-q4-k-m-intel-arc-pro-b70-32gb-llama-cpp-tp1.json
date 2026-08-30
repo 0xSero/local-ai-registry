@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10621 (c1d0e7a00)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "gemma-4-26b-a4b-it-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtetla50005mn001yx2cfcy6"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtetla50005mn001yx2cfcy6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtetla50005mn001yx2cfcy6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Single Intel Arc Pro B70 (one of two in the box; model runs on one card, ~23.2 GB VRAM used). llama.cpp SYCL build b10621. Speculative decoding via the repo-bundled MTP draft head (--spec-type draft-mtp, n-max 4), ~64% acceptance on mixed prose. Context 262144 = 2x RoPE extension over the GGUF n_ctx_train of 131072 (HF card lists 262144). Measured: 2845-token prompt, 256-token generation, temp 0.7; median of 4 iterations after warmup. Short-context (~100-token prompt) decode runs ~65-76 tok/s.",
+      "observed_command": "llama-server (b10621 SYCL) -m Gemma4-26B-A4B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf --mmproj mmproj-...-BF16.gguf -ngl 99 -fit off -np 1 -c 262144 -t 16 --load-mode dio -ctk q8_0 -ctv q8_0 -b 2048 -ub 1024 -fa on --jinja --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-ngl all --spec-draft-model mtp-gemma-4-26B-A4B-it.gguf\nONEAPI_DEVICE_SELECTOR=level_zero:0  GGML_SYCL_ENABLE_VMM=0  UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1",
+      "run_id": "cmtetla50005mn001yx2cfcy6"
+    }
+  },
+  "model_instance_id": "hauhaucs-gemma4-26b-a4b-qat-uncensored-hauhaucs-balanced-mtp--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtetla50005mn001yx2cfcy6"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-26b-a4b-it-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.21.1rc1.dev339+g1967a5627bc3"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-flash-fp8-dgx-spark-gb10-128gb-vllm-tp1-nzqc7c66",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqxng3sa000zpk01nzqc7c66"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqxng3sa000zpk01nzqc7c66",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqxng3sa000zpk01nzqc7c66"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "LocalMaxxing C1 row from llama-benchy 0.3.7: pp=2048, tg=128, concurrency=1, runs=5. DeepSeek REAP K160 profile, FP8 KV, prefix caching, DeepSeek MTP speculative decoding with 2 draft tokens. Quantization detail: DeepSeek V4 Flash FP8 / FP4 MoE REAP K160. Single DGX Spark / GB10.",
+      "observed_command": "python -m vllm.entrypoints.openai.api_server --model 0xSero/DeepSeek-V4-Flash-180B --served-model-name DeepSeek-V4-Flash-Spark --max-model-len 200000 --kv-cache-dtype fp8 --max-num-seqs 1 --gpu-memory-utilization 0.88 --enable-prefix-caching --speculative-config {\"method\":\"deepseek_mtp\",\"num_speculative_tokens\":2}",
+      "run_id": "cmqxng3sa000zpk01nzqc7c66"
+    }
+  },
+  "model_instance_id": "0xsero-deepseek-v4-flash-180b--fp8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqxng3sa000zpk01nzqc7c66"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 200000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-fp8-dgx-spark-gb10-128gb-vllm-tp1-nzqc7c66-sweep"
+  ],
+  "status": "candidate"
+}

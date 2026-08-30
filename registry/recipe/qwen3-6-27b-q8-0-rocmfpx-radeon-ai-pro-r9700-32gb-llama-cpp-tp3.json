@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "ROCmFPX r9700-gfx1201-lab@45bcff5"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-6-27b-q8-0-rocmfpx-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmro9s3kb0285lg01odsdmnwq"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmro9s3kb0285lg01odsdmnwq",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmro9s3kb0285lg01odsdmnwq"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Custom Q8_0_ROCMFPX quant (1337Hero/Qwen3.6-27B-Q8_0-ROCMFPX-GGUF) on the custom ROCmFPX HIP llama-server, native gfx1201. 3 independent single-card replicas (one per R9700, --device ROCm$i), client round-robin, 4 slots each. Aggregate tok/s, median of 3 rounds, cold prefill. Quant is 2.94% smaller than upstream Q8_0, which is what lets it fit one card with ~1GB headroom.",
+      "observed_command": "3x: ROCmFPX llama-server (r9700-gfx1201-lab @45bcff5) --device ROCm$i -ngl 99 --jinja --prio 3 -m Qwen3.6-27B-Q8_0_ROCMFPX.gguf --flash-attn on --no-mmap -ctk f16 -ctv f16 -b 2048 -ub 512 -np 4 -c 8192",
+      "run_id": "cmro9s3kb0285lg01odsdmnwq"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--q8-0-rocmfpx",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmro9s3kb0285lg01odsdmnwq"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 12,
+    "max_context_tokens": 787,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-q8-0-rocmfpx-radeon-ai-pro-r9700-32gb-llama-cpp-tp3-sweep"
+  ],
+  "status": "candidate"
+}

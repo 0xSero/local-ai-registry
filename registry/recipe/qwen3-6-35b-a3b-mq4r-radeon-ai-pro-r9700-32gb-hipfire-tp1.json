@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "0.3.0+b0bcc3f91506"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-6-35b-a3b-mq4r-radeon-ai-pro-r9700-32gb-hipfire-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsnsxbrr02fbo0012bo2krxv"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsnsxbrr02fbo0012bo2krxv",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsnsxbrr02fbo0012bo2krxv"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "BATCHED AGGREGATE THROUGHPUT \u2014 not single-stream decode. batch=64, concurrency=64, 64 requests/run, 3 runs, continuous batching, max_tokens=128, KV=q8, greedy; TTFT measured under load.\nsingle R9700 (1 of 4 in the box; other cards ran unrelated jobs and were unused).\nengine: hipfire 0.3.0+b0bcc3f91506, backend rocm, gfx1201\nquant: MQ4R = MagnumQuant 4-bit Redline (MQ4 attention/router/shared + graded MQ4 routed experts; '.mq4r' also selects Redline retained-PM4 dispatch), 4.16 bpw effective.\nWORKLOAD (read before comparing): prompt merge_sort_thinking_off.txt md5 253c7ac50857fe6d0e10fb0d2c5e35c0, only 38 prompt tokens, 128 generated. The contextLength 4096 on this row is the max_seq ALLOCATION, not the prompt size. The Arc Pro B70 row on this page (1139.8 tok/s, concurrency 64) reports contextLength 16384, but that is likewise its --max-model-len; its own notes state diverse 512-token prompts. Its per-request prefill work is therefore ~13x ours, so this row is NOT like-for-like and should not be read as matching or beating it on equal workload.\nmethod: median of 3 runs; samples 1113.68 / 1115.74 / 1131.49 tok/s; per-lane 17.43 tok/s; median latency 7182.37 ms. All outputs byte-identical and coherent.\ncapacity: 64 lanes is the ceiling at max_seq 4096 on 32 GB; B96 and B128 both fail with 'hipMalloc: out of memory / continuous batch allocation failed'.\nevidence: 20260810T221534Z-a3b-mq4r-concurrency-ladder\nnot measured: peak VRAM.",
+      "observed_command": "python3 scripts/lmx_continuous_batch.py --model qwen3.6-35b-a3b.mq4r --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --batch-size 64 --requests 64 --runs 3 --max-tokens 128 --max-seq 4096 --device 1",
+      "run_id": "cmsnsxbrr02fbo0012bo2krxv"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--mq4r",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsnsxbrr02fbo0012bo2krxv"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 64,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-mq4r-radeon-ai-pro-r9700-32gb-hipfire-tp1-sweep"
+  ],
+  "status": "candidate"
+}

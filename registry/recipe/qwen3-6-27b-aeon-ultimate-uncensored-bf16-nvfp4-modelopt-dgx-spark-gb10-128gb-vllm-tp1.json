@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev166+gf6490a284"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-27b-aeon-ultimate-uncensored-bf16-nvfp4-modelopt-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmp029g8200cqlo012cwzc7qm"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmp029g8200cqlo012cwzc7qm",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp029g8200cqlo012cwzc7qm"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "AEON-7 v4 6-category bench validation. Average tokSOut=34.98 t/s median (across Coding/Math/Reasoning/Prose/NaturalLanguage/Extraction-JSON, 3 runs each, max_tokens=512). Per-category: Coding 31.65 t/s, Math 34.77, Reasoning 38.17, Prose 27.05, Natural-Language 26.51, Extraction/JSON 51.72. Average TTFR 256.6ms, TPOT 30.10ms. AEON-7 published v4: 31.89/37.76/42.41/31.85/31.99/49.48 avg 37.56. We are 7pct under published avg, matched Coding (99pct), beat Extraction/JSON (+4pct). Streaming bench methodology vs their llama-bench.",
+      "observed_command": "vllm serve /models/xs --tensor-parallel-size 1 --quantization modelopt --max-model-len 262144 --max-num-seqs 16 --max-num-batched-tokens 32768 --gpu-memory-utilization 0.85 --enable-chunked-prefill --enable-prefix-caching --speculative-config {method:dflash,model:/models/dflash-drafter,num_speculative_tokens:15} --tool-call-parser qwen3_coder --reasoning-parser qwen3 --attention-backend flash_attn",
+      "run_id": "cmp029g8200cqlo012cwzc7qm"
+    }
+  },
+  "model_instance_id": "aeon-7-qwen3-6-27b-aeon-ultimate-uncensored-multimodal-nvfp4-mtp-xs--nvfp4-modelopt",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmp029g8200cqlo012cwzc7qm"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-aeon-ultimate-uncensored-bf16-nvfp4-modelopt-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

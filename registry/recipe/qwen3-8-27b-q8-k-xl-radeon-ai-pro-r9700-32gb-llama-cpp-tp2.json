@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "5ea1b124e + stew675 01/10/02"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-8-27b-q8-k-xl-radeon-ai-pro-r9700-32gb-llama-cpp-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmteuq5il007gn0016ypz0hfp"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmteuq5il007gn0016ypz0hfp",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmteuq5il007gn0016ypz0hfp"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Unsloth UD-Q8_K_XL (not Q8_0). Same box/bin as our Q8_0 run. NOT llama-benchy. tokSOut = median of 3 essay decode-512 legs (40.49/43.59/44.10). Code-prompt median was 59.71 (not submitted as tokSOut). tokSPrefill = ~10k prompt (10275 tok, 1191.04 t/s); 8k=1005, 16k=1128, 40k=933. VOID=false 512/512. Dual R9700 tensor-split 1,1 (Raphael iGPU unused). HIP overlay libamdhip64.so.7.2.53211 (stock 7.2.70204 hangs gfx1201 hipMemcpy2DAsync). llama 5ea1b124e build-rocm-rdna-02, FA on, KV q8_0, mmap, draft-mtp-adaptive n-max3 n-min2 p-min0. HIP PR: ROCm/rocm-systems#10940. Recipe: github.com/onchainapps/rocm-llama.cpp",
+      "observed_command": "llama-server -m Qwen3.8-27B-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 18080 --device ROCm0,ROCm1 --split-mode tensor --tensor-split 1,1 -ngl 99 -c 262144 -fit off --cache-ram 0 --mmap --no-warmup --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 --parallel 1 --spec-type draft-mtp-adaptive --spec-draft-n-max 3 --spec-draft-n-min-adaptive 2 --spec-draft-p-min 0.0 --n-predict 4096",
+      "run_id": "cmteuq5il007gn0016ypz0hfp"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q8-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmteuq5il007gn0016ypz0hfp"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q8-k-xl-radeon-ai-pro-r9700-32gb-llama-cpp-tp2-sweep"
+  ],
+  "status": "candidate"
+}

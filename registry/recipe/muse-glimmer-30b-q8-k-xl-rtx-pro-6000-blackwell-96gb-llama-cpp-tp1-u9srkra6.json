@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "10355"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "muse-glimmer-30b-q8-k-xl-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1-u9srkra6",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsovemby00czmp01u9srkra6"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsovemby00czmp01u9srkra6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsovemby00czmp01u9srkra6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Concurrent 2-request llama.cpp benchmark for Muse-Glimmer-30B Q8_K_XL GGUF on NVIDIA RTX PRO 6000 Blackwell 96 GB. 2 simultaneous requests using the same 4,152-token measured code-review prompt, 128 output-token cap, configured context depth 131072, full GPU offload with 99 layers, reasoning off. Average per-request decode 44.80 tok/s; aggregate output throughput 37.40 tok/s across all requests; aggregate prefill estimate 2046.92 tok/s from 8304 prompt tokens to the slowest TTFT; maximum TTFT 4056.82 ms. Peak VRAM sampled at 32676 MiB (31.91 GiB). All requests completed successfully.",
+      "observed_command": "llama-server -m /home/<USER>/models/Muse-Glimmer-30B-GGUF-unsloth/Muse-Glimmer-30B-UD-Q8_K_XL.gguf --mmproj /home/<USER>/models/Muse-Glimmer-30B-GGUF/mmproj-kquant.gguf --host 0.0.0.0 --port 8092 -ngl 99 -c 131072 -n 16000 --reasoning off --alias muse-q8-llamacpp",
+      "run_id": "cmsovemby00czmp01u9srkra6"
+    }
+  },
+  "model_instance_id": "meta-models-muse-glimmer-30b--q8-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsovemby00czmp01u9srkra6"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-q8-k-xl-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1-u9srkra6-sweep"
+  ],
+  "status": "candidate"
+}

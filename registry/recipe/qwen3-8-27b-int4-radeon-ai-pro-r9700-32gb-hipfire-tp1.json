@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "00374bb7dfab0235a25f6ba61cf12c0d711f3703"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-8-27b-int4-radeon-ai-pro-r9700-32gb-hipfire-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt62jgz20032lk01uo7i0p1d"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt62jgz20032lk01uo7i0p1d",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt62jgz20032lk01uo7i0p1d"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "32K context point in a controlled Qwen3.8-27B R9700 context sweep. R9700 gfx1201 only; Strix Halo/Radeon 8060S iGPU unused. One warmup plus three fresh measured processes with clean driver-baseline waits; median decode/prefill/TTFT/total and maximum measured workload VRAM. tokSTotal = (27 prompt + 157 output tokens) / (prefill_secs + decode_secs), calculated per run before the median. Peak workload VRAM = max(/sys/class/drm/card1/device/mem_info_vram_used) minus a clean 59,936,768-byte baseline, sampled every 50 ms. Exact target is independently quantized MQ4V2 from Qwen/Qwen3.8-27B revision 1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0; INT4 is the nearest structured label because MQ4V2 has no dedicated enum. Hipfire DFlash2, Q8 KV, runtime block 16, temp 0. All outputs byte-identical and correct merge-sort code; 157 tokens, tau 13.1818, acceptance 0.8788. The 128K Q8-KV point could not load: hipMalloc OOM after target+draft reached 21.32 GB.",
+      "observed_command": "HIP_VISIBLE_DEVICES=0 HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_VERIFY_GRAPH=0 dflash_spec_demo --target q38-fixed.mq4v2.mq4 --draft qwen38-27b-dflash2-mq4v2.hfq --prompt-file merge_sort_thinking_off.txt --max 256 --temp 0 --no-chatml --kv-mode q8 --ctx 32768 --no-adaptive-b",
+      "run_id": "cmt62jgz20032lk01uo7i0p1d"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--int4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt62jgz20032lk01uo7i0p1d"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-int4-radeon-ai-pro-r9700-32gb-hipfire-tp1-sweep"
+  ],
+  "status": "candidate"
+}

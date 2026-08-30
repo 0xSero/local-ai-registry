@@ -1,6 +1,8 @@
 import Link from "next/link"
 
 import { DataTree } from "@/app/components/data-tree"
+import { ConfigurationCard, configurationFromRecipe } from "@/app/components/configuration-card"
+import { HuggingFaceCard } from "@/app/components/huggingface-card"
 import { ModalCloseButton, RecordModal } from "@/app/components/record-modal"
 import { RegistrySearch, type SearchFilter } from "@/app/components/registry-search"
 import {
@@ -15,6 +17,8 @@ import {
   listSpeedSweeps,
   marketPriceCount,
   queryCompatibility,
+  recipeCountForHardware,
+  runtimeGroup,
   type CompatibilityFilters,
   type CompatibilityResult,
   type PriceResult,
@@ -40,7 +44,7 @@ type RowTag = {
 }
 
 const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; description: string }> = [
-  { key: "recipes", label: "Recipes", countKey: "recipe", description: "Browse model × hardware compatibility by hardware or by model, with engine, launch status, and evidence." },
+  { key: "recipes", label: "Recipes", countKey: "recipe", description: "One artifact × hardware × engine unit. Validated rows are launch-safe. Candidate and reference rows are evidence only." },
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
@@ -163,9 +167,11 @@ function RecipeRows({ by, data, state }: { by: "hardware" | "model"; data: Compa
         const context = numberField(result.recipe.serving, "max_context_tokens")
         const speed = peakRecipeSpeed(result)
         const validation = result.launchable ? "validated" : "candidate"
+        const runtime = runtimeGroup(result.recipe.launch.kind)
         const tags: RowTag[] = [
           { label: validation, name: "validation", value: validation },
           { label: result.recipe.engine.name, name: "engine", value: result.recipe.engine.name },
+          { label: runtime === "docker" ? "docker" : runtime === "native" ? "no docker" : "evidence", name: "runtime", value: runtime },
           { label: result.speed_evidence.available ? "measured" : "unmeasured", name: "evidence", value: String(result.speed_evidence.available) },
           { label: `${result.hardware.memory.vram_gb} GB+`, name: "min_vram_gb", value: String(result.hardware.memory.vram_gb) },
         ]
@@ -226,6 +232,16 @@ function PriceRows({ data, state }: { data: PriceResult[]; state: URLSearchParam
   )
 }
 
+function displayRecord(detail: Record<string, unknown>): Record<string, unknown> {
+  const { launch: _launch, huggingface: _huggingface, ...rest } = detail
+  return rest
+}
+
+function recordHuggingFace(detail: Record<string, unknown>): Record<string, unknown> | null {
+  const value = detail.huggingface
+  return value && typeof value === "object" ? value as Record<string, unknown> : null
+}
+
 export default async function Home({ searchParams }: PageProps) {
   const params = await searchParams
   const value = (key: string) => {
@@ -251,12 +267,14 @@ export default async function Home({ searchParams }: PageProps) {
     min_vram_gb: value("min_vram_gb"),
     model_id: value("model_id"),
     q: query,
+    runtime: value("runtime"),
     sort_by: recipeBrowse,
   }
   const overviewRecipes = queryCompatibility({ launchable: "true" }, { limit: 8, offset: 0 })
   const recipeResults = topic === "recipes" ? queryCompatibility(recipeFilters, pagination) : { data: [], total: 0 }
   const hardwareResults = topic === "hardware" ? listHardware({
     backend: value("backend"),
+    has_recipes: value("has_recipes"),
     min_vram_gb: value("min_vram_gb"),
     priced_only: value("priced_only"),
     q: query,
@@ -290,10 +308,10 @@ export default async function Home({ searchParams }: PageProps) {
     : null
 
   const filterKeys: Partial<Record<Topic, string[]>> = {
-    hardware: ["vendor", "backend", "min_vram_gb", "priced_only"],
+    hardware: ["vendor", "backend", "min_vram_gb", "priced_only", "has_recipes"],
     models: ["family", "architecture"],
     prices: ["region", "category", "condition", "retailer", "in_stock"],
-    recipes: ["by", "hardware_id", "model_id", "validation", "engine", "evidence"],
+    recipes: ["by", "hardware_id", "model_id", "validation", "engine", "runtime", "evidence"],
     benchmarks: ["category"],
     "speed-sweeps": ["recipe_id"],
   }
@@ -336,6 +354,12 @@ export default async function Home({ searchParams }: PageProps) {
     { label: "Model", name: "model_id", value: value("model_id"), options: [{ label: "All models", value: "" }, ...listModels({}, { limit: 200, offset: 0 }).data.map((model) => ({ label: model.name, value: model.id }))] },
     { label: "Status", name: "validation", value: validation, options: facetOptions(["validated", "candidate"], "All statuses", (item) => item === "validated" ? "Validated · launch-safe" : "Candidate or reference") },
     { label: "Engine", name: "engine", value: value("engine"), options: facetOptions(facets.recipes.engine, "Any engine") },
+    { label: "Runtime", name: "runtime", value: value("runtime"), options: [
+      { label: "Any runtime", value: "" },
+      { label: "Docker / compose", value: "docker" },
+      { label: "Native / no docker", value: "native" },
+      { label: "Evidence only", value: "reference" },
+    ] },
     { label: "Evidence", name: "evidence", value: value("evidence"), options: facetOptions(["true", "false"], "Any evidence", (item) => item === "true" ? "Measured speed attached" : "No measured speed") },
   ]
   const hardwareSearchFilters: SearchFilter[] = [
@@ -343,6 +367,7 @@ export default async function Home({ searchParams }: PageProps) {
     { label: "Backend", name: "backend", value: value("backend"), options: facetOptions(facets.hardware.backend, "Any backend") },
     { label: "Memory", name: "min_vram_gb", value: value("min_vram_gb"), options: facetOptions(facets.hardware.vram_gb, "Any memory", (item) => `At least ${item} GB`) },
     { label: "Pricing", name: "priced_only", value: value("priced_only"), options: facetOptions(["true"], "All hardware", () => "Priced only") },
+    { label: "Recipes", name: "has_recipes", value: value("has_recipes"), options: facetOptions(["true", "false"], "All hardware", (item) => item === "true" ? "Has recipes" : "No recipes yet") },
   ]
   const modelSearchFilters: SearchFilter[] = [
     { label: "Family", name: "family", value: value("family"), options: facetOptions(facets.models.family, "Any family") },
@@ -413,11 +438,13 @@ export default async function Home({ searchParams }: PageProps) {
             <div className="browser-list collection-list">
               {hardwareResults.data.map((hardware) => {
                 const hasPrices = marketPriceCount(hardware.id) > 0
+                const recipes = recipeCountForHardware(hardware.id)
                 const tags: RowTag[] = [
                   { label: hardware.vendor, name: "vendor", value: hardware.vendor },
                   { label: hardware.accelerator_backend, name: "backend", value: hardware.accelerator_backend },
                   { label: `${hardware.memory.vram_gb} GB+`, name: "min_vram_gb", value: String(hardware.memory.vram_gb) },
                   ...(hasPrices ? [{ label: "priced", name: "priced_only", value: "true" }] : []),
+                  { label: recipes > 0 ? `${recipes} recipes` : "no recipes", name: "has_recipes", value: recipes > 0 ? "true" : "false" },
                 ]
                 return (
                   <article className="browser-row collection-row" key={hardware.id}>
@@ -425,7 +452,7 @@ export default async function Home({ searchParams }: PageProps) {
                     <span className="row-primary"><strong>{hardware.name}</strong><small>{hardware.id}</small></span>
                     <span><strong>{hardware.vendor}</strong><small>{hardware.kind}</small></span>
                     <span><strong>{hardware.memory.vram_gb} GB</strong><small>{hardware.memory.vram_type ?? "Memory type unknown"}</small></span>
-                    <span><strong>{hardware.accelerator_backend}</strong><small>backend</small></span>
+                    <span><strong>{recipes.toLocaleString()}</strong><small>{recipes === 1 ? "recipe" : "recipes"}</small></span>
                     <TaxonomyTags state={viewState} tags={tags} />
                     <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
                   </article>
@@ -515,7 +542,20 @@ export default async function Home({ searchParams }: PageProps) {
             <div><span className="mono-label">{detailCollection.toUpperCase()} / RECORD</span><h2 id="record-modal-title">{selectedTitle}</h2><code>{value("record")}</code></div>
             <ModalCloseButton className="modal-close" closeHref={closeHref} label="Close record details">Close</ModalCloseButton>
           </header>
-          <div className="record-modal-body"><DataTree value={selectedRecord} /></div>
+          <div className="record-modal-body">
+            <HuggingFaceCard identity={recordHuggingFace(selectedRecord) as { link_type?: string; reason?: string; repository?: string | null; status?: string; url?: string } | null} />
+            {(detailCollection === "recipes" || detailCollection === "recipe") && (
+              <>
+                <p className="trust-note">
+                  {selectedRecord.status === "validated" && selectedRecord.registry && typeof selectedRecord.registry === "object" && "launchable" in selectedRecord.registry && selectedRecord.registry.launchable
+                    ? "Validated: pinned artifact, pinned runtime, and accepted evidence. This is a launch contract."
+                    : "Candidate: useful compatibility or speed evidence. The registry does not offer Run until promotion requirements are met."}
+                </p>
+                <ConfigurationCard config={configurationFromRecipe(selectedRecord, typeof selectedRecord.engine === "object" && selectedRecord.engine && "name" in selectedRecord.engine ? String((selectedRecord.engine as { name?: string }).name) : undefined)} />
+              </>
+            )}
+            <DataTree value={displayRecord(selectedRecord)} />
+          </div>
           <footer className="record-modal-footer">
             <a href={`/api/v1/${detailCollection}/${value("record")}`}>JSON API</a>
             <Link href={`/${detailCollection}/${value("record")}`}>Permanent record URL</Link>

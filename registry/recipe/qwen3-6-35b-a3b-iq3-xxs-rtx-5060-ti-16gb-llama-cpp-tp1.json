@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "c7896fcf923aabb8fc455ecda891d59e99c8addd"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5060-ti-16gb",
+  "id": "qwen3-6-35b-a3b-iq3-xxs-rtx-5060-ti-16gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsezjk1f00oipp01b6jwneqd"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsezjk1f00oipp01b6jwneqd",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsezjk1f00oipp01b6jwneqd"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5060 Ti",
+      "notes": null,
+      "observed_command": "llamacpp --server --host 0.0.0.0 --port 8080 --jinja\n             --n-gpu-layers 99\n             -lv 4 --log-timestamps --log-colors on\n             --checkpoint-min-step 4000 --ctx-checkpoints 32\n             --cache-prompt --cache-ram -1\n             --n-cpu-moe 0\n             --temp 0.7 --top-p 0.95 --top-k 20 --min-p 0.01\n             --ctx-size 150000 \n             -b 2048 -ub 512\n             --parallel 1 --cache-idle-slots --slot-save-path /cache/slots/\n             --flash-attn on \n             --keep 20000 --context-shift\n             -ctk q8_0 -ctv q6_0 --kv-unified \n             --spec-draft-type-k turbo4\n             --spec-draft-type-v turbo4\n             --spec-draft-ngl 99 --spec-draft-n-cpu-moe 0\n             --spec-type draft-mtp, ngram-mod --spec-draft-n-max 2\n             --spec-draft-ctx-size 8192\n             --spec-ngram-mod-n-match 16\n             --spec-ngram-mod-n-min 8\n             --spec-ngram-mod-n-max 24",
+      "run_id": "cmsezjk1f00oipp01b6jwneqd"
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-35b-a3b-mtp-gguf--iq3-xxs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsezjk1f00oipp01b6jwneqd"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 150000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-iq3-xxs-rtx-5060-ti-16gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

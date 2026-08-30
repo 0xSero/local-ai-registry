@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrhgyn5d00oumj017fz6ia7p"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrhgyn5d00oumj017fz6ia7p",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrhgyn5d00oumj017fz6ia7p"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Production co-resident config (ComfyUI shares the GPU) - not a tuned bench rig.\n\nvllm serve unsloth/Qwen3.6-27B-NVFP4 \\\n  --served-model-name qwen3.6-27b --trust-remote-code \\\n  --gpu-memory-utilization 0.40 --max-num-seqs 64 --max-model-len 262144 \\\n  --kv-cache-dtype fp8_e4m3 --reasoning-parser qwen3 \\\n  --tool-call-parser qwen3_xml --enable-auto-tool-choice \\\n  --speculative-config {\"method\":\"qwen3_5_mtp\",\"num_speculative_tokens\":5}\n\nThis checkpoint carries BOTH the MTP draft head and the vision tower, so one engine\ngets spec-decode speed AND image support (verified on vLLM 0.24.0).\n\nnum_speculative_tokens sweep, single-stream, same rig:\n  3 -> 137.1 tok/s | 5 -> 140.1 tok/s | 8 -> 130.2 tok/s\n  mean accepted per draft: 2.46 at depth 5 vs 2.82 at depth 8 (35% rate) - knee is at 5.\n\nTTFT measured client-side as time to first streamed delta (the qwen3 reasoning parser\nstreams into the reasoning field, which hides first-token timing from generic harnesses).\nPower: nvidia-smi 1Hz peak during decode. Driver 595-server-open, CUDA 13.1.",
+      "observed_command": "# Remote endpoint: http://127.0.0.1:8000  servedModel: qwen3.6-27b",
+      "run_id": "cmrhgyn5d00oumj017fz6ia7p"
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrhgyn5d00oumj017fz6ia7p"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

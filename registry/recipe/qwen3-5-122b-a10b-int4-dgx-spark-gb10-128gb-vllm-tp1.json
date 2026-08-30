@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.23.1rc1.dev272+gb7abab517.d20260717"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-5-122b-a10b-int4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms8cppfp00ecpf01w51chj2i"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms8cppfp00ecpf01w51chj2i",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms8cppfp00ecpf01w51chj2i"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Single-stream text benchmark: 2 warmups followed by 5 measured streaming greedy runs; median reported (33.46-34.25 output tok/s). AutoRound symmetric INT4, group size 128, auto_gptq packing; shared-expert tensors remain BF16. Prefix caching was enabled, so repeated-prompt TTFT is warm-cache. Metrics use server usage counters and client-observed token timing. Automatic tool selection passed; forced tool_choice=required hit a vLLM xgrammar error in this runtime. Public-equivalent launch command omits authentication and endpoint details.",
+      "observed_command": "vllm serve Intel/Qwen3.5-122B-A10B-int4-AutoRound --served-model-name qwen35-122b-a10b-int4 --gpu-memory-utilization 0.85 --enable-prefix-caching --trust-remote-code --max-model-len 131072 --max-num-batched-tokens 8192 --max-num-seqs 6 --kv-cache-dtype fp8 --reasoning-parser qwen3 --tool-call-parser qwen3_xml --enable-auto-tool-choice --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":2}'",
+      "run_id": "cms8cppfp00ecpf01w51chj2i"
+    }
+  },
+  "model_instance_id": "intel-qwen3-5-122b-a10b-int4-autoround--int4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms8cppfp00ecpf01w51chj2i"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-5-122b-a10b-int4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

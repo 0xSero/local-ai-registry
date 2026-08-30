@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.2rc1.dev213+g9558f4390.d20260426"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-35b-a3b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-m6i8dge6",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmon8glp0000el204m6i8dge6"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmon8glp0000el204m6i8dge6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmon8glp0000el204m6i8dge6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Companion submission to cmoi65drc000bl104fehrcah8 (RedHatAI/Qwen3.6-35B-A3B-NVFP4). Same measurement, posted against root model Qwen/Qwen3.6-35B-A3B with quantization=NVFP4 explicit so it surfaces on the canonical model page.\n\nQwen3.6-35B-A3B-NVFP4 + DFlash speculative decoding on a single DGX Spark (GB10 Blackwell, 128 GiB unified). vLLM 0.19.2rc1 + the DFlash off-by-one patch (without it, drafter reads pre-embedding state and acceptance collapses ~80%\u21923%). Sherlock prose, pp=128, tg=128, c=1, n=29 warm. tokSOut = 102.05 t/s MEDIAN (std 48.74 \u2014 DFlash acceptance varies per token). 2.37\u00d7 over NVFP4 AR baseline (42.98 t/s). peakVramGb=87 at gpu-memory-utilization=0.50 (right-sized from 118 GB at 0.92, no decode regression). KV pool 294K tokens covers the 262K context with 1.12\u00d7 headroom. MoE-A3B is bound by expert weights not KV \u2014 FP8 KV + alt attention backends gave <5% AR gain.\n\nRecipe + Dockerfile + raw JSONs: github.com/my-other-github-account/spark-bench-reproducers/tree/main/qwen36-35b-a3b-dflash-spark (commit b8776d3, reproduces clean-from-scratch).\n\nBy @banana_baeee.",
+      "observed_command": "vllm serve /models/Qwen3.6-35B-A3B-NVFP4 --served-model-name qwen36-35b-a3b --host 0.0.0.0 --port 8000 --tensor-parallel-size 1 --gpu-memory-utilization 0.50 --max-model-len 262144 --max-num-batched-tokens 4096 --max-num-seqs 1 --trust-remote-code --load-format fastsafetensors --attention-backend flash_attn --enable-prefix-caching --speculative-config '{\"method\":\"dflash\",\"num_speculative_tokens\":15,\"model\":\"/models/Qwen3.6-35B-A3B-DFlash\"}' --seed 0",
+      "run_id": "cmon8glp0000el204m6i8dge6"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmon8glp0000el204m6i8dge6"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-m6i8dge6-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.25.1.dev24+g96bb89286.d20260710"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "hy3-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrjee41802humj01va09q9a1"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrjee41802humj01va09q9a1",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrjee41802humj01va09q9a1"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Official LocalMaxxing CLI v0.1.19 remote-endpoint run against commit bc41c8ce4ce0be46b60cc4d728e1b85eee1107a1: 2 untimed warmups + 7 timed streamed iterations, temperature=0, standard CLI prompt, 132 prompt / 256 output tokens, batch=1. Reported values are medians: 19.0 decode tok/s (18.8-19.4, mean 19.06, stddev 0.21), 195.56 ms TTFT, 675 tok/s estimated prefill, and 28.5 total tok/s.\n\nRuntime: 2x NVIDIA DGX Spark (GB10), 256 GB aggregate unified memory, TP=2 over direct 200GbE/RoCE (NCCL NET/IB); vLLM 0.25.1.dev24+g96bb89286.d20260710; compressed-tensors MARLIN NVFP4 W4A16 routed experts with BF16 non-experts and BF16 KV; max_model_len=4096, max_num_seqs=1, eager, gpu_memory_utilization=0.85, native MTP spec-1. Session MTP counters after integrity plus benchmark: 896/1555 accepted draft tokens (57.62%). Peak VRAM is the max per node: 101.72 GiB target allocation (~203.44 GiB aggregate); vLLM loaded 84.49-84.50 GiB weights per rank.\n\nPre-submit integrity suite passed 5/5: arithmetic, strict JSON, Korean, Python AST, and exact-format generation; no empty output, invalid UTF-8, or special-token leakage. Model files were full-checksum verified across both nodes.\n\nLocalMaxxing hardware memory is reported per node (128 GB); the two-node cluster total is 256 GB.",
+      "observed_command": "vllm serve Jiunsong/SuperHY3-abliterated-NVFP4 --served-model-name superhy3 --host 0.0.0.0 --port 8600 --tensor-parallel-size 2 --distributed-executor-backend ray --max-model-len 4096 --max-num-seqs 1 --max-num-batched-tokens 4096 --gpu-memory-utilization 0.85 --kv-cache-dtype bfloat16 --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":1}' --generation-config vllm --trust-remote-code --enforce-eager",
+      "run_id": "cmrjee41802humj01va09q9a1"
+    }
+  },
+  "model_instance_id": "jiunsong-superhy3-abliterated-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrjee41802humj01va09q9a1"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "hy3-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

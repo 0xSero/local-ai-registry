@@ -243,6 +243,17 @@ def validate(root):
                 errors.append(f"{recipe['id']}: observed imports must be reference-only candidates")
             if "command_snippet" in json.dumps(launch).lower():
                 errors.append(f"{recipe['id']}: candidate launch contains a command snippet")
+        if recipe.get("recipe_source") == "mlxfast":
+            if status != "candidate":
+                errors.append(f"{recipe['id']}: mlx.fast imports remain candidates until a pinned runtime exists")
+            if recipe.get("hardware_id") != "apple-m5-max-128gb":
+                errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
+            if kind == "reference":
+                pass
+            elif kind != "native":
+                errors.append(f"{recipe['id']}: mlx.fast launch must be native or reference")
+        if recipe.get("recipe_source") == "omlx":
+            errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")

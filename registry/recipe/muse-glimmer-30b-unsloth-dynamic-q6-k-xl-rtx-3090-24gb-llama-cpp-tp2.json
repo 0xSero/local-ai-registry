@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "muse-glimmer-30b-unsloth-dynamic-q6-k-xl-rtx-3090-24gb-llama-cpp-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsnf37pe00bqo001jze3l8kj",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Setup: llama.cpp 8ad8aef, CUDA, 2x NVIDIA RTX 3090 24GB each (48GB total VRAM), all layers GPU-offloaded with layer split 1:1, flash attention, 131072-token server context, Q8_0 K/V cache, one parallel slot, BF16 Muse Glimmer vision projector. Decode: 31.671169 tok/s from llama-bench, 0 prompt tokens, 128 output tokens, 5 repetitions and default warmup. Prefill: 1604.010013 tok/s from a separate llama-bench prompt-processing test with 2048 prompt tokens, 0 output tokens, ubatch 2048, 5 repetitions; the shorter 66-token endpoint estimate was 374.8 tok/s because fixed TTFT/request overhead dominated. Endpoint timing: median TTFT 176.09 ms and total throughput 46.8 tok/s over 3 measured iterations after 1 warmup, using 66 actual prompt tokens and 128 generated tokens. Server command: /home/lotto/llama.cpp/build/bin/llama-server --model /home/lotto/models/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-UD-Q6_K_XL.gguf --mmproj /home/lotto/models/Muse-Glimmer-30B-GGUF/mmproj-Muse-Glimmer-30B-BF16.gguf --alias Muse-Glimmer-30B-Q6 --host 0.0.0.0 --port 8001 --device CUDA0,CUDA1 --n-gpu-layers all --split-mode layer --tensor-split 1,1 --ctx-size 131072 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on --parallel 1 --cont-batching --jinja --temp 1.0 --top-p 0.95 --top-k 64 --metrics --perf",
+      "observed_command": "/home/lotto/llama.cpp/build/bin/llama-bench -m /home/lotto/models/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-UD-Q6_K_XL.gguf -p 0 -n 128 -ngl 999 -sm layer -ts 1/1 -fa 1 -ctk q8_0 -ctv q8_0 -r 5 -o json",
+      "run_id": "cmsnf37pe00bqo001jze3l8kj"
+    }
+  },
+  "model_instance_id": "unsloth-muse-glimmer-30b-gguf--unsloth-dynamic-q6-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-unsloth-dynamic-q6-k-xl-rtx-3090-24gb-llama-cpp-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "v0.20.2rc1.dev13+g9557d9108 local XPU stack; vllm 44fc8fde09; vllm-xpu-kernels 2dd55f380d; oneCCL 4ceafd1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-autoround-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmszbkxco0e11ms01l2rixxbt"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmszbkxco0e11ms01l2rixxbt",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmszbkxco0e11ms01l2rixxbt"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Supersedes cmszarna10e0nms0103hv0tve (MTP4, 100.497) on the same 25-prompt suite. Median of three fresh cold arms 100.896 / 102.042 / 101.922; every measured row cached_tokens=0. Self-determinism: all three pairwise comparisons 25/25 token-identical under a PINNED torch.compile cache shared by the arms - fresh compilations emit different-but-internally-deterministic code, so the compile cache is part of the run identity and a fresh-compile arm is outstanding. Quality: pass_all and baseline_match_all against this model's own baseline (15 comparisons). IMPORTANT: on the 12 historical selection prompts the median is 95.167, which is LOWER than the MTP4 submission's 96.627 - depth helps the newer holdout prompts and hurts the historical ones, so use 95.167 against any record set on a 12-prompt suite. Depth was swept: MTP3 96.6, MTP4 100.5, MTP5 101.9, MTP6 99.5, so 5 is the optimum. VLLM_XPU_GDN_SPEC_PERSISTENT_SCRATCH=0 is required and is a workaround for an uninitialized read in the persistent GDN scratch, not a tuning choice.",
+      "observed_command": "VLLM_XPU_GDN_SPEC_PERSISTENT_SCRATCH=0 VALIDATION_NUM_SPECULATIVE_TOKENS=5 cudagraph_capture_sizes=[6] VALIDATION_GDN_NATIVE_SPEC_RECURRENT_SERIAL_EXACT=0 VALIDATION_LM_HEAD_INT8=1 VALIDATION_DETERMINISTIC_GREEDY_MARGIN=0.03125 --dtype float16 --tensor-parallel-size 2 --max-model-len 2048 --max-num-seqs 1",
+      "run_id": "cmszbkxco0e11ms01l2rixxbt"
+    }
+  },
+  "model_instance_id": "devan-carlin-qwen3-8-27b-int4-autoround--autoround-int4-w4a16",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmszbkxco0e11ms01l2rixxbt"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-autoround-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

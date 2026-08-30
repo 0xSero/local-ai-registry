@@ -53,6 +53,7 @@ export type CompatibilityFilters = {
   instance_kind?: string
   launch_kind?: string
   launchable?: string
+  runtime?: string
   max_vram_gb?: string
   min_vram_gb?: string
   model_id?: string
@@ -279,6 +280,16 @@ export function isLaunchable(row: Pick<CompatibilityRow, "status" | "launch_kind
   return row.status === "validated" && row.launch_kind !== "reference"
 }
 
+export function runtimeGroup(kind: string): "docker" | "native" | "reference" {
+  if (kind === "docker" || kind === "docker-compose") return "docker"
+  if (kind === "reference") return "reference"
+  return "native"
+}
+
+export function recipeCountForHardware(hardwareId: string): number {
+  return dataset().index.recipes.reduce((count, row) => count + (row.hardware_id === hardwareId ? 1 : 0), 0)
+}
+
 function matchingCompatibilityRows(filters: CompatibilityFilters): CompatibilityRow[] {
   const data = dataset()
 
@@ -311,6 +322,7 @@ function matchingCompatibilityRows(filters: CompatibilityFilters): Compatibility
     if (filters.evidence === "false" && row.has_evidence) return false
     if (filters.launchable === "true" && !isLaunchable(row)) return false
     if (filters.launchable === "false" && isLaunchable(row)) return false
+    if (filters.runtime && runtimeGroup(row.launch_kind) !== filters.runtime) return false
     return true
   })
 }
@@ -405,6 +417,7 @@ export function listModelInstances(filters: Record<string, string>, pagination: 
 export function listHardware(filters: Record<string, string>, pagination: Pagination) {
   const all = [...dataset().hardware.values()].filter((hardware) => {
     const hasPrices = marketPriceCount(hardware.id) > 0
+    const hasRecipes = recipeCountForHardware(hardware.id) > 0
     return (
       contains(hardware, filters.q) &&
       equals(hardware.vendor, filters.vendor) &&
@@ -412,7 +425,8 @@ export function listHardware(filters: Record<string, string>, pagination: Pagina
       equals(hardware.kind, filters.kind) &&
       equals(hardware.family, filters.family) &&
       numericFilter(hardware.memory.vram_gb, filters.min_vram_gb, filters.max_vram_gb) &&
-      booleanFilter(hasPrices, filters.priced_only)
+      booleanFilter(hasPrices, filters.priced_only) &&
+      booleanFilter(hasRecipes, filters.has_recipes)
     )
   })
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
@@ -541,6 +555,7 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     const rows = data.index.recipes.filter((row) => row.hardware_id === id)
     return {
       ...hardware,
+      recipe_count: rows.length,
       relationships: {
         models: modelLinksForRows(rows),
         prices: priceResults()
@@ -572,9 +587,11 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     if (!result) return undefined
     return {
       ...result.recipe,
+      huggingface: result.model_instance.huggingface,
       registry: {
         launchable: result.launchable,
         speed_evidence: result.speed_evidence,
+        runtime: runtimeGroup(result.recipe.launch.kind),
       },
       relationships: {
         hardware: recordLink("hardware", result.hardware.id, result.hardware.name),
@@ -644,6 +661,7 @@ export function getFacets() {
       engine: unique(data.index.recipes.map((recipe) => recipe.engine)),
       hardware_count: unique(data.index.recipes.map((recipe) => recipe.hardware_count)),
       launch_kind: unique(data.index.recipes.map((recipe) => recipe.launch_kind)),
+      runtime: unique(data.index.recipes.map((recipe) => runtimeGroup(recipe.launch_kind))),
       status: unique(data.index.recipes.map((recipe) => recipe.status)),
     },
     benchmarks: {

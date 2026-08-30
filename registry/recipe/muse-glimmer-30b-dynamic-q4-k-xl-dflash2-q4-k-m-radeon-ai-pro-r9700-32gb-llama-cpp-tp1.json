@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "0.3.0-dev / build 10680 / commit d7bd3bfca"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "muse-glimmer-30b-dynamic-q4-k-xl-dflash2-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtdonksq005olm01t0itg4cs"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtdonksq005olm01t0itg4cs",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtdonksq005olm01t0itg4cs"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Lucebox R9700-only Muse Glimmer 30B deployment. Full target is meta-models Dynamic Q4_K_XL (18.30 GiB), paired with z-lab/Muse-Glimmer-30B-DFlash2-GGUF Q4_K_M draft (1.53 GiB) and the Q4 multimodal projector. One discarded warmup plus three measured streamed requests; medians of per-run rates/timing. Low reasoning, deterministic temperature 0/top-k 1, cache_prompt=false, one slot, 32K context, Q8 K/V, flash attention, DFlash2 block size 16 / draft n-max 15. Decode and prefill are server-authoritative; total is (82 prompt + 225 output tokens) / dispatch-to-DONE wall time; TTFT is dispatch to first non-empty generated reasoning/content token. Peak VRAM is the maximum service-process amdgpu DRM fdinfo drm-memory-vram allocation on R9700 PCI 0000:c5:00.0, sampled every 10 ms, not device capacity. All measured outputs were byte-identical (SHA-256 48e5a6129f994b07b862d12db2490a847ad000e55a0ac9f1772dac527004c128). The Q4 DFlash2 draft accelerates verification while preserving the target model output; it is not a standalone model.",
+      "observed_command": "llama-server -m Muse-Glimmer-30B-KQuant-Dynamic-Q4_K_XL.gguf --mmproj mmproj-Muse-Glimmer-30B-Q4_K_M.gguf -md Muse-Glimmer-30B-DFlash2-Q4_K_M.gguf --spec-type draft-dflash --spec-draft-n-max 15 -ngld 99 -ngl 99 -c 32768 -np 1 -ctk q8_0 -ctv q8_0 -fa on --jinja --chat-template-kwargs '{reasoning_strength: low}'",
+      "run_id": "cmtdonksq005olm01t0itg4cs"
+    }
+  },
+  "model_instance_id": "meta-models-muse-glimmer-30b-gguf--dynamic-q4-k-xl-dflash2-q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtdonksq005olm01t0itg4cs"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-dynamic-q4-k-xl-dflash2-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

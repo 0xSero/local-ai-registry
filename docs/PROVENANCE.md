@@ -46,6 +46,12 @@ Nine newly observed rows mapped to hardware already supported by this registry a
 
 The same-day live GLM-5.3 Flash NVFP4 four-RTX-PRO-6000 record was normalized separately from repository evidence. Its model revision and source bundle commit are pinned and its completion, multimodal, context, concurrency, and speed evidence are retained. It remains a candidate because the locally built launch image is still identified by a mutable tag rather than a published digest.
 
+A later LocalMaxxing refresh mapped NVIDIA GB10 / DGX Spark UNIFIED 128GB rows onto the exact `dgx-spark-gb10-128gb` record and left 256GB GB10 rows unmapped. Quantized artifact names attach to an existing canonical model when one exists; they do not become a second canonical with guessed parameter counts.
+
+oMLX `omlx serve` templates were rejected. They copied a native command onto Apple SKUs that had some other MLX evidence, without a measured oMLX run on those chips.
+
+mlx.fast official Gemma 4 26B A4B scores from [yukon.org/mlxfast](https://www.yukon.org/mlxfast) attach to canonical `gemma-4-26b-a4b-it` through Hub-confirmed `mlx-community/gemma-4-26B-A4B-it-qat-4bit` revision `0e3cbab38ce568cf6e23543010d08d03b731910c`. Hardware is `apple-m5-max-128gb` only. The recipe stays `candidate` because the Swift/Metal engine is not digest-pinned. Observed setup stays in metadata; the registry does not offer Run.
+
 ## Promotion rule
 
 A candidate becomes validated only when all of these are present:

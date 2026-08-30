@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "muse-glimmer-30b-q4-k-m-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy7js0l0ctfms01fk4fmflm"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy7js0l0ctfms01fk4fmflm",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy7js0l0ctfms01fk4fmflm"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "Muse-Glimmer-30B KQuant-17GB Q4_K_M (Meta's official 15.61 GiB quant), 52 layers, of which only 28 fit on a 10GB card - 24 run on CPU. Result is 5.97 tok/s and a 3.8 s TTFT, with PCIe rx peaking at 23.9 GB/s streaming the CPU layers every token. This is the slowest of the six configs I measured on this GPU and is included as a negative result: the official Q4_K_M is not practical on 10GB. Unsloth's UD-Q3_K_XL of the same model (12.44 GiB, ngl 40) more than doubles it to 13.78 tok/s, and a fully-resident smaller model beats both by 5-12x. Medians of 2 reps. PROVENANCE CAVEAT: my local file is 16,756,681,056 B against 16,756,683,904 B for the current HF revision (2,848 B smaller). It loads and runs correctly, so this is most likely a re-upload rather than a bad download, but I could not byte-verify it and am flagging that rather than claiming provenance. Headless 3080 (both displays on the 7900X iGPU). Workload: single non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off, medians of 3 reps (2 where noted). Prefill/decode from llama-server timings; TTFT client-side on a streaming request. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, driver 591.86, PCIe 4.0 x16, stock 370 W.",
+      "observed_command": "llama-server -m Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf -c 16384 -ngl 28 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type none",
+      "run_id": "cmsy7js0l0ctfms01fk4fmflm"
+    }
+  },
+  "model_instance_id": "meta-models-muse-glimmer-30b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy7js0l0ctfms01fk4fmflm"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 16384,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-q4-k-m-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

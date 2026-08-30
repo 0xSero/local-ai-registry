@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "0.3.0+5ccef2df2719"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "deepseek-v4-flash-mq2r-radeon-ai-pro-r9700-32gb-hipfire-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsnp21x400k5o001hc7cubcl"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsnp21x400k5o001hc7cubcl",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsnp21x400k5o001hc7cubcl"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "SINGLE-STREAM. Autoregressive decode, batch 1, greedy, speculation off, tensor-parallel 4 across 4 x Radeon AI PRO R9700 (devices 0,1,2,3).\nhipfire 0.3.0+5ccef2df2719, backend rocm, gfx1201.\nquant: MQ2R = MagnumQuant 2-bit Redline (MQ3-Lloyd routed tier); model deepseek-v4-flash-0731.mq2r sha256 cbf2bbcf...\nKV: explicit f32 compressor cache, verified per run by the loader line 'compressor_cache=f32' with zero F16-fallback lines. DeepSeek-V4 implements only F32 or F16 compressor storage and silently widens sub-F16 selectors up to F16, so a run that asks for q8 actually executes F16; the engine advises 'Pass --kv f32 for the golden configuration'. This row is the golden f32 config.\nmethod: scripts/serve_harness.py battery, 3 fresh processes, GPUs verified idle before each launch, median reported. prompt ds4-gfx942-ar-2048.txt md5 25e22fae..., 2052 prompt tokens, 512 generated, finish=length, output coherent.\nsamples - decode 54.370 / 54.266 / 54.264 tok/s; prefill 390.97 / 389.19 / 389.04 tok/s; TTFT 6095 / 6120 / 6086 ms.\nAn identical n=3 battery on the F16 path measures within run-to-run noise of these figures on both TP3 and TP4; f32 is reported because it is the correct configuration, not because it is faster.\nevidence: 20260810T194943Z-ds4-f32-tp-triplicate\nnot measured: peak VRAM (not instrumented this campaign)",
+      "observed_command": "python3 scripts/serve_harness.py --model deepseek-v4-flash-0731.mq2r --kv f32 --kv-backend contiguous --speculation off --mtp off --dflash off --thinking off --sampling greedy --max-tokens 512 --mode battery --prompts-file benchmarks/prompts/ds4-gfx942-ar-2048.txt --devices 0,1,2,3 --tp 4",
+      "run_id": "cmsnp21x400k5o001hc7cubcl"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--mq2r",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsnp21x400k5o001hc7cubcl"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2052,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-mq2r-radeon-ai-pro-r9700-32gb-hipfire-tp4-sweep"
+  ],
+  "status": "candidate"
+}

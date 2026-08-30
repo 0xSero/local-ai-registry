@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "ornith-1-5-9b-gguf-q5-k-m-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt0nhkxm0f1yms01p2ta43ww"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt0nhkxm0f1yms01p2ta43ww",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt0nhkxm0f1yms01p2ta43ww"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "Full 262144-token native context, fully GPU-resident on a 10GB card. This model is a hybrid: qwen35.full_attention_interval=4, so only 8 of 32 layers carry a growing KV cache and the rest are SSM with constant state. Measured KV cost is 14.0 KiB/token at q4_0 (consistent to 3 significant figures across five context sizes from 128K to 262K), roughly a quarter of what a dense 32-layer 9B would need. At 262K the model sits at 9691 MiB peak with 408 MiB host-shared, which is the normal baseline here rather than spill: decode holds at 92 tok/s and PCIe rx stays near 100 MB/s. Q6_K of the same model does NOT fit 262K on this card (1306 MiB host-shared, decode halves to 42 tok/s), so Q5_K_M is the right pick at max context. Decode figure is the median of 3 reps, not the best. Prompt is deliberately non-repetitive: a repeated-sentence filler inflates decode by ~25% on speculative setups. ignore_eos is set so output token count is identical across runs.",
+      "observed_command": "llama-server \\\n  -m Ornith-1.5-9B-Q5_K_M.gguf \\\n  --host 127.0.0.1 \\\n  --port 8099 \\\n  --device CUDA0 \\\n  --n-gpu-layers 99 \\\n  --ctx-size 262144 \\\n  --flash-attn on \\\n  --cache-type-k q4_0 \\\n  --cache-type-v q4_0 \\\n  --parallel 1 \\\n  --jinja \\\n  --spec-type none",
+      "run_id": "cmt0nhkxm0f1yms01p2ta43ww"
+    }
+  },
+  "model_instance_id": "ornith-ai-ornith-1-5-9b-gguf--q5-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt0nhkxm0f1yms01p2ta43ww"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "ornith-1-5-9b-gguf-q5-k-m-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

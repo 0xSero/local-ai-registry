@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.23.1rc1.dev-nightly"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrxk8q0x00dco401yhwzjx9m"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrxk8q0x00dco401yhwzjx9m",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrxk8q0x00dco401yhwzjx9m"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 5090",
+      "notes": "poolside Laguna-S-2.1-NVFP4 (117.6B MoE / 8.5B active, 256 experts, 36 SWA@512 + 12 global layers) on 4x RTX 5090 32GB, tensor-parallel 4 (no-NVLink, --disable-custom-all-reduce), no speculative decode. FP8 KV cache, FlashInfer, CUDA graphs, prefix caching. b1 = pure single-stream decode over 1024 forced tokens (ignore_eos), 3 runs temp 0.7 / top_p 0.95: 157.02 / 157.13 / 157.18 tok/s (mean 157.11, stdev 0.07); TTFT ~5.1s over the 32k prompt (tokSPrefill from prompt/TTFT, tokSTotal = (prompt+output)/end-to-end). Full 262144 context fits at TP=4.",
+      "observed_command": "docker run --gpus all --ipc=host --network=host --shm-size=32g -e CUTE_DSL_ARCH=sm_120a -v <MODEL_DIR>:/model:ro vllm/vllm-openai:<nightly-cu13> --model /model --served-model-name laguna --trust-remote-code --tensor-parallel-size 4 --disable-custom-all-reduce --dtype bfloat16 --kv-cache-dtype fp8 --max-model-len 262144 --gpu-memory-utilization 0.90 --max-num-seqs 1 --max-num-batched-tokens 8192 --enable-prefix-caching --override-generation-config '{\"temperature\":0.7,\"top_p\":0.95}'",
+      "run_id": "cmrxk8q0x00dco401yhwzjx9m"
+    }
+  },
+  "model_instance_id": "poolside-laguna-s-2-1-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrxk8q0x00dco401yhwzjx9m"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4
+  },
+  "speed_sweeps_ids": [
+    "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

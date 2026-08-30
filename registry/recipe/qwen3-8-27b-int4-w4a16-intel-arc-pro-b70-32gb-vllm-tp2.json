@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "v0.27.2rc1.dev78+g8e6d8e4f6"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmstyaenj046xms01azvmwlpo"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmstyaenj046xms01azvmwlpo",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmstyaenj046xms01azvmwlpo"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Both ASRock Intel Arc B70, one sitting in a gen 5 x16 slot and another in a standard PCIe x4 slot connected straight to motherboard Z790. I am also using a heavily modified driver stack, modified OneDNN,  all fine tuned to my machine since the drivers for the B70 are still very immature.",
+      "observed_command": "vllm serve /data/models/Qwen3.8-27B-INT4-W4A16-GPTQ \\                                                      \n     --host 0.0.0.0 --port 19622 \\                                                                                                            \n     --served-model-name qwen38-27b-int4-autoround \\                                                                                          \n     --tensor-parallel-size 2 \\                                                                                                               \n     --dtype float16 \\                                                                                                                        \n     --quantization gptq \\                                                                                                                    \n     --max-model-len 262144 \\                                                                                                                 \n     --max-num-seqs 1 \\                                                                                                                       \n     --max-num-batched-tokens 8192 \\                                                                                                          \n     --gpu-memory-utilization 0.95 \\                                                                                                          \n     --enable-prompt-tokens-details \\                                                                                                         \n     --enable-auto-tool-choice --tool-call-parser qwen3_coder \\                                                                               \n     --default-chat-template-kwargs '{\"enable_thinking\": false}' \\                                                                            \n     --speculative-config '{\"method\":\"qwen3_5_mtp\",\"num_speculative_tokens\":3}'     ",
+      "run_id": "cmstyaenj046xms01azvmwlpo"
+    }
+  },
+  "model_instance_id": "goldhub-qwen3-8-27b-int4-w4a16-autoround--int4-w4a16",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmstyaenj046xms01azvmwlpo"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 2
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-int4-w4a16-intel-arc-pro-b70-32gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

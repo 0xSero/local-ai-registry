@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "qwen3-8-27b-iq2-xxs-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy9hood0cv0ms01yzrhdya9"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy9hood0cv0ms01yzrhdya9",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy9hood0cv0ms01yzrhdya9"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "MTP arm, +56.5% over the spec-off row (47.32 -> 74.07). The MTP head survives abliteration in this build and delivers essentially the same speedup as the unmodified quant (+58.3%), so you do not lose speculative decoding by going abliterated - PROVIDED the build kept the nextn tensors. ANOMALY DISCLOSED: llama-server reports draft acceptance 0.796 (156/196, mean len 2.59) for this model, which is identical to five decimal places to what the unmodified unsloth quant reports on the same prompt, even though I verified the two models generate materially different text. I cannot explain the coincidence and am reporting the number with that caveat rather than as a validated cross-model comparison; treat the throughput figures, which are medians of 3 tight reps, as the reliable part. Headless 3080 (displays on the 7900X iGPU). Non-repetitive 2700-token synthetic log-summarisation prompt, ignore_eos forcing exactly 256 output tokens so token count is identical across models, temp 0, cache_prompt off, medians of 3 reps. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, PCIe 4.0 x16, stock 370 W. File verified byte-exact against HF (8,884,504,160 B) and confirmed to retain the MTP head (65 blocks, 866 tensors, 4 nextn tensors) - many abliterated Qwen3.8 GGUFs do NOT: one build in a repo literally named -MTP-GGUF has 64 blocks and zero nextn tensors, i.e. the MTP block was dropped entirely. Check the tensor list, not the repo name.",
+      "observed_command": "llama-server -m Qwen3.8-27B-Uncensored-IQ2_XXS.gguf -c 16384 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type draft-mtp --spec-draft-n-max 2",
+      "run_id": "cmsy9hood0cv0ms01yzrhdya9"
+    }
+  },
+  "model_instance_id": "orcarouter-qwen3-8-27b-uncensored-gguf--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy9hood0cv0ms01yzrhdya9"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 16384,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-iq2-xxs-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

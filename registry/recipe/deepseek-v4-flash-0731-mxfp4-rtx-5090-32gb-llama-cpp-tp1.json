@@ -1,0 +1,157 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "4821 (c46ffaa5)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "deepseek-v4-flash-0731-mxfp4-rtx-5090-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy6nels0csbms01n5ob921c"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy6nels0csbms01n5ob921c",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy6nels0csbms01n5ob921c"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "https://x.com/Rabbit_Hole_Ai\nas-served llama-swap serving flags EXCEPT sampling forced greedy (temp 0 top-k 1; production serves temp 1.0); median of 3 single-stream runs on 3 distinct ~420-token prompts, 512 tok out, each run first sight of its prompt (cache_prompt=false, no prompt reuse, fresh server); llama-bench baseline uses ik llama-bench defaults (no -c/--swa-compress/--yarn support in that binary); no-spec llama-bench baseline: pp512=295.853956 tg128=27.263016; context allocated 196608, throughput measured at ~420-token depth; peak VRAM = whole-card nvidia-smi incl 605 MiB desktop baseline; raw /completion (chat template not applied); GPU power = max 0.5s nvidia-smi sample during generation; DeepSeek-V4-Flash-0731 (in-house trunk quant: https://huggingface.co/Rabbit-Hole-Ai/DeepSeek-V4-Flash-0731-MXFP4-GGUF)",
+      "observed_command": "llama-server.exe --host 127.0.0.1 --port 8099 -m D:\\\\dsv4f-0731-trunk-q8rest-mxfp4moe.gguf --swa-compress --ctx-checkpoints 2 --ctx-checkpoints-tolerance 5 --ctx-checkpoints-interval 0 --jinja --chat-template-file C:\\\\s41_template_0731_fixed.jinja -t 24 --parallel 1 --temp 0.0 --top-k 1 -c 196608 -fa 1 -ctk f16 -ctv f16 -ngl 99 --n-cpu-moe 39 -b 7168 -ub 7168 --rope-scaling yarn --rope-scale 16 --yarn-orig-ctx 65536 --yarn-beta-fast 32 --yarn-beta-slow 1 --spec-type none",
+      "run_id": "cmsy6nels0csbms01n5ob921c"
+    }
+  },
+  "model_instance_id": "rabbit-hole-ai-deepseek-v4-flash-0731-mxfp4-gguf--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy6nels0csbms01n5ob921c"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 196608,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "deepseek-v4-flash-0731-mxfp4-rtx-5090-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}
