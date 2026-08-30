@@ -164,18 +164,13 @@ function dataset(): Dataset {
   return cachedDataset
 }
 
-function cachedRecord<T>(
+function readRecord<T>(
   collection: "speed-sweeps" | "recipe",
   id: string,
-  cache: Map<string, T>,
 ): T | undefined {
   const ids = dataset().index.collections[collection]
   if (!ids.includes(id)) return undefined
-  const existing = cache.get(id)
-  if (existing) return existing
-  const record = readJson<T>(collection, `${id}.json`)
-  cache.set(id, record)
-  return record
+  return readJson<T>(collection, `${id}.json`)
 }
 
 export function getRegistryIndex(): RegistryIndex {
@@ -195,11 +190,11 @@ export function getHardware(id: string): Hardware | undefined {
 }
 
 export function getRecipe(id: string): Recipe | undefined {
-  return cachedRecord("recipe", id, dataset().recipes)
+  return readRecord("recipe", id)
 }
 
 export function getSpeedSweep(id: string): SpeedSweep | undefined {
-  return cachedRecord("speed-sweeps", id, dataset().sweeps)
+  return readRecord("speed-sweeps", id)
 }
 
 export function getBenchmark(id: string): Benchmark | undefined {
