@@ -101,14 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-8-27b-ud-iq2-xxs-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama.cpp",
-      "GGUF",
-      "five-prompt",
-      "plus",
-      "vision",
-      "benchmark"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -136,7 +128,18 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Matched five-prompt Qwen3.8 GGUF suite plus one vision probe; prompts 1-4 single requests, prompt 5 four-turn session; reasoning off; temperature 0; max output 4096; vision response verified as QWEN38-VISION-7F3A 3.",
       "observed_command": "llama.cpp GGUF five-prompt plus vision benchmark",
-      "run_id": "cmsxk30bo0bsdms0110w25oqq"
+      "run_id": "cmsxk30bo0bsdms0110w25oqq",
+      "tokenized": {
+        "arguments": [
+          "llama.cpp",
+          "GGUF",
+          "five-prompt",
+          "plus",
+          "vision",
+          "benchmark"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-iq2-xxs",

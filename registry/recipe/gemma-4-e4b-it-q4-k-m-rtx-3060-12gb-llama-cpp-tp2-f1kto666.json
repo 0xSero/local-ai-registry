@@ -101,27 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-e4b-it-q4-k-m-rtx-3060-12gb-llama-cpp-tp2-f1kto666",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "gemma4-coding-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-ngl",
-      "48",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-r",
-      "5"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "RTX 3060",
       "notes": ", , GB RAM, Layer split (-sm layer), flash attention, f16 KV cache. Benchmarked with llama-bench -r 5. Dual GPU via llama.cpp layer split.",
       "observed_command": "llama-bench -m gemma4-coding-Q4_K_M.gguf -p 512 -n 128 -ngl 48 -sm layer -fa on -ctk f16 -ctv f16 -r 5",
-      "run_id": "cmr7ja01j000kp301f1kto666"
+      "run_id": "cmr7ja01j000kp301f1kto666",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "gemma4-coding-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "48",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-r",
+          "5"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "jgebbeken-gemma-4-coder-gguf--q4-k-m",

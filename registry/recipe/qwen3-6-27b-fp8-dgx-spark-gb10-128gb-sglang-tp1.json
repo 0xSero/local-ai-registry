@@ -101,19 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-6-27b-fp8-dgx-spark-gb10-128gb-sglang-tp1",
   "launch": {
-    "arguments": [
-      "python",
-      "-m",
-      "sglang.launch_server",
-      "--model-path",
-      "/home/radar/models/Qwen3.6-27B-FP8",
-      "--fp8-gemm-backend",
-      "triton",
-      "--attention-backend",
-      "triton",
-      "--context-length",
-      "65536"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -141,7 +128,23 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark SGLang FP8 triton GEMM path for Qwen3.6-27B-FP8; compatible but much slower than vLLM MTP2. Source: /home/radar/qwen36_27b_fp8_vllm_mtp_runfile_2026-04-23.md",
       "observed_command": "python -m sglang.launch_server --model-path /home/radar/models/Qwen3.6-27B-FP8 --fp8-gemm-backend triton --attention-backend triton --context-length 65536",
-      "run_id": "cmof6aro10002l404x6vocua9"
+      "run_id": "cmof6aro10002l404x6vocua9",
+      "tokenized": {
+        "arguments": [
+          "python",
+          "-m",
+          "sglang.launch_server",
+          "--model-path",
+          "/home/radar/models/Qwen3.6-27B-FP8",
+          "--fp8-gemm-backend",
+          "triton",
+          "--attention-backend",
+          "triton",
+          "--context-length",
+          "65536"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8",

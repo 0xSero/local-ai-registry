@@ -101,20 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "laguna-s-2-1-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp4",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "poolside/Laguna-S-2.1-DFlash",
-      "--tensor-parallel-size",
-      "4",
-      "--gpu-memory-utilization",
-      "0.9",
-      "--max-num-seqs",
-      "8",
-      "--enable-prefix-caching",
-      "--speculative-config",
-      "{method:dflash,num_speculative_tokens:7}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -142,7 +128,24 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": null,
       "observed_command": "vllm serve poolside/Laguna-S-2.1-DFlash --tensor-parallel-size 4 --gpu-memory-utilization 0.9 --max-num-seqs 8 --enable-prefix-caching --speculative-config {\"method\":\"dflash\",\"num_speculative_tokens\":7}",
-      "run_id": "cms0c2qgx002ps201nri5ap3i"
+      "run_id": "cms0c2qgx002ps201nri5ap3i",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "poolside/Laguna-S-2.1-DFlash",
+          "--tensor-parallel-size",
+          "4",
+          "--gpu-memory-utilization",
+          "0.9",
+          "--max-num-seqs",
+          "8",
+          "--enable-prefix-caching",
+          "--speculative-config",
+          "{method:dflash,num_speculative_tokens:7}"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "poolside-laguna-s-2-1-dflash--bf16",

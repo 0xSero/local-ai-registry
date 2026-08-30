@@ -101,10 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-8-27b-q4-k-m-rtx-3090-24gb-ollama-tp1",
   "launch": {
-    "arguments": [
-      "ollama",
-      "serve"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -132,7 +128,14 @@
       "hardware_label": "RTX 3090",
       "notes": "Official Ollama library model qwen3.8:27b-q4_k_m. One warmup plus median of three timed 256-token greedy runs. GPU power is the mean of 98 sustained samples at >=90% utilization and >=300 W; peak VRAM sampled every 250 ms.",
       "observed_command": "ollama serve",
-      "run_id": "cmsurfonh06t1ms01sq2vmpx4"
+      "run_id": "cmsurfonh06t1ms01sq2vmpx4",
+      "tokenized": {
+        "arguments": [
+          "ollama",
+          "serve"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--q4-k-m",

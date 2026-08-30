@@ -101,21 +101,6 @@
   "hardware_id": "rtx-5070-12gb",
   "id": "ornith-1-5-9b-q4-k-m-rtx-5070-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "~/Projects/local-llm/models/ornith-1.5-9b/artifacts/Ornith-1.5-9B-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-c",
-      "32768",
-      "-b",
-      "2048",
-      "-ub",
-      "512",
-      "--flash-attn",
-      "on"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "RTX 5070",
       "notes": null,
       "observed_command": "llama-bench -m ~/Projects/local-llm/models/ornith-1.5-9b/artifacts/Ornith-1.5-9B-Q4_K_M.gguf -ngl 99 -c 32768 -b 2048 -ub 512 --flash-attn on",
-      "run_id": "cmtc6sopl0007o601d7hqrj1z"
+      "run_id": "cmtc6sopl0007o601d7hqrj1z",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "~/Projects/local-llm/models/ornith-1.5-9b/artifacts/Ornith-1.5-9B-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-c",
+          "32768",
+          "-b",
+          "2048",
+          "-ub",
+          "512",
+          "--flash-attn",
+          "on"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "ornith-ai-ornith-1-5-9b--q4-k-m",

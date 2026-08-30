@@ -101,30 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-e4b-it-qat-q4-0-unquantized-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/home/dario/llama.cpp/build/bin/llama-bench",
-      "-m",
-      "/mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf",
-      "-p",
-      "4096",
-      "-n",
-      "512",
-      "-b",
-      "4096",
-      "-ub",
-      "1024",
-      "-t",
-      "16",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-r",
-      "2",
-      "-o",
-      "json",
-      "--no-warmup"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -152,7 +128,34 @@
       "hardware_label": "RTX 3060",
       "notes": "4096 prompt / 512 generation. Two throwaway llama-bench runs preceded the recorded sweep. Winner selected by minimum measured TTFT across (b2048/ub512/t16), (b4096/ub1024/t16), and (b4096/ub512/t32), with exact command preserved. Local file: /mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf. Temperature 0. Peak VRAM and maximum sampled sustained GPU power were measured during the winner run.",
       "observed_command": "/home/dario/llama.cpp/build/bin/llama-bench -m /mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf -p 4096 -n 512 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json --no-warmup",
-      "run_id": "cmrz00bvh05h6o401em8c6unn"
+      "run_id": "cmrz00bvh05h6o401em8c6unn",
+      "tokenized": {
+        "arguments": [
+          "/home/dario/llama.cpp/build/bin/llama-bench",
+          "-m",
+          "/mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf",
+          "-p",
+          "4096",
+          "-n",
+          "512",
+          "-b",
+          "4096",
+          "-ub",
+          "1024",
+          "-t",
+          "16",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "2",
+          "-o",
+          "json",
+          "--no-warmup"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-e4b-it-qat-q4-0-gguf--q4-k-xl",

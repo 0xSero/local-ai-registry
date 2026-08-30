@@ -101,31 +101,6 @@
   "hardware_id": "rtx-5060-ti-16gb",
   "id": "gemma-4-26b-a4b-it-q4-k-m-rtx-5060-ti-16gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "supergemma4-26b-uncensored-fast-v2-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "--tensor-split",
-      "0.5,0.5",
-      "-c",
-      "32768",
-      "-fa",
-      "on",
-      "--cache-type-k",
-      "q4_0",
-      "--cache-type-v",
-      "q4_0",
-      "-np",
-      "1",
-      "--temp",
-      "0",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "8080"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -142,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8080,
-    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmrjrlnjp02tumj01o0fdo23w",
     "source": "localmaxxing",
@@ -155,7 +128,35 @@
       "hardware_label": "RTX 5060 Ti",
       "notes": null,
       "observed_command": "llama-server -m supergemma4-26b-uncensored-fast-v2-Q4_K_M.gguf -ngl 99 --tensor-split 0.5,0.5 -c 32768 -fa on --cache-type-k q4_0 --cache-type-v q4_0 -np 1 --temp 0 --host 0.0.0.0 --port 8080",
-      "run_id": "cmrjrlnjp02tumj01o0fdo23w"
+      "run_id": "cmrjrlnjp02tumj01o0fdo23w",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "supergemma4-26b-uncensored-fast-v2-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "--tensor-split",
+          "0.5,0.5",
+          "-c",
+          "32768",
+          "-fa",
+          "on",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0",
+          "-np",
+          "1",
+          "--temp",
+          "0",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8080"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "jiunsong-supergemma4-26b-uncensored-gguf-v2--q4-k-m",

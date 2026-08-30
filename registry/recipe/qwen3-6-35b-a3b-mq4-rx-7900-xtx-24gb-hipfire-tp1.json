@@ -101,14 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-35b-a3b-mq4-rx-7900-xtx-24gb-hipfire-tp1",
   "launch": {
-    "arguments": [
-      "hipfire",
-      "bench",
-      "qwen3.6:35b-a3b",
-      "--runs",
-      "3",
-      "Explain the theory of general relativity in simple terms."
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -136,7 +128,18 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "hipfire @ f16eceb (master post-perf-recovery)\nprompt: \"Explain the theory of general relativity in simple terms.\"\nruns: 3\ndecode mode: AR\nkv_cache: asym3\nprompt_normalize: true (default since 2026-04-26)\npp128: 325.4 tok/s\npp512: 322.0 tok/s\npp1024: 320.4 tok/s\npp2048: 316.8 tok/s\nvram_loaded: 22660 MB",
       "observed_command": "hipfire bench qwen3.6:35b-a3b --runs 3 \"Explain the theory of general relativity in simple terms.\"",
-      "run_id": "cmofezrun000cie04z5y0b83e"
+      "run_id": "cmofezrun000cie04z5y0b83e",
+      "tokenized": {
+        "arguments": [
+          "hipfire",
+          "bench",
+          "qwen3.6:35b-a3b",
+          "--runs",
+          "3",
+          "Explain the theory of general relativity in simple terms."
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--mq4",

@@ -101,23 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "deepseek-v4-flash-q2-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Huihui-DeepSeek-V4-Flash-BF16-abliterated-ds4-Q2.gguf",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8089",
-      "-ngl",
-      "99",
-      "-c",
-      "4096",
-      "--flash-attn",
-      "on",
-      "--temp",
-      "0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -134,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8089,
-    "host_port": 8089,
     "kind": "reference",
     "run_id": "cms0nfewo009rs2011l53fkr5",
     "source": "localmaxxing",
@@ -147,7 +128,27 @@
       "hardware_label": "M5 Max",
       "notes": "DeepSeek-V4-Flash abliterated (Q2, 81GB on disk) on Apple M5 Max 128GB unified memory. llama.cpp b10079 with Metal backend, all layers on GPU, flash attention. 535-token prompt, 128 output tokens, temperature=0, 2 warmup + 5 measured runs (median). Consistent: 11.95-12.37 tok/s. Some DeepSeek-specific fused ops (Lightning Indexer, HC pre/comb/post) fall back to CPU on Metal; native Metal support would improve throughput. Demonstrates a 180B-class MoE fitting in 128GB unified memory.",
       "observed_command": "llama-server -m Huihui-DeepSeek-V4-Flash-BF16-abliterated-ds4-Q2.gguf --host 127.0.0.1 --port 8089 -ngl 99 -c 4096 --flash-attn on --temp 0",
-      "run_id": "cms0nfewo009rs2011l53fkr5"
+      "run_id": "cms0nfewo009rs2011l53fkr5",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Huihui-DeepSeek-V4-Flash-BF16-abliterated-ds4-Q2.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8089",
+          "-ngl",
+          "99",
+          "-c",
+          "4096",
+          "--flash-attn",
+          "on",
+          "--temp",
+          "0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "huihui-ai-huihui-deepseek-v4-flash-abliterated-ds4-gguf--q2",

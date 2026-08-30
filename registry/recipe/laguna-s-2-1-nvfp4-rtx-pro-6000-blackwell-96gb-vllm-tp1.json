@@ -117,11 +117,8 @@
       ],
       "state": "none"
     },
-    "endpoint": "http://127.0.0.1:8000",
-    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmrvb4rw909f1lg01cwonifnf",
-    "served_model_name": "laguna-s-2.1",
     "source": "localmaxxing",
     "url": "https://www.localmaxxing.com/en/runs/cmrvb4rw909f1lg01cwonifnf"
   },
@@ -131,7 +128,12 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "DFlash speculative decode, num_speculative_tokens=7 (draft: poolside/Laguna-S-2.1-DFlash-NVFP4, BF16 6-layer). vLLM nightly 0.23.1rc1.dev1358+gb8fb56d97 (post-0.25.1, includes Blackwell DFlash fix #48167). FlashInfer attention, FLASHINFER_CUTLASS NVFP4 MoE, kv fp8_e4m3, gpu-mem-util 0.90, max-model-len 32768, temp 0, single stream. Sweep 3..15: decode peaks 208 tok/s on code workloads at n=15; prose saturates at accept-len ~2.3. Baseline no-spec 110 tok/s.",
       "observed_command": "# Remote endpoint: http://127.0.0.1:8000  servedModel: laguna-s-2.1",
-      "run_id": "cmrvb4rw909f1lg01cwonifnf"
+      "run_id": "cmrvb4rw909f1lg01cwonifnf",
+      "tokenized": {
+        "endpoint": "http://127.0.0.1:8000",
+        "fidelity": "faithful",
+        "served_model_name": "laguna-s-2.1"
+      }
     }
   },
   "model_instance_id": "poolside-laguna-s-2-1-nvfp4--nvfp4",

@@ -101,26 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "glm-4-7-flash-q5-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "/path/to/GLM-4.7-Flash-Q5_K_M.gguf",
-      "--alias",
-      "glm-4.7-flash-q5km",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8096",
-      "-ngl",
-      "99",
-      "-c",
-      "131072",
-      "-n",
-      "8192",
-      "--reasoning",
-      "off",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8096,
-    "host_port": 8096,
     "kind": "reference",
     "run_id": "cmsr37a3800zcmr01tdifp568",
     "source": "localmaxxing",
@@ -150,7 +128,30 @@
       "hardware_label": "RTX 5090",
       "notes": "Mean prompts 1-4 from the five-prompt RTX 5090 suite at temperature 0 and configured 131072 context; prompt 5 completed four turns in 4.678 s. Peak GPU utilization 100%, peak temperature 59 C. Near-limit probe reached 98400 actual input tokens without OOM at 102.55 tok/s and 28012 MiB peak VRAM; near-limit sampled board power reached 413.23 W versus the reported 400 W limit.",
       "observed_command": "llama-server --model /path/to/GLM-4.7-Flash-Q5_K_M.gguf --alias glm-4.7-flash-q5km --host 127.0.0.1 --port 8096 -ngl 99 -c 131072 -n 8192 --reasoning off --jinja",
-      "run_id": "cmsr37a3800zcmr01tdifp568"
+      "run_id": "cmsr37a3800zcmr01tdifp568",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "/path/to/GLM-4.7-Flash-Q5_K_M.gguf",
+          "--alias",
+          "glm-4.7-flash-q5km",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8096",
+          "-ngl",
+          "99",
+          "-c",
+          "131072",
+          "-n",
+          "8192",
+          "--reasoning",
+          "off",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-glm-4-7-flash-gguf--q5-k-m",

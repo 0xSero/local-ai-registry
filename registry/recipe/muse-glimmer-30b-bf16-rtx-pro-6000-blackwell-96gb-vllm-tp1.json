@@ -101,36 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "muse-glimmer-30b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "{PROJECT_ROOT}/models/meta-muse-glimmer-30b-bf16",
-      "--served-model-name",
-      "muse-glimmer",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8000",
-      "--tensor-parallel-size",
-      "1",
-      "--gpu-memory-utilization",
-      "0.90",
-      "--max-model-len",
-      "32768",
-      "--max-num-seqs",
-      "8",
-      "--max-num-batched-tokens",
-      "32768",
-      "--enable-auto-tool-choice",
-      "--tool-call-parser",
-      "muse_glimmer",
-      "--reasoning-parser",
-      "muse_glimmer",
-      "--generation-config",
-      "auto",
-      "--speculative-config",
-      "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":15}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -147,59 +117,9 @@
       ],
       "state": "none"
     },
-    "container_port": 8000,
-    "environment": {
-      "HF_HOME": "{PROJECT_ROOT}/.cache/huggingface",
-      "MAX_JOBS": "4",
-      "NVCC_THREADS": "2",
-      "TORCH_CUDA_ARCH_LIST": "12.0a",
-      "VLLM_USE_DEEP_GEMM": "0",
-      "XDG_CACHE_HOME": "{PROJECT_ROOT}/.cache"
-    },
-    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmsnf7x7v00c6o001u6g4a1ex",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "cd",
-        "{PROJECT_ROOT}"
-      ],
-      [
-        "source",
-        ".venv-vllm/bin/activate"
-      ],
-      [
-        "vllm",
-        "serve",
-        "{PROJECT_ROOT}/models/meta-muse-glimmer-30b-bf16",
-        "--served-model-name",
-        "muse-glimmer",
-        "--host",
-        "127.0.0.1",
-        "--port",
-        "8000",
-        "--tensor-parallel-size",
-        "1",
-        "--gpu-memory-utilization",
-        "0.90",
-        "--max-model-len",
-        "32768",
-        "--max-num-seqs",
-        "8",
-        "--max-num-batched-tokens",
-        "32768",
-        "--enable-auto-tool-choice",
-        "--tool-call-parser",
-        "muse_glimmer",
-        "--reasoning-parser",
-        "muse_glimmer",
-        "--generation-config",
-        "auto",
-        "--speculative-config",
-        "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":15}"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmsnf7x7v00c6o001u6g4a1ex"
   },
   "metadata": {
@@ -208,7 +128,88 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Official BF16 weights. Vision enabled and verified with a real image request. DFlash assistant meta-models/Muse-Glimmer-30B-assistant revision 2c86316d689027b91123638739743fef1d425233. Supplemental BS8: 424.9 tok/s aggregate, 53.1 tok/s per stream.",
       "observed_command": "cd {PROJECT_ROOT} && source .venv-vllm/bin/activate && MAX_JOBS=4 NVCC_THREADS=2 TORCH_CUDA_ARCH_LIST=12.0a VLLM_USE_DEEP_GEMM=0 HF_HOME={PROJECT_ROOT}/.cache/huggingface XDG_CACHE_HOME={PROJECT_ROOT}/.cache vllm serve {PROJECT_ROOT}/models/meta-muse-glimmer-30b-bf16 --served-model-name muse-glimmer --host 127.0.0.1 --port 8000 --tensor-parallel-size 1 --gpu-memory-utilization 0.90 --max-model-len 32768 --max-num-seqs 8 --max-num-batched-tokens 32768 --enable-auto-tool-choice --tool-call-parser muse_glimmer --reasoning-parser muse_glimmer --generation-config auto --speculative-config '{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":15}'",
-      "run_id": "cmsnf7x7v00c6o001u6g4a1ex"
+      "run_id": "cmsnf7x7v00c6o001u6g4a1ex",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "{PROJECT_ROOT}/models/meta-muse-glimmer-30b-bf16",
+          "--served-model-name",
+          "muse-glimmer",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8000",
+          "--tensor-parallel-size",
+          "1",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-model-len",
+          "32768",
+          "--max-num-seqs",
+          "8",
+          "--max-num-batched-tokens",
+          "32768",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "muse_glimmer",
+          "--reasoning-parser",
+          "muse_glimmer",
+          "--generation-config",
+          "auto",
+          "--speculative-config",
+          "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":15}"
+        ],
+        "environment": {
+          "HF_HOME": "{PROJECT_ROOT}/.cache/huggingface",
+          "MAX_JOBS": "4",
+          "NVCC_THREADS": "2",
+          "TORCH_CUDA_ARCH_LIST": "12.0a",
+          "VLLM_USE_DEEP_GEMM": "0",
+          "XDG_CACHE_HOME": "{PROJECT_ROOT}/.cache"
+        },
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "cd",
+            "{PROJECT_ROOT}"
+          ],
+          [
+            "source",
+            ".venv-vllm/bin/activate"
+          ],
+          [
+            "vllm",
+            "serve",
+            "{PROJECT_ROOT}/models/meta-muse-glimmer-30b-bf16",
+            "--served-model-name",
+            "muse-glimmer",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "8000",
+            "--tensor-parallel-size",
+            "1",
+            "--gpu-memory-utilization",
+            "0.90",
+            "--max-model-len",
+            "32768",
+            "--max-num-seqs",
+            "8",
+            "--max-num-batched-tokens",
+            "32768",
+            "--enable-auto-tool-choice",
+            "--tool-call-parser",
+            "muse_glimmer",
+            "--reasoning-parser",
+            "muse_glimmer",
+            "--generation-config",
+            "auto",
+            "--speculative-config",
+            "{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":15}"
+          ]
+        ]
+      }
     }
   },
   "model_instance_id": "meta-models-muse-glimmer-30b--bf16",

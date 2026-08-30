@@ -117,11 +117,8 @@
       ],
       "state": "none"
     },
-    "endpoint": "http://192.168.0.45:30000",
-    "host_port": 30000,
     "kind": "reference",
     "run_id": "cmtdklchh005clm01b8ev1mrk",
-    "served_model_name": "gittensor-model-hub/Qwen3.8-27B-NVFP4-RTX5090-LMHead4",
     "source": "localmaxxing",
     "url": "https://www.localmaxxing.com/en/runs/cmtdklchh005clm01b8ev1mrk"
   },
@@ -131,7 +128,12 @@
       "hardware_label": "RTX 5060 Ti",
       "notes": "vLLM V2 on dual RTX 5060 Ti 16GB (Unraid 7, 6.18.38). MTP speculative decoding: num_speculative_tokens=3, TP=2, NVFP4 quant, max-model-len 131072, KV-cache nvfp4 4.5GB budget, prefix-caching + chunked-prefill enabled, cudagraph_capture_sizes [1,2,4,8,16]. This is the warm-cache representative run (4 consecutive back-to-back benchmark iterations, prefix cache hot): 63.2-63.7 tok/s decode, ~186-195 ms TTFT. MTP draft acceptance during this window: avg 54.8% (41.4-71.1%, p50 52.6%, 18 samples) \u2014 well above the ~30% breakeven for 3 draft tokens, i.e. MTP spec-decode is net-positive here. For contrast, a cold-cache benchmark window earlier in the session measured 38.2 tok/s at ~35% acceptance; full-lifetime real-world Hermes traffic averages ~50.6% token-weighted acceptance (2.69M samples, per-position pos1=0.647 pos2=0.495 pos3=0.393). Engine: vLLM, quant NVFP4.",
       "observed_command": "# Remote endpoint: http://192.168.0.45:30000  servedModel: gittensor-model-hub/Qwen3.8-27B-NVFP4-RTX5090-LMHead4",
-      "run_id": "cmtdklchh005clm01b8ev1mrk"
+      "run_id": "cmtdklchh005clm01b8ev1mrk",
+      "tokenized": {
+        "endpoint": "http://192.168.0.45:30000",
+        "fidelity": "faithful",
+        "served_model_name": "gittensor-model-hub/Qwen3.8-27B-NVFP4-RTX5090-LMHead4"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-8-27b--nvfp4",

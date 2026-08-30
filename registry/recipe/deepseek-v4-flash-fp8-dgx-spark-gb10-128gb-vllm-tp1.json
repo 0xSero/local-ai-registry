@@ -101,19 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "deepseek-v4-flash-fp8-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "deepseek-ai/DeepSeek-V4-Flash",
-      "--tensor-parallel-size",
-      "2",
-      "--max-model-len",
-      "200000",
-      "--kv-cache-dtype",
-      "fp8",
-      "--gpu-memory-utilization",
-      "0.8"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -141,7 +128,23 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "2x NVIDIA DGX Spark (GB10) cluster, TP=2 over RoCE. FP8 KV cache + MXFP4 MoE, MTP=2, 200K ctx (aidendle94/sparkrun-vllm-ds4-gb10). Warm single-stream, temp=0. ttftMs=median of 3 (short prompt, streaming). tokSOut=median of 3 (code prompt, max_tokens=256, completion_tokens/decode_seconds). tokSPrefill=median of 3 (~2000-token unique prompts, prefix-cache defeated). Unified memory 128GB/node (242GB combined pool); peakVramGb=209 = 105GB(node1)+104GB(node2) actually used.",
       "observed_command": "vllm serve deepseek-ai/DeepSeek-V4-Flash --tensor-parallel-size 2 --max-model-len 200000 --kv-cache-dtype fp8 --gpu-memory-utilization 0.8",
-      "run_id": "cmpw3cr6l003tr101wblsaxvj"
+      "run_id": "cmpw3cr6l003tr101wblsaxvj",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "deepseek-ai/DeepSeek-V4-Flash",
+          "--tensor-parallel-size",
+          "2",
+          "--max-model-len",
+          "200000",
+          "--kv-cache-dtype",
+          "fp8",
+          "--gpu-memory-utilization",
+          "0.8"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-flash--fp8",

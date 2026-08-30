@@ -101,21 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-8-27b-q4-k-s-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.8-27B-Q4_K_S.gguf",
-      "-ngl",
-      "all",
-      "-c",
-      "32768",
-      "-np",
-      "1",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "RTX 5090",
       "notes": null,
       "observed_command": "llama-server -m Qwen3.8-27B-Q4_K_S.gguf -ngl all -c 32768 -np 1 --spec-type draft-mtp --spec-draft-n-max 2",
-      "run_id": "cmsxjlq8k0bq6ms01osoaskzl"
+      "run_id": "cmsxjlq8k0bq6ms01osoaskzl",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-Q4_K_S.gguf",
+          "-ngl",
+          "all",
+          "-c",
+          "32768",
+          "-np",
+          "1",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--q4-k-s",

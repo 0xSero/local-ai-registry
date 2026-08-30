@@ -101,15 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "ling-3-0-tiny-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/home/jack/llama.cpp/build-hip/bin/llama-bench",
-      "-m",
-      "/home/jack/unsloth/Ling-3.0-tiny-GGUF/Ling-3.0-tiny-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "HIP/ROCm (native gfx1201, ROCm 7.2.1). Ling-3.0-tiny (inclusionAI) Q4_K_M, hybrid MoE 1.3B active. bartowski GGUF.",
       "observed_command": "/home/jack/llama.cpp/build-hip/bin/llama-bench -m /home/jack/unsloth/Ling-3.0-tiny-GGUF/Ling-3.0-tiny-Q4_K_M.gguf -p 512 -n 128",
-      "run_id": "cmt2s99nw0h7zmv01v8hgyisp"
+      "run_id": "cmt2s99nw0h7zmv01v8hgyisp",
+      "tokenized": {
+        "arguments": [
+          "/home/jack/llama.cpp/build-hip/bin/llama-bench",
+          "-m",
+          "/home/jack/unsloth/Ling-3.0-tiny-GGUF/Ling-3.0-tiny-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "bartowski-ling-3-0-tiny-gguf--q4-k-m",

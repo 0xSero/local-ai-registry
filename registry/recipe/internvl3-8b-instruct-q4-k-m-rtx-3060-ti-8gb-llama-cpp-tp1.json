@@ -101,26 +101,6 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "internvl3-8b-instruct-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-ngl",
-      "28",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-r",
-      "5"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "RTX 3060 Ti",
       "notes": "Dell Precision T7810 (7810), Dual Intel Xeon E5-2650 v4 (2x12c/24t, 2.20GHz), 32GB DDR4 ECC 2133 MT/s (8x4GB), PCIe Gen 3 x16 (8GT/s, both GPUs at x16), both GPUs on same NUMA node (NUMA 0, PHB topology). Layer split (-sm layer), flash attention, f16 KV cache at all contexts. Stock llama.cpp build (commit 13f2b28, NOT PrismML fork). Benchmarked with llama-bench. Dual GPU via llama.cpp layer split.",
       "observed_command": "llama-bench -m  -p 512 -n 128 -ngl 28 -sm layer -fa on -ctk f16 -ctv f16 -r 5",
-      "run_id": "cms3go53c011rs201fn9998ir"
+      "run_id": "cms3go53c011rs201fn9998ir",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "28",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-r",
+          "5"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "opengvlab-internvl3-8b--q4-k-m",

@@ -101,30 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-3bcpfta2",
   "launch": {
-    "arguments": [
-      "llama-server.exe",
-      "-hf",
-      "unsloth/Qwen3.6-27B-GGUF:Q4_K_M",
-      "-c",
-      "65536",
-      "-ngl",
-      "999",
-      "-fa",
-      "on",
-      "-t",
-      "4",
-      "-b",
-      "512",
-      "-np",
-      "1",
-      "-sm",
-      "none",
-      "--jinja",
-      "--port",
-      "8033",
-      "--cache-ram",
-      "0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -141,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8033,
-    "host_port": 8033,
     "kind": "reference",
     "run_id": "cmpijbutt007ooe013bcpfta2",
     "source": "localmaxxing",
@@ -154,7 +128,34 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": null,
       "observed_command": "llama-server.exe -hf unsloth/Qwen3.6-27B-GGUF:Q4_K_M -c 65536 -ngl 999 -fa on -t 4 -b 512 -np 1 -sm none --jinja --port 8033 --cache-ram 0  \n",
-      "run_id": "cmpijbutt007ooe013bcpfta2"
+      "run_id": "cmpijbutt007ooe013bcpfta2",
+      "tokenized": {
+        "arguments": [
+          "llama-server.exe",
+          "-hf",
+          "unsloth/Qwen3.6-27B-GGUF:Q4_K_M",
+          "-c",
+          "65536",
+          "-ngl",
+          "999",
+          "-fa",
+          "on",
+          "-t",
+          "4",
+          "-b",
+          "512",
+          "-np",
+          "1",
+          "-sm",
+          "none",
+          "--jinja",
+          "--port",
+          "8033",
+          "--cache-ram",
+          "0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-27b--q4-k-m",

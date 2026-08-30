@@ -101,17 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "qwen3-6-35b-a3b-q4-k-xl-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-fa",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -139,7 +128,21 @@
       "hardware_label": "M5 Max",
       "notes": "llama.cpp b9430, Metal backend, llama-bench pp512/tg128, flash-attn on, no speculative decoding. Decode 97.0 t/s, prefill 3038 t/s, short context. Apple M5 Max 128GB, macOS 27.0. File: Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf.",
       "observed_command": "llama-bench -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf -p 512 -n 128 -fa 1",
-      "run_id": "cmqptcu9x00sgqo01ivq06sdp"
+      "run_id": "cmqptcu9x00sgqo01ivq06sdp",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-fa",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b-mtp-gguf--q4-k-xl",

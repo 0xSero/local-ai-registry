@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "phi-4-q4-k-m-rtx-3060-12gb-llama-cpp-tp2-94u5jikk",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "phi-4-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-c",
-      "16384",
-      "-n",
-      "8192",
-      "--reasoning",
-      "on",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 3060",
       "notes": "2x RTX 3060 12GB, Dense 14B. 16K context limit. Short-prompt avg (prompts 1,2,4,5). Long-context: 24.0 t/s out, 1623 t/s prefill at 12.5K tokens.",
       "observed_command": "llama-server -m phi-4-Q4_K_M.gguf -ngl 99 -sm layer -fa on -ctk q4_0 -ctv q4_0 -c 16384 -n 8192 --reasoning on --jinja",
-      "run_id": "cmsyor6ym0d4rms0194u5jikk"
+      "run_id": "cmsyor6ym0d4rms0194u5jikk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "phi-4-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-c",
+          "16384",
+          "-n",
+          "8192",
+          "--reasoning",
+          "on",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-phi-4-gguf--q4-k-m",

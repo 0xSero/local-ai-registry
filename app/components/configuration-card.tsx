@@ -5,6 +5,7 @@ export type LaunchConfiguration = {
   endpoint: string | null
   engine: string
   environment: Record<string, string>
+  fidelity: "faithful" | "lossy" | null
   hasContainer: boolean
   image: string | null
   kind: string
@@ -39,8 +40,20 @@ function argvList(record: unknown): string[][] {
   return record.filter((step): step is unknown[] => Array.isArray(step)).map((step) => step.map(String))
 }
 
-export function flagRows(tokens: string[]): Array<[string, string | null]> {
-  const rows: Array<[string, string | null]> = []
+function observedBlock(recipe: Record<string, unknown>): Record<string, unknown> | null {
+  const metadata = (value(recipe, "metadata") as Record<string, unknown> | undefined) ?? {}
+  const source = typeof value(recipe, "recipe_source") === "string" ? String(value(recipe, "recipe_source")) : ""
+  const key = source === "mlxfast" ? "mlxfast" : source === "localmaxxing" ? "localmaxxing" : null
+  if (!key) return null
+  const block = metadata[key]
+  if (!block || typeof block !== "object" || Array.isArray(block)) return null
+  const tokenized = (block as Record<string, unknown>).tokenized
+  if (!tokenized || typeof tokenized !== "object" || Array.isArray(tokenized)) return null
+  return tokenized as Record<string, unknown>
+}
+
+export function flagRows(tokens: string[]): Array<[string, string]> {
+  const rows: Array<[string, string]> = []
   for (let index = 0; index < tokens.length; index += 1) {
     const token = tokens[index]
     if (!token.startsWith("-") || token === "-") continue
@@ -53,8 +66,6 @@ export function flagRows(tokens: string[]): Array<[string, string | null]> {
     if (next && !next.startsWith("-")) {
       rows.push([token, next])
       index += 1
-    } else {
-      rows.push([token, null])
     }
   }
   return rows
@@ -64,9 +75,13 @@ export function configurationFromRecipe(recipe: Record<string, unknown>, engineN
   const launch = (value(recipe, "launch") as Record<string, unknown> | undefined) ?? {}
   const container = (launch.container as Record<string, unknown> | undefined) ?? {}
   const kind = typeof launch.kind === "string" ? launch.kind : "reference"
+  const observed = kind === "reference" ? observedBlock(recipe) : null
+  const fields = observed ?? launch
   const hasContainer = kind === "docker" || kind === "docker-compose"
-  const hostPort = launch.host_port ?? launch.container_port
-  const image = typeof launch.image === "string" ? launch.image : typeof container.image === "string" ? container.image : null
+  const hostPort = hasContainer ? launch.host_port ?? launch.container_port : null
+  const image = hasContainer
+    ? (typeof launch.image === "string" ? launch.image : typeof container.image === "string" ? container.image : null)
+    : null
   const source = launch.url ?? launch.source
   const sourceUrl = typeof source === "string" && source.startsWith("http")
     ? source
@@ -84,29 +99,33 @@ export function configurationFromRecipe(recipe: Record<string, unknown>, engineN
   const status = typeof value(recipe, "status") === "string" ? String(value(recipe, "status")) : "candidate"
   const registryMeta = (value(recipe, "registry") as Record<string, unknown> | undefined) ?? {}
   const launchable = registryMeta.launchable === true && status === "validated" && kind !== "reference"
-  const mounts = Array.isArray(launch.mounts)
+  const mounts = hasContainer && Array.isArray(launch.mounts)
     ? launch.mounts.filter((item): item is LaunchConfiguration["mounts"][number] => !!item && typeof item === "object")
     : []
+  const fidelity = observed && (observed.fidelity === "faithful" || observed.fidelity === "lossy")
+    ? observed.fidelity
+    : null
   return {
-    arguments: stringList(launch.arguments),
+    arguments: fidelity === "lossy" ? [] : stringList(fields.arguments),
     composeFile: typeof (launch.compose as { file?: string } | undefined)?.file === "string"
       ? (launch.compose as { file: string }).file
       : typeof container.compose_file === "string" ? container.compose_file : null,
     digest: typeof container.digest === "string" ? container.digest : null,
-    endpoint: typeof launch.endpoint === "string" ? launch.endpoint : null,
+    endpoint: typeof fields.endpoint === "string" ? fields.endpoint : null,
     engine: engineName || (typeof (value(recipe, "engine") as { name?: string } | undefined)?.name === "string" ? (value(recipe, "engine") as { name: string }).name : "unknown"),
-    environment: stringMap(launch.environment),
+    environment: fidelity === "lossy" ? {} : stringMap(fields.environment),
+    fidelity,
     hasContainer,
     image,
     kind,
     launchable,
     mounts,
-    notes: stringList(launch.notes),
+    notes: fidelity === "lossy" ? [] : stringList(fields.notes),
     ports: hostPort == null ? null : String(hostPort),
-    servedModelName: typeof launch.served_model_name === "string" ? launch.served_model_name : null,
+    servedModelName: typeof fields.served_model_name === "string" ? fields.served_model_name : null,
     sourceUrl,
     status,
-    steps: argvList(launch.steps),
+    steps: fidelity === "lossy" ? [] : argvList(fields.steps),
     title: titles[kind] ?? "Configuration",
   }
 }
@@ -134,7 +153,7 @@ function FlagTable({ tokens }: { tokens: string[] }) {
         {rows.map(([flag, item], index) => (
           <tr key={`${index}:${flag}`}>
             <th scope="row"><code>{flag}</code></th>
-            <td>{item ? <code>{item}</code> : "set"}</td>
+            <td><code>{item}</code></td>
           </tr>
         ))}
       </tbody>
@@ -146,7 +165,8 @@ export function ConfigurationCard({ config }: { config: LaunchConfiguration }) {
   const runtime = config.hasContainer ? "Container" : config.kind === "reference" ? "Evidence only" : "No container"
   const trust = config.launchable ? "Validated launch contract" : "Candidate evidence — not a Run contract"
   const argv = config.steps.length > 0 ? null : config.arguments
-  const empty = !config.image && !config.arguments.length && !config.steps.length && !config.endpoint && !Object.keys(config.environment).length && !config.notes.length
+  const showFlags = config.fidelity !== "lossy"
+  const empty = !config.image && !config.arguments.length && !config.steps.length && !config.endpoint && !Object.keys(config.environment).length && !config.notes.length && config.fidelity !== "lossy"
   return (
     <section aria-label={config.title} className="config-card">
       <header>
@@ -170,10 +190,13 @@ export function ConfigurationCard({ config }: { config: LaunchConfiguration }) {
         {config.servedModelName && <div><dt>Served model</dt><dd><code>{config.servedModelName}</code></dd></div>}
         {config.sourceUrl && <div><dt>Source</dt><dd><a href={config.sourceUrl} rel="noreferrer" target="_blank">{config.sourceUrl}</a></dd></div>}
       </dl>
+      {config.fidelity === "lossy" && (
+        <p className="config-empty">Source command could not be tokenized faithfully. The original string stays in metadata. This does not satisfy promotion.</p>
+      )}
       {config.steps.length > 0 && (
         <div className="config-block">
-          <h4>Setup steps</h4>
-          {!config.launchable && <p>Tokenized source fields. The registry does not offer Run for this recipe.</p>}
+          <h4>Observed source tokens</h4>
+          <p>Mechanical split of the source command. Unverified against the engine CLI. The registry does not offer Run for this recipe.</p>
           <ol className="config-steps">
             {config.steps.map((step, index) => (
               <li key={index}><Argv tokens={step} /></li>
@@ -183,13 +206,13 @@ export function ConfigurationCard({ config }: { config: LaunchConfiguration }) {
       )}
       {argv && argv.length > 0 && (
         <div className="config-block">
-          <h4>{config.launchable ? "Launch arguments" : "Documented arguments"}</h4>
-          {!config.launchable && <p>Tokenized source fields. The registry does not offer Run for this recipe.</p>}
+          <h4>{config.launchable ? "Launch arguments" : "Observed source tokens"}</h4>
+          {!config.launchable && <p>Mechanical split of the source command. Unverified against the engine CLI. The registry does not offer Run for this recipe.</p>}
           <Argv tokens={argv} />
-          <FlagTable tokens={argv} />
+          {showFlags && <FlagTable tokens={argv} />}
         </div>
       )}
-      {config.steps.length > 0 && flagRows(config.arguments).length >= 2 && (
+      {showFlags && config.steps.length > 0 && flagRows(config.arguments).length >= 2 && (
         <div className="config-block">
           <FlagTable tokens={config.arguments} />
         </div>

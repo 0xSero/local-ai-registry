@@ -101,26 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-coder-30b-a3b-instruct-gguf-ud-q4-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "/mnt/usb-models/llm-models/qwen3-coder-30b-a3b-instruct-gguf/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf",
-      "-c",
-      "4096",
-      "-ngl",
-      "99",
-      "-b",
-      "1024",
-      "-ub",
-      "256",
-      "-fa",
-      "on",
-      "--ctx-checkpoints",
-      "0",
-      "--jinja",
-      "--reasoning",
-      "off"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Strict fresh-response rapid snapshot on one Intel Arc Pro B70. Fixed realistic suite, each prompt once, cached_tokens=0 on every request, server prompt cache disabled with --cache-ram 0 and per-request cache_prompt=false, no speculation/history/response reuse. Qwen3-Coder 30B-A3B coder-family companion to the Qwen3 30B rapid row; poll100/ctx4096 confirmed after a four-GPU quick screen.",
       "observed_command": "llama-server -m /mnt/usb-models/llm-models/qwen3-coder-30b-a3b-instruct-gguf/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 4096 -ngl 99 -b 1024 -ub 256 -fa on --ctx-checkpoints 0 --jinja --reasoning off",
-      "run_id": "cmr6w2ekt00gimn01orbith22"
+      "run_id": "cmr6w2ekt00gimn01orbith22",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/mnt/usb-models/llm-models/qwen3-coder-30b-a3b-instruct-gguf/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf",
+          "-c",
+          "4096",
+          "-ngl",
+          "99",
+          "-b",
+          "1024",
+          "-ub",
+          "256",
+          "-fa",
+          "on",
+          "--ctx-checkpoints",
+          "0",
+          "--jinja",
+          "--reasoning",
+          "off"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-coder-30b-a3b-instruct-gguf--gguf-ud-q4-k-xl",

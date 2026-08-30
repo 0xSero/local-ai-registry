@@ -101,30 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-ngl",
-      "99",
-      "-c",
-      "65536",
-      "-b",
-      "2048",
-      "-ub",
-      "512",
-      "--cache-type-k",
-      "f16",
-      "--cache-type-v",
-      "f16",
-      "--flash-attn",
-      "on",
-      "--jinja",
-      "--metrics",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8081",
-      "--parallel",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -141,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8081,
-    "host_port": 8081,
     "kind": "reference",
     "run_id": "cmt4eywp700hnpu017sqlq127",
     "source": "localmaxxing",
@@ -154,7 +128,34 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": null,
       "observed_command": " \n  -ngl 99 `\n  -c 65536 `\n  -b 2048 `\n  -ub 512 `\n  --cache-type-k f16 `\n  --cache-type-v f16 `\n  --flash-attn on `\n  --jinja `\n  --metrics `\n  --host 127.0.0.1 `\n  --port 8081 `\n  --parallel 1",
-      "run_id": "cmt4eywp700hnpu017sqlq127"
+      "run_id": "cmt4eywp700hnpu017sqlq127",
+      "tokenized": {
+        "arguments": [
+          "-ngl",
+          "99",
+          "-c",
+          "65536",
+          "-b",
+          "2048",
+          "-ub",
+          "512",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--metrics",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8081",
+          "--parallel",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--q4-k-m",

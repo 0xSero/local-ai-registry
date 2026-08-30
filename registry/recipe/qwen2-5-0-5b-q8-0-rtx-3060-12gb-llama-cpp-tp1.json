@@ -101,30 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen2-5-0-5b-q8-0-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/home/dario/llama.cpp/build/bin/llama-bench",
-      "-m",
-      "/mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen2.5-0.5b/qwen2.5-0.5b-instruct-q8_0.gguf",
-      "-p",
-      "4096",
-      "-n",
-      "512",
-      "-b",
-      "4096",
-      "-ub",
-      "1024",
-      "-t",
-      "16",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-r",
-      "2",
-      "-o",
-      "json",
-      "--no-warmup"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -152,7 +128,34 @@
       "hardware_label": "RTX 3060",
       "notes": "4096 prompt / 512 generation. Two throwaway runs preceded the measured sweep across three batch/ubatch/thread configurations. Winner selected by minimum measured TTFT. Full GPU offload, Flash Attention, temperature 0. Peak VRAM and maximum sampled GPU power were measured during the winner run. Local file: /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen2.5-0.5b/qwen2.5-0.5b-instruct-q8_0.gguf",
       "observed_command": "/home/dario/llama.cpp/build/bin/llama-bench -m /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen2.5-0.5b/qwen2.5-0.5b-instruct-q8_0.gguf -p 4096 -n 512 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json --no-warmup",
-      "run_id": "cmrz3dbth0647o401fcwm0gyu"
+      "run_id": "cmrz3dbth0647o401fcwm0gyu",
+      "tokenized": {
+        "arguments": [
+          "/home/dario/llama.cpp/build/bin/llama-bench",
+          "-m",
+          "/mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen2.5-0.5b/qwen2.5-0.5b-instruct-q8_0.gguf",
+          "-p",
+          "4096",
+          "-n",
+          "512",
+          "-b",
+          "4096",
+          "-ub",
+          "1024",
+          "-t",
+          "16",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "2",
+          "-o",
+          "json",
+          "--no-warmup"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen2-5-0-5b-instruct--q8-0",

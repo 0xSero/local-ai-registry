@@ -101,15 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "nex-n2-mini-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "/home/popiwus/Carlos/models/Nex-N2-mini-B70-Turbo-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "B70 SYCL optimizations: dp4a fattn, V dequant 16B, NX2=2, BLOCK_SIZE=1, scale-dequant predication, SYCL graph cache, ACT_Q8_CACHE=1, GATE_UP_Q8_HANDOFF=1. 10 rounds at 128 ctx. vs HEAD 67.09 tok/s = +59% improvement.",
       "observed_command": "llama-bench -m /home/popiwus/Carlos/models/Nex-N2-mini-B70-Turbo-Q4_K_M.gguf -p 512 -n 128",
-      "run_id": "cmqm49cui01fbnv01d7l6io6u"
+      "run_id": "cmqm49cui01fbnv01d7l6io6u",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "/home/popiwus/Carlos/models/Nex-N2-mini-B70-Turbo-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "nex-agi-nex-n2-mini--q4-k-m",

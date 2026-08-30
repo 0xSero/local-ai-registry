@@ -101,17 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "qwen3-6-35b-a3b-q4-k-m-apple-m5-max-128gb-lmstudio-tp1-c16ndvx6",
   "launch": {
-    "arguments": [
-      "lms",
-      "load",
-      "qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled",
-      "--context-length",
-      "8192",
-      "--parallel",
-      "1",
-      "--gpu",
-      "max"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -131,26 +120,6 @@
     "kind": "reference",
     "run_id": "cmoq58c6r000el804c16ndvx6",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "lms",
-        "load",
-        "qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled",
-        "--context-length",
-        "8192",
-        "--parallel",
-        "1",
-        "--gpu",
-        "max"
-      ],
-      [
-        "LM",
-        "Studio",
-        "/api/v0/chat/completions",
-        "temperature=0",
-        "max_tokens=256"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmoq58c6r000el804c16ndvx6"
   },
   "metadata": {
@@ -159,7 +128,26 @@
       "hardware_label": "M5 Max",
       "notes": "Automated benchmark via LM Studio local API. 2 warm-up runs; median of 3 measured greedy chat completions with max_tokens=256.",
       "observed_command": "lms load qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled --context-length 8192 --parallel 1 --gpu max; LM Studio /api/v0/chat/completions temperature=0 max_tokens=256",
-      "run_id": "cmoq58c6r000el804c16ndvx6"
+      "run_id": "cmoq58c6r000el804c16ndvx6",
+      "tokenized": {
+        "arguments": [
+          "lms",
+          "load",
+          "qwen3.6-35b-a3b-claude-4.6-opus-reasoning-distilled",
+          "--context-length",
+          "8192",
+          "--parallel",
+          "1",
+          "--gpu",
+          "max;",
+          "LM",
+          "Studio",
+          "/api/v0/chat/completions",
+          "temperature=0",
+          "max_tokens=256"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "hesamation-qwen3-6-35b-a3b-claude-4-6-opus-reasoning-distilled--q4-k-m",

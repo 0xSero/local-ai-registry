@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-30b-a3b-thinking-2507-q4-k-m-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3-30B-A3B-Thinking-2507-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-c",
-      "65536",
-      "-n",
-      "8192",
-      "--reasoning",
-      "on",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 3060",
       "notes": "2x RTX 3060 12GB, MoE 30.5B/3.3B active. Short-prompt avg (prompts 1,2,4,5). Long-context: 17.8 t/s out, 1604 t/s prefill at 46.2K tokens.",
       "observed_command": "llama-server -m Qwen3-30B-A3B-Thinking-2507-Q4_K_M.gguf -ngl 99 -sm layer -fa on -ctk q4_0 -ctv q4_0 -c 65536 -n 8192 --reasoning on --jinja",
-      "run_id": "cmsyor4ry0d4ems01su66yl6z"
+      "run_id": "cmsyor4ry0d4ems01su66yl6z",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3-30B-A3B-Thinking-2507-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-c",
+          "65536",
+          "-n",
+          "8192",
+          "--reasoning",
+          "on",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-30b-a3b-thinking-2507-gguf--q4-k-m",

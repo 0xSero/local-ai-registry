@@ -101,25 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "ornith-1-0-35b-q5-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "ornith-1.0-35b-Q5_K_M.gguf",
-      "--parallel",
-      "32",
-      "--ctx-size",
-      "131072",
-      "-fa",
-      "on",
-      "-ctk",
-      "q5_0",
-      "-ctv",
-      "q4_1",
-      "-b",
-      "8192",
-      "-ub",
-      "4096"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -147,7 +128,29 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "POWER/FREQUENCY UNLOCKED TEST: max_freq pushed to 2800 MHz, power1_cap relaxed to 230W. Telemetry logged 196W sustained draw at 73C. Memory bandwidth bottleneck confirmed: +33% power yielded only +8% throughput over the 165W/2400MHz baseline.",
       "observed_command": "llama-server -m ornith-1.0-35b-Q5_K_M.gguf --parallel 32 --ctx-size 131072 -fa on -ctk q5_0 -ctv q4_1 -b 8192 -ub 4096",
-      "run_id": "cmr90watg00jaqr01jx0foi3r"
+      "run_id": "cmr90watg00jaqr01jx0foi3r",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "ornith-1.0-35b-Q5_K_M.gguf",
+          "--parallel",
+          "32",
+          "--ctx-size",
+          "131072",
+          "-fa",
+          "on",
+          "-ctk",
+          "q5_0",
+          "-ctv",
+          "q4_1",
+          "-b",
+          "8192",
+          "-ub",
+          "4096"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "ornith-ai-ornith-1-0-35b--q5-k-m",

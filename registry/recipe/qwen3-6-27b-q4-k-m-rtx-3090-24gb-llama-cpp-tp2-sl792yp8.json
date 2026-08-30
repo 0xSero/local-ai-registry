@@ -101,29 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-6-27b-q4-k-m-rtx-3090-24gb-llama-cpp-tp2-sl792yp8",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "Qwen3.6-27B-Q4_K_M.gguf",
-      "--ctx-size",
-      "65536",
-      "--n-gpu-layers",
-      "999",
-      "--split-mode",
-      "layer",
-      "--tensor-split",
-      "0.5,0.5",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "turbo4",
-      "--batch-size",
-      "2048",
-      "--ubatch-size",
-      "512",
-      "--threads",
-      "8"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "RTX 3090",
       "notes": "Tom Turney's TurboQuant+ fork of llama.cpp. Asymmetric KV: q8_0 keys + turbo4 values per @no_stp_on_snek's twitter post. 2\u00d7 RTX 3090 layer-split, 50/50 tensor-split. Pascal (2\u00d7 1080 Ti) got 14 TPS at 65K; Ampere gets 37.78 = 2.7\u00d7 faster. CV 0.1% across 5 runs (essentially deterministic). Combined with the 35B-A3B Q3_K_XL bench (125.94 TPS), MoE-vs-dense advantage = 3.3\u00d7 on Ampere (vs Pascal's 2.6\u00d7). Bench: 800-word essay \u00d7 1000 max_tokens \u00d7 temp 0.6 streaming.",
       "observed_command": "llama-server --model Qwen3.6-27B-Q4_K_M.gguf --ctx-size 65536 --n-gpu-layers 999 --split-mode layer --tensor-split 0.5,0.5 --cache-type-k q8_0 --cache-type-v turbo4 --batch-size 2048 --ubatch-size 512 --threads 8",
-      "run_id": "cmogjhzqv0004jv04sl792yp8"
+      "run_id": "cmogjhzqv0004jv04sl792yp8",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "Qwen3.6-27B-Q4_K_M.gguf",
+          "--ctx-size",
+          "65536",
+          "--n-gpu-layers",
+          "999",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "0.5,0.5",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "turbo4",
+          "--batch-size",
+          "2048",
+          "--ubatch-size",
+          "512",
+          "--threads",
+          "8"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-gguf--q4-k-m",

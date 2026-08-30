@@ -101,18 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-35b-a3b-q3-k-xl-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "1024",
-      "-ub",
-      "1024",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q8_0",
-      "-sm",
-      "row"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -140,7 +128,22 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b/ub 1024; q8_0/q8_0 KV; all-GPU no -ot needed (15.68 GiB fits 24 GB VRAM); gen flat 104-106 t/s tg128-tg2048; b/ub 1024 wins prefill over b/ub 512 (pp4096: 3035 vs 2353); b/ub 2048 catastrophic cliff (pp4096=653, -78%)",
       "observed_command": "-b 1024 -ub 1024 --cache-type-k q8_0 --cache-type-v q8_0 -sm row",
-      "run_id": "cmoh721ve000kla04zc0ki9gs"
+      "run_id": "cmoh721ve000kla04zc0ki9gs",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "1024",
+          "-ub",
+          "1024",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "-sm",
+          "row"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b--q3-k-xl",

@@ -101,28 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-8-27b-iq4-xs-ryzen-ai-max-plus-395-128gb-lucebox-tp1",
   "launch": {
-    "arguments": [
-      "/home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server",
-      "/home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf",
-      "--draft",
-      "/home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf",
-      "--draft-block-size",
-      "16",
-      "--max-ctx",
-      "131072",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q8_0",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "8087",
-      "--target-device",
-      "hip:0",
-      "--draft-device",
-      "hip:0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -139,11 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8087,
-    "environment": {
-      "HIP_VISIBLE_DEVICES": "1"
-    },
-    "host_port": 8087,
     "kind": "reference",
     "run_id": "cmt7on4h50059nn01bkp53rrp",
     "source": "localmaxxing",
@@ -155,7 +128,35 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Lucebox-native DFlash2 Qwen3.8-27B target. Task: count_to_30. One discarded warmup + three measured requests, median rates/timing; greedy decode (temperature omitted); target 27-token prompt -> 110 output tokens; 131072 context; batch 1. Target IQ4_XS GGUF with Q8_0 DFlash2 draft, DFlash2 spec-decode confirmed in server journal; identical output hashes across measured repetitions. Placement: Radeon 8060S iGPU (gfx1151) at PCIe 0000:c7:00.0, unified memory, weights streamed from system RAM; Q8 K/V cache. Peak VRAM is the maximum dflash_server DRM-client workload allocation (vram+gtt) on 0000:c7:00.0; power is peak observed GPU power. tokSOut uses server decode timing, tokSPrefill server prefill timing, tokSTotal client dispatch-to-DONE wall time.",
       "observed_command": "HIP_VISIBLE_DEVICES=1 /home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server /home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf --draft /home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf --draft-block-size 16 --max-ctx 131072 --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8087 --target-device hip:0 --draft-device hip:0",
-      "run_id": "cmt7on4h50059nn01bkp53rrp"
+      "run_id": "cmt7on4h50059nn01bkp53rrp",
+      "tokenized": {
+        "arguments": [
+          "/home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server",
+          "/home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf",
+          "--draft",
+          "/home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf",
+          "--draft-block-size",
+          "16",
+          "--max-ctx",
+          "131072",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8087",
+          "--target-device",
+          "hip:0",
+          "--draft-device",
+          "hip:0"
+        ],
+        "environment": {
+          "HIP_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--iq4-xs",

@@ -101,26 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "phi-4-mini-instruct-gguf-q8-0-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "/mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q8_0.gguf",
-      "-c",
-      "4096",
-      "-ngl",
-      "99",
-      "-b",
-      "1024",
-      "-ub",
-      "256",
-      "-fa",
-      "on",
-      "--ctx-checkpoints",
-      "0",
-      "--jinja",
-      "--reasoning",
-      "off"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Strict fresh-response rapid snapshot for Phi-4-mini-instruct Q8_0 on one Intel Arc Pro B70. Fixed rapid realistic suite, one cold response per prompt, cached_tokens=0 on every row, no prompt/KV/context/response reuse, no n-gram/history acceleration, no speculation. llama.cpp/SYCL, ctx=4096, batch=1024, ubatch=256, FlashAttention on, f16 KV, server --cache-ram 0 and per-request cache_prompt=false. Standalone confirmations were 72.884 and 72.246 tok/s; the lower repeat is promoted conservatively. This is a higher-quality quant reference, not the fastest Phi-4-mini row.",
       "observed_command": "llama-server -m /mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q8_0.gguf -c 4096 -ngl 99 -b 1024 -ub 256 -fa on --ctx-checkpoints 0 --jinja --reasoning off",
-      "run_id": "cmr6yazvy00hgmn01s5rtowwa"
+      "run_id": "cmr6yazvy00hgmn01s5rtowwa",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q8_0.gguf",
+          "-c",
+          "4096",
+          "-ngl",
+          "99",
+          "-b",
+          "1024",
+          "-ub",
+          "256",
+          "-fa",
+          "on",
+          "--ctx-checkpoints",
+          "0",
+          "--jinja",
+          "--reasoning",
+          "off"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "bartowski-microsoft-phi-4-mini-instruct-gguf--gguf-q8-0",

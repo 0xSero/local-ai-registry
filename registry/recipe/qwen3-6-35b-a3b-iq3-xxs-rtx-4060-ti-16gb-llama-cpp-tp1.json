@@ -101,31 +101,6 @@
   "hardware_id": "rtx-4060-ti-16gb",
   "id": "qwen3-6-35b-a3b-iq3-xxs-rtx-4060-ti-16gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "/models/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf",
-      "-ngl",
-      "999",
-      "--n-cpu-moe",
-      "6",
-      "-fa",
-      "on",
-      "-c",
-      "262144",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "--reasoning",
-      "on",
-      "--reasoning-format",
-      "deepseek",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "8080"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -142,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8080,
-    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmoiwo2rs0007l804wsmxyakj",
     "source": "localmaxxing",
@@ -155,7 +128,35 @@
       "hardware_label": "RTX 4060 Ti",
       "notes": null,
       "observed_command": "llama-server \\\n  -m /models/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf \\\n  -ngl 999 \\\n  --n-cpu-moe 6 \\\n  -fa on \\\n  -c 262144 \\\n  -ctk q4_0 \\\n  -ctv q4_0 \\\n  --reasoning on \\\n  --reasoning-format deepseek \\\n  --host 0.0.0.0 \\\n  --port 8080",
-      "run_id": "cmoiwo2rs0007l804wsmxyakj"
+      "run_id": "cmoiwo2rs0007l804wsmxyakj",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/models/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf",
+          "-ngl",
+          "999",
+          "--n-cpu-moe",
+          "6",
+          "-fa",
+          "on",
+          "-c",
+          "262144",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "--reasoning",
+          "on",
+          "--reasoning-format",
+          "deepseek",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8080"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b--iq3-xxs",

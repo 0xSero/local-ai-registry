@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3080-10gb",
   "id": "qwen3-8-27b-iq2-xxs-rtx-3080-10gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.8-27B-Uncensored-IQ2_XXS.gguf",
-      "-c",
-      "16384",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "--parallel",
-      "1",
-      "--jinja",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 3080",
       "notes": "MTP arm, +56.5% over the spec-off row (47.32 -> 74.07). The MTP head survives abliteration in this build and delivers essentially the same speedup as the unmodified quant (+58.3%), so you do not lose speculative decoding by going abliterated - PROVIDED the build kept the nextn tensors. ANOMALY DISCLOSED: llama-server reports draft acceptance 0.796 (156/196, mean len 2.59) for this model, which is identical to five decimal places to what the unmodified unsloth quant reports on the same prompt, even though I verified the two models generate materially different text. I cannot explain the coincidence and am reporting the number with that caveat rather than as a validated cross-model comparison; treat the throughput figures, which are medians of 3 tight reps, as the reliable part. Headless 3080 (displays on the 7900X iGPU). Non-repetitive 2700-token synthetic log-summarisation prompt, ignore_eos forcing exactly 256 output tokens so token count is identical across models, temp 0, cache_prompt off, medians of 3 reps. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, PCIe 4.0 x16, stock 370 W. File verified byte-exact against HF (8,884,504,160 B) and confirmed to retain the MTP head (65 blocks, 866 tensors, 4 nextn tensors) - many abliterated Qwen3.8 GGUFs do NOT: one build in a repo literally named -MTP-GGUF has 64 blocks and zero nextn tensors, i.e. the MTP block was dropped entirely. Check the tensor list, not the repo name.",
       "observed_command": "llama-server -m Qwen3.8-27B-Uncensored-IQ2_XXS.gguf -c 16384 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type draft-mtp --spec-draft-n-max 2",
-      "run_id": "cmsy9hood0cv0ms01yzrhdya9"
+      "run_id": "cmsy9hood0cv0ms01yzrhdya9",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-Uncensored-IQ2_XXS.gguf",
+          "-c",
+          "16384",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "orcarouter-qwen3-8-27b-uncensored-gguf--iq2-xxs",

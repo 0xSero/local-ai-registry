@@ -101,28 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "llama-3-1-8b-instruct-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "nvidia/Llama-3.1-8B-Instruct-FP8",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8000",
-      "--served-model-name",
-      "nvidia/Llama-3.1-8B-Instruct-FP8",
-      "--trust-remote-code",
-      "--generation-config",
-      "vllm",
-      "--max-model-len",
-      "32768",
-      "--gpu-memory-utilization",
-      "0.90",
-      "--max-num-batched-tokens",
-      "8192",
-      "--max-num-seqs",
-      "4"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -139,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8000,
-    "host_port": 8000,
     "kind": "reference",
     "run_id": "cmsoxtuma00ftmp01axh5avuw",
     "source": "localmaxxing",
@@ -152,7 +128,32 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Coding benchmark on RTX PRO 6000 Blackwell 96 GB. Prompt: benchmark-promptv1.md. Single request, 512 max output tokens, cold server request. Request wall time: 3239 ms. tokSOut and tokSTotal are client wall-time rates; TTFT, prefill throughput, peak VRAM, and power were not sampled.",
       "observed_command": "vllm serve nvidia/Llama-3.1-8B-Instruct-FP8 \\\n  --host 127.0.0.1 --port 8000 \\\n  --served-model-name nvidia/Llama-3.1-8B-Instruct-FP8 \\\n  --trust-remote-code --generation-config vllm \\\n  --max-model-len 32768 --gpu-memory-utilization 0.90 \\\n  --max-num-batched-tokens 8192 --max-num-seqs 4",
-      "run_id": "cmsoxtuma00ftmp01axh5avuw"
+      "run_id": "cmsoxtuma00ftmp01axh5avuw",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "nvidia/Llama-3.1-8B-Instruct-FP8",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8000",
+          "--served-model-name",
+          "nvidia/Llama-3.1-8B-Instruct-FP8",
+          "--trust-remote-code",
+          "--generation-config",
+          "vllm",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-num-seqs",
+          "4"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "nvidia-llama-3-1-8b-instruct-fp8--fp8",

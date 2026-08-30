@@ -101,23 +101,6 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "gemma-4-e4b-it-qat-q4-0-unquantized-q4-0-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-hf",
-      "google/gemma-4-E4B-it-qat-q4_0-gguf",
-      "-hff",
-      "gemma-4-E4B_q4_0-it.gguf",
-      "-ngl",
-      "99",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-r",
-      "10",
-      "-o",
-      "md"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -145,7 +128,27 @@
       "hardware_label": "RTX 3060 Ti",
       "notes": "llama.cpp b9653 CUDA backend on Windows 10, RTX 3060 Ti 8GB. User requested google/gemma-4-E4B; llama.cpp requires GGUF, so this run used Google's official GGUF repo google/gemma-4-E4B-it-qat-q4_0-gguf with file gemma-4-E4B_q4_0-it.gguf. Q4_0 quantization, all layers offloaded with -ngl 99. Benchmark used -p 512 -n 128 -r 10 and llama-bench defaults unless specified: context 2048, batch 2048, ubatch 512, flash-attn auto, mmap enabled. TTFT and peak VRAM were not measured. Initial Hugging Face cache symlink warning on Windows was harmless; inference completed normally with CUDA.",
       "observed_command": "llama-bench -hf google/gemma-4-E4B-it-qat-q4_0-gguf -hff gemma-4-E4B_q4_0-it.gguf -ngl 99 -p 512 -n 128 -r 10 -o md",
-      "run_id": "cmqflwtsg00c5mt01bxdtynxa"
+      "run_id": "cmqflwtsg00c5mt01bxdtynxa",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-hf",
+          "google/gemma-4-E4B-it-qat-q4_0-gguf",
+          "-hff",
+          "gemma-4-E4B_q4_0-it.gguf",
+          "-ngl",
+          "99",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "10",
+          "-o",
+          "md"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-e4b-it-qat-q4-0-gguf--q4-0",

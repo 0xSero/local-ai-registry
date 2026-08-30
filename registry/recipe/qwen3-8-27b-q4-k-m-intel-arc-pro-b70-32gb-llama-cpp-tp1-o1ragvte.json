@@ -101,9 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-o1ragvte",
   "launch": {
-    "arguments": [
-      "repro/qwen38-27b-q4km-tp1-b70/run-server.sh"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -120,10 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "BUILD_DIR": "/path/to/llama.cpp/build-sycl-aot-bmg-g31",
-      "MODEL_DIR": "/path/to/qwen3.8-27b-q4km"
-    },
     "kind": "reference",
     "run_id": "cmt9m8i0b00z3li01o1ragvte",
     "source": "localmaxxing",
@@ -135,7 +128,17 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.8 27B Q4_K_M target-only on one Intel Arc Pro B70. Fixed 12-prompt cold realistic suite, one request per unique prompt, cache_prompt=false, cached_tokens=0, no draft model or speculation. Primary score is the conventional median over the 99 intervals between generated events 1 and 100; the second fresh run measured 27.813629 tok/s. The lab TP1 fusion ladder improved the 26.05 baseline by 6.8-7.0% with 24/24 oracle-exact outputs. Complete patches, clean-host scripts, model hash, context curves, and commands: https://neural.download/models/qwen38-27b-q4km-tp1-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/qwen38-27b-q4km-tp1-b70.",
       "observed_command": "MODEL_DIR=/path/to/qwen3.8-27b-q4km BUILD_DIR=/path/to/llama.cpp/build-sycl-aot-bmg-g31 repro/qwen38-27b-q4km-tp1-b70/run-server.sh",
-      "run_id": "cmt9m8i0b00z3li01o1ragvte"
+      "run_id": "cmt9m8i0b00z3li01o1ragvte",
+      "tokenized": {
+        "arguments": [
+          "repro/qwen38-27b-q4km-tp1-b70/run-server.sh"
+        ],
+        "environment": {
+          "BUILD_DIR": "/path/to/llama.cpp/build-sycl-aot-bmg-g31",
+          "MODEL_DIR": "/path/to/qwen3.8-27b-q4km"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",

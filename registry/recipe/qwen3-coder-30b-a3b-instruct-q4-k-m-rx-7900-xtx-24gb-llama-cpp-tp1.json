@@ -101,16 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-coder-30b-a3b-instruct-q4-k-m-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "1024",
-      "-ub",
-      "1024",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q8_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -138,7 +128,20 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg512 metric; b/ub 1024; q8_0/q8_0 KV; MoE A3B (30B total / 3B active)",
       "observed_command": "-b 1024 -ub 1024 --cache-type-k q8_0 --cache-type-v q8_0",
-      "run_id": "cmoeu8m92000fl604nt2wtvkj"
+      "run_id": "cmoeu8m92000fl604nt2wtvkj",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "1024",
+          "-ub",
+          "1024",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "lmstudio-community-qwen3-coder-30b-a3b-instruct-gguf--q4-k-m",

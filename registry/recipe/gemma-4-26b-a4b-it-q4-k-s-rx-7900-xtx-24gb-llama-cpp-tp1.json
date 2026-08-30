@@ -101,17 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "gemma-4-26b-a4b-it-q4-k-s-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "512",
-      "-ub",
-      "512",
-      "--cache-type-k",
-      "f16",
-      "--cache-type-v",
-      "f16",
-      "--no-flash-attn"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -139,7 +128,21 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b/ub 512; FA=0 required on ROCm; f16/f16 KV only (quantized V requires FA); UD unsloth dynamic quant",
       "observed_command": "-b 512 -ub 512 --cache-type-k f16 --cache-type-v f16 --no-flash-attn",
-      "run_id": "cmoeu1wus0003l60472784yfr"
+      "run_id": "cmoeu1wus0003l60472784yfr",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "512",
+          "-ub",
+          "512",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--no-flash-attn"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-gemma-4-26b-a4b-it-gguf--q4-k-s",

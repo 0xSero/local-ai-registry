@@ -101,30 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "glm-5-2-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp4",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "/model",
-      "--tensor-parallel-size",
-      "4",
-      "--decode-context-parallel-size",
-      "4",
-      "--kv-cache-dtype",
-      "nvfp4_ds_mla",
-      "--attention-backend",
-      "B12X_MLA_SPARSE",
-      "--moe-backend",
-      "b12x",
-      "--gpu-memory-utilization",
-      "0.986",
-      "--max-model-len",
-      "480000",
-      "--enable-prefix-caching",
-      "--enable-chunked-prefill",
-      "--async-scheduling",
-      "--speculative-config",
-      "{method:mtp,num_speculative_tokens:3}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -152,7 +128,34 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": null,
       "observed_command": "vllm serve /model --tensor-parallel-size 4 --decode-context-parallel-size 4 --kv-cache-dtype nvfp4_ds_mla --attention-backend B12X_MLA_SPARSE --moe-backend b12x --gpu-memory-utilization 0.986 --max-model-len 480000 --enable-prefix-caching --enable-chunked-prefill --async-scheduling --speculative-config {method:mtp,num_speculative_tokens:3}",
-      "run_id": "cms2jeldj00n7s201llzdtqbr"
+      "run_id": "cms2jeldj00n7s201llzdtqbr",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/model",
+          "--tensor-parallel-size",
+          "4",
+          "--decode-context-parallel-size",
+          "4",
+          "--kv-cache-dtype",
+          "nvfp4_ds_mla",
+          "--attention-backend",
+          "B12X_MLA_SPARSE",
+          "--moe-backend",
+          "b12x",
+          "--gpu-memory-utilization",
+          "0.986",
+          "--max-model-len",
+          "480000",
+          "--enable-prefix-caching",
+          "--enable-chunked-prefill",
+          "--async-scheduling",
+          "--speculative-config",
+          "{method:mtp,num_speculative_tokens:3}"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid--nvfp4",

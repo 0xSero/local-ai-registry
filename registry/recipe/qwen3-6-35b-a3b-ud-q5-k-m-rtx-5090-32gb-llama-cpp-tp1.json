@@ -101,22 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-35b-a3b-ud-q5-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--hf-repo",
-      "unsloth/Qwen3.6-35B-A3B-GGUF",
-      "--alias",
-      "qwen3.6-35b-a3b-q5km",
-      "-ngl",
-      "99",
-      "-c",
-      "65536",
-      "-n",
-      "8192",
-      "--reasoning",
-      "off",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -144,7 +128,26 @@
       "hardware_label": "RTX 5090",
       "notes": "Five-prompt suite for unsloth/Qwen3.6-35B-A3B-GGUF at configured 65536 context. Prompt 5 completed its four-turn session; output speed is the mean of prompts 1-4. Hardware values are sampled with nvidia-smi every 0.25 seconds.",
       "observed_command": "llama-server --hf-repo unsloth/Qwen3.6-35B-A3B-GGUF --alias qwen3.6-35b-a3b-q5km -ngl 99 -c 65536 -n 8192 --reasoning off --jinja",
-      "run_id": "cmsr47tif010bmr01gws8z6p7"
+      "run_id": "cmsr47tif010bmr01gws8z6p7",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--hf-repo",
+          "unsloth/Qwen3.6-35B-A3B-GGUF",
+          "--alias",
+          "qwen3.6-35b-a3b-q5km",
+          "-ngl",
+          "99",
+          "-c",
+          "65536",
+          "-n",
+          "8192",
+          "--reasoning",
+          "off",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q5-k-m",

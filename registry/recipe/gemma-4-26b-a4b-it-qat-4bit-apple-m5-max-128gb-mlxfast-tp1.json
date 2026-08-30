@@ -101,9 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "gemma-4-26b-a4b-it-qat-4bit-apple-m5-max-128gb-mlxfast-tp1",
   "launch": {
-    "arguments": [
-      "./setup-gemma4-assistant.sh"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:28:11Z",
       "compose_file": null,
@@ -122,22 +119,6 @@
     },
     "kind": "reference",
     "source": "mlxfast",
-    "steps": [
-      [
-        "git",
-        "clone",
-        "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"
-      ],
-      [
-        "./tools/fetch-benchd.sh"
-      ],
-      [
-        "./setup.sh"
-      ],
-      [
-        "./setup-gemma4-assistant.sh"
-      ]
-    ],
     "url": "https://www.yukon.org/mlxfast"
   },
   "metadata": {
@@ -147,6 +128,28 @@
       "observed_command": "git clone https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine && ./tools/fetch-benchd.sh && ./setup.sh && ./setup-gemma4-assistant.sh",
       "official_hardware": "organizer M5 Max 128GB",
       "solver": "samfenwick",
+      "tokenized": {
+        "arguments": [
+          "./setup-gemma4-assistant.sh"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "git",
+            "clone",
+            "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"
+          ],
+          [
+            "./tools/fetch-benchd.sh"
+          ],
+          [
+            "./setup.sh"
+          ],
+          [
+            "./setup-gemma4-assistant.sh"
+          ]
+        ]
+      },
       "track_id": "gemma4-26b-a4b-mlx-v1"
     }
   },

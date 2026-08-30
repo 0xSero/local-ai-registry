@@ -101,27 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-6-27b-q1-0-rtx-3090-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "Bonsai-27B-Q1_0.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-ngl",
-      "64",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-fitt",
-      "1024",
-      "-r",
-      "5"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "RTX 3090",
       "notes": "7900 (homelab), AMD Ryzen 9 7900X (12c/24t, 4.7GHz), 32GB DDR5-5600, Zotac RTX 3090 power-limited to 250W, Linux 6.8.0. Single GPU, flash attention ON, q4_0 KV cache. Benchmarked with llama-bench (-r 5 reps, -fa on, -ctk q4_0 -ctv q4_0, -fitt 1024). Bonsai-27B is a 1-bit (Q1_0) ternary quant of Qwen3.6-27B with hybrid SSM/attention architecture (~75% linear attention, only 16 of 64 layers grow KV cache). Model weights: 3.6GB. KV cache at 262K: ~5.2GB (q4_0). Peak VRAM: ~10.8GB.",
       "observed_command": "llama-bench -m Bonsai-27B-Q1_0.gguf -p 512 -n 128 -ngl 64 -fa on -ctk q4_0 -ctv q4_0 -fitt 1024 -r 5",
-      "run_id": "cmrnk1z1k006qlg01gwmx6l3o"
+      "run_id": "cmrnk1z1k006qlg01gwmx6l3o",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "Bonsai-27B-Q1_0.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "64",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-fitt",
+          "1024",
+          "-r",
+          "5"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "prism-ml-bonsai-27b-gguf--q1-0",

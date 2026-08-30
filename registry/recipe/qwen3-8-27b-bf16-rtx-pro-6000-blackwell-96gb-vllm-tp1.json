@@ -101,19 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-8-27b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "Qwen3.8-27B",
-      "--max-model-len",
-      "262144",
-      "--kv-cache-dtype",
-      "fp8",
-      "--enable-prefix-caching",
-      "--enable-chunked-prefill",
-      "--speculative-config",
-      "mtp"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -141,7 +128,23 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Text-only OpenAI-compatible coding-generation benchmark; 3 repetitions; temperature 0; streamed client wall-time measurement.",
       "observed_command": "vllm serve Qwen3.8-27B --max-model-len 262144 --kv-cache-dtype fp8 --enable-prefix-caching --enable-chunked-prefill --speculative-config mtp",
-      "run_id": "cmst4m5ck02rims01rm73f7pl"
+      "run_id": "cmst4m5ck02rims01rm73f7pl",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "Qwen3.8-27B",
+          "--max-model-len",
+          "262144",
+          "--kv-cache-dtype",
+          "fp8",
+          "--enable-prefix-caching",
+          "--enable-chunked-prefill",
+          "--speculative-config",
+          "mtp"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-8-27b--bf16",

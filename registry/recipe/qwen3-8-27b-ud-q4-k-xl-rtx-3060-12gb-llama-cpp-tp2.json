@@ -101,31 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-8-27b-ud-q4-k-xl-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.8-27B-UD-Q4_K_XL.gguf",
-      "-ngl",
-      "99",
-      "--split-mode",
-      "tensor",
-      "--tensor-split",
-      "1,1",
-      "-c",
-      "65536",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-np",
-      "1",
-      "-fa",
-      "on",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -142,9 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "GGML_CUDA_ALLREDUCE": "internal"
-    },
     "kind": "reference",
     "run_id": "cmtejxs5b0014n0018r2he4nh",
     "source": "localmaxxing",
@@ -156,7 +128,38 @@
       "hardware_label": "RTX 3060",
       "notes": "Dual RTX 3060 12GB, no NVLink. Chat decode tok/s with native MTP (spec-type draft-mtp, n-max 2), thinking off, 256-token code prompt. Not llama-bench without speculation. Vision off. llama.cpp b10682.",
       "observed_command": "GGML_CUDA_ALLREDUCE=internal llama-server -m Qwen3.8-27B-UD-Q4_K_XL.gguf -ngl 99 --split-mode tensor --tensor-split 1,1 -c 65536 -ctk q4_0 -ctv q4_0 -np 1 -fa on --spec-type draft-mtp --spec-draft-n-max 2",
-      "run_id": "cmtejxs5b0014n0018r2he4nh"
+      "run_id": "cmtejxs5b0014n0018r2he4nh",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+          "-ngl",
+          "99",
+          "--split-mode",
+          "tensor",
+          "--tensor-split",
+          "1,1",
+          "-c",
+          "65536",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-np",
+          "1",
+          "-fa",
+          "on",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2"
+        ],
+        "environment": {
+          "GGML_CUDA_ALLREDUCE": "internal"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-xl",

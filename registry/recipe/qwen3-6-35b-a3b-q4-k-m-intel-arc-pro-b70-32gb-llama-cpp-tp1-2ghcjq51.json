@@ -101,23 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-2ghcjq51",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-35B-A3B-Abliterated-Heretic-Q4_K_M.gguf",
-      "-c",
-      "8192",
-      "-ngl",
-      "99",
-      "-fa",
-      "1",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-t",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -145,7 +128,27 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Backend: SYCL level_zero (Intel oneAPI). Abliterated-Heretic finetune. Intel Arc Pro B70 BMG G31 32GB GDDR6, xe driver, kernel 6.17. Fused MoE MMVQ + xe GT freq pinning. Mean of 5 runs, warmup discarded.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-Abliterated-Heretic-Q4_K_M.gguf -c 8192 -ngl 99 -fa 1 -ctk q8_0 -ctv q8_0 -t 1",
-      "run_id": "cmohirwjq0002l4042ghcjq51"
+      "run_id": "cmohirwjq0002l4042ghcjq51",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-Abliterated-Heretic-Q4_K_M.gguf",
+          "-c",
+          "8192",
+          "-ngl",
+          "99",
+          "-fa",
+          "1",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-t",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--q4-k-m",

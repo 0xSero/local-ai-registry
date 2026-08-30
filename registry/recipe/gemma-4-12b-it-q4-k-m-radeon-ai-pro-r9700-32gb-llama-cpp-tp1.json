@@ -101,15 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "gemma-4-12b-it-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/home/jack/llama.cpp/build-hip/bin/llama-bench",
-      "-m",
-      "/home/jack/unsloth/gemma-4-12b-it-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "HIP/ROCm backend (native gfx1201, ROCm 7.2.1). Q4_K_M Dynamic V3.0 GGUF. Maintained by Hermes Agent automatic HIP benchmark.",
       "observed_command": "/home/jack/llama.cpp/build-hip/bin/llama-bench -m /home/jack/unsloth/gemma-4-12b-it-Q4_K_M.gguf -p 512 -n 128",
-      "run_id": "cmt0gabam0eslms01i687rww5"
+      "run_id": "cmt0gabam0eslms01i687rww5",
+      "tokenized": {
+        "arguments": [
+          "/home/jack/llama.cpp/build-hip/bin/llama-bench",
+          "-m",
+          "/home/jack/unsloth/gemma-4-12b-it-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",

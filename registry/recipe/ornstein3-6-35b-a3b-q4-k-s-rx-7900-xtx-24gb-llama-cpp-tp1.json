@@ -101,16 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "ornstein3-6-35b-a3b-q4-k-s-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "1024",
-      "-ub",
-      "1024",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q8_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -138,7 +128,20 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b/ub 1024; q8_0/q8_0 KV; MoE A3B; gen perfectly flat (Qwen3.6 DeltaNet arch); Q4_K_S beats Q4_K_M on all metrics",
       "observed_command": "-b 1024 -ub 1024 --cache-type-k q8_0 --cache-type-v q8_0",
-      "run_id": "cmoeum17e0003jo04iijt0vvl"
+      "run_id": "cmoeum17e0003jo04iijt0vvl",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "1024",
+          "-ub",
+          "1024",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "djlougen-ornstein3-6-35b-a3b-gguf--q4-k-s",

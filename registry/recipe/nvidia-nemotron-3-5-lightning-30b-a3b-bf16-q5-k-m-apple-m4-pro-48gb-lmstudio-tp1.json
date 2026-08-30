@@ -101,18 +101,6 @@
   "hardware_id": "apple-m4-pro-48gb",
   "id": "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-q5-k-m-apple-m4-pro-48gb-lmstudio-tp1",
   "launch": {
-    "arguments": [
-      "lms",
-      "load",
-      "nvidia-nemotron-3.5-lightning-30b-a3b",
-      "--context-length",
-      "64000",
-      "--parallel",
-      "4",
-      "--identifier",
-      "benchmark-nemotron35-lightning",
-      "--yes"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -129,34 +117,9 @@
       ],
       "state": "none"
     },
-    "container_port": 1234,
-    "host_port": 1234,
     "kind": "reference",
     "run_id": "cmsqri91u00qomr01tr6ckfzy",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "lms",
-        "server",
-        "start",
-        "--port",
-        "1234",
-        "--bind",
-        "127.0.0.1"
-      ],
-      [
-        "lms",
-        "load",
-        "nvidia-nemotron-3.5-lightning-30b-a3b",
-        "--context-length",
-        "64000",
-        "--parallel",
-        "4",
-        "--identifier",
-        "benchmark-nemotron35-lightning",
-        "--yes"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmsqri91u00qomr01tr6ckfzy"
   },
   "metadata": {
@@ -165,7 +128,45 @@
       "hardware_label": "M4 Pro",
       "notes": "GGUF Q5_K_M quantization. Median of 3 timed runs after 1 warmup using the same deterministic 512-word source-prompt protocol at temperature 0. The model-specific chat template produced 552 prompt tokens; each run generated 255 output tokens. Prefill estimated as prompt tokens divided by LM Studio native time-to-first-token.",
       "observed_command": "lms server start --port 1234 --bind 127.0.0.1 && lms load nvidia-nemotron-3.5-lightning-30b-a3b --context-length 64000 --parallel 4 --identifier benchmark-nemotron35-lightning --yes",
-      "run_id": "cmsqri91u00qomr01tr6ckfzy"
+      "run_id": "cmsqri91u00qomr01tr6ckfzy",
+      "tokenized": {
+        "arguments": [
+          "lms",
+          "load",
+          "nvidia-nemotron-3.5-lightning-30b-a3b",
+          "--context-length",
+          "64000",
+          "--parallel",
+          "4",
+          "--identifier",
+          "benchmark-nemotron35-lightning",
+          "--yes"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "lms",
+            "server",
+            "start",
+            "--port",
+            "1234",
+            "--bind",
+            "127.0.0.1"
+          ],
+          [
+            "lms",
+            "load",
+            "nvidia-nemotron-3.5-lightning-30b-a3b",
+            "--context-length",
+            "64000",
+            "--parallel",
+            "4",
+            "--identifier",
+            "benchmark-nemotron35-lightning",
+            "--yes"
+          ]
+        ]
+      }
     }
   },
   "model_instance_id": "bartowski-nvidia-nemotron-3-5-lightning-30b-a3b-gguf--q5-k-m",

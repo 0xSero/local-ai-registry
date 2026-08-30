@@ -101,39 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-v5lfqrqu",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "/models/Qwen3.6-27B-NVFP4",
-      "--served-model-name",
-      "qwen36-27b",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "8000",
-      "--tensor-parallel-size",
-      "1",
-      "--gpu-memory-utilization",
-      "0.92",
-      "--max-model-len",
-      "262144",
-      "--max-num-batched-tokens",
-      "4096",
-      "--max-num-seqs",
-      "1",
-      "--trust-remote-code",
-      "--load-format",
-      "fastsafetensors",
-      "--attention-backend",
-      "flash_attn",
-      "--enable-prefix-caching",
-      "--speculative-config",
-      "{\"method\":\"dflash\",\"num_speculative_tokens\":15,\"model\":\"/models/Qwen3.6-27B-DFlash\"}",
-      "--default-chat-template-kwargs",
-      "{\"enable_thinking\": true}",
-      "--seed",
-      "0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -150,102 +117,9 @@
       ],
       "state": "none"
     },
-    "container_port": 8000,
-    "entrypoint": "bash",
-    "environment": {
-      "THINK_KWARGS": "{\"enable_thinking\": true}"
-    },
-    "host_port": 8000,
-    "image": "qwen36-dflash-spark",
     "kind": "reference",
-    "mounts": [
-      {
-        "read_only": true,
-        "source": "~/models",
-        "target": "/models"
-      },
-      {
-        "read_only": true,
-        "source": "~/models",
-        "target": "/models"
-      },
-      {
-        "read_only": false,
-        "source": "$(pwd)",
-        "target": "/out"
-      }
-    ],
-    "network_mode": "host",
-    "notes": [
-      "Reproduction \u2014 see https://github.com/my-other-github-account/qwen36-dflash-spark-repro",
-      "Download models on host:",
-      "Build & run:",
-      "Bench (pp=128 / tg=128 / depth=0 / c=1 / n=30) \u2014 produces the headline number:",
-      "Underlying vllm serve invocation (from launch_server.sh):",
-      "Required vLLM source patch: patches/apply_dflash_off_by_one.sh (DFlash layer-tap +1)."
-    ],
     "run_id": "cmogn5c7w0003l704v5lfqrqu",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "hf",
-        "download",
-        "sakamakismile/Qwen3.6-27B-NVFP4",
-        "--local-dir",
-        "~/models/Qwen3.6-27B-NVFP4"
-      ],
-      [
-        "hf",
-        "download",
-        "z-lab/Qwen3.6-27B-DFlash",
-        "--local-dir",
-        "~/models/Qwen3.6-27B-DFlash"
-      ],
-      [
-        "docker",
-        "build",
-        "-t",
-        "qwen36-dflash-spark",
-        "."
-      ],
-      [
-        "-c",
-        "OUT=/out/result.json bash /repro/scripts/bench.sh"
-      ],
-      [
-        "vllm",
-        "serve",
-        "/models/Qwen3.6-27B-NVFP4",
-        "--served-model-name",
-        "qwen36-27b",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000",
-        "--tensor-parallel-size",
-        "1",
-        "--gpu-memory-utilization",
-        "0.92",
-        "--max-model-len",
-        "262144",
-        "--max-num-batched-tokens",
-        "4096",
-        "--max-num-seqs",
-        "1",
-        "--trust-remote-code",
-        "--load-format",
-        "fastsafetensors",
-        "--attention-backend",
-        "flash_attn",
-        "--enable-prefix-caching",
-        "--speculative-config",
-        "{\"method\":\"dflash\",\"num_speculative_tokens\":15,\"model\":\"/models/Qwen3.6-27B-DFlash\"}",
-        "--default-chat-template-kwargs",
-        "{\"enable_thinking\": true}",
-        "--seed",
-        "0"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmogn5c7w0003l704v5lfqrqu"
   },
   "metadata": {
@@ -254,7 +128,10 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Final corrected submission (replaces cmoglz0ux0004lb04zo1dhhhb and cmogm80ri0001lb04hwhu9uzx). Target weights: sakamakismile/Qwen3.6-27B-NVFP4 (community NVFP4 quant of Qwen/Qwen3.6-27B). Drafter: z-lab/Qwen3.6-27B-DFlash (DFlash spec decoding, num_speculative_tokens=15, thinking-ON). Hardware: DGX Spark GB10 (128 GB unified, peak 117 GiB measured). n=30 trials @ pp=128, tg=128, depth=0, concurrency=1, warm-pass (cold-start sample dropped): tokSOut median=32.83 (mean=40.10, std=15.63), ttfr median=268ms (mean=274). Median is the honest headline; DFlash decode std is ~40% of mean due to acceptance fluctuating with prompt content. Mean acceptance length tau=4.11 (per-position [0.75, 0.52, 0.38, ...]). Speedup vs Qwen3.6-27B-FP8 autoregressive baseline on same hardware: 4.18x (32.83 / 7.85). First DGX Spark + spec-decoding entry, first NVFP4 entry leaderboard-wide. REQUIRES the DFlash layer-tap off-by-one vLLM source patch (without it acceptance collapses ~80% -> ~3%). llama-benchy 0.3.6 (PR #11 SSE-counting fix is upstream as of 0.3.6). Full Docker reproduction: https://github.com/my-other-github-account/qwen36-dflash-spark-repro By @banana_baeee.",
       "observed_command": "# Reproduction \u2014 see https://github.com/my-other-github-account/qwen36-dflash-spark-repro\n# Download models on host:\nhf download sakamakismile/Qwen3.6-27B-NVFP4 --local-dir ~/models/Qwen3.6-27B-NVFP4\nhf download z-lab/Qwen3.6-27B-DFlash       --local-dir ~/models/Qwen3.6-27B-DFlash\n\n# Build & run:\ndocker build -t qwen36-dflash-spark .\ndocker run -d --name qwen36-dflash --runtime=nvidia --gpus all --network=host \\\n  -v ~/models:/models:ro \\\n  -e THINK_KWARGS='{\"enable_thinking\": true}' \\\n  qwen36-dflash-spark\n\n# Bench (pp=128 / tg=128 / depth=0 / c=1 / n=30) \u2014 produces the headline number:\ndocker run --rm --network=host -v ~/models:/models:ro -v $(pwd):/out \\\n  --entrypoint bash qwen36-dflash-spark \\\n  -c 'OUT=/out/result.json bash /repro/scripts/bench.sh'\n\n# Underlying vllm serve invocation (from launch_server.sh):\nvllm serve /models/Qwen3.6-27B-NVFP4 \\\n  --served-model-name qwen36-27b \\\n  --host 0.0.0.0 --port 8000 \\\n  --tensor-parallel-size 1 \\\n  --gpu-memory-utilization 0.92 \\\n  --max-model-len 262144 \\\n  --max-num-batched-tokens 4096 \\\n  --max-num-seqs 1 \\\n  --trust-remote-code \\\n  --load-format fastsafetensors \\\n  --attention-backend flash_attn \\\n  --enable-prefix-caching \\\n  --speculative-config '{\"method\":\"dflash\",\"num_speculative_tokens\":15,\"model\":\"/models/Qwen3.6-27B-DFlash\"}' \\\n  --default-chat-template-kwargs '{\"enable_thinking\": true}' \\\n  --seed 0\n\n# Required vLLM source patch: patches/apply_dflash_off_by_one.sh (DFlash layer-tap +1).",
-      "run_id": "cmogn5c7w0003l704v5lfqrqu"
+      "run_id": "cmogn5c7w0003l704v5lfqrqu",
+      "tokenized": {
+        "fidelity": "lossy"
+      }
     }
   },
   "model_instance_id": "sakamakismile-qwen3-6-27b-nvfp4--nvfp4",

@@ -101,16 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "granite-4-2-8b-q5-k-m-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-quantize",
-      "--imatrix",
-      "imatrix-granite42-mixed.gguf",
-      "--tensor-type-file",
-      "tensor_types_G.txt",
-      "bf16.gguf",
-      "out.gguf",
-      "Q4_K_S"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -130,32 +120,6 @@
     "kind": "reference",
     "run_id": "cmt8zlca200ioli019ukksygh",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "llama-quantize",
-        "--imatrix",
-        "imatrix-granite42-mixed.gguf",
-        "--tensor-type-file",
-        "tensor_types_G.txt",
-        "bf16.gguf",
-        "out.gguf",
-        "Q4_K_S"
-      ],
-      [
-        "bench:",
-        "llama-bench",
-        "-p",
-        "512",
-        "-n",
-        "128",
-        "-ngl",
-        "99",
-        "-fa",
-        "on",
-        "-r",
-        "3"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmt8zlca200ioli019ukksygh"
   },
   "metadata": {
@@ -164,7 +128,32 @@
       "hardware_label": "RTX 3060",
       "notes": "Custom mixed quant 'G-Q5': per-tensor map attn_q/k/output=Q5_K, attn_v=Q6_K, ffn_down=Q5_K, ffn_gate/up=Q4_K, token_embd=Q5_K, output=Q6_K, from bf16 with custom imatrix (~600K tokens wikitext-103 + local code). Measured vs official Q4_K_M same GPU/build: KLD vs bf16 0.0809 vs 0.1796 (-55%), same-top-p 91.2% vs 86.0%, tg128 52.53 vs 54.24 (-3%), pp512 1708, file 5.22 GiB. Near-Q5 accuracy at near-Q4 size/speed. r=3 medians.",
       "observed_command": "llama-quantize --imatrix imatrix-granite42-mixed.gguf --tensor-type-file tensor_types_G.txt bf16.gguf out.gguf Q4_K_S; bench: llama-bench -p 512 -n 128 -ngl 99 -fa on -r 3",
-      "run_id": "cmt8zlca200ioli019ukksygh"
+      "run_id": "cmt8zlca200ioli019ukksygh",
+      "tokenized": {
+        "arguments": [
+          "llama-quantize",
+          "--imatrix",
+          "imatrix-granite42-mixed.gguf",
+          "--tensor-type-file",
+          "tensor_types_G.txt",
+          "bf16.gguf",
+          "out.gguf",
+          "Q4_K_S;",
+          "bench:",
+          "llama-bench",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "3"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "ibm-granite-granite-4-2-8b-gguf--q5-k-m",

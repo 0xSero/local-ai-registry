@@ -5,7 +5,7 @@ import json
 import re
 from pathlib import Path
 
-from tokenize_observed_command import TOKENIZED_LAUNCH_FIELDS
+from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 
 SCHEMA = "local-ai-registry/v1"
@@ -192,9 +192,8 @@ def sanitize_candidates(root):
         }
         if existing_container:
             recipe["launch"]["container"] = existing_container
-        for key in TOKENIZED_LAUNCH_FIELDS:
-            if key in existing:
-                recipe["launch"][key] = existing[key]
+        for key in REFERENCE_LAUNCH_FORBIDDEN:
+            recipe["launch"].pop(key, None)
         recipe["capabilities"] = {key: None for key in ("chat", "reasoning", "tools", "vision")}
         recipe["schema_version"] = SCHEMA
         write(path, recipe)

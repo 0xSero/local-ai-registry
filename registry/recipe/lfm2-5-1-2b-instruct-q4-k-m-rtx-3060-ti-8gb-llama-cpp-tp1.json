@@ -101,21 +101,6 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "lfm2-5-1-2b-instruct-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-hf",
-      "LiquidAI/LFM2.5-1.2B-Instruct-GGUF",
-      "-ngl",
-      "99",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-r",
-      "5",
-      "-o",
-      "md"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "RTX 3060 Ti",
       "notes": "llama.cpp b9653 CUDA on Windows 10, RTX 3060 Ti 8GB, Q4_K_M, -ngl 99. Context 2048, batch 2048, ubatch 512 defaults. Third cached run after \n initial HF download. TTFT/peak VRAM not measured. Desktop apps were open; free VRAM reported ~7128 MiB. Initial HF cache symlink warning was  \n harmless; CUDA inference completed normally.",
       "observed_command": "llama-bench -hf LiquidAI/LFM2.5-1.2B-Instruct-GGUF -ngl 99 -p 512 -n 128 -r 5 -o md",
-      "run_id": "cmqflk9af00bomt018micnpb5"
+      "run_id": "cmqflk9af00bomt018micnpb5",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-hf",
+          "LiquidAI/LFM2.5-1.2B-Instruct-GGUF",
+          "-ngl",
+          "99",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "5",
+          "-o",
+          "md"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "liquidai-lfm2-5-1-2b-instruct-gguf--q4-k-m",

@@ -101,27 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-6-27b-q4-0-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-27B-MTP-Q4_0.gguf",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2",
-      "--reasoning-format",
-      "auto",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-c",
-      "262144",
-      "-np",
-      "1",
-      "-ngl",
-      "999"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Rented JarvisLabs RTX PRO 6000 Blackwell 96GB (cloud), CUDA 13 build sm_120. Median of 3 runs, temp 0, cold prefill, prompt ~4189 tok. Self-speculative MTP (draft-mtp, n-max 2). Head-to-head vs my 3x R9700 rig, same GGUF quants.",
       "observed_command": "llama-server -m Qwen3.6-27B-MTP-Q4_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --reasoning-format auto -ctk f16 -ctv f16 -c 262144 -np 1 -ngl 999",
-      "run_id": "cmrk2evji02xjmj01ebcpejn3"
+      "run_id": "cmrk2evji02xjmj01ebcpejn3",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-MTP-Q4_0.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--reasoning-format",
+          "auto",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-c",
+          "262144",
+          "-np",
+          "1",
+          "-ngl",
+          "999"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-27b--q4-0",

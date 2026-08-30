@@ -101,29 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "mimo-v2-5-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vLLM",
-      "MiMo",
-      "DFlash",
-      "TP=2",
-      "container,",
-      "max_model_len=500000,",
-      "gpu_memory_utilization=0.83,",
-      "max_num_seqs=6,",
-      "max_num_batched_tokens=4096,",
-      "NVFP4",
-      "weights,",
-      "NVFP4",
-      "KV",
-      "cache,",
-      "triton_attn_diffkv,",
-      "DFlash",
-      "speculative",
-      "decoding",
-      "num_speculative_tokens=7,",
-      "NCCL_PROTO=LL,",
-      "NCCL_MAX_NCHANNELS=2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "MiMo DFlash C1 LocalMax-style row from llama-benchy 0.3.7, pp=2048 tg=128 depth=0 c=1 runs=5 on two DGX Spark/GB10 nodes. NVFP4 weights with true NVFP4 KV cache, triton_attn_diffkv backend, Xiaomi DFlash draft num_speculative_tokens=7. The DFlash repo lacked the vendored nvfp4-kv-diffkv runtime mod; the missing patch bundle was copied from Tony's earlier MiMo TP2 NVFP4-KV repo before launch. Server logs confirmed kv_cache_dtype=nvfp4, triton_attn_diffkv, inline-dequant kernel enabled, WMMA decode precompile, and successful smoke generation. Hostnames, usernames, LAN IPs, and raw logs omitted.",
       "observed_command": "vLLM MiMo DFlash TP=2 container, max_model_len=500000, gpu_memory_utilization=0.83, max_num_seqs=6, max_num_batched_tokens=4096, NVFP4 weights, NVFP4 KV cache, triton_attn_diffkv, DFlash speculative decoding num_speculative_tokens=7, NCCL_PROTO=LL, NCCL_MAX_NCHANNELS=2",
-      "run_id": "cmr8n6yos00euqr01kqotgbyj"
+      "run_id": "cmr8n6yos00euqr01kqotgbyj",
+      "tokenized": {
+        "arguments": [
+          "vLLM",
+          "MiMo",
+          "DFlash",
+          "TP=2",
+          "container,",
+          "max_model_len=500000,",
+          "gpu_memory_utilization=0.83,",
+          "max_num_seqs=6,",
+          "max_num_batched_tokens=4096,",
+          "NVFP4",
+          "weights,",
+          "NVFP4",
+          "KV",
+          "cache,",
+          "triton_attn_diffkv,",
+          "DFlash",
+          "speculative",
+          "decoding",
+          "num_speculative_tokens=7,",
+          "NCCL_PROTO=LL,",
+          "NCCL_MAX_NCHANNELS=2"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",

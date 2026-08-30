@@ -101,29 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-6-27b-bf16-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "qwen3.6-27b-bf16.gguf",
-      "-ngl",
-      "999",
-      "-fa",
-      "1",
-      "--no-mmap",
-      "--mlock",
-      "-c",
-      "16384",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-b",
-      "4096",
-      "-ub",
-      "4096",
-      "--parallel",
-      "4"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "M5 Strix Halo. Qwen 3.6 27B DENSE at BF16 full precision (51 GB). Single-stream 512/512 vllm bench serve, 5 prompts (reduced to bound 11+ min/prompt). KV q8_0. Full M5 dense ladder: Q4 11.46 / Q6 7.81 / Q8 6.07 / BF16 3.81 t/s \u2014 clean memory-bandwidth scaling. Dense BF16 baseline for the rig.",
       "observed_command": "llama-server -m qwen3.6-27b-bf16.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 16384 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 4",
-      "run_id": "cmofddmnd0002le049d1ftqzu"
+      "run_id": "cmofddmnd0002le049d1ftqzu",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "qwen3.6-27b-bf16.gguf",
+          "-ngl",
+          "999",
+          "-fa",
+          "1",
+          "--no-mmap",
+          "--mlock",
+          "-c",
+          "16384",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-b",
+          "4096",
+          "-ub",
+          "4096",
+          "--parallel",
+          "4"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-gguf--bf16",

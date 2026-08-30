@@ -101,18 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "laguna-xs-2-1-q4-k-m-rtx-3090-24gb-lucebox-tp1",
   "launch": {
-    "arguments": [
-      "./build/dflash_server",
-      "models/Laguna-XS-2.1-Q4_K_M.gguf",
-      "--draft",
-      "models/laguna-xs21-dflash-q4.gguf",
-      "--prefill-drafter",
-      "models/Qwen3-0.6B-Q8_0.gguf",
-      "--max-ctx",
-      "262144",
-      "--kvflash",
-      "auto"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -130,87 +118,8 @@
       "state": "none"
     },
     "kind": "reference",
-    "notes": [
-      "build the server (CUDA 12+, sm_86+)",
-      "target (poolside official), our q4 drafter, and the PFlash residency scorer",
-      "the measured configuration: 296 tok/s short context, 152 tok/s at 256K",
-      "pool sized from free VRAM instead of fixed:"
-    ],
     "run_id": "cmro7rltq025plg01hffh4jjx",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "git",
-        "clone",
-        "https://github.com/Luce-Org/lucebox-hub"
-      ],
-      [
-        "cd",
-        "lucebox-hub/server"
-      ],
-      [
-        "cmake",
-        "-B",
-        "build",
-        "-DCMAKE_CUDA_ARCHITECTURES=86"
-      ],
-      [
-        "cmake",
-        "--build",
-        "build",
-        "-j"
-      ],
-      [
-        "huggingface-cli",
-        "download",
-        "poolside/Laguna-XS-2.1-GGUF",
-        "Laguna-XS-2.1-Q4_K_M.gguf",
-        "--local-dir",
-        "models"
-      ],
-      [
-        "huggingface-cli",
-        "download",
-        "Lucebox/Laguna-XS-2.1-DFlash-GGUF",
-        "laguna-xs21-dflash-q4.gguf",
-        "--local-dir",
-        "models"
-      ],
-      [
-        "huggingface-cli",
-        "download",
-        "Qwen/Qwen3-0.6B-GGUF",
-        "Qwen3-0.6B-Q8_0.gguf",
-        "--local-dir",
-        "models"
-      ],
-      [
-        "./build/dflash_server",
-        "models/Laguna-XS-2.1-Q4_K_M.gguf",
-        "--draft",
-        "models/laguna-xs21-dflash-q4.gguf",
-        "--prefill-drafter",
-        "models/Qwen3-0.6B-Q8_0.gguf",
-        "--max-ctx",
-        "262144",
-        "--kvflash",
-        "8192",
-        "--chunk",
-        "1024"
-      ],
-      [
-        "./build/dflash_server",
-        "models/Laguna-XS-2.1-Q4_K_M.gguf",
-        "--draft",
-        "models/laguna-xs21-dflash-q4.gguf",
-        "--prefill-drafter",
-        "models/Qwen3-0.6B-Q8_0.gguf",
-        "--max-ctx",
-        "262144",
-        "--kvflash",
-        "auto"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmro7rltq025plg01hffh4jjx"
   },
   "metadata": {
@@ -219,7 +128,101 @@
       "hardware_label": "RTX 3090",
       "notes": null,
       "observed_command": "# build the server (CUDA 12+, sm_86+)\ngit clone https://github.com/Luce-Org/lucebox-hub && cd lucebox-hub/server\ncmake -B build -DCMAKE_CUDA_ARCHITECTURES=86 && cmake --build build -j\n\n# target (poolside official), our q4 drafter, and the PFlash residency scorer\nhuggingface-cli download poolside/Laguna-XS-2.1-GGUF Laguna-XS-2.1-Q4_K_M.gguf --local-dir models\nhuggingface-cli download Lucebox/Laguna-XS-2.1-DFlash-GGUF laguna-xs21-dflash-q4.gguf --local-dir models\nhuggingface-cli download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models\n\n# the measured configuration: 296 tok/s short context, 152 tok/s at 256K\n./build/dflash_server models/Laguna-XS-2.1-Q4_K_M.gguf \\\n    --draft models/laguna-xs21-dflash-q4.gguf \\\n    --prefill-drafter models/Qwen3-0.6B-Q8_0.gguf \\\n    --max-ctx 262144 --kvflash 8192 --chunk 1024\n\n# pool sized from free VRAM instead of fixed:\n./build/dflash_server models/Laguna-XS-2.1-Q4_K_M.gguf \\\n    --draft models/laguna-xs21-dflash-q4.gguf \\\n    --prefill-drafter models/Qwen3-0.6B-Q8_0.gguf \\\n    --max-ctx 262144 --kvflash auto",
-      "run_id": "cmro7rltq025plg01hffh4jjx"
+      "run_id": "cmro7rltq025plg01hffh4jjx",
+      "tokenized": {
+        "arguments": [
+          "./build/dflash_server",
+          "models/Laguna-XS-2.1-Q4_K_M.gguf",
+          "--draft",
+          "models/laguna-xs21-dflash-q4.gguf",
+          "--prefill-drafter",
+          "models/Qwen3-0.6B-Q8_0.gguf",
+          "--max-ctx",
+          "262144",
+          "--kvflash",
+          "auto"
+        ],
+        "fidelity": "faithful",
+        "notes": [
+          "build the server (CUDA 12+, sm_86+)",
+          "target (poolside official), our q4 drafter, and the PFlash residency scorer",
+          "the measured configuration: 296 tok/s short context, 152 tok/s at 256K",
+          "pool sized from free VRAM instead of fixed:"
+        ],
+        "steps": [
+          [
+            "git",
+            "clone",
+            "https://github.com/Luce-Org/lucebox-hub"
+          ],
+          [
+            "cd",
+            "lucebox-hub/server"
+          ],
+          [
+            "cmake",
+            "-B",
+            "build",
+            "-DCMAKE_CUDA_ARCHITECTURES=86"
+          ],
+          [
+            "cmake",
+            "--build",
+            "build",
+            "-j"
+          ],
+          [
+            "huggingface-cli",
+            "download",
+            "poolside/Laguna-XS-2.1-GGUF",
+            "Laguna-XS-2.1-Q4_K_M.gguf",
+            "--local-dir",
+            "models"
+          ],
+          [
+            "huggingface-cli",
+            "download",
+            "Lucebox/Laguna-XS-2.1-DFlash-GGUF",
+            "laguna-xs21-dflash-q4.gguf",
+            "--local-dir",
+            "models"
+          ],
+          [
+            "huggingface-cli",
+            "download",
+            "Qwen/Qwen3-0.6B-GGUF",
+            "Qwen3-0.6B-Q8_0.gguf",
+            "--local-dir",
+            "models"
+          ],
+          [
+            "./build/dflash_server",
+            "models/Laguna-XS-2.1-Q4_K_M.gguf",
+            "--draft",
+            "models/laguna-xs21-dflash-q4.gguf",
+            "--prefill-drafter",
+            "models/Qwen3-0.6B-Q8_0.gguf",
+            "--max-ctx",
+            "262144",
+            "--kvflash",
+            "8192",
+            "--chunk",
+            "1024"
+          ],
+          [
+            "./build/dflash_server",
+            "models/Laguna-XS-2.1-Q4_K_M.gguf",
+            "--draft",
+            "models/laguna-xs21-dflash-q4.gguf",
+            "--prefill-drafter",
+            "models/Qwen3-0.6B-Q8_0.gguf",
+            "--max-ctx",
+            "262144",
+            "--kvflash",
+            "auto"
+          ]
+        ]
+      }
     }
   },
   "model_instance_id": "poolside-laguna-xs-2-1--q4-k-m",

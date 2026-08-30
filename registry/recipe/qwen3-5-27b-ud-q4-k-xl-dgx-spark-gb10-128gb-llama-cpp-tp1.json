@@ -101,21 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-5-27b-ud-q4-k-xl-dgx-spark-gb10-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "Qwen3.5-27B-UD-Q4_K_XL.gguf",
-      "-ngl",
-      "99",
-      "-fa",
-      "1",
-      "-c",
-      "262144",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark GB10 llama-bench dense-model baseline. Qwen3.5-27B Dense Q4_K_XL, q8/q8 or q4/q4 KV both around 11.1 tok/s. Source: /home/radar/benchmarks_dgx_spark_2026-04-14.md",
       "observed_command": "llama-bench -m Qwen3.5-27B-UD-Q4_K_XL.gguf -ngl 99 -fa 1 -c 262144 -ctk q8_0 -ctv q8_0",
-      "run_id": "cmof5r0ig0005kv04jg8v0ozv"
+      "run_id": "cmof5r0ig0005kv04jg8v0ozv",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "Qwen3.5-27B-UD-Q4_K_XL.gguf",
+          "-ngl",
+          "99",
+          "-fa",
+          "1",
+          "-c",
+          "262144",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-5-27b-gguf--ud-q4-k-xl",

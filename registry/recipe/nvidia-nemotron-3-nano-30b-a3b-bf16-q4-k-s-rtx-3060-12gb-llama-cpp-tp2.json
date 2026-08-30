@@ -101,23 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "nvidia-nemotron-3-nano-30b-a3b-bf16-q4-k-s-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "Nemotron-3-Nano-30B-A3B-Q4_K_S.gguf",
-      "--ctx-size",
-      "262144",
-      "--n-gpu-layers",
-      "99",
-      "--flash-attn",
-      "on",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "turbo3",
-      "--split-mode",
-      "layer"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -145,7 +128,27 @@
       "hardware_label": "RTX 3060",
       "notes": null,
       "observed_command": "llama-server --model Nemotron-3-Nano-30B-A3B-Q4_K_S.gguf --ctx-size 262144 --n-gpu-layers 99 --flash-attn on --cache-type-k q8_0 --cache-type-v turbo3 --split-mode layer",
-      "run_id": "cmpq1po300091pl014y2iw1mu"
+      "run_id": "cmpq1po300091pl014y2iw1mu",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "Nemotron-3-Nano-30B-A3B-Q4_K_S.gguf",
+          "--ctx-size",
+          "262144",
+          "--n-gpu-layers",
+          "99",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "turbo3",
+          "--split-mode",
+          "layer"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-nemotron-3-nano-30b-a3b-gguf--q4-k-s",

@@ -101,21 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "gemma-4-26b-a4b-it-ud-q8-k-xl-dgx-spark-gb10-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf",
-      "--ctx-size",
-      "262144",
-      "--parallel",
-      "1",
-      "--flash-attn",
-      "on",
-      "--cache-type-k",
-      "q4_0",
-      "--cache-type-v",
-      "q4_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark GB10, chat completions sustained 2048-token run. Gemma 4 26B-A4B MoE, Q8_K_XL, q4/q4 KV. Source: /home/radar/benchmarks_dgx_spark_2026-04-14.md",
       "observed_command": "llama-server --model gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf --ctx-size 262144 --parallel 1 --flash-attn on --cache-type-k q4_0 --cache-type-v q4_0",
-      "run_id": "cmof5kerg0001kw046apvlu7t"
+      "run_id": "cmof5kerg0001kw046apvlu7t",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf",
+          "--ctx-size",
+          "262144",
+          "--parallel",
+          "1",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-gemma-4-26b-a4b-it-gguf--ud-q8-k-xl",

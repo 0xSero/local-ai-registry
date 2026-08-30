@@ -101,24 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-gptq-int4-intel-arc-pro-b70-32gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "/model",
-      "--quantization",
-      "gptq",
-      "--dtype",
-      "float16",
-      "--max-model-len",
-      "16384",
-      "--max-num-seqs",
-      "64",
-      "--max-num-batched-tokens",
-      "8192",
-      "--served-model-name",
-      "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
-      "--language-model-only"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -146,7 +128,28 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "CONCURRENCY MAX: 64 concurrent users. Aggregate 1967.7 t/s wall-agg, generation 1139.8 t/s, diverse 512-token prompts, median TPOT 56ms. No-MTP native int4 v4 (MTP+concurrency blocked by GDN kernel). max-num-seqs 64. 165W. Multi-user aggregate throughput, not single-stream decode. 2026-08-07.",
       "observed_command": "vllm serve /model --quantization gptq --dtype float16 --max-model-len 16384 --max-num-seqs 64 --max-num-batched-tokens 8192 --served-model-name Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4 --language-model-only",
-      "run_id": "cmsiwwqmt00a9qm010iekvi3u"
+      "run_id": "cmsiwwqmt00a9qm010iekvi3u",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/model",
+          "--quantization",
+          "gptq",
+          "--dtype",
+          "float16",
+          "--max-model-len",
+          "16384",
+          "--max-num-seqs",
+          "64",
+          "--max-num-batched-tokens",
+          "8192",
+          "--served-model-name",
+          "Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4",
+          "--language-model-only"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--gptq-int4",

@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "mistral-small-3-2-24b-instruct-2506-q4-k-m-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "mistralai_Mistral-Small-3.2-24B-Instruct-2506-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-c",
-      "65536",
-      "-n",
-      "8192",
-      "--reasoning",
-      "on",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 3060",
       "notes": "2x RTX 3060 12GB, Dense 24B. Short-prompt avg (prompts 1,2,4,5). Long-context: 11.0 t/s out, 849 t/s prefill at 54.2K tokens.",
       "observed_command": "llama-server -m mistralai_Mistral-Small-3.2-24B-Instruct-2506-Q4_K_M.gguf -ngl 99 -sm layer -fa on -ctk q4_0 -ctv q4_0 -c 65536 -n 8192 --reasoning on --jinja",
-      "run_id": "cmsyor6fw0d4mms01yutjor1q"
+      "run_id": "cmsyor6fw0d4mms01yutjor1q",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "mistralai_Mistral-Small-3.2-24B-Instruct-2506-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-c",
+          "65536",
+          "-n",
+          "8192",
+          "--reasoning",
+          "on",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "bartowski-mistralai-mistral-small-3-2-24b-instruct-2506-gguf--q4-k-m",

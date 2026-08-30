@@ -101,21 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-5-35b-a3b-ud-q8-k-xl-dgx-spark-gb10-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "Qwen3.5-35B-A3B-UD-Q8_K_XL.gguf",
-      "--ctx-size",
-      "262144",
-      "--parallel",
-      "1",
-      "--flash-attn",
-      "on",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q4_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark GB10, chat completions sustained 2048-token run. Qwen3.5-35B-A3B MoE, Q8_K_XL, q8/q4 KV. Source: /home/radar/benchmarks_dgx_spark_2026-04-14.md",
       "observed_command": "llama-server --model Qwen3.5-35B-A3B-UD-Q8_K_XL.gguf --ctx-size 262144 --parallel 1 --flash-attn on --cache-type-k q8_0 --cache-type-v q4_0",
-      "run_id": "cmof5799c0006jm04jyk81gjl"
+      "run_id": "cmof5799c0006jm04jyk81gjl",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "Qwen3.5-35B-A3B-UD-Q8_K_XL.gguf",
+          "--ctx-size",
+          "262144",
+          "--parallel",
+          "1",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q4_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-5-35b-a3b-gguf--ud-q8-k-xl",

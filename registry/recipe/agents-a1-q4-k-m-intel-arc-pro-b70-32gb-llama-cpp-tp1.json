@@ -101,26 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "agents-a1-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Agents-A1-Q4_K_M.gguf",
-      "-c",
-      "262144",
-      "-ngl",
-      "99",
-      "-ncmoe",
-      "0",
-      "-fa",
-      "on",
-      "-ctk",
-      "q5_0",
-      "-ctv",
-      "q4_1",
-      "-t",
-      "8",
-      "--no-mmap"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "q5_0-q4_1 asymmetric KV (92.65% tail precision). 150W power cap. 256K context at 73 t/s engine. Agent-optimized 35B MoE model. Intel Arc Pro B70 32GB. llama.cpp SYCL b9851. oneAPI 2026.0.0. GPU temp: 67C. Zero context scaling penalty.",
       "observed_command": "llama-server -m Agents-A1-Q4_K_M.gguf -c 262144 -ngl 99 -ncmoe 0 -fa on -ctk q5_0 -ctv q4_1 -t 8 --no-mmap",
-      "run_id": "cmr2jjbhl06eqpi01aywxom7x"
+      "run_id": "cmr2jjbhl06eqpi01aywxom7x",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Agents-A1-Q4_K_M.gguf",
+          "-c",
+          "262144",
+          "-ngl",
+          "99",
+          "-ncmoe",
+          "0",
+          "-fa",
+          "on",
+          "-ctk",
+          "q5_0",
+          "-ctv",
+          "q4_1",
+          "-t",
+          "8",
+          "--no-mmap"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "internscience-agents-a1--q4-k-m",

@@ -101,28 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-8-27b-q6-k-rtx-5090-32gb-llama-cpp-tp1-l7yvwzwd",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--model",
-      "Qwen3.8-27B-Q6_K.gguf",
-      "--spec-draft-model",
-      "Qwen3.8-27B-DFlash2-Q8_0.gguf",
-      "--spec-type",
-      "draft-dflash",
-      "--spec-draft-n-max",
-      "3",
-      "--spec-draft-ngl",
-      "999",
-      "--ctx-size",
-      "8192",
-      "--n-gpu-layers",
-      "999",
-      "--flash-attn",
-      "on",
-      "--jinja",
-      "--threads",
-      "8"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 5090",
       "notes": "llama.cpp built from PR #27342 with CUDA (sm_120), target Q6_K fully GPU-resident on the RTX 5090 with the 2 GB z-lab/Qwen3.8-27B-DFlash2-GGUF Q8_0 drafter alongside it (--spec-type draft-dflash --spec-draft-ngl 999), 8k context, flash attention on, greedy decode. Key tuning: --spec-draft-n-max 3 instead of the README's default 7 \u2014 draft acceptance on this workload ran ~2.4 tokens per block (vs ~5.3 on GSM8K), and sweeping n-max 2\u21927 gave 87.1 / 97.7 / 87.8 / 84.3 / 73.6 tok/s",
       "observed_command": "llama-server --model Qwen3.8-27B-Q6_K.gguf --spec-draft-model Qwen3.8-27B-DFlash2-Q8_0.gguf --spec-type draft-dflash --spec-draft-n-max 3 --spec-draft-ngl 999 --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --jinja --threads 8",
-      "run_id": "cmt05msex0eitms01l7yvwzwd"
+      "run_id": "cmt05msex0eitms01l7yvwzwd",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--model",
+          "Qwen3.8-27B-Q6_K.gguf",
+          "--spec-draft-model",
+          "Qwen3.8-27B-DFlash2-Q8_0.gguf",
+          "--spec-type",
+          "draft-dflash",
+          "--spec-draft-n-max",
+          "3",
+          "--spec-draft-ngl",
+          "999",
+          "--ctx-size",
+          "8192",
+          "--n-gpu-layers",
+          "999",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--threads",
+          "8"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--q6-k",

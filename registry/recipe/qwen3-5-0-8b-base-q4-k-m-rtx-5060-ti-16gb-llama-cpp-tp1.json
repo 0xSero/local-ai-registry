@@ -101,15 +101,6 @@
   "hardware_id": "rtx-5060-ti-16gb",
   "id": "qwen3-5-0-8b-base-q4-k-m-rtx-5060-ti-16gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Huihui-Qwen3.5-0.8B-abliterated.Q4_K_M.gguf",
-      "-c",
-      "4096",
-      "--port",
-      "8080"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -126,11 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8080,
-    "environment": {
-      "CUDA_VISIBLE_DEVICES": "0"
-    },
-    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmqg7nyjg0016p201i1dotymk",
     "source": "localmaxxing",
@@ -142,7 +128,22 @@
       "hardware_label": "RTX 5060 Ti",
       "notes": null,
       "observed_command": "CUDA_VISIBLE_DEVICES=0 llama-server -m Huihui-Qwen3.5-0.8B-abliterated.Q4_K_M.gguf -c 4096 --port 8080",
-      "run_id": "cmqg7nyjg0016p201i1dotymk"
+      "run_id": "cmqg7nyjg0016p201i1dotymk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Huihui-Qwen3.5-0.8B-abliterated.Q4_K_M.gguf",
+          "-c",
+          "4096",
+          "--port",
+          "8080"
+        ],
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "0"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-5-0-8b--q4-k-m",

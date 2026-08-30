@@ -101,10 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-12b-it-qat-q4-0-unquantized-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      ".llama.cppbuildbinReleasellama-server.exe",
-      "^"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -121,114 +117,9 @@
       ],
       "state": "none"
     },
-    "container_port": 8001,
-    "host_port": 8001,
     "kind": "reference",
     "run_id": "cmqffnk1t008gmt01jrdzrpbz",
     "source": "localmaxxing",
-    "steps": [
-      [
-        ".llama.cppbuildbinReleasellama-server.exe",
-        "^"
-      ],
-      [
-        "--model",
-        "unslothgemma-4-12B-it-qat-GGUFgemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
-        "^"
-      ],
-      [
-        "--model-draft",
-        "unslothgemma-4-12B-it-qat-GGUFmtp-gemma-4-12B-it.gguf",
-        "^"
-      ],
-      [
-        "--spec-type",
-        "draft-mtp",
-        "^"
-      ],
-      [
-        "--spec-draft-n-max",
-        "2",
-        "^"
-      ],
-      [
-        "--spec-draft-p-min",
-        "0.05",
-        "^"
-      ],
-      [
-        "--temp",
-        "1.0",
-        "^"
-      ],
-      [
-        "--top-p",
-        "0.95",
-        "^"
-      ],
-      [
-        "--top-k",
-        "64",
-        "^"
-      ],
-      [
-        "--alias",
-        "unsloth/gemma-4-12b-it-qat-GGUF",
-        "^"
-      ],
-      [
-        "--port",
-        "8001",
-        "^"
-      ],
-      [
-        "--reasoning",
-        "on",
-        "^"
-      ],
-      [
-        "--jinja",
-        "^"
-      ],
-      [
-        "-ngl",
-        "999",
-        "^"
-      ],
-      [
-        "-fa",
-        "on",
-        "^"
-      ],
-      [
-        "-c",
-        "65536",
-        "^"
-      ],
-      [
-        "-t",
-        "6",
-        "^"
-      ],
-      [
-        "--mlock",
-        "^"
-      ],
-      [
-        "-np",
-        "1",
-        "^"
-      ],
-      [
-        "-b",
-        "1024",
-        "^"
-      ],
-      [
-        "-ub",
-        "1024"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmqffnk1t008gmt01jrdzrpbz"
   },
   "metadata": {
@@ -237,7 +128,51 @@
       "hardware_label": "RTX 3060",
       "notes": null,
       "observed_command": ".\\llama.cpp\\build\\bin\\Release\\llama-server.exe ^\n    --model unsloth\\gemma-4-12B-it-qat-GGUF\\gemma-4-12B-it-qat-UD-Q4_K_XL.gguf ^\n    --model-draft unsloth\\gemma-4-12B-it-qat-GGUF\\mtp-gemma-4-12B-it.gguf ^\n    --spec-type draft-mtp ^\n    --spec-draft-n-max 2 ^\n    --spec-draft-p-min 0.05 ^\n    --temp 1.0 ^\n    --top-p 0.95 ^\n    --top-k 64 ^\n    --alias \"unsloth/gemma-4-12b-it-qat-GGUF\" ^\n    --port 8001 ^\n    --reasoning on ^\n    --jinja ^\n    -ngl 999 ^\n    -fa on ^\n    -c 65536 ^\n    -t 6 ^\n    --mlock ^\n    -np 1 ^\n    -b 1024 ^\n    -ub 1024",
-      "run_id": "cmqffnk1t008gmt01jrdzrpbz"
+      "run_id": "cmqffnk1t008gmt01jrdzrpbz",
+      "tokenized": {
+        "arguments": [
+          ".\\llama.cpp\\build\\bin\\Release\\llama-server.exe",
+          "--model",
+          "unsloth\\gemma-4-12B-it-qat-GGUF\\gemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
+          "--model-draft",
+          "unsloth\\gemma-4-12B-it-qat-GGUF\\mtp-gemma-4-12B-it.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-p-min",
+          "0.05",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "64",
+          "--alias",
+          "\"unsloth/gemma-4-12b-it-qat-GGUF\"",
+          "--port",
+          "8001",
+          "--reasoning",
+          "on",
+          "--jinja",
+          "-ngl",
+          "999",
+          "-fa",
+          "on",
+          "-c",
+          "65536",
+          "-t",
+          "6",
+          "--mlock",
+          "-np",
+          "1",
+          "-b",
+          "1024",
+          "-ub",
+          "1024"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-gemma-4-12b-it-qat-gguf--q4-k-xl",

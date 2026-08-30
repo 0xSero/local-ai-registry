@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import { configurationFromRecipe, flagRows } from "../app/components/configuration-card"
 import {
   collectionCounts,
   getBenchmark,
@@ -461,6 +462,7 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   const record = detail as {
     hardware_id: string
     launch: { arguments?: string[]; kind: string; steps?: string[][] }
+    metadata: { mlxfast: { tokenized: { arguments?: string[]; fidelity: string; steps?: string[][] } } }
     recipe_source: string
     registry: { launchable: boolean }
     relationships: { model: { id: string } }
@@ -472,10 +474,13 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   assert.equal(record.hardware_id, "apple-m5-max-128gb")
   assert.equal(record.registry.launchable, false)
   assert.equal(record.relationships.model.id, "gemma-4-26b-a4b-it")
-  assert.ok(Array.isArray(record.launch.steps))
-  assert.equal(record.launch.steps?.length, 4)
-  assert.equal(record.launch.steps?.[0]?.[0], "git")
-  assert.equal(record.launch.arguments?.[0], "./setup-gemma4-assistant.sh")
+  assert.ok(!("arguments" in record.launch))
+  assert.ok(!("steps" in record.launch))
+  assert.ok(!("image" in record.launch))
+  assert.equal(record.metadata.mlxfast.tokenized.fidelity, "faithful")
+  assert.equal(record.metadata.mlxfast.tokenized.steps?.length, 4)
+  assert.equal(record.metadata.mlxfast.tokenized.steps?.[0]?.[0], "git")
+  assert.equal(record.metadata.mlxfast.tokenized.arguments?.[0], "./setup-gemma4-assistant.sh")
   assert.doesNotMatch(JSON.stringify(record.launch), /&&/)
   assert.doesNotMatch(JSON.stringify(record.launch).toLowerCase(), /command_snippet/)
 
@@ -490,26 +495,54 @@ test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the c
   assert.equal(instance.huggingface.repository, "mlx-community/gemma-4-26B-A4B-it-qat-4bit")
 })
 
-test("observed LocalMaxxing commands are tokenized onto reference launches", () => {
+test("observed LocalMaxxing commands are tokenized in metadata, not onto the launch contract", () => {
   const llama = getEntityDetail("recipes", "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1") as {
-    launch: { arguments?: string[]; environment?: Record<string, string>; kind: string }
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
     recipe_source: string
     status: string
   }
   const vllm = getEntityDetail("recipes", "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1") as {
-    launch: { arguments?: string[]; environment?: Record<string, string>; host_port?: number }
+    launch: Record<string, unknown>
+    metadata: {
+      localmaxxing: {
+        tokenized: { arguments?: string[]; environment?: Record<string, string>; fidelity: string }
+      }
+    }
+  }
+  const windows = getEntityDetail(
+    "recipes",
+    "gemma-4-12b-it-qat-q4-0-unquantized-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
+  ) as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
+  }
+  const dockerSnippet = getEntityDetail("recipes", "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4") as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
   }
   assert.equal(llama.recipe_source, "localmaxxing")
   assert.equal(llama.status, "candidate")
   assert.equal(llama.launch.kind, "reference")
-  assert.equal(llama.launch.arguments?.[0], "llama-bench")
-  assert.ok(llama.launch.arguments?.includes("-ngl"))
+  assert.ok(!("arguments" in llama.launch))
+  assert.ok(!("image" in llama.launch))
+  assert.equal(llama.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.equal(llama.metadata.localmaxxing.tokenized.arguments?.[0], "llama-bench")
+  assert.ok(llama.metadata.localmaxxing.tokenized.arguments?.includes("-ngl"))
   assert.doesNotMatch(JSON.stringify(llama.launch), /&&/)
   assert.doesNotMatch(JSON.stringify(llama.launch).toLowerCase(), /command_snippet/)
-  assert.equal(vllm.launch.arguments?.[0], "vllm")
-  assert.equal(vllm.launch.arguments?.[1], "serve")
-  assert.equal(vllm.launch.host_port, 8000)
-  assert.equal(vllm.launch.environment?.VLLM_NVFP4_GEMM_BACKEND, "cutlass")
+  assert.ok(!("arguments" in vllm.launch))
+  assert.ok(!("image" in vllm.launch))
+  assert.equal(vllm.metadata.localmaxxing.tokenized.arguments?.[0], "vllm")
+  assert.equal(vllm.metadata.localmaxxing.tokenized.arguments?.[1], "serve")
+  assert.equal(vllm.metadata.localmaxxing.tokenized.environment?.VLLM_NVFP4_GEMM_BACKEND, "cutlass")
+  assert.equal(windows.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.ok(windows.metadata.localmaxxing.tokenized.arguments?.[0]?.includes("llama-server.exe"))
+  assert.doesNotMatch(JSON.stringify(windows), /\.llama\.cppbuildbin/)
+  assert.ok(!("image" in dockerSnippet.launch))
+  assert.ok(!("mounts" in dockerSnippet.launch))
+  assert.ok(!("ports" in dockerSnippet.launch))
+  assert.equal(dockerSnippet.metadata.localmaxxing.tokenized.arguments?.[0], "docker")
 })
 
 test("observed LocalMaxxing and Postgres recipes stay reference-only candidates", () => {
@@ -526,4 +559,32 @@ test("observed LocalMaxxing and Postgres recipes stay reference-only candidates"
   }
   assert.equal(getEntityDetail("recipes", "gemma-4-26b-a4b-it-4bit-apple-m5-max-128gb-omlx-tp1"), undefined)
   assert.ok(lmx.total >= 0)
+})
+
+test("empty observed flags are omitted from the flag table rather than labeled set", () => {
+  assert.deepEqual(
+    flagRows(["llama-bench", "-m", "-p", "512", "-ngl", "28"]),
+    [
+      ["-p", "512"],
+      ["-ngl", "28"],
+    ],
+  )
+  const observed = getEntityDetail("recipes", "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1")
+  const config = configurationFromRecipe(observed as Record<string, unknown>)
+  assert.equal(config.kind, "reference")
+  assert.equal(config.launchable, false)
+  assert.equal(config.image, null)
+  assert.equal(config.fidelity, "faithful")
+  assert.equal(config.arguments[0], "llama-bench")
+  assert.ok(config.arguments.includes("-m"))
+  assert.equal(flagRows(config.arguments).some(([, item]) => item === "set"), false)
+  assert.equal(flagRows(config.arguments).some(([flag]) => flag === "-m"), false)
+
+  const docker = configurationFromRecipe(
+    getEntityDetail("recipes", "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1") as Record<string, unknown>,
+  )
+  assert.equal(docker.kind, "docker")
+  assert.equal(docker.launchable, true)
+  assert.match(String(docker.image), /lmsysorg\/sglang/)
+  assert.ok(docker.arguments.includes("-lc"))
 })

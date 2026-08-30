@@ -101,29 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "gpt-oss-20b-mxfp4-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "openai/gpt-oss-20b",
-      "--served-model-name",
-      "triage",
-      "--gpu-memory-utilization",
-      "0.26",
-      "--enable-prefix-caching",
-      "--max-model-len",
-      "32768",
-      "--max-num-seqs",
-      "8",
-      "--reasoning-parser",
-      "openai_gptoss",
-      "--tool-call-parser",
-      "openai",
-      "--enable-auto-tool-choice",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "8105"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -140,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8105,
-    "host_port": 8105,
     "kind": "reference",
     "run_id": "cms0knudw007gs201l6iy4vnb",
     "source": "localmaxxing",
@@ -153,7 +128,33 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "gpt-oss-20b (MXFP4 MoE) on GB10 Grace Blackwell 128GB unified memory. Conthroughput run: 8 concurrent requests (saturates max-num-seqs=8), 128 output tokens each. 2 warmup + 3 measured batches, median reported. Aggregate output 317.63 tok/s (6.5x single-stream 49.19). Per-stream decode 39.84 tok/s under load. Very consistent: 312.36-317.69 tok/s. Low gpu-memory-utilization (0.26) leaves headroom for co-tenant embedding/rerank models.",
       "observed_command": "vllm serve openai/gpt-oss-20b --served-model-name triage --gpu-memory-utilization 0.26 --enable-prefix-caching --max-model-len 32768 --max-num-seqs 8 --reasoning-parser openai_gptoss --tool-call-parser openai --enable-auto-tool-choice --host 0.0.0.0 --port 8105",
-      "run_id": "cms0knudw007gs201l6iy4vnb"
+      "run_id": "cms0knudw007gs201l6iy4vnb",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "openai/gpt-oss-20b",
+          "--served-model-name",
+          "triage",
+          "--gpu-memory-utilization",
+          "0.26",
+          "--enable-prefix-caching",
+          "--max-model-len",
+          "32768",
+          "--max-num-seqs",
+          "8",
+          "--reasoning-parser",
+          "openai_gptoss",
+          "--tool-call-parser",
+          "openai",
+          "--enable-auto-tool-choice",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8105"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "openai-gpt-oss-20b--mxfp4",

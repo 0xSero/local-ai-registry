@@ -101,24 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-8-27b-mq4-rx-7900-xtx-24gb-hipfire-tp1",
   "launch": {
-    "arguments": [
-      "dflash_spec_demo",
-      "--target",
-      "qwen3.8-27b.mq4",
-      "--draft",
-      "qwen36-27b-dflash-mq4.hfq",
-      "--prompt-file",
-      "merge_sort_thinking_off.txt",
-      "--max",
-      "256",
-      "--temp",
-      "0",
-      "--kv-mode",
-      "asym3",
-      "--no-chatml",
-      "--ctx",
-      "2048"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -135,11 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "HIPFIRE_GRAPH": "1",
-      "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
-      "HIP_VISIBLE_DEVICES": "0"
-    },
     "kind": "reference",
     "run_id": "cmt1ff27w00ydmv01drv7z4np",
     "source": "localmaxxing",
@@ -151,7 +128,33 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "Qwen3.8-27B target (hipfire-models/qwen3.8-27b.mq4 MQ4). Spec draft is qwen36-27b-dflash-mq4.hfq (3.6-matched DFlash, not native 3.8 DFlash2). hipfire 80a572c dflash_spec_demo on Windows 11 + HIP 7.2 gfx1100. HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_GRAPH=1 --kv-mode asym3 --no-chatml --ctx 2048 --max 256 --temp 0. Code merge_sort_thinking_off retest 154.57 / 153.79 tok/s mean 154.18, tau 8.81, accept 0.588, prefill 51.3 tok/s, TTFT 767 ms, VRAM 17.12 GB. Same-day peak 155.60. Native 3.8 DFlash2 same flags: code 81.7 / prose 45.8 (low accept). Prose with 3.6 draft 37.5. Output is 3.8 (draft guesses only). Not the R9700 282 tok/s MQ4V2/DFlash2 stack.",
       "observed_command": "HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_GRAPH=1 HIP_VISIBLE_DEVICES=0 dflash_spec_demo --target qwen3.8-27b.mq4 --draft qwen36-27b-dflash-mq4.hfq --prompt-file merge_sort_thinking_off.txt --max 256 --temp 0 --kv-mode asym3 --no-chatml --ctx 2048",
-      "run_id": "cmt1ff27w00ydmv01drv7z4np"
+      "run_id": "cmt1ff27w00ydmv01drv7z4np",
+      "tokenized": {
+        "arguments": [
+          "dflash_spec_demo",
+          "--target",
+          "qwen3.8-27b.mq4",
+          "--draft",
+          "qwen36-27b-dflash-mq4.hfq",
+          "--prompt-file",
+          "merge_sort_thinking_off.txt",
+          "--max",
+          "256",
+          "--temp",
+          "0",
+          "--kv-mode",
+          "asym3",
+          "--no-chatml",
+          "--ctx",
+          "2048"
+        ],
+        "environment": {
+          "HIPFIRE_GRAPH": "1",
+          "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+          "HIP_VISIBLE_DEVICES": "0"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-8-27b--mq4",

@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gpt-oss-20b-q4-k-m-rtx-3060-12gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "gpt-oss-20b-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-sm",
-      "layer",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-c",
-      "65536",
-      "-n",
-      "8192",
-      "--reasoning",
-      "on",
-      "--jinja"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX 3060",
       "notes": "2x RTX 3060 12GB, MoE 21B/3.6B active. Short-prompt avg (prompts 1,2,4,5). Long-context: 46.2 t/s out, 3050 t/s prefill at 44.9K tokens.",
       "observed_command": "llama-server -m gpt-oss-20b-Q4_K_M.gguf -ngl 99 -sm layer -fa on -ctk q4_0 -ctv q4_0 -c 65536 -n 8192 --reasoning on --jinja",
-      "run_id": "cmsyor53a0d4hms01cyj8vns9"
+      "run_id": "cmsyor53a0d4hms01cyj8vns9",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gpt-oss-20b-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-sm",
+          "layer",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-c",
+          "65536",
+          "-n",
+          "8192",
+          "--reasoning",
+          "on",
+          "--jinja"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-gpt-oss-20b-gguf--q4-k-m",

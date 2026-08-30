@@ -101,26 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "ornith-1-5-35b-a3b-bf16-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--jinja",
-      "--flash-attn",
-      "auto",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-ts",
-      "1/1/0.8",
-      "-np",
-      "1",
-      "-c",
-      "262144",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "3x R9700 tensor split (desktop card protected at 0.8). Self-speculative MTP via built-in nextn layer (nextn_predict_layers=1), draft n-max 2 (sweep: 1=30.3, 2=35.4, 4=32.3, 6=30.5, 8=24.4 tok/s @ depth 8192). benchy pp2520/tg240 no-cache protocol, depth 8192.",
       "observed_command": "llama-server --jinja --flash-attn auto -ctk f16 -ctv f16 -ts 1/1/0.8 -np 1 -c 262144 --spec-type draft-mtp --spec-draft-n-max 2",
-      "run_id": "cmtdisbpb004vlm01bnqoytpq"
+      "run_id": "cmtdisbpb004vlm01bnqoytpq",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--jinja",
+          "--flash-attn",
+          "auto",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-ts",
+          "1/1/0.8",
+          "-np",
+          "1",
+          "-c",
+          "262144",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "ornith-ai-ornith-1-5-35b-a3b--bf16",

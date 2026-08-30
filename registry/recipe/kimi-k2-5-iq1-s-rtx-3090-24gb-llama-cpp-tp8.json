@@ -101,28 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "kimi-k2-5-iq1-s-rtx-3090-24gb-llama-cpp-tp8",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "/data/models/kimi-k25-gguf/bartowski-moonshotai-kimi-k25-iq1s/moonshotai_Kimi-K2.5-IQ1_S-00001-of-00006.gguf",
-      "-c",
-      "4096",
-      "-b",
-      "512",
-      "-ub",
-      "128",
-      "-ngl",
-      "48",
-      "--split-mode",
-      "layer",
-      "--tensor-split",
-      "1,1,1,1,1,1,1,1",
-      "-fa",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -139,9 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "CUDA_VISIBLE_DEVICES": "2,3,4,5,6,7,8,9"
-    },
     "kind": "reference",
     "run_id": "cmowla4rq004io201otfp0rdo",
     "source": "localmaxxing",
@@ -153,7 +128,35 @@
       "hardware_label": "RTX 3090",
       "notes": "Kimi-K2.5 IQ1_S GGUF feasibility row on 8x RTX 3090. Full offload did not fit; first stable route used n_gpu_layers=48 with substantial CPU offload, so this is not a speed-match row. 3 measured 512-token runs after 1 warmup; wall tok/s varied 6.21, 6.44, 3.94. Raw log: /home/mattsav/Documents/data/glm51_8x3090_20260507/kimi_k25_iq1s_8x_ngl48_b512_bench512.log",
       "observed_command": "CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9 llama-server -m /data/models/kimi-k25-gguf/bartowski-moonshotai-kimi-k25-iq1s/moonshotai_Kimi-K2.5-IQ1_S-00001-of-00006.gguf -c 4096 -b 512 -ub 128 -ngl 48 --split-mode layer --tensor-split 1,1,1,1,1,1,1,1 -fa -ctk q4_0 -ctv q4_0",
-      "run_id": "cmowla4rq004io201otfp0rdo"
+      "run_id": "cmowla4rq004io201otfp0rdo",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/data/models/kimi-k25-gguf/bartowski-moonshotai-kimi-k25-iq1s/moonshotai_Kimi-K2.5-IQ1_S-00001-of-00006.gguf",
+          "-c",
+          "4096",
+          "-b",
+          "512",
+          "-ub",
+          "128",
+          "-ngl",
+          "48",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "1,1,1,1,1,1,1,1",
+          "-fa",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0"
+        ],
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "2,3,4,5,6,7,8,9"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "bartowski-moonshotai-kimi-k2-5-gguf--iq1-s",

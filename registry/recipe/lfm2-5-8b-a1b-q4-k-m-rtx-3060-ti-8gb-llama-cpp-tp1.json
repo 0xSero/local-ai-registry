@@ -101,21 +101,6 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "lfm2-5-8b-a1b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-hf",
-      "LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M",
-      "-ngl",
-      "99",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-r",
-      "10",
-      "-o",
-      "md"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "RTX 3060 Ti",
       "notes": "llama.cpp b9653 CUDA backend on Windows 10, RTX 3060 Ti 8GB. Q4_K_M quantization, all layers offloaded with -ngl 99. Benchmark used -p 512 -n 128 -r 10 and llama-bench defaults unless specified: context 2048, batch 2048, ubatch 512, flash-attn auto, mmap enabled. TTFT and peak VRAM were not measured. Initial Hugging Face cache symlink warning on Windows was harmless; inference completed normally with CUDA.",
       "observed_command": "llama-bench -hf LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M -ngl 99 -p 512 -n 128 -r 10 -o md",
-      "run_id": "cmqflre4r00bvmt016ysnls5u"
+      "run_id": "cmqflre4r00bvmt016ysnls5u",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-hf",
+          "LiquidAI/LFM2.5-8B-A1B-GGUF:Q4_K_M",
+          "-ngl",
+          "99",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "10",
+          "-o",
+          "md"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",

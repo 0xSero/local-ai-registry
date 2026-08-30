@@ -101,25 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "qwen3-6-35b-a3b-ud-q4-k-xl-rtx-3090-24gb-llama-cpp-tp2",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
-      "--ctx-size",
-      "1048576",
-      "--n-gpu-layers",
-      "999",
-      "--split-mode",
-      "layer",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-fa",
-      "on",
-      "--threads",
-      "16"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -147,7 +128,29 @@
       "hardware_label": "RTX 3090",
       "notes": "Qwen3.6-35B-A3B (MoE, 3B-active) at 1M context window. Layer-split across 2\u00d7 RTX 3090, llama.cpp turboquant fork (Tom Jobbins' fork supporting q4_0 KV cache + extended ctx). Short-prompt 124 TPS sustained at full 1M ctx. Loaded-context generation 37 TPS @ 128K. UD-Q4_K_XL = Unsloth Dynamic Quantization (variable-precision Q4_K_M derivative). Measured 2026-04-19 at 230W power cap, no NVLink bridge.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf --ctx-size 1048576 --n-gpu-layers 999 --split-mode layer -ctk q4_0 -ctv q4_0 -fa on --threads 16",
-      "run_id": "cmof29ivq000ajr047dp6behr"
+      "run_id": "cmof29ivq000ajr047dp6behr",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+          "--ctx-size",
+          "1048576",
+          "--n-gpu-layers",
+          "999",
+          "--split-mode",
+          "layer",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-fa",
+          "on",
+          "--threads",
+          "16"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-xl",

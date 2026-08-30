@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Turn observed source shell strings into tokenized launch fields.
+"""Tokenize observed source shell strings into metadata, not the launch contract.
 
-Candidate recipes stay `launch.kind: "reference"`. This never invents a
-validated contract. Env prefixes become `launch.environment`; the remainder
-becomes an argv array. `&&` chains become `launch.steps`.
+Candidate recipes stay `launch.kind: "reference"`. Derived argv is stored at
+`metadata.<source>.tokenized` beside `observed_command`. Lossy splits emit
+fidelity=lossy and no tokens. This never writes image/mounts/ports onto a
+reference launch and never invents a validated contract.
 """
 
 from __future__ import annotations
@@ -16,7 +17,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 
-TOKENIZED_LAUNCH_FIELDS = (
+# Fields that belong on a docker/native contract, never on a reference launch.
+REFERENCE_LAUNCH_FORBIDDEN = (
     "arguments",
     "container_port",
     "endpoint",
@@ -39,7 +41,9 @@ REMOTE_ENDPOINT = re.compile(
     re.I,
 )
 ENV_COMMENT = re.compile(r"^#\s*env:\s*(.+)$", re.I)
-PORT_FLAG = {"--port", "--publish"}
+WINDOWS_SHELL = re.compile(r"\\|\.exe\b|\^", re.I)
+DANGEROUS_IN_TOKEN = re.compile(r"\$\(|`|\$\(\(")
+SHELL_ONLY_TOKENS = {";", "|", ">", "<", "^", "&&"}
 PRIMARY_HEAD = {
     "hipfire",
     "llama-bench",
@@ -54,43 +58,6 @@ PRIMARY_HEAD = {
     "sglang",
     "vllm",
 }
-DOCKER_VALUE_OPTS = {
-    "--add-host",
-    "--cidfile",
-    "--cpus",
-    "--device",
-    "--entrypoint",
-    "--env",
-    "--env-file",
-    "--gpus",
-    "--hostname",
-    "--ipc",
-    "--label",
-    "--memory",
-    "--mount",
-    "--name",
-    "--net",
-    "--network",
-    "--pid",
-    "--platform",
-    "--publish",
-    "--pull",
-    "--restart",
-    "--runtime",
-    "--security-opt",
-    "--shm-size",
-    "--ulimit",
-    "--user",
-    "--volume",
-    "--workdir",
-    "-e",
-    "-l",
-    "-m",
-    "-p",
-    "-u",
-    "-v",
-    "-w",
-}
 
 
 @dataclass
@@ -98,17 +65,14 @@ class ParsedCommand:
     arguments: list[str] = field(default_factory=list)
     environment: dict[str, str] = field(default_factory=dict)
     steps: list[list[str]] = field(default_factory=list)
-    host_port: int | None = None
-    container_port: int | None = None
-    image: str | None = None
-    mounts: list[dict] = field(default_factory=list)
-    entrypoint: str | None = None
-    ipc: str | None = None
-    network_mode: str | None = None
-    shm_size: str | None = None
     notes: list[str] = field(default_factory=list)
     endpoint: str | None = None
     served_model_name: str | None = None
+    fidelity: str = "faithful"
+
+
+def windows_shell(text: str) -> bool:
+    return bool(WINDOWS_SHELL.search(text))
 
 
 def safe_split(text: str) -> list[str]:
@@ -117,11 +81,12 @@ def safe_split(text: str) -> list[str]:
         return []
     if stripped.startswith("& "):
         stripped = stripped[2:].strip()
+    posix = not windows_shell(stripped)
     try:
-        tokens = shlex.split(stripped, posix=True)
+        tokens = shlex.split(stripped, posix=posix)
     except ValueError:
         try:
-            tokens = shlex.split(stripped, posix=False)
+            tokens = shlex.split(stripped, posix=not posix)
         except ValueError:
             tokens = stripped.split()
     return [token for token in tokens if token and token != "&"]
@@ -165,6 +130,7 @@ def join_continuations(text: str) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = re.sub(r"\\[ \t]*\n[ \t]*", " ", text)
     text = re.sub(r"`[ \t]*\n[ \t]*", " ", text)
+    text = re.sub(r"\^[ \t]*\n[ \t]*", " ", text)
     return text
 
 
@@ -180,87 +146,23 @@ def peel_env(tokens: list[str]) -> tuple[list[str], dict[str, str]]:
     return tokens[index:], environment
 
 
-def parse_port_token(value: str) -> tuple[int | None, int | None]:
-    left, _, right = value.partition(":")
-    host = left or right
-    container = right or left
-    try:
-        host_port = int(host)
-    except ValueError:
-        host_port = None
-    try:
-        container_port = int(container)
-    except ValueError:
-        container_port = None
-    return host_port, container_port
+def collapse(text: str) -> str:
+    return re.sub(r"\s+", " ", text.strip())
 
 
-def extract_port(tokens: list[str], parsed: ParsedCommand) -> None:
-    for index, token in enumerate(tokens):
-        flag, _, attached = token.partition("=")
-        if flag not in PORT_FLAG:
-            continue
-        value = attached or (tokens[index + 1] if index + 1 < len(tokens) else "")
-        if not value or value.startswith("-"):
-            continue
-        host_port, container_port = parse_port_token(value)
-        if host_port is not None:
-            parsed.host_port = host_port
-        if container_port is not None:
-            parsed.container_port = container_port
-        return
-    if parsed.endpoint:
-        match = re.search(r":(\d+)(?:/|$)", parsed.endpoint)
-        if match:
-            parsed.host_port = int(match.group(1))
-
-
-def parse_mount(value: str) -> dict:
-    parts = value.split(":")
-    read_only = parts[-1] == "ro" if len(parts) >= 3 else False
-    if read_only:
-        parts = parts[:-1]
-    source = parts[0] if parts else value
-    target = parts[1] if len(parts) > 1 else parts[0]
-    return {"read_only": read_only, "source": source, "target": target}
-
-
-def parse_docker_run(tokens: list[str], parsed: ParsedCommand) -> list[str]:
-    if len(tokens) < 2 or tokens[0] != "docker" or tokens[1] != "run":
-        return tokens
-    index = 2
-    while index < len(tokens):
-        token = tokens[index]
-        flag, eq, attached = token.partition("=")
-        if flag in DOCKER_VALUE_OPTS:
-            value = attached if eq else (tokens[index + 1] if index + 1 < len(tokens) else "")
-            index += 1 if eq else 2
-            if flag in {"-e", "--env"} and "=" in value:
-                key, val = value.split("=", 1)
-                parsed.environment[key] = val
-            elif flag in {"-v", "--volume"}:
-                parsed.mounts.append(parse_mount(value))
-            elif flag in {"-p", "--publish"}:
-                host_port, container_port = parse_port_token(value)
-                if host_port is not None:
-                    parsed.host_port = host_port
-                if container_port is not None:
-                    parsed.container_port = container_port
-            elif flag == "--entrypoint":
-                parsed.entrypoint = value
-            elif flag == "--ipc":
-                parsed.ipc = value
-            elif flag in {"--network", "--net"}:
-                parsed.network_mode = value
-            elif flag == "--shm-size":
-                parsed.shm_size = value
-            continue
-        if token.startswith("-"):
-            index += 1
-            continue
-        parsed.image = token
-        return tokens[index + 1 :]
-    return []
+def chunk_is_lossy(original: str, tokens: list[str]) -> bool:
+    if not tokens:
+        return bool(collapse(original))
+    if any(token in SHELL_ONLY_TOKENS or DANGEROUS_IN_TOKEN.search(token) for token in tokens):
+        return True
+    if "\\" in original and "\\" not in "".join(tokens):
+        return True
+    if any(token == "^" for token in tokens):
+        return True
+    if tokens[0].startswith("-") and not original.lstrip().startswith(("-", "'", '"')):
+        return True
+    words = original.split()
+    return len(tokens) == 1 and len(words) > 3
 
 
 def take_env_tokens(text: str, parsed: ParsedCommand) -> None:
@@ -311,22 +213,23 @@ def parse_observed_command(raw: str | None) -> ParsedCommand:
             continue
         command_lines.append(stripped)
     argv_steps: list[list[str]] = []
+    lossy = False
     for line in command_lines:
-        for chunk in split_operators(line, ("&&", ";")):
+        for chunk in split_operators(line, ("&&",)):
             tokens, environment = peel_env(safe_split(chunk))
+            reconstructed = [f"{key}={value}" for key, value in environment.items()] + tokens
+            if chunk_is_lossy(chunk, reconstructed if reconstructed else tokens):
+                lossy = True
+                continue
             parsed.environment.update(environment)
-            if not tokens:
-                continue
-            rest = parse_docker_run(tokens, parsed)
-            if tokens[:2] == ["docker", "run"]:
-                if rest:
-                    argv_steps.append(rest)
-                continue
-            argv_steps.append(tokens)
-    for step in argv_steps:
-        extract_port(step, parsed)
-    if parsed.host_port is None:
-        extract_port([], parsed)
+            if tokens:
+                argv_steps.append(tokens)
+    if lossy:
+        parsed.fidelity = "lossy"
+        parsed.arguments = []
+        parsed.steps = []
+        parsed.environment = {}
+        return parsed
     parsed.steps = argv_steps
     if not argv_steps:
         return parsed
@@ -337,111 +240,144 @@ def parse_observed_command(raw: str | None) -> ParsedCommand:
     return parsed
 
 
-def merge_launch(launch: dict, parsed: ParsedCommand) -> bool:
-    before = json.dumps(launch, sort_keys=True)
-    for key in TOKENIZED_LAUNCH_FIELDS:
-        launch.pop(key, None)
+def tokenized_record(parsed: ParsedCommand) -> dict:
+    record: dict = {"fidelity": parsed.fidelity}
+    if parsed.fidelity != "faithful":
+        return record
     if parsed.arguments:
-        launch["arguments"] = parsed.arguments
+        record["arguments"] = parsed.arguments
     if parsed.environment:
-        launch["environment"] = parsed.environment
+        record["environment"] = parsed.environment
     if parsed.steps:
-        launch["steps"] = parsed.steps
-    if parsed.host_port is not None:
-        launch["host_port"] = parsed.host_port
-    if parsed.container_port is not None:
-        launch["container_port"] = parsed.container_port
-    if parsed.image:
-        launch["image"] = parsed.image
-    if parsed.mounts:
-        launch["mounts"] = parsed.mounts
-    if parsed.entrypoint:
-        launch["entrypoint"] = parsed.entrypoint
-    if parsed.ipc:
-        launch["ipc"] = parsed.ipc
-    if parsed.network_mode:
-        launch["network_mode"] = parsed.network_mode
-    if parsed.shm_size:
-        launch["shm_size"] = parsed.shm_size
+        record["steps"] = parsed.steps
     if parsed.notes:
-        launch["notes"] = parsed.notes
+        record["notes"] = parsed.notes
     if parsed.endpoint:
-        launch["endpoint"] = parsed.endpoint
+        record["endpoint"] = parsed.endpoint
     if parsed.served_model_name:
-        launch["served_model_name"] = parsed.served_model_name
-    return json.dumps(launch, sort_keys=True) != before
+        record["served_model_name"] = parsed.served_model_name
+    return record
+
+
+def strip_reference_launch(launch: dict) -> bool:
+    changed = False
+    for key in REFERENCE_LAUNCH_FORBIDDEN:
+        if key in launch:
+            launch.pop(key)
+            changed = True
+    return changed
+
+
+def metadata_source_key(recipe: dict) -> str | None:
+    source = recipe.get("recipe_source")
+    if source == "mlxfast":
+        return "mlxfast"
+    if source == "localmaxxing":
+        return "localmaxxing"
+    return None
 
 
 def observed_snippet(recipe: dict) -> str | None:
-    metadata = recipe.get("metadata") or {}
-    for key in ("localmaxxing", "mlxfast"):
-        block = metadata.get(key)
-        if isinstance(block, dict):
-            command = block.get("observed_command")
-            if isinstance(command, str) and command.strip():
-                return command
+    key = metadata_source_key(recipe)
+    if not key:
+        return None
+    block = (recipe.get("metadata") or {}).get(key)
+    if isinstance(block, dict):
+        command = block.get("observed_command")
+        if isinstance(command, str) and command.strip():
+            return command
     return None
 
 
 def apply_to_recipe(recipe: dict) -> bool:
-    snippet = observed_snippet(recipe)
-    if not snippet:
+    key = metadata_source_key(recipe)
+    if not key:
         return False
+    changed = False
     launch = recipe.setdefault("launch", {})
-    if not isinstance(launch, dict):
-        return False
-    return merge_launch(launch, parse_observed_command(snippet))
+    if isinstance(launch, dict) and strip_reference_launch(launch):
+        changed = True
+    snippet = observed_snippet(recipe)
+    block = recipe.setdefault("metadata", {}).setdefault(key, {})
+    if not isinstance(block, dict):
+        return changed
+    record = tokenized_record(parse_observed_command(snippet)) if snippet else None
+    if record != block.get("tokenized"):
+        if record:
+            block["tokenized"] = record
+        else:
+            block.pop("tokenized", None)
+        changed = True
+    return changed
 
 
 def write(path: Path, value: dict) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
 
 
-def apply_registry(root: Path) -> int:
+def apply_registry(root: Path) -> tuple[int, int, int]:
     updated = 0
+    faithful = 0
+    lossy = 0
     for path in sorted((root / "recipe").glob("*.json")):
         recipe = json.loads(path.read_text())
         if apply_to_recipe(recipe):
             write(path, recipe)
             updated += 1
-    return updated
+        key = metadata_source_key(recipe)
+        if not key:
+            continue
+        tokenized = ((recipe.get("metadata") or {}).get(key) or {}).get("tokenized") or {}
+        if tokenized.get("fidelity") == "lossy":
+            lossy += 1
+        elif tokenized.get("fidelity") == "faithful":
+            faithful += 1
+    return updated, faithful, lossy
 
 
 def _self_check() -> None:
     env = parse_observed_command(
         "VLLM_NVFP4_GEMM_BACKEND=cutlass vllm serve /models/Qwen --port 8000 --max-model-len 4096"
     )
+    assert env.fidelity == "faithful"
     assert env.environment == {"VLLM_NVFP4_GEMM_BACKEND": "cutlass"}
-    assert env.arguments[0] == "vllm"
-    assert env.host_port == 8000
-    assert "&&" not in env.arguments
+    assert env.arguments[:2] == ["vllm", "serve"]
 
     chain = parse_observed_command(
         "git clone https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine && ./tools/fetch-benchd.sh && ./setup.sh && ./setup-gemma4-assistant.sh"
     )
-    assert chain.steps == [
-        ["git", "clone", "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"],
-        ["./tools/fetch-benchd.sh"],
-        ["./setup.sh"],
-        ["./setup-gemma4-assistant.sh"],
-    ]
+    assert chain.fidelity == "faithful"
+    assert chain.steps[0] == ["git", "clone", "https://github.com/Layr-Labs/mlxfast-gemma4-26b-a4b-engine"]
     assert chain.steps[-1] == ["./setup-gemma4-assistant.sh"]
-    assert chain.arguments == ["./setup-gemma4-assistant.sh"]
 
     remote = parse_observed_command("# Remote endpoint: http://127.0.0.1:1235  servedModel: microsoft/phi-4-reasoning-plus")
+    assert remote.fidelity == "faithful"
     assert remote.endpoint == "http://127.0.0.1:1235"
-    assert remote.served_model_name == "microsoft/phi-4-reasoning-plus"
-    assert remote.host_port == 1235
     assert not remote.arguments
 
     docker = parse_observed_command(
-        'docker run --gpus all --ipc=host -e CUTE_DSL_ARCH=sm_120a -v /models:/model:ro -p 8000:8000 vllm/vllm-openai:cu13 --model /model --served-model-name laguna'
+        "docker run --gpus all --ipc=host -e CUTE_DSL_ARCH=sm_120a -v /models:/model:ro vllm/vllm-openai:cu13 --model /model"
     )
-    assert docker.image == "vllm/vllm-openai:cu13"
-    assert docker.environment["CUTE_DSL_ARCH"] == "sm_120a"
-    assert docker.mounts[0]["target"] == "/model"
-    assert docker.arguments[:2] == ["--model", "/model"]
-    assert docker.host_port == 8000
+    assert docker.fidelity == "faithful"
+    assert docker.arguments[0] == "docker"
+    assert docker.arguments[1] == "run"
+
+    windows = parse_observed_command(
+        r"C:\llama.cpp\build\bin\Release\llama-server.exe ^"
+        "\n  --model C:\\models\\foo.gguf ^"
+        "\n  --port 8001"
+    )
+    assert windows.fidelity == "faithful", windows
+    assert "llama-server.exe" in windows.arguments[0]
+    assert "\\" in windows.arguments[0]
+    assert "^" not in windows.arguments
+
+    eaten = parse_observed_command("C:\\llama.cpp\\bin\\llama-server.exe --port 8001")
+    assert eaten.fidelity == "faithful"
+    assert "llama-server.exe" in eaten.arguments[0]
+    caret = parse_observed_command("llama-server.exe ^\n  --port 8001")
+    assert caret.fidelity == "faithful"
+    assert caret.arguments == ["llama-server.exe", "--port", "8001"]
     print("tokenize_observed_command self-check passed")
 
 
@@ -455,8 +391,8 @@ def main() -> None:
         _self_check()
         if not args.apply:
             return
-    updated = apply_registry(Path(args.root))
-    print(f"tokenized {updated} recipes")
+    updated, faithful, lossy = apply_registry(Path(args.root))
+    print(f"updated {updated} recipes; faithful={faithful} lossy={lossy}")
 
 
 if __name__ == "__main__":

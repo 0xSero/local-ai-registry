@@ -101,27 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-5-27b-q5-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-27B-MTP-Q5_K_M.gguf",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "4",
-      "-fa",
-      "on",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q4_1",
-      "-c",
-      "204800",
-      "-b",
-      "8192",
-      "-ub",
-      "4096"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6-27B-MTP-Q5_K_M dense + draft-mtp n-max 4. Single-stream. Prefill ~4k. Profile qwen27-mtp-q5-256k-165w @165W. 2026-07-16.",
       "observed_command": "llama-server -m Qwen3.6-27B-MTP-Q5_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 4 -fa on -ctk q8_0 -ctv q4_1 -c 204800 -b 8192 -ub 4096",
-      "run_id": "cmrnbufer003ilg0182dgqwqk"
+      "run_id": "cmrnbufer003ilg0182dgqwqk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-MTP-Q5_K_M.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "4",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q4_1",
+          "-c",
+          "204800",
+          "-b",
+          "8192",
+          "-ub",
+          "4096"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-5-27b--q5-k-m",

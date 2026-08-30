@@ -101,11 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-27b-iq4-xs-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-27B-IQ4_XS.gguf"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -133,7 +128,15 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "Automated benchmark | lane: ggml-vulkan-b9934 | config: pp512, tg128 | device: Vulkan1 | CPU: 12th Gen Intel(R) Core(TM) i7-12700KF | RAM: 92Gi | OS: Ubuntu 24.04.4 LTS",
       "observed_command": "llama-server -m Qwen3.6-27B-IQ4_XS.gguf",
-      "run_id": "cmrdj9nt9004ho401mapwkzkk"
+      "run_id": "cmrdj9nt9004ho401mapwkzkk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-IQ4_XS.gguf"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-mtp-gguf--iq4-xs",

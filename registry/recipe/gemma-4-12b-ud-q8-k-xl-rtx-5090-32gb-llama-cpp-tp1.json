@@ -101,31 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "gemma-4-12b-ud-q8-k-xl-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "gemma-4-12b-it-UD-Q8_K_XL.gguf",
-      "--alias",
-      "gemma-4-12b-q8",
-      "-ngl",
-      "999",
-      "-fa",
-      "on",
-      "-c",
-      "8192",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-np",
-      "1",
-      "--temp",
-      "0",
-      "--host",
-      "127.0.0.1",
-      "--port",
-      "8080"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -142,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 8080,
-    "host_port": 8080,
     "kind": "reference",
     "run_id": "cmqdzcto500r0mp019jylhjqk",
     "source": "localmaxxing",
@@ -155,7 +128,35 @@
       "hardware_label": "RTX 5090",
       "notes": "Batch bench via lmx remote loop (warmup 2, median of 3, 512 out, temp 0). RTX 5090, display attached. llama-server -m gemma-4-12b-it-UD-Q8_K_XL.gguf --alias gemma-4-12b-q8 -ngl 999 -fa on -c 8192 -ctk q8_0 -ctv q8_0 -np 1 --temp 0 --host 127.0.0.1 --port 8080",
       "observed_command": "llama-server -m gemma-4-12b-it-UD-Q8_K_XL.gguf --alias gemma-4-12b-q8 -ngl 999 -fa on -c 8192 -ctk q8_0 -ctv q8_0 -np 1 --temp 0 --host 127.0.0.1 --port 8080",
-      "run_id": "cmqdzcto500r0mp019jylhjqk"
+      "run_id": "cmqdzcto500r0mp019jylhjqk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gemma-4-12b-it-UD-Q8_K_XL.gguf",
+          "--alias",
+          "gemma-4-12b-q8",
+          "-ngl",
+          "999",
+          "-fa",
+          "on",
+          "-c",
+          "8192",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-np",
+          "1",
+          "--temp",
+          "0",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8080"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-12b-it--ud-q8-k-xl",

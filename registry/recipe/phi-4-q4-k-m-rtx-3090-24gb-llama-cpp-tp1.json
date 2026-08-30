@@ -101,27 +101,6 @@
   "hardware_id": "rtx-3090-24gb",
   "id": "phi-4-q4-k-m-rtx-3090-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "microsoft_Phi-4-reasoning-plus-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-ngl",
-      "999",
-      "-fa",
-      "on",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-fitt",
-      "1024",
-      "-r",
-      "5"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "RTX 3090",
       "notes": "7900 (homelab), AMD Ryzen 9 7900X (12c/24t, 3.7GHz), 64GB DDR5, RTX 3090 power-limited to 250W, Linux 6.8.0. Single GPU, flash attention ON, fp16 KV cache (auto-detected per model). Benchmarked with llama-bench (-r 5 reps).",
       "observed_command": "llama-bench -m microsoft_Phi-4-reasoning-plus-Q4_K_M.gguf -p 512 -n 128 -ngl 999 -fa on -ctk f16 -ctv f16 -fitt 1024 -r 5",
-      "run_id": "cmrsh42kj06fwlg01n9f1byu4"
+      "run_id": "cmrsh42kj06fwlg01n9f1byu4",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "microsoft_Phi-4-reasoning-plus-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "999",
+          "-fa",
+          "on",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-fitt",
+          "1024",
+          "-r",
+          "5"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "microsoft-phi-4-reasoning--q4-k-m",

@@ -17,7 +17,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from tokenize_observed_command import merge_launch, parse_observed_command
+from tokenize_observed_command import parse_observed_command, tokenized_record
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -428,7 +428,15 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             "url": url,
             "container": container_none(url),
         }
-        merge_launch(launch, parse_observed_command(snippet if isinstance(snippet, str) else None))
+        localmaxxing_meta = {
+            "run_id": run_id,
+            "hardware_label": row.get("hardwareGroupLabel"),
+            "observed_command": snippet,
+            "backend": engine.get("backend"),
+            "notes": row.get("notes"),
+        }
+        if isinstance(snippet, str) and snippet.strip():
+            localmaxxing_meta["tokenized"] = tokenized_record(parse_observed_command(snippet))
         recipe = {
             "schema_version": SCHEMA,
             "id": recipe_id,
@@ -453,13 +461,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
             "speed_sweeps_ids": [sweep_id],
             "metadata": {
-                "localmaxxing": {
-                    "run_id": run_id,
-                    "hardware_label": row.get("hardwareGroupLabel"),
-                    "observed_command": flags.get("commandSnippet"),
-                    "backend": engine.get("backend"),
-                    "notes": row.get("notes"),
-                }
+                "localmaxxing": localmaxxing_meta
             },
             "provenance": provenance("normalized-recipe", url),
             "facts": {
@@ -694,7 +696,6 @@ def import_mlxfast(registry: Registry) -> None:
         "url": board_url,
         "container": container_none(board_url),
     }
-    merge_launch(launch, parse_observed_command(observed))
     recipe = {
         "schema_version": SCHEMA,
         "id": recipe_id,
@@ -722,6 +723,7 @@ def import_mlxfast(registry: Registry) -> None:
                 "official_hardware": "organizer M5 Max 128GB",
                 "solver": "samfenwick",
                 "observed_command": observed,
+                "tokenized": tokenized_record(parse_observed_command(observed)),
             }
         },
         "provenance": provenance("normalized-recipe", board_url),

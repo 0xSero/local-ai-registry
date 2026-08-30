@@ -101,16 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-6-27b-q4-k-s-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "1024",
-      "-ub",
-      "512",
-      "--cache-type-k",
-      "q4_0",
-      "--cache-type-v",
-      "q4_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -138,7 +128,20 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b=1024/ub=512; q4_0/q4_0 KV; GatedDeltaNet+GQA hybrid arch; gen perfectly flat",
       "observed_command": "-b 1024 -ub 512 --cache-type-k q4_0 --cache-type-v q4_0",
-      "run_id": "cmoetoim3000sjo04hd67abew"
+      "run_id": "cmoetoim3000sjo04hd67abew",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "1024",
+          "-ub",
+          "512",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-gguf--q4-k-s",

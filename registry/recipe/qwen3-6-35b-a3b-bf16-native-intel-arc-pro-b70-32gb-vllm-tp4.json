@@ -101,32 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-bf16-native-intel-arc-pro-b70-32gb-vllm-tp4",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "qwen36-35b-a3b-bf16-hf",
-      "--tensor-parallel-size",
-      "4",
-      "--dtype",
-      "bfloat16",
-      "--enable-prefix-caching",
-      "--mamba-cache-mode",
-      "align",
-      "--max-model-len",
-      "65536",
-      "--max-num-seqs",
-      "8",
-      "--gpu-memory-utilization",
-      "0.90",
-      "--max-num-batched-tokens",
-      "8192",
-      "--trust-remote-code",
-      "--enable-auto-tool-choice",
-      "--tool-call-parser",
-      "qwen3_coder",
-      "--compilation-config",
-      "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,10 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
-      "ZE_AFFINITY_MASK": "0,2,3,4"
-    },
     "kind": "reference",
     "run_id": "cmqszbv1q012hqr01fsmv2wnu",
     "source": "localmaxxing",
@@ -158,7 +128,40 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6-35B-A3B NATIVE BF16 (no quantization) on 4x Intel Arc Pro B70 (TP=4) via vLLM-XPU graph-mode. b1 DECODE = 120.76 t/s (corrected after-first-token, mean-of-5, temp 0, deterministic 120.71-120.81). FULL_DECODE_ONLY XPU graph capture (4-way XCCL allreduce captured cleanly) on vllm-main d272418f4 + locally-patched cutlass work_group_scratch attention kernel. Cold prefill ~6500 tok/s (5.3k-tok prompt); align prefix-cache warm re-prefill 145ms vs 810ms cold (~5.6x). Higher-batch aggregate (single TP=4 instance): b8=593, b16=602, b24=596 tok/s. Full-precision BF16 BEATS our own online-FP8 TP=2 (110.73 b1) by ~9% on decode AND beats the prior B70 BF16-TP4 community best (102.5) by +18 t/s -- FP8 dequant overhead exceeds its bandwidth savings on this 3B-active MoE. qwen3_coder tool-calling verified. No power-limit changes; high-power B70 variant card excluded (4 matched regular-power cards).",
       "observed_command": "ZE_AFFINITY_MASK=0,2,3,4 VLLM_XPU_ENABLE_XPU_GRAPH=1 vllm serve qwen36-35b-a3b-bf16-hf --tensor-parallel-size 4 --dtype bfloat16 --enable-prefix-caching --mamba-cache-mode align --max-model-len 65536 --max-num-seqs 8 --gpu-memory-utilization 0.90 --max-num-batched-tokens 8192 --trust-remote-code --enable-auto-tool-choice --tool-call-parser qwen3_coder --compilation-config '{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}'",
-      "run_id": "cmqszbv1q012hqr01fsmv2wnu"
+      "run_id": "cmqszbv1q012hqr01fsmv2wnu",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "qwen36-35b-a3b-bf16-hf",
+          "--tensor-parallel-size",
+          "4",
+          "--dtype",
+          "bfloat16",
+          "--enable-prefix-caching",
+          "--mamba-cache-mode",
+          "align",
+          "--max-model-len",
+          "65536",
+          "--max-num-seqs",
+          "8",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-num-batched-tokens",
+          "8192",
+          "--trust-remote-code",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}"
+        ],
+        "environment": {
+          "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+          "ZE_AFFINITY_MASK": "0,2,3,4"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--bf16-native",

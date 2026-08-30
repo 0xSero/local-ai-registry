@@ -101,24 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "laguna-s-2-1-4bit-affine-gs64-apple-m5-max-128gb-mlx-tp1",
   "launch": {
-    "arguments": [
-      "python",
-      "bench_speed.py",
-      "(one-big-function",
-      "@mx.compile",
-      "+",
-      "zmlx",
-      "moe_mlp",
-      "sigmoid",
-      "gating",
-      "fix",
-      "+",
-      "precomputed",
-      "masks",
-      "+",
-      "bf16",
-      "gating)"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -146,7 +128,28 @@
       "hardware_label": "M5 Max",
       "notes": "Optimized MLX decode: one-big-function @mx.compile (48 layers), zmlx moe_mlp patch with sigmoid gating fix (zmlx defaults to softmax, Laguna uses sigmoid), precomputed attention masks, bfloat16 gating. Pure MLX, no torch/CUDA. Quality: 0.9555 Pearson logit correlation vs BF16 reference. Code: github.com/jacklarmer/laguna-apple",
       "observed_command": "python bench_speed.py (one-big-function @mx.compile + zmlx moe_mlp sigmoid gating fix + precomputed masks + bf16 gating)",
-      "run_id": "cms3c730w00w6s201nzhq8cmh"
+      "run_id": "cms3c730w00w6s201nzhq8cmh",
+      "tokenized": {
+        "arguments": [
+          "python",
+          "bench_speed.py",
+          "(one-big-function",
+          "@mx.compile",
+          "+",
+          "zmlx",
+          "moe_mlp",
+          "sigmoid",
+          "gating",
+          "fix",
+          "+",
+          "precomputed",
+          "masks",
+          "+",
+          "bf16",
+          "gating)"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "pipenetwork-laguna-s-2-1-mlx-4bit--4bit-affine-gs64",

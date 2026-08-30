@@ -101,10 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "gemma-4-12b-q4-k-m-dgx-spark-gb10-128gb-lmstudio-tp1",
   "launch": {
-    "arguments": [
-      "max_tokens",
-      "512"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -124,32 +120,6 @@
     "kind": "reference",
     "run_id": "cmqdwa20m00n2mp01f41powhb",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "LM",
-        "Studio",
-        "runtime",
-        "llama.cpp-linux-arm64-nvidia-cuda13",
-        "v2.20.1"
-      ],
-      [
-        "model",
-        "google/gemma-4-12b",
-        "Q4_K_M"
-      ],
-      [
-        "ctx",
-        "66861"
-      ],
-      [
-        "temp",
-        "0"
-      ],
-      [
-        "max_tokens",
-        "512"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmqdwa20m00n2mp01f41powhb"
   },
   "metadata": {
@@ -158,7 +128,26 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Benchmarked via LM Studio REST /api/v0/chat/completions. Median of 2 measured 512-token generations after 1 warm-up; temperature 0; fixed prompt (43 prompt tokens). Runtime: llama.cpp-linux-arm64-nvidia-cuda13 v2.20.1, CUDA 13.0, driver 580.142. NVIDIA DGX Spark (GB10 Grace Blackwell), 20-core Grace ARM (Cortex-X925/A725), 121 GiB unified memory. Note: gemma-4 is a reasoning model; ~509 of 512 output tokens were reasoning tokens.",
       "observed_command": "LM Studio runtime llama.cpp-linux-arm64-nvidia-cuda13 v2.20.1; model google/gemma-4-12b Q4_K_M; ctx 66861; temp 0; max_tokens 512",
-      "run_id": "cmqdwa20m00n2mp01f41powhb"
+      "run_id": "cmqdwa20m00n2mp01f41powhb",
+      "tokenized": {
+        "arguments": [
+          "LM",
+          "Studio",
+          "runtime",
+          "llama.cpp-linux-arm64-nvidia-cuda13",
+          "v2.20.1;",
+          "model",
+          "google/gemma-4-12b",
+          "Q4_K_M;",
+          "ctx",
+          "66861;",
+          "temp",
+          "0;",
+          "max_tokens",
+          "512"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-12b--q4-k-m",

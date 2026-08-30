@@ -101,27 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-6-27b-q4-k-xl-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-ny0b512u",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-27B-UD-Q4_K_XL.gguf",
-      "--mmproj",
-      "mmproj-BF16.gguf",
-      "--host",
-      "0.0.0.0",
-      "--port",
-      "1234",
-      "-c",
-      "65536",
-      "-ngl",
-      "999",
-      "--flash-attn",
-      "on",
-      "--jinja",
-      "--no-mmap",
-      "-fit",
-      "off"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -138,8 +117,6 @@
       ],
       "state": "none"
     },
-    "container_port": 1234,
-    "host_port": 1234,
     "kind": "reference",
     "run_id": "cmp99vyrv046co401ny0b512u",
     "source": "localmaxxing",
@@ -151,7 +128,31 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "from 2k to 64k depth with llama-benchy, goes from just under 1k prefill down to just under 500. decode goes from 28 to around 23 but didn't test long outputs.",
       "observed_command": "llama-server \\\n  -m Qwen3.6-27B-UD-Q4_K_XL.gguf \\\n  --mmproj mmproj-BF16.gguf \\\n  --host 0.0.0.0 \\\n  --port 1234 \\\n  -c 65536 \\\n  -ngl 999 \\\n  --flash-attn on \\\n  --jinja \\\n  --no-mmap \\\n  -fit off\n",
-      "run_id": "cmp99vyrv046co401ny0b512u"
+      "run_id": "cmp99vyrv046co401ny0b512u",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-UD-Q4_K_XL.gguf",
+          "--mmproj",
+          "mmproj-BF16.gguf",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "1234",
+          "-c",
+          "65536",
+          "-ngl",
+          "999",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--no-mmap",
+          "-fit",
+          "off"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-gguf--q4-k-xl",

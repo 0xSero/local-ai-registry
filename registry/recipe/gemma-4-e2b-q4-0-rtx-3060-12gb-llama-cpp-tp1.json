@@ -101,23 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-e2b-q4-0-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "gemma-4-E2B_q4_0-it.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-r",
-      "3",
-      "-o",
-      "json"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -145,7 +128,27 @@
       "hardware_label": "RTX 3060",
       "notes": "Gemma4 E2B (4.6B params, ~2B active) QAT quantized to Q4_0. Fully offloaded (-ngl 99). Fedora 43, CUDA 13.0, driver 580.159.04. Max context = 262144 (native limit, VRAM headroom available). Benchmark at 4096 ctx, greedy decode.",
       "observed_command": "llama-bench -m gemma-4-E2B_q4_0-it.gguf -p 512 -n 128 -ngl 99 -fa on -r 3 -o json",
-      "run_id": "cmr3pjxbz06xvpi01add4ufo5"
+      "run_id": "cmr3pjxbz06xvpi01add4ufo5",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "gemma-4-E2B_q4_0-it.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "3",
+          "-o",
+          "json"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-e2b-it--q4-0",

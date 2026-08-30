@@ -101,18 +101,6 @@
   "hardware_id": "apple-m5-max-128gb",
   "id": "deepseek-v4-flash-iq2-xxs-asym-moe-apple-m5-max-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "ds4-server",
-      "--model",
-      "ds4flash.gguf",
-      "--ctx",
-      "32768",
-      "(antirez/ds4",
-      "DwarfStar",
-      "native",
-      "Metal",
-      "engine"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -132,33 +120,6 @@
     "kind": "reference",
     "run_id": "cmqpiopug00ouqo01gtohwf4l",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "ds4-server",
-        "--model",
-        "ds4flash.gguf",
-        "--ctx",
-        "32768",
-        "(antirez/ds4",
-        "DwarfStar",
-        "native",
-        "Metal",
-        "engine"
-      ],
-      [
-        "q2-imatrix",
-        "IQ2_XXS",
-        "GGUF",
-        "from",
-        "antirez/deepseek-v4-gguf"
-      ],
-      [
-        "in-memory",
-        "KV,",
-        "no",
-        "MTP)"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmqpiopug00ouqo01gtohwf4l"
   },
   "metadata": {
@@ -167,7 +128,31 @@
       "hardware_label": "M5 Max",
       "notes": "antirez/ds4 (DwarfStar) custom Metal engine for DeepSeek-V4-Flash (filed as llama.cpp per cell convention; not actual llama.cpp). IQ2_XXS asymmetric MoE quant. Decode measured at the 32k context frontier via ds4-bench, greedy, in-memory KV (no disk KV cache, no MTP): gen 26.33 t/s, prefill 319.95 t/s. Apple M5 Max 128GB macOS 27.0.",
       "observed_command": "ds4-server --model ds4flash.gguf --ctx 32768  (antirez/ds4 \"DwarfStar\" native Metal engine; q2-imatrix IQ2_XXS GGUF from antirez/deepseek-v4-gguf; in-memory KV, no MTP)",
-      "run_id": "cmqpiopug00ouqo01gtohwf4l"
+      "run_id": "cmqpiopug00ouqo01gtohwf4l",
+      "tokenized": {
+        "arguments": [
+          "ds4-server",
+          "--model",
+          "ds4flash.gguf",
+          "--ctx",
+          "32768",
+          "(antirez/ds4",
+          "DwarfStar",
+          "native",
+          "Metal",
+          "engine;",
+          "q2-imatrix",
+          "IQ2_XXS",
+          "GGUF",
+          "from",
+          "antirez/deepseek-v4-gguf;",
+          "in-memory",
+          "KV,",
+          "no",
+          "MTP)"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-flash--iq2-xxs-asym-moe",

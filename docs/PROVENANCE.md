@@ -50,7 +50,7 @@ A later LocalMaxxing refresh mapped NVIDIA GB10 / DGX Spark UNIFIED 128GB rows o
 
 oMLX `omlx serve` templates were rejected. They copied a native command onto Apple SKUs that had some other MLX evidence, without a measured oMLX run on those chips.
 
-mlx.fast official Gemma 4 26B A4B scores from [yukon.org/mlxfast](https://www.yukon.org/mlxfast) attach to canonical `gemma-4-26b-a4b-it` through Hub-confirmed `mlx-community/gemma-4-26B-A4B-it-qat-4bit` revision `0e3cbab38ce568cf6e23543010d08d03b731910c`. Hardware is `apple-m5-max-128gb` only. The recipe is a reference-only candidate: the observed setup is tokenized into `launch.steps` / `launch.arguments`, and the original shell string stays in metadata.
+mlx.fast official Gemma 4 26B A4B scores from [yukon.org/mlxfast](https://www.yukon.org/mlxfast) attach to canonical `gemma-4-26b-a4b-it` through Hub-confirmed `mlx-community/gemma-4-26B-A4B-it-qat-4bit` revision `0e3cbab38ce568cf6e23543010d08d03b731910c`. Hardware is `apple-m5-max-128gb` only. The recipe is a reference-only candidate: the original shell string stays in metadata, and a mechanical argv split may appear beside it as `metadata.mlxfast.tokenized`. Those tokens are unverified against the engine CLI and do not satisfy promotion criterion 3.
 
 ## Promotion rule
 
@@ -64,7 +64,7 @@ A candidate becomes validated only when all of these are present:
 6. measured speed evidence attached to the same recipe;
 7. no eager-mode or CUDA-graph-disabling workaround.
 
-Until then, the candidate is searchable and useful as evidence, but clients must not offer its Run action.
+Until then, the candidate is searchable and useful as evidence, but clients must not offer its Run action. A mechanical argv split stored in metadata is not criterion 3.
 
 ## Enrichment contract
 

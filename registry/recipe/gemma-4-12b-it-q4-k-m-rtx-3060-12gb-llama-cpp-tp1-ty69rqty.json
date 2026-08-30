@@ -101,29 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-12b-it-q4-k-m-rtx-3060-12gb-llama-cpp-tp1-ty69rqty",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "/mnt/hdd/models/yuxinlu1-gemma4-agentic/gemma4-v2-Q4_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-b",
-      "4096",
-      "-ub",
-      "512",
-      "-t",
-      "32",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-r",
-      "2",
-      "-o",
-      "json"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "RTX 3060",
       "notes": "Gemma4-v2 agentic/Fable5 Q4_K_M, fully offloaded on RTX 3060. Server loaded and completed a real completion at 262144 context. Optimization sweep tested batch/ubatch/thread combinations; winner b4096 ub512 threads32. Peak VRAM measured after warmup at 262K context with q4_0 KV cache.",
       "observed_command": "llama-bench -m /mnt/hdd/models/yuxinlu1-gemma4-agentic/gemma4-v2-Q4_K_M.gguf -p 512 -n 128 -b 4096 -ub 512 -t 32 -ngl 99 -fa on -r 2 -o json",
-      "run_id": "cmrjj22rh02k4mj01ty69rqty"
+      "run_id": "cmrjj22rh02k4mj01ty69rqty",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "/mnt/hdd/models/yuxinlu1-gemma4-agentic/gemma4-v2-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-b",
+          "4096",
+          "-ub",
+          "512",
+          "-t",
+          "32",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "2",
+          "-o",
+          "json"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "yuxinlu1-gemma-4-12b-agentic-fable5-composer2-5-v2-3-5x-tau2-gguf--q4-k-m",

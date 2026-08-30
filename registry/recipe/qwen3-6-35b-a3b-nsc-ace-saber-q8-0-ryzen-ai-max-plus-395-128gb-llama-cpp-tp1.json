@@ -101,29 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-6-35b-a3b-nsc-ace-saber-q8-0-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-35B-A3B-NSC-ACE-SABER-Q8_0-MTP.gguf",
-      "-c",
-      "262144",
-      "-b",
-      "32768",
-      "--cache-type-k",
-      "f16",
-      "--cache-type-v",
-      "f16",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-type",
-      "ngram-mod",
-      "--spec-type",
-      "ngram-map-k",
-      "--draft-max",
-      "3",
-      "--no-mmap",
-      "--kv-unified"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Evidence: rolling tg=79.56 tok/s; n_decoded=103; prompt eval=307.01 tok/s.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-NSC-ACE-SABER-Q8_0-MTP.gguf -c 262144 -b 32768 --cache-type-k f16 --cache-type-v f16 --spec-type draft-mtp --spec-type ngram-mod --spec-type ngram-map-k --draft-max 3 --no-mmap --kv-unified",
-      "run_id": "cmq45uj0u0046mu01snzbmjjg"
+      "run_id": "cmq45uj0u0046mu01snzbmjjg",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-NSC-ACE-SABER-Q8_0-MTP.gguf",
+          "-c",
+          "262144",
+          "-b",
+          "32768",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-type",
+          "ngram-mod",
+          "--spec-type",
+          "ngram-map-k",
+          "--draft-max",
+          "3",
+          "--no-mmap",
+          "--kv-unified"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "gestaltlabs-qwen3-6-35b-a3b-nsc-ace-saber-gguf-mtp--q8-0",

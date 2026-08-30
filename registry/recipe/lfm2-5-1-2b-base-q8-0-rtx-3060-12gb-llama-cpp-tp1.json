@@ -101,30 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "lfm2-5-1-2b-base-q8-0-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/home/dario/llama.cpp/build/bin/llama-bench",
-      "-m",
-      "/mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/lfm2.5-1.2b/LFM2.5-1.2B-Instruct-Q8_0.gguf",
-      "-p",
-      "4096",
-      "-n",
-      "512",
-      "-b",
-      "4096",
-      "-ub",
-      "1024",
-      "-t",
-      "16",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-r",
-      "2",
-      "-o",
-      "json",
-      "--no-warmup"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -152,7 +128,34 @@
       "hardware_label": "RTX 3060",
       "notes": "4096 prompt / 512 generation. Two throwaway loads preceded three measured configurations; winner selected by minimum measured TTFT. Q8_0 GGUF: /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/lfm2.5-1.2b/LFM2.5-1.2B-Instruct-Q8_0.gguf. All weights fully offloaded with Flash Attention. Peak VRAM and max sampled GPU power recorded during winner configuration. MobileLLM GGUF filename reports the converted parameter count (see local file).",
       "observed_command": "/home/dario/llama.cpp/build/bin/llama-bench -m /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/lfm2.5-1.2b/LFM2.5-1.2B-Instruct-Q8_0.gguf -p 4096 -n 512 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json --no-warmup",
-      "run_id": "cmrz354ye063no401xdkrx978"
+      "run_id": "cmrz354ye063no401xdkrx978",
+      "tokenized": {
+        "arguments": [
+          "/home/dario/llama.cpp/build/bin/llama-bench",
+          "-m",
+          "/mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/lfm2.5-1.2b/LFM2.5-1.2B-Instruct-Q8_0.gguf",
+          "-p",
+          "4096",
+          "-n",
+          "512",
+          "-b",
+          "4096",
+          "-ub",
+          "1024",
+          "-t",
+          "16",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-r",
+          "2",
+          "-o",
+          "json",
+          "--no-warmup"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "liquidai-lfm2-5-1-2b-instruct--q8-0",

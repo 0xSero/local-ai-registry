@@ -101,30 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-6-27b-q4-0-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
   "launch": {
-    "arguments": [
-      "3x:",
-      "GGML_VK_VISIBLE_DEVICES=$i",
-      "llama-server",
-      "--port",
-      "910$((1+i))",
-      "-ngl",
-      "99",
-      "--jinja",
-      "--flash-attn",
-      "auto",
-      "--prio",
-      "3",
-      "-m",
-      "Qwen3.6-27B-Q4_0.gguf",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-np",
-      "16",
-      "-c",
-      "65536"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -152,7 +128,10 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "3 independent llama-server replicas, one per GPU (GGML_VK_VISIBLE_DEVICES pinning), client round-robin. Aggregate tok/s across replicas, median of 3 rounds, cold prefill (cache_prompt off). Replicate-over-fewest-cards layout.",
       "observed_command": "3x: GGML_VK_VISIBLE_DEVICES=$i llama-server --port 910$((1+i)) -ngl 99 --jinja --flash-attn auto --prio 3 -m Qwen3.6-27B-Q4_0.gguf -ctk f16 -ctv f16 -np 16 -c 65536",
-      "run_id": "cmro8x2u3027plg01ileea7w8"
+      "run_id": "cmro8x2u3027plg01ileea7w8",
+      "tokenized": {
+        "fidelity": "lossy"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-27b--q4-0",

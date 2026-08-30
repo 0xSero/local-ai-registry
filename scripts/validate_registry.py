@@ -7,6 +7,8 @@ import re
 import sys
 from pathlib import Path
 
+from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
+
 
 COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks")
 SCHEMA = "local-ai-registry/v1"
@@ -153,19 +155,47 @@ def validate_tokenized_launch(recipe, errors):
         elif any("&&" in token for step in steps for token in step):
             errors.append(f"{identifier}: launch.steps still contains a shell && chain")
     source = recipe.get("recipe_source")
-    if source in ("localmaxxing", "mlxfast", "exo-postgres"):
-        if isinstance(arguments, list) and any("&&" in item for item in arguments):
-            errors.append(f"{identifier}: launch.arguments still contains a shell && chain")
-        metadata = (recipe.get("metadata") or {}).get("localmaxxing" if source == "localmaxxing" else "mlxfast") or {}
+    if launch.get("kind") == "reference" or source in ("localmaxxing", "mlxfast", "exo-postgres"):
+        for field in REFERENCE_LAUNCH_FORBIDDEN:
+            if field in launch:
+                errors.append(f"{identifier}: reference launch must not carry contract field {field}")
+        meta_key = "mlxfast" if source == "mlxfast" else "localmaxxing" if source == "localmaxxing" else None
+        metadata = (recipe.get("metadata") or {}).get(meta_key) or {} if meta_key else {}
+        tokenized = metadata.get("tokenized") if isinstance(metadata, dict) else None
+        if tokenized is None:
+            return
+        if not isinstance(tokenized, dict) or tokenized.get("fidelity") not in ("faithful", "lossy"):
+            errors.append(f"{identifier}: metadata tokenized fidelity must be faithful or lossy")
+            return
+        if tokenized.get("fidelity") == "lossy":
+            if tokenized.get("arguments") or tokenized.get("steps"):
+                errors.append(f"{identifier}: lossy tokenization must not publish argv")
+            return
+        observed_args = tokenized.get("arguments")
+        observed_steps = tokenized.get("steps")
+        if observed_args is not None and (
+            not isinstance(observed_args, list) or not all(isinstance(item, str) for item in observed_args)
+        ):
+            errors.append(f"{identifier}: tokenized arguments must be a string array")
+        if observed_steps is not None:
+            if not isinstance(observed_steps, list) or not all(
+                isinstance(step, list) and all(isinstance(token, str) for token in step) for step in observed_steps
+            ):
+                errors.append(f"{identifier}: tokenized steps must be an argv array list")
+            elif any(step and step[0].startswith("-") for step in observed_steps):
+                errors.append(f"{identifier}: tokenized step starts with a flag")
+        blob = json.dumps({"arguments": observed_args, "steps": observed_steps})
+        if "&&" in blob:
+            errors.append(f"{identifier}: tokenized argv still contains a shell && chain")
         snippet = metadata.get("observed_command") if isinstance(metadata, dict) else None
         if (
             isinstance(snippet, str)
-            and " " in snippet.strip()
-            and isinstance(arguments, list)
-            and len(arguments) == 1
-            and arguments[0].strip() == snippet.strip()
+            and len(snippet.split()) > 1
+            and isinstance(observed_args, list)
+            and len(observed_args) == 1
+            and not observed_steps
         ):
-            errors.append(f"{identifier}: observed command was copied as a single launch argument")
+            errors.append(f"{identifier}: observed command collapsed to a single token")
 
 
 def validate_container(recipe, errors):

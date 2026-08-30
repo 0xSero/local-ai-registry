@@ -101,15 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-5-27b-q4-k-xl-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-vv4ph6h2",
   "launch": {
-    "arguments": [
-      "/home/jack/llama.cpp/build-hip/bin/llama-bench",
-      "-m",
-      "/home/jack/unsloth/Qwen3.5-27B-GGUF/Qwen3.5-27B-UD-Q4_K_XL.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "HIP/ROCm backend (native gfx1201, ROCm 7.2.1). Q4_K_XL Dynamic V3.0 GGUF. Maintained by Hermes Agent automatic HIP benchmark.",
       "observed_command": "/home/jack/llama.cpp/build-hip/bin/llama-bench -m /home/jack/unsloth/Qwen3.5-27B-GGUF/Qwen3.5-27B-UD-Q4_K_XL.gguf -p 512 -n 128",
-      "run_id": "cmt0g74hr0es6ms01vv4ph6h2"
+      "run_id": "cmt0g74hr0es6ms01vv4ph6h2",
+      "tokenized": {
+        "arguments": [
+          "/home/jack/llama.cpp/build-hip/bin/llama-bench",
+          "-m",
+          "/home/jack/unsloth/Qwen3.5-27B-GGUF/Qwen3.5-27B-UD-Q4_K_XL.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-5-27b-gguf--q4-k-xl",

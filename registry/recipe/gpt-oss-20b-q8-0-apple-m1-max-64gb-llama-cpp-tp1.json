@@ -101,15 +101,6 @@
   "hardware_id": "apple-m1-max-64gb",
   "id": "gpt-oss-20b-q8-0-apple-m1-max-64gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "gpt-oss-20b-Q8_0.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "M1 Max",
       "notes": "M1 Max (Metal) via prebuilt llama.cpp b9535, llama-bench best-of-5. tg128=83.58 t/s, pp512=1021.94 t/s. Comparison vs 1x AMD R9700 Vulkan (123.4 tg / 3159 pp).",
       "observed_command": "llama-bench -m gpt-oss-20b-Q8_0.gguf -p 512 -n 128",
-      "run_id": "cmq1eccf500mko6015zitbqv8"
+      "run_id": "cmq1eccf500mko6015zitbqv8",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "gpt-oss-20b-Q8_0.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "openai-gpt-oss-20b--q8-0",

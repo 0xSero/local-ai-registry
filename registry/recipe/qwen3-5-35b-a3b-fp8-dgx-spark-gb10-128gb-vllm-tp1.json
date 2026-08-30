@@ -101,14 +101,6 @@
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "qwen3-5-35b-a3b-fp8-dgx-spark-gb10-128gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "spark-vllm",
-      "recipe",
-      "qwen3.5-35b-a3b-fp8.yaml",
-      "with",
-      "--reasoning-parser",
-      "qwen3"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:26:09Z",
       "compose_file": null,
@@ -136,7 +128,18 @@
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark vLLM/Spark Docker profile, long coding run. Source: /home/radar/spark_vllm_runbook_2026-04-16.md",
       "observed_command": "spark-vllm recipe qwen3.5-35b-a3b-fp8.yaml with --reasoning-parser qwen3",
-      "run_id": "cmof6hct9000cgv04pv51opal"
+      "run_id": "cmof6hct9000cgv04pv51opal",
+      "tokenized": {
+        "arguments": [
+          "spark-vllm",
+          "recipe",
+          "qwen3.5-35b-a3b-fp8.yaml",
+          "with",
+          "--reasoning-parser",
+          "qwen3"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-5-35b-a3b-fp8--fp8",

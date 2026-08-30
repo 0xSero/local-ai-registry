@@ -101,18 +101,6 @@
   "hardware_id": "apple-m4-pro-48gb",
   "id": "qwen3-6-35b-a3b-mlx-4bit-apple-m4-pro-48gb-lmstudio-tp1",
   "launch": {
-    "arguments": [
-      "lms",
-      "load",
-      "qwen3.6-35b-a3b-optiq",
-      "--context-length",
-      "154112",
-      "--parallel",
-      "4",
-      "--identifier",
-      "benchmark-qwen36-35b-optiq",
-      "--yes"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -129,34 +117,9 @@
       ],
       "state": "none"
     },
-    "container_port": 1234,
-    "host_port": 1234,
     "kind": "reference",
     "run_id": "cmsqri8th00qimr016ohrvv20",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "lms",
-        "server",
-        "start",
-        "--port",
-        "1234",
-        "--bind",
-        "127.0.0.1"
-      ],
-      [
-        "lms",
-        "load",
-        "qwen3.6-35b-a3b-optiq",
-        "--context-length",
-        "154112",
-        "--parallel",
-        "4",
-        "--identifier",
-        "benchmark-qwen36-35b-optiq",
-        "--yes"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmsqri8th00qimr016ohrvv20"
   },
   "metadata": {
@@ -165,7 +128,45 @@
       "hardware_label": "M4 Pro",
       "notes": "OptiQ mixed-precision MLX 4-bit quantization. Median of 3 timed runs after 1 warmup using the same deterministic 512-word source-prompt protocol at temperature 0. The model-specific chat template produced 547 prompt tokens; each run generated 254 output tokens. Prefill estimated as prompt tokens divided by LM Studio native time-to-first-token.",
       "observed_command": "lms server start --port 1234 --bind 127.0.0.1 && lms load qwen3.6-35b-a3b-optiq --context-length 154112 --parallel 4 --identifier benchmark-qwen36-35b-optiq --yes",
-      "run_id": "cmsqri8th00qimr016ohrvv20"
+      "run_id": "cmsqri8th00qimr016ohrvv20",
+      "tokenized": {
+        "arguments": [
+          "lms",
+          "load",
+          "qwen3.6-35b-a3b-optiq",
+          "--context-length",
+          "154112",
+          "--parallel",
+          "4",
+          "--identifier",
+          "benchmark-qwen36-35b-optiq",
+          "--yes"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "lms",
+            "server",
+            "start",
+            "--port",
+            "1234",
+            "--bind",
+            "127.0.0.1"
+          ],
+          [
+            "lms",
+            "load",
+            "qwen3.6-35b-a3b-optiq",
+            "--context-length",
+            "154112",
+            "--parallel",
+            "4",
+            "--identifier",
+            "benchmark-qwen36-35b-optiq",
+            "--yes"
+          ]
+        ]
+      }
     }
   },
   "model_instance_id": "mlx-community-qwen3-6-35b-a3b-optiq-4bit--mlx-4bit",

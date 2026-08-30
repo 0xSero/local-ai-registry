@@ -101,28 +101,6 @@
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "qwen3-6-35b-a3b-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "mmangkad/Qwen3.6-35B-A3B-NVFP4",
-      "--quantization",
-      "nvfp4",
-      "--max-model-len",
-      "8192",
-      "--max-num-seqs",
-      "1",
-      "--gpu-memory-utilization",
-      "0.35",
-      "--kv-cache-dtype",
-      "bfloat16",
-      "--tool-call-parser",
-      "qwen3_coder",
-      "--enable-auto-tool-choice",
-      "--speculative-config",
-      "{method:dflash,num_speculative_tokens:4}",
-      "--compilation-config",
-      "{level:2,inductor_compile_config:{use_inductor_graph_partition:true}}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -150,7 +128,32 @@
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Campaign champion \u2014 graph_partition + FAP compile (no max-autotune) on SM120 Blackwell. 2.14x over pre-compile baseline. BFCL 73.33% (22/30). DFlash speculative decoding N=4 + CUDA graphs + greedy (temp=0). 20/20 tool-call chain completed, 100% tool_call_valid_rate. Warmup=10 discarded runs before measurement.",
       "observed_command": "vllm serve mmangkad/Qwen3.6-35B-A3B-NVFP4 --quantization nvfp4 --max-model-len 8192 --max-num-seqs 1 --gpu-memory-utilization 0.35 --kv-cache-dtype bfloat16 --tool-call-parser qwen3_coder --enable-auto-tool-choice --speculative-config {\"method\":\"dflash\",\"num_speculative_tokens\":4} --compilation-config {\"level\":2,\"inductor_compile_config\":{\"use_inductor_graph_partition\":true}}",
-      "run_id": "cmopmgspw0002jv041yjbb6sq"
+      "run_id": "cmopmgspw0002jv041yjbb6sq",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "mmangkad/Qwen3.6-35B-A3B-NVFP4",
+          "--quantization",
+          "nvfp4",
+          "--max-model-len",
+          "8192",
+          "--max-num-seqs",
+          "1",
+          "--gpu-memory-utilization",
+          "0.35",
+          "--kv-cache-dtype",
+          "bfloat16",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--enable-auto-tool-choice",
+          "--speculative-config",
+          "{method:dflash,num_speculative_tokens:4}",
+          "--compilation-config",
+          "{level:2,inductor_compile_config:{use_inductor_graph_partition:true}}"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "mmangkad-qwen3-6-35b-a3b-nvfp4--nvfp4",

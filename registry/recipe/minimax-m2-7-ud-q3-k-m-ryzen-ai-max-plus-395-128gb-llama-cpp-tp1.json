@@ -101,29 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "minimax-m2-7-ud-q3-k-m-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "MiniMax-M2.7-UD-Q3_K_M.gguf",
-      "-ngl",
-      "999",
-      "-fa",
-      "1",
-      "--no-mmap",
-      "--mlock",
-      "-c",
-      "16384",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-b",
-      "4096",
-      "-ub",
-      "4096",
-      "--parallel",
-      "2"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "M5 Strix Halo. MiniMax M2.7 huge MoE at unsloth UD-Q3_K_M (95 GB on disk). 512/512 single-stream, 5 prompts. KV q8_0. ~95 GB consumed of 96 GB GTT cap \u2014 need to stop other processes first. mmap on/off both work; mlock-on slightly faster (13.95 vs 12.95 t/s). Active params still substantial despite Q3 quant; throughput limited by raw weight bandwidth.",
       "observed_command": "llama-server -m MiniMax-M2.7-UD-Q3_K_M.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 16384 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 2",
-      "run_id": "cmoff9sju000oie041q8cst9q"
+      "run_id": "cmoff9sju000oie041q8cst9q",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "MiniMax-M2.7-UD-Q3_K_M.gguf",
+          "-ngl",
+          "999",
+          "-fa",
+          "1",
+          "--no-mmap",
+          "--mlock",
+          "-c",
+          "16384",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-b",
+          "4096",
+          "-ub",
+          "4096",
+          "--parallel",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-minimax-m2-7-gguf--ud-q3-k-m",

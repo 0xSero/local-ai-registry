@@ -101,27 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-6-35b-a3b-q8-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "/home/frosty40/models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf",
-      "-p",
-      "4096",
-      "-n",
-      "128",
-      "-b",
-      "8192",
-      "-ub",
-      "4096",
-      "-r",
-      "2",
-      "-ctk",
-      "f16",
-      "-ctv",
-      "f16",
-      "-fa",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Intel Arc Pro B70 (30.3GiB), llama.cpp SYCL. Q8_K_XL=38.45GB > VRAM, so 11/40 MoE expert layers on CPU (-n-cpu-moe 11 --no-op-offload); f16 KV, -b 8192 -ub 4096, GGML_SYCL_DISABLE_DNN=1. llama-bench pp4096/tg128 depth0, r2. NOT fully VRAM-resident.",
       "observed_command": "llama-bench -m /home/frosty40/models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf -p 4096 -n 128 -b 8192 -ub 4096 -r 2 -ctk f16 -ctv f16 -fa 1",
-      "run_id": "cmr9oedbl00slqr01cqd6le9w"
+      "run_id": "cmr9oedbl00slqr01cqd6le9w",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "/home/frosty40/models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf",
+          "-p",
+          "4096",
+          "-n",
+          "128",
+          "-b",
+          "8192",
+          "-ub",
+          "4096",
+          "-r",
+          "2",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-fa",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--q8-k-xl",

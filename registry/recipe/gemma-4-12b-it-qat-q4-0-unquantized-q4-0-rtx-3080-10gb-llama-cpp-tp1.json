@@ -101,26 +101,6 @@
   "hardware_id": "rtx-3080-10gb",
   "id": "gemma-4-12b-it-qat-q4-0-unquantized-q4-0-rtx-3080-10gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "gemma-4-12b-it-qat-q4_0.gguf",
-      "-c",
-      "32768",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "--parallel",
-      "1",
-      "--jinja",
-      "--spec-type",
-      "none"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "RTX 3080",
       "notes": "Gemma 4 12B IT QAT q4_0 (official Google GGUF, 6.50 GiB), 48 layers, ALL on GPU, fully resident at 32K in 7.47 GB. By far the best latency of the four models I measured on this card: TTFT 977 ms and 2699 tok/s prefill, against 2525 ms / 1080 tok/s for a 27B at 2-bit. Decode is within 2% of the 27B models while prefill is 2.5x faster, so for interactive and long-prompt work this is the better pick on 10GB. Gemma's 40 sliding-window layers cache only 1024 tokens; do not add --swa-full. Headless 3080 (both displays on the 7900X iGPU; desktop holds ~64 MiB on the card). Workload: single non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off, medians of 3 reps (2 where noted). Prefill/decode from llama-server timings; TTFT measured client-side on a streaming request. Prompt token counts differ per model because tokenizers differ. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, driver 591.86, PCIe 4.0 x16, stock 370 W.",
       "observed_command": "llama-server -m gemma-4-12b-it-qat-q4_0.gguf -c 32768 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type none",
-      "run_id": "cmsy7eupf0cszms017nvp2dye"
+      "run_id": "cmsy7eupf0cszms017nvp2dye",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gemma-4-12b-it-qat-q4_0.gguf",
+          "-c",
+          "32768",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-12b-it-qat-q4-0-gguf--q4-0",

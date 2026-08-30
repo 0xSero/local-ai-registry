@@ -101,22 +101,6 @@
   "hardware_id": "rtx-4070-12gb",
   "id": "nvidia-nemotron-3-5-lightning-30b-a3b-gguf-iq4-xs-rtx-4070-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "IQ4_XS",
-      "-ngl",
-      "99",
-      "--n-cpu-moe",
-      "28",
-      "-c",
-      "262144",
-      "q8_0",
-      "KV",
-      "-ub",
-      "1024",
-      "--reasoning",
-      "off"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -136,31 +120,6 @@
     "kind": "reference",
     "run_id": "cmspbzw1300pkmp01v0rqlngc",
     "source": "localmaxxing",
-    "steps": [
-      [
-        "llama-server",
-        "IQ4_XS",
-        "-ngl",
-        "99",
-        "--n-cpu-moe",
-        "28",
-        "-c",
-        "262144",
-        "q8_0",
-        "KV",
-        "-ub",
-        "1024",
-        "--reasoning",
-        "off"
-      ],
-      [
-        "depth",
-        "250K",
-        "fill",
-        "(pp",
-        "est)"
-      ]
-    ],
     "url": "https://www.localmaxxing.com/en/runs/cmspbzw1300pkmp01v0rqlngc"
   },
   "metadata": {
@@ -169,7 +128,31 @@
       "hardware_label": "RTX 4070",
       "notes": null,
       "observed_command": "llama-server IQ4_XS -ngl 99 --n-cpu-moe 28 -c 262144 q8_0 KV -ub 1024 --reasoning off; depth 250K fill (pp est)",
-      "run_id": "cmspbzw1300pkmp01v0rqlngc"
+      "run_id": "cmspbzw1300pkmp01v0rqlngc",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "IQ4_XS",
+          "-ngl",
+          "99",
+          "--n-cpu-moe",
+          "28",
+          "-c",
+          "262144",
+          "q8_0",
+          "KV",
+          "-ub",
+          "1024",
+          "--reasoning",
+          "off;",
+          "depth",
+          "250K",
+          "fill",
+          "(pp",
+          "est)"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "lmstudio-community-nvidia-nemotron-3-5-lightning-30b-a3b-gguf--iq4-xs",

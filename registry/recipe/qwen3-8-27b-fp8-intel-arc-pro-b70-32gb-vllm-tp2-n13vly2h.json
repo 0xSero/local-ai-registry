@@ -101,9 +101,6 @@
   "hardware_id": "intel-arc-pro-b70-32gb",
   "id": "qwen3-8-27b-fp8-intel-arc-pro-b70-32gb-vllm-tp2-n13vly2h",
   "launch": {
-    "arguments": [
-      "repro/qwen38-27b-fp8-vllm-tp2-asrock-b70/run-w8a16-dynamic-mtp-server.sh"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -120,10 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "MODEL_DIR": "/path/to/qwen3.8-27b-fp8",
-      "VLLM_CACHE_DIR": "/path/to/new-dynamic-mtp-cache"
-    },
     "kind": "reference",
     "run_id": "cmtb5n45n0021qq01n13vly2h",
     "source": "localmaxxing",
@@ -135,7 +128,17 @@
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.8 27B official FP8 target on two Intel Arc Pro B70 cards with the neural.download block-W8A16, active-width GDN, and active-Mamba allocation patches. Dynamic service uses the publisher MTP layer serially to depth 8 for one active request and depth 1 under load; every accepted draft token is verified by the unchanged official FP8 target. Fixed 12-prompt cold realistic suite, one unique request each, 128 outputs, streamed token-ID timing, prefix cache disabled, cached_tokens=0 for all requests. Conventional 99-interval median was 58.537756 tok/s on this submitted cold server; an independent second cold server measured 58.244309 tok/s. Exact evidence, patches, commands, cold-start timing, and the separately scoped 146.814418 tok/s high-acceptance fixture are in the linked result packet.",
       "observed_command": "MODEL_DIR=/path/to/qwen3.8-27b-fp8 VLLM_CACHE_DIR=/path/to/new-dynamic-mtp-cache repro/qwen38-27b-fp8-vllm-tp2-asrock-b70/run-w8a16-dynamic-mtp-server.sh",
-      "run_id": "cmtb5n45n0021qq01n13vly2h"
+      "run_id": "cmtb5n45n0021qq01n13vly2h",
+      "tokenized": {
+        "arguments": [
+          "repro/qwen38-27b-fp8-vllm-tp2-asrock-b70/run-w8a16-dynamic-mtp-server.sh"
+        ],
+        "environment": {
+          "MODEL_DIR": "/path/to/qwen3.8-27b-fp8",
+          "VLLM_CACHE_DIR": "/path/to/new-dynamic-mtp-cache"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-8-27b-fp8--fp8",

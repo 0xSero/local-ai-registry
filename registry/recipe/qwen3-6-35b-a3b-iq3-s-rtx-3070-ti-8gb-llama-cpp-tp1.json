@@ -101,23 +101,6 @@
   "hardware_id": "rtx-3070-ti-8gb",
   "id": "qwen3-6-35b-a3b-iq3-s-rtx-3070-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "./llama-bench",
-      "-hf",
-      "unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ3_S",
-      "--n-cpu-moe",
-      "25",
-      "--flash-attn",
-      "1",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "--device",
-      "CUDA0",
-      "-fitc",
-      "262144"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -145,7 +128,27 @@
       "hardware_label": "RTX 3070 Ti",
       "notes": null,
       "observed_command": "./llama-bench -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ3_S --n-cpu-moe 25 --flash-attn 1  -ctk q8_0 -ctv q8_0 --device CUDA0 -fitc 262144",
-      "run_id": "cmoix1maz000glb04gixcekjk"
+      "run_id": "cmoix1maz000glb04gixcekjk",
+      "tokenized": {
+        "arguments": [
+          "./llama-bench",
+          "-hf",
+          "unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ3_S",
+          "--n-cpu-moe",
+          "25",
+          "--flash-attn",
+          "1",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--device",
+          "CUDA0",
+          "-fitc",
+          "262144"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--iq3-s",

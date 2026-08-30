@@ -101,29 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-6-35b-a3b-dynamic-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-35B-A3B-DYNAMIC.gguf",
-      "-ngl",
-      "999",
-      "-fa",
-      "1",
-      "--no-mmap",
-      "--mlock",
-      "-c",
-      "32768",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-b",
-      "4096",
-      "-ub",
-      "4096",
-      "--parallel",
-      "8"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "M5 Strix Halo. 0xSero-strix custom DYNAMIC quant of Qwen 3.6 35B-A3B MoE (20 GB) \u2014 purpose-built for Strix Halo. Fastest 35B-A3B variant tested on this rig: 56.77 t/s vs Q4 52.12 / Q6 50.36 / Q8 41.40 / Claude-distilled Q6_K 55.65.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-DYNAMIC.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 8",
-      "run_id": "cmofbcuu4000al204o4zlq1xb"
+      "run_id": "cmofbcuu4000al204o4zlq1xb",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-DYNAMIC.gguf",
+          "-ngl",
+          "999",
+          "-fa",
+          "1",
+          "--no-mmap",
+          "--mlock",
+          "-c",
+          "32768",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-b",
+          "4096",
+          "-ub",
+          "4096",
+          "--parallel",
+          "8"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "0xsero-qwen3-6-35b-a3b-gguf-strix--dynamic",

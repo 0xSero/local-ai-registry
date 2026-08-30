@@ -101,29 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "gemma-4-12b-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "gemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
-      "--model-draft",
-      "gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "3",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-ctk",
-      "q4_0",
-      "-ctv",
-      "q4_0",
-      "-c",
-      "196608",
-      "-np",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "RTX 3060",
       "notes": "Gemma4 12B QAT Q4_K_XL + MTP draft head (Q8_0, 444 MB). OPTIMAL: MTP enabled (--spec-type draft-mtp --spec-draft-n-max 3, draft model gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf). 42 dense attn layers, fully offloaded. KV cache q4_0. MTP speedup: 2.38x. Acceptance rate: 94% (188/200). Max context with MTP: 196608 (192K) at ~11.5 GB. Fedora 43, CUDA 13.0.",
       "observed_command": "llama-server -m gemma-4-12B-it-qat-UD-Q4_K_XL.gguf --model-draft gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 3 -ngl 99 -fa on -ctk q4_0 -ctv q4_0 -c 196608 -np 1",
-      "run_id": "cmr3ynprv0007nv0192k93bri"
+      "run_id": "cmr3ynprv0007nv0192k93bri",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
+          "--model-draft",
+          "gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-c",
+          "196608",
+          "-np",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "google-gemma-4-12b-it--q4-k-xl",

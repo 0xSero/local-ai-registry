@@ -101,26 +101,6 @@
   "hardware_id": "radeon-ai-pro-r9700-32gb",
   "id": "qwen3-8-27b-q4-k-xl-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.8-27B-UD-Q4_K_XL.gguf",
-      "--ctx-size",
-      "32768",
-      "--flash-attn",
-      "on",
-      "--cache-type-k",
-      "q8_0",
-      "--cache-type-v",
-      "q8_0",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "2",
-      "--no-mmap",
-      "--device",
-      "Vulkan0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Unsloth Dynamic V3.0 (final) UD-Q4_K_XL. Optimized benchmark: MTP=2 speculative decoding, q8_0 KV cache, flash-attention, Vulkan on AMD Radeon AI PRO R9700. 512-token prompt, measured via llama-server.",
       "observed_command": "llama-server -m Qwen3.8-27B-UD-Q4_K_XL.gguf --ctx-size 32768 --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 --spec-type draft-mtp --spec-draft-n-max 2 --no-mmap --device Vulkan0",
-      "run_id": "cmt0dtpqo0eqams013p8rvp9k"
+      "run_id": "cmt0dtpqo0eqams013p8rvp9k",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+          "--ctx-size",
+          "32768",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--no-mmap",
+          "--device",
+          "Vulkan0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-8-27b-gguf--q4-k-xl",

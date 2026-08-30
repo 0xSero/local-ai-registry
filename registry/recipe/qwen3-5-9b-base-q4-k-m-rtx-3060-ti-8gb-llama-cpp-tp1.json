@@ -101,21 +101,6 @@
   "hardware_id": "rtx-3060-ti-8gb",
   "id": "qwen3-5-9b-base-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-bench",
-      "-m",
-      "/home/wstone/models/Qwen3.5-9B-GGUF/Qwen3.5-9B-Q4_K_M.gguf",
-      "-ngl",
-      "99",
-      "-fa",
-      "on",
-      "-p",
-      "512",
-      "-n",
-      "128",
-      "-r",
-      "1"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -143,7 +128,25 @@
       "hardware_label": "RTX 3060 Ti",
       "notes": "WSL2. llama-bench local run: -ngl 99 -fa on -p 512 -n 128 -r 1. GGUF from lmstudio-community/Qwen3.5-9B-GGUF.",
       "observed_command": "llama-bench -m /home/wstone/models/Qwen3.5-9B-GGUF/Qwen3.5-9B-Q4_K_M.gguf -ngl 99 -fa on -p 512 -n 128 -r 1",
-      "run_id": "cmr3y4bw40002mx01idpcyfbx"
+      "run_id": "cmr3y4bw40002mx01idpcyfbx",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "/home/wstone/models/Qwen3.5-9B-GGUF/Qwen3.5-9B-Q4_K_M.gguf",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-5-9b--q4-k-m",

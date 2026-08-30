@@ -101,15 +101,6 @@
   "hardware_id": "rtx-5090-32gb",
   "id": "qwen3-6-27b-q5-k-m-rtx-5090-32gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "/data/bin/llama-bench",
-      "-m",
-      "/data/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-Q5_K_M.gguf",
-      "-p",
-      "512",
-      "-n",
-      "128"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -137,7 +128,19 @@
       "hardware_label": "RTX 5090",
       "notes": null,
       "observed_command": "/data/bin/llama-bench -m /data/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-Q5_K_M.gguf -p 512 -n 128",
-      "run_id": "cmqxp923o0029pk0120ha8rm6"
+      "run_id": "cmqxp923o0029pk0120ha8rm6",
+      "tokenized": {
+        "arguments": [
+          "/data/bin/llama-bench",
+          "-m",
+          "/data/models/unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-Q5_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-mtp-gguf--q5-k-m",

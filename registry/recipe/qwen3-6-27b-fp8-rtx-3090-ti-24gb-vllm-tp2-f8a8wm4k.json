@@ -101,29 +101,6 @@
   "hardware_id": "rtx-3090-ti-24gb",
   "id": "qwen3-6-27b-fp8-rtx-3090-ti-24gb-vllm-tp2-f8a8wm4k",
   "launch": {
-    "arguments": [
-      "vllm",
-      "serve",
-      "Qwen3.6-27B-FP8",
-      "--tensor-parallel-size",
-      "2",
-      "--gpu-memory-utilization",
-      "0.88",
-      "--max-model-len",
-      "131072",
-      "--max-num-seqs",
-      "2",
-      "--kv-cache-dtype",
-      "fp8",
-      "--enable-prefix-caching",
-      "--enable-auto-tool-choice",
-      "--tool-call-parser",
-      "qwen3_coder",
-      "--reasoning-parser",
-      "qwen3",
-      "--speculative-config",
-      "{\"method\":\"mtp\",\"num_speculative_tokens\":3}"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "RTX 3090 Ti",
       "notes": "Qwen 3.6 27B FP8 dense + MTP n=3 speculative decoding (FP8 weights ship native mtp.layers.0.* \u2014 verified 2026-04-27, mtp_num_hidden_layers=1 in text_config). vLLM 0.19.1 --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}'. Dual RTX 3090 (Ti slot 1 Gen4 x16 + Dell slot 2 Gen4 x4, hardware-detected as same gpuName for dedupe). Bench: vllm bench serve openai-chat random 512/512 num-prompts 20 concurrency 1 --ignore-eos --extra-body chat_template_kwargs.enable_thinking=false. MTP acceptance 55.02% / avg length 2.65 / per-position P0=75%/P1=54%/P2=36%. TPOT 13.34 ms. **1.59\u00d7 output throughput vs prior FP8 single-stream (44.17 t/s, no spec decode)**, zero quality cost (same FP8 weights, just MTP draft path). Tool calls verified working (qwen3_coder parser + qwen3 reasoning parser). Thinking-off is the production default \u2014 bench verified that thinking-on causes 'silent finish' (model exhausts max_tokens drafting in reasoning channel without emitting visible content) on 5/6 prompt categories.",
       "observed_command": "vllm serve Qwen3.6-27B-FP8 --tensor-parallel-size 2 --gpu-memory-utilization 0.88 --max-model-len 131072 --max-num-seqs 2 --kv-cache-dtype fp8 --enable-prefix-caching --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}'",
-      "run_id": "cmogs42490005lb04f8a8wm4k"
+      "run_id": "cmogs42490005lb04f8a8wm4k",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "Qwen3.6-27B-FP8",
+          "--tensor-parallel-size",
+          "2",
+          "--gpu-memory-utilization",
+          "0.88",
+          "--max-model-len",
+          "131072",
+          "--max-num-seqs",
+          "2",
+          "--kv-cache-dtype",
+          "fp8",
+          "--enable-prefix-caching",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--reasoning-parser",
+          "qwen3",
+          "--speculative-config",
+          "{\"method\":\"mtp\",\"num_speculative_tokens\":3}"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8",

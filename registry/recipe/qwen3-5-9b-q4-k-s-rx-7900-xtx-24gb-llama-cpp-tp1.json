@@ -101,16 +101,6 @@
   "hardware_id": "rx-7900-xtx-24gb",
   "id": "qwen3-5-9b-q4-k-s-rx-7900-xtx-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "-b",
-      "4096",
-      "-ub",
-      "4096",
-      "--cache-type-k",
-      "f16",
-      "--cache-type-v",
-      "f16"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -138,7 +128,20 @@
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b/ub 4096; f16/f16 KV cache",
       "observed_command": "-b 4096 -ub 4096 --cache-type-k f16 --cache-type-v f16",
-      "run_id": "cmoetb4n1000jjz04aol3g3h5"
+      "run_id": "cmoetb4n1000jjz04aol3g3h5",
+      "tokenized": {
+        "arguments": [
+          "-b",
+          "4096",
+          "-ub",
+          "4096",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "jackrong-qwen3-5-9b-claude-4-6-opus-reasoning-distilled-gguf--q4-k-s",

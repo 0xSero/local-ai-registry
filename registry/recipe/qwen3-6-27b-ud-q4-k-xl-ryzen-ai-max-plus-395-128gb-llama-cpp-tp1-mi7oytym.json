@@ -101,29 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-6-27b-ud-q4-k-xl-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-mi7oytym",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "qwen3.6-27b-unsloth-ud-q4kxl.gguf",
-      "-ngl",
-      "999",
-      "-fa",
-      "1",
-      "--no-mmap",
-      "--mlock",
-      "-c",
-      "32768",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-b",
-      "4096",
-      "-ub",
-      "4096",
-      "--parallel",
-      "8"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "M5 Strix Halo. Qwen 3.6 27B DENSE at unsloth UD-Q4_K_XL (17 GB). Single-stream 512/512 vllm bench serve, 20 prompts. KV q8_0. Dense 27B is dramatically slower than 35B-A3B MoE on this rig (11.46 vs 52.12 t/s for same Q4 quant) \u2014 Strix Halo iGPU has no compute headroom for dense; MoE sparse activation (3B/35B per token) is the only workable path on this hardware.",
       "observed_command": "llama-server -m qwen3.6-27b-unsloth-ud-q4kxl.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 8",
-      "run_id": "cmofby2jr0001ju04mi7oytym"
+      "run_id": "cmofby2jr0001ju04mi7oytym",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "qwen3.6-27b-unsloth-ud-q4kxl.gguf",
+          "-ngl",
+          "999",
+          "-fa",
+          "1",
+          "--no-mmap",
+          "--mlock",
+          "-c",
+          "32768",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-b",
+          "4096",
+          "-ub",
+          "4096",
+          "--parallel",
+          "8"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-27b-gguf--ud-q4-k-xl",

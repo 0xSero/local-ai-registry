@@ -101,27 +101,6 @@
   "hardware_id": "rtx-3060-12gb",
   "id": "qwen3-6-35b-a3b-q3-k-m-rtx-3060-12gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "-m",
-      "Qwen3.6-35B-A3B-UD-Q3_K_M.gguf",
-      "--spec-type",
-      "draft-mtp",
-      "--spec-draft-n-max",
-      "3",
-      "-ngl",
-      "40",
-      "-ncmoe",
-      "40",
-      "-fa",
-      "on",
-      "-ctk",
-      "q8_0",
-      "-ctv",
-      "q8_0",
-      "-c",
-      "4096"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -149,7 +128,31 @@
       "hardware_label": "RTX 3060",
       "notes": "MoE 35B/3B act, MTP enabled: --spec-type draft-mtp --spec-draft-n-max 3. Integrated MTP heads in model. 256 experts, 8 active/token. Partial offload: -ngl 40 -ncmoe 40, KV cache q8_0. MTP speedup: +5% over non-MTP 26.55 tok/s (bottlenecked by CPU MoE experts). Acceptance rate: 67.7% (170/251). Fedora 43, CUDA 13.0, driver 580.159.04.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-Q3_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 3 -ngl 40 -ncmoe 40 -fa on -ctk q8_0 -ctv q8_0 -c 4096",
-      "run_id": "cmr3qzewd06yppi01p7uc9yff"
+      "run_id": "cmr3qzewd06yppi01p7uc9yff",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-UD-Q3_K_M.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "-ngl",
+          "40",
+          "-ncmoe",
+          "40",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-c",
+          "4096"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-6-35b-a3b--q3-k-m",

@@ -101,25 +101,6 @@
   "hardware_id": "ryzen-ai-max-plus-395-128gb",
   "id": "qwen3-8-27b-mq4v2-ryzen-ai-max-plus-395-128gb-hipfire-tp1",
   "launch": {
-    "arguments": [
-      "dflash_spec_demo",
-      "--target",
-      "qwen3.8-27b.mq4-xt",
-      "--draft",
-      "qwen38-27b-dflash-mq4.hfq",
-      "--prompt-file",
-      "merge_sort_thinking_off.txt",
-      "--max",
-      "256",
-      "--temp",
-      "0.0",
-      "--no-chatml",
-      "--kv-mode",
-      "q8",
-      "--ctx",
-      "4096",
-      "--no-adaptive-b"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -136,10 +117,6 @@
       ],
       "state": "none"
     },
-    "environment": {
-      "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
-      "HIPFIRE_VERIFY_GRAPH": "0"
-    },
     "kind": "reference",
     "run_id": "cmt6wvmy40003o9019eyb86nz",
     "source": "localmaxxing",
@@ -151,7 +128,33 @@
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Three warmed fresh-process runs on gfx1151/Ryzen AI Max+ 395: decode 103.86, 103.86, 103.31 tok/s (median 103.86); prefill 144.09, 143.90, 142.30 tok/s (median 143.90); TTFT 322.71, 323.45, 328.34 ms (median 323.45). Every run emitted the same coherent complete merge_sort implementation with tau=13.1818 and acceptance=0.8788. Prompt MD5 253c7ac50857fe6d0e10fb0d2c5e35c0; binary MD5 72316beb70fb33515cf5092e8f8e631f; target MQ4V2 XT MD5 e45d15bfe0c9a87132697101d17cbed6; draft MQ4V2 MD5 013395583cd04206c8aa68f4d061983d. Checkpoint declares B=8; Hipfire uses measured runtime B=16. DFlash/DFlash2 checkpoint design by z-lab/incoai; AMD runtime and MQ4V2 path implemented in Hipfire.",
       "observed_command": "HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_VERIFY_GRAPH=0 dflash_spec_demo --target qwen3.8-27b.mq4-xt --draft qwen38-27b-dflash-mq4.hfq --prompt-file merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 4096 --no-adaptive-b",
-      "run_id": "cmt6wvmy40003o9019eyb86nz"
+      "run_id": "cmt6wvmy40003o9019eyb86nz",
+      "tokenized": {
+        "arguments": [
+          "dflash_spec_demo",
+          "--target",
+          "qwen3.8-27b.mq4-xt",
+          "--draft",
+          "qwen38-27b-dflash-mq4.hfq",
+          "--prompt-file",
+          "merge_sort_thinking_off.txt",
+          "--max",
+          "256",
+          "--temp",
+          "0.0",
+          "--no-chatml",
+          "--kv-mode",
+          "q8",
+          "--ctx",
+          "4096",
+          "--no-adaptive-b"
+        ],
+        "environment": {
+          "HIPFIRE_HFQ4G256_LDSSTAGE": "1",
+          "HIPFIRE_VERIFY_GRAPH": "0"
+        },
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "qwen-qwen3-8-27b--mq4v2",

@@ -101,26 +101,6 @@
   "hardware_id": "rtx-4090-24gb",
   "id": "qwen3-6-35b-a3b-q4-k-m-rtx-4090-24gb-llama-cpp-tp1",
   "launch": {
-    "arguments": [
-      "llama-server",
-      "--spec-type",
-      "mtp",
-      "--spec-draft-n-max",
-      "1",
-      "--jinja",
-      "-ngl",
-      "99",
-      "-c",
-      "32768",
-      "-np",
-      "1",
-      "-fa",
-      "on",
-      "--cache-type-k",
-      "q4_0",
-      "--cache-type-v",
-      "q4_0"
-    ],
     "container": {
       "captured_at": "2026-08-30T09:10:02Z",
       "compose_file": null,
@@ -148,7 +128,30 @@
       "hardware_label": "RTX 4090",
       "notes": "MTP enabled with --spec-draft-n-max 1. Acceptance rate 87.18%. Single RTX 4090.",
       "observed_command": "llama-server --spec-type mtp --spec-draft-n-max 1 --jinja -ngl 99 -c 32768 -np 1 -fa on --cache-type-k q4_0 --cache-type-v q4_0",
-      "run_id": "cmp7b4hc6000ho40128gv04c7"
+      "run_id": "cmp7b4hc6000ho40128gv04c7",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--spec-type",
+          "mtp",
+          "--spec-draft-n-max",
+          "1",
+          "--jinja",
+          "-ngl",
+          "99",
+          "-c",
+          "32768",
+          "-np",
+          "1",
+          "-fa",
+          "on",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0"
+        ],
+        "fidelity": "faithful"
+      }
     }
   },
   "model_instance_id": "unsloth-qwen3-6-35b-a3b-mtp-gguf--q4-k-m",
