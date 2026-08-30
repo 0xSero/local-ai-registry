@@ -543,6 +543,18 @@ test("observed LocalMaxxing commands are tokenized in metadata, not onto the lau
   assert.ok(!("mounts" in dockerSnippet.launch))
   assert.ok(!("ports" in dockerSnippet.launch))
   assert.equal(dockerSnippet.metadata.localmaxxing.tokenized.arguments?.[0], "docker")
+  const wrapped = getEntityDetail(
+    "recipes",
+    "qwen3-8-27b-nvfp4-rtx-pro-6000-blackwell-96gb-sglang-tp1",
+  ) as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string; steps?: string[][] } } }
+  }
+  assert.equal(wrapped.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.equal(wrapped.metadata.localmaxxing.tokenized.arguments?.[0], "sglang")
+  assert.ok(wrapped.metadata.localmaxxing.tokenized.arguments?.includes("--port"))
+  assert.ok(!wrapped.metadata.localmaxxing.tokenized.steps)
+  assert.ok(!("arguments" in wrapped.launch))
 })
 
 test("observed LocalMaxxing and Postgres recipes stay reference-only candidates", () => {

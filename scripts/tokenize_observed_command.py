@@ -212,9 +212,15 @@ def parse_observed_command(raw: str | None) -> ParsedCommand:
             parse_comment(stripped, parsed)
             continue
         command_lines.append(stripped)
+    merged: list[str] = []
+    for line in command_lines:
+        if merged and line.startswith("-"):
+            merged[-1] = f"{merged[-1]} {line}"
+        else:
+            merged.append(line)
     argv_steps: list[list[str]] = []
     lossy = False
-    for line in command_lines:
+    for line in merged:
         for chunk in split_operators(line, ("&&",)):
             tokens, environment = peel_env(safe_split(chunk))
             reconstructed = [f"{key}={value}" for key, value in environment.items()] + tokens
@@ -378,6 +384,17 @@ def _self_check() -> None:
     caret = parse_observed_command("llama-server.exe ^\n  --port 8001")
     assert caret.fidelity == "faithful"
     assert caret.arguments == ["llama-server.exe", "--port", "8001"]
+
+    wrapped = parse_observed_command("sglang serve\n        --port 8000\n        --model-path foo")
+    assert wrapped.fidelity == "faithful"
+    assert wrapped.arguments[:2] == ["sglang", "serve"]
+    assert wrapped.arguments[2:4] == ["--port", "8000"]
+    assert not wrapped.steps
+
+    env_script = parse_observed_command("PORT=18530 LABEL=run ./scripts/run-gemma4-26b-first-baseline.sh")
+    assert env_script.fidelity == "faithful"
+    assert env_script.arguments == ["./scripts/run-gemma4-26b-first-baseline.sh"]
+    assert env_script.environment == {"PORT": "18530", "LABEL": "run"}
     print("tokenize_observed_command self-check passed")
 
 

@@ -194,6 +194,7 @@ def validate_tokenized_launch(recipe, errors):
             and isinstance(observed_args, list)
             and len(observed_args) == 1
             and not observed_steps
+            and not tokenized.get("environment")
         ):
             errors.append(f"{identifier}: observed command collapsed to a single token")
 
