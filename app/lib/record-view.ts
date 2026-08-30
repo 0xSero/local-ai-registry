@@ -33,7 +33,24 @@ const RELATION_LABELS: Record<string, string> = {
   speed_sweeps: "Speed sweeps",
 }
 
-const TREE_OMIT = new Set(["launch", "huggingface", "relationships"])
+const TREE_OMIT = new Set([
+  "launch",
+  "huggingface",
+  "relationships",
+  "description",
+  "registry",
+])
+
+export type RecordFact = {
+  href?: string
+  label: string
+  value: string
+}
+
+export type CopyItem = {
+  label: string
+  value: string
+}
 
 function nestedName(record: Record<string, unknown>, key: string): string | null {
   const value = record[key]
@@ -101,4 +118,126 @@ export function relatedGroups(record: Record<string, unknown>): RelatedGroup[] {
     })
   }
   return groups
+}
+
+function asObject(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null
+}
+
+function fact(label: string, value: unknown, href?: string): RecordFact | null {
+  if (value === null || value === undefined || value === "") return null
+  if (typeof value === "number" && Number.isFinite(value)) return { label, value: value.toLocaleString(), href }
+  if (typeof value === "boolean") return { label, value: value ? "yes" : "no", href }
+  if (typeof value === "string") return { label, value, href }
+  return null
+}
+
+function capabilityFacts(record: Record<string, unknown>): RecordFact[] {
+  const capabilities = asObject(record.capabilities)
+  if (!capabilities) return []
+  return ["chat", "reasoning", "tools", "vision"].flatMap((key) => {
+    const value = capabilities[key]
+    if (value === true) return [{ label: key, value: "yes" }]
+    if (value === false) return [{ label: key, value: "no" }]
+    return [{ label: key, value: "unknown" }]
+  })
+}
+
+export function recordDescription(record: Record<string, unknown>): string | null {
+  return typeof record.description === "string" && record.description.trim() ? record.description : null
+}
+
+export function recordFacts(collection: string, record: Record<string, unknown>): RecordFact[] {
+  const engine = asObject(record.engine)
+  const serving = asObject(record.serving)
+  const memory = asObject(record.memory)
+  const weights = asObject(record.weights)
+  const product = asObject(record.product)
+  const region = asObject(record.region)
+  const summary = asObject(record.summary)
+  if (collection === "recipes") {
+    return [
+      fact("Status", record.status),
+      fact("Source", record.recipe_source),
+      fact("Engine", engine?.name),
+      fact("Engine version", engine?.version),
+      fact("Graph", engine?.graph_mode),
+      fact("Accelerators", record.hardware_count),
+      fact("Tensor parallel", serving?.tensor_parallel),
+      fact("Context tokens", serving?.max_context_tokens),
+      fact("Max concurrency", serving?.max_concurrency),
+      fact("KV cache tokens", serving?.kv_cache_tokens),
+      ...capabilityFacts(record),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "hardware") {
+    return [
+      fact("Vendor", record.vendor),
+      fact("Kind", record.kind),
+      fact("Backend", record.accelerator_backend),
+      fact("VRAM", memory?.vram_gb === undefined ? null : `${memory.vram_gb} GB`),
+      fact("Memory type", memory?.vram_type),
+      fact("Bandwidth", memory?.bandwidth_gb_per_s === undefined ? null : `${memory.bandwidth_gb_per_s} GB/s`),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "models") {
+    return [
+      fact("Family", record.family),
+      fact("Architecture", record.architecture),
+      fact("Parameters", record.params),
+      fact("Active parameters", record.active_params),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "model-instances") {
+    return [
+      fact("Repository", record.repository),
+      fact("Revision", record.revision),
+      fact("Precision", weights?.precision),
+      fact("Format", weights?.format),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "prices") {
+    return [
+      fact("Product", product?.name),
+      fact("Region", region?.name ?? region?.code),
+      fact("Currency", region?.currency),
+      fact("Listings", summary?.listing_count),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "speed-sweeps") {
+    const rows = Array.isArray(record.rows) ? record.rows.length : null
+    return [
+      fact("Recipe", record.recipe_id, typeof record.recipe_id === "string" ? `/recipes/${record.recipe_id}` : undefined),
+      fact("Measured", record.measured_at),
+      fact("Accepted", record.accepted_at),
+      fact("Points", rows),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  if (collection === "benchmarks") {
+    const rows = Array.isArray(record.rows) ? record.rows.length : null
+    return [
+      fact("Category", record.category),
+      fact("Scored models", rows),
+    ].filter((item): item is RecordFact => item !== null)
+  }
+  return []
+}
+
+export function copyItems(collection: string, record: Record<string, unknown>): CopyItem[] {
+  const id = typeof record.id === "string" ? record.id : ""
+  const items: CopyItem[] = []
+  if (id) {
+    items.push({ label: "ID", value: id })
+    items.push({ label: "JSON API", value: `/api/v1/${collection}/${id}` })
+    items.push({ label: "Record URL", value: `/${collection}/${id}` })
+  }
+  const hub = huggingFaceIdentity(record)
+  if (hub?.status === "known" && hub.url) items.push({ label: "Hub repository", value: hub.url })
+  if (typeof record.revision === "string" && record.revision) items.push({ label: "Revision", value: record.revision })
+  if (recipeIsLaunchable(record)) {
+    const launch = asObject(record.launch)
+    const args = Array.isArray(launch?.arguments) ? launch.arguments.filter((item): item is string => typeof item === "string") : []
+    if (args.length > 0) items.push({ label: "Launch arguments", value: args.join(" ") })
+  }
+  return items
 }
