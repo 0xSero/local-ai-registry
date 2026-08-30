@@ -1,7 +1,7 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
 
-import { hrefWithFilter, hrefWithRecord } from "@/app/lib/catalog"
+import { hrefWithFilter, recordHref } from "@/app/lib/catalog"
 import {
   getSpeedSweep,
   marketPriceCount,
@@ -92,7 +92,7 @@ function BrowserRow({
 }) {
   return (
     <article className={`browser-row ${className}`}>
-      <Link aria-label={label} className="row-open" href={href} scroll={false} />
+      <Link aria-label={label} className="row-open" href={href} />
       {status && <span className={`status-mark ${status}`} aria-hidden="true" />}
       {children}
       <TaxonomyTags state={state} tags={tags} />
@@ -131,7 +131,7 @@ export function RecipeRows({ by, data, state }: { by: "hardware" | "model"; data
         return (
           <BrowserRow
             className="recipe-browser-row"
-            href={hrefWithRecord(state, result.id)}
+            href={recordHref("recipes", result.id)}
             key={result.id}
             label={`Open ${result.model.name} recipe`}
             state={state}
@@ -166,7 +166,7 @@ export function PriceRows({ data, state }: { data: PriceResult[]; state: URLSear
         return (
           <BrowserRow
             className="price-row"
-            href={hrefWithRecord(state, record.id)}
+            href={recordHref("prices", record.id)}
             key={record.id}
             label={`Open ${record.product.name} market observations`}
             state={state}
@@ -200,7 +200,7 @@ export function HardwareRows({ data, state }: { data: Hardware[]; state: URLSear
         return (
           <BrowserRow
             className="collection-row"
-            href={hrefWithRecord(state, hardware.id)}
+            href={recordHref("hardware", hardware.id)}
             key={hardware.id}
             label={`Open ${hardware.name}`}
             state={state}
@@ -228,7 +228,7 @@ export function ModelRows({ data, state }: { data: Model[]; state: URLSearchPara
         return (
           <BrowserRow
             className="collection-row"
-            href={hrefWithRecord(state, model.id)}
+            href={recordHref("models", model.id)}
             key={model.id}
             label={`Open ${model.name}`}
             state={state}
@@ -256,7 +256,7 @@ export function BenchmarkRows({ data, state }: { data: Benchmark[]; state: URLSe
         return (
           <BrowserRow
             className="collection-row"
-            href={hrefWithRecord(state, benchmark.id)}
+            href={recordHref("benchmarks", benchmark.id)}
             key={benchmark.id}
             label={`Open ${benchmark.id}`}
             state={state}
@@ -284,7 +284,7 @@ export function SweepRows({ data, state }: { data: SpeedSweep[]; state: URLSearc
         return (
           <BrowserRow
             className="collection-row"
-            href={hrefWithRecord(state, sweep.id)}
+            href={recordHref("speed-sweeps", sweep.id)}
             key={sweep.id}
             label={`Open ${sweep.id}`}
             state={state}
