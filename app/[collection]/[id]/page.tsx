@@ -3,6 +3,8 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { DataTree } from "@/app/components/data-tree"
+import { ConfigurationCard, configurationFromRecipe } from "@/app/components/configuration-card"
+import { HuggingFaceCard } from "@/app/components/huggingface-card"
 import { getEntityDetail } from "@/lib/registry"
 
 export const dynamic = "force-dynamic"
@@ -67,17 +69,23 @@ export default async function DetailPage({ params }: DetailProps) {
 
   const product = detail.product && typeof detail.product === "object" && "name" in detail.product ? detail.product.name : null
   const title = String(detail.name ?? detail.repository ?? product ?? detail.id ?? id)
-  const instance = collection === "model-instances" ? detail : null
-  const huggingFace = instance ? readHuggingFace(instance) : null
-  if (instance && !huggingFace) {
+  if (collection === "model-instances" && !readHuggingFace(detail)) {
     throw new Error(`Model instance '${id}' lacks its authoritative Hugging Face identity`)
   }
-
+  const huggingFace = detail.huggingface && typeof detail.huggingface === "object" ? detail.huggingface as {
+    link_type?: string
+    reason?: string | { code: string; detail: string }
+    repository?: string | null
+    status?: string
+    url?: string
+  } : null
+  const showRecipeSearch = collection === "recipes" || collection === "hardware" || collection === "models" || collection === "model-instances"
+  const treeRecord = Object.fromEntries(Object.entries(detail).filter(([key]) => key !== "launch" && key !== "huggingface"))
+  const config = collection === "recipes" ? configurationFromRecipe(detail) : null
   const topic = COLLECTION_TOPICS[collection]
   const collectionHref = `/?topic=${encodeURIComponent(topic)}`
   const recipeSearchHref = `/?topic=recipes&q=${encodeURIComponent(title)}`
   const collectionSearchHref = `${collectionHref}&q=${encodeURIComponent(title)}`
-  const showRecipeSearch = collection === "recipes" || collection === "hardware" || collection === "models" || collection === "model-instances"
 
   return (
     <main className="detail-page">
@@ -102,28 +110,24 @@ export default async function DetailPage({ params }: DetailProps) {
         </div>
       </header>
 
-      {huggingFace && (
-        <section className="artifact-resolution" aria-label="Hugging Face identity">
-          <p className="eyebrow">Authoritative Hugging Face link from this model-instance body</p>
-          <a href={huggingFace.url} rel="noreferrer" target="_blank">{huggingFace.url} ↗</a>
-          <dl className="artifact-fields">
-            <div><dt>Status</dt><dd>{huggingFace.status}</dd></div>
-            <div><dt>Link type</dt><dd>{huggingFace.linkType}</dd></div>
-          </dl>
-          <p className="link-explanation">
-            {huggingFace.linkType === "repository"
-              ? "Exact Hugging Face repository link."
-              : "Hugging Face search fallback; not an exact repository link."}
+      <HuggingFaceCard identity={huggingFace} />
+      {config && (
+        <>
+          <p className="trust-note">
+            {detail.status === "validated" && detail.registry && typeof detail.registry === "object" && "launchable" in detail.registry && detail.registry.launchable
+              ? "Validated: pinned artifact, pinned runtime, and accepted evidence. This is a launch contract."
+              : "Candidate: useful compatibility or speed evidence. The registry does not offer Run until promotion requirements are met."}
           </p>
-        </section>
+          <ConfigurationCard config={config} />
+        </>
       )}
 
       <section className="record-sheet">
         <div className="record-sheet-heading">
           <h2>Complete normalized record</h2>
-          <p>Null values are explicit unknowns. Nested enrichment is shown whenever it is present.</p>
+          <p>Launch contracts are shown as configuration cards above. Remaining fields stay in page flow.</p>
         </div>
-        <DataTree value={detail} />
+        <DataTree value={treeRecord} />
       </section>
     </main>
   )

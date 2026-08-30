@@ -1,0 +1,175 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.0rc2+rocm724"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "muse-glimmer-30b-fp8-radeon-ai-pro-r9700-32gb-vllm-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsp1ut7n00i7mp015640hvon"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsp1ut7n00i7mp015640hvon",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsp1ut7n00i7mp015640hvon"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Ran on 2 of the 3 R9700s (tp2, x8-slot pair). zen-7.0.14 kernel (7.1.x amdgpu RCCL regression bypassed); FP8 on-the-fly; DFlash spec decode k=15. Corrected resubmission of a run that misreported gpuCount=2.",
+      "observed_command": "vllm serve Muse-Glimmer-30B -tp 2 --quantization fp8 --disable-custom-all-reduce --compilation-config '{\"cudagraph_mode\":\"NONE\"}' --speculative-config dflash k=15",
+      "run_id": "cmsp1ut7n00i7mp015640hvon",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "Muse-Glimmer-30B",
+          "-tp",
+          "2",
+          "--quantization",
+          "fp8",
+          "--disable-custom-all-reduce",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"NONE\"}",
+          "--speculative-config",
+          "dflash",
+          "k=15"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "meta-models-muse-glimmer-30b--fp8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsp1ut7n00i7mp015640hvon"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 16,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 3
+  },
+  "speed_sweeps_ids": [
+    "muse-glimmer-30b-fp8-radeon-ai-pro-r9700-32gb-vllm-tp3-sweep"
+  ],
+  "status": "candidate"
+}

@@ -7,6 +7,8 @@ import re
 import sys
 from pathlib import Path
 
+from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
+
 
 COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks")
 SCHEMA = "local-ai-registry/v1"
@@ -128,6 +130,75 @@ def validate_huggingface(record, errors):
         errors.append(f"{label}: invalid link_type")
 
 
+def validate_tokenized_launch(recipe, errors):
+    identifier = recipe.get("id")
+    launch = recipe.get("launch") or {}
+    launch_text = json.dumps(launch).lower()
+    if "command_snippet" in launch_text:
+        errors.append(f"{identifier}: launch contains a command snippet")
+    arguments = launch.get("arguments")
+    if arguments is not None:
+        if not isinstance(arguments, list) or not all(isinstance(item, str) for item in arguments):
+            errors.append(f"{identifier}: launch.arguments must be a string array")
+    environment = launch.get("environment")
+    if environment is not None:
+        if not isinstance(environment, dict) or not all(
+            isinstance(key, str) and isinstance(value, str) for key, value in environment.items()
+        ):
+            errors.append(f"{identifier}: launch.environment must be a string map")
+    steps = launch.get("steps")
+    if steps is not None:
+        if not isinstance(steps, list) or not all(
+            isinstance(step, list) and all(isinstance(token, str) for token in step) for step in steps
+        ):
+            errors.append(f"{identifier}: launch.steps must be an argv array list")
+        elif any("&&" in token for step in steps for token in step):
+            errors.append(f"{identifier}: launch.steps still contains a shell && chain")
+    source = recipe.get("recipe_source")
+    if launch.get("kind") == "reference" or source in ("localmaxxing", "mlxfast", "exo-postgres"):
+        for field in REFERENCE_LAUNCH_FORBIDDEN:
+            if field in launch:
+                errors.append(f"{identifier}: reference launch must not carry contract field {field}")
+        meta_key = "mlxfast" if source == "mlxfast" else "localmaxxing" if source == "localmaxxing" else None
+        metadata = (recipe.get("metadata") or {}).get(meta_key) or {} if meta_key else {}
+        tokenized = metadata.get("tokenized") if isinstance(metadata, dict) else None
+        if tokenized is None:
+            return
+        if not isinstance(tokenized, dict) or tokenized.get("fidelity") not in ("faithful", "lossy"):
+            errors.append(f"{identifier}: metadata tokenized fidelity must be faithful or lossy")
+            return
+        if tokenized.get("fidelity") == "lossy":
+            if tokenized.get("arguments") or tokenized.get("steps"):
+                errors.append(f"{identifier}: lossy tokenization must not publish argv")
+            return
+        observed_args = tokenized.get("arguments")
+        observed_steps = tokenized.get("steps")
+        if observed_args is not None and (
+            not isinstance(observed_args, list) or not all(isinstance(item, str) for item in observed_args)
+        ):
+            errors.append(f"{identifier}: tokenized arguments must be a string array")
+        if observed_steps is not None:
+            if not isinstance(observed_steps, list) or not all(
+                isinstance(step, list) and all(isinstance(token, str) for token in step) for step in observed_steps
+            ):
+                errors.append(f"{identifier}: tokenized steps must be an argv array list")
+            elif any(step and step[0].startswith("-") for step in observed_steps):
+                errors.append(f"{identifier}: tokenized step starts with a flag")
+        blob = json.dumps({"arguments": observed_args, "steps": observed_steps})
+        if "&&" in blob:
+            errors.append(f"{identifier}: tokenized argv still contains a shell && chain")
+        snippet = metadata.get("observed_command") if isinstance(metadata, dict) else None
+        if (
+            isinstance(snippet, str)
+            and len(snippet.split()) > 1
+            and isinstance(observed_args, list)
+            and len(observed_args) == 1
+            and not observed_steps
+            and not tokenized.get("environment")
+        ):
+            errors.append(f"{identifier}: observed command collapsed to a single token")
+
+
 def validate_container(recipe, errors):
     identifier = recipe.get("id")
     launch = recipe.get("launch", {})
@@ -241,8 +312,14 @@ def validate(root):
         if recipe.get("recipe_source") in ("localmaxxing", "exo-postgres"):
             if status != "candidate" or kind != "reference":
                 errors.append(f"{recipe['id']}: observed imports must be reference-only candidates")
-            if "command_snippet" in json.dumps(launch).lower():
-                errors.append(f"{recipe['id']}: candidate launch contains a command snippet")
+        if recipe.get("recipe_source") == "mlxfast":
+            if status != "candidate" or kind != "reference":
+                errors.append(f"{recipe['id']}: mlx.fast imports must be reference-only candidates")
+            if recipe.get("hardware_id") != "apple-m5-max-128gb":
+                errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
+        validate_tokenized_launch(recipe, errors)
+        if recipe.get("recipe_source") == "omlx":
+            errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")

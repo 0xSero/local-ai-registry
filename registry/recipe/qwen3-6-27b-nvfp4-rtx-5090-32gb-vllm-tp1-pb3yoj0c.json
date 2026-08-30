@@ -1,0 +1,182 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.19.2rc1.dev134+gfe9c3d6c5"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-pb3yoj0c",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmoevcpkp000sl804pb3yoj0c"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmoevcpkp000sl804pb3yoj0c",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoevcpkp000sl804pb3yoj0c"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "vLLM on Unraid RTX 5090 (600W). NVFP4 quant, fp8 KV cache, prefix caching, 131K context. Updated after power limit increase \u2014 ~13% faster output, ~17% faster TTFT.",
+      "observed_command": "vllm serve sakamakismile/Qwen3.6-27B-NVFP4 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --kv-cache-dtype fp8 --trust-remote-code --max-model-len 131072 --max-num-batched-tokens 4096 --enable-prefix-caching --max-num-seqs 4 --gpu-memory-utilization 0.90",
+      "run_id": "cmoevcpkp000sl804pb3yoj0c",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "sakamakismile/Qwen3.6-27B-NVFP4",
+          "--reasoning-parser",
+          "qwen3",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--kv-cache-dtype",
+          "fp8",
+          "--trust-remote-code",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "4096",
+          "--enable-prefix-caching",
+          "--max-num-seqs",
+          "4",
+          "--gpu-memory-utilization",
+          "0.90"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "sakamakismile-qwen3-6-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmoevcpkp000sl804pb3yoj0c"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-pb3yoj0c-sweep"
+  ],
+  "status": "candidate"
+}

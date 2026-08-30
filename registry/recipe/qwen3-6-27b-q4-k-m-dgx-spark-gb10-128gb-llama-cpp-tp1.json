@@ -1,0 +1,198 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "llama.cpp b8214 f7db3f378; Luce DFlash e534780"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-27b-q4-k-m-dgx-spark-gb10-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmp7vw9de00goo401s6mzzoag"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmp7vw9de00goo401s6mzzoag",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp7vw9de00goo401s6mzzoag"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Qwen3.6-27B Q4_K_M GGUF on a single NVIDIA DGX Spark GB10. DFlash speculative decoding plus DDTree rollback/tree decoding (budget=18, ddtree-temp=1.05, no chain seed). LocalMaxxing row uses Sherlock/thinkON pp=128,tg=128,c=1, N=29 warm median: tokSOut 55.17 tok/s (mean 55.42, std 16.47, range 31.87-83.68); TTFT/e2e first-token median 570.38 ms; tokSPrefill 224.41 tok/s; tokSTotal 88.57 tok/s. Variability is prompt/mode dependent: across the four N=29 cells, AR median 10.11-10.69, +DF 16.77-33.77, +DDT 25.11-55.17 tok/s; DDTree adds 1.50-1.63x over +DF. This is the headline +DDT row; companion AR and +DF payloads are included for same-shape baseline context. Raw JSON, commands, token_id smokes, and three-tier AR/+DF/+DDT discussion: https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/luce-ddtree/submission and https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/luce-ddtree. By @banana_baeee.",
+      "observed_command": "PYTHONPATH=/home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/scripts /home/user/work/dflash-lucebox-gb10-spark3/venv/bin/python /home/user/work/dflash-lucebox-gb10-spark3/llama-benchy-fixed-serving-grid-20260514_164136/server_dflash-sherlock-thinkON.py --host 127.0.0.1 --port 8180 --target /home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/models/Qwen3.6-27B-Q4_K_M.gguf --draft /home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/models/draft --bin /home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/build/test_dflash --budget 18 --ddtree-temp 1.05 --max-ctx 1024 --ctk f16 --ctv f16 --fa-window 2048 --prefix-cache-slots 0 --prefill-cache-slots 0 --tokenizer Qwen/Qwen3.6-27B --verbose-daemon --ignore-eos-stop --ddtree-no-chain-seed",
+      "run_id": "cmp7vw9de00goo401s6mzzoag",
+      "tokenized": {
+        "arguments": [
+          "/home/user/work/dflash-lucebox-gb10-spark3/venv/bin/python",
+          "/home/user/work/dflash-lucebox-gb10-spark3/llama-benchy-fixed-serving-grid-20260514_164136/server_dflash-sherlock-thinkON.py",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8180",
+          "--target",
+          "/home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/models/Qwen3.6-27B-Q4_K_M.gguf",
+          "--draft",
+          "/home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/models/draft",
+          "--bin",
+          "/home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/build/test_dflash",
+          "--budget",
+          "18",
+          "--ddtree-temp",
+          "1.05",
+          "--max-ctx",
+          "1024",
+          "--ctk",
+          "f16",
+          "--ctv",
+          "f16",
+          "--fa-window",
+          "2048",
+          "--prefix-cache-slots",
+          "0",
+          "--prefill-cache-slots",
+          "0",
+          "--tokenizer",
+          "Qwen/Qwen3.6-27B",
+          "--verbose-daemon",
+          "--ignore-eos-stop",
+          "--ddtree-no-chain-seed"
+        ],
+        "environment": {
+          "PYTHONPATH": "/home/user/work/dflash-lucebox-gb10-spark3/lucebox-hub/dflash/scripts"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmp7vw9de00goo401s6mzzoag"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 1024,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-q4-k-m-dgx-spark-gb10-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,185 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b9297-2-gb22ff4b7b"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-6-27b-q4-k-xl-rtx-3090-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqc95c5q001zmp011zfub31b"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqc95c5q001zmp011zfub31b",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqc95c5q001zmp011zfub31b"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Actual host: Ryzen 9 5950X, 64GB DDR4-3600, CachyOS Linux 7.0.10-1-cachyos, RTX 3090 24GB at 400W power limit. Fresh-server clean run after 2 non-identical warmups; no same-prompt ngram-cache warmup. Raw /completion endpoint, n_predict=512, temperature=0, ignore_eos=true, cache_prompt=false. Q4_K_XL dynamic quant, q4_0 KV, MTP speculative decoding with 2 draft tokens. Measured from llama.cpp Prometheus metric deltas; peak VRAM/power sampled with nvidia-smi. The exact published -c 0 f16-KV style config OOMed on this build, so this run uses c=4096 with q4_0 KV.",
+      "observed_command": "llama-server -m /home/ada/Models/unsloth-Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q4_K_XL.gguf --host 127.0.0.1 --metrics --parallel 1 --jinja -ngl 99 -fa on -c 4096 -ctk q4_0 -ctv q4_0 --spec-type draft-mtp --spec-draft-n-max 2",
+      "run_id": "cmqc95c5q001zmp011zfub31b",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/home/ada/Models/unsloth-Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-UD-Q4_K_XL.gguf",
+          "--host",
+          "127.0.0.1",
+          "--metrics",
+          "--parallel",
+          "1",
+          "--jinja",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-c",
+          "4096",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-mtp-gguf--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqc95c5q001zmp011zfub31b"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-27b-q4-k-xl-rtx-3090-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

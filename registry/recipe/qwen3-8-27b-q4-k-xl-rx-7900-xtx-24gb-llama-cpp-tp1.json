@@ -1,0 +1,197 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9731ad3"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rx-7900-xtx-24gb",
+  "id": "qwen3-8-27b-q4-k-xl-rx-7900-xtx-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt00amga0eeums015vw8ttp3"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt00amga0eeums015vw8ttp3",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt00amga0eeums015vw8ttp3"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "RX 7900 XTX",
+      "notes": "Record decode on Windows 11 Pro + official AMD Vulkan ICD (not RADV). llama.cpp master 9731ad3 build-vulkan llama-server, Unsloth Qwen3.8-27B-UD-Q4_K_XL, native MTP n-max 3 (no p-min), -fa on, q4_0 KV, GGML_VK_ALLOW_GRAPHICS_QUEUE=1. Measured with bench_src.py on a 32k slot: code decode mean 90.74 tok/s (3 runs, 11.04 ms/tok), prose 64.99, mixed 77.81, prefill 326.5 tok/s, TTFT 101.7 ms, dedicated VRAM 17.48 GiB. Daily serve is the same stack at 100k (88.4 code / 62.3 prose). 128k and 132k lose hard on code decode and were not submitted.",
+      "observed_command": "GGML_VK_VISIBLE_DEVICES=0 GGML_VK_ALLOW_GRAPHICS_QUEUE=1 llama-server -m Qwen3.8-27B-UD-Q4_K_XL.gguf --device Vulkan0 -c 32768 -ngl 999 -fa on --cache-type-k q4_0 --cache-type-v q4_0 --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-type-k q4_0 --spec-draft-type-v q4_0 --parallel 1 --no-mmproj --jinja --reasoning-budget 0 --alias qwen38-27b-src",
+      "run_id": "cmt00amga0eeums015vw8ttp3",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-UD-Q4_K_XL.gguf",
+          "--device",
+          "Vulkan0",
+          "-c",
+          "32768",
+          "-ngl",
+          "999",
+          "-fa",
+          "on",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "--spec-draft-type-k",
+          "q4_0",
+          "--spec-draft-type-v",
+          "q4_0",
+          "--parallel",
+          "1",
+          "--no-mmproj",
+          "--jinja",
+          "--reasoning-budget",
+          "0",
+          "--alias",
+          "qwen38-27b-src"
+        ],
+        "environment": {
+          "GGML_VK_ALLOW_GRAPHICS_QUEUE": "1",
+          "GGML_VK_VISIBLE_DEVICES": "0"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt00amga0eeums015vw8ttp3"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-k-xl-rx-7900-xtx-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

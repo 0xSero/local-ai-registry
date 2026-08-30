@@ -1,0 +1,189 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "nightly"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "gemma-4-31b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1-24kbd1sh",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmowrr6x900a2o20124kbd1sh"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmowrr6x900a2o20124kbd1sh",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowrr6x900a2o20124kbd1sh"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Automated 32k/64k Pro 6000 batch benchmark. Local model: Gemma 4 31B IT MTP4 at /LINUX/Models/google/gemma-4-31B-it.",
+      "observed_command": "CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 /home/espen/.local/share/rtxbench/venvs/vllm-gemma4-nightly/bin/python -m vllm.entrypoints.openai.api_server --model /LINUX/Models/google/gemma-4-31B-it --served-model-name gemma-4-31b-it-mtp8 --host 127.0.0.1 --port 8001 --max-model-len 32768 --gpu-memory-utilization 0.91 --trust-remote-code --max-num-seqs 1 --tool-call-parser gemma4 --enable-auto-tool-choice --speculative-config {\"method\":\"mtp\",\"num_speculative_tokens\":4,\"model\":\"/LINUX/Models/google/gemma-4-31B-it-assistant\"}",
+      "run_id": "cmowrr6x900a2o20124kbd1sh",
+      "tokenized": {
+        "arguments": [
+          "/home/espen/.local/share/rtxbench/venvs/vllm-gemma4-nightly/bin/python",
+          "-m",
+          "vllm.entrypoints.openai.api_server",
+          "--model",
+          "/LINUX/Models/google/gemma-4-31B-it",
+          "--served-model-name",
+          "gemma-4-31b-it-mtp8",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8001",
+          "--max-model-len",
+          "32768",
+          "--gpu-memory-utilization",
+          "0.91",
+          "--trust-remote-code",
+          "--max-num-seqs",
+          "1",
+          "--tool-call-parser",
+          "gemma4",
+          "--enable-auto-tool-choice",
+          "--speculative-config",
+          "{method:mtp,num_speculative_tokens:4,model:/LINUX/Models/google/gemma-4-31B-it-assistant}"
+        ],
+        "environment": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "google-gemma-4-31b-it--bf16",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmowrr6x900a2o20124kbd1sh"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "gemma-4-31b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1-24kbd1sh-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,190 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "hipfire",
+    "version": "0.3.0+72877258068c"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rx-7900-xtx-24gb",
+  "id": "qwen3-6-35b-a3b-mq4r-rx-7900-xtx-24gb-hipfire-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsnp3cmd00nyo001yvkgm3tq"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsnp3cmd00nyo001yvkgm3tq",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsnp3cmd00nyo001yvkgm3tq"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "RX 7900 XTX",
+      "notes": "SINGLE-STREAM. Speculative decode active (MTP + n-gram). tau A 3.81 -> B 5.8 (2.81x), thresholds 24/48/64 defaults, ngram_mod 3 windows 192 drafts 192 accepted, parity md5 6eb9a69a (4/4 byte-identical output). engine: hipfire 0.3.0+72877258068c, backend rocm, gfx1100 quant: MQ4R = MagnumQuant 4-bit Redline (graded mixed-tier: MQ4 attn/router/shared + graded MQ4 routed experts, Redline retained-PM4 dispatch), 4.16 bpw effective (18700048128 bytes *8 / 35.95B params) model file: qwen3.6-35b-a3b.mq4r sha256 4685c140c46b1a6f prompt: code_edit_rewrite_copy.txt md5 80b910784c456bbb5532eb0493a497b9, 764 prompt tokens (templated) method: median of 4 runs (ABBA A B B A), batch1 single-stream, fresh process, temperature 0 (greedy) max_tokens 256 ctx 4096 KV q8 evidence: sealed case a3b-mq4r-ngram-edit-abba-20260810-gfx1100-rx7900xtx, corpus manifest manifest-sha12-8f3c2e1a4b9d not measured: peak VRAM (not instrumented this campaign)",
+      "observed_command": "DEVICE=0 hipfire serve --model ~/.hipfire/models/qwen3.6-35b-a3b.mq4r --mtp ~/.hipfire/models/qwen3.6-35b-a3b.mtp --mtp-ngram --ngram-match 24 --ngram-min 48 --ngram-max 64 --prompt-file benchmarks/prompts/code_edit_rewrite_copy.txt --max-tokens 256 --max-seq 4096 --kv q8 --temperature 0 --mode battery",
+      "run_id": "cmsnp3cmd00nyo001yvkgm3tq",
+      "tokenized": {
+        "arguments": [
+          "hipfire",
+          "serve",
+          "--model",
+          "~/.hipfire/models/qwen3.6-35b-a3b.mq4r",
+          "--mtp",
+          "~/.hipfire/models/qwen3.6-35b-a3b.mtp",
+          "--mtp-ngram",
+          "--ngram-match",
+          "24",
+          "--ngram-min",
+          "48",
+          "--ngram-max",
+          "64",
+          "--prompt-file",
+          "benchmarks/prompts/code_edit_rewrite_copy.txt",
+          "--max-tokens",
+          "256",
+          "--max-seq",
+          "4096",
+          "--kv",
+          "q8",
+          "--temperature",
+          "0",
+          "--mode",
+          "battery"
+        ],
+        "environment": {
+          "DEVICE": "0"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--mq4r",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsnp3cmd00nyo001yvkgm3tq"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-6-35b-a3b-mq4r-rx-7900-xtx-24gb-hipfire-tp1-sweep"
+  ],
+  "status": "candidate"
+}

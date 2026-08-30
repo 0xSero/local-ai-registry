@@ -1,0 +1,183 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vLLM 0.21.1rc1.dev85+gd87ee1893.d20260518; image ghcr.io/tonyd2wild/mimo-v2.5-tp2-1m-nvfp4kv@sha256:219043cf57a42499ccc514f4de5b96f9e8e401fee47e435ba96ce06c3171f1c8; nvfp4-kv-diffkv mods copied from tonyd2wild/MiMo-V2.5-TP2-1M-NVFP4-KV-2xDGX-Spark commit 50c4ff8c119a2398c9b2016c4b50221014ccf770"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "mimo-v2-5-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr8n6yos00euqr01kqotgbyj"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr8n6yos00euqr01kqotgbyj",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr8n6yos00euqr01kqotgbyj"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "MiMo DFlash C1 LocalMax-style row from llama-benchy 0.3.7, pp=2048 tg=128 depth=0 c=1 runs=5 on two DGX Spark/GB10 nodes. NVFP4 weights with true NVFP4 KV cache, triton_attn_diffkv backend, Xiaomi DFlash draft num_speculative_tokens=7. The DFlash repo lacked the vendored nvfp4-kv-diffkv runtime mod; the missing patch bundle was copied from Tony's earlier MiMo TP2 NVFP4-KV repo before launch. Server logs confirmed kv_cache_dtype=nvfp4, triton_attn_diffkv, inline-dequant kernel enabled, WMMA decode precompile, and successful smoke generation. Hostnames, usernames, LAN IPs, and raw logs omitted.",
+      "observed_command": "vLLM MiMo DFlash TP=2 container, max_model_len=500000, gpu_memory_utilization=0.83, max_num_seqs=6, max_num_batched_tokens=4096, NVFP4 weights, NVFP4 KV cache, triton_attn_diffkv, DFlash speculative decoding num_speculative_tokens=7, NCCL_PROTO=LL, NCCL_MAX_NCHANNELS=2",
+      "run_id": "cmr8n6yos00euqr01kqotgbyj",
+      "tokenized": {
+        "arguments": [
+          "vLLM",
+          "MiMo",
+          "DFlash",
+          "TP=2",
+          "container,",
+          "max_model_len=500000,",
+          "gpu_memory_utilization=0.83,",
+          "max_num_seqs=6,",
+          "max_num_batched_tokens=4096,",
+          "NVFP4",
+          "weights,",
+          "NVFP4",
+          "KV",
+          "cache,",
+          "triton_attn_diffkv,",
+          "DFlash",
+          "speculative",
+          "decoding",
+          "num_speculative_tokens=7,",
+          "NCCL_PROTO=LL,",
+          "NCCL_MAX_NCHANNELS=2"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr8n6yos00euqr01kqotgbyj"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 500000,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "mimo-v2-5-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

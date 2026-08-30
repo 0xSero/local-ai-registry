@@ -1,0 +1,167 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "4302fb599 + neural.download Qwen3.8 TP1 stack; oneAPI 2026.1.1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-o1ragvte",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt9m8i0b00z3li01o1ragvte"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt9m8i0b00z3li01o1ragvte",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt9m8i0b00z3li01o1ragvte"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.8 27B Q4_K_M target-only on one Intel Arc Pro B70. Fixed 12-prompt cold realistic suite, one request per unique prompt, cache_prompt=false, cached_tokens=0, no draft model or speculation. Primary score is the conventional median over the 99 intervals between generated events 1 and 100; the second fresh run measured 27.813629 tok/s. The lab TP1 fusion ladder improved the 26.05 baseline by 6.8-7.0% with 24/24 oracle-exact outputs. Complete patches, clean-host scripts, model hash, context curves, and commands: https://neural.download/models/qwen38-27b-q4km-tp1-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/qwen38-27b-q4km-tp1-b70.",
+      "observed_command": "MODEL_DIR=/path/to/qwen3.8-27b-q4km BUILD_DIR=/path/to/llama.cpp/build-sycl-aot-bmg-g31 repro/qwen38-27b-q4km-tp1-b70/run-server.sh",
+      "run_id": "cmt9m8i0b00z3li01o1ragvte",
+      "tokenized": {
+        "arguments": [
+          "repro/qwen38-27b-q4km-tp1-b70/run-server.sh"
+        ],
+        "environment": {
+          "BUILD_DIR": "/path/to/llama.cpp/build-sycl-aot-bmg-g31",
+          "MODEL_DIR": "/path/to/qwen3.8-27b-q4km"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt9m8i0b00z3li01o1ragvte"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "qwen3-8-27b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-o1ragvte-sweep"
+  ],
+  "status": "candidate"
+}

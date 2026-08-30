@@ -1,0 +1,195 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b8833 (45cac7ca7)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "minimax-m2-7-ud-iq4-xs-dgx-spark-gb10-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmoi6yfxh000nk304si0uyyp5"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmoi6yfxh000nk304si0uyyp5",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoi6yfxh000nk304si0uyyp5"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "MiniMax-M2.7-UD-IQ4_XS (unsloth dynamic Q4, 101 GB GGUF) on a single DGX Spark with llama.cpp ngram-simple speculative decode: draft-max=16, draft-min=1, p-min=0.5, ngram-size=4. Sherlock prose, pp=128, tg=128, c=1, n=29 warm. tokSOut = 30.98 t/s MEDIAN (std 4.08). 1.255\u00d7 over AR baseline (24.68 t/s). Tested all 5 llama.cpp ngram variants \u2014 ngram-simple won, ngram-mod 2nd, ngram-cache regressed below AR, the two ngram-map-* variants crashed. peakVramGb=107 via free -g (101 GB GGUF + KV + overhead in 128 GiB UMA, basically no headroom). Note: clean reproductions on different Sparks produce medians anywhere from 30\u201342 t/s (std 4\u201317) \u2014 fitting a 101 GB model in 128 GiB UMA leaves the kernel paging weights opportunistically and you catch some 'fast' windows depending on luck. Submitting the most-reproducible cell. Repo: github.com/my-other-github-account/spark-bench-reproducers/tree/main/minimax-m27-ngram-spec-spark. By @banana_baeee.",
+      "observed_command": "/opt/llama.cpp/build-cuda/bin/llama-server --jinja -fa on --no-warmup -t 20 -c 32768 -ctk q8_0 -ctv q8_0 -np 1 -a MiniMax-M2.7-UD-IQ4_XS -m /models/MiniMax-M2.7-GGUF/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf --host 127.0.0.1 --port 8012 --spec-type ngram-simple --draft-max 16 --draft-min 1 --draft-p-min 0.5 --spec-ngram-size-n 4",
+      "run_id": "cmoi6yfxh000nk304si0uyyp5",
+      "tokenized": {
+        "arguments": [
+          "/opt/llama.cpp/build-cuda/bin/llama-server",
+          "--jinja",
+          "-fa",
+          "on",
+          "--no-warmup",
+          "-t",
+          "20",
+          "-c",
+          "32768",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "-np",
+          "1",
+          "-a",
+          "MiniMax-M2.7-UD-IQ4_XS",
+          "-m",
+          "/models/MiniMax-M2.7-GGUF/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8012",
+          "--spec-type",
+          "ngram-simple",
+          "--draft-max",
+          "16",
+          "--draft-min",
+          "1",
+          "--draft-p-min",
+          "0.5",
+          "--spec-ngram-size-n",
+          "4"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-minimax-m2-7--ud-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmoi6yfxh000nk304si0uyyp5"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweeps_ids": [
+    "minimax-m2-7-ud-iq4-xs-dgx-spark-gb10-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}
