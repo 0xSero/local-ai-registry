@@ -15,7 +15,7 @@
     "launch",
     "serving",
     "capabilities",
-    "speed_sweeps_ids",
+    "speed_sweep_ids",
     "metadata",
     "provenance",
     "facts"
@@ -140,13 +140,6 @@
       },
       "additionalProperties": false
     },
-    "speed_sweeps_ids": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "uniqueItems": true
-    },
     "metadata": {
       "type": "object"
     },
@@ -155,6 +148,13 @@
     },
     "facts": {
       "$ref": "common.schema.json#/$defs/facts"
+    },
+    "speed_sweep_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
     }
   },
   "allOf": [

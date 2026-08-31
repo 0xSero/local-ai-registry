@@ -16,8 +16,8 @@ pipeline before committing.
 | Step | Script | Reads | Writes |
 |---|---|---|---|
 | 1. Import | `import_localmaxxing.py` | LocalMaxxing snapshot | candidate recipes, instances (`launch.kind: reference`) |
-| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication (see docs/PROVENANCE.md) | candidate recipes + speed-sweeps |
-| 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmarks/` |
+| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication (see docs/PROVENANCE.md) | candidate recipes + speed-sweep |
+| 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
 | 1. Import | `import_market_snapshot.py` | local-ai-scanner-cli snapshot | `registry/price/` |
 | 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
 | 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |

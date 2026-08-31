@@ -57,19 +57,19 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3
   const threeGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3")
   const twoGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2")
   const fourGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
   )
   const threeGpuPpSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3-sweep",
   )
   const twoGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2-sweep",
   )
   const threeGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3-sweep",
   )
 
@@ -234,13 +234,13 @@ test("recipe detail progressively resolves related records and speed evidence", 
     relationships &&
     typeof relationships === "object" &&
     "model_instance" in relationships &&
-    "speed_sweeps" in relationships,
+    "speed_sweep" in relationships,
   )
   const instance = (relationships as { model_instance: unknown }).model_instance
   assert.ok(instance && typeof instance === "object" && "href" in instance)
   assert.equal((instance as { href: string }).href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
 
-  const sweeps = (relationships as { speed_sweeps: unknown }).speed_sweeps
+  const sweeps = (relationships as { speed_sweep: unknown }).speed_sweep
   assert.ok(Array.isArray(sweeps))
   assert.equal(sweeps.length, 1)
 })
@@ -286,7 +286,7 @@ test("navigable topic collections expose real registry records", () => {
 
   assert.equal(models.total, counts.model)
   assert.equal(hardware.total, counts.hardware)
-  assert.equal(sweeps.total, counts.speed_sweeps)
+  assert.equal(sweeps.total, counts.speed_sweep)
   assert.equal(recipes.total, counts.recipe)
   assert.ok(models.data.length > 0)
   assert.ok(hardware.data.length > 0)
@@ -299,7 +299,7 @@ test("scraped benchmark leaderboards expose quality scores separate from speed s
   const benchmarks = listBenchmarks({}, { limit: 200, offset: 0 })
   const sweeps = listSpeedSweeps({}, { limit: 5, offset: 0 })
 
-  assert.equal(benchmarks.total, counts.benchmarks)
+  assert.equal(benchmarks.total, counts.benchmark)
   assert.ok(benchmarks.total >= 90)
   assert.ok(benchmarks.data.every((benchmark) => benchmark.rows.length > 0))
   assert.ok(sweeps.total > 0)
@@ -320,11 +320,11 @@ test("scraped benchmark leaderboards expose quality scores separate from speed s
   assert.equal(terminalBench.source.kind, "leaderboard-scrape")
   assert.ok(terminalBench.source.paths?.includes("benchmarks/terminal-bench-2.1.html"))
 
-  const detail = getEntityDetail("benchmarks", "terminal-bench-2.1")
+  const detail = getEntityDetail("benchmark", "terminal-bench-2.1")
   assert.ok(detail && typeof detail === "object")
   assert.equal((detail as { id: string }).id, "terminal-bench-2.1")
-  assert.equal(getEntityDetail("benchmark", "terminal-bench-2.1"), undefined)
-  assert.equal(getEntityDetail("speed-sweeps", "terminal-bench-2.1"), undefined)
+  assert.equal(getEntityDetail("benchmarks", "terminal-bench-2.1"), undefined)
+  assert.equal(getEntityDetail("speed-sweep", "terminal-bench-2.1"), undefined)
 
   const agentic = listBenchmarks({ category: "agentic-coding" }, { limit: 50, offset: 0 })
   assert.ok(agentic.data.some((benchmark) => benchmark.id === "terminal-bench-2.1"))
