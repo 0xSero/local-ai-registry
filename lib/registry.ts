@@ -223,6 +223,106 @@ export function getModelBenchmarkScores(modelId: string): ModelBenchmarkScore[] 
   return cachedScores[modelId] ?? []
 }
 
+export type RegionMarket = {
+  record_id: string
+  region: string
+  currency: string
+  lowest_new: number | null
+  lowest_refurbished: number | null
+  lowest_used: number | null
+  listing_count: number
+  retailer_count: number
+  observed_at: string
+}
+
+let cachedPricesByHardware: Record<string, string[]> | undefined
+
+function pricesByHardware(): Record<string, string[]> {
+  if (!cachedPricesByHardware) {
+    cachedPricesByHardware = readJson<{ prices_by_hardware: Record<string, string[]> }>(
+      "index",
+      "prices-by-hardware.json",
+    ).prices_by_hardware
+  }
+  return cachedPricesByHardware
+}
+
+export function getHardwareMarket(hardwareId: string): RegionMarket[] {
+  const ids = pricesByHardware()[hardwareId] ?? []
+  const rows: RegionMarket[] = []
+  for (const id of ids) {
+    const record = dataset().prices.get(id)
+    if (!record) continue
+    rows.push({
+      record_id: id,
+      region: record.region.code,
+      currency: record.region.currency,
+      lowest_new: record.summary.lowest_new,
+      lowest_refurbished: record.summary.lowest_refurbished,
+      lowest_used: record.summary.lowest_used,
+      listing_count: record.summary.listing_count,
+      retailer_count: record.summary.retailer_count,
+      observed_at: record.observed_at,
+    })
+  }
+  return rows.sort((left, right) => left.region.localeCompare(right.region))
+}
+
+export type HardwareComparisonRow = {
+  id: string
+  name: string
+  vendor: string
+  vram_gb: number
+  bandwidth_gb_per_s: number | null
+  fp16_tflops: number | null
+  fp8_tflops: number | null
+  int8_tflops: number | null
+  fp16_sparse: boolean
+  fp8_sparse: boolean
+  int8_sparse: boolean
+  lowest_new_usd: number | null
+  price_observed_at: string | null
+  recipe_count: number
+}
+
+function bestThroughput(record: Hardware, dtype: string): { value: number | null; sparse: boolean } {
+  const stats = (record.compute?.stats ?? {}) as Record<string, Record<string, { state?: string; value?: number | null }>>
+  const entry = stats[dtype]
+  if (!entry) return { value: null, sparse: false }
+  const dense = entry.dense
+  if (dense?.state === "known" && typeof dense.value === "number") return { value: dense.value, sparse: false }
+  const sparse = entry.structured_2_4
+  if (sparse?.state === "known" && typeof sparse.value === "number") return { value: sparse.value, sparse: true }
+  return { value: null, sparse: false }
+}
+
+export function hardwareComparison(): HardwareComparisonRow[] {
+  const data = dataset()
+  return [...data.hardware.values()].map((record) => {
+    const fp16 = bestThroughput(record, "fp16")
+    const fp8 = bestThroughput(record, "fp8")
+    const int8 = bestThroughput(record, "int8")
+    const market = getHardwareMarket(record.id)
+    const us = market.find((row) => row.region === "US" && row.lowest_new !== null)
+    return {
+      id: record.id,
+      name: record.name,
+      vendor: record.vendor,
+      vram_gb: record.memory.vram_gb,
+      bandwidth_gb_per_s: record.memory.bandwidth_gb_per_s as number | null,
+      fp16_tflops: fp16.value,
+      fp8_tflops: fp8.value,
+      int8_tflops: int8.value,
+      fp16_sparse: fp16.sparse,
+      fp8_sparse: fp8.sparse,
+      int8_sparse: int8.sparse,
+      lowest_new_usd: us?.lowest_new ?? null,
+      price_observed_at: us?.observed_at ?? null,
+      recipe_count: recipeCountForHardware(record.id),
+    }
+  })
+}
+
 export function getBenchmark(id: string): Benchmark | undefined {
   return dataset().benchmarks.get(id)
 }

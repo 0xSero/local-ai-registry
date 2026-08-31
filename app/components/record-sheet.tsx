@@ -4,7 +4,7 @@ import type { ReactNode } from "react"
 
 type Row = { label: string; value: unknown }
 
-const QUIET_KEYS = new Set(["provenance", "facts", "metadata", "source", "sources"])
+const QUIET_KEYS = new Set(["provenance", "facts", "metadata", "source", "sources", "state", "reason", "unit", "prices"])
 
 function label(value: string): string {
   return value.replaceAll("_", " ")
@@ -60,7 +60,12 @@ function explode(name: string, value: Record<string, unknown>): Record<string, u
   const entries = Object.entries(value)
   const allObjects = entries.length > 0 && entries.every(([, item]) => item !== null && typeof item === "object" && !Array.isArray(item))
   if (allObjects) {
-    return entries.map(([variant, item]) => ({ "": name, variant, ...(item as Record<string, unknown>) }))
+    return entries
+      .filter(([, item]) => {
+        const state = (item as Record<string, unknown>).state
+        return state === undefined || state === "known"
+      })
+      .map(([variant, item]) => ({ "": name, variant, ...(item as Record<string, unknown>) }))
   }
   return [{ "": name, ...value }]
 }
@@ -84,10 +89,10 @@ function flatten(value: Record<string, unknown>, prefix = ""): { rows: Row[]; ta
       continue
     }
     if (isScalar(item)) {
-      rows.push({ label: path, value: item })
+      if (item !== null && item !== "") rows.push({ label: path, value: item })
     } else if (Array.isArray(item)) {
       if (item.length === 0) {
-        rows.push({ label: path, value: null })
+        continue
       } else if (item.every(isScalar)) {
         rows.push({ label: path, value: item.map((entry) => String(entry)).join(", ") })
       } else {
@@ -144,7 +149,7 @@ function Cell({ value }: { value: unknown }): ReactNode {
 
 function SheetTable({ caption, rows }: { caption: string; rows: Record<string, unknown>[] }) {
   const columns = columnsOf(rows)
-  if (columns.length === 0) return null
+  if (columns.length === 0 || rows.length === 0) return null
   return (
     <div className="sheet-table">
       <p className="sheet-caption">{caption}</p>
@@ -239,10 +244,10 @@ export function RecordSheet({ record }: { record: Record<string, unknown> }) {
       continue
     }
     if (isScalar(value)) {
-      scalarRows.push({ label: label(key), value })
+      if (value !== null && value !== "") scalarRows.push({ label: label(key), value })
     } else if (Array.isArray(value)) {
       if (value.length === 0) {
-        scalarRows.push({ label: label(key), value: null })
+        continue
       } else if (value.every(isScalar)) {
         scalarRows.push({ label: label(key), value: value.map((entry) => String(entry)).join(", ") })
       } else {
