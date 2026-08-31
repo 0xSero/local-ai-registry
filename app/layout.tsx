@@ -28,6 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <span>Local AI Registry</span>
           </Link>
           <nav aria-label="Primary navigation">
+            <Link href="/compare">Compare</Link>
             <Link href="/api/v1">API</Link>
             <a href="https://github.com/0xSero/local-ai-registry#read-only-api">Docs</a>
           </nav>
