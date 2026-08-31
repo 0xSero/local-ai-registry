@@ -347,7 +347,7 @@ test("Prices topic exposes regional market records without flattening currencies
   assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
   assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
   assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
-  assert.deepEqual(facets.prices.condition, ["new", "refurbished", "used"])
+  assert.deepEqual(facets.prices.condition, ["new", "refurbished", "unknown", "used"])
   assert.ok(prices.data.some((record) => record.product.id === "rtx-5060"))
   assert.ok(prices.data.some((record) => record.product.id === "intel-arc-pro-b70"))
   assert.ok(prices.data.some((record) => record.product.id === "rx-9070-xt"))

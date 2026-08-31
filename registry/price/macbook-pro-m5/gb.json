@@ -16,6 +16,17 @@
   "id": "macbook-pro-m5--gb",
   "observations": [
     {
+      "amount": 1699.0,
+      "condition": "new",
+      "currency": "GBP",
+      "in_stock": null,
+      "observed_at": "2026-08-31T11:49:06Z",
+      "quantity": null,
+      "retailer": "apple",
+      "title": "MacBook Pro with M5 chip",
+      "url": "https://www.apple.com/uk/macbook-pro/"
+    },
+    {
       "amount": 1699,
       "condition": "refurbished",
       "currency": "GBP",
@@ -58,17 +69,6 @@
       "retailer": "apple-refurbished",
       "title": "Refurbished 14-inch MacBook Pro Apple M5 chip with 10‑Core CPU and 10‑Core GPU, Nano-texture display - Silver",
       "url": "https://www.apple.com/uk/shop/product/g1km2b/a/Refurbished-14-inch-MacBook-Pro-Apple-M5-chip-with-10‑Core-CPU-and-10‑Core-GPU-Nano-texture-display-Silver"
-    },
-    {
-      "amount": 1999,
-      "condition": "new",
-      "currency": "GBP",
-      "in_stock": true,
-      "observed_at": "2026-08-27T11:28:59.887Z",
-      "quantity": null,
-      "retailer": "apple-store",
-      "title": "MacBook Pro M5 (m5-10-10)",
-      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro"
     },
     {
       "amount": 2539,
@@ -289,18 +289,29 @@
       "retailer": "apple-refurbished",
       "title": "Refurbished 14-inch MacBook Pro Apple M5 Max chip with 18‑Core CPU and 40‑Core GPU - Silver",
       "url": "https://www.apple.com/uk/shop/product/g1mk8b/a/Refurbished-14-inch-MacBook-Pro-Apple-M5-Max-chip-with-18‑Core-CPU-and-40‑Core-GPU-Silver"
+    },
+    {
+      "amount": 1999,
+      "condition": "new",
+      "currency": "GBP",
+      "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.887Z",
+      "quantity": null,
+      "retailer": "apple-store",
+      "title": "MacBook Pro M5 (m5-10-10)",
+      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.887Z",
+  "observed_at": "2026-08-31T11:49:06Z",
   "product": {
     "category": "apple",
     "id": "macbook-pro-m5",
     "name": "MacBook Pro M5"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 90
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
   },
   "region": {
     "code": "GB",
@@ -310,14 +321,14 @@
   "schema_version": "local-ai-registry/v1",
   "summary": {
     "in_stock_count": 25,
-    "listing_count": 25,
-    "lowest_new": 1999,
+    "listing_count": 26,
+    "lowest_new": 1699.0,
     "lowest_refurbished": 1699,
     "lowest_used": null,
-    "retailer_count": 2
+    "retailer_count": 3
   },
   "verification": {
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
     "rejected_observations": 0,
     "state": "candidate"
   }
