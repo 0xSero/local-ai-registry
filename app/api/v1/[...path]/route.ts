@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs"
+import nodePath from "node:path"
+
 import { NextRequest, NextResponse } from "next/server"
 
 import {
@@ -77,9 +80,35 @@ function listResponse(
   })
 }
 
+
+function assetBlob(id: string): NextResponse {
+  if (!/^[a-z0-9][a-z0-9.-]*$/.test(id)) {
+    return response({ error: { code: "not_found", message: "asset not found" } }, 404)
+  }
+  const base = nodePath.join(process.cwd(), "registry", "asset")
+  let manifest: { file: string; media_type?: string; sha256?: string }
+  try {
+    manifest = JSON.parse(readFileSync(nodePath.join(base, `${id}.json`), "utf8"))
+  } catch {
+    return response({ error: { code: "not_found", message: "asset not found" } }, 404)
+  }
+  const blobPath = nodePath.join(base, nodePath.basename(manifest.file))
+  const body = readFileSync(blobPath)
+  return new NextResponse(new Uint8Array(body), {
+    headers: {
+      "content-type": manifest.media_type ?? "application/octet-stream",
+      "x-content-sha256": manifest.sha256 ?? "",
+      "cache-control": "public, max-age=3600",
+    },
+  })
+}
+
 export async function GET(request: NextRequest, context: RouteContext): Promise<NextResponse> {
   const { path } = await context.params
   const [resource, id, extra] = path
+  if (resource === "asset" && id && extra === "file") {
+    return assetBlob(id)
+  }
   if (!resource || extra) {
     return response({ error: { code: "not_found", message: "API route not found" } }, 404)
   }
