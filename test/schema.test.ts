@@ -70,9 +70,17 @@ test("every price record validates against price.schema.json", () => {
   assert.deepEqual(failures, [], `${failures.length} invalid price record(s):\n${failures.slice(0, 5).join("\n")}`)
 })
 
-test("index.json validates against index.schema.json", () => {
+test("index shards are well-formed", () => {
   const validate = ajv.getSchema(schemaId("index.schema.json"))
   assert.ok(validate, "index schema is registered")
-  const record = JSON.parse(readFileSync(join(ROOT, "index.json"), "utf8"))
-  assert.ok(validate(record), formatErrors("index.json", validate.errors))
+  const collections = JSON.parse(readFileSync(join(ROOT, "index", "collections.json"), "utf8"))
+  assert.ok(validate(collections), formatErrors("index/collections.json", validate.errors))
+  const validateRecipes = ajv.getSchema(schemaId("index-recipes.schema.json"))
+  assert.ok(validateRecipes, "index-recipes schema is registered")
+  const recipeRows = JSON.parse(readFileSync(join(ROOT, "index", "recipes.json"), "utf8"))
+  assert.ok(validateRecipes(recipeRows), formatErrors("index/recipes.json", validateRecipes.errors))
+  for (const shard of ["recipes.json", "recipes-by-hardware.json", "instances-by-model.json", "benchmarks-by-model.json", "prices-by-hardware.json"]) {
+    const doc = JSON.parse(readFileSync(join(ROOT, "index", shard), "utf8"))
+    assert.equal(doc.schema_version, "local-ai-registry/v1", `${shard} schema_version`)
+  }
 })
