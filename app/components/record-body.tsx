@@ -3,6 +3,7 @@ import { CopyActions } from "@/app/components/copy-actions"
 import { RecordSheet } from "@/app/components/record-sheet"
 import { HardwareMarket } from "@/app/components/hardware-market"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
+import { LaunchCommand } from "@/app/components/launch-command"
 import { ModelScores } from "@/app/components/model-scores"
 import { RecordEvidence } from "@/app/components/record-evidence"
 import { RecordFacts } from "@/app/components/record-facts"
@@ -47,6 +48,7 @@ export function RecordBody({
               : "Candidate: useful compatibility or speed evidence. The registry does not offer Run until promotion requirements are met."}
           </p>
           <ConfigurationCard config={config} />
+          <LaunchCommand recipe={record as never} />
         </>
       )}
       <RecordEvidence collection={collection} record={record} />
