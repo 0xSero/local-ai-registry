@@ -1,0 +1,211 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "69 (fork ds4-longctx @ e6718011c)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "deepseek-v4-flash-0731-ud-iq2-m-rtx-3090-24gb-llama-cpp-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsi0l2sc01lepp019uelu1ga"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsi0l2sc01lepp019uelu1ga",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsi0l2sc01lepp019uelu1ga"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "DeepSeek-V4-Flash-0731 (304B MoE, Unsloth UD-IQ2_M, ~90GB GGUF) on 4x RTX 3090 24GB (96GB total, ~90.3GiB used at 130K ctx). Engine: llama.cpp fork with DeepSeek-V4-Flash optimizations - github.com/alesha-pro/llama.cpp branch ds4-longctx @ e6718011c. Launcher: scripts/ds4-prod-serve.sh (full env flag set in commandSnippet). Custom work vs upstream: prefill CUDA graphs, sparse FA + indexer skip, fused MoE (GLU fuse + tiling + resident experts), radix top-k, register-based MLA head-compression sinkhorn kernel, 2-pass fp8 KV quantize kernel, sticky graph allocator, startup warm pass (moves allocator climb out of first request). GPU tuning: PL 270W/card + locked SM clocks (scripts/ds4-gpu-clocks.sh). Full story: DS4HANDOFF.md in the repo. Measured 2026-08-06, server fully warm. This run: fresh 32768-token prompt -> prefill 1745.4 t/s (TTFT 18.8s, ~265W/card), then decode 41.07 t/s at 32K depth (~210W/card). Same config decodes 44.6 t/s at short context.",
+      "observed_command": "CUDA_VISIBLE_DEVICES=0,1,2,3 GGML_CUDA_P2P=1 DSV4_CONSTANT_SHAPE=1 DSV4_SPARSE_FA=1 DSV4_FA_UNION=1 DSV4_IDX_SKIP=1 DSV4_MOE_TILE=1 DSV4_MOE_RESIDENT=1 DSV4_GLU_FUSE=1 DSV4_MOE_FUSE=1 DSV4_DECODE_FUSED_IDX=1 DSV4_DECODE_RADIX_TOPK=1 DSV4_PREFILL_RADIX_TOPK=1 DSV4_MMVQ_SMALLK=1 DSV4_STABLE_TOPO=1 GGML_GALLOC_STICKY=1 DSV4_PREFILL_GRAPHS=1 DSV4_AGENT_CKPT_TAIL=1 llama-server -m DeepSeek-V4-Flash-0731-UD-IQ2_M-00001-of-00003.gguf -ngl 999 -ts 1,1,0.95,1.05 --split-mode layer --flash-attn on --no-repack --ctx-size 131072 --batch-size 8192 --ubatch-size 384 --ctx-checkpoints 1 -t 8 --parallel 1 --jinja --reasoning-budget 1024 --reasoning-budget-message 'Okay, that is enough thinking. Let me get to work.'",
+      "run_id": "cmsi0l2sc01lepp019uelu1ga",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "DeepSeek-V4-Flash-0731-UD-IQ2_M-00001-of-00003.gguf",
+          "-ngl",
+          "999",
+          "-ts",
+          "1,1,0.95,1.05",
+          "--split-mode",
+          "layer",
+          "--flash-attn",
+          "on",
+          "--no-repack",
+          "--ctx-size",
+          "131072",
+          "--batch-size",
+          "8192",
+          "--ubatch-size",
+          "384",
+          "--ctx-checkpoints",
+          "1",
+          "-t",
+          "8",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--reasoning-budget",
+          "1024",
+          "--reasoning-budget-message",
+          "Okay, that is enough thinking. Let me get to work."
+        ],
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+          "DSV4_AGENT_CKPT_TAIL": "1",
+          "DSV4_CONSTANT_SHAPE": "1",
+          "DSV4_DECODE_FUSED_IDX": "1",
+          "DSV4_DECODE_RADIX_TOPK": "1",
+          "DSV4_FA_UNION": "1",
+          "DSV4_GLU_FUSE": "1",
+          "DSV4_IDX_SKIP": "1",
+          "DSV4_MMVQ_SMALLK": "1",
+          "DSV4_MOE_FUSE": "1",
+          "DSV4_MOE_RESIDENT": "1",
+          "DSV4_MOE_TILE": "1",
+          "DSV4_PREFILL_GRAPHS": "1",
+          "DSV4_PREFILL_RADIX_TOPK": "1",
+          "DSV4_SPARSE_FA": "1",
+          "DSV4_STABLE_TOPO": "1",
+          "GGML_CUDA_P2P": "1",
+          "GGML_GALLOC_STICKY": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-deepseek-v4-flash-0731-gguf--ud-iq2-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsi0l2sc01lepp019uelu1ga"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-flash-0731-ud-iq2-m-rtx-3090-24gb-llama-cpp-tp4-sweep"
+  ],
+  "status": "candidate"
+}

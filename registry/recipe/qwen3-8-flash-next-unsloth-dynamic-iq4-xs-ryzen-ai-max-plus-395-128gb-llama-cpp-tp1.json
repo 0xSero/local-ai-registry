@@ -1,0 +1,209 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10637 (strix-go-brrr / strix-halo-vulkan 39817c476)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-flash-next-unsloth-dynamic-iq4-xs-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtbqotxt003gqq01kfluky16"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtbqotxt003gqq01kfluky16",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtbqotxt003gqq01kfluky16"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "strix-go-brrr engine (github.com/setianke/strix-go-brrr).\n\nMeasurement: llama-server /v1/chat/completions API timings, code-rewrite task (1701 prompt tok, 800 output tok), warm cache run (1697 cached). Decode 110 t/s is ngram-mod speculation drafting from repeated code in context — cold novel-text baseline is 27 t/s unspeculated. Both numbers reported honestly; the workload is representative of agentic coding, not cherry-picked.\n\nContainer: Vulkan/RADV, flashnext-strix toolbox from strix-halo-vulkan fork (commit 39817c476, qwen4exp arch). N-gram embedding table (51B params) offloaded to CPU via -ot per_layer_token_embd=CPU — zero speed cost, frees ~27 GB GTT. KV f16 mandatory (quantised KV crashes on qwen4exp dense-attention layers).\n\nDay-1 build. No MTP drafter (not in Unsloth GGUFs), no EVICT adaptive verification, no ubatch tuning, no profiling. Room to grow.",
+      "observed_command": "toolbox run -c flashnext-strix -- llama-server -m ~/models/qwen3.8-flash-next/UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf -ngl 999 --load-mode none -fa on -c 32768 -ot per_layer_token_embd=CPU --spec-type ngram-mod --spec-ngram-mod-n-match 32 --spec-draft-n-max 7 -np 1 --fit off -b 4096 -ub 2048 --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --jinja --reasoning-format auto --host 0.0.0.0 --port 8082",
+      "run_id": "cmtbqotxt003gqq01kfluky16",
+      "tokenized": {
+        "arguments": [
+          "toolbox",
+          "run",
+          "-c",
+          "flashnext-strix",
+          "--",
+          "llama-server",
+          "-m",
+          "~/models/qwen3.8-flash-next/UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+          "-ngl",
+          "999",
+          "--load-mode",
+          "none",
+          "-fa",
+          "on",
+          "-c",
+          "32768",
+          "-ot",
+          "per_layer_token_embd=CPU",
+          "--spec-type",
+          "ngram-mod",
+          "--spec-ngram-mod-n-match",
+          "32",
+          "--spec-draft-n-max",
+          "7",
+          "-np",
+          "1",
+          "--fit",
+          "off",
+          "-b",
+          "4096",
+          "-ub",
+          "2048",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--jinja",
+          "--reasoning-format",
+          "auto",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8082"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--unsloth-dynamic-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtbqotxt003gqq01kfluky16"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-flash-next-unsloth-dynamic-iq4-xs-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

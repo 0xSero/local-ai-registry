@@ -1,11 +1,14 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import { configurationFromRecipe, flagRows } from "../app/components/configuration-card"
 import {
   collectionCounts,
+  getBenchmark,
   getEntityDetail,
   getFacets,
   isLaunchable,
+  listBenchmarks,
   listHardware,
   marketPriceCount,
   listModelInstances,
@@ -13,6 +16,7 @@ import {
   listPrices,
   listSpeedSweeps,
   queryCompatibility,
+  recipeCountForHardware,
 } from "../lib/registry"
 
 test("model and hardware searches intersect on compatible recipes", () => {
@@ -53,19 +57,19 @@ test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3
   const threeGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3")
   const twoGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2")
   const fourGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep",
   )
   const threeGpuPpSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3-sweep",
   )
   const twoGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2-sweep",
   )
   const threeGpuSweep = getEntityDetail(
-    "speed-sweeps",
+    "speed-sweep",
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp3-sweep",
   )
 
@@ -170,6 +174,12 @@ test("repository link results expose the authoritative body identity", () => {
   assert.equal(exact.huggingface.repository, "unsloth/gemma-4-12b-it-NVFP4")
   assert.equal(exact.hugging_face_url, exact.huggingface.url)
   assert.equal(exact.hugging_face_url, "https://huggingface.co/unsloth/gemma-4-12b-it-NVFP4")
+  assert.equal(exact.credits.artifact.publisher, "unsloth")
+  assert.equal(exact.credits.artifact.repository, "unsloth/gemma-4-12b-it-NVFP4")
+  assert.equal(exact.credits.artifact.status, "known")
+  assert.equal(exact.credits.base_model?.publisher, "google")
+  assert.equal(exact.credits.base_model?.repository, "google/gemma-4-12B-it")
+  assert.ok(exact.credits.provenance.sources.length > 0)
 })
 
 test("search fallback results stay distinct from repository links", () => {
@@ -187,6 +197,9 @@ test("search fallback results stay distinct from repository links", () => {
   assert.equal(fallback.huggingface.status, "unavailable")
   assert.equal(fallback.hugging_face_url, fallback.huggingface.url)
   assert.equal(fallback.hugging_face_url, "https://huggingface.co/models?search=agents-a1-q4km")
+  assert.equal(fallback.credits.artifact.publisher, null)
+  assert.equal(fallback.credits.artifact.repository, null)
+  assert.equal(fallback.credits.artifact.status, "unavailable")
 })
 
 test("hardware filters use normalized vendor and memory fields", () => {
@@ -206,28 +219,28 @@ test("recipe detail progressively resolves related records and speed evidence", 
     "recipes",
     "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
   )
-  assert.ok(detail)
+  if (!detail) throw new Error("recipe detail not found")
   assert.equal(detail.status, "validated")
   const launch = detail.launch
   assert.ok(launch && typeof launch === "object" && "kind" in launch)
-  assert.equal(launch.kind, "docker")
+  assert.equal((launch as { kind: string }).kind, "docker")
 
   const registry = detail.registry
   assert.ok(registry && typeof registry === "object" && "launchable" in registry)
-  assert.equal(registry.launchable, true)
+  assert.equal((registry as { launchable: boolean }).launchable, true)
 
   const relationships = detail.relationships
   assert.ok(
     relationships &&
     typeof relationships === "object" &&
     "model_instance" in relationships &&
-    "speed_sweeps" in relationships,
+    "speed_sweep" in relationships,
   )
-  const instance = relationships.model_instance
+  const instance = (relationships as { model_instance: unknown }).model_instance
   assert.ok(instance && typeof instance === "object" && "href" in instance)
-  assert.equal(instance.href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
+  assert.equal((instance as { href: string }).href, "/model-instances/unsloth-gemma-4-12b-it-nvfp4--nvfp4")
 
-  const sweeps = relationships.speed_sweeps
+  const sweeps = (relationships as { speed_sweep: unknown }).speed_sweep
   assert.ok(Array.isArray(sweeps))
   assert.equal(sweeps.length, 1)
 })
@@ -273,7 +286,7 @@ test("navigable topic collections expose real registry records", () => {
 
   assert.equal(models.total, counts.model)
   assert.equal(hardware.total, counts.hardware)
-  assert.equal(sweeps.total, counts.speed_sweeps)
+  assert.equal(sweeps.total, counts.speed_sweep)
   assert.equal(recipes.total, counts.recipe)
   assert.ok(models.data.length > 0)
   assert.ok(hardware.data.length > 0)
@@ -281,25 +294,71 @@ test("navigable topic collections expose real registry records", () => {
   assert.ok(recipes.data.length > 0)
 })
 
+test("scraped benchmark leaderboards expose quality scores separate from speed sweeps", () => {
+  const counts = collectionCounts()
+  const benchmarks = listBenchmarks({}, { limit: 200, offset: 0 })
+  const sweeps = listSpeedSweeps({}, { limit: 5, offset: 0 })
+
+  assert.equal(benchmarks.total, counts.benchmark)
+  assert.ok(benchmarks.total >= 90)
+  assert.ok(benchmarks.data.every((benchmark) => benchmark.rows.length > 0))
+  assert.ok(sweeps.total > 0)
+  assert.ok(sweeps.data.every((sweep) => !("rows" in sweep && Array.isArray(sweep.rows) && sweep.rows.some((row) => "variant" in row))))
+
+  const mmlu = getBenchmark("mmlu")
+  assert.ok(mmlu)
+  assert.equal(mmlu.name, "MMLU")
+  assert.ok(mmlu.rows.length > 0)
+  assert.ok(mmlu.rows.every((row) => row.score === null || (row.score >= 0 && row.score <= 100)))
+  assert.ok(mmlu.rows.every((row) => typeof row.root === "string" && row.root.length > 0))
+
+  const terminalBench = getBenchmark("terminal-bench-2.1")
+  assert.ok(terminalBench)
+  assert.equal(terminalBench.name, "Terminal-Bench 2.1")
+  assert.equal(terminalBench.category, "agentic-coding")
+  assert.equal(terminalBench.rows.length, 17)
+  assert.equal(terminalBench.source.kind, "leaderboard-scrape")
+  assert.ok(terminalBench.source.paths?.includes("benchmarks/terminal-bench-2.1.html"))
+
+  const detail = getEntityDetail("benchmark", "terminal-bench-2.1")
+  assert.ok(detail && typeof detail === "object")
+  assert.equal((detail as { id: string }).id, "terminal-bench-2.1")
+  assert.equal(getEntityDetail("benchmarks", "terminal-bench-2.1"), undefined)
+  assert.equal(getEntityDetail("speed-sweep", "terminal-bench-2.1"), undefined)
+
+  const agentic = listBenchmarks({ category: "agentic-coding" }, { limit: 50, offset: 0 })
+  assert.ok(agentic.data.some((benchmark) => benchmark.id === "terminal-bench-2.1"))
+  assert.ok(agentic.data.every((benchmark) => benchmark.category === "agentic-coding"))
+
+  const query = listBenchmarks({ q: "terminal-bench-2.1" }, { limit: 10, offset: 0 })
+  assert.ok(query.data.some((benchmark) => benchmark.id === "terminal-bench-2.1"))
+  const sweepQuery = listSpeedSweeps({ q: "terminal-bench-2.1" }, { limit: 10, offset: 0 })
+  assert.equal(sweepQuery.total, 0)
+})
+
 test("Prices topic exposes regional market records without flattening currencies", () => {
-  const prices = listPrices({}, { limit: 200, offset: 0 })
+  const prices = listPrices({}, { limit: 500, offset: 0 })
   const facets = getFacets()
 
-  assert.equal(prices.total, 84)
-  assert.equal(prices.data.length, 84)
-  assert.equal(new Set(prices.data.map((record) => record.product.id)).size, 33)
-  assert.equal(prices.data.reduce((count, record) => count + record.observations.length, 0), 896)
+  assert.ok(prices.total >= 100)
+  assert.equal(prices.data.length, prices.total)
+  assert.ok(new Set(prices.data.map((record) => record.product.id)).size >= 45)
+  assert.ok(prices.data.reduce((count, record) => count + record.observations.length, 0) >= 1000)
   assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
   assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
   assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
-  assert.deepEqual(facets.prices.condition, ["new", "refurbished", "used"])
+  assert.deepEqual(facets.prices.condition, ["new", "refurbished", "unknown", "used"])
+  assert.ok(prices.data.some((record) => record.product.id === "rtx-5060"))
+  assert.ok(prices.data.some((record) => record.product.id === "intel-arc-pro-b70"))
+  assert.ok(prices.data.some((record) => record.product.id === "rx-9070-xt"))
+  assert.ok(prices.data.some((record) => record.product.id === "rtx-pro-4000-blackwell"))
 })
 
 test("market filters compose across region, category, condition, and retailer", () => {
   const sample = listPrices({}, { limit: 200, offset: 0 }).data.find((record) => record.observations.some((observation) => observation.in_stock === true))
-  assert.ok(sample)
+  if (!sample) throw new Error("no in-stock price sample found")
   const observation = sample.observations.find((candidate) => candidate.in_stock === true)
-  assert.ok(observation)
+  if (!observation) throw new Error("no in-stock observation found")
 
   const filtered = listPrices(
     {
@@ -338,7 +397,7 @@ test("hardware topic filters vendor backend memory and priced state", () => {
 test("model topic filters family and architecture together", () => {
   const models = listModels({}, { limit: 200, offset: 0 })
   const sample = models.data.find((model) => model.architecture !== null)
-  assert.ok(sample)
+  if (!sample) throw new Error("no architecture sample found")
 
   const filtered = listModels(
     { architecture: sample.architecture ?? "", family: sample.family },
@@ -353,4 +412,191 @@ test("model topic filters family and architecture together", () => {
   const unknown = listModels({ architecture: "unknown" }, { limit: 200, offset: 0 })
   assert.ok(unknown.total > 0)
   assert.ok(unknown.data.every((model) => model.architecture === null))
+})
+
+test("runtime and engine filters distinguish docker from evidence-only recipes", () => {
+  const docker = queryCompatibility({ runtime: "docker" }, { limit: 50, offset: 0 })
+  const evidence = queryCompatibility({ runtime: "reference" }, { limit: 50, offset: 0 })
+  const llama = queryCompatibility({ engine: "llama.cpp" }, { limit: 50, offset: 0 })
+
+  assert.ok(docker.total > 0)
+  assert.ok(evidence.total > 0)
+  assert.ok(docker.data.every((item) => item.recipe.launch.kind === "docker" || item.recipe.launch.kind === "docker-compose"))
+  assert.ok(evidence.data.every((item) => item.recipe.launch.kind === "reference" && item.launchable === false))
+  assert.ok(llama.total > 0)
+  assert.ok(llama.data.every((item) => item.recipe.engine.name === "llama.cpp"))
+})
+
+test("hardware has_recipes filter and previously empty SKUs stay exact", () => {
+  const filled = listHardware({ has_recipes: "true" }, { limit: 200, offset: 0 })
+  const empty = listHardware({ has_recipes: "false" }, { limit: 200, offset: 0 })
+  const ti = listHardware({ q: "3060 ti" }, { limit: 20, offset: 0 })
+  const spark = listHardware({ q: "dgx spark" }, { limit: 20, offset: 0 })
+
+  assert.ok(filled.total > 0)
+  assert.ok(empty.total > 0)
+  assert.ok(filled.data.every((hardware) => recipeCountForHardware(hardware.id) > 0))
+  assert.ok(empty.data.every((hardware) => recipeCountForHardware(hardware.id) === 0))
+  assert.ok(ti.data.some((hardware) => hardware.id === "rtx-3060-ti-8gb" && recipeCountForHardware(hardware.id) > 0))
+  assert.ok(spark.data.some((hardware) => hardware.id === "dgx-spark-gb10-128gb" && recipeCountForHardware(hardware.id) > 0))
+})
+
+test("recipe detail exposes Hugging Face identity and a visual configuration, never a local-ai launch", () => {
+  const detail = getEntityDetail("recipes", "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1")
+  assert.ok(detail && typeof detail === "object")
+  const record = detail as {
+    huggingface?: { status?: string; url?: string }
+    launch?: { kind?: string }
+    registry?: { launchable?: boolean }
+  }
+  assert.equal(record.huggingface?.status, "known")
+  assert.match(String(record.huggingface?.url), /^https:\/\/huggingface\.co\//)
+  assert.equal(record.launch?.kind, "docker")
+  assert.equal(record.registry?.launchable, true)
+  assert.doesNotMatch(JSON.stringify(record.launch), /local-ai launch/i)
+})
+
+test("mlx.fast official Gemma 4 score is a candidate on M5 Max attached to the canonical model", () => {
+  const detail = getEntityDetail("recipes", "gemma-4-26b-a4b-it-qat-4bit-apple-m5-max-128gb-mlxfast-tp1")
+  assert.ok(detail && typeof detail === "object")
+  const record = detail as {
+    hardware_id: string
+    launch: { arguments?: string[]; kind: string; steps?: string[][] }
+    metadata: { mlxfast: { tokenized: { arguments?: string[]; fidelity: string; steps?: string[][] } } }
+    recipe_source: string
+    registry: { launchable: boolean }
+    relationships: { model: { id: string } }
+    status: string
+  }
+  assert.equal(record.recipe_source, "mlxfast")
+  assert.equal(record.status, "candidate")
+  assert.equal(record.launch.kind, "reference")
+  assert.equal(record.hardware_id, "apple-m5-max-128gb")
+  assert.equal(record.registry.launchable, false)
+  assert.equal(record.relationships.model.id, "gemma-4-26b-a4b-it")
+  assert.ok(!("arguments" in record.launch))
+  assert.ok(!("steps" in record.launch))
+  assert.ok(!("image" in record.launch))
+  assert.equal(record.metadata.mlxfast.tokenized.fidelity, "faithful")
+  assert.equal(record.metadata.mlxfast.tokenized.steps?.length, 4)
+  assert.equal(record.metadata.mlxfast.tokenized.steps?.[0]?.[0], "git")
+  assert.equal(record.metadata.mlxfast.tokenized.arguments?.[0], "./setup-gemma4-assistant.sh")
+  assert.doesNotMatch(JSON.stringify(record.launch), /&&/)
+  assert.doesNotMatch(JSON.stringify(record.launch).toLowerCase(), /command_snippet/)
+
+  const instance = getEntityDetail("model-instances", "mlx-community-gemma-4-26b-a4b-it-qat-4bit--4bit") as {
+    huggingface: { repository: string; status: string }
+    model_id: string
+    revision: string
+  }
+  assert.equal(instance.model_id, "gemma-4-26b-a4b-it")
+  assert.equal(instance.revision, "0e3cbab38ce568cf6e23543010d08d03b731910c")
+  assert.equal(instance.huggingface.status, "known")
+  assert.equal(instance.huggingface.repository, "mlx-community/gemma-4-26B-A4B-it-qat-4bit")
+})
+
+test("observed LocalMaxxing commands are tokenized in metadata, not onto the launch contract", () => {
+  const llama = getEntityDetail("recipes", "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1") as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
+    recipe_source: string
+    status: string
+  }
+  const vllm = getEntityDetail("recipes", "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1") as {
+    launch: Record<string, unknown>
+    metadata: {
+      localmaxxing: {
+        tokenized: { arguments?: string[]; environment?: Record<string, string>; fidelity: string }
+      }
+    }
+  }
+  const windows = getEntityDetail(
+    "recipes",
+    "gemma-4-12b-it-qat-q4-0-unquantized-q4-k-xl-rtx-3060-12gb-llama-cpp-tp1",
+  ) as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
+  }
+  const dockerSnippet = getEntityDetail("recipes", "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4") as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string } } }
+  }
+  assert.equal(llama.recipe_source, "localmaxxing")
+  assert.equal(llama.status, "candidate")
+  assert.equal(llama.launch.kind, "reference")
+  assert.ok(!("arguments" in llama.launch))
+  assert.ok(!("image" in llama.launch))
+  assert.equal(llama.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.equal(llama.metadata.localmaxxing.tokenized.arguments?.[0], "llama-bench")
+  assert.ok(llama.metadata.localmaxxing.tokenized.arguments?.includes("-ngl"))
+  assert.doesNotMatch(JSON.stringify(llama.launch), /&&/)
+  assert.doesNotMatch(JSON.stringify(llama.launch).toLowerCase(), /command_snippet/)
+  assert.ok(!("arguments" in vllm.launch))
+  assert.ok(!("image" in vllm.launch))
+  assert.equal(vllm.metadata.localmaxxing.tokenized.arguments?.[0], "vllm")
+  assert.equal(vllm.metadata.localmaxxing.tokenized.arguments?.[1], "serve")
+  assert.equal(vllm.metadata.localmaxxing.tokenized.environment?.VLLM_NVFP4_GEMM_BACKEND, "cutlass")
+  assert.equal(windows.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.ok(windows.metadata.localmaxxing.tokenized.arguments?.[0]?.includes("llama-server.exe"))
+  assert.doesNotMatch(JSON.stringify(windows), /\.llama\.cppbuildbin/)
+  assert.ok(!("image" in dockerSnippet.launch))
+  assert.ok(!("mounts" in dockerSnippet.launch))
+  assert.ok(!("ports" in dockerSnippet.launch))
+  assert.equal(dockerSnippet.metadata.localmaxxing.tokenized.arguments?.[0], "docker")
+  const wrapped = getEntityDetail(
+    "recipes",
+    "qwen3-8-27b-nvfp4-rtx-pro-6000-blackwell-96gb-sglang-tp1",
+  ) as {
+    launch: Record<string, unknown>
+    metadata: { localmaxxing: { tokenized: { arguments?: string[]; fidelity: string; steps?: string[][] } } }
+  }
+  assert.equal(wrapped.metadata.localmaxxing.tokenized.fidelity, "faithful")
+  assert.equal(wrapped.metadata.localmaxxing.tokenized.arguments?.[0], "sglang")
+  assert.ok(wrapped.metadata.localmaxxing.tokenized.arguments?.includes("--port"))
+  assert.ok(!wrapped.metadata.localmaxxing.tokenized.steps)
+  assert.ok(!("arguments" in wrapped.launch))
+})
+
+test("observed LocalMaxxing and Postgres recipes stay reference-only candidates", () => {
+  const lmx = queryCompatibility({ q: "localmaxxing" }, { limit: 20, offset: 0 })
+  const recipes = queryCompatibility({ hardware_id: "rtx-3060-ti-8gb" }, { limit: 50, offset: 0 })
+  assert.ok(recipes.total > 0)
+  for (const item of recipes.data) {
+    if (item.recipe.recipe_source === "localmaxxing" || item.recipe.recipe_source === "exo-postgres") {
+      assert.equal(item.recipe.status, "candidate")
+      assert.equal(item.recipe.launch.kind, "reference")
+      assert.equal(item.launchable, false)
+    }
+    assert.notEqual(item.recipe.recipe_source, "omlx")
+  }
+  assert.equal(getEntityDetail("recipes", "gemma-4-26b-a4b-it-4bit-apple-m5-max-128gb-omlx-tp1"), undefined)
+  assert.ok(lmx.total >= 0)
+})
+
+test("empty observed flags are omitted from the flag table rather than labeled set", () => {
+  assert.deepEqual(
+    flagRows(["llama-bench", "-m", "-p", "512", "-ngl", "28"]),
+    [
+      ["-p", "512"],
+      ["-ngl", "28"],
+    ],
+  )
+  const observed = getEntityDetail("recipes", "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1")
+  const config = configurationFromRecipe(observed as Record<string, unknown>)
+  assert.equal(config.kind, "reference")
+  assert.equal(config.launchable, false)
+  assert.equal(config.image, null)
+  assert.equal(config.fidelity, "faithful")
+  assert.equal(config.arguments[0], "llama-bench")
+  assert.ok(config.arguments.includes("-m"))
+  assert.equal(flagRows(config.arguments).some(([, item]) => item === "set"), false)
+  assert.equal(flagRows(config.arguments).some(([flag]) => flag === "-m"), false)
+
+  const docker = configurationFromRecipe(
+    getEntityDetail("recipes", "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1") as Record<string, unknown>,
+  )
+  assert.equal(docker.kind, "docker")
+  assert.equal(docker.launchable, true)
+  assert.match(String(docker.image), /lmsysorg\/sglang/)
+  assert.ok(docker.arguments.includes("-lc"))
 })

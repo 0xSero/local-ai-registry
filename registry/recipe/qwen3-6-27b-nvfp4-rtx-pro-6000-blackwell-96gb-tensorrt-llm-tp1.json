@@ -1,0 +1,177 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "tensorrt-llm",
+    "version": "1.3.0rc24+3d1596b755"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3-6-27b-nvfp4-rtx-pro-6000-blackwell-96gb-tensorrt-llm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsovenrm00djmp013kbi4jf0"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsovenrm00djmp013kbi4jf0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsovenrm00djmp013kbi4jf0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Qwen3.6-27B NVFP4 benchmark with source-built TensorRT-LLM 1.3.0rc24+3d1596b755 on NVIDIA RTX PRO 6000 Blackwell 96 GB. Single-user text completion, 131072 max context, 2048-token output cap, temperature 0. Recorded wall time 29382 ms for 2048 output tokens, equivalent to 69.70 tok/s by wall time; prompt tokens 559.",
+      "observed_command": "trtllm-serve --model nvidia/Qwen3.6-27B-NVFP4 --host 0.0.0.0 --port 8090 --max_batch_size 1 --max_num_tokens 4096 --max_seq_len 131072 --served_model_name qwen3.6-27b-nvfp4-trtllm",
+      "run_id": "cmsovenrm00djmp013kbi4jf0",
+      "tokenized": {
+        "arguments": [
+          "trtllm-serve",
+          "--model",
+          "nvidia/Qwen3.6-27B-NVFP4",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8090",
+          "--max_batch_size",
+          "1",
+          "--max_num_tokens",
+          "4096",
+          "--max_seq_len",
+          "131072",
+          "--served_model_name",
+          "qwen3.6-27b-nvfp4-trtllm"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-6-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsovenrm00djmp013kbi4jf0"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-nvfp4-rtx-pro-6000-blackwell-96gb-tensorrt-llm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

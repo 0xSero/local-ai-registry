@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b9333-35c9b1f39"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "gemma-4-e4b-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmpm4cxbe000wrt01crm6mhqr"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmpm4cxbe000wrt01crm6mhqr",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpm4cxbe000wrt01crm6mhqr"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "Gemma4 E4B Q4_K_M GGUF on Vulkan0 AMD Radeon AI PRO R9700. Tested -fa 0 and -fa 1; submitted -fa 1 because decode was faster. llama-bench repetitions=5.",
+      "observed_command": "build-vulkan-sdk2\\bin\\llama-bench.exe -m gemma-4-E4B-it-Q4_K_M.gguf -dev Vulkan0 -ngl 99 -fa 1 -p 512 -n 512 -r 5 -o md --progress",
+      "run_id": "cmpm4cxbe000wrt01crm6mhqr",
+      "tokenized": {
+        "arguments": [
+          "build-vulkan-sdk2\\bin\\llama-bench.exe",
+          "-m",
+          "gemma-4-E4B-it-Q4_K_M.gguf",
+          "-dev",
+          "Vulkan0",
+          "-ngl",
+          "99",
+          "-fa",
+          "1",
+          "-p",
+          "512",
+          "-n",
+          "512",
+          "-r",
+          "5",
+          "-o",
+          "md",
+          "--progress"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "google-gemma-4-e4b-it--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmpm4cxbe000wrt01crm6mhqr"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-e4b-q4-k-m-radeon-ai-pro-r9700-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

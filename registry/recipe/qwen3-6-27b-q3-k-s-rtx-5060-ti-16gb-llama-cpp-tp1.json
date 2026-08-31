@@ -1,0 +1,181 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "Turbo Quant "
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5060-ti-16gb",
+  "id": "qwen3-6-27b-q3-k-s-rtx-5060-ti-16gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmoevggsc0013l804ay3jbtel"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmoevggsc0013l804ay3jbtel",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoevggsc0013l804ay3jbtel"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "5060 Ti",
+      "notes": null,
+      "observed_command": ".\\build\\bin\\Release\\llama-cli.exe `\n  -m .\\models\\Qwen3.6-27B-TQ3_4S\\Qwen3.6-27B-TQ3_4S.gguf `\n  --jinja `\n  -ngl 99 `\n  -c 32768 `\n  -ctk q4_0 `\n  -ctv tq3_0 `\n  -fa on `\n  --reasoning on `\n  --reasoning-budget -1 `\n  -i",
+      "run_id": "cmoevggsc0013l804ay3jbtel",
+      "tokenized": {
+        "arguments": [
+          ".\\build\\bin\\Release\\llama-cli.exe",
+          "-m",
+          ".\\models\\Qwen3.6-27B-TQ3_4S\\Qwen3.6-27B-TQ3_4S.gguf",
+          "--jinja",
+          "-ngl",
+          "99",
+          "-c",
+          "32768",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "tq3_0",
+          "-fa",
+          "on",
+          "--reasoning",
+          "on",
+          "--reasoning-budget",
+          "-1",
+          "-i"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ytan2000-qwen3-6-27b-tq3-4s--q3-k-s",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmoevggsc0013l804ay3jbtel"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-q3-k-s-rtx-5060-ti-16gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

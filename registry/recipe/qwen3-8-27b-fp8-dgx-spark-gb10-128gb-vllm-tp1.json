@@ -1,0 +1,187 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "nightly muse-glimmer-arm64-cu130 (main, 2026-08-11)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-8-27b-fp8-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmstexahh03ioms011butavnr"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmstexahh03ioms011butavnr",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmstexahh03ioms011butavnr"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Official FP8 checkpoint, MTP-2 spec decode (~1.5 accepted/draft). Single-stream 512-token generations, temp 1.0/top_p 0.95/top_k 64. Without spec decode: 7.7 tok/s. Aggregate 56.2 tok/s at c=4, 97.7 at c=8. Release-day bench 2026-08-14.",
+      "observed_command": "vllm serve Qwen/Qwen3.8-27B-FP8 --served-model-name qwen3.8-27b --trust-remote-code --tensor-parallel-size 1 --gpu-memory-utilization 0.40 --max-model-len 65536 --max-num-seqs 8 --max-num-batched-tokens 8192 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --generation-config auto --speculative-config '{\"method\": \"mtp\", \"num_speculative_tokens\": 2}'",
+      "run_id": "cmstexahh03ioms011butavnr",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "Qwen/Qwen3.8-27B-FP8",
+          "--served-model-name",
+          "qwen3.8-27b",
+          "--trust-remote-code",
+          "--tensor-parallel-size",
+          "1",
+          "--gpu-memory-utilization",
+          "0.40",
+          "--max-model-len",
+          "65536",
+          "--max-num-seqs",
+          "8",
+          "--max-num-batched-tokens",
+          "8192",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--reasoning-parser",
+          "qwen3",
+          "--generation-config",
+          "auto",
+          "--speculative-config",
+          "{\"method\": \"mtp\", \"num_speculative_tokens\": 2}"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b-fp8--fp8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmstexahh03ioms011butavnr"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-fp8-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,213 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "10156"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3-6-35b-a3b-unsloth-dynamic-iq4-xs-rtx-5090-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsic8sas01w1pp01ggbm90vr"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsic8sas01w1pp01ggbm90vr",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsic8sas01w1pp01ggbm90vr"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 5090",
+      "notes": "Win11 Docker Desktop, ghcr.io/ggml-org/llama.cpp:server-cuda13. MoE A3B + Unsloth MTP UD-IQ4_XS. MSI RTX 5090 32G VENTUS 3X OC. 2 warmup + 3 measured runs, temp=0, batch=1. MTP draft accept ~72% at n-max=2. Power ~290W sustained via nvidia-smi.",
+      "observed_command": "llama-server -hf unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-IQ4_XS -ngl 99 -c 65536 -fa on -np 1 -n 8192 --verbosity 2 --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.0 --cache-type-k q4_0 --cache-type-v q4_0 --cache-prompt --cache-reuse 256 --cache-ram 16384 --cache-idle-slots --slot-prompt-similarity 0.50 --temp 0.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --alias qwen3.6-35b-a3b-mtp --jinja --sleep-idle-seconds -1 --mlock --no-mmap --warmup",
+      "run_id": "cmsic8sas01w1pp01ggbm90vr",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-hf",
+          "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-IQ4_XS",
+          "-ngl",
+          "99",
+          "-c",
+          "65536",
+          "-fa",
+          "on",
+          "-np",
+          "1",
+          "-n",
+          "8192",
+          "--verbosity",
+          "2",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-p-min",
+          "0.0",
+          "--cache-type-k",
+          "q4_0",
+          "--cache-type-v",
+          "q4_0",
+          "--cache-prompt",
+          "--cache-reuse",
+          "256",
+          "--cache-ram",
+          "16384",
+          "--cache-idle-slots",
+          "--slot-prompt-similarity",
+          "0.50",
+          "--temp",
+          "0.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--presence-penalty",
+          "0.0",
+          "--alias",
+          "qwen3.6-35b-a3b-mtp",
+          "--jinja",
+          "--sleep-idle-seconds",
+          "-1",
+          "--mlock",
+          "--no-mmap",
+          "--warmup"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-35b-a3b-mtp-gguf--unsloth-dynamic-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsic8sas01w1pp01ggbm90vr"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-35b-a3b-unsloth-dynamic-iq4-xs-rtx-5090-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

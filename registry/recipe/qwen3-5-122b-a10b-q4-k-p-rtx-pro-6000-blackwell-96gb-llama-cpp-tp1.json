@@ -1,0 +1,192 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "unknown"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3-5-122b-a10b-q4-k-p-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmows9org00b7o201bx92fk1a"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmows9org00b7o201bx92fk1a",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmows9org00b7o201bx92fk1a"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Automated 32k/64k Pro 6000 batch benchmark. Local model: Qwen3.5 122B A10B HauhauCS Aggressive GGUF Q4_K_P at /LINUX/Models/HauhauCS/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf.",
+      "observed_command": "CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 /usr/local/bin/llama-server -m /LINUX/Models/HauhauCS/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf --host 127.0.0.1 --port 8001 --ctx-size 32768 --alias qwen35-hauhau-q4kp -ngl 999 --flash-attn on --batch-size 512 --ubatch-size 512 --cache-type-k q8_0 --cache-type-v q8_0 --parallel 1 --jinja",
+      "run_id": "cmows9org00b7o201bx92fk1a",
+      "tokenized": {
+        "arguments": [
+          "/usr/local/bin/llama-server",
+          "-m",
+          "/LINUX/Models/HauhauCS/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8001",
+          "--ctx-size",
+          "32768",
+          "--alias",
+          "qwen35-hauhau-q4kp",
+          "-ngl",
+          "999",
+          "--flash-attn",
+          "on",
+          "--batch-size",
+          "512",
+          "--ubatch-size",
+          "512",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja"
+        ],
+        "environment": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "1"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "hauhaucs-qwen3-5-122b-a10b-uncensored-hauhaucs-aggressive--q4-k-p",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmows9org00b7o201bx92fk1a"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-5-122b-a10b-q4-k-p-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}
