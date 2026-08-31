@@ -11,8 +11,8 @@ export function LaunchCommand({ recipe }: { recipe: Recipe }) {
       <p className="eyebrow">Launch</p>
       <p className="trust-note">
         Exact materialization of this validated launch contract: digest-pinned image, pinned model revision, and the
-        audited arguments. Registry asset mounts are relative to a checkout of this repository. Also available as
-        <code> local-ai run {recipe.id}</code>.
+        audited arguments. Self-contained — required assets are fetched from this registry and verified against their
+        recorded sha256 before mounting. Also available as <code>local-ai run {recipe.id}</code>.
       </p>
       <pre className="launch-command"><code>{command}</code></pre>
       <CopyActions items={[{ label: "Copy docker command", value: command }]} />

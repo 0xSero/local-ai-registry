@@ -239,7 +239,31 @@ launch_args() {
   while IFS=$'\t' read -r source target ro; do
     [[ -n $source ]] || continue
     source=${source/#\~/$HOME}
-    if [[ $source == asset/* ]]; then source="$ROOT/$source"; fi
+    if [[ $source == asset/* ]]; then
+      if [[ -f $ROOT/$source ]]; then
+        source="$ROOT/$source"
+      else
+        # cartridge mode: no checkout — fetch the asset and verify its recorded digest
+        local asset_file asset_id manifest sha cache
+        asset_file=${source#asset/}
+        cache="${TMPDIR:-/tmp}/local-ai-assets"
+        mkdir -p "$cache"
+        asset_id=""
+        while IFS= read -r candidate; do
+          manifest=$(curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$candidate" 2>/dev/null | jq -c '.data // .' 2>/dev/null) || continue
+          if [[ $(jq -r '.file // empty' <<<"$manifest") == "$asset_file" ]]; then asset_id=$candidate; break; fi
+        done < <(jq -r '.launch.asset_ids[]?' <<<"$recipe")
+        [[ -n $asset_id ]] || fail "asset $asset_file is not declared by this recipe"
+        sha=$(jq -r '.sha256' <<<"$manifest")
+        curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$asset_id/file" -o "$cache/$asset_file" || fail "could not fetch asset $asset_file"
+        if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | shasum -a 256 -c - >/dev/null 2>&1; then
+          if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | sha256sum -c - >/dev/null 2>&1; then
+            fail "asset $asset_file failed sha256 verification"
+          fi
+        fi
+        source="$cache/$asset_file"
+      fi
+    fi
     suffix=""
     if [[ $ro == true ]]; then suffix=":ro"; fi
     LAUNCH+=(-v "${source}:${target}${suffix}")
