@@ -8,6 +8,17 @@
   "id": "rtx-4070--jp",
   "observations": [
     {
+      "amount": 86980,
+      "condition": "new",
+      "currency": "JPY",
+      "in_stock": null,
+      "observed_at": "2026-08-31T11:51:51Z",
+      "quantity": null,
+      "retailer": "dospara",
+      "title": "玄人志向 GG-RTX4070-E12GB/DF (GeForce RTX 4070 12GB)",
+      "url": "https://www.dospara.co.jp/SBR1753/IC492463.html"
+    },
+    {
       "amount": 169800.0,
       "condition": "new",
       "currency": "JPY",
@@ -96,16 +107,16 @@
       "url": "https://kakaku.com/item/K0001601177/"
     }
   ],
-  "observed_at": "2026-08-29T22:45:09.478Z",
+  "observed_at": "2026-08-31T11:51:51Z",
   "product": {
     "category": "gpu",
     "id": "rtx-4070",
     "name": "RTX 4070"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-29T22:45:49.751Z",
-    "source_error_count": 0
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
   },
   "region": {
     "code": "JP",
@@ -115,14 +126,14 @@
   "schema_version": "local-ai-registry/v1",
   "summary": {
     "in_stock_count": 0,
-    "listing_count": 8,
-    "lowest_new": 169800.0,
+    "listing_count": 9,
+    "lowest_new": 86980,
     "lowest_refurbished": null,
     "lowest_used": null,
-    "retailer_count": 1
+    "retailer_count": 2
   },
   "verification": {
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
     "rejected_observations": 0,
     "state": "candidate"
   }
