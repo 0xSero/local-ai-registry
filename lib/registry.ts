@@ -58,6 +58,7 @@ export type CompatibilityFilters = {
   launchable?: string
   runtime?: string
   max_vram_gb?: string
+  min_context?: string
   min_vram_gb?: string
   model_id?: string
   model_instance_id?: string
@@ -330,6 +331,31 @@ export function hardwareComparison(): HardwareComparisonRow[] {
   })
 }
 
+export function dockerCommand(recipe: Recipe): string | null {
+  const launch = recipe.launch as Record<string, unknown>
+  if (recipe.status !== "validated" || launch.kind !== "docker") return null
+  const quote = (part: string) => (/[\s"'$;|&<>()]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
+  const lines: string[][] = [["docker", "run", "--rm"]]
+  if (launch.accelerator_backend === "nvidia") lines.push(["--gpus", "all"])
+  if (typeof launch.ipc === "string") lines.push(["--ipc", launch.ipc])
+  if (typeof launch.shm_size === "string") lines.push(["--shm-size", launch.shm_size])
+  if (typeof launch.network_mode === "string" && launch.network_mode !== "bridge") lines.push(["--network", launch.network_mode as string])
+  if (typeof launch.host_port === "number" && typeof launch.container_port === "number") {
+    lines.push(["-p", `${launch.host_port}:${launch.container_port}`])
+  }
+  for (const [key, value] of Object.entries((launch.environment as Record<string, string>) ?? {})) {
+    lines.push(["-e", `${key}=${value}`])
+  }
+  for (const mount of (launch.mounts as Array<{ source: string; target: string; read_only?: boolean }>) ?? []) {
+    const source = mount.source.startsWith("asset/") ? `./registry/${mount.source}` : mount.source
+    lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+  }
+  if (typeof launch.entrypoint === "string" && launch.entrypoint) lines.push(["--entrypoint", launch.entrypoint])
+  lines.push([launch.image as string])
+  for (const argument of (launch.arguments as string[]) ?? []) lines.push([argument])
+  return lines.map((line) => line.map(quote).join(" ")).join(" \\\n  ")
+}
+
 export function getBenchmark(id: string): Benchmark | undefined {
   return dataset().benchmarks.get(id)
 }
@@ -448,6 +474,11 @@ function matchingCompatibilityRows(filters: CompatibilityFilters): Compatibility
     if (!booleanFilter(row.capabilities.vision, filters.vision)) return false
     if (filters.evidence === "true" && !row.has_evidence) return false
     if (filters.evidence === "false" && row.has_evidence) return false
+    if (filters.min_context) {
+      const recipeRecord = readRecord<Recipe>("recipe", row.id)
+      const context = (recipeRecord?.serving as { max_context_tokens?: number | null } | undefined)?.max_context_tokens
+      if (typeof context !== "number" || context < Number(filters.min_context)) return false
+    }
     if (filters.launchable === "true" && !isLaunchable(row)) return false
     if (filters.launchable === "false" && isLaunchable(row)) return false
     if (filters.runtime && runtimeGroup(row.launch_kind) !== filters.runtime) return false
