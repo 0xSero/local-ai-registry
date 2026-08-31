@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import scraped Hugging Face model benchmark scores into registry/benchmarks/.
+"""Import scraped Hugging Face model benchmark scores into registry/benchmark/.
 
 Source is the static "HF Model & Benchmark Matrix" scrape (120 leaderboard pages,
 one per benchmark). Each page holds a ranked table of [rank, variant, root, org,
@@ -68,7 +68,7 @@ def import_page(matrix, page, meta, root):
     if not rows:
         return 0
     info = meta.get(benchmark_id, {})
-    write(root / "benchmarks" / f"{benchmark_id}.json", {
+    write(root / "benchmark" / f"{benchmark_id}.json", {
         "schema_version": SCHEMA,
         "id": benchmark_id,
         "name": info.get("name") or benchmark_id,
@@ -76,7 +76,7 @@ def import_page(matrix, page, meta, root):
         "source": {
             "kind": "leaderboard-scrape",
             "url": source_url(html),
-            "paths": [f"benchmarks/{page.name}"],
+            "paths": [f"benchmark/{page.name}"],
         },
         "rows": rows,
     })
@@ -93,7 +93,7 @@ def main():
     meta = load_benchmark_meta(matrix)
     imported = 0
     total_rows = 0
-    for page in sorted((matrix / "benchmarks").glob("*.html")):
+    for page in sorted((matrix / "benchmark").glob("*.html")):
         count = import_page(matrix, page, meta, root)
         imported += 1
         total_rows += count

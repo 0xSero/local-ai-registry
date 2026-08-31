@@ -165,8 +165,8 @@ resolve() {
   hardware=$(record hardware "$(jq -r '.hardware_id' <<<"$recipe")")
   while IFS= read -r sweep_id; do
     [[ -n $sweep_id ]] || continue
-    sweeps=$(jq -cn --argjson rows "$sweeps" --argjson sweep "$(record speed-sweeps "$sweep_id")" '$rows + [$sweep]')
-  done < <(jq -r '.speed_sweeps_ids[]?' <<<"$recipe")
+    sweeps=$(jq -cn --argjson rows "$sweeps" --argjson sweep "$(record speed-sweep "$sweep_id")" '$rows + [$sweep]')
+  done < <(jq -r '.speed_sweep_ids[]?' <<<"$recipe")
   jq -n --argjson recipe "$recipe" --argjson instance "$instance" --argjson model "$model" --argjson hardware "$hardware" --argjson sweeps "$sweeps" \
     '{recipe: $recipe, model_instance: $instance, model: $model, hardware: $hardware, speed_sweeps: $sweeps}'
 }

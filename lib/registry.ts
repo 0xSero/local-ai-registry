@@ -92,7 +92,7 @@ export type CompatibilityResult = {
     available: boolean
     count: number
     detail_urls: string[]
-    speed_sweeps_ids: string[]
+    speed_sweep_ids: string[]
   }
 }
 
@@ -158,14 +158,14 @@ function dataset(): Dataset {
       }),
     ),
     recipes: new Map(),
-    benchmarks: loadCollection<Benchmark>(index, "benchmarks"),
+    benchmarks: loadCollection<Benchmark>(index, "benchmark"),
     sweeps: new Map(),
   }
   return cachedDataset
 }
 
 function readRecord<T>(
-  collection: "speed-sweeps" | "recipe",
+  collection: "speed-sweep" | "recipe",
   id: string,
 ): T | undefined {
   const ids = dataset().index.collections[collection]
@@ -194,7 +194,7 @@ export function getRecipe(id: string): Recipe | undefined {
 }
 
 export function getSpeedSweep(id: string): SpeedSweep | undefined {
-  return readRecord("speed-sweeps", id)
+  return readRecord("speed-sweep", id)
 }
 
 export function getBenchmark(id: string): Benchmark | undefined {
@@ -339,9 +339,9 @@ function compatibilityResult(row: CompatibilityRow): CompatibilityResult | undef
     recipe,
     speed_evidence: {
       available: row.has_evidence,
-      count: recipe.speed_sweeps_ids.length,
-      speed_sweeps_ids: recipe.speed_sweeps_ids,
-      detail_urls: recipe.speed_sweeps_ids.map((id) => `/api/v1/speed-sweeps/${id}`),
+      count: recipe.speed_sweep_ids.length,
+      speed_sweep_ids: recipe.speed_sweep_ids,
+      detail_urls: recipe.speed_sweep_ids.map((id) => `/api/v1/speed-sweep/${id}`),
     },
     links: {
       api: `/api/v1/recipes/${row.id}`,
@@ -457,7 +457,7 @@ export function listPrices(filters: Record<string, string>, pagination: Paginati
 }
 
 export function listSpeedSweeps(filters: Record<string, string>, pagination: Pagination) {
-  const ids = dataset().index.collections["speed-sweeps"]
+  const ids = dataset().index.collections["speed-sweep"]
   const all = ids.flatMap((id) => {
     const sweep = getSpeedSweep(id)
     if (!sweep) return []
@@ -592,12 +592,12 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
         hardware: recordLink("hardware", result.hardware.id, result.hardware.name),
         model: recordLink("models", result.model.id, result.model.name),
         model_instance: recordLink("model-instances", result.model_instance.id, result.model_instance.repository),
-        speed_sweeps: result.recipe.speed_sweeps_ids.map((sweepId) => recordLink("speed-sweeps", sweepId)),
+        speed_sweep: result.recipe.speed_sweep_ids.map((sweepId) => recordLink("speed-sweep", sweepId)),
       },
     }
   }
 
-  if (collection === "speed-sweeps") {
+  if (collection === "speed-sweep") {
     const sweep = getSpeedSweep(id)
     if (!sweep) return undefined
     const recipe = getRecipe(sweep.recipe_id)
@@ -609,7 +609,7 @@ export function getEntityDetail(collection: string, id: string): RegistryRecord 
     }
   }
 
-  if (collection === "benchmarks") {
+  if (collection === "benchmark") {
     const benchmark = dataset().benchmarks.get(id)
     if (!benchmark) return undefined
     return { ...benchmark }

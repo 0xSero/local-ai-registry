@@ -16,7 +16,7 @@ const COLLECTION_LABELS: Record<string, string> = {
   prices: "Regional market price",
   recipes: "Recipe",
   benchmarks: "Leaderboard",
-  "speed-sweeps": "Speed sweep",
+  "speed-sweep": "Speed sweep",
 }
 
 const COLLECTION_TOPICS: Record<string, string> = {
@@ -25,8 +25,8 @@ const COLLECTION_TOPICS: Record<string, string> = {
   models: "models",
   prices: "prices",
   recipes: "recipes",
-  benchmarks: "benchmarks",
-  "speed-sweeps": "speed-sweeps",
+  benchmarks: "benchmark",
+  "speed-sweep": "speed-sweep",
 }
 
 type DetailProps = {

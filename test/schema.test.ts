@@ -14,8 +14,8 @@ const COLLECTION_SCHEMAS: Record<string, string> = {
   model: "model.schema.json",
   "model-instance": "model-instance.schema.json",
   recipe: "recipe.schema.json",
-  "speed-sweeps": "speed-sweeps.schema.json",
-  benchmarks: "benchmarks.schema.json",
+  "speed-sweep": "speed-sweep.schema.json",
+  benchmark: "benchmark.schema.json",
 }
 
 const ajv = new Ajv2020({ allErrors: true, strict: false })

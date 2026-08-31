@@ -22,7 +22,7 @@ const SEARCH_LABELS: Record<string, string> = {
   prices: "Search price observations",
   recipes: "Find a model or machine",
   benchmarks: "Search leaderboard scores",
-  "speed-sweeps": "Search measured speed sweeps",
+  "speed-sweep": "Search measured speed sweeps",
 }
 
 export function RegistrySearch({ filters, query, topic }: RegistrySearchProps) {
