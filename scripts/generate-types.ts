@@ -23,6 +23,7 @@ const bundle = {
     speed_sweep: { $ref: "speed-sweep.schema.json" },
     benchmark: { $ref: "benchmark.schema.json" },
     price: { $ref: "price.schema.json" },
+    asset: { $ref: "asset.schema.json" },
     index: { $ref: "index.schema.json" },
   },
 } as const
