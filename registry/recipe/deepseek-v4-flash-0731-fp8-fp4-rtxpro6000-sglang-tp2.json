@@ -5,7 +5,7 @@
     "tools": true,
     "vision": false
   },
-  "description": "DeepSeek-V4-Flash-0731 (vendor fp8 dense + fp4 experts, served stock) on two RTX PRO 6000 Blackwell Max-Q (sm_120) via the upstream SGLang dspark image, TP-2, ctx 131,072, thinking mode. No patches. Weights 74.9 GB per rank; MLA KV pool 1,722,368 tokens. The one trap: SGLang's DeepSeek-V4 template defaults to CHAT mode (zero reasoning tokens) \u2014 send chat_template_kwargs {\"thinking\": true} per request to match the vendor API's posture; enable_thinking is ignored and reasoning_effort only adds a prompt prefix.",
+  "description": "DeepSeek-V4-Flash-0731 (vendor fp8 dense + fp4 experts, served stock) on two RTX PRO 6000 Blackwell Max-Q (sm_120) via the upstream SGLang dspark image, TP-2, ctx 131,072, thinking mode. No patches. Weights 74.9 GB per rank; MLA KV pool 1,722,368 tokens. The one trap: SGLang's DeepSeek-V4 template defaults to CHAT mode (zero reasoning tokens) — send chat_template_kwargs {\"thinking\": true} per request to match the vendor API's posture; enable_thinking is ignored and reasoning_effort only adds a prompt prefix.",
   "engine": {
     "graph_mode": "full decode capture bs<=4; piecewise CUDA graph disabled",
     "name": "sglang",

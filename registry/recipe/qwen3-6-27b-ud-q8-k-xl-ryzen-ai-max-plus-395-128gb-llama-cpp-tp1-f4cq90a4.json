@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "vulkan",
       "hardware_label": "Ryzen AI Max 395",
-      "notes": "M5 Strix Halo. Qwen 3.6 27B DENSE at unsloth UD-Q8_K_XL (33 GB). Single-stream 512/512 vllm bench serve, 10 prompts. KV q8_0. Dense quant ladder on M5: Q4 11.46 / Q6 7.81 / Q8 6.07 t/s \u2014 strict bandwidth-bound, scaling roughly with bytes per token.",
+      "notes": "M5 Strix Halo. Qwen 3.6 27B DENSE at unsloth UD-Q8_K_XL (33 GB). Single-stream 512/512 vllm bench serve, 10 prompts. KV q8_0. Dense quant ladder on M5: Q4 11.46 / Q6 7.81 / Q8 6.07 t/s — strict bandwidth-bound, scaling roughly with bytes per token.",
       "observed_command": "llama-server -m qwen3.6-27b-unsloth-ud-q8kxl.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 8",
       "run_id": "cmofcwv17000fla04f4cq90a4",
       "tokenized": {
