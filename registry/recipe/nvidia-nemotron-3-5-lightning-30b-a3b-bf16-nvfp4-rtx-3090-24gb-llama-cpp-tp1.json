@@ -1,0 +1,199 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "030ebb558 + PR 26623 @ 000d8ecd4 + local classification fix 94577ad1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-nvfp4-rtx-3090-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmspe7wa500pwmp01c2szra70"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmspe7wa500pwmp01c2szra70",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmspe7wa500pwmp01c2szra70"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Imported from immutable run 20260812T004722Z: 2 warmups + 7 scored serial requests; exact 512-token array; 1024 output; temperature 0; prompt cache off; median server decode 353.7255 tok/s (353.3801 timer-corrected), client output/wall 324.0063 tok/s; 100% NextN MTP draft acceptance. Highly predictable decode workload, not arbitrary-prose throughput. Complete recurrent rollback PR 26623 plus local memory-classification fix. Exact NVFP4 model SHA 7827805ae9f2d20cc71e46bf05d9cb045e222d3fa0429363c324bbf6d3cab959; 12/12 semantic canaries passed separately. This is official ggml-org NVFP4, not LM Studio Community Q4_K_M.",
+      "observed_command": "/home/aliii/opt/llama.cpp-mtp-rollback/build/bin/llama-server --model /home/aliii/models/nemotron-nvfp4/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4.gguf --alias nemotron-nvfp4-complete-rollback-n7 --host 127.0.0.1 --port 8012 --ctx-size 8192 --parallel 1 --metrics --batch-size 512 --ubatch-size 256 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on --jinja --n-gpu-layers 999 --fit off --spec-type draft-mtp --spec-draft-n-max 7 --threads 16 --threads-batch 16",
+      "run_id": "cmspe7wa500pwmp01c2szra70",
+      "tokenized": {
+        "arguments": [
+          "/home/aliii/opt/llama.cpp-mtp-rollback/build/bin/llama-server",
+          "--model",
+          "/home/aliii/models/nemotron-nvfp4/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4.gguf",
+          "--alias",
+          "nemotron-nvfp4-complete-rollback-n7",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8012",
+          "--ctx-size",
+          "8192",
+          "--parallel",
+          "1",
+          "--metrics",
+          "--batch-size",
+          "512",
+          "--ubatch-size",
+          "256",
+          "--cache-type-k",
+          "q8_0",
+          "--cache-type-v",
+          "q8_0",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--n-gpu-layers",
+          "999",
+          "--fit",
+          "off",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "7",
+          "--threads",
+          "16",
+          "--threads-batch",
+          "16"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ggml-org-nvidia-nemotron-3-5-lightning-30b-a3b-gguf--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmspe7wa500pwmp01c2szra70"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "nvidia-nemotron-3-5-lightning-30b-a3b-bf16-nvfp4-rtx-3090-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,204 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "buun-llama-cpp b8959-7343d30c6"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-ti-24gb",
+  "id": "qwen3-6-27b-ud-q4-k-xl-rtx-3090-ti-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmohkdafg000nl704l43fxf7j"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmohkdafg000nl704l43fxf7j",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmohkdafg000nl704l43fxf7j"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090 Ti",
+      "notes": "DFlash speculative decoding bench reproducing joaosump's methodology: 2 warmup requests + recorded request against llama-server /v1/chat/completions. Recorded request used temperature=0, max_tokens=500, prompt: Write a Python binary search tree implementation with insert, search, delete, and traversal methods. DFlash acceptance on recorded run: 451 accepted draft tokens out of 697 draft tokens (64.7%) -- workload-equivalent to joaosump's 452/693. Wall-clock 155.94 t/s; server-side eval rate 159.62 t/s. Same target + draft combo as joaosump's #1 entry (UD-Q4_K_XL fp_target + q4_k_m DFlash draft); same buun-llama-cpp build (one commit newer at 7343d30c6 vs his 30759dfa0). Server launched with -c 4096; DFlash recurrent backup makes usable slot n_ctx 2048.",
+      "observed_command": "/home/steven/dev/buun-llama-cpp/build/bin/llama-server -m Qwen3.6-27B-UD-Q4_K_XL.gguf -md dflash-draft-3.6-q4_k_m.gguf --spec-type dflash -dev CUDA0 -devd CUDA0 -sm none -ngl 99 -ngld 99 -np 1 -c 4096 -cd 256 -fa on -b 512 -ub 128 --draft-max 16 --draft-min 1 --temp 0 --reasoning off --host 127.0.0.1 --port 8081 --no-webui",
+      "run_id": "cmohkdafg000nl704l43fxf7j",
+      "tokenized": {
+        "arguments": [
+          "/home/steven/dev/buun-llama-cpp/build/bin/llama-server",
+          "-m",
+          "Qwen3.6-27B-UD-Q4_K_XL.gguf",
+          "-md",
+          "dflash-draft-3.6-q4_k_m.gguf",
+          "--spec-type",
+          "dflash",
+          "-dev",
+          "CUDA0",
+          "-devd",
+          "CUDA0",
+          "-sm",
+          "none",
+          "-ngl",
+          "99",
+          "-ngld",
+          "99",
+          "-np",
+          "1",
+          "-c",
+          "4096",
+          "-cd",
+          "256",
+          "-fa",
+          "on",
+          "-b",
+          "512",
+          "-ub",
+          "128",
+          "--draft-max",
+          "16",
+          "--draft-min",
+          "1",
+          "--temp",
+          "0",
+          "--reasoning",
+          "off",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8081",
+          "--no-webui"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b--ud-q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmohkdafg000nl704l43fxf7j"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-ud-q4-k-xl-rtx-3090-ti-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

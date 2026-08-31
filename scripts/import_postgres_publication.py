@@ -175,7 +175,7 @@ def import_publication(publication, root):
                     "samples": 1,
                     "status": "observed",
                 }]
-            write(root / "speed-sweeps" / f"{sweep_id}.json", {
+            write(root / "speed-sweep" / f"{sweep_id}.json", {
                 "schema_version": SCHEMA,
                 "id": sweep_id,
                 "recipe_id": recipe_id,
@@ -202,7 +202,7 @@ def import_publication(publication, root):
             "launch": {"kind": "reference", "source": SOURCE, "publication_id": publication_id, "run_ids": sorted(run["run_id"] for run in evidence)},
             "serving": {"tensor_parallel": 1, "max_context_tokens": max_context, "max_concurrency": max_concurrency, "kv_cache_tokens": None},
             "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
-            "speed_sweeps_ids": sweep_ids,
+            "speed_sweep_ids": sweep_ids,
             "metadata": {"postgres": {"publication_id": publication_id, "hardware_key": evidence[0]["hardware_key"], "source_model_id": evidence[0]["model_id"], "run_count": len(evidence)}},
         })
 
@@ -210,7 +210,7 @@ def import_publication(publication, root):
         record = json.loads(path.read_text())
         if record.get("recipe_source") == SOURCE and record["id"] not in wanted_recipes:
             path.unlink()
-    for path in (root / "speed-sweeps").glob("pg-*-sweep.json"):
+    for path in (root / "speed-sweep").glob("pg-*-sweep.json"):
         if path.stem not in wanted_sweeps:
             path.unlink()
     print(f"imported {len(speed_rows)} Mac runs into {len(groups)} candidate recipes from {publication_id}")

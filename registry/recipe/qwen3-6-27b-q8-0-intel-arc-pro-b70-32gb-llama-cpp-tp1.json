@@ -1,0 +1,242 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "10298 (15586e2d7) local Intel SYCL VDR2 embedded-MTP build"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-27b-q8-0-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsn6b0bm0074o001uw5f9kod"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsn6b0bm0074o001uw5f9kod",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsn6b0bm0074o001uw5f9kod"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.6 27B integrated publisher-MTP Q8_0 on one Intel Arc Pro B70. The fixed 12-prompt realistic suite used one cold request per prompt, cached_tokens=0 throughout, no prompt/KV/context/response/history reuse, and target-verified embedded MTP3. The primary score is the conventional median over 99 inter-token intervals between generated events 1 and 100. Candidate token IDs and content exactly match a fresh same-integrated-artifact non-spec control for all prompts. Eleven rows reached the 512-token request cap; customer-email ended normally at EOS after 248 tokens, after the required generated-token 1/100 timing endpoints. The immutable measured source retains FAIL from an incompatible legacy 4K/128 oracle; the separately sealed matched-control supplement is PASS.",
+      "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:* ZE_AFFINITY_MASK=0 ZES_ENABLE_SYSMAN=1 UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1 GGML_SYCL_ENABLE_VMM=1 GGML_SYCL_ENABLE_GRAPH=0 GGML_SYCL_GRAPH_CACHE_SIZE=0 GGML_SYCL_ENABLE_DNN=0 GGML_SYCL_ENABLE_OPT=1 GGML_SYCL_FA_ONEDNN=1 GGML_SYCL_FA_ONEDNN_MAX_KV=0 GGML_SYCL_ENABLE_MKL_FA=1 GGML_SYCL_ENABLE_FLASH_ATTN=1 llama-server -m Qwen3.6-27B-Q8_0.gguf -dev SYCL0 -ngl all -c 32768 -np 1 -b 1024 -ub 1024 -t 8 --threads-http 6 --poll 50 -lv 4 -ctk f16 -ctv f16 -fa on -fit on -fitt 1024 --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-n-min 0 --spec-draft-p-split 0.10 --spec-draft-p-min 0.00 --spec-draft-backend-sampling --spec-draft-device SYCL0 --spec-draft-ngl all --spec-draft-type-k f16 --spec-draft-type-v f16 --reasoning off --ctx-checkpoints 0 --cache-ram 0 --no-cache-idle-slots --no-context-shift --slots --metrics --jinja --no-kv-unified --cont-batching",
+      "run_id": "cmsn6b0bm0074o001uw5f9kod",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-Q8_0.gguf",
+          "-dev",
+          "SYCL0",
+          "-ngl",
+          "all",
+          "-c",
+          "32768",
+          "-np",
+          "1",
+          "-b",
+          "1024",
+          "-ub",
+          "1024",
+          "-t",
+          "8",
+          "--threads-http",
+          "6",
+          "--poll",
+          "50",
+          "-lv",
+          "4",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-fa",
+          "on",
+          "-fit",
+          "on",
+          "-fitt",
+          "1024",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "--spec-draft-n-min",
+          "0",
+          "--spec-draft-p-split",
+          "0.10",
+          "--spec-draft-p-min",
+          "0.00",
+          "--spec-draft-backend-sampling",
+          "--spec-draft-device",
+          "SYCL0",
+          "--spec-draft-ngl",
+          "all",
+          "--spec-draft-type-k",
+          "f16",
+          "--spec-draft-type-v",
+          "f16",
+          "--reasoning",
+          "off",
+          "--ctx-checkpoints",
+          "0",
+          "--cache-ram",
+          "0",
+          "--no-cache-idle-slots",
+          "--no-context-shift",
+          "--slots",
+          "--metrics",
+          "--jinja",
+          "--no-kv-unified",
+          "--cont-batching"
+        ],
+        "environment": {
+          "GGML_SYCL_ENABLE_DNN": "0",
+          "GGML_SYCL_ENABLE_FLASH_ATTN": "1",
+          "GGML_SYCL_ENABLE_GRAPH": "0",
+          "GGML_SYCL_ENABLE_MKL_FA": "1",
+          "GGML_SYCL_ENABLE_OPT": "1",
+          "GGML_SYCL_ENABLE_VMM": "1",
+          "GGML_SYCL_FA_ONEDNN": "1",
+          "GGML_SYCL_FA_ONEDNN_MAX_KV": "0",
+          "GGML_SYCL_GRAPH_CACHE_SIZE": "0",
+          "ONEAPI_DEVICE_SELECTOR": "level_zero:*",
+          "UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS": "1",
+          "ZES_ENABLE_SYSMAN": "1",
+          "ZE_AFFINITY_MASK": "0"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-27b-mtp-gguf--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsn6b0bm0074o001uw5f9kod"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-q8-0-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

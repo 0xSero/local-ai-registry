@@ -1,0 +1,191 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b284 SYCL (d2f83055d) GGML_SYCL_F16=ON"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "muse-glimmer-30b-q4-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsp799tx00mnmp016yziebh4"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsp799tx00mnmp016yziebh4",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsp799tx00mnmp016yziebh4"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Meta Muse-Glimmer-30B (dense 30B multimodal, vision+reasoning). Decode with DFlash speculative decoding (draft-dflash, n-max=2). p512/g128 median 29.2 t/s (max 31.8, n=5, Run 33). No-spec baseline: 25.3 t/s (Run 34). Measured at 230W cap. GGML_SYCL_F16=ON mandatory for this architecture (3.4x prefill loss without it). Build: llama.cpp SYCL d2f83055d (build 284). KV: q8_0 K + q4_1 V, FA on, -ngl 99 -ub 8192. Model: Muse-Glimmer-30B-UD-Q4_K_XL (15 GB). Multimodal verified (vision mmproj). Day-0 adoption: llama.cpp PR #26841 merged.",
+      "observed_command": "llama-server -m Muse-Glimmer-30B-UD-Q4_K_XL.gguf -md dflash-draft.gguf --spec-type draft-dflash --spec-draft-n-max 2 -ngl 99 -ngld 99 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -b 8192 -ub 8192 -t 8 -dev SYCL0",
+      "run_id": "cmsp799tx00mnmp016yziebh4",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Muse-Glimmer-30B-UD-Q4_K_XL.gguf",
+          "-md",
+          "dflash-draft.gguf",
+          "--spec-type",
+          "draft-dflash",
+          "--spec-draft-n-max",
+          "2",
+          "-ngl",
+          "99",
+          "-ngld",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q4_1",
+          "-c",
+          "131072",
+          "-b",
+          "8192",
+          "-ub",
+          "8192",
+          "-t",
+          "8",
+          "-dev",
+          "SYCL0"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "meta-models-muse-glimmer-30b--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsp799tx00mnmp016yziebh4"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "muse-glimmer-30b-q4-k-xl-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

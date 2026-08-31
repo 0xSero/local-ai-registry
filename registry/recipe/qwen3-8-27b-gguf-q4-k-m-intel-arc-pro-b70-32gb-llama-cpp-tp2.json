@@ -1,0 +1,204 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "4302fb599 + lab TP2 f21e9b557 + Q4K GLU 0a2785852; oneAPI 2026.1.1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-8-27b-gguf-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy530c70cpwms01bl1sjk6g"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy530c70cpwms01bl1sjk6g",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy530c70cpwms01bl1sjk6g"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.8 27B Q4_K_M target-only TP2 on two Intel Arc Pro B70 GPUs. Fixed 12-prompt realistic suite, one cold request per unique prompt, cache_prompt=false and cached_tokens=0 throughout. No MTP, DFlash, draft model, prompt/KV/context/history/response reuse, or speculation. Primary score is the conventional median over 99 inter-token intervals between generated events 1 and 100. Device-local Q4_K gate/up/SwiGLU fusion passed 12/12 exact complete-output hashes against the prior target-only oracle. Public patch and repro are linked in engineFlags. One row ended naturally at EOS after 272 generated tokens, after the required 100-event timing window.",
+      "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:1,0 GGML_SYCL_MMQ_Q4K_REORDER=1 GGML_SYCL_FUSED_MMVQ_SWIGLU_Q4K=1 llama-server -m Qwen3.8-27B-Q4_K_M.gguf --device SYCL0,SYCL1 --gpu-layers 99 --split-mode tensor --tensor-split 1,1 --flash-attn on --batch-size 1024 --ubatch-size 256 --cache-type-k f16 --cache-type-v f16 --cache-ram 0 --ctx-checkpoints 0 --fit off --reasoning off --threads 8 --poll 50 --ctx-size 8192 --parallel 1",
+      "run_id": "cmsy530c70cpwms01bl1sjk6g",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.8-27B-Q4_K_M.gguf",
+          "--device",
+          "SYCL0,SYCL1",
+          "--gpu-layers",
+          "99",
+          "--split-mode",
+          "tensor",
+          "--tensor-split",
+          "1,1",
+          "--flash-attn",
+          "on",
+          "--batch-size",
+          "1024",
+          "--ubatch-size",
+          "256",
+          "--cache-type-k",
+          "f16",
+          "--cache-type-v",
+          "f16",
+          "--cache-ram",
+          "0",
+          "--ctx-checkpoints",
+          "0",
+          "--fit",
+          "off",
+          "--reasoning",
+          "off",
+          "--threads",
+          "8",
+          "--poll",
+          "50",
+          "--ctx-size",
+          "8192",
+          "--parallel",
+          "1"
+        ],
+        "environment": {
+          "GGML_SYCL_FUSED_MMVQ_SWIGLU_Q4K": "1",
+          "GGML_SYCL_MMQ_Q4K_REORDER": "1",
+          "ONEAPI_DEVICE_SELECTOR": "level_zero:1,0"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ggml-org-qwen3-8-27b-gguf--gguf-q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy530c70cpwms01bl1sjk6g"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-gguf-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp2-sweep"
+  ],
+  "status": "candidate"
+}
