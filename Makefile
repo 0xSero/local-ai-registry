@@ -22,7 +22,8 @@ index:
 
 index-check:
 	python3 scripts/curate_registry.py --index-only
-	git diff --exit-code registry/index.json
+	git diff --exit-code registry/index/
+	test ! -f registry/index.json
 
 ## Regenerate registry/schema/types.ts from the JSON Schemas.
 types:
