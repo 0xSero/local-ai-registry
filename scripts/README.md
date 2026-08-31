@@ -42,3 +42,22 @@ speed-sweep evidence.
 - Observed source commands never become launch contracts: candidate imports
   stay `launch.kind: "reference"` and tokenized argv lives in metadata
   (`tokenize_observed_command.py` docstring has the full rules).
+
+## Promotion: candidates to cartridges
+
+Observed candidates keep `launch.kind: reference` forever — the evidence
+is never rewritten. The path to a validated, replayable recipe:
+
+1. `synthesize_launches.py` adds a `draft_launch` to eligible candidates
+   (NVIDIA vllm/sglang/llama.cpp today) — a mechanically generated,
+   UNVERIFIED docker contract built from the candidate's own facts and an
+   image digest already audited elsewhere in this registry.
+2. On the target hardware: `local-ai validate <recipe-id>` preflights the
+   machine, launches the draft, waits for health, runs a real completion
+   with streaming TTFT/decode measurement (`accept_recipe.py`), pins the
+   served model revision, writes an acceptance speed-sweep, and promotes:
+   draft_launch becomes launch, status becomes validated.
+3. Rebuild the index, run `make check`, commit, open a PR. CI re-verifies
+   everything the promotion claims.
+
+A failed acceptance changes nothing: the recipe stays a candidate.

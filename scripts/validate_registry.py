@@ -327,6 +327,12 @@ def validate(root):
             if recipe.get("hardware_id") != "apple-m5-max-128gb":
                 errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
         validate_tokenized_launch(recipe, errors)
+        draft = recipe.get("draft_launch")
+        if draft is not None:
+            if status != "candidate":
+                errors.append(f"{recipe['id']}: draft_launch is only allowed on candidates")
+            if not re.search(r"@sha256:[0-9a-f]{64}$", str(draft.get("image", ""))):
+                errors.append(f"{recipe['id']}: draft_launch image must be digest-pinned")
         if recipe.get("recipe_source") == "omlx":
             errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
