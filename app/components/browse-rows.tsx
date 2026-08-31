@@ -273,31 +273,3 @@ export function BenchmarkRows({ data, state }: { data: Benchmark[]; state: URLSe
     </div>
   )
 }
-
-export function SweepRows({ data, state }: { data: SpeedSweep[]; state: URLSearchParams }) {
-  return (
-    <div className="browser-list collection-list">
-      {data.map((sweep) => {
-        const speed = peakSpeed(sweep.rows)
-        const tags: RowTag[] = [
-          { label: sweep.recipe_id, name: "recipe_id", value: sweep.recipe_id },
-        ]
-        return (
-          <BrowserRow
-            className="collection-row"
-            href={recordHref("speed-sweep", sweep.id)}
-            key={sweep.id}
-            label={`Open ${sweep.id}`}
-            state={state}
-            tags={tags}
-          >
-            <span className="row-primary"><strong>{sweep.id}</strong><small>{sweep.recipe_id}</small></span>
-            <span><strong>{sweep.measured_at ?? "Unknown"}</strong><small>measured</small></span>
-            <span><strong>{sweep.rows.length}</strong><small>points</small></span>
-            <span><strong>{speed === null ? "—" : `${formatRate(speed)} tok/s`}</strong><small>peak recorded</small></span>
-          </BrowserRow>
-        )
-      })}
-    </div>
-  )
-}
