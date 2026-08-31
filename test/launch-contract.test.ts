@@ -48,9 +48,22 @@ test("every validated docker recipe passes the Omarchy launch gate", () => {
       `${row.id}: instance ${recipe.model_instance_id} needs weights.size_gb (the plugin's download-completeness check depends on it)`,
     )
 
+    let sawPrimary = false
     for (const mount of launch.mounts ?? []) {
       const src = String(mount.source ?? "")
       assert.ok(!src.includes(".."), `${row.id}: mount traverses upward: ${src}`)
+      const isWeightsTarget = ["/model", "/models", "/workspace/models"].includes(mount.target)
+      if (isWeightsTarget && !sawPrimary) {
+        sawPrimary = true // provisioned from the model instance
+      } else if (mount.read_only && src.startsWith("${MODEL_ROOT}/")) {
+        // Secondary weights (e.g. a speculative draft) must be auto-downloadable,
+        // or the plugin can only offer "place weights manually".
+        const p = mount.provision
+        assert.ok(p, `${row.id}: read-only mount ${src} needs provision {repository, revision, size_gb}`)
+        assert.ok(typeof p.repository === "string" && p.repository.includes("/"), `${row.id}: provision.repository invalid for ${src}`)
+        assert.match(String(p.revision ?? ""), /^[0-9a-f]{40,64}$/, `${row.id}: provision.revision not pinned for ${src}`)
+        assert.ok(typeof p.size_gb === "number" && p.size_gb > 0, `${row.id}: provision.size_gb missing for ${src}`)
+      }
       const allowed =
         src.startsWith("~/.cache/") ||
         src.startsWith("${MODEL_ROOT}/") ||
