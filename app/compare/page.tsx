@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = { title: "Compare hardware · Local AI Registry" }
 
-type SortKey = "name" | "vram" | "bandwidth" | "fp16" | "fp8" | "int8" | "price" | "recipes"
+type SortKey = "name" | "vram" | "bandwidth" | "fp16" | "fp8" | "fp4" | "int8" | "price" | "recipes"
 
 const COLUMNS: Array<{ key: SortKey; label: string }> = [
   { key: "name", label: "Hardware" },
@@ -16,6 +16,7 @@ const COLUMNS: Array<{ key: SortKey; label: string }> = [
   { key: "bandwidth", label: "Bandwidth" },
   { key: "fp16", label: "FP16 TFLOPS" },
   { key: "fp8", label: "FP8 TFLOPS" },
+  { key: "fp4", label: "FP4 TFLOPS" },
   { key: "int8", label: "INT8 TOPS" },
   { key: "price", label: "Lowest new (US)" },
   { key: "recipes", label: "Recipes" },
@@ -24,9 +25,10 @@ const COLUMNS: Array<{ key: SortKey; label: string }> = [
 function metric(row: HardwareComparisonRow, key: SortKey): number | string | null {
   if (key === "name") return row.name
   if (key === "vram") return row.vram_gb
-  if (key === "bandwidth") return row.bandwidth_gb_per_s
+  if (key === "bandwidth") return typeof row.bandwidth_gb_per_s === "object" && row.bandwidth_gb_per_s !== null ? row.bandwidth_gb_per_s.max : row.bandwidth_gb_per_s
   if (key === "fp16") return row.fp16_tflops
   if (key === "fp8") return row.fp8_tflops
+  if (key === "fp4") return row.fp4_tflops
   if (key === "int8") return row.int8_tflops
   if (key === "price") return row.lowest_new_usd
   return row.recipe_count
@@ -35,6 +37,12 @@ function metric(row: HardwareComparisonRow, key: SortKey): number | string | nul
 function cell(value: number | null, sparse = false): string {
   if (value === null) return "—"
   return `${value.toLocaleString("en-US")}${sparse ? " *" : ""}`
+}
+
+function bandwidth(value: HardwareComparisonRow["bandwidth_gb_per_s"]): string {
+  if (value === null) return "—"
+  if (typeof value === "object") return `${value.min.toLocaleString("en-US")}–${value.max.toLocaleString("en-US")} GB/s`
+  return `${value.toLocaleString("en-US")} GB/s`
 }
 
 export default async function ComparePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
@@ -92,9 +100,10 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
               <tr key={row.id}>
                 <td><Link href={`/hardware/${row.id}`}>{row.name}</Link></td>
                 <td>{row.vram_gb.toLocaleString("en-US")} GB</td>
-                <td>{row.bandwidth_gb_per_s === null ? "—" : `${row.bandwidth_gb_per_s.toLocaleString("en-US")} GB/s`}</td>
+                <td>{bandwidth(row.bandwidth_gb_per_s)}</td>
                 <td>{cell(row.fp16_tflops, row.fp16_sparse)}</td>
                 <td>{cell(row.fp8_tflops, row.fp8_sparse)}</td>
+                <td>{cell(row.fp4_tflops, row.fp4_sparse)}</td>
                 <td>{cell(row.int8_tflops, row.int8_sparse)}</td>
                 <td>{row.lowest_new_usd === null ? "—" : `$${row.lowest_new_usd.toLocaleString("en-US", { maximumFractionDigits: 0 })}`}</td>
                 <td>{row.recipe_count.toLocaleString("en-US")}</td>
