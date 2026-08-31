@@ -1,0 +1,198 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev2+gc51df4300.d20260523"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen3-6-35b-a3b-quark-w8a8-int8-intel-arc-pro-b70-32gb-vllm-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmq9ifq0500b0r8012f27j1xl",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Qwen3.6-35B-A3B Quark W8A8 INT8 on 4x Intel Arc Pro B70 via vLLM XPU. Accepted production-candidate frontdoor run, not diagnostic route-capture. Mean of 4 measured streaming /v1/completions runs after warmup: corrected after-first output tok/s=99.77, e2e output tok/s=98.27, TTFT=76.53 ms. Prompt/output 512/512, batch/concurrency 1, temperature 0, top_k 1, top_p 1, prefix caching disabled. Quality gates for accepted runtime passed earlier same day: exact, repeat canary, structured/math/code prompts, and 8192-token needle. Peak VRAM is total xpu-smi allocation across 4 cards; observed about 31.89 GiB per B70 because gpu_memory_utilization=0.95 reserves nearly all visible memory.",
+      "observed_command": "vllm serve /mnt/fast-ai/llm-cache/hf/models--nameistoken--Qwen3.6-35B-A3B-Quark-W8A8-INT8/snapshots/cced56592e8c8935f8220836b4baa04dfd389118 --host 127.0.0.1 --port 18080 --trust-remote-code --served-model-name qwen36-35b-a3b-fp8 --dtype auto --quantization quark --tensor-parallel-size 4 --pipeline-parallel-size 1 --distributed-executor-backend mp --max-model-len 32768 --max-num-batched-tokens 8192 --max-num-seqs 48 --gpu-memory-utilization 0.95 --kv-cache-dtype auto --no-enable-prefix-caching --language-model-only --compilation-config '{\"cudagraph_mode\":\"PIECEWISE\"}' --generation-config vllm",
+      "run_id": "cmq9ifq0500b0r8012f27j1xl",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/mnt/fast-ai/llm-cache/hf/models--nameistoken--Qwen3.6-35B-A3B-Quark-W8A8-INT8/snapshots/cced56592e8c8935f8220836b4baa04dfd389118",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "18080",
+          "--trust-remote-code",
+          "--served-model-name",
+          "qwen36-35b-a3b-fp8",
+          "--dtype",
+          "auto",
+          "--quantization",
+          "quark",
+          "--tensor-parallel-size",
+          "4",
+          "--pipeline-parallel-size",
+          "1",
+          "--distributed-executor-backend",
+          "mp",
+          "--max-model-len",
+          "32768",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-num-seqs",
+          "48",
+          "--gpu-memory-utilization",
+          "0.95",
+          "--kv-cache-dtype",
+          "auto",
+          "--no-enable-prefix-caching",
+          "--language-model-only",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"PIECEWISE\"}",
+          "--generation-config",
+          "vllm"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--quark-w8a8-int8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-35b-a3b-quark-w8a8-int8-intel-arc-pro-b70-32gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

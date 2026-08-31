@@ -5,7 +5,7 @@
     "tools": true,
     "vision": false
   },
-  "description": "Inkling-Small-NVFP4 on two RTX PRO 6000 Blackwell Max-Q (sm_120) via SGLang TP-2, ctx 131,072. Upstream dspark image + ONE patched kernel file (two one-line fixes: grouped-GEMM num_stages 4->3 for sm_120's 101,376 B shared memory; silu_and_mul rerouted from Helion, which has no sm_120 config, to the in-file Triton kernel \u2014 verified bit-exact). MoE runner marlin, attention triton, KV fp8_e5m2. Stock vLLM v0.27.1 has no sm_120 attention path for this model and asserts at startup; with a locally ported attention kernel it serves but computes garbage (cutlass NVFP4 MoE wrong at 256 experts/top-6 on sm_120; marlin-in-vLLM did not rescue that stack), so SGLang is the coherent path. Temporary bridge: retire when upstream SGLang ships sm_120 kernels for this model.",
+  "description": "Inkling-Small-NVFP4 on two RTX PRO 6000 Blackwell Max-Q (sm_120) via SGLang TP-2, ctx 131,072. Upstream dspark image + ONE patched kernel file (two one-line fixes: grouped-GEMM num_stages 4->3 for sm_120's 101,376 B shared memory; silu_and_mul rerouted from Helion, which has no sm_120 config, to the in-file Triton kernel — verified bit-exact). MoE runner marlin, attention triton, KV fp8_e5m2. Stock vLLM v0.27.1 has no sm_120 attention path for this model and asserts at startup; with a locally ported attention kernel it serves but computes garbage (cutlass NVFP4 MoE wrong at 256 experts/top-6 on sm_120; marlin-in-vLLM did not rescue that stack), so SGLang is the coherent path. Temporary bridge: retire when upstream SGLang ships sm_120 kernels for this model.",
   "engine": {
     "graph_mode": "full decode capture bs<=4; piecewise CUDA graph disabled",
     "name": "sglang",
@@ -185,7 +185,7 @@
     "max_context_tokens": 131072,
     "tensor_parallel": 2
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "inkling-small-nvfp4-rtxpro6000-sglang-tp2-sweep"
   ],
   "status": "candidate"

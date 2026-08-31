@@ -1,0 +1,253 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "246 (0a59add)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-27b-rocmfp4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt0vip5k0fvgms01179emtv0"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt0vip5k0fvgms01179emtv0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt0vip5k0fvgms01179emtv0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "Radeon 8060S integrated GPU (gfx1151) on BOSGAME M5 Ryzen AI MAX+ 395, 128GB unified memory, Ubuntu 26.04, ROCm 7.14. iGPU only — the discrete R9700 was present in the system but not used (server bound to ROCm0 = 8060S; verified in the engine device log). Engine is a ROCmFPX llama.cpp fork (github.com/charlie12345/ROCmFPX, commit 0a59add, version 246) built specifically for gfx1151, with Qwen MTP self-speculative decoding. Steady-state decode from 3 consecutive timed runs after 1 discarded warmup: 51.39 / 50.17 / 50.11 tok/s; submitting the slowest (50.11) as the conservative figure. Engine-reported prompt eval across the timed runs: 167.9 / 170.4 / 169.7 tok/s. MTP draft acceptance rate 0.994 with mean accepted length 6.87 of 6 max draft tokens. Weights are Qwen3.8-27B-ROCmFP4-FAST.gguf, a ROCmFP4 repack of the unsloth Qwen3.8-27B GGUF release; the quantization label 'ROCmFP4' is the engine-native format name and has no exact entry in the accepted quantization list. Note that -ctk/-ctv q8_0 means the KV cache is 8-bit, not fp16.",
+      "observed_command": "# ROCmFPX llama-server built for gfx1151 (Strix Halo iGPU)\n# source: https://github.com/charlie12345/ROCmFPX commit 0a59add\n# cmake -S . -B build-gfx1151 -G Ninja -DCMAKE_BUILD_TYPE=Release \\\n#   -DCMAKE_HIP_COMPILER=/opt/rocm/core-7.14/lib/llvm/bin/clang++ \\\n#   -DAMDGPU_TARGETS=gfx1151 -DGGML_HIP=ON -DGGML_HIP_MMQ_MFMA=ON \\\n#   -DGGML_HIP_NO_VMM=ON -DGGML_HIP_GRAPHS=ON -DLLAMA_BUILD_WEBUI=OFF -DLLAMA_CURL=OFF\n\nexport HSA_ENABLE_SDMA=0\n\n./llama-server \\\n  -m Qwen3.8-27B-ROCmFP4-FAST.gguf \\\n  -dev ROCm0 \\\n  -ngl 99 -fa on -np 1 \\\n  -c 32768 -b 2048 -ub 1024 -t 16 \\\n  -ctk q8_0 -ctv q8_0 \\\n  --spec-type draft-mtp --spec-draft-n-max 6 --spec-draft-p-min 0.60 \\\n  --spec-mtp-strict-qwen \\\n  --host 127.0.0.1 --port 18090 --jinja --metrics --reasoning off\n\n# request: 56-token prompt, max_tokens=1024, temperature=0, top_p=1, stream=false\n# 1 warmup discarded, then 3 timed runs",
+      "run_id": "cmt0vip5k0fvgms01179emtv0",
+      "tokenized": {
+        "arguments": [
+          "./llama-server",
+          "-m",
+          "Qwen3.8-27B-ROCmFP4-FAST.gguf",
+          "-dev",
+          "ROCm0",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-np",
+          "1",
+          "-c",
+          "32768",
+          "-b",
+          "2048",
+          "-ub",
+          "1024",
+          "-t",
+          "16",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "6",
+          "--spec-draft-p-min",
+          "0.60",
+          "--spec-mtp-strict-qwen",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "18090",
+          "--jinja",
+          "--metrics",
+          "--reasoning",
+          "off"
+        ],
+        "fidelity": "faithful",
+        "notes": [
+          "ROCmFPX llama-server built for gfx1151 (Strix Halo iGPU)",
+          "source: https://github.com/charlie12345/ROCmFPX commit 0a59add",
+          "cmake -S . -B build-gfx1151 -G Ninja -DCMAKE_BUILD_TYPE=Release  #   -DCMAKE_HIP_COMPILER=/opt/rocm/core-7.14/lib/llvm/bin/clang++  #   -DAMDGPU_TARGETS=gfx1151 -DGGML_HIP=ON -DGGML_HIP_MMQ_MFMA=ON  #   -DGGML_HIP_NO_VMM=ON -DGGML_HIP_GRAPHS=ON -DLLAMA_BUILD_WEBUI=OFF -DLLAMA_CURL=OFF",
+          "request: 56-token prompt, max_tokens=1024, temperature=0, top_p=1, stream=false",
+          "1 warmup discarded, then 3 timed runs"
+        ],
+        "steps": [
+          [
+            "export",
+            "HSA_ENABLE_SDMA=0"
+          ],
+          [
+            "./llama-server",
+            "-m",
+            "Qwen3.8-27B-ROCmFP4-FAST.gguf",
+            "-dev",
+            "ROCm0",
+            "-ngl",
+            "99",
+            "-fa",
+            "on",
+            "-np",
+            "1",
+            "-c",
+            "32768",
+            "-b",
+            "2048",
+            "-ub",
+            "1024",
+            "-t",
+            "16",
+            "-ctk",
+            "q8_0",
+            "-ctv",
+            "q8_0",
+            "--spec-type",
+            "draft-mtp",
+            "--spec-draft-n-max",
+            "6",
+            "--spec-draft-p-min",
+            "0.60",
+            "--spec-mtp-strict-qwen",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "18090",
+            "--jinja",
+            "--metrics",
+            "--reasoning",
+            "off"
+          ]
+        ]
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-gguf--rocmfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt0vip5k0fvgms01179emtv0"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-rocmfp4-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

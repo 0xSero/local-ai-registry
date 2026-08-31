@@ -1,0 +1,211 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.22.1rc1.dev124+gace95c9cf.d20260603"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-3sj0zzr0",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmqqxt0i601d8qo013sj0zzr0"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmqqxt0i601d8qo013sj0zzr0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmqqxt0i601d8qo013sj0zzr0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "LocalMaxxing C1 rerun for the same-upstream Qwen3.6 27B NVFP4 MTP checkpoint. vLLM/eugr image, TP=1, max context 262144, max_num_seqs=4, FP8 KV, native MTP speculative tokens=3. Speculative decoding/MTP details are also in the sanitized launch command because the form switch did not toggle reliably in Chrome automation.",
+      "observed_command": "vllm serve sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP --host 0.0.0.0 --port 8811 --served-model-name sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP --trust-remote-code --max-model-len 262144 --max-num-batched-tokens 8192 --max-num-seqs 4 --moe-backend marlin --language-model-only --gpu-memory-utilization 0.40 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --dtype auto --kv-cache-dtype fp8 --load-format fastsafetensors --attention-backend flashinfer --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\"}' --enable-chunked-prefill --async-scheduling --enable-prefix-caching -tp 1 -pp 1 --default-chat-template-kwargs '{\"enable_thinking\":true,\"preserve_thinking\":true}' --generation-config vllm --override-generation-config '{\"temperature\":0.6,\"top_p\":0.95,\"top_k\":20,\"min_p\":0.0,\"presence_penalty\":0.0,\"repetition_penalty\":1.0}'",
+      "run_id": "cmqqxt0i601d8qo013sj0zzr0",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8811",
+          "--served-model-name",
+          "sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP",
+          "--trust-remote-code",
+          "--max-model-len",
+          "262144",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-num-seqs",
+          "4",
+          "--moe-backend",
+          "marlin",
+          "--language-model-only",
+          "--gpu-memory-utilization",
+          "0.40",
+          "--enable-auto-tool-choice",
+          "--tool-call-parser",
+          "qwen3_coder",
+          "--reasoning-parser",
+          "qwen3",
+          "--dtype",
+          "auto",
+          "--kv-cache-dtype",
+          "fp8",
+          "--load-format",
+          "fastsafetensors",
+          "--attention-backend",
+          "flashinfer",
+          "--speculative-config",
+          "{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\"}",
+          "--enable-chunked-prefill",
+          "--async-scheduling",
+          "--enable-prefix-caching",
+          "-tp",
+          "1",
+          "-pp",
+          "1",
+          "--default-chat-template-kwargs",
+          "{\"enable_thinking\":true,\"preserve_thinking\":true}",
+          "--generation-config",
+          "vllm",
+          "--override-generation-config",
+          "{\"temperature\":0.6,\"top_p\":0.95,\"top_k\":20,\"min_p\":0.0,\"presence_penalty\":0.0,\"repetition_penalty\":1.0}"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "sakamakismile-qwen3-6-27b-text-nvfp4-mtp--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmqqxt0i601d8qo013sj0zzr0"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8192,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-3sj0zzr0-sweep"
+  ],
+  "status": "candidate"
+}

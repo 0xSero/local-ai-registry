@@ -1,0 +1,195 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "llama.cpp qwen36 Spark build b831dc2fd962076c74d4b5837000459902cba484ee15f81d038d7d3ce1bcda62"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-35b-a3b-gguf-q6-k-dgx-spark-gb10-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr6hnwk1005cmn01qt69mcic"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr6hnwk1005cmn01qt69mcic",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr6hnwk1005cmn01qt69mcic"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Curated DGX Spark/GB10 sweep for Qwen3.6-35B-A3B base Spark from /home/frosty40/agentic-arcade/benchmarks/QWEN36_35B_SPARK_20260629.md. Excluded warmup and per-sweep lowest tokSOut rows from submission. Measured with fixed 256 completion tokens per request through llama-server; model file Qwen3.6-35B-A3B-UD-Q6_K.gguf, sha256=49935b04ad883c2f3d4da61f65b609d447dad67d0b08453b90abb09a1bb35464.",
+      "observed_command": "/home/frosty40/llama.cpp-qwen36/build/bin/llama-server -m Qwen3.6-35B-A3B-UD-Q6_K.gguf --host 127.0.0.1 --port 8370 -ngl 99 -c 32768 -np 32 -b 8192 -ub 4096 -fa on -ctk q8_0 -ctv q8_0 --jinja --no-mmap -a qwen36-generic; ornith_aeon_vllm_sweep.py --max-tokens 256 --min-tokens 256 --ignore-eos",
+      "run_id": "cmr6hnwk1005cmn01qt69mcic",
+      "tokenized": {
+        "arguments": [
+          "/home/frosty40/llama.cpp-qwen36/build/bin/llama-server",
+          "-m",
+          "Qwen3.6-35B-A3B-UD-Q6_K.gguf",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "8370",
+          "-ngl",
+          "99",
+          "-c",
+          "32768",
+          "-np",
+          "32",
+          "-b",
+          "8192",
+          "-ub",
+          "4096",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--jinja",
+          "--no-mmap",
+          "-a",
+          "qwen36-generic;",
+          "ornith_aeon_vllm_sweep.py",
+          "--max-tokens",
+          "256",
+          "--min-tokens",
+          "256",
+          "--ignore-eos"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-35b-a3b--gguf-q6-k",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr6hnwk1005cmn01qt69mcic"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 32,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-35b-a3b-gguf-q6-k-dgx-spark-gb10-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,198 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "3edc3d3"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "laguna-s-2-1-q4-0-rocmfp4-fast-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsgf1kg8016npp01h89b7kt8"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsgf1kg8016npp01h89b7kt8",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsgf1kg8016npp01h89b7kt8"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "ROCmFPX fork (build-strix-vulkan) on Framework Desktop Strix Halo 128G unified, via llama-swap. FAST quant, -b 512 -ub 128 strix flags. Median of 3.",
+      "observed_command": "/home/mikekey/ROCmFPX/build-strix-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 -dev Vulkan0 -ngl 999 --flash-attn on --jinja --reasoning-format auto --temp 1.0 --top-k 20 --top-p 1.0 -ctk f16 -ctv f16 -b 512 -ub 128 -t 16 -np 1 -c 65536 -m /home/mikekey/models/gguf/Laguna-S-2.1-Q4_0_ROCMFP4_FAST.gguf",
+      "run_id": "cmsgf1kg8016npp01h89b7kt8",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/ROCmFPX/build-strix-vulkan/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "-dev",
+          "Vulkan0",
+          "-ngl",
+          "999",
+          "--flash-attn",
+          "on",
+          "--jinja",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "1.0",
+          "--top-k",
+          "20",
+          "--top-p",
+          "1.0",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-b",
+          "512",
+          "-ub",
+          "128",
+          "-t",
+          "16",
+          "-np",
+          "1",
+          "-c",
+          "65536",
+          "-m",
+          "/home/mikekey/models/gguf/Laguna-S-2.1-Q4_0_ROCMFP4_FAST.gguf"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "poolside-laguna-s-2-1--q4-0-rocmfp4-fast",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsgf1kg8016npp01h89b7kt8"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 820,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "laguna-s-2-1-q4-0-rocmfp4-fast-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

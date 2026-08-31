@@ -1,0 +1,195 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "lmstudio",
+    "version": "0.4.20+1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m4-pro-48gb",
+  "id": "qwen3-5-4b-mlx-8bit-apple-m4-pro-48gb-lmstudio-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsqri9h200qvmr01wcj8yjo5"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsqri9h200qvmr01wcj8yjo5",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsqri9h200qvmr01wcj8yjo5"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "metal",
+      "hardware_label": "M4 Pro",
+      "notes": "MLX 8-bit quantization. Median of 3 timed runs after 1 warmup using the same deterministic 512-word source-prompt protocol at temperature 0. The model-specific chat template produced 547 prompt tokens; each run generated 254 output tokens. Prefill estimated as prompt tokens divided by LM Studio native time-to-first-token.",
+      "observed_command": "lms server start --port 1234 --bind 127.0.0.1 && lms load qwen3.5-4b-mlx --context-length 262144 --parallel 4 --identifier benchmark-qwen35-4b-mlx --yes",
+      "run_id": "cmsqri9h200qvmr01wcj8yjo5",
+      "tokenized": {
+        "arguments": [
+          "lms",
+          "load",
+          "qwen3.5-4b-mlx",
+          "--context-length",
+          "262144",
+          "--parallel",
+          "4",
+          "--identifier",
+          "benchmark-qwen35-4b-mlx",
+          "--yes"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "lms",
+            "server",
+            "start",
+            "--port",
+            "1234",
+            "--bind",
+            "127.0.0.1"
+          ],
+          [
+            "lms",
+            "load",
+            "qwen3.5-4b-mlx",
+            "--context-length",
+            "262144",
+            "--parallel",
+            "4",
+            "--identifier",
+            "benchmark-qwen35-4b-mlx",
+            "--yes"
+          ]
+        ]
+      }
+    }
+  },
+  "model_instance_id": "mlx-community-qwen3-5-4b-mlx-8bit--mlx-8bit",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsqri9h200qvmr01wcj8yjo5"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-5-4b-mlx-8bit-apple-m4-pro-48gb-lmstudio-tp1-sweep"
+  ],
+  "status": "candidate"
+}
