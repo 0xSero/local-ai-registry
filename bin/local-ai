@@ -344,6 +344,52 @@ launch_args() {
   done < <(jq -j '(.arguments // [])[] | . + "\u0000"' <<<"$launch")
 }
 
+
+cmd_validate() {
+  # Run a candidate's draft (or docker candidate launch) on THIS machine,
+  # accept it with a real completion + speed measurement, and promote it.
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
+  local id=$1 recipe contract cname port
+  recipe=$(record recipe "$id")
+  [[ $(jq -r '.status' <<<"$recipe") == candidate ]] || fail "only candidates can be validated; this recipe is $(jq -r '.status' <<<"$recipe")"
+  if [[ $(jq -r '.launch.kind' <<<"$recipe") == docker ]]; then
+    contract=$(jq -c '.launch' <<<"$recipe")
+  else
+    contract=$(jq -c '.draft_launch // empty' <<<"$recipe")
+    [[ -n $contract ]] || fail "this candidate has no docker launch and no draft_launch; run scripts/synthesize_launches.py or curate one"
+  fi
+  # stage the contract first so preflight sees the draft backend and ports
+  local staged
+  staged=$(jq -c --argjson launch "$contract" '.launch = $launch | .status = "validated"' <<<"$recipe")
+  preflight "$staged" "$force"
+  launch_args "$staged"
+  port=$(jq -r '.host_port' <<<"$contract")
+  cname="local-ai-accept-$$"
+  printf 'launching draft for acceptance (container %s, port %s)...\n' "$cname" "$port" >&2
+  # detach: replace 'docker run --rm' with named detached run
+  local detached=("${LAUNCH[@]:0:2}" -d --name "$cname" "${LAUNCH[@]:2}")
+  "${detached[@]}" >/dev/null || fail "docker launch failed"
+  trap 'docker rm -f "'"$cname"'" >/dev/null 2>&1 || true' EXIT
+  printf 'waiting for the server (weights may download; up to 60 minutes)...\n' >&2
+  local waited=0
+  until curl -fsS -m 5 "http://localhost:${port}/v1/models" >/dev/null 2>&1; do
+    if ! docker inspect -f '{{.State.Running}}' "$cname" 2>/dev/null | grep -q true; then
+      docker logs --tail 40 "$cname" >&2 || true
+      fail "the server exited before becoming healthy (last logs above)"
+    fi
+    sleep 10; waited=$((waited+10))
+    (( waited % 120 == 0 )) && printf '  still waiting (%ss)...\n' "$waited" >&2
+    (( waited >= 3600 )) && { docker logs --tail 40 "$cname" >&2 || true; fail "server did not become healthy within 60 minutes"; }
+  done
+  printf 'server healthy after %ss; running acceptance...\n' "$waited" >&2
+  python3 "$ROOT/../scripts/accept_recipe.py" "$id" --endpoint "http://localhost:${port}" || fail "acceptance failed; recipe stays candidate"
+  docker rm -f "$cname" >/dev/null 2>&1 || true
+  trap - EXIT
+  printf 'done. Rebuild the index, run make check, and open a PR with the promotion.\n' >&2
+}
+
 cmd_command() {
   local recipe
   recipe=$(record recipe "$1")
@@ -377,6 +423,7 @@ Usage: local-ai [command]
   search <text>                  search all registry records
   command <recipe-id>            print the exact docker command for a validated recipe
   run [--force] <recipe-id>      preflight this machine, then launch a validated recipe
+  validate [--force] <recipe-id> run a candidate draft here, accept it, and promote to validated
 EOF
 }
 
@@ -386,6 +433,7 @@ need jq
 case ${1:-choose} in
   command) shift; [[ $# -eq 1 ]] || fail "usage: local-ai command <recipe-id>"; cmd_command "$1" ;;
   run) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai run [--force] <recipe-id>"; cmd_run "$@" ;;
+  validate) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai validate [--force] <recipe-id>"; cmd_validate "$@" ;;
   detect) detect ;;
   list) shift; list "$@" ;;
   choose) choose "${2:-}" ;;
