@@ -16,6 +16,7 @@ const COLLECTION_SCHEMAS: Record<string, string> = {
   recipe: "recipe.schema.json",
   "speed-sweep": "speed-sweep.schema.json",
   benchmark: "benchmark.schema.json",
+  asset: "asset.schema.json",
 }
 
 const ajv = new Ajv2020({ allErrors: true, strict: false })
