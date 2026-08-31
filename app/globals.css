@@ -658,3 +658,45 @@ body > footer p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   .registry-search[aria-busy="true"] .search-field::after { animation: none; }
 }
+
+/* Record sheet: designed rendering of the full normalized record */
+.record-sheet-body { display: grid; gap: 4px; }
+.sheet-grid {
+  display: grid;
+  margin: 12px 0 0;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px 20px;
+}
+.sheet-grid dt {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.sheet-grid dd { margin: 3px 0 0; font-size: 0.8rem; overflow-wrap: anywhere; }
+.sheet-section { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sheet-table { margin-top: 14px; }
+.sheet-table-scroll { overflow-x: auto; }
+.sheet-caption {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.sheet-caption:empty { display: none; }
+.sheet-quiet { margin-top: 14px; }
+.sheet-quiet > summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sheet-quiet > summary:hover { color: var(--ink); }
+.sheet-quiet-body { display: grid; gap: 14px; margin-top: 10px; padding-left: 12px; border-left: 1px solid var(--line); }
+.sheet-quiet-row { font-size: 0.78rem; }
+.sheet-quiet-row .sheet-caption { display: inline; margin-right: 8px; }
