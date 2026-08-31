@@ -269,6 +269,10 @@ export interface BenchmarkScoreRow {
   score: number | null
   conf?: string | null
   context?: string | null
+  /**
+   * Registry model id resolved from the row's root HF repository (or curated alias); null when the model is not in the registry.
+   */
+  model_id: string | null
   [k: string]: unknown
 }
 /**
