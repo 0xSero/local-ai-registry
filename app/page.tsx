@@ -474,6 +474,7 @@ export default async function Home({ searchParams }: PageProps) {
                     <span><strong>{model.family}</strong><small>family</small></span>
                     <span><strong>{model.architecture ?? "Unknown"}</strong><small>architecture</small></span>
                     <span><strong>{model.params ?? "—"}</strong><small>parameters</small></span>
+                    <span><strong>{model.downloads?.last_30d != null ? model.downloads.last_30d.toLocaleString("en-US") : "—"}</strong><small>HF downloads / 30d</small></span>
                     <TaxonomyTags state={viewState} tags={tags} />
                     <svg aria-hidden="true" className="row-arrow" viewBox="0 0 20 20"><path d="m7 4 6 6-6 6" /></svg>
                   </article>
