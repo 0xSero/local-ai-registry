@@ -45,3 +45,8 @@ typecheck:
 
 build:
 	npm run build
+
+## Refresh Hugging Face download counts (models-page sort order).
+downloads:
+	python3 scripts/fetch_hf_downloads.py
+	python3 scripts/format_registry.py

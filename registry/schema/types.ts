@@ -209,6 +209,15 @@ export interface Model {
   huggingface: HuggingfaceIdentity
   provenance: Provenance
   facts: Facts
+  /**
+   * Hugging Face download counts for the canonical repository; null when the model has no known repo.
+   */
+  downloads: {
+    last_30d: number | null
+    all_time: number | null
+    captured_at: string
+    source: "huggingface-api"
+  }
 }
 export interface ModelInstance {
   schema_version: "local-ai-registry/v1"
