@@ -40,6 +40,9 @@ jobs:
       - name: Referential integrity and trust boundary
         run: python3 scripts/validate_registry.py
 
+      - name: Omarchy plugin gate accepts every validated Docker recipe
+        run: python3 scripts/check_plugin_gate.py
+
       - name: index shards match the records they summarize
         run: |
           python3 scripts/curate_registry.py --index-only
