@@ -20,6 +20,17 @@
   "id": "macbook-pro-m5-max--de",
   "observations": [
     {
+      "amount": 8324,
+      "condition": "new",
+      "currency": "EUR",
+      "in_stock": true,
+      "observed_at": "2026-08-31T11:49:41.803Z",
+      "quantity": null,
+      "retailer": "Apple",
+      "title": "MacBook Pro, 14-Zoll, M5 Max Chip, 128 GB Arbeitsspeicher, 8 TB Speicher",
+      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro/14-zoll-space-black-standard-display-apple-m5-max-chip-18-core-cpu-40%E2%80%91core-gpu-128-gb-arbeitsspeicher-8tb-speicher"
+    },
+    {
       "amount": 4799,
       "condition": "new",
       "currency": "EUR",
@@ -42,16 +53,16 @@
       "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.883Z",
+  "observed_at": "2026-08-31T11:49:41.803Z",
   "product": {
     "category": "apple",
     "id": "macbook-pro-m5-max",
     "name": "MacBook Pro M5 Max"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 60
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
   },
   "region": {
     "code": "DE",
@@ -60,15 +71,15 @@
   },
   "schema_version": "local-ai-registry/v1",
   "summary": {
-    "in_stock_count": 2,
-    "listing_count": 2,
+    "in_stock_count": 3,
+    "listing_count": 3,
     "lowest_new": 4799,
     "lowest_refurbished": null,
     "lowest_used": null,
-    "retailer_count": 1
+    "retailer_count": 2
   },
   "verification": {
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
     "rejected_observations": 0,
     "state": "candidate"
   }

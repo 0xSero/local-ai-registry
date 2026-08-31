@@ -94,18 +94,29 @@
       "retailer": "alternate",
       "title": "RTX 5070",
       "url": "https://www.alternate.de"
+    },
+    {
+      "amount": 799.99,
+      "condition": "new",
+      "currency": "EUR",
+      "in_stock": true,
+      "observed_at": "2026-08-31T11:49:41.803Z",
+      "quantity": null,
+      "retailer": "MediaMarkt",
+      "title": "ASUS PRIME-RTX5070-O12G (NVIDIA, Grafikkarte)",
+      "url": "https://www.mediamarkt.de/de/category/nvidia-grafikkarten-4277.html"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.885Z",
+  "observed_at": "2026-08-31T11:49:41.803Z",
   "product": {
     "category": "gpu",
     "id": "rtx-5070",
     "name": "RTX 5070"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 60
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
   },
   "region": {
     "code": "DE",
@@ -114,15 +125,15 @@
   },
   "schema_version": "local-ai-registry/v1",
   "summary": {
-    "in_stock_count": 0,
-    "listing_count": 8,
-    "lowest_new": null,
+    "in_stock_count": 1,
+    "listing_count": 9,
+    "lowest_new": 789,
     "lowest_refurbished": null,
     "lowest_used": null,
-    "retailer_count": 1
+    "retailer_count": 2
   },
   "verification": {
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
     "rejected_observations": 0,
     "state": "candidate"
   }
