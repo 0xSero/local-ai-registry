@@ -96,7 +96,7 @@ def import_row(root, row):
             "kv_cache_tokens": None,
         },
         "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
-        "speed_sweeps_ids": [sweep_id],
+        "speed_sweep_ids": [sweep_id],
         "metadata": {
             "localmaxxing": {
                 "run_id": run_id,
@@ -106,7 +106,7 @@ def import_row(root, row):
             }
         },
     })
-    write(root / "speed-sweeps" / f"{sweep_id}.json", {
+    write(root / "speed-sweep" / f"{sweep_id}.json", {
         "schema_version": SCHEMA,
         "id": sweep_id,
         "recipe_id": recipe_id,
