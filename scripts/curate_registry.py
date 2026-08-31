@@ -90,7 +90,7 @@ LEGACY = {
 
 def write(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+    path.write_text(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
 
 def title_chip(chip):
@@ -198,21 +198,43 @@ def sanitize_candidates(root):
         recipe["schema_version"] = SCHEMA
         write(path, recipe)
 
-    for collection in ("model", "model-instance", "speed-sweeps"):
+    for collection in ("model", "model-instance", "speed-sweep"):
         for path in sorted((root / collection).glob("*.json")):
             record = json.loads(path.read_text())
             record["schema_version"] = SCHEMA
             write(path, record)
 
 
+
+def link_products(root):
+    """Derive hardware.products from the price records that reference each SKU."""
+    by_hardware = {}
+    for path in sorted((root / "price").glob("*/*.json")):
+        record = json.loads(path.read_text())
+        product_id = record["product"]["id"]
+        for hardware in record.get("hardware", []):
+            by_hardware.setdefault(hardware.get("id"), set()).add(product_id)
+    for path in sorted((root / "hardware").glob("*.json")):
+        record = json.loads(path.read_text())
+        products = sorted(by_hardware.get(record.get("id"), set()))
+        if record.get("products") != products:
+            record["products"] = products
+            write(path, record)
+
+
 def rebuild_index(root):
     collections = {}
-    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks"):
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark", "asset"):
         collections[name] = sorted(path.stem for path in (root / name).glob("*.json"))
     collections["price"] = sorted(
         json.loads(path.read_text())["id"] for path in (root / "price").glob("*/*.json")
     )
     recipes = []
+    recipes_by_hardware = {}
+    instances_by_model = {}
+    for path in sorted((root / "model-instance").glob("*.json")):
+        instance = json.loads(path.read_text())
+        instances_by_model.setdefault(instance["model_id"], []).append(instance["id"])
     for path in sorted((root / "recipe").glob("*.json")):
         recipe = json.loads(path.read_text())
         recipes.append({
@@ -225,15 +247,40 @@ def rebuild_index(root):
             "engine": recipe["engine"]["name"],
             "launch_kind": recipe["launch"]["kind"],
             "capabilities": recipe["capabilities"],
-            "has_evidence": bool(recipe.get("speed_sweeps_ids")),
+            "has_evidence": bool(recipe.get("speed_sweep_ids")),
         })
-    write(root / "index.json", {
+        recipes_by_hardware.setdefault(recipe["hardware_id"], []).append(recipe["id"])
+    benchmarks_by_model = {}
+    for path in sorted((root / "benchmark").glob("*.json")):
+        benchmark = json.loads(path.read_text())
+        for row in benchmark.get("rows", []):
+            model_id = row.get("model_id")
+            if model_id:
+                benchmarks_by_model.setdefault(model_id, []).append({
+                    "benchmark_id": benchmark["id"],
+                    "category": benchmark.get("category"),
+                    "rank": row.get("rank"),
+                    "score": row.get("score"),
+                    "variant": row.get("variant"),
+                    "conf": row.get("conf"),
+                })
+    prices_by_hardware = {}
+    for path in sorted((root / "price").glob("*/*.json")):
+        record = json.loads(path.read_text())
+        for hardware in record.get("hardware", []):
+            prices_by_hardware.setdefault(hardware.get("id"), []).append(record["id"])
+    index_dir = root / "index"
+    write(index_dir / "collections.json", {
         "schema_version": SCHEMA,
-        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in collection names become hyphens. Resolve price ids from price/<product-id>/<region>.json.",
+        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in field names become hyphens in collection directories. Resolve price ids from price/<product-id>/<region>.json. Reverse lookups live beside this file: recipes.json (compact filter rows), recipes-by-hardware.json, instances-by-model.json, benchmarks-by-model.json, prices-by-hardware.json.",
         "collections": collections,
         "counts": {name.replace("-", "_"): len(ids) for name, ids in collections.items()},
-        "recipes": recipes,
     })
+    write(index_dir / "recipes.json", {"schema_version": SCHEMA, "recipes": recipes})
+    write(index_dir / "recipes-by-hardware.json", {"schema_version": SCHEMA, "recipes_by_hardware": recipes_by_hardware})
+    write(index_dir / "instances-by-model.json", {"schema_version": SCHEMA, "instances_by_model": instances_by_model})
+    write(index_dir / "benchmarks-by-model.json", {"schema_version": SCHEMA, "benchmarks_by_model": benchmarks_by_model})
+    write(index_dir / "prices-by-hardware.json", {"schema_version": SCHEMA, "prices_by_hardware": prices_by_hardware})
 
 
 def main():
@@ -245,6 +292,7 @@ def main():
     if not args.index_only:
         curate_hardware(root)
         sanitize_candidates(root)
+        link_products(root)
     rebuild_index(root)
 
 

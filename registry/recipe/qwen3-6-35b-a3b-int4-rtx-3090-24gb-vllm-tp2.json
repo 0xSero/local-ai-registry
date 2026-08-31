@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "RTX 3090",
-      "notes": "Quant: Intel/Qwen3.6-35B-A3B-int4-AutoRound (group_size=128, sym, W4A16, repo currently gated on HF \u2014 used while it was public). Requires our pad-Marlin patch (vLLM PR #40361, OPEN) for TP=2 \u2014 without it Marlin rejects size_n=32 sub-tile shards. Measured 2026-04-20 at 230W power cap on consumer RTX 3090s, no NVLink bridge.",
+      "notes": "Quant: Intel/Qwen3.6-35B-A3B-int4-AutoRound (group_size=128, sym, W4A16, repo currently gated on HF — used while it was public). Requires our pad-Marlin patch (vLLM PR #40361, OPEN) for TP=2 — without it Marlin rejects size_n=32 sub-tile shards. Measured 2026-04-20 at 230W power cap on consumer RTX 3090s, no NVLink bridge.",
       "observed_command": "vllm serve Intel/Qwen3.6-35B-A3B-int4-AutoRound --tensor-parallel-size 2 --quantization auto_round --dtype float16 --max-model-len 32768 --gpu-memory-utilization 0.92 --max-num-seqs 8 --kv-cache-dtype auto --trust-remote-code --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill",
       "run_id": "cmof1zrjo0003h204re6e99ao",
       "tokenized": {
@@ -180,7 +180,7 @@
     "max_context_tokens": 32768,
     "tensor_parallel": 2
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "qwen3-6-35b-a3b-int4-rtx-3090-24gb-vllm-tp2-sweep"
   ],
   "status": "candidate"

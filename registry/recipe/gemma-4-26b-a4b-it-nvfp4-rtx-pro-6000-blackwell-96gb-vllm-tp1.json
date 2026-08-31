@@ -233,7 +233,7 @@
         "tensorParallel": null
       },
       "hardware_label": "1x RTX PRO 6000 Blackwell 96GB",
-      "notes": "Single-stream baseline on RTX PRO 6000 Blackwell (sm_120). vLLM 0.20.1 default CUDA 13 wheel, torch 2.11.0+cu130. Concurrency sweep on the same endpoint (same prompts, max_tokens=600, temp=0.7): aggregate ~1,048 t/s at c=16 (max-num-seqs), ~1,202 t/s at c=32 with queueing, 0 KV-cache preemptions across 88 requests. Eagle3 spec-decode (RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3, k=3) tested separately on this same NVFP4 target: 27% accept rate, 91 t/s \u2014 net-negative since speculator was trained against BF16 hidden states.",
+      "notes": "Single-stream baseline on RTX PRO 6000 Blackwell (sm_120). vLLM 0.20.1 default CUDA 13 wheel, torch 2.11.0+cu130. Concurrency sweep on the same endpoint (same prompts, max_tokens=600, temp=0.7): aggregate ~1,048 t/s at c=16 (max-num-seqs), ~1,202 t/s at c=32 with queueing, 0 KV-cache preemptions across 88 requests. Eagle3 spec-decode (RedHatAI/gemma-4-26B-A4B-it-speculator.eagle3, k=3) tested separately on this same NVFP4 target: 27% accept rate, 91 t/s — net-negative since speculator was trained against BF16 hidden states.",
       "revision_unpinned": true,
       "run_id": "cmoz9mgf9001ppd01fsc7a4au"
     }
@@ -257,7 +257,7 @@
     "max_context_tokens": null,
     "tensor_parallel": 1
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "gemma-4-26b-a4b-it-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
   ],
   "status": "candidate"

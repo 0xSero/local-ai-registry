@@ -1,52 +1,63 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "intel-arc-pro-b60--jp",
-  "product": {
-    "id": "intel-arc-pro-b60",
-    "name": "Intel Arc Pro b60",
-    "category": "gpu"
-  },
-  "region": {
-    "code": "JP",
-    "name": "Japan",
-    "currency": "JPY"
-  },
   "hardware": [
     {
       "id": "intel-arc-pro-b60-24gb",
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-29T22:45:38.816Z",
-  "summary": {
-    "listing_count": 1,
-    "retailer_count": 1,
-    "in_stock_count": 0,
-    "lowest_new": 142263.0,
-    "lowest_refurbished": null,
-    "lowest_used": null
-  },
+  "id": "intel-arc-pro-b60--jp",
   "observations": [
     {
-      "retailer": "kakaku",
-      "title": "SPARKLE Intel Arc Pro B60 24GB Blower SBP60W-24G [PCIExp 24GB]",
-      "condition": "new",
       "amount": 142263.0,
+      "condition": "new",
       "currency": "JPY",
       "in_stock": null,
+      "observed_at": "2026-08-29T22:45:38.816Z",
       "quantity": null,
-      "url": "https://kakaku.com/item/K0001720920/",
-      "observed_at": "2026-08-29T22:45:38.816Z"
+      "retailer": "kakaku",
+      "title": "SPARKLE Intel Arc Pro B60 24GB Blower SBP60W-24G [PCIExp 24GB]",
+      "url": "https://kakaku.com/item/K0001720920/"
+    },
+    {
+      "amount": 119800,
+      "condition": "new",
+      "currency": "JPY",
+      "in_stock": false,
+      "observed_at": "2026-08-31T11:51:51Z",
+      "quantity": null,
+      "retailer": "sofmap",
+      "title": "SPARKLE Intel Arc Pro B60 24GB Blower SBP60W-24G",
+      "url": "https://www.sofmap.com/product_detail.aspx?sku=101830750"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T11:51:51Z",
+  "product": {
+    "category": "gpu",
+    "id": "intel-arc-pro-b60",
+    "name": "Intel Arc Pro b60"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-29T22:45:49.751Z",
-    "source_error_count": 0
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "JP",
+    "currency": "JPY",
+    "name": "Japan"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 0,
+    "listing_count": 2,
+    "lowest_new": 119800,
+    "lowest_refurbished": null,
+    "lowest_used": null,
+    "retailer_count": 2
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 0,
+    "state": "candidate"
   }
 }

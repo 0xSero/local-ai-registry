@@ -12,7 +12,7 @@ const routes = {
   prices: "/api/v1/prices",
   recipes: "/api/v1/recipes",
   benchmarks: "/api/v1/benchmarks",
-  speed_sweeps: "/api/v1/speed-sweeps",
+  speed_sweeps: "/api/v1/speed-sweep",
 }
 
 export function GET(): NextResponse {

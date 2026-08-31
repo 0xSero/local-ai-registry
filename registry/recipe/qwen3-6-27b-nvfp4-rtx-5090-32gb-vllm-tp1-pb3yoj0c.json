@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "RTX 5090",
-      "notes": "vLLM on Unraid RTX 5090 (600W). NVFP4 quant, fp8 KV cache, prefix caching, 131K context. Updated after power limit increase \u2014 ~13% faster output, ~17% faster TTFT.",
+      "notes": "vLLM on Unraid RTX 5090 (600W). NVFP4 quant, fp8 KV cache, prefix caching, 131K context. Updated after power limit increase — ~13% faster output, ~17% faster TTFT.",
       "observed_command": "vllm serve sakamakismile/Qwen3.6-27B-NVFP4 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --kv-cache-dtype fp8 --trust-remote-code --max-model-len 131072 --max-num-batched-tokens 4096 --enable-prefix-caching --max-num-seqs 4 --gpu-memory-utilization 0.90",
       "run_id": "cmoevcpkp000sl804pb3yoj0c",
       "tokenized": {
@@ -175,7 +175,7 @@
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "qwen3-6-27b-nvfp4-rtx-5090-32gb-vllm-tp1-pb3yoj0c-sweep"
   ],
   "status": "candidate"

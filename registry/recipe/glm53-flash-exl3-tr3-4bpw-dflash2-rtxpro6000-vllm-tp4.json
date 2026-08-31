@@ -1,5 +1,10 @@
 {
-  "capabilities": {"chat": true, "reasoning": true, "tools": true, "vision": false},
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
   "description": "Runtime-validated four-GPU 499,968-token extension of the publisher-qualified GLM-5.3 Flash TR3 EXL3 4bpw profile. Uses TP4/EP4/DCP4, B12X sparse MLA, NVFP4 MLA KV, external DFlash2-7, and full-and-piecewise CUDA graphs. CUDA_DEVICE_MAX_CONNECTIONS=1 and an explicit 1-64 capture set prevent a multi-stream B12X graph-warmup race while retaining the complete C8 DFlash graph shape.",
   "engine": {
     "graph_mode": "full-and-piecewise CUDA graphs through 64 target tokens; DFlash2 full graph capture through 8 requests",
@@ -13,20 +18,54 @@
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "serve", "/model", "--served-model-name", "glm-5.3-flash",
-      "--host", "0.0.0.0", "--port", "8000", "--language-model-only",
-      "--tensor-parallel-size", "4", "--enable-expert-parallel",
-      "--decode-context-parallel-size", "4", "--dcp-comm-backend", "a2a",
-      "--dtype", "bfloat16", "--load-format", "safetensors",
-      "--moe-backend", "b12x", "--attention-backend", "B12X_MLA_SPARSE",
-      "--kv-cache-dtype", "nvfp4_ds_mla", "--max-model-len", "499968",
-      "--max-num-batched-tokens", "1024", "--max-num-seqs", "8",
-      "--compilation-config", "{\"cudagraph_capture_sizes\":[1,2,4,8,16,24,32,40,48,56,64]}",
-      "--gpu-memory-utilization", "0.986", "--enable-chunked-prefill",
-      "--no-enable-prefix-caching", "--generation-config", "/model",
-      "--reasoning-parser", "glm45", "--tool-call-parser", "glm47",
-      "--enable-auto-tool-choice", "--disable-custom-all-reduce",
-      "--speculative-config", "{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7,\"draft_tensor_parallel_size\":4,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"standard\",\"attention_backend\":\"TRITON_ATTN\",\"kv_cache_dtype\":\"auto\"}"
+      "serve",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--language-model-only",
+      "--tensor-parallel-size",
+      "4",
+      "--enable-expert-parallel",
+      "--decode-context-parallel-size",
+      "4",
+      "--dcp-comm-backend",
+      "a2a",
+      "--dtype",
+      "bfloat16",
+      "--load-format",
+      "safetensors",
+      "--moe-backend",
+      "b12x",
+      "--attention-backend",
+      "B12X_MLA_SPARSE",
+      "--kv-cache-dtype",
+      "nvfp4_ds_mla",
+      "--max-model-len",
+      "499968",
+      "--max-num-batched-tokens",
+      "1024",
+      "--max-num-seqs",
+      "8",
+      "--compilation-config",
+      "{\"cudagraph_capture_sizes\":[1,2,4,8,16,24,32,40,48,56,64]}",
+      "--gpu-memory-utilization",
+      "0.986",
+      "--enable-chunked-prefill",
+      "--no-enable-prefix-caching",
+      "--generation-config",
+      "/model",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-auto-tool-choice",
+      "--disable-custom-all-reduce",
+      "--speculative-config",
+      "{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7,\"draft_tensor_parallel_size\":4,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"standard\",\"attention_backend\":\"TRITON_ATTN\",\"kv_cache_dtype\":\"auto\"}"
     ],
     "container": {
       "captured_at": "2026-08-28T23:44:12Z",
@@ -35,33 +74,74 @@
       "image": "verdictai/glm53-flash-exl3-k4:r19-sm120-tp2-ep2-dcp2-v84-language-only@sha256:0f1cdcc8891f1cc3a444121eb61d366289a1cbba285f0892dcbb24bc94961692",
       "reason": "publisher digest and live image identity confirmed; TP4 extension validated locally",
       "runtime": "docker",
-      "source": [{"captured_at": "2026-08-28T23:44:12Z", "kind": "runtime-acceptance", "url": "https://github.com/0xSero/local-ai-registry"}],
+      "source": [
+        {
+          "captured_at": "2026-08-28T23:44:12Z",
+          "kind": "runtime-acceptance",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
       "state": "digest-pinned"
     },
     "container_port": 8000,
     "environment": {
-      "B12X_GL53_ROUTE128_HYBRID_TAIL": "1", "B12X_GL53_ROUTE128_WIDE": "1",
-      "CUDA_DEVICE_MAX_CONNECTIONS": "1", "KV_FP8_ROPE": "0",
-      "NCCL_IB_DISABLE": "1", "NCCL_P2P_LEVEL": "4", "OMP_NUM_THREADS": "2",
-      "VLLM_B12X_GLM_NOPE_NVFP4": "1", "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
-      "VLLM_ENGINE_READY_TIMEOUT_S": "3600", "VLLM_EXL3_PREFILL_BLOCK_M": "64",
-      "VLLM_EXL3_PREFILL_TRELLIS": "1", "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0",
+      "B12X_GL53_ROUTE128_HYBRID_TAIL": "1",
+      "B12X_GL53_ROUTE128_WIDE": "1",
+      "CUDA_DEVICE_MAX_CONNECTIONS": "1",
+      "KV_FP8_ROPE": "0",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "4",
+      "OMP_NUM_THREADS": "2",
+      "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+      "VLLM_EXL3_PREFILL_BLOCK_M": "64",
+      "VLLM_EXL3_PREFILL_TRELLIS": "1",
+      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0",
       "VLLM_NVFP4_MLA_SCALES_FILE": "/opt/glm53/calibration/glm53_nvfp4_mla_outer_scales_mtp_power2_v2.json",
-      "VLLM_PCIE_ALLREDUCE_BACKEND": "cpp", "VLLM_USE_B12X_DCP_A2A": "1"
+      "VLLM_PCIE_ALLREDUCE_BACKEND": "cpp",
+      "VLLM_USE_B12X_DCP_A2A": "1"
     },
     "host_port": 8000,
     "image": "verdictai/glm53-flash-exl3-k4:r19-sm120-tp2-ep2-dcp2-v84-language-only@sha256:0f1cdcc8891f1cc3a444121eb61d366289a1cbba285f0892dcbb24bc94961692",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
-      {"read_only": true, "source": "${MODEL_ROOT}/GLM-5.3-Flash-tr3-4bpw", "target": "/model"},
-      {"read_only": true, "source": "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2", "target": "/draft"},
-      {"read_only": false, "source": "${MODEL_ROOT}/cache_glm53_tr3_dflash_v84_tp4", "target": "/cache"}
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-tr3-4bpw",
+        "target": "/model"
+      },
+      {
+        "provision": {
+          "repository": "incoai/GLM-5.3-Flash-DFlash2",
+          "revision": "bf582e4eacc1810f76656d1811693ff6c6737d2a",
+          "size_gb": 2.2
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2",
+        "target": "/draft"
+      },
+      {
+        "read_only": false,
+        "source": "${MODEL_ROOT}/cache_glm53_tr3_dflash_v84_tp4",
+        "target": "/cache"
+      }
     ],
     "shm_size": "32g"
   },
   "metadata": {
-    "acceptance": {"completion": true, "c8_all_streams_active": true, "cuda_graph_capture": true, "dflash_active": true, "health": true, "long_context_prompt_tokens": 496045, "model_discovery": true, "omp_end_to_end": true, "tools": true},
+    "acceptance": {
+      "c8_all_streams_active": true,
+      "completion": true,
+      "cuda_graph_capture": true,
+      "dflash_active": true,
+      "health": true,
+      "long_context_prompt_tokens": 496045,
+      "model_discovery": true,
+      "omp_end_to_end": true,
+      "tools": true
+    },
     "benchmark": {
       "c1_decode_tok_s": 185.29807143721484,
       "c2_aggregate_decode_tok_s": 243.8190265956469,
@@ -75,21 +155,42 @@
     "full_context_resident_concurrency": 21.73,
     "kv_cache_memory_gib_per_gpu": 47.33,
     "kv_headroom_note": "The validated 499,968-token profile allocated 10,862,941 KV tokens and reports 21.73 full-context resident requests, exceeding the requested C8 capacity.",
-    "long_context_acceptance": {"completion_tokens": 8, "elapsed_seconds": 383.5423291250481, "finish_reason": "length", "prompt_tokens": 496045, "uncached": true},
     "local_power_limit_w_each": 275,
+    "long_context_acceptance": {
+      "completion_tokens": 8,
+      "elapsed_seconds": 383.5423291250481,
+      "finish_reason": "length",
+      "prompt_tokens": 496045,
+      "uncached": true
+    },
     "runtime_state": "runtime-tested"
   },
   "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
   "provenance": {
     "captured_at": "2026-08-28T23:44:12Z",
     "sources": [
-      {"captured_at": "2026-08-28T23:44:12Z", "kind": "model-card", "url": "https://huggingface.co/brandonmusic/GLM-5.3-Flash-tr3-4bpw"},
-      {"captured_at": "2026-08-28T23:44:12Z", "kind": "runtime-acceptance", "url": "https://github.com/0xSero/local-ai-registry"}
+      {
+        "captured_at": "2026-08-28T23:44:12Z",
+        "kind": "model-card",
+        "url": "https://huggingface.co/brandonmusic/GLM-5.3-Flash-tr3-4bpw"
+      },
+      {
+        "captured_at": "2026-08-28T23:44:12Z",
+        "kind": "runtime-acceptance",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
     ]
   },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
-  "serving": {"kv_cache_tokens": 10862941, "max_concurrency": 8, "max_context_tokens": 499968, "tensor_parallel": 4},
-  "speed_sweeps_ids": ["glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp4-sweep"],
+  "serving": {
+    "kv_cache_tokens": 10862941,
+    "max_concurrency": 8,
+    "max_context_tokens": 499968,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp4-sweep"
+  ],
   "status": "validated"
 }

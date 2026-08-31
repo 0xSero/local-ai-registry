@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Import scraped Hugging Face model benchmark scores into registry/benchmarks/.
+"""Import scraped Hugging Face model benchmark scores into registry/benchmark/.
 
 Source is the static "HF Model & Benchmark Matrix" scrape (120 leaderboard pages,
 one per benchmark). Each page holds a ranked table of [rank, variant, root, org,
@@ -12,6 +12,8 @@ import argparse
 import json
 import re
 from pathlib import Path
+
+from benchmark_models import model_ids_by_repo, resolve_model_id
 
 
 SCHEMA = "local-ai-registry/v1"
@@ -61,14 +63,16 @@ def parse_rows(html):
     return rows
 
 
-def import_page(matrix, page, meta, root):
+def import_page(matrix, page, meta, root, by_repo):
     benchmark_id = page.stem
     html = page.read_text()
     rows = parse_rows(html)
     if not rows:
         return 0
+    for row in rows:
+        row["model_id"] = resolve_model_id(row, by_repo)
     info = meta.get(benchmark_id, {})
-    write(root / "benchmarks" / f"{benchmark_id}.json", {
+    write(root / "benchmark" / f"{benchmark_id}.json", {
         "schema_version": SCHEMA,
         "id": benchmark_id,
         "name": info.get("name") or benchmark_id,
@@ -91,10 +95,11 @@ def main():
     matrix = Path(args.matrix)
     root = Path(args.root)
     meta = load_benchmark_meta(matrix)
+    by_repo = model_ids_by_repo(root)
     imported = 0
     total_rows = 0
     for page in sorted((matrix / "benchmarks").glob("*.html")):
-        count = import_page(matrix, page, meta, root)
+        count = import_page(matrix, page, meta, root, by_repo)
         imported += 1
         total_rows += count
     print(f"imported {imported} benchmarks with {total_rows} score rows")

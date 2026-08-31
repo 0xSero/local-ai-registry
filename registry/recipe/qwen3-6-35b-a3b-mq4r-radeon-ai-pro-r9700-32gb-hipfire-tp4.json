@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "rocm",
       "hardware_label": "Radeon AI Pro R9700",
-      "notes": "BATCHED AGGREGATE THROUGHPUT \u2014 not single-stream decode. DATA-PARALLEL across 4 cards; aggregate of 4 independent replicas. batch=112, concurrency=112, 100 input rows, 3 waves, max_tokens=64, ctx=1024, KV=q8, greedy; TTFT not comparable. Per-card median MODEL tok/s: d0:1495.3, d1:1504.4, d2:1500.1, d3:1501.6 (sum 6001.4); wall-clock aggregate 3889.4 tok/s (per-card wall d0:969.6, d1:975.7, d2:973.2, d3:970.9). MODEL tok/s is sum of per-card decode rates excluding inter-wave gap; wall includes all overhead. Do not compare DP aggregate to single-stream. engine: hipfire 0.3.0+b0bcc3f91506, backend rocm, gfx1201 x4 quant: MQ4R = MagnumQuant 4-bit Redline (graded mixed-tier: MQ4 attn/router/shared + graded MQ4 routed experts, Redline retained-PM4 dispatch), 4.16 bpw effective (18700048128 bytes *8 / 35.95B params) model file: qwen3.6-35b-a3b.mq4r sha256 4685c140c46b1a6f prompt: uniform short-serve jsonl md5 3d22208dcf539818ff2e8341f53474ee, 64 max_new method: median of 3 waves, fresh process per wave, temperature 0, bit-exact outputs (sha ec47dcfb9b0c54e0) evidence: sealed case a3b-mq4r-dp4-b112-gfx1201-r9700-4x, corpus manifest manifest-sha12-8f3c2e1a4b9d not measured: peak VRAM (not instrumented this campaign)",
+      "notes": "BATCHED AGGREGATE THROUGHPUT — not single-stream decode. DATA-PARALLEL across 4 cards; aggregate of 4 independent replicas. batch=112, concurrency=112, 100 input rows, 3 waves, max_tokens=64, ctx=1024, KV=q8, greedy; TTFT not comparable. Per-card median MODEL tok/s: d0:1495.3, d1:1504.4, d2:1500.1, d3:1501.6 (sum 6001.4); wall-clock aggregate 3889.4 tok/s (per-card wall d0:969.6, d1:975.7, d2:973.2, d3:970.9). MODEL tok/s is sum of per-card decode rates excluding inter-wave gap; wall includes all overhead. Do not compare DP aggregate to single-stream. engine: hipfire 0.3.0+b0bcc3f91506, backend rocm, gfx1201 x4 quant: MQ4R = MagnumQuant 4-bit Redline (graded mixed-tier: MQ4 attn/router/shared + graded MQ4 routed experts, Redline retained-PM4 dispatch), 4.16 bpw effective (18700048128 bytes *8 / 35.95B params) model file: qwen3.6-35b-a3b.mq4r sha256 4685c140c46b1a6f prompt: uniform short-serve jsonl md5 3d22208dcf539818ff2e8341f53474ee, 64 max_new method: median of 3 waves, fresh process per wave, temperature 0, bit-exact outputs (sha ec47dcfb9b0c54e0) evidence: sealed case a3b-mq4r-dp4-b112-gfx1201-r9700-4x, corpus manifest manifest-sha12-8f3c2e1a4b9d not measured: peak VRAM (not instrumented this campaign)",
       "observed_command": "hipfire-batch-generate --model ~/.hipfire/models/qwen3.6-35b-a3b.mq4r --batch 112 --max-seq 1024 --max-new 64 --devices 0,1,2,3 --data-parallel --kv q8 --fresh-process-per-wave",
       "run_id": "cmsnp1rko00jco001mvymwmsb",
       "tokenized": {
@@ -170,7 +170,7 @@
     "max_context_tokens": 1024,
     "tensor_parallel": 4
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "qwen3-6-35b-a3b-mq4r-radeon-ai-pro-r9700-32gb-hipfire-tp4-sweep"
   ],
   "status": "candidate"

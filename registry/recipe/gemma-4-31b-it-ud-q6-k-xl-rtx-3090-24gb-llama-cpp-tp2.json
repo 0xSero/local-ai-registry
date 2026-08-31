@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "RTX 3090",
-      "notes": "PC dual-RTX-3090 (Ti+FE), llama.cpp -sm row TP=2. Gemma 4 31B IT at unsloth UD-Q6_K_XL (26 GB). 512/512 single-stream, 20 prompts. KV q8_0. Bench used Qwen tokenizer for synthetic prompts (Gemma tokenizer is gated) \u2014 output token count is server-reported, throughput accurate; TTFT slightly inflated due to vocab mismatch. Gemma 4 dense ~25% slower than Qwen 3.6 27B dense Q6 on same rig (14.38 vs 22.23 t/s).",
+      "notes": "PC dual-RTX-3090 (Ti+FE), llama.cpp -sm row TP=2. Gemma 4 31B IT at unsloth UD-Q6_K_XL (26 GB). 512/512 single-stream, 20 prompts. KV q8_0. Bench used Qwen tokenizer for synthetic prompts (Gemma tokenizer is gated) — output token count is server-reported, throughput accurate; TTFT slightly inflated due to vocab mismatch. Gemma 4 dense ~25% slower than Qwen 3.6 27B dense Q6 on same rig (14.38 vs 22.23 t/s).",
       "observed_command": "llama-server -m gemma-4-31B-it-UD-Q6_K_XL.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -sm row -ts 1,1 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 1",
       "run_id": "cmofeyn1i000gl204hiwvdqj0",
       "tokenized": {
@@ -180,7 +180,7 @@
     "max_context_tokens": 32768,
     "tensor_parallel": 2
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "gemma-4-31b-it-ud-q6-k-xl-rtx-3090-24gb-llama-cpp-tp2-sweep"
   ],
   "status": "candidate"

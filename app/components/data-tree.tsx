@@ -52,16 +52,24 @@ function Scalar({ value }: { value: string | number | boolean | null }): ReactNo
   return <span>{value}</span>
 }
 
-function Branch({ value }: { value: unknown[] | Record<string, unknown> }) {
+const COLLAPSED_KEYS = new Set(["facts", "provenance", "sources", "source", "metadata"])
+const MAX_OPEN_DEPTH = 3
+
+function Branch({ value, open, depth }: { value: unknown[] | Record<string, unknown>; open: boolean; depth: number }) {
   return (
-    <details className="data-branch">
+    <details className="data-branch" open={open}>
       <summary>{branchSummary(value)}</summary>
-      <div className="data-branch-body"><DataTree nested value={value} /></div>
+      <div className="data-branch-body"><DataTree depth={open ? depth + 1 : MAX_OPEN_DEPTH} nested value={value} /></div>
     </details>
   )
 }
 
-export function DataTree({ nested = false, value }: { nested?: boolean; value: unknown }): ReactNode {
+function branchOpen(key: string | null, depth: number): boolean {
+  if (key !== null && COLLAPSED_KEYS.has(key)) return false
+  return depth < MAX_OPEN_DEPTH
+}
+
+export function DataTree({ nested = false, value, depth = 0 }: { nested?: boolean; value: unknown; depth?: number }): ReactNode {
   if (value === null || value === undefined) return <Scalar value={null} />
   if (typeof value !== "object") {
     return <Scalar value={value as string | number | boolean} />
@@ -74,8 +82,8 @@ export function DataTree({ nested = false, value }: { nested?: boolean; value: u
         {value.map((item, index) => (
           <li key={typeof item === "string" ? item : index}>
             {item !== null && typeof item === "object"
-              ? <Branch value={item as unknown[] | Record<string, unknown>} />
-              : <DataTree nested value={item} />}
+              ? <Branch depth={depth} open={branchOpen(null, depth)} value={item as unknown[] | Record<string, unknown>} />
+              : <DataTree depth={depth + 1} nested value={item} />}
           </li>
         ))}
       </ol>
@@ -89,8 +97,8 @@ export function DataTree({ nested = false, value }: { nested?: boolean; value: u
           <dt>{label(key)}</dt>
           <dd>
             {item !== null && typeof item === "object"
-              ? <Branch value={item as unknown[] | Record<string, unknown>} />
-              : <DataTree nested value={item} />}
+              ? <Branch depth={depth} open={branchOpen(key, depth)} value={item as unknown[] | Record<string, unknown>} />
+              : <DataTree depth={depth + 1} nested value={item} />}
           </dd>
         </div>
       ))}

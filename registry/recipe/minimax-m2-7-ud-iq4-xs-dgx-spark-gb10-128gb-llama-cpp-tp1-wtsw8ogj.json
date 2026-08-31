@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "GB10 Grace Blackwell",
-      "notes": "Companion submission to cmomfmks00003k204617egw2l (unsloth/MiniMax-M2.7 GGUF). Same measurement, posted against root model MiniMaxAI/MiniMax-M2.7 with quantization=UD-IQ4_XS explicit so it surfaces on the canonical model page.\n\nMiniMax-M2.7-UD-IQ4_XS (101 GB GGUF) on a single DGX Spark with llama.cpp ngram-simple speculative decode at 108K context. Sherlock prose, pp=128, tg=128, c=1, depth=0. tokSOut = 30.88 t/s MEDIAN over n=38 warm trials across 2 independent rounds (mean 30.88, std 4.11, range 24.57-41.85). ttftMs = 807 median. Same headline tg/s at 3.3\u00d7 context window vs my prior 32K submission, with provably stable long-context behavior (5-phase battery + 10\u00d7 back-to-back 100K torture, R10/R1=1.006).\n\nImage base PINNED to nvcr.io/nvidia/cuda:13.0.0-devel-ubuntu24.04 \u2014 CUDA 13.2/13.3 bases produced silent libcublas matmul corruption on GB10 sm_121. Pre-flight: `readlink libcublas.so.13` must show 13.0.0.19. Stability flags overriding defaults: --cache-reuse 256, --ctx-checkpoints 0, -cram 100 (NOT 4096; 4096 collapses decode 5.6\u21921.0 t/s by run 4). Spec acceptance ~36-82% across runs.\n\nRecipe + raw JSONs + Dockerfile: github.com/my-other-github-account/spark-bench-reproducers/tree/main/minimax-m27-longctx-108k-spark\n\nBy @banana_baeee.",
+      "notes": "Companion submission to cmomfmks00003k204617egw2l (unsloth/MiniMax-M2.7 GGUF). Same measurement, posted against root model MiniMaxAI/MiniMax-M2.7 with quantization=UD-IQ4_XS explicit so it surfaces on the canonical model page.\n\nMiniMax-M2.7-UD-IQ4_XS (101 GB GGUF) on a single DGX Spark with llama.cpp ngram-simple speculative decode at 108K context. Sherlock prose, pp=128, tg=128, c=1, depth=0. tokSOut = 30.88 t/s MEDIAN over n=38 warm trials across 2 independent rounds (mean 30.88, std 4.11, range 24.57-41.85). ttftMs = 807 median. Same headline tg/s at 3.3× context window vs my prior 32K submission, with provably stable long-context behavior (5-phase battery + 10× back-to-back 100K torture, R10/R1=1.006).\n\nImage base PINNED to nvcr.io/nvidia/cuda:13.0.0-devel-ubuntu24.04 — CUDA 13.2/13.3 bases produced silent libcublas matmul corruption on GB10 sm_121. Pre-flight: `readlink libcublas.so.13` must show 13.0.0.19. Stability flags overriding defaults: --cache-reuse 256, --ctx-checkpoints 0, -cram 100 (NOT 4096; 4096 collapses decode 5.6→1.0 t/s by run 4). Spec acceptance ~36-82% across runs.\n\nRecipe + raw JSONs + Dockerfile: github.com/my-other-github-account/spark-bench-reproducers/tree/main/minimax-m27-longctx-108k-spark\n\nBy @banana_baeee.",
       "observed_command": "/opt/llama.cpp/build-cuda/bin/llama-server --jinja -fa on --no-warmup -t 20 -c 108000 -ctk q8_0 -ctv q8_0 -np 1 -ngl 99 -a MiniMax-M2.7-UD-IQ4_XS -m /models/MiniMax-M2.7-GGUF/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf --host 0.0.0.0 --port 18080 --cache-reuse 256 --ctx-checkpoints 0 -cram 100 --spec-type ngram-simple --draft-max 16 --draft-min 1 --draft-p-min 0.5 --spec-ngram-size-n 4",
       "run_id": "cmon7v1f70007l204wtsw8ogj",
       "tokenized": {
@@ -196,7 +196,7 @@
     "max_context_tokens": 108000,
     "tensor_parallel": 1
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "minimax-m2-7-ud-iq4-xs-dgx-spark-gb10-128gb-llama-cpp-tp1-wtsw8ogj-sweep"
   ],
   "status": "candidate"
