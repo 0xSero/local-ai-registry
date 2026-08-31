@@ -4,8 +4,10 @@
  * Regenerate with: npm run gen:types
  */
 
+/**
+ * Per-field provenance and knowledge state. The field value itself lives once, at the record path the facts key names; facts never carry a duplicate value.
+ */
 export type Fact = {
-  value?: unknown
   state: "known" | "unknown" | "unavailable" | "not_applicable"
   reason?:
     | string
@@ -118,7 +120,18 @@ export interface Hardware {
     [k: string]: unknown
   }[]
   commercial?: {
-    availability: Fact
+    availability: {
+      state: "available" | "unavailable" | "unknown" | "not_applicable"
+      reason?:
+        | string
+        | {
+            code: string
+            detail: string
+          }
+      note?: string
+      provenance: Provenance
+      scope?: string
+    }
     prices: {
       amount: number
       currency: string
@@ -131,6 +144,24 @@ export interface Hardware {
       source: Source
       captured_at: string
     }[]
+    msrp?: {
+      amount: number
+      currency: string
+    } | null
+    current_street_price?: {
+      amount: number
+      currency: string
+    } | null
+    exact_configuration_price?: {
+      amount: number
+      currency: string
+    } | null
+    channel_status?: string | null
+    current_stock?: string | boolean | null
+    current_system_price?: {
+      amount: number
+      currency: string
+    } | null
   }
   compute?: {
     stats: {
@@ -140,6 +171,10 @@ export interface Hardware {
   }
   provenance?: Provenance
   facts?: Facts
+  /**
+   * Marketed product names this chip/configuration ships in (e.g. MacBook Pro 16-inch); products holds price-record product ids.
+   */
+  product_names?: string[]
   [k: string]: unknown
 }
 export interface Provenance {

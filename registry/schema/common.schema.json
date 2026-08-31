@@ -81,7 +81,6 @@
         "provenance"
       ],
       "properties": {
-        "value": {},
         "state": {
           "enum": [
             "known",
@@ -141,23 +140,6 @@
           "if": {
             "properties": {
               "state": {
-                "const": "known"
-              }
-            },
-            "required": [
-              "state"
-            ]
-          },
-          "then": {
-            "required": [
-              "value"
-            ]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "state": {
                 "enum": [
                   "unknown",
                   "unavailable",
@@ -176,7 +158,8 @@
           }
         }
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Per-field provenance and knowledge state. The field value itself lives once, at the record path the facts key names; facts never carry a duplicate value."
     },
     "facts": {
       "type": "object",

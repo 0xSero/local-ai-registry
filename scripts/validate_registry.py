@@ -91,8 +91,16 @@ def validate_facts(record, errors):
         structured_reason = isinstance(reason, dict) and isinstance(reason.get("code"), str) and bool(reason.get("code")) and isinstance(reason.get("detail"), str) and bool(reason.get("detail"))
         if fact.get("state") != "known" and not ((isinstance(reason, str) and bool(reason)) or structured_reason):
             errors.append(f"{label}: missing reason")
-        if fact.get("state") == "known" and "value" not in fact:
-            errors.append(f"{label}: known fact has no value")
+        if "value" in fact:
+            errors.append(f"{label}: facts must not duplicate the record value")
+        if not path.startswith("audit."):
+            target = record
+            for part in path.split("."):
+                if isinstance(target, dict) and part in target:
+                    target = target[part]
+                else:
+                    errors.append(f"{label}: fact path does not resolve to a record field")
+                    break
         validate_provenance(fact.get("provenance"), label, errors)
 
 
@@ -273,9 +281,9 @@ def validate(root):
             validate_facts(record, errors)
         availability = (record.get("commercial") or {}).get("availability")
         if availability is not None:
-            if not isinstance(availability, dict) or availability.get("state") not in ("known", "unknown", "unavailable", "not_applicable"):
+            if not isinstance(availability, dict) or availability.get("state") not in ("available", "unavailable", "unknown", "not_applicable"):
                 errors.append(f"{record.get('id')}: commercial availability has invalid state")
-            elif availability.get("state") != "known" and not availability.get("reason"):
+            elif availability.get("state") in ("unknown", "not_applicable") and not availability.get("reason"):
                 errors.append(f"{record.get('id')}: commercial availability requires a reason when not known")
 
     for record in data["model-instance"].values():
