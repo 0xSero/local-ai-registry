@@ -166,11 +166,8 @@
             ]
           },
           "amount": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "minimum": 0
+            "type": "number",
+            "exclusiveMinimum": 0
           },
           "currency": {
             "type": "string",
@@ -191,7 +188,8 @@
           },
           "url": {
             "type": "string",
-            "format": "iri"
+            "format": "iri",
+            "pattern": "^https?://"
           },
           "observed_at": {
             "type": "string",
@@ -199,7 +197,8 @@
           }
         },
         "additionalProperties": false
-      }
+      },
+      "minItems": 1
     },
     "verification": {
       "title": "Price verification",

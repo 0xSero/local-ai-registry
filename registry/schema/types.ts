@@ -292,7 +292,10 @@ export interface PriceRecord {
   }[]
   observed_at: string
   summary: PriceSummary
-  observations: PriceObservation[]
+  /**
+   * @minItems 1
+   */
+  observations: [PriceObservation, ...PriceObservation[]]
   verification: PriceVerification
   provenance: PriceProvenance
 }
@@ -308,7 +311,7 @@ export interface PriceObservation {
   retailer: string
   title: string
   condition: "new" | "refurbished" | "used" | "unknown"
-  amount: number | null
+  amount: number
   currency: string
   in_stock: boolean | null
   quantity: number | null
