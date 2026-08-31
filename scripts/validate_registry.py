@@ -339,6 +339,8 @@ def validate(root):
                         errors.append(f"{recipe['id']}: validated docker launch missing {port_field}")
                 if not launch.get("accelerator_backend"):
                     errors.append(f"{recipe['id']}: validated docker launch missing accelerator_backend")
+                if (recipe.get("serving") or {}).get("max_context_tokens") is None:
+                    errors.append(f"{recipe['id']}: validated recipe must state serving.max_context_tokens")
                 for mount in launch.get("mounts", []):
                     if not isinstance(mount, dict) or not mount.get("source") or not mount.get("target"):
                         errors.append(f"{recipe['id']}: validated docker launch has a malformed mount")
