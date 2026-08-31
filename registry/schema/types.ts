@@ -65,6 +65,36 @@ export type Recipe = {
   provenance: Provenance
   facts: Facts
   speed_sweep_ids: string[]
+  /**
+   * Synthesized, UNVERIFIED docker launch draft used only by the acceptance harness (local-ai validate). Never a launch contract: the observed launch stays authoritative until acceptance promotes the recipe, at which point draft_launch becomes launch and is removed.
+   */
+  draft_launch?: {
+    kind: "docker"
+    image: string
+    arguments: string[]
+    entrypoint?: string | null
+    environment?: {
+      [k: string]: string
+    }
+    mounts?: {
+      source: string
+      target: string
+      read_only?: boolean
+    }[]
+    host_port: number
+    container_port: number
+    ipc?: string
+    shm_size?: string
+    accelerator_backend: string
+    synthesized: {
+      template: string
+      generated_at: string
+      /**
+       * Which audited registry recipe this image digest was taken from.
+       */
+      image_provenance: string
+    }
+  }
 }
 export type Container = {
   state: "digest-pinned" | "mutable" | "indirect" | "none"
