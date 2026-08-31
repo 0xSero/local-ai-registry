@@ -86,6 +86,7 @@ export interface RegistryBundle {
   speed_sweep?: SpeedSweep
   benchmark?: Benchmark
   price?: PriceRecord
+  asset?: Asset
   index?: RegistryIndex
 }
 export interface Hardware {
@@ -327,6 +328,25 @@ export interface PriceProvenance {
   scanner: string
   snapshot_generated_at: string
   source_error_count: number
+}
+/**
+ * One engine config, patch, or other launch artifact stored beside its manifest in registry/asset/. Recipes reference assets via launch.asset_ids and mount the blob path directly.
+ */
+export interface Asset {
+  schema_version: "local-ai-registry/v1"
+  id: string
+  /**
+   * Blob filename inside registry/asset/.
+   */
+  file: string
+  /**
+   * Original basename the launch expects (e.g. config.yml).
+   */
+  filename: string
+  media_type: string
+  purpose: string
+  sha256: string
+  size_bytes: number
 }
 export interface RegistryIndex {
   schema_version: "local-ai-registry/v1"

@@ -36,6 +36,9 @@
       "-lc",
       "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.94 --attention-backend triton --kv-cache-dtype fp8_e4m3 --max-running-requests 4 --cuda-graph-max-bs-decode 4 --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
     ],
+    "asset_ids": [
+      "gemma4-nvfp4-sglang-engine-patch"
+    ],
     "container": {
       "captured_at": "2026-08-27T06:04:13.773Z",
       "compose_file": null,
@@ -69,7 +72,7 @@
       },
       {
         "read_only": true,
-        "source": "hardware/rtx-pro-6000-blackwell-96gb/gemma-4-12b-it/nvfp4/sglang/tp1/gemma4-engine-patch.diff",
+        "source": "asset/gemma4-nvfp4-sglang-engine-patch.diff",
         "target": "/tmp/gemma4-engine-patch.diff"
       }
     ],

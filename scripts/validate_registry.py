@@ -10,7 +10,7 @@ from pathlib import Path
 from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 
-COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark")
+COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark", "asset")
 SCHEMA = "local-ai-registry/v1"
 FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
@@ -299,6 +299,9 @@ def validate(root):
         validate_facts(recipe, errors)
         validate_container(recipe, errors)
         validate_launch_assets(root, recipe, errors)
+        for asset_id in (recipe.get("launch") or {}).get("asset_ids", []):
+            if asset_id not in data["asset"]:
+                errors.append(f"{recipe['id']}: unresolved launch.asset_ids {asset_id!r}")
         for sweep_id in recipe.get("speed_sweep_ids", []):
             if sweep_id not in data["speed-sweep"]:
                 errors.append(f"{recipe['id']}: unresolved speed_sweep_ids {sweep_id!r}")
@@ -377,6 +380,28 @@ def validate(root):
                 errors.append(f"{identifier}: observation currency does not match region")
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
+
+    import hashlib
+    for asset in data["asset"].values():
+        blob = root / "asset" / str(asset.get("file"))
+        if not blob.is_file():
+            errors.append(f"{asset.get('id')}: asset blob {asset.get('file')} is missing")
+        else:
+            digest = hashlib.sha256(blob.read_bytes()).hexdigest()
+            if digest != asset.get("sha256"):
+                errors.append(f"{asset.get('id')}: blob sha256 {digest} does not match manifest")
+            if blob.stat().st_size != asset.get("size_bytes"):
+                errors.append(f"{asset.get('id')}: blob size does not match manifest")
+    manifest_files = {asset.get("file") for asset in data["asset"].values()}
+    for blob in sorted((root / "asset").iterdir()):
+        if blob.suffix == ".json" or blob.name.startswith("."):
+            continue
+        if blob.name not in manifest_files:
+            errors.append(f"asset/{blob.name}: blob has no manifest record")
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark"):
+        for stray in sorted((root / name).iterdir()):
+            if stray.is_dir() or (stray.suffix != ".json" and not stray.name.startswith(".")):
+                errors.append(f"{name}/{stray.name}: collections hold only <id>.json records; launch artifacts belong in asset/")
 
     expected_products = {}
     for record in prices.values():
