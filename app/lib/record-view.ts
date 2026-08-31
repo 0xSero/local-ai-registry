@@ -181,11 +181,14 @@ export function recordFacts(collection: string, record: Record<string, unknown>)
     ].filter((item): item is RecordFact => item !== null)
   }
   if (collection === "models") {
+    const downloads = asObject(record.downloads)
+    const monthly = typeof downloads?.last_30d === "number" ? downloads.last_30d.toLocaleString("en-US") : null
     return [
       fact("Family", record.family),
       fact("Architecture", record.architecture),
       fact("Parameters", record.params),
       fact("Active parameters", record.active_params),
+      fact("HF downloads / 30d", monthly),
     ].filter((item): item is RecordFact => item !== null)
   }
   if (collection === "model-instances") {
