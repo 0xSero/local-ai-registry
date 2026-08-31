@@ -127,7 +127,7 @@ list_json() {
         )
       )
     | $recipe + {match: (if $recipe.hardware_id == $hardware then "exact" else "capacity" end)}
-  ' "$ROOT/index.json") | jq -s 'sort_by([.match != "exact", .status != "validated", .model_name, .id])'
+  ' "$ROOT/index/recipes.json") | jq -s 'sort_by([.match != "exact", .status != "validated", .model_name, .id])'
 }
 
 list() {
@@ -222,7 +222,7 @@ EOF
 }
 
 need jq
-[[ -f $ROOT/index.json ]] || fail "registry not found at $ROOT"
+[[ -f $ROOT/index/recipes.json ]] || fail "registry not found at $ROOT"
 
 case ${1:-choose} in
   detect) detect ;;

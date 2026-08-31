@@ -4,17 +4,24 @@ A hardware-aware registry of local model artifacts, launch recipes, measured spe
 
 ## Start here
 
-[`registry/index.json`](registry/index.json) is the only discovery document a client needs. It contains collection IDs and compact recipe rows for filtering. Fetch full records only after the user chooses something.
+[`registry/index/`](registry/index/) holds the discovery shards. A client fetches only what its question needs: `collections.json` (ids + counts), `recipes.json` (compact filter rows), and four reverse lookups — `recipes-by-hardware.json`, `instances-by-model.json`, `benchmarks-by-model.json`, `prices-by-hardware.json`. Fetch full records only after the user chooses something.
 
 ```text
-index.json
-  recipe/<id>.json
-    model_instance_id  -> model-instance/<id>.json
-      model_id         -> model/<id>.json
-    hardware_id        -> hardware/<id>.json
-    speed_sweep_ids[] -> speed-sweep/<id>.json
-  price/<product-id>/<region>.json
-    hardware[].id      -> hardware/<id>.json
+index/collections.json          ids + counts for every collection
+index/recipes.json              compact recipe rows for filtering
+index/recipes-by-hardware.json  hardware_id -> [recipe ids]
+index/instances-by-model.json   model_id    -> [model-instance ids]
+index/benchmarks-by-model.json  model_id    -> [leaderboard score rows]
+index/prices-by-hardware.json   hardware_id -> [price record ids]
+
+recipe/<id>.json
+  model_instance_id -> model-instance/<id>.json
+    model_id        -> model/<id>.json
+  hardware_id       -> hardware/<id>.json
+  speed_sweep_ids[] -> speed-sweep/<id>.json
+  launch.asset_ids[]-> asset/<id>.json
+price/<product-id>/<region>.json
+  hardware[].id     -> hardware/<id>.json  (hardware.products[] points back)
 ```
 
 This is the progressive-disclosure rule: index, choice, then the exact record and immediate references needed for the selected view. The API adds compact `relationships` links to the same records used by the site; it does not maintain a second UI-specific dataset or recursively embed the entire graph.
@@ -32,7 +39,7 @@ This is the progressive-disclosure rule: index, choice, then the exact record an
 | `price/<product-id>/` | Current retailer observations split by region and native currency |
 | `asset/` | Engine configs and patches recipes mount, stored as manifest + blob |
 
-Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
+Current counts are published from the source of truth in [`registry/index/collections.json`](registry/index/collections.json) and `/api/v1/index`.
 
 The shared contract is defined twice for different consumers: JSON Schema files under [`registry/schema/`](registry/schema/) and TypeScript interfaces in [`registry/schema/types.ts`](registry/schema/types.ts).
 
