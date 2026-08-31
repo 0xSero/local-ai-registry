@@ -1,4 +1,4 @@
-export type Topic = "recipes" | "hardware" | "models" | "prices" | "benchmark" | "speed-sweep"
+export type Topic = "recipes" | "hardware" | "models" | "prices" | "benchmark"
 
 export type TopicSpec = {
   countKey: string | null
@@ -8,12 +8,11 @@ export type TopicSpec = {
 }
 
 export const TOPICS: TopicSpec[] = [
-  { key: "recipes", label: "Recipes", countKey: "recipe", description: "One artifact × hardware × engine unit. Validated rows are launch-safe. Candidate and reference rows are evidence only." },
+  { key: "recipes", label: "Recipes", countKey: "recipe", description: "One artifact × hardware × engine unit. Validated rows are launch-safe; measured speed sweeps attach to each recipe as evidence." },
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
   { key: "benchmark", label: "Leaderboards", countKey: "benchmark", description: "Scraped public quality scores from GitHub Pages leaderboards such as Terminal-Bench 2.1. These are not local speed measurements." },
-  { key: "speed-sweep", label: "Speed Sweeps", countKey: "speed_sweep", description: "Measured token/s evidence connected back to the recipe that produced it. These are not public quality leaderboards." },
 ]
 
 const COLLECTION_LABELS: Record<string, string> = {
@@ -33,7 +32,7 @@ const COLLECTION_TOPICS: Record<string, Topic> = {
   prices: "prices",
   recipes: "recipes",
   benchmark: "benchmark",
-  "speed-sweep": "speed-sweep",
+  "speed-sweep": "recipes",
 }
 
 export const TOPIC_FILTERS: Record<Topic, string[]> = {
@@ -42,7 +41,6 @@ export const TOPIC_FILTERS: Record<Topic, string[]> = {
   prices: ["region", "category", "condition", "retailer", "in_stock"],
   recipes: ["by", "hardware_id", "model_id", "validation", "engine", "runtime", "evidence"],
   benchmark: ["category"],
-  "speed-sweep": ["recipe_id"],
 }
 
 export function isTopic(value: string): value is Topic {
