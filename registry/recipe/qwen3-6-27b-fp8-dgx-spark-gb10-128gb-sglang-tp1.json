@@ -6,6 +6,44 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "Qwen/Qwen3.6-27B-FP8",
+      "--tp",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "65536"
+    ],
+    "container_port": 30000,
+    "entrypoint": null,
+    "environment": {},
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
+      "template": "sglang-launch-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "sglang",
