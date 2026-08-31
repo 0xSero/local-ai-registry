@@ -21,6 +21,8 @@ from tokenize_observed_command import parse_observed_command, tokenized_record
 from datetime import datetime, timezone
 from pathlib import Path
 
+from sweep_metrics import derive_metrics
+
 
 SCHEMA = "local-ai-registry/v1"
 CAPTURED = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -493,6 +495,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
                 "status": "observed",
             }],
         }
+        sweep["metrics"] = derive_metrics(sweep["rows"], sweep["measured_at"])
         write(registry.root / "recipe" / f"{recipe_id}.json", recipe)
         write(registry.root / "speed-sweep" / f"{sweep_id}.json", sweep)
         registry.recipes[recipe_id] = recipe
@@ -762,6 +765,7 @@ def import_mlxfast(registry: Registry) -> None:
             "status": "observed",
         }],
     }
+    sweep["metrics"] = derive_metrics(sweep["rows"], sweep["measured_at"])
     write(registry.root / "recipe" / f"{recipe_id}.json", recipe)
     write(registry.root / "speed-sweep" / f"{sweep_id}.json", sweep)
     registry.recipes[recipe_id] = recipe
