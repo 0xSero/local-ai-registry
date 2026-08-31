@@ -24,7 +24,7 @@ pipeline before committing.
 | 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |
 | 2. Tokenize | `tokenize_observed_command.py` | observed shell strings on records | `metadata.<source>.tokenized` (never the launch contract) |
 | 3. Enrich | `enrich_registry.py` | records | shared enrichment contract fields (facts, provenance) |
-| 4. Curate | `curate_registry.py` | records | curated hardware, sanitized candidates, **`registry/index.json`** (`--index-only` for just the index) |
+| 4. Curate | `curate_registry.py` | records | curated hardware, sanitized candidates, **`registry/index/` shards** (`--index-only` for just the index) |
 | 5. Format | `format_registry.py` | every `registry/**/*.json` | canonical form: 2-space indent, sorted keys (schemas keep hand order), raw UTF-8, trailing newline |
 | 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |
 | 6. Verify | `npm test` | records + schemas | nothing — ajv validates every record against `registry/schema/*.schema.json` |
