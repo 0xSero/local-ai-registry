@@ -89,7 +89,8 @@ export interface RegistryBundle {
   benchmark?: Benchmark
   price?: PriceRecord
   asset?: Asset
-  index?: RegistryIndex
+  index?: RegistryCollectionsIndex
+  index_recipes?: RegistryRecipesIndex
 }
 export interface Hardware {
   schema_version: "local-ai-registry/v1"
@@ -396,7 +397,10 @@ export interface Asset {
   sha256: string
   size_bytes: number
 }
-export interface RegistryIndex {
+/**
+ * registry/index/collections.json: collection id lists and counts. Compact recipe rows live in index/recipes.json; reverse lookups in the sibling *-by-* shards.
+ */
+export interface RegistryCollectionsIndex {
   schema_version: "local-ai-registry/v1"
   resolver_rule: string
   collections: {
@@ -405,6 +409,12 @@ export interface RegistryIndex {
   counts: {
     [k: string]: number
   }
+}
+/**
+ * registry/index/recipes.json: compact recipe rows for filtering without fetching full records.
+ */
+export interface RegistryRecipesIndex {
+  schema_version: "local-ai-registry/v1"
   recipes: IndexRecipeRow[]
 }
 export interface IndexRecipeRow {

@@ -25,6 +25,7 @@ const bundle = {
     price: { $ref: "price.schema.json" },
     asset: { $ref: "asset.schema.json" },
     index: { $ref: "index.schema.json" },
+    index_recipes: { $ref: "index-recipes.schema.json" },
   },
 } as const
 
