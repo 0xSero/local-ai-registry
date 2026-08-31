@@ -268,17 +268,21 @@ export function getHardwareMarket(hardwareId: string): RegionMarket[] {
   return rows.sort((left, right) => left.region.localeCompare(right.region))
 }
 
+export type BandwidthRange = { min: number; max: number }
+
 export type HardwareComparisonRow = {
   id: string
   name: string
   vendor: string
   vram_gb: number
-  bandwidth_gb_per_s: number | null
+  bandwidth_gb_per_s: number | BandwidthRange | null
   fp16_tflops: number | null
   fp8_tflops: number | null
+  fp4_tflops: number | null
   int8_tflops: number | null
   fp16_sparse: boolean
   fp8_sparse: boolean
+  fp4_sparse: boolean
   int8_sparse: boolean
   lowest_new_usd: number | null
   price_observed_at: string | null
@@ -301,6 +305,7 @@ export function hardwareComparison(): HardwareComparisonRow[] {
   return [...data.hardware.values()].map((record) => {
     const fp16 = bestThroughput(record, "fp16")
     const fp8 = bestThroughput(record, "fp8")
+    const fp4 = bestThroughput(record, "fp4")
     const int8 = bestThroughput(record, "int8")
     const market = getHardwareMarket(record.id)
     const us = market.find((row) => row.region === "US" && row.lowest_new !== null)
@@ -309,12 +314,14 @@ export function hardwareComparison(): HardwareComparisonRow[] {
       name: record.name,
       vendor: record.vendor,
       vram_gb: record.memory.vram_gb,
-      bandwidth_gb_per_s: record.memory.bandwidth_gb_per_s as number | null,
+      bandwidth_gb_per_s: record.memory.bandwidth_gb_per_s as number | BandwidthRange | null,
       fp16_tflops: fp16.value,
       fp8_tflops: fp8.value,
+      fp4_tflops: fp4.value,
       int8_tflops: int8.value,
       fp16_sparse: fp16.sparse,
       fp8_sparse: fp8.sparse,
+      fp4_sparse: fp4.sparse,
       int8_sparse: int8.sparse,
       lowest_new_usd: us?.lowest_new ?? null,
       price_observed_at: us?.observed_at ?? null,
