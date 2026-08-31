@@ -1,0 +1,205 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10434"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "qwen3-8-27b-q8-0-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmstgpwjj03kjms01adt0vcal"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmstgpwjj03kjms01adt0vcal",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmstgpwjj03kjms01adt0vcal"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "MTP self-speculative (--spec-type draft-mtp, n-max 4) on Framework Desktop Strix Halo (Ryzen AI Max 395+, 128G unified, gfx1151), llama.cpp b10434 ROCm via llama-swap. Compare Qwen3.6-27B Q8_0 MTP same rig: 16.7 t/s.",
+      "observed_command": "/home/mikekey/llama.cpp/build-rocm-fresh/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/Qwen3.8-27B-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 4 --reasoning-format auto --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -np 1 -c 131072",
+      "run_id": "cmstgpwjj03kjms01adt0vcal",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/llama.cpp/build-rocm-fresh/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "--no-webui",
+          "-ngl",
+          "99",
+          "--jinja",
+          "--flash-attn",
+          "auto",
+          "--cache-reuse",
+          "256",
+          "--prio",
+          "3",
+          "-m",
+          "/home/mikekey/models/Qwen3.8-27B-Q8_0.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "4",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--presence-penalty",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-np",
+          "1",
+          "-c",
+          "131072"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmstgpwjj03kjms01adt0vcal"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 829,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-q8-0-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

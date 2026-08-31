@@ -1,0 +1,231 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "Atomic TurboQuant fork 514e600c8"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-4090-24gb",
+  "id": "gemma-4-31b-it-q4-k-m-rtx-4090-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmp45iwqw0073pc01sxqx90h6"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmp45iwqw0073pc01sxqx90h6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmp45iwqw0073pc01sxqx90h6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 4090",
+      "notes": " Fresh 3-run 512-token validation: min output 72.74 tok/s, avg output 87.67 tok/s. Runtime used llama.cpp Atomic TurboQuant fork 514e600c8 with turbo4 K/V cache, Gemma 4 MTP assistant Q4_K_S, draft block size 4, and --override-tensor-draft token_embd.weight=CUDA0. Peak observed VRAM was 23321 MiB/24564  MiB.",
+      "observed_command": "llama-server -m LiconStudio/Gemma-4-31B-it-abliterated-GGUF:Q4_K_M -ngl 999 -c 70080 -b 2048 -ub 512 --flash-attn on --cache-type-k turbo4 --cache-type-v\n  turbo4 -np 1 --jinja --reasoning off --metrics --poll 100 --poll-batch 1 --prio 2 --prio-batch 2 --threads-http 1 -ngld all --override-tensor-draft\n  token_embd.weight=CUDA0 --spec-type mtp --mtp-head google/gemma-4-31B-it-assistant:Q4_K_S --draft-block-size 4 --cache-ram 0",
+      "run_id": "cmp45iwqw0073pc01sxqx90h6",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "LiconStudio/Gemma-4-31B-it-abliterated-GGUF:Q4_K_M",
+          "-ngl",
+          "999",
+          "-c",
+          "70080",
+          "-b",
+          "2048",
+          "-ub",
+          "512",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "turbo4",
+          "--cache-type-v"
+        ],
+        "fidelity": "faithful",
+        "steps": [
+          [
+            "llama-server",
+            "-m",
+            "LiconStudio/Gemma-4-31B-it-abliterated-GGUF:Q4_K_M",
+            "-ngl",
+            "999",
+            "-c",
+            "70080",
+            "-b",
+            "2048",
+            "-ub",
+            "512",
+            "--flash-attn",
+            "on",
+            "--cache-type-k",
+            "turbo4",
+            "--cache-type-v"
+          ],
+          [
+            "turbo4",
+            "-np",
+            "1",
+            "--jinja",
+            "--reasoning",
+            "off",
+            "--metrics",
+            "--poll",
+            "100",
+            "--poll-batch",
+            "1",
+            "--prio",
+            "2",
+            "--prio-batch",
+            "2",
+            "--threads-http",
+            "1",
+            "-ngld",
+            "all",
+            "--override-tensor-draft"
+          ],
+          [
+            "token_embd.weight=CUDA0",
+            "--spec-type",
+            "mtp",
+            "--mtp-head",
+            "google/gemma-4-31B-it-assistant:Q4_K_S",
+            "--draft-block-size",
+            "4",
+            "--cache-ram",
+            "0"
+          ]
+        ]
+      }
+    }
+  },
+  "model_instance_id": "liconstudio-gemma-4-31b-it-abliterated-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmp45iwqw0073pc01sxqx90h6"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 70080,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-31b-it-q4-k-m-rtx-4090-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

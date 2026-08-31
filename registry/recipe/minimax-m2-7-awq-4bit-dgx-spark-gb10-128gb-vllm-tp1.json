@@ -1,0 +1,193 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.20.2rc1.dev173+g171d59ae8.d20260509"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "minimax-m2-7-awq-4bit-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmoz9l2ko001jpd01vjth8se5"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmoz9l2ko001jpd01vjth8se5",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmoz9l2ko001jpd01vjth8se5"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "190K CONTEXT - Tony pushed it past Alex post-4 recipes 128K declared max via VLLM_ALLOW_LONG_MAX_MODEL_LEN=1. Fresh image vllm-node:latest from spark-vllm-docker @ ae8ac81 (vLLM 0.20.2 + FlashInfer autotune live). tokSOut=27.78 t/s steady-state long-form (3 runs c=1 max_tokens=1024, mean 28.0, stdev 0.64). Short-form c=1 max_tokens=256 hit 31.85 median. Aggregate c=4 ~60 t/s (15.10 per stream). KV cache 645984 tokens = 3.40x concurrency at 190K. Going from 128K to 190K cost essentially nothing in throughput - same model handles 50pct more context for free.",
+      "observed_command": "vllm serve /root/minimax-m27-weights -tp 2 --distributed-executor-backend ray --gpu-memory-utilization 0.85 --max-model-len 190000 --max-num-seqs 4 --max-num-batched-tokens 8192 --enable-prefix-caching --enable-chunked-prefill --kv-cache-dtype fp8 --attention-backend flashinfer --dtype auto --disable-custom-all-reduce --load-format fastsafetensors --tool-call-parser minimax_m2 --reasoning-parser minimax_m2_append_think --trust-remote-code",
+      "run_id": "cmoz9l2ko001jpd01vjth8se5",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/root/minimax-m27-weights",
+          "-tp",
+          "2",
+          "--distributed-executor-backend",
+          "ray",
+          "--gpu-memory-utilization",
+          "0.85",
+          "--max-model-len",
+          "190000",
+          "--max-num-seqs",
+          "4",
+          "--max-num-batched-tokens",
+          "8192",
+          "--enable-prefix-caching",
+          "--enable-chunked-prefill",
+          "--kv-cache-dtype",
+          "fp8",
+          "--attention-backend",
+          "flashinfer",
+          "--dtype",
+          "auto",
+          "--disable-custom-all-reduce",
+          "--load-format",
+          "fastsafetensors",
+          "--tool-call-parser",
+          "minimax_m2",
+          "--reasoning-parser",
+          "minimax_m2_append_think",
+          "--trust-remote-code"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "cyankiwi-minimax-m2-7-awq-4bit--awq-4bit",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmoz9l2ko001jpd01vjth8se5"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 190000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "minimax-m2-7-awq-4bit-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

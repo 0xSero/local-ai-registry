@@ -1,0 +1,194 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "0.1.2-dev (build 197, commit b062ba735)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3060-12gb",
+  "id": "granite-4-2-8b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt8wx9zq00ftli014hldgmc6"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt8wx9zq00ftli014hldgmc6",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt8wx9zq00ftli014hldgmc6"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3060",
+      "notes": "IBM Granite 4.2 8B dense (8.79B params, llama-bench reports 'granite 3B Q4_K - Medium' arch label; 40 layers, GQA 32/8 heads, head_dim 128, native ctx 131072). Official ibm-granite GGUF repo rev 31239b3e4a93. Cold-start bench: pp512 1717 tok/s, tg128 53.55-55.8 tok/s (r=3). KV q4_0 vs f16: no measurable speed difference at this size. Peak VRAM 6571 MiB during bench. Max context verified live on RTX 3060 12GB full offload with q4_0 KV + FA: 104K (106496) loads and completes; 112K OOM on KV alloc; 128K OOM. Serving prefill at ~2.6K-token real prompt: 1635 tok/s, decode 47.5 tok/s (thinking model: output goes to reasoning_content first, so serving decode includes thinking tokens). Model is a native reasoning model (thinking always on in weights); benchmark used raw completions-style measurement. TTFT estimated from bench medians (prompt_ms + first-token) at 512/128 cold start.",
+      "observed_command": "llama-bench -m granite-4.2-8b-Q4_K_M.gguf -p 512 -n 128 -ngl 99 -fa on -ctk q4_0 -ctv q4_0 -r 3 -o json; server check: llama-server -c 106496 -ngl 99 -fa on -ctk q4_0 -ctv q4_0",
+      "run_id": "cmt8wx9zq00ftli014hldgmc6",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-m",
+          "granite-4.2-8b-Q4_K_M.gguf",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0",
+          "-r",
+          "3",
+          "-o",
+          "json;",
+          "server",
+          "check:",
+          "llama-server",
+          "-c",
+          "106496",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "ibm-granite-granite-4-2-8b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt8wx9zq00ftli014hldgmc6"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "granite-4-2-8b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

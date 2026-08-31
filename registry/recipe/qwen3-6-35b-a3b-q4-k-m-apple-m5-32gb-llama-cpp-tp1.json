@@ -1,0 +1,191 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b9940"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-32gb",
+  "id": "qwen3-6-35b-a3b-q4-k-m-apple-m5-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrdkfqku00mro40154dj4gqc"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrdkfqku00mro40154dj4gqc",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrdkfqku00mro40154dj4gqc"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "metal",
+      "hardware_label": "M5 M5",
+      "notes": null,
+      "observed_command": "llama-cli \\\n  --model \"$HOME/models/GGUF/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf\" \\\n  --jinja \\\n  --prompt \"Write a concise explanation of how transformer attention works.\" \\\n  --n-predict 512 \\\n  --temp \"0.6\" \\\n  --top-p \"0.95\" \\\n  --top-k \"20\" \\\n  --min-p \"0.00\" \\\n  --presence-penalty \"0.0\" \\\n  --repeat-penalty \"1.0\" \\\n  --flash-attn on \\\n  --ctx-size \"64000\" \\\n  --mlock \\\n  -ngl 99 \\\n  -np 1",
+      "run_id": "cmrdkfqku00mro40154dj4gqc",
+      "tokenized": {
+        "arguments": [
+          "llama-cli",
+          "--model",
+          "$HOME/models/GGUF/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+          "--jinja",
+          "--prompt",
+          "Write a concise explanation of how transformer attention works.",
+          "--n-predict",
+          "512",
+          "--temp",
+          "0.6",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.00",
+          "--presence-penalty",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "--flash-attn",
+          "on",
+          "--ctx-size",
+          "64000",
+          "--mlock",
+          "-ngl",
+          "99",
+          "-np",
+          "1"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrdkfqku00mro40154dj4gqc"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 64000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-35b-a3b-q4-k-m-apple-m5-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

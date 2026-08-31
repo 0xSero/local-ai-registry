@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.27.1+syv-ai.00210159"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt8rd616009ali01qnnrasi7"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt8rd616009ali01qnnrasi7",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt8rd616009ali01qnnrasi7"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "C1 remote LocalMaxxing CLI run: 1 untimed warmup plus 3 timed iterations; medians submitted. Requested a nominal 1,024-token synthesized prompt, but endpoint usage reported 1,109 prompt tokens; endpoint count is authoritative and prefill throughput uses 1,109 / TTFT. Greedy temperature 0, 512 generated tokens, streaming inter-token decode timing. Target is dbirks AutoRound W4A16 group-128, prepared in place with int8 embeddings, LM head, and MTP auxiliary weights; FAST_VARIANT=0. Drafter is syvai DFlash2 W4A16 with 4 speculative tokens. BF16 KV, FP16 recurrent state, FlashAttention 2, chunked prefill, prefix caching disabled, TP2. Cards are PHB with no NVLink/P2P, so vLLM used PYNCCL host-mediated all-reduce. Peak telemetry: 22,713/22,711 MiB VRAM and 328.57/318.36 W; configured card power limits are 390/350 W. Server max context 262,144, max sequences 4, GPU utilization 0.95.",
+      "observed_command": "vllm serve /app/models/Qwen3.8-27B-W4A16-AutoRound --served-model-name qwen3.8-27b --tensor-parallel-size 2 --gpu-memory-utilization 0.95 --max-model-len 262144 --max-num-seqs 4 --max-num-batched-tokens 2048 --attention-backend FLASH_ATTN --kv-cache-dtype bfloat16 --mamba-ssm-cache-dtype float16 --language-model-only --speculative-config '{\"method\":\"dflash\",\"model\":\"/app/models/Qwen3.8-27B-DFlash2-W4A16\",\"num_speculative_tokens\":4}'",
+      "run_id": "cmt8rd616009ali01qnnrasi7",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/app/models/Qwen3.8-27B-W4A16-AutoRound",
+          "--served-model-name",
+          "qwen3.8-27b",
+          "--tensor-parallel-size",
+          "2",
+          "--gpu-memory-utilization",
+          "0.95",
+          "--max-model-len",
+          "262144",
+          "--max-num-seqs",
+          "4",
+          "--max-num-batched-tokens",
+          "2048",
+          "--attention-backend",
+          "FLASH_ATTN",
+          "--kv-cache-dtype",
+          "bfloat16",
+          "--mamba-ssm-cache-dtype",
+          "float16",
+          "--language-model-only",
+          "--speculative-config",
+          "{\"method\":\"dflash\",\"model\":\"/app/models/Qwen3.8-27B-DFlash2-W4A16\",\"num_speculative_tokens\":4}"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "dbirks-qwen3-8-27b-w4a16-autoround--w4a16-autoround",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt8rd616009ali01qnnrasi7"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,205 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10643-11-gaecd368d0"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 3,
+  "hardware_id": "radeon-ai-pro-r9700-32gb",
+  "id": "qwen3-8-flash-next-ud-iq3-xxs-radeon-ai-pro-r9700-32gb-llama-cpp-tp3",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmtddazgh003rlm015xk99gyj"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmtddazgh003rlm015xk99gyj",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmtddazgh003rlm015xk99gyj"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "vulkan",
+      "hardware_label": "Radeon AI Pro R9700",
+      "notes": "llama.cpp Vulkan on 3× R9700 via llama-swap. Best of 3 runs.",
+      "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec /home/mikekey/Experiments/llama.cpp-master/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/gguf/Qwen3.8-Flash-Next/Qwen3.8-Flash-Next-UD-IQ3_XXS-00001-of-00003.gguf --mmproj /home/mikekey/models/gguf/Qwen3.8-Flash-Next/mmproj-Qwen3.8-Flash-Next-bf16.gguf --reasoning-format auto --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -ts 1/1/0.8 -np 1 -c 131072",
+      "run_id": "cmtddazgh003rlm015xk99gyj",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/.config/llama-swap/gpu-order.sh",
+          "exec",
+          "/home/mikekey/Experiments/llama.cpp-master/build-vulkan/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "--no-webui",
+          "-ngl",
+          "99",
+          "--jinja",
+          "--flash-attn",
+          "auto",
+          "--cache-reuse",
+          "256",
+          "--prio",
+          "3",
+          "-m",
+          "/home/mikekey/models/gguf/Qwen3.8-Flash-Next/Qwen3.8-Flash-Next-UD-IQ3_XXS-00001-of-00003.gguf",
+          "--mmproj",
+          "/home/mikekey/models/gguf/Qwen3.8-Flash-Next/mmproj-Qwen3.8-Flash-Next-bf16.gguf",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "1.0",
+          "--top-p",
+          "0.95",
+          "--top-k",
+          "20",
+          "--min-p",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-ts",
+          "1/1/0.8",
+          "-np",
+          "1",
+          "-c",
+          "131072"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-flash-next--ud-iq3-xxs",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmtddazgh003rlm015xk99gyj"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 829,
+    "tensor_parallel": 3
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-flash-next-ud-iq3-xxs-radeon-ai-pro-r9700-32gb-llama-cpp-tp3-sweep"
+  ],
+  "status": "candidate"
+}

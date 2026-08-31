@@ -1,0 +1,197 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.11.2.dev279-b12x"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr0cglf10090ld01banhfvi0"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr0cglf10090ld01banhfvi0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr0cglf10090ld01banhfvi0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "DSpark spec decode (num_spec=5, accept_len 4.48) on the b12x SM120 stack accelerating DeepSeek-V4-Flash, 2x RTX PRO 6000 TP2. Code gen, single stream, greedy, 262k config. Checkpoint: DeepSeek-V4-Flash-DSpark. Beats the 181 MTP run. Repo: github.com/jarrelscy/dspark-b12x",
+      "observed_command": "vllm serve deepseek-ai/DeepSeek-V4-Flash-DSpark --served-model-name deepseek/v4flash --kv-cache-dtype fp8 --block-size 256 --tensor-parallel-size 2 --moe-backend b12x --linear-backend b12x --gpu-memory-utilization 0.93 --max-model-len 262000 --max-num-seqs 4 --async-scheduling --no-scheduler-reserve-full-isl --max-num-batched-tokens 4096 --max-cudagraph-capture-size 256 --attention-backend B12X_MLA_SPARSE --enable-chunked-prefill --enable-prefix-caching --compilation-config {cudagraph_mode:FULL_AND_PIECEWISE,custom_ops:[all]} --speculative-config {method:dspark,num_speculative_tokens:5}",
+      "run_id": "cmr0cglf10090ld01banhfvi0",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "deepseek-ai/DeepSeek-V4-Flash-DSpark",
+          "--served-model-name",
+          "deepseek/v4flash",
+          "--kv-cache-dtype",
+          "fp8",
+          "--block-size",
+          "256",
+          "--tensor-parallel-size",
+          "2",
+          "--moe-backend",
+          "b12x",
+          "--linear-backend",
+          "b12x",
+          "--gpu-memory-utilization",
+          "0.93",
+          "--max-model-len",
+          "262000",
+          "--max-num-seqs",
+          "4",
+          "--async-scheduling",
+          "--no-scheduler-reserve-full-isl",
+          "--max-num-batched-tokens",
+          "4096",
+          "--max-cudagraph-capture-size",
+          "256",
+          "--attention-backend",
+          "B12X_MLA_SPARSE",
+          "--enable-chunked-prefill",
+          "--enable-prefix-caching",
+          "--compilation-config",
+          "{cudagraph_mode:FULL_AND_PIECEWISE,custom_ops:[all]}",
+          "--speculative-config",
+          "{method:dspark,num_speculative_tokens:5}"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--fp8",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr0cglf10090ld01banhfvi0"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262000,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-flash-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}

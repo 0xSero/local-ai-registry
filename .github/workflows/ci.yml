@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests (includes JSON Schema validation of every record)
+        run: npm test
+
+      - name: Generated types are in sync with schemas
+        run: |
+          npm run gen:types
+          git diff --exit-code registry/schema/types.ts
+
+      - name: Registry files are canonically formatted
+        run: python3 scripts/format_registry.py --check
+
+      - name: Referential integrity and trust boundary
+        run: python3 scripts/validate_registry.py
+
+      - name: index shards match the records they summarize
+        run: |
+          python3 scripts/curate_registry.py --index-only
+          git diff --exit-code registry/index/
+          test ! -f registry/index.json
+
+      - name: Build
+        run: npm run build

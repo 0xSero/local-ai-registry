@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10472"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3080-10gb",
+  "id": "qwen3-6-27b-q1-0-rtx-3080-10gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsy7dgbg0csvms01y6floeco"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsy7dgbg0csvms01y6floeco",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsy7dgbg0csvms01y6floeco"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": null,
+      "hardware_label": "RTX 3080",
+      "notes": "Bonsai-27B Q1_0 (1.125-bit, 3.54 GiB), 64 layers, ALL on GPU. Fully resident at 32K using only 5.13 GB of 10 GB - roughly 5 GB spare, so far larger contexts are available on this card. Fastest decode of the four models I measured on this GPU. Headless 3080 (both displays on the 7900X iGPU; desktop holds ~64 MiB on the card). Workload: single non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off, medians of 3 reps (2 where noted). Prefill/decode from llama-server timings; TTFT measured client-side on a streaming request. Prompt token counts differ per model because tokenizers differ. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, driver 591.86, PCIe 4.0 x16, stock 370 W.",
+      "observed_command": "llama-server -m Bonsai-27B-Q1_0.gguf -c 32768 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type none",
+      "run_id": "cmsy7dgbg0csvms01y6floeco",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Bonsai-27B-Q1_0.gguf",
+          "-c",
+          "32768",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q8_0",
+          "--parallel",
+          "1",
+          "--jinja",
+          "--spec-type",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "prism-ml-bonsai-27b-gguf--q1-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsy7dgbg0csvms01y6floeco"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-q1-0-rtx-3080-10gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

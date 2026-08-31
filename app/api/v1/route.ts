@@ -11,7 +11,8 @@ const routes = {
   models: "/api/v1/models",
   prices: "/api/v1/prices",
   recipes: "/api/v1/recipes",
-  speed_sweeps: "/api/v1/speed-sweeps",
+  benchmarks: "/api/v1/benchmarks",
+  speed_sweeps: "/api/v1/speed-sweep",
 }
 
 export function GET(): NextResponse {

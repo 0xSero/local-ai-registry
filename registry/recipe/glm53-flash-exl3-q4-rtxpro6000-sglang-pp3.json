@@ -1,0 +1,176 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Runtime-tested three-GPU pipeline-parallel deployment of the selective EXL3 Q4 artifact. Each pipeline stage owns complete transformer layers and executes all four independently rotated EXL3 slices locally. Full decode CUDA graphs were captured at batch sizes 1, 2, 4, 8, and 16. A cold-prefix C32 screen delivered 176.82 output tok/s and a warm-prefix C32 screen delivered 203.78 output tok/s. Prefill CUDA graphs remain unsupported for GLM-5.3's hybrid KDA/DSA layers, and the locally built image is not published by digest, so this remains a candidate.",
+  "engine": {
+    "graph_mode": "full decode CUDA graphs at batch sizes 1, 2, 4, 8, and 16; full prefill requested but rejected by the runtime because hybrid KDA/DSA layers are not Standard GQA",
+    "name": "sglang",
+    "version": "GLM-5.3 selective-EXL3 virtual-slice PP3 overlay"
+  },
+  "facts": {},
+  "hardware_count": 3,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash-exl3-q4-pp3",
+      "--tp-size",
+      "1",
+      "--pp-size",
+      "3",
+      "--ep-size",
+      "1",
+      "--quantization",
+      "exl3",
+      "--context-length",
+      "262144",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--attention-backend",
+      "dsa",
+      "--dsa-prefill-backend",
+      "flashinfer_sparse_mla",
+      "--dsa-decode-backend",
+      "flashinfer_sparse_mla",
+      "--linear-attn-backend",
+      "triton",
+      "--disable-shared-experts-fusion",
+      "--chunked-prefill-size",
+      "256",
+      "--max-prefill-tokens",
+      "256",
+      "--max-running-requests",
+      "16",
+      "--max-mamba-cache-size",
+      "64",
+      "--pp-max-micro-batch-size",
+      "8",
+      "--pp-async-batch-depth",
+      "1",
+      "--mem-fraction-static",
+      "0.88",
+      "--cuda-graph-config",
+      "{\"decode\":{\"backend\":\"full\",\"max_bs\":16,\"bs\":[1,2,4,8,16]},\"prefill\":{\"backend\":\"full\",\"max_bs\":256,\"bs\":[64,128,256],\"full_prefill_max_req\":16}}",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+    ],
+    "container": {
+      "captured_at": "2026-08-28T00:58:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "glm53-flash-sglang-exl3:pp23-v4",
+      "reason": "runtime-tested-local-image-not-yet-published-by-digest",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-28T00:58:00Z",
+          "kind": "runtime-acceptance",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "mutable"
+    },
+    "environment": {
+      "SGLANG_EXL3_MAX_BATCH_TOKENS": "256"
+    },
+    "image": "glm53-flash-sglang-exl3:pp23-v4",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-EXL3-Q4",
+        "target": "/model"
+      },
+      {
+        "read_only": true,
+        "source": "${RUNTIME_ASSETS}/chat-template-mm.jinja",
+        "target": "/chat-template.jinja"
+      }
+    ],
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance": {
+      "all_shard_load": true,
+      "cuda_graph_capture_decode": true,
+      "cuda_graph_capture_prefill": false,
+      "endpoint_health": true,
+      "exl3_kernel_initialization": true,
+      "generated_completion": true,
+      "model_discovery": true,
+      "tools": null,
+      "vision": null
+    },
+    "benchmark": {
+      "c16_output_tok_s": 120.7353,
+      "c1_output_tok_s": 22.5958,
+      "c32_cold_output_tok_s": 176.824,
+      "c32_cold_total_api_tok_s": 201.6899,
+      "c32_warm_output_tok_s": 203.78,
+      "c32_warm_total_api_tok_s": 229.2525,
+      "c8_output_tok_s": 117.3689
+    },
+    "checkpoint_layout": "glm53-selective-exl3-tp4-v1",
+    "execution_layout": "TP1/PP3/EP1; four sealed virtual EXL3 rank slices executed and summed inside each owned pipeline layer",
+    "memory": {
+      "decode_graph_free_gb_by_stage_after_capture": [
+        24.26,
+        11.58,
+        10.4
+      ],
+      "prepared_weight_gb_by_stage": [
+        61.67,
+        73.32,
+        74.49
+      ]
+    },
+    "quality_note": "The exact runtime returned READY with finish_reason=stop. The artifact's published BF16-to-Q4 KLD remains the quality reference; a new aligned-logit server KLD was not run.",
+    "runtime_state": "runtime-tested",
+    "selection": "PP3 accepted for three-GPU capacity and measured throughput. Stock ExLlamaV3 does not currently register GLM-5 Next and cannot consume this custom four-rank-sliced artifact as-is. TP2 remains a separate unaccepted path."
+  },
+  "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--selective-exl3-q4",
+  "provenance": {
+    "captured_at": "2026-08-28T00:58:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-28T00:58:00Z",
+        "kind": "artifact",
+        "url": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+      },
+      {
+        "captured_at": "2026-08-28T00:58:00Z",
+        "kind": "runtime-acceptance",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "expert_parallel": 1,
+    "kv_cache_dtype": "fp8_e4m3",
+    "max_concurrency": 16,
+    "max_context_tokens": 262144,
+    "pipeline_parallel": 3,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3-sweep"
+  ],
+  "status": "candidate"
+}
