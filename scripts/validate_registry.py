@@ -378,6 +378,17 @@ def validate(root):
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
 
+    expected_products = {}
+    for record in prices.values():
+        for hardware in record.get("hardware", []):
+            expected_products.setdefault(hardware.get("id"), set()).add(record["product"]["id"])
+    for record in data["hardware"].values():
+        expected = sorted(expected_products.get(record.get("id"), set()))
+        if record.get("products") != expected:
+            errors.append(
+                f"{record.get('id')}: products {record.get('products')} does not match price records {expected}"
+            )
+
     index_path = root / "index.json"
     try:
         index = json.loads(index_path.read_text())
