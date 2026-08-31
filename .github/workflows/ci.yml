@@ -40,10 +40,11 @@ jobs:
       - name: Referential integrity and trust boundary
         run: python3 scripts/validate_registry.py
 
-      - name: index.json matches the records it summarizes
+      - name: index shards match the records they summarize
         run: |
           python3 scripts/curate_registry.py --index-only
-          git diff --exit-code registry/index.json
+          git diff --exit-code registry/index/
+          test ! -f registry/index.json
 
       - name: Build
         run: npm run build

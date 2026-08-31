@@ -8,9 +8,12 @@ import type {
   ModelInstance,
   PriceRecord,
   Recipe,
-  RegistryIndex,
+  RegistryCollectionsIndex,
+  RegistryRecipesIndex,
   SpeedSweep,
 } from "@/registry/schema/types"
+
+type RegistryIndex = RegistryCollectionsIndex & { recipes: RegistryRecipesIndex["recipes"] }
 
 export type HuggingFaceIdentity = {
   link_type: "repository" | "search"
@@ -143,7 +146,9 @@ function loadCollection<T>(
 function dataset(): Dataset {
   if (cachedDataset) return cachedDataset
 
-  const index = readJson<RegistryIndex>("index.json")
+  const collectionsDoc = readJson<RegistryCollectionsIndex>("index", "collections.json")
+  const recipesDoc = readJson<RegistryRecipesIndex>("index", "recipes.json")
+  const index: RegistryIndex = { ...collectionsDoc, recipes: recipesDoc.recipes }
   cachedDataset = {
     hardware: loadCollection<Hardware>(index, "hardware"),
     index,
