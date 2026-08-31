@@ -130,7 +130,7 @@ function readJson<T>(...parts: string[]): T {
 
 function loadCollection<T>(
   index: RegistryIndex,
-  collection: keyof RegistryIndex["collections"],
+  collection: keyof RegistryIndex["collections"] & string,
 ): Map<string, T> {
   return new Map(
     index.collections[collection].map((id) => [

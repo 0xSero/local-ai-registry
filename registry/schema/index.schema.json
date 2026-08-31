@@ -3,13 +3,133 @@
   "$id": "https://local-ai-registry.dev/schema/index.schema.json",
   "title": "Registry index",
   "type": "object",
-  "required": ["schema_version", "resolver_rule", "collections", "counts", "recipes"],
+  "required": [
+    "schema_version",
+    "resolver_rule",
+    "collections",
+    "counts",
+    "recipes"
+  ],
   "properties": {
-    "schema_version": { "const": "local-ai-registry/v1" },
-    "resolver_rule": { "type": "string" },
-    "collections": { "type": "object" },
-    "counts": { "type": "object" },
-    "recipes": { "type": "array" }
+    "schema_version": {
+      "const": "local-ai-registry/v1"
+    },
+    "resolver_rule": {
+      "type": "string"
+    },
+    "collections": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": true
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "title": "Index recipe row",
+        "type": "object",
+        "required": [
+          "id",
+          "model_instance_id",
+          "hardware_id",
+          "hardware_count",
+          "engine",
+          "status",
+          "recipe_source",
+          "launch_kind",
+          "has_evidence",
+          "capabilities"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "model_instance_id": {
+            "type": "string"
+          },
+          "hardware_id": {
+            "type": "string"
+          },
+          "hardware_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "engine": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "candidate",
+              "validated"
+            ]
+          },
+          "recipe_source": {
+            "type": "string"
+          },
+          "launch_kind": {
+            "enum": [
+              "reference",
+              "docker",
+              "docker-compose",
+              "controller",
+              "script",
+              "native"
+            ]
+          },
+          "has_evidence": {
+            "type": "boolean"
+          },
+          "capabilities": {
+            "type": "object",
+            "required": [
+              "chat",
+              "reasoning",
+              "tools",
+              "vision"
+            ],
+            "properties": {
+              "chat": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "reasoning": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "tools": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "vision": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
   },
   "additionalProperties": false
 }
