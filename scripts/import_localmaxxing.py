@@ -5,6 +5,8 @@ import json
 import re
 from pathlib import Path
 
+from sweep_metrics import derive_metrics
+
 
 SCHEMA = "local-ai-registry/v1"
 SOURCE = "https://www.localmaxxing.com"
@@ -106,6 +108,18 @@ def import_row(root, row):
             }
         },
     })
+    sweep_rows = [{
+        "concurrency": row.get("batchSize") or 1,
+        "context_tokens": row.get("contextLength"),
+        "output_tokens": row.get("outputTokens"),
+        "prefill_tok_s": row.get("tokSPrefill"),
+        "decode_tok_s": row.get("tokSOut"),
+        "decode_tok_s_per_stream": None,
+        "ttft_ms_p50": row.get("ttftMs"),
+        "peak_vram_gb": row.get("peakVramGb"),
+        "samples": 1,
+        "status": "observed",
+    }]
     write(root / "speed-sweep" / f"{sweep_id}.json", {
         "schema_version": SCHEMA,
         "id": sweep_id,
@@ -113,18 +127,8 @@ def import_row(root, row):
         "measured_at": row.get("createdAt"),
         "accepted_at": None,
         "source": {"repository": SOURCE, "commit": None, "paths": [f"/en/runs/{run_id}"]},
-        "rows": [{
-            "concurrency": row.get("batchSize") or 1,
-            "context_tokens": row.get("contextLength"),
-            "output_tokens": row.get("outputTokens"),
-            "prefill_tok_s": row.get("tokSPrefill"),
-            "decode_tok_s": row.get("tokSOut"),
-            "decode_tok_s_per_stream": None,
-            "ttft_ms_p50": row.get("ttftMs"),
-            "peak_vram_gb": row.get("peakVramGb"),
-            "samples": 1,
-            "status": "observed",
-        }],
+        "metrics": derive_metrics(sweep_rows, row.get("createdAt")),
+        "rows": sweep_rows,
     })
     return True
 

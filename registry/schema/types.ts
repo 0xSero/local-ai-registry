@@ -200,7 +200,7 @@ export interface SpeedSweep {
   measured_at: string | null
   accepted_at: string | null
   source: {} | null
-  metrics?: SpeedMetrics
+  metrics: SpeedMetrics
   provenance?: Provenance
   facts?: Facts
   /**
