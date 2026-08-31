@@ -198,7 +198,7 @@ def sanitize_candidates(root):
         recipe["schema_version"] = SCHEMA
         write(path, recipe)
 
-    for collection in ("model", "model-instance", "speed-sweeps"):
+    for collection in ("model", "model-instance", "speed-sweep"):
         for path in sorted((root / collection).glob("*.json")):
             record = json.loads(path.read_text())
             record["schema_version"] = SCHEMA
@@ -207,7 +207,7 @@ def sanitize_candidates(root):
 
 def rebuild_index(root):
     collections = {}
-    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks"):
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark"):
         collections[name] = sorted(path.stem for path in (root / name).glob("*.json"))
     collections["price"] = sorted(
         json.loads(path.read_text())["id"] for path in (root / "price").glob("*/*.json")
@@ -225,7 +225,7 @@ def rebuild_index(root):
             "engine": recipe["engine"]["name"],
             "launch_kind": recipe["launch"]["kind"],
             "capabilities": recipe["capabilities"],
-            "has_evidence": bool(recipe.get("speed_sweeps_ids")),
+            "has_evidence": bool(recipe.get("speed_sweep_ids")),
         })
     write(root / "index.json", {
         "schema_version": SCHEMA,

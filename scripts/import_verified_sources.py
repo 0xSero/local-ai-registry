@@ -94,8 +94,8 @@ class Registry:
         self.models = {path.stem: load_json(path) for path in (root / "model").glob("*.json")}
         self.instances = {path.stem: load_json(path) for path in (root / "model-instance").glob("*.json")}
         self.recipes = {path.stem: load_json(path) for path in (root / "recipe").glob("*.json")}
-        self.sweeps = {path.stem: load_json(path) for path in (root / "speed-sweeps").glob("*.json")}
-        self.created = {"model": 0, "model-instance": 0, "recipe": 0, "speed-sweeps": 0, "updated_sweeps": 0}
+        self.sweeps = {path.stem: load_json(path) for path in (root / "speed-sweep").glob("*.json")}
+        self.created = {"model": 0, "model-instance": 0, "recipe": 0, "speed-sweep": 0, "updated_sweeps": 0}
         self.hf_cache: dict[str, bool] = {}
         self.gpu_index = self._gpu_index()
 
@@ -459,7 +459,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
                 "kv_cache_tokens": None,
             },
             "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
-            "speed_sweeps_ids": [sweep_id],
+            "speed_sweep_ids": [sweep_id],
             "metadata": {
                 "localmaxxing": localmaxxing_meta
             },
@@ -494,12 +494,12 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             }],
         }
         write(registry.root / "recipe" / f"{recipe_id}.json", recipe)
-        write(registry.root / "speed-sweeps" / f"{sweep_id}.json", sweep)
+        write(registry.root / "speed-sweep" / f"{sweep_id}.json", sweep)
         registry.recipes[recipe_id] = recipe
         registry.sweeps[sweep_id] = sweep
         keys.add(recipe_key)
         registry.created["recipe"] += 1
-        registry.created["speed-sweeps"] += 1
+        registry.created["speed-sweep"] += 1
     print(f"localmaxxing import done; extra skips {dict(skipped)}")
 
 
@@ -607,7 +607,7 @@ def import_mia(registry: Registry) -> None:
             },
             "serving": {"tensor_parallel": count, "max_context_tokens": None, "max_concurrency": None, "kv_cache_tokens": None},
             "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
-            "speed_sweeps_ids": [],
+            "speed_sweep_ids": [],
             "metadata": {"mialabs": {"repository": url, "readme": launch_url}},
             "provenance": provenance("normalized-recipe", launch_url),
             "facts": {
@@ -714,7 +714,7 @@ def import_mlxfast(registry: Registry) -> None:
             "kv_cache_tokens": None,
         },
         "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
-        "speed_sweeps_ids": [sweep_id],
+        "speed_sweep_ids": [sweep_id],
         "metadata": {
             "mlxfast": {
                 "track_id": "gemma4-26b-a4b-mlx-v1",
@@ -763,11 +763,11 @@ def import_mlxfast(registry: Registry) -> None:
         }],
     }
     write(registry.root / "recipe" / f"{recipe_id}.json", recipe)
-    write(registry.root / "speed-sweeps" / f"{sweep_id}.json", sweep)
+    write(registry.root / "speed-sweep" / f"{sweep_id}.json", sweep)
     registry.recipes[recipe_id] = recipe
     registry.sweeps[sweep_id] = sweep
     registry.created["recipe"] += 1
-    registry.created["speed-sweeps"] += 1
+    registry.created["speed-sweep"] += 1
     print("mlxfast imported official Gemma 4 26B A4B M5 Max candidate")
 
 
