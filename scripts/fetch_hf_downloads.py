@@ -53,6 +53,9 @@ def main() -> int:
     for p, d in records.items():
         repo = (d.get("huggingface") or {}).get("repository")
         d30, dall = results.get(repo, (None, None))
+        previous = d.get("downloads") or {}
+        if d30 is None and previous.get("last_30d") is not None:
+            continue  # fetch failed or repo unqueried: keep the prior counts
         d["downloads"] = {
             "last_30d": d30,
             "all_time": dall,
