@@ -6,7 +6,6 @@ import {
   ModelRows,
   PriceRows,
   RecipeRows,
-  SweepRows,
 } from "@/app/components/browse-rows"
 import { CollectionNav } from "@/app/components/collection-nav"
 import { RecordBody } from "@/app/components/record-body"
@@ -30,7 +29,6 @@ import {
   listBenchmarks,
   listModels,
   listPrices,
-  listSpeedSweeps,
   queryCompatibility,
   type CompatibilityFilters,
 } from "@/lib/registry"
@@ -100,7 +98,6 @@ export default async function Home({ searchParams }: PageProps) {
     retailer: value("retailer"),
   }, pagination) : { data: [], total: 0 }
   const priceTotal = counts.price ?? (topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total)
-  const sweepResults = topic === "speed-sweep" ? listSpeedSweeps({ q: query, recipe_id: value("recipe_id") }, pagination) : { data: [], total: 0 }
   const benchmarkResults = topic === "benchmark" ? listBenchmarks({ q: query, category: value("category") }, pagination) : { data: [], total: 0 }
   const matchCounts = !topic && query
     ? {
@@ -109,7 +106,6 @@ export default async function Home({ searchParams }: PageProps) {
         models: listModels({ q: query }, { limit: 1, offset: 0 }).total,
         prices: listPrices({ q: query }, { limit: 1, offset: 0 }).total,
         benchmark: listBenchmarks({ q: query }, { limit: 1, offset: 0 }).total,
-        "speed-sweep": undefined as number | undefined,
       }
     : null
 
@@ -132,7 +128,6 @@ export default async function Home({ searchParams }: PageProps) {
     models: modelResults.total,
     prices: priceResults.total,
     benchmark: benchmarkResults.total,
-    "speed-sweep": sweepResults.total,
   }
   const total = topic ? totals[topic] : 0
 
@@ -222,7 +217,6 @@ export default async function Home({ searchParams }: PageProps) {
           {topic === "models" && <ModelRows data={modelResults.data} state={viewState} />}
           {topic === "prices" && <PriceRows data={priceResults.data} state={viewState} />}
           {topic === "benchmark" && <BenchmarkRows data={benchmarkResults.data} state={viewState} />}
-          {topic === "speed-sweep" && <SweepRows data={sweepResults.data} state={viewState} />}
           {total === 0 && <div className="empty-state"><h2>No records found.</h2><p>Clear the search or remove a filter.</p></div>}
           {(offset > 0 || offset + limit < total) && (
             <nav aria-label={`${spec?.label} pages`} className="pagination">
