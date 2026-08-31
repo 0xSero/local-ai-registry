@@ -24,6 +24,17 @@
   "id": "mac-studio-m3-ultra--us",
   "observations": [
     {
+      "amount": 6199,
+      "condition": "new",
+      "currency": "USD",
+      "in_stock": null,
+      "observed_at": "2026-08-31T11:49:17.000Z",
+      "quantity": null,
+      "retailer": "apple",
+      "title": "Mac Studio with M3 Ultra chip, 28-core CPU, 60-core GPU, 96GB memory, 8TB storage",
+      "url": "https://www.apple.com/shop/buy-mac/mac-studio/m3-ultra-chip-28-core-cpu-60-core-gpu-96gb-memory-8tb-storage"
+    },
+    {
       "amount": 11979,
       "condition": "refurbished",
       "currency": "USD",
@@ -35,16 +46,16 @@
       "url": "https://www.apple.com/shop/product/g1cemll/a/Refurbished-Mac-Studio-Apple-M3-Ultra-chip-with-32‑Core-CPU-and-80‑Core-GPU"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.877Z",
+  "observed_at": "2026-08-31T11:49:17.000Z",
   "product": {
     "category": "apple",
     "id": "mac-studio-m3-ultra",
     "name": "Mac Studio M3 Ultra"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 159
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
   },
   "region": {
     "code": "US",
@@ -54,14 +65,14 @@
   "schema_version": "local-ai-registry/v1",
   "summary": {
     "in_stock_count": 1,
-    "listing_count": 1,
-    "lowest_new": null,
+    "listing_count": 2,
+    "lowest_new": 6199,
     "lowest_refurbished": 11979,
     "lowest_used": null,
-    "retailer_count": 1
+    "retailer_count": 2
   },
   "verification": {
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
     "rejected_observations": 0,
     "state": "candidate"
   }
