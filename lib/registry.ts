@@ -331,10 +331,23 @@ export function hardwareComparison(): HardwareComparisonRow[] {
   })
 }
 
+const REGISTRY_BASE_URL = "https://local-ai-registry.vercel.app"
+
+type AssetManifest = { id: string; file: string; sha256: string }
+
+function assetManifests(recipe: Recipe): AssetManifest[] {
+  const ids = ((recipe.launch as Record<string, unknown>).asset_ids as string[]) ?? []
+  return ids.map((id) => readJson<AssetManifest>("asset", `${id}.json`))
+}
+
 export function dockerCommand(recipe: Recipe): string | null {
   const launch = recipe.launch as Record<string, unknown>
   if (recipe.status !== "validated" || launch.kind !== "docker") return null
   const quote = (part: string) => (/[\s"'$;|&<>()]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
+  const manifests = assetManifests(recipe)
+  const byFile = new Map(manifests.map((manifest) => [manifest.file, manifest]))
+
+  const preamble: string[] = []
   const lines: string[][] = [["docker", "run", "--rm"]]
   if (launch.accelerator_backend === "nvidia") lines.push(["--gpus", "all"])
   if (typeof launch.ipc === "string") lines.push(["--ipc", launch.ipc])
@@ -347,13 +360,31 @@ export function dockerCommand(recipe: Recipe): string | null {
     lines.push(["-e", `${key}=${value}`])
   }
   for (const mount of (launch.mounts as Array<{ source: string; target: string; read_only?: boolean }>) ?? []) {
-    const source = mount.source.startsWith("asset/") ? `./registry/${mount.source}` : mount.source
+    let source = mount.source
+    if (source.startsWith("asset/")) {
+      const file = source.slice("asset/".length)
+      const manifest = byFile.get(file)
+      if (!manifest) return null
+      if (preamble.length === 0) {
+        preamble.push(`ASSETS="\${TMPDIR:-/tmp}/local-ai-assets" && mkdir -p "$ASSETS"`)
+      }
+      preamble.push(
+        `curl -fsSL '${REGISTRY_BASE_URL}/api/v1/asset/${manifest.id}/file' -o "$ASSETS/${file}"`,
+        `{ printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | sha256sum -c - 2>/dev/null || printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | shasum -a 256 -c -; }`,
+      )
+      source = `"$ASSETS/${file}"`
+      lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+      continue
+    }
     lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
   }
   if (typeof launch.entrypoint === "string" && launch.entrypoint) lines.push(["--entrypoint", launch.entrypoint])
   lines.push([launch.image as string])
   for (const argument of (launch.arguments as string[]) ?? []) lines.push([argument])
-  return lines.map((line) => line.map(quote).join(" ")).join(" \\\n  ")
+  const docker = lines
+    .map((line) => line.map((part) => (part.startsWith('"$ASSETS/') ? part.replace(/^("\$ASSETS\/[^:]+")/, "$1") : quote(part))).join(" "))
+    .join(" \\\n  ")
+  return preamble.length > 0 ? `${preamble.join(" && \\\n")} && \\\n${docker}` : docker
 }
 
 export function getBenchmark(id: string): Benchmark | undefined {
