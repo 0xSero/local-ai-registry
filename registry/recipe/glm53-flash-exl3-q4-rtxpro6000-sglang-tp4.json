@@ -2,14 +2,14 @@
   "capabilities": {
     "chat": true,
     "reasoning": true,
-    "tools": true,
-    "vision": true
+    "tools": null,
+    "vision": null
   },
-  "description": "Working four-GPU GLM-5.3 Flash EXL3 Q4 on RTX PRO 6000 Blackwell. SGLang TP4/EP1, DSA sparse MLA, FP8 KV, full decode CUDA graphs at batch sizes 1-8. Prefill graph max-bs stays 1 (DSA prefill capture crashes). No MTP on this recipe. Thinking-on C1 77 tok/s and C8 440 tok/s. Candidate until the staging image is digest-pinned. Overlay requires TP=4; there is no working 2-GPU EXL3 launch.",
+  "description": "Runtime-tested selective EXL3 Q4 deployment on four RTX PRO 6000 Blackwell GPUs. Routed experts in layers 3-44 use 4.0 bpw EXL3; the backbone remains BF16. The accepted TP4/EP1 path keeps full CUDA graphs and FP8 E4M3 KV. A sustained C256, ISL 131, OSL 1024 screen delivered 102,609.85 output tokens/minute. Tool and vision execution remain unvalidated, and the locally built runtime image is not yet published by digest, so this remains a candidate.",
   "engine": {
-    "graph_mode": "full decode capture bs=[1,2,4,8]; prefill backend full at max-bs 1 only",
+    "graph_mode": "full decode capture planned to 256 concurrent requests (runtime-captured graph buckets through batch 62) and full prefill capture at batch size 1",
     "name": "sglang",
-    "version": "glm53-flash-sglang-exl3:stage-20260827-r6"
+    "version": "0.0.0.dev1+gf609d677b with Sparkinfer 1.0.1 selective-EXL3 overlay"
   },
   "facts": {},
   "hardware_count": 4,
@@ -18,62 +18,73 @@
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "--model-path", "/model",
-      "--served-model-name", "glm-5.3-flash-exl3-q4",
-      "--tp-size", "4",
-      "--ep-size", "1",
-      "--quantization", "exl3",
-      "--context-length", "262144",
-      "--kv-cache-dtype", "fp8_e4m3",
-      "--attention-backend", "dsa",
-      "--dsa-prefill-backend", "flashinfer_sparse_mla",
-      "--dsa-decode-backend", "flashinfer_sparse_mla",
-      "--linear-attn-backend", "triton",
+      "--model-path",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash-exl3-q4",
+      "--tp-size",
+      "4",
+      "--ep-size",
+      "1",
+      "--quantization",
+      "exl3",
+      "--context-length",
+      "262144",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--attention-backend",
+      "dsa",
+      "--dsa-prefill-backend",
+      "flashinfer_sparse_mla",
+      "--dsa-decode-backend",
+      "flashinfer_sparse_mla",
+      "--linear-attn-backend",
+      "triton",
       "--disable-shared-experts-fusion",
-      "--chunked-prefill-size", "256",
-      "--max-prefill-tokens", "256",
-      "--max-running-requests", "8",
-      "--mem-fraction-static", "0.80",
-      "--cuda-graph-backend-decode", "full",
-      "--cuda-graph-backend-prefill", "full",
-      "--cuda-graph-max-bs-decode", "8",
-      "--cuda-graph-max-bs-prefill", "1",
-      "--chat-template", "/chat-template.jinja",
-      "--reasoning-parser", "glm45",
-      "--tool-call-parser", "glm47",
-      "--enable-metrics",
-      "--host", "0.0.0.0",
-      "--port", "8000"
+      "--chunked-prefill-size",
+      "256",
+      "--max-prefill-tokens",
+      "256",
+      "--max-running-requests",
+      "256",
+      "--mem-fraction-static",
+      "0.80",
+      "--cuda-graph-backend-decode",
+      "full",
+      "--cuda-graph-backend-prefill",
+      "full",
+      "--cuda-graph-max-bs-decode",
+      "256",
+      "--cuda-graph-max-bs-prefill",
+      "1",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8000"
     ],
     "container": {
-      "captured_at": "2026-08-27T21:55:00.000Z",
+      "captured_at": "2026-08-27T22:05:00Z",
       "compose_file": null,
       "digest": null,
       "image": "glm53-flash-sglang-exl3:stage-20260827-r6",
-      "reason": "image-tag-without-content-digest",
+      "reason": "runtime-tested-local-image-not-yet-published-by-digest",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-08-27T21:55:00.000Z",
-          "kind": "recipe-launch",
+          "captured_at": "2026-08-27T22:05:00Z",
+          "kind": "runtime-acceptance",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
       ],
       "state": "mutable"
     },
-    "container_port": 8000,
     "environment": {
-      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
-      "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
-      "SGLANG_EXL3_MAX_BATCH_TOKENS": "256",
-      "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
-      "SGLANG_OPT_DEEPGEMM_HC_PRENORM": "0",
-      "SGLANG_OPT_FP8_WO_A_GEMM": "0",
-      "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
-      "SGLANG_OPT_USE_TOPK_V2": "0",
-      "TORCH_CUDA_ARCH_LIST": "12.0a"
+      "SGLANG_EXL3_MAX_BATCH_TOKENS": "256"
     },
-    "host_port": 8000,
     "image": "glm53-flash-sglang-exl3:stage-20260827-r6",
     "ipc": "host",
     "kind": "docker",
@@ -82,32 +93,55 @@
         "read_only": true,
         "source": "${MODEL_ROOT}/GLM-5.3-Flash-EXL3-Q4",
         "target": "/model"
+      },
+      {
+        "read_only": true,
+        "source": "${RUNTIME_ASSETS}/chat-template-mm.jinja",
+        "target": "/chat-template.jinja"
       }
     ],
-    "network_mode": "host",
     "shm_size": "32g"
   },
   "metadata": {
     "acceptance": {
-      "completion": true,
-      "thinking_on": true
+      "artifact_forward_kl_bf16_to_q4": 0.06579,
+      "artifact_perplexity_delta_percent": 2.38,
+      "artifact_top1_agreement_percent": 91.7,
+      "cuda_graph_capture": true,
+      "endpoint_health": true,
+      "generated_completion": true,
+      "model_discovery": true,
+      "tools": null,
+      "vision": null
     },
-    "request_policy": "uncapped natural-stop requests; do not send max_tokens",
-    "runtime_pin_missing": "launch.image digest",
-    "notes": [
-      "Do not raise --cuda-graph-max-bs-prefill above 1 (DeepseekSparseAttnBackend prefill graph capture crash).",
-      "Do not enable NEXTN until GLM-5 Next TP draft graphs are proven on this overlay.",
-      "EP4 candidate was slower (~71 tok/s C1) and is not this recipe.",
-      "Selective EXL3 overlay cannot launch at TP=2."
-    ]
+    "benchmark": {
+      "accepted_single_stream_output_tok_s": 73.6191,
+      "cold_1024_token_prefill_tok_s": 827.7402,
+      "matched_ep4_candidate_output_tok_s": 563.981,
+      "max_sustained_output_tok_s": 1710.1642,
+      "max_sustained_output_tokens_per_minute": 102609.852,
+      "max_sustained_profile": "C256, measured ISL 131, requested OSL 1024, warmed shared prefix",
+      "max_sustained_total_api_tokens_per_minute": 115736.6983,
+      "mtp5_candidate_output_tok_s": 64.8608
+    },
+    "checkpoint_layout": "glm53-selective-exl3-tp4-v1",
+    "controller_recipe_id": "glm-5.3-flash-exl3-q4",
+    "quality_note": "Artifact KLD is held-out BF16-versus-Q4 evaluation. A new full-server aligned-logit KLD run has not been published.",
+    "runtime_state": "runtime-tested",
+    "selection": "TP4/EP1 accepted; sustained C256 is the max-output-TPM profile; C32/C64 remain the lower-latency profiles; virtual-slice EP4, MTP5, shared-expert fusion, single-batch overlap, and incomplete GLM-5 Next TBO candidates were rejected"
   },
-  "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--exl3-q4",
+  "model_instance_id": "0xsero-glm-5-3-flash-exl3-q4--selective-exl3-q4",
   "provenance": {
-    "captured_at": "2026-08-27T21:55:00.000Z",
+    "captured_at": "2026-08-27T22:05:00Z",
     "sources": [
       {
-        "captured_at": "2026-08-27T21:55:00.000Z",
-        "kind": "normalized-recipe",
+        "captured_at": "2026-08-27T22:05:00Z",
+        "kind": "artifact",
+        "url": "https://huggingface.co/0xSero/GLM-5.3-Flash-EXL3-Q4"
+      },
+      {
+        "captured_at": "2026-08-27T22:05:00Z",
+        "kind": "runtime-acceptance",
         "url": "https://github.com/0xSero/local-ai-registry"
       }
     ]
@@ -115,13 +149,13 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": null,
-    "max_concurrency": 8,
+    "expert_parallel": 1,
+    "kv_cache_dtype": "fp8_e4m3",
+    "max_concurrency": 256,
     "max_context_tokens": 262144,
-    "tensor_parallel": 4,
-    "expert_parallel": 1
+    "tensor_parallel": 4
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4-sweep"
   ],
   "status": "candidate"

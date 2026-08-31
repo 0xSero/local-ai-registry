@@ -1,0 +1,183 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "8178 (3e6ab244a)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "glm-5-1-iq1-s-rtx-3090-24gb-llama-cpp-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmowl7a7m0048o201d2d6f0hu"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmowl7a7m0048o201d2d6f0hu",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmowl7a7m0048o201d2d6f0hu"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Full GLM-5.1 IQ1_S GGUF on 8x RTX 3090, llama.cpp CUDA, all 80/80 layers offloaded across GPUs 2-9. Parallel aggregate run: 4 concurrent 512-token requests, server ctx=8192 / per-slot ctx=2048; per-request wall rate was 10.20 tok/s. Raw log: /home/mattsav/Documents/data/glm51_8x3090_20260507/glm51_iq1s_8x_ctx2048_p4_concurrent512.log",
+      "observed_command": "CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9 llama-server -m /data/models/glm51-gguf/bartowski-zai-org-glm51-iq1s/zai-org_GLM-5.1-IQ1_S-00001-of-00004.gguf -c 8192 -np 4 -ngl 999 --split-mode layer --tensor-split 1,1,1,1,1,1,1,1 -fa -ctk q4_0 -ctv q4_0",
+      "run_id": "cmowl7a7m0048o201d2d6f0hu",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/data/models/glm51-gguf/bartowski-zai-org-glm51-iq1s/zai-org_GLM-5.1-IQ1_S-00001-of-00004.gguf",
+          "-c",
+          "8192",
+          "-np",
+          "4",
+          "-ngl",
+          "999",
+          "--split-mode",
+          "layer",
+          "--tensor-split",
+          "1,1,1,1,1,1,1,1",
+          "-fa",
+          "-ctk",
+          "q4_0",
+          "-ctv",
+          "q4_0"
+        ],
+        "environment": {
+          "CUDA_VISIBLE_DEVICES": "2,3,4,5,6,7,8,9"
+        },
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "bartowski-zai-org-glm-5-1-gguf--iq1-s",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmowl7a7m0048o201d2d6f0hu"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [
+    "glm-5-1-iq1-s-rtx-3090-24gb-llama-cpp-tp8-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "fdb1db877"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "phi-4-mini-instruct-gguf-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr6yazhe00hcmn01i5gz2xe0"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr6yazhe00hcmn01i5gz2xe0",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr6yazhe00hcmn01i5gz2xe0"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Strict fresh-response rapid snapshot for Phi-4-mini-instruct Q4_K_M on one Intel Arc Pro B70. Fixed rapid realistic suite, one cold response per prompt, cached_tokens=0 on every row, no prompt/KV/context/response reuse, no n-gram/history acceleration, no speculation. llama.cpp/SYCL, ctx=4096, batch=1024, ubatch=256, FlashAttention on, f16 KV, server --cache-ram 0 and per-request cache_prompt=false. A same-recipe standalone repeat landed at 96.574 tok/s; the lower 96.548 tok/s confirmation is promoted conservatively. Concurrent four-GPU screen rows were lower and kept diagnostic-only for this small model.",
+      "observed_command": "llama-server -m /mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf -c 4096 -ngl 99 -b 1024 -ub 256 -fa on --ctx-checkpoints 0 --jinja --reasoning off",
+      "run_id": "cmr6yazhe00hcmn01i5gz2xe0",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "/mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf",
+          "-c",
+          "4096",
+          "-ngl",
+          "99",
+          "-b",
+          "1024",
+          "-ub",
+          "256",
+          "-fa",
+          "on",
+          "--ctx-checkpoints",
+          "0",
+          "--jinja",
+          "--reasoning",
+          "off"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "bartowski-microsoft-phi-4-mini-instruct-gguf--gguf-q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr6yazhe00hcmn01i5gz2xe0"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 4096,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "phi-4-mini-instruct-gguf-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

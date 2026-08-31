@@ -1,0 +1,181 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "master+2969d6d"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "qwen3-6-27b-q8-0-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrk1z0g102w3mj01nnw34zqf"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrk1z0g102w3mj01nnw34zqf",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrk1z0g102w3mj01nnw34zqf"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": "Rented JarvisLabs RTX PRO 6000 Blackwell 96GB (cloud), CUDA 13 build sm_120. Median of 3 runs, temp 0, cold prefill, prompt ~531 tok. Self-speculative MTP (draft-mtp, n-max 2). Head-to-head vs my 3x R9700 rig, same GGUF quants.",
+      "observed_command": "llama-server -m Qwen3.6-27B-MTP-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --reasoning-format auto -ctk f16 -ctv f16 -c 262144 -np 1 -ngl 999",
+      "run_id": "cmrk1z0g102w3mj01nnw34zqf",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "Qwen3.6-27B-MTP-Q8_0.gguf",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--reasoning-format",
+          "auto",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-c",
+          "262144",
+          "-np",
+          "1",
+          "-ngl",
+          "999"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--q8-0",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrk1z0g102w3mj01nnw34zqf"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 787,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-27b-q8-0-rtx-pro-6000-blackwell-96gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

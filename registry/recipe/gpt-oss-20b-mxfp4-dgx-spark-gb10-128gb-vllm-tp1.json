@@ -1,0 +1,183 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "gpt-oss-20b-mxfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms0knudw007gs201l6iy4vnb"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms0knudw007gs201l6iy4vnb",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms0knudw007gs201l6iy4vnb"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "gpt-oss-20b (MXFP4 MoE) on GB10 Grace Blackwell 128GB unified memory. Conthroughput run: 8 concurrent requests (saturates max-num-seqs=8), 128 output tokens each. 2 warmup + 3 measured batches, median reported. Aggregate output 317.63 tok/s (6.5x single-stream 49.19). Per-stream decode 39.84 tok/s under load. Very consistent: 312.36-317.69 tok/s. Low gpu-memory-utilization (0.26) leaves headroom for co-tenant embedding/rerank models.",
+      "observed_command": "vllm serve openai/gpt-oss-20b --served-model-name triage --gpu-memory-utilization 0.26 --enable-prefix-caching --max-model-len 32768 --max-num-seqs 8 --reasoning-parser openai_gptoss --tool-call-parser openai --enable-auto-tool-choice --host 0.0.0.0 --port 8105",
+      "run_id": "cms0knudw007gs201l6iy4vnb",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "openai/gpt-oss-20b",
+          "--served-model-name",
+          "triage",
+          "--gpu-memory-utilization",
+          "0.26",
+          "--enable-prefix-caching",
+          "--max-model-len",
+          "32768",
+          "--max-num-seqs",
+          "8",
+          "--reasoning-parser",
+          "openai_gptoss",
+          "--tool-call-parser",
+          "openai",
+          "--enable-auto-tool-choice",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8105"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "openai-gpt-oss-20b--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms0knudw007gs201l6iy4vnb"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 8,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gpt-oss-20b-mxfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,0 +1,231 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "buun-llama-cpp (86-real, MSVC 19.31, CUDA 12.8)"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "ornstein3-6-27b-mtp-nsc-ace-saber-q4-k-m-rtx-3090-24gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmpcxbhcw00fynw017wgjyvsp"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmpcxbhcw00fynw017wgjyvsp",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmpcxbhcw00fynw017wgjyvsp"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3090",
+      "notes": "Batch/ubatch sweep | batch=256 ubatch=128 | MTP n_max=2 p_min=0.75 | KV K=turbo3_tcq V=turbo2_tcq | --fit off --flash-attn on",
+      "observed_command": "llama-server --threads 12 --prio 3 --n-predict 32768 --batch-size 256 --ubatch-size 128 --flash-attn on --cache-type-k turbo3_tcq --cache-type-v turbo2_tcq --no-mmap --n-gpu-layers all --fit off --ctx-size 262144 --model Ornstein3.6-27B-MTP-NSC-ACE-SABER-Q4_K_M-MTP.gguf --cache-type-k-draft turbo3_tcq --cache-type-v-draft turbo2_tcq --temperature 0.6 --top-p 0.95 --min-p 0.01 --repeat-penalty 1.0 --presence-penalty 0.0 --ctx-checkpoints 8 --cache-ram 8192 --kv-unified --parallel 1 --mmproj mmproj-Ornstein3.6-27B-MTP-NSC-ACE-SABER-F16.gguf --no-mmproj-offload --image-min-tokens 1024 --alias Qwen3.6-27B --props --reasoning on --chat-template-kwargs '{\"preserve_thinking\":true}' --reasoning-budget 8192 --reasoning-budget-message '. My reasoning budget is exhausted, but I have enough information to answer directly now.' --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.75",
+      "run_id": "cmpcxbhcw00fynw017wgjyvsp",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--threads",
+          "12",
+          "--prio",
+          "3",
+          "--n-predict",
+          "32768",
+          "--batch-size",
+          "256",
+          "--ubatch-size",
+          "128",
+          "--flash-attn",
+          "on",
+          "--cache-type-k",
+          "turbo3_tcq",
+          "--cache-type-v",
+          "turbo2_tcq",
+          "--no-mmap",
+          "--n-gpu-layers",
+          "all",
+          "--fit",
+          "off",
+          "--ctx-size",
+          "262144",
+          "--model",
+          "Ornstein3.6-27B-MTP-NSC-ACE-SABER-Q4_K_M-MTP.gguf",
+          "--cache-type-k-draft",
+          "turbo3_tcq",
+          "--cache-type-v-draft",
+          "turbo2_tcq",
+          "--temperature",
+          "0.6",
+          "--top-p",
+          "0.95",
+          "--min-p",
+          "0.01",
+          "--repeat-penalty",
+          "1.0",
+          "--presence-penalty",
+          "0.0",
+          "--ctx-checkpoints",
+          "8",
+          "--cache-ram",
+          "8192",
+          "--kv-unified",
+          "--parallel",
+          "1",
+          "--mmproj",
+          "mmproj-Ornstein3.6-27B-MTP-NSC-ACE-SABER-F16.gguf",
+          "--no-mmproj-offload",
+          "--image-min-tokens",
+          "1024",
+          "--alias",
+          "Qwen3.6-27B",
+          "--props",
+          "--reasoning",
+          "on",
+          "--chat-template-kwargs",
+          "{\"preserve_thinking\":true}",
+          "--reasoning-budget",
+          "8192",
+          "--reasoning-budget-message",
+          ". My reasoning budget is exhausted, but I have enough information to answer directly now.",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "2",
+          "--spec-draft-p-min",
+          "0.75"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "gestaltlabs-ornstein3-6-27b-mtp-nsc-ace-saber-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmpcxbhcw00fynw017wgjyvsp"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 256,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "ornstein3-6-27b-mtp-nsc-ace-saber-q4-k-m-rtx-3090-24gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

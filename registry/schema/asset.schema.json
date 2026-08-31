@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local-ai-registry.dev/schema/asset.schema.json",
+  "title": "Asset",
+  "description": "One engine config, patch, or other launch artifact stored beside its manifest in registry/asset/. Recipes reference assets via launch.asset_ids and mount the blob path directly.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "file",
+    "filename",
+    "media_type",
+    "purpose",
+    "sha256",
+    "size_bytes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "local-ai-registry/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]*$"
+    },
+    "file": {
+      "type": "string",
+      "description": "Blob filename inside registry/asset/."
+    },
+    "filename": {
+      "type": "string",
+      "description": "Original basename the launch expects (e.g. config.yml)."
+    },
+    "media_type": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "size_bytes": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}

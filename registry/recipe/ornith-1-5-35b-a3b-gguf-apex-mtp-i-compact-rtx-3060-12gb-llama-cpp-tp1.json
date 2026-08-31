@@ -1,0 +1,162 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3060-12gb",
+  "id": "ornith-1-5-35b-a3b-gguf-apex-mtp-i-compact-rtx-3060-12gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmt9dtiwa00teli011ocu02mp"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmt9dtiwa00teli011ocu02mp",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmt9dtiwa00teli011ocu02mp"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX 3060",
+      "notes": "RTX 3060 12GB, ik_llama.cpp hybrid expert offload: --n-cpu-moe 18 keeps first-18-layer experts in 16GB DDR4, rest full GPU. q8_0 KV, flash-attn, ik build d206417. Sharp chat template + --reasoning-budget 1024. Weights: mudler APEX-MTP I-Compact quant (bundles the native MTP head). Speculative decoding stays OFF here: on A3B-class MoE, draft verification reads the union of per-token expert sets and SLOWS decode; output quality is unchanged either way (lossless verification). Expert cache warmed before measurement.",
+      "observed_command": "# Remote endpoint: http://127.0.0.1:8080  servedModel: D:\\AI\\user\\Ornith-1.5-35B-A3B-APEX-MTP-I-Compact.gguf",
+      "run_id": "cmt9dtiwa00teli011ocu02mp",
+      "tokenized": {
+        "endpoint": "http://127.0.0.1:8080",
+        "fidelity": "faithful",
+        "served_model_name": "D:\\AI\\user\\Ornith-1.5-35B-A3B-APEX-MTP-I-Compact.gguf"
+      }
+    }
+  },
+  "model_instance_id": "ornith-ai-ornith-1-5-35b-a3b-gguf--apex-mtp-i-compact",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmt9dtiwa00teli011ocu02mp"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "ornith-1-5-35b-a3b-gguf-apex-mtp-i-compact-rtx-3060-12gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

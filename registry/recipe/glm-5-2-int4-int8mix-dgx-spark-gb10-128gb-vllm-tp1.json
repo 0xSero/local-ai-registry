@@ -1,0 +1,186 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm-5-2-int4-int8mix-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmr7eu1a7009tni01n3wqp3ti"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmr7eu1a7009tni01n3wqp3ti",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmr7eu1a7009tni01n3wqp3ti"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "[STRUCTURED / JSON-output workload] GLM-5.2 UNPRUNED 744B (QuantTrio Int4-Int8Mix, all 256 experts) TP=4 across 4x NVIDIA DGX Spark GB10 over ConnectX-7 RoCE, MTP k=4 spec-decode, fp8 sparse-MLA (DSA) KV, full CUDA graphs, vLLM native multi-node (no Ray). Single-stream decode is MTP-content-dependent (temp 0, batch 1, warm): ~31 code / ~38 structured-JSON / ~24 prose. Aggregate ~60 tok/s at 6 concurrent. Recipe: https://github.com/tonyd2wild/GLM-5.2-QuantTrio-200K-4x-DGX-Spark",
+      "observed_command": "vllm serve QuantTrio/GLM-5.2-Int4-Int8Mix --tensor-parallel-size 4 --max-model-len 200000 --max-num-seqs 6 --speculative-config {method:mtp,num_speculative_tokens:4,draft_tensor_parallel_size:1,attention_backend:FLASHMLA_SPARSE} --tool-call-parser glm47 --enable-auto-tool-choice --reasoning-parser glm45 (4x DGX Spark GB10, RoCE, Bluey head :8210)",
+      "run_id": "cmr7eu1a7009tni01n3wqp3ti",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "QuantTrio/GLM-5.2-Int4-Int8Mix",
+          "--tensor-parallel-size",
+          "4",
+          "--max-model-len",
+          "200000",
+          "--max-num-seqs",
+          "6",
+          "--speculative-config",
+          "{method:mtp,num_speculative_tokens:4,draft_tensor_parallel_size:1,attention_backend:FLASHMLA_SPARSE}",
+          "--tool-call-parser",
+          "glm47",
+          "--enable-auto-tool-choice",
+          "--reasoning-parser",
+          "glm45",
+          "(4x",
+          "DGX",
+          "Spark",
+          "GB10,",
+          "RoCE,",
+          "Bluey",
+          "head",
+          ":8210)"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "quanttrio-glm-5-2-int4-int8mix--int4-int8mix",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmr7eu1a7009tni01n3wqp3ti"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 200000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "glm-5-2-int4-int8mix-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}
