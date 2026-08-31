@@ -426,27 +426,27 @@ def validate(root):
                 f"{record.get('id')}: products {record.get('products')} does not match price records {expected}"
             )
 
-    index_path = root / "index.json"
+    index_path = root / "index" / "collections.json"
     try:
         index = json.loads(index_path.read_text())
     except (FileNotFoundError, json.JSONDecodeError) as error:
         errors.append(f"{index_path}: invalid or missing index: {error}")
         index = {}
     if index.get("schema_version") != SCHEMA:
-        errors.append("index.json: wrong schema_version")
+        errors.append("index/collections.json: wrong schema_version")
     for name in COLLECTIONS:
         expected = sorted(identifier for identifier in data[name] if identifier)
         actual = index.get("collections", {}).get(name)
         if actual != expected:
-            errors.append(f"index.json: {name} collection is stale")
+            errors.append(f"index/collections.json: {name} collection is stale")
         count_key = name.replace("-", "_")
         if index.get("counts", {}).get(count_key) != len(expected):
-            errors.append(f"index.json: {count_key} count is stale")
+            errors.append(f"index/collections.json: {count_key} count is stale")
     expected_prices = sorted(identifier for identifier in prices if identifier)
     if index.get("collections", {}).get("price") != expected_prices:
-        errors.append("index.json: price collection is stale")
+        errors.append("index/collections.json: price collection is stale")
     if index.get("counts", {}).get("price") != len(expected_prices):
-        errors.append("index.json: price count is stale")
+        errors.append("index/collections.json: price count is stale")
 
     if errors:
         print("\n".join(errors), file=sys.stderr)
