@@ -1,0 +1,268 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-0731-mxfp4-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsap6owb00jupm011x6canpd"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsap6owb00jupm011x6canpd",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsap6owb00jupm011x6canpd"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "RTX PRO 6000 Blackwell",
+      "notes": null,
+      "observed_command": "docker compose up -d  # image riverhouse/glm52-hybrid:v1.4-cfe43b0 (vLLM 0.11.2.dev279+eldritch.enlightenment...b12x7bfc945.cu132, b12x/sparkinfer 0.30.0)\nvllm serve /model --served-model-name DeepSeek-V4-Flash-0731 --trust-remote-code --tensor-parallel-size 4 --kv-cache-dtype fp8_ds_mla --moe-backend b12x --load-format safetensors -cc.pass_config.fuse_allreduce_rms=True --gpu-memory-utilization 0.90 --max-model-len 262144 --max-num-seqs 8 --max-num-batched-tokens 8192 --max-cudagraph-capture-size 48 --async-scheduling --enable-chunked-prefill --enable-auto-tool-choice --tokenizer-mode deepseek_v4 --tool-call-parser deepseek_v4 --reasoning-parser deepseek_v4 --speculative-config '{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"moe_backend\":\"b12x\",\"draft_sample_method\":\"probabilistic\"}'\n# env: CUTE_DSL_ARCH=sm_120a VLLM_USE_V2_MODEL_RUNNER=1 VLLM_USE_B12X_MOE=1 VLLM_USE_B12X_SPARSE_INDEXER=1 VLLM_USE_B12X_FP8_GEMM=0 B12X_DENSE_SPLITK_TURBO=1 B12X_MLA_SM120_PREFILL_F16_ROPE=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 NCCL_P2P_LEVEL=SYS NCCL_PROTO=LL,LL128,Simple VLLM_ENABLE_PCIE_ALLREDUCE=0\n# Notes: Threadripper PRO topology deadlocks on PCIe P2P, so P2P is disabled. b12x MoE is used; b12x MLA (B12X_MLA_SPARSE) is NOT usable for DeepSeek-V4 in b12x 0.30.0 (DSV4 topk-128 MG prefill dispatcher passes scale_format= to io_issue_gather_dsv4_nope(), which rejects it). VLLM_USE_B12X_FP8_GEMM must be 0 with DSpark or deep_gemm fp8_einsum hits a layout assertion during drafter warmup. DSpark requires decode-context-parallel-size 1. DeepseekV4 ds_mla accepts fp8_ds_mla only, not nvfp4_ds_mla.",
+      "run_id": "cmsap6owb00jupm011x6canpd",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "/model",
+          "--served-model-name",
+          "DeepSeek-V4-Flash-0731",
+          "--trust-remote-code",
+          "--tensor-parallel-size",
+          "4",
+          "--kv-cache-dtype",
+          "fp8_ds_mla",
+          "--moe-backend",
+          "b12x",
+          "--load-format",
+          "safetensors",
+          "-cc.pass_config.fuse_allreduce_rms=True",
+          "--gpu-memory-utilization",
+          "0.90",
+          "--max-model-len",
+          "262144",
+          "--max-num-seqs",
+          "8",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-cudagraph-capture-size",
+          "48",
+          "--async-scheduling",
+          "--enable-chunked-prefill",
+          "--enable-auto-tool-choice",
+          "--tokenizer-mode",
+          "deepseek_v4",
+          "--tool-call-parser",
+          "deepseek_v4",
+          "--reasoning-parser",
+          "deepseek_v4",
+          "--speculative-config",
+          "{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"moe_backend\":\"b12x\",\"draft_sample_method\":\"probabilistic\"}"
+        ],
+        "environment": {
+          "B12X_DENSE_SPLITK_TURBO": "1",
+          "B12X_MLA_SM120_PREFILL_F16_ROPE": "1",
+          "CUTE_DSL_ARCH": "sm_120a",
+          "NCCL_IB_DISABLE": "1",
+          "NCCL_P2P_DISABLE": "1",
+          "NCCL_P2P_LEVEL": "SYS",
+          "NCCL_PROTO": "LL,LL128,Simple",
+          "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+          "VLLM_USE_B12X_FP8_GEMM": "0",
+          "VLLM_USE_B12X_MOE": "1",
+          "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+          "VLLM_USE_V2_MODEL_RUNNER": "1"
+        },
+        "fidelity": "faithful",
+        "notes": [
+          "Notes: Threadripper PRO topology deadlocks on PCIe P2P, so P2P is disabled. b12x MoE is used; b12x MLA (B12X_MLA_SPARSE) is NOT usable for DeepSeek-V4 in b12x 0.30.0 (DSV4 topk-128 MG prefill dispatcher passes scale_format= to io_issue_gather_dsv4_nope(), which rejects it). VLLM_USE_B12X_FP8_GEMM must be 0 with DSpark or deep_gemm fp8_einsum hits a layout assertion during drafter warmup. DSpark requires decode-context-parallel-size 1. DeepseekV4 ds_mla accepts fp8_ds_mla only, not nvfp4_ds_mla."
+        ],
+        "steps": [
+          [
+            "docker",
+            "compose",
+            "up",
+            "-d",
+            "#",
+            "image",
+            "riverhouse/glm52-hybrid:v1.4-cfe43b0",
+            "(vLLM",
+            "0.11.2.dev279+eldritch.enlightenment...b12x7bfc945.cu132,",
+            "b12x/sparkinfer",
+            "0.30.0)"
+          ],
+          [
+            "vllm",
+            "serve",
+            "/model",
+            "--served-model-name",
+            "DeepSeek-V4-Flash-0731",
+            "--trust-remote-code",
+            "--tensor-parallel-size",
+            "4",
+            "--kv-cache-dtype",
+            "fp8_ds_mla",
+            "--moe-backend",
+            "b12x",
+            "--load-format",
+            "safetensors",
+            "-cc.pass_config.fuse_allreduce_rms=True",
+            "--gpu-memory-utilization",
+            "0.90",
+            "--max-model-len",
+            "262144",
+            "--max-num-seqs",
+            "8",
+            "--max-num-batched-tokens",
+            "8192",
+            "--max-cudagraph-capture-size",
+            "48",
+            "--async-scheduling",
+            "--enable-chunked-prefill",
+            "--enable-auto-tool-choice",
+            "--tokenizer-mode",
+            "deepseek_v4",
+            "--tool-call-parser",
+            "deepseek_v4",
+            "--reasoning-parser",
+            "deepseek_v4",
+            "--speculative-config",
+            "{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"moe_backend\":\"b12x\",\"draft_sample_method\":\"probabilistic\"}"
+          ]
+        ]
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--mxfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsap6owb00jupm011x6canpd"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 2048,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-flash-0731-mxfp4-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

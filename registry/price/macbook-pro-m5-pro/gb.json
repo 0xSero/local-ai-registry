@@ -1,16 +1,4 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "macbook-pro-m5-pro--gb",
-  "product": {
-    "id": "macbook-pro-m5-pro",
-    "name": "MacBook Pro M5 Pro",
-    "category": "apple"
-  },
-  "region": {
-    "code": "GB",
-    "name": "United Kingdom",
-    "currency": "GBP"
-  },
   "hardware": [
     {
       "id": "apple-m5-pro-24gb",
@@ -25,47 +13,70 @@
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.887Z",
-  "summary": {
-    "listing_count": 2,
-    "retailer_count": 1,
-    "in_stock_count": 2,
-    "lowest_new": 2499,
-    "lowest_refurbished": null,
-    "lowest_used": null
-  },
+  "id": "macbook-pro-m5-pro--gb",
   "observations": [
     {
-      "retailer": "apple-store",
-      "title": "MacBook Pro M5 Pro (m5pro-15-16)",
+      "amount": 2349.0,
       "condition": "new",
-      "amount": 2499,
       "currency": "GBP",
-      "in_stock": true,
+      "in_stock": null,
+      "observed_at": "2026-08-31T11:49:06Z",
       "quantity": null,
-      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro",
-      "observed_at": "2026-08-27T11:28:59.887Z"
+      "retailer": "apple",
+      "title": "MacBook Pro, 14-inch, M5 Pro Chip, 15-core CPU, 16-core GPU, Space Black, Nano-texture display, 24GB memory, 1TB storage",
+      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro/14-inch-space-black-nano-texture-display-apple-m5-pro-chip-15-core-cpu-16-core-gpu-24gb-memory-1tb-storage"
     },
     {
-      "retailer": "apple-store",
-      "title": "MacBook Pro M5 Pro (m5pro-18-20)",
+      "amount": 2499,
       "condition": "new",
-      "amount": 2699,
       "currency": "GBP",
       "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.887Z",
       "quantity": null,
-      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro",
-      "observed_at": "2026-08-27T11:28:59.887Z"
+      "retailer": "apple-store",
+      "title": "MacBook Pro M5 Pro (m5pro-15-16)",
+      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro"
+    },
+    {
+      "amount": 2699,
+      "condition": "new",
+      "currency": "GBP",
+      "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.887Z",
+      "quantity": null,
+      "retailer": "apple-store",
+      "title": "MacBook Pro M5 Pro (m5pro-18-20)",
+      "url": "https://www.apple.com/uk/shop/buy-mac/macbook-pro"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T11:49:06Z",
+  "product": {
+    "category": "apple",
+    "id": "macbook-pro-m5-pro",
+    "name": "MacBook Pro M5 Pro"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 90
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "GB",
+    "currency": "GBP",
+    "name": "United Kingdom"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 2,
+    "listing_count": 3,
+    "lowest_new": 2349.0,
+    "lowest_refurbished": null,
+    "lowest_used": null,
+    "retailer_count": 2
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 0,
+    "state": "candidate"
   }
 }

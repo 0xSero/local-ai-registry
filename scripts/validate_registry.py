@@ -7,8 +7,10 @@ import re
 import sys
 from pathlib import Path
 
+from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
-COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps")
+
+COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark", "asset")
 SCHEMA = "local-ai-registry/v1"
 FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
@@ -89,8 +91,16 @@ def validate_facts(record, errors):
         structured_reason = isinstance(reason, dict) and isinstance(reason.get("code"), str) and bool(reason.get("code")) and isinstance(reason.get("detail"), str) and bool(reason.get("detail"))
         if fact.get("state") != "known" and not ((isinstance(reason, str) and bool(reason)) or structured_reason):
             errors.append(f"{label}: missing reason")
-        if fact.get("state") == "known" and "value" not in fact:
-            errors.append(f"{label}: known fact has no value")
+        if "value" in fact:
+            errors.append(f"{label}: facts must not duplicate the record value")
+        if not path.startswith("audit."):
+            target = record
+            for part in path.split("."):
+                if isinstance(target, dict) and part in target:
+                    target = target[part]
+                else:
+                    errors.append(f"{label}: fact path does not resolve to a record field")
+                    break
         validate_provenance(fact.get("provenance"), label, errors)
 
 
@@ -126,6 +136,75 @@ def validate_huggingface(record, errors):
             errors.append(f"{label}: search link must have null repository and HF search URL")
     else:
         errors.append(f"{label}: invalid link_type")
+
+
+def validate_tokenized_launch(recipe, errors):
+    identifier = recipe.get("id")
+    launch = recipe.get("launch") or {}
+    launch_text = json.dumps(launch).lower()
+    if "command_snippet" in launch_text:
+        errors.append(f"{identifier}: launch contains a command snippet")
+    arguments = launch.get("arguments")
+    if arguments is not None:
+        if not isinstance(arguments, list) or not all(isinstance(item, str) for item in arguments):
+            errors.append(f"{identifier}: launch.arguments must be a string array")
+    environment = launch.get("environment")
+    if environment is not None:
+        if not isinstance(environment, dict) or not all(
+            isinstance(key, str) and isinstance(value, str) for key, value in environment.items()
+        ):
+            errors.append(f"{identifier}: launch.environment must be a string map")
+    steps = launch.get("steps")
+    if steps is not None:
+        if not isinstance(steps, list) or not all(
+            isinstance(step, list) and all(isinstance(token, str) for token in step) for step in steps
+        ):
+            errors.append(f"{identifier}: launch.steps must be an argv array list")
+        elif any("&&" in token for step in steps for token in step):
+            errors.append(f"{identifier}: launch.steps still contains a shell && chain")
+    source = recipe.get("recipe_source")
+    if launch.get("kind") == "reference" or source in ("localmaxxing", "mlxfast", "exo-postgres"):
+        for field in REFERENCE_LAUNCH_FORBIDDEN:
+            if field in launch:
+                errors.append(f"{identifier}: reference launch must not carry contract field {field}")
+        meta_key = "mlxfast" if source == "mlxfast" else "localmaxxing" if source == "localmaxxing" else None
+        metadata = (recipe.get("metadata") or {}).get(meta_key) or {} if meta_key else {}
+        tokenized = metadata.get("tokenized") if isinstance(metadata, dict) else None
+        if tokenized is None:
+            return
+        if not isinstance(tokenized, dict) or tokenized.get("fidelity") not in ("faithful", "lossy"):
+            errors.append(f"{identifier}: metadata tokenized fidelity must be faithful or lossy")
+            return
+        if tokenized.get("fidelity") == "lossy":
+            if tokenized.get("arguments") or tokenized.get("steps"):
+                errors.append(f"{identifier}: lossy tokenization must not publish argv")
+            return
+        observed_args = tokenized.get("arguments")
+        observed_steps = tokenized.get("steps")
+        if observed_args is not None and (
+            not isinstance(observed_args, list) or not all(isinstance(item, str) for item in observed_args)
+        ):
+            errors.append(f"{identifier}: tokenized arguments must be a string array")
+        if observed_steps is not None:
+            if not isinstance(observed_steps, list) or not all(
+                isinstance(step, list) and all(isinstance(token, str) for token in step) for step in observed_steps
+            ):
+                errors.append(f"{identifier}: tokenized steps must be an argv array list")
+            elif any(step and step[0].startswith("-") for step in observed_steps):
+                errors.append(f"{identifier}: tokenized step starts with a flag")
+        blob = json.dumps({"arguments": observed_args, "steps": observed_steps})
+        if "&&" in blob:
+            errors.append(f"{identifier}: tokenized argv still contains a shell && chain")
+        snippet = metadata.get("observed_command") if isinstance(metadata, dict) else None
+        if (
+            isinstance(snippet, str)
+            and len(snippet.split()) > 1
+            and isinstance(observed_args, list)
+            and len(observed_args) == 1
+            and not observed_steps
+            and not tokenized.get("environment")
+        ):
+            errors.append(f"{identifier}: observed command collapsed to a single token")
 
 
 def validate_container(recipe, errors):
@@ -193,20 +272,18 @@ def validate(root):
     errors = []
     data = {name: load_collection(root, name, errors) for name in COLLECTIONS}
 
+    # Pure shape rules (required fields, types, ranges, URL formats) live in
+    # registry/schema/*.schema.json and are enforced by ajv in `npm test`.
+    # This validator keeps what schemas cannot express: referential integrity,
+    # cross-field logic, the trust boundary, and index staleness.
     for record in data["hardware"].values():
-        for field in ("vendor", "name", "kind", "accelerator_backend", "memory", "sources"):
-            if field not in record:
-                errors.append(f"{record.get('id')}: missing hardware.{field}")
-        capacity = record.get("memory", {}).get("vram_gb")
-        if not isinstance(capacity, (int, float)) or capacity <= 0:
-            errors.append(f"{record.get('id')}: memory.vram_gb must be positive")
         if "facts" in record:
             validate_facts(record, errors)
         availability = (record.get("commercial") or {}).get("availability")
         if availability is not None:
-            if not isinstance(availability, dict) or availability.get("state") not in ("known", "unknown", "unavailable", "not_applicable"):
+            if not isinstance(availability, dict) or availability.get("state") not in ("available", "unavailable", "unknown", "not_applicable"):
                 errors.append(f"{record.get('id')}: commercial availability has invalid state")
-            elif availability.get("state") != "known" and not availability.get("reason"):
+            elif availability.get("state") in ("unknown", "not_applicable") and not availability.get("reason"):
                 errors.append(f"{record.get('id')}: commercial availability requires a reason when not known")
 
     for record in data["model-instance"].values():
@@ -219,6 +296,9 @@ def validate(root):
         validate_huggingface(record, errors)
         validate_provenance(record.get("provenance"), f"{record.get('id')}", errors)
         validate_facts(record, errors)
+        params = record.get("params")
+        if not isinstance(params, (int, float)) or params <= 0:
+            errors.append(f"{record.get('id')}: model params must be positive")
 
     for recipe in data["recipe"].values():
         require_reference(recipe, "model_instance_id", data["model-instance"], errors)
@@ -227,9 +307,12 @@ def validate(root):
         validate_facts(recipe, errors)
         validate_container(recipe, errors)
         validate_launch_assets(root, recipe, errors)
-        for sweep_id in recipe.get("speed_sweeps_ids", []):
-            if sweep_id not in data["speed-sweeps"]:
-                errors.append(f"{recipe['id']}: unresolved speed_sweeps_ids {sweep_id!r}")
+        for asset_id in (recipe.get("launch") or {}).get("asset_ids", []):
+            if asset_id not in data["asset"]:
+                errors.append(f"{recipe['id']}: unresolved launch.asset_ids {asset_id!r}")
+        for sweep_id in recipe.get("speed_sweep_ids", []):
+            if sweep_id not in data["speed-sweep"]:
+                errors.append(f"{recipe['id']}: unresolved speed_sweep_ids {sweep_id!r}")
         status = recipe.get("status")
         launch = recipe.get("launch", {})
         kind = launch.get("kind")
@@ -238,15 +321,21 @@ def validate(root):
         if recipe.get("recipe_source") in ("localmaxxing", "exo-postgres"):
             if status != "candidate" or kind != "reference":
                 errors.append(f"{recipe['id']}: observed imports must be reference-only candidates")
-            if "command_snippet" in json.dumps(launch).lower():
-                errors.append(f"{recipe['id']}: candidate launch contains a command snippet")
+        if recipe.get("recipe_source") == "mlxfast":
+            if status != "candidate" or kind != "reference":
+                errors.append(f"{recipe['id']}: mlx.fast imports must be reference-only candidates")
+            if recipe.get("hardware_id") != "apple-m5-max-128gb":
+                errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
+        validate_tokenized_launch(recipe, errors)
+        if recipe.get("recipe_source") == "omlx":
+            errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")
             instance = data["model-instance"].get(recipe.get("model_instance_id"), {})
             if not instance.get("revision"):
                 errors.append(f"{recipe['id']}: validated recipe has an unpinned model revision")
-            if not recipe.get("speed_sweeps_ids"):
+            if not recipe.get("speed_sweep_ids"):
                 errors.append(f"{recipe['id']}: validated recipe has no speed evidence")
             if kind == "docker" and not re.search(r"@sha256:[0-9a-f]{64}$", launch.get("image", "")):
                 errors.append(f"{recipe['id']}: validated Docker launch has no image digest")
@@ -257,7 +346,7 @@ def validate(root):
                 if forbidden in launch_text:
                     errors.append(f"{recipe['id']}: validated launch contains forbidden option {forbidden}")
 
-    for sweep in data["speed-sweeps"].values():
+    for sweep in data["speed-sweep"].values():
         require_reference(sweep, "recipe_id", data["recipe"], errors)
         if not sweep.get("rows"):
             errors.append(f"{sweep['id']}: speed sweep has no rows")
@@ -266,6 +355,18 @@ def validate(root):
                 value = row.get(field)
                 if value is not None and (not isinstance(value, (int, float)) or value < 0):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
+
+    for benchmark in data.get("benchmark", {}).values():
+        for row in benchmark.get("rows", []):
+            model_id = row.get("model_id")
+            if model_id is not None and model_id not in data["model"]:
+                errors.append(f"{benchmark['id']}: row model_id {model_id!r} does not resolve to a model")
+        if not benchmark.get("name"):
+            errors.append(f"{benchmark['id']}: benchmark has no name")
+        for row in benchmark.get("rows", []):
+            score = row.get("score")
+            if score is not None and (not isinstance(score, (int, float)) or score < 0):
+                errors.append(f"{benchmark['id']}: score must be non-negative or null")
 
     prices = {}
     for path in sorted((root / "price").glob("*/*.json")):
@@ -278,10 +379,6 @@ def validate(root):
         if identifier in prices:
             errors.append(f"{path}: duplicate id {identifier}")
         prices[identifier] = record
-        if record.get("schema_version") != SCHEMA:
-            errors.append(f"{path}: schema_version must be {SCHEMA}")
-        if not record.get("observations"):
-            errors.append(f"{identifier}: price record has no observations")
         if not valid_timestamp(record.get("observed_at")):
             errors.append(f"{identifier}: observed_at must be RFC3339 UTC")
         currency = (record.get("region") or {}).get("currency")
@@ -293,34 +390,63 @@ def validate(root):
         for observation in record.get("observations", []):
             if observation.get("currency") != currency:
                 errors.append(f"{identifier}: observation currency does not match region")
-            if not isinstance(observation.get("amount"), (int, float)) or observation["amount"] <= 0:
-                errors.append(f"{identifier}: observation amount must be positive")
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
-            if not isinstance(observation.get("url"), str) or not re.match(r"^https?://", observation["url"]):
-                errors.append(f"{identifier}: observation URL is malformed")
 
-    index_path = root / "index.json"
+    import hashlib
+    for asset in data["asset"].values():
+        blob = root / "asset" / str(asset.get("file"))
+        if not blob.is_file():
+            errors.append(f"{asset.get('id')}: asset blob {asset.get('file')} is missing")
+        else:
+            digest = hashlib.sha256(blob.read_bytes()).hexdigest()
+            if digest != asset.get("sha256"):
+                errors.append(f"{asset.get('id')}: blob sha256 {digest} does not match manifest")
+            if blob.stat().st_size != asset.get("size_bytes"):
+                errors.append(f"{asset.get('id')}: blob size does not match manifest")
+    manifest_files = {asset.get("file") for asset in data["asset"].values()}
+    for blob in sorted((root / "asset").iterdir()):
+        if blob.suffix == ".json" or blob.name.startswith("."):
+            continue
+        if blob.name not in manifest_files:
+            errors.append(f"asset/{blob.name}: blob has no manifest record")
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark"):
+        for stray in sorted((root / name).iterdir()):
+            if stray.is_dir() or (stray.suffix != ".json" and not stray.name.startswith(".")):
+                errors.append(f"{name}/{stray.name}: collections hold only <id>.json records; launch artifacts belong in asset/")
+
+    expected_products = {}
+    for record in prices.values():
+        for hardware in record.get("hardware", []):
+            expected_products.setdefault(hardware.get("id"), set()).add(record["product"]["id"])
+    for record in data["hardware"].values():
+        expected = sorted(expected_products.get(record.get("id"), set()))
+        if record.get("products") != expected:
+            errors.append(
+                f"{record.get('id')}: products {record.get('products')} does not match price records {expected}"
+            )
+
+    index_path = root / "index" / "collections.json"
     try:
         index = json.loads(index_path.read_text())
     except (FileNotFoundError, json.JSONDecodeError) as error:
         errors.append(f"{index_path}: invalid or missing index: {error}")
         index = {}
     if index.get("schema_version") != SCHEMA:
-        errors.append("index.json: wrong schema_version")
+        errors.append("index/collections.json: wrong schema_version")
     for name in COLLECTIONS:
         expected = sorted(identifier for identifier in data[name] if identifier)
         actual = index.get("collections", {}).get(name)
         if actual != expected:
-            errors.append(f"index.json: {name} collection is stale")
+            errors.append(f"index/collections.json: {name} collection is stale")
         count_key = name.replace("-", "_")
         if index.get("counts", {}).get(count_key) != len(expected):
-            errors.append(f"index.json: {count_key} count is stale")
+            errors.append(f"index/collections.json: {count_key} count is stale")
     expected_prices = sorted(identifier for identifier in prices if identifier)
     if index.get("collections", {}).get("price") != expected_prices:
-        errors.append("index.json: price collection is stale")
+        errors.append("index/collections.json: price collection is stale")
     if index.get("counts", {}).get("price") != len(expected_prices):
-        errors.append("index.json: price count is stale")
+        errors.append("index/collections.json: price count is stale")
 
     if errors:
         print("\n".join(errors), file=sys.stderr)

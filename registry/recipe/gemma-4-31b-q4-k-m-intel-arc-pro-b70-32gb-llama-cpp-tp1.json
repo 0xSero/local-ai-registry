@@ -1,0 +1,195 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b9853"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "gemma-4-31b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrvyvfeo09rslg01sq5skopk"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrvyvfeo09rslg01sq5skopk",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrvyvfeo09rslg01sq5skopk"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "xpu",
+      "hardware_label": "Intel Arc Pro B70",
+      "notes": "Single Intel Arc Pro B70 clean-suite result from 2026-07-16. Independent phases: prefill uses the recorded ~4K prompt at temperature 0; decode uses a separate 350-token task at temperature 0.2. Batch/concurrency 1; full GPU offload; Flash Attention on; K=q8_0,V=q4_1; b=8192,ub=4096. Engine: llama.cpp SYCL b9853 (7af4279f4), IntelLLVM 2026.0.0. Actual host: AMD Ryzen 7 5700X3D, 32 GB RAM, Ubuntu 26.04. LocalMaxxing currently reuses an older B70 hardware profile for this account; its structured CPU/RAM/OS/power fields are stale and should be ignored. Raw source SHA-256: 6d4f82df37f469d3f0aba0e1cc3e5642919b1f9c50d2ef5d5c37e4750f20ba4c. Power cap 180 W. MTP-4 enabled; decode draft acceptance 225/297 (75.76%).",
+      "observed_command": "llama-server -m gemma-4-31B-it-Q4_K_M.gguf -dev SYCL0 --parallel 1 -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -t 8 -b 8192 -ub 4096 --spec-type draft-mtp --spec-draft-model mtp-gemma-4-31B-it.gguf --spec-draft-n-max 4 --spec-draft-p-min 0.75",
+      "run_id": "cmrvyvfeo09rslg01sq5skopk",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "-m",
+          "gemma-4-31B-it-Q4_K_M.gguf",
+          "-dev",
+          "SYCL0",
+          "--parallel",
+          "1",
+          "-ngl",
+          "99",
+          "-ncmoe",
+          "0",
+          "-fa",
+          "on",
+          "-ctk",
+          "q8_0",
+          "-ctv",
+          "q4_1",
+          "-c",
+          "131072",
+          "-t",
+          "8",
+          "-b",
+          "8192",
+          "-ub",
+          "4096",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-model",
+          "mtp-gemma-4-31B-it.gguf",
+          "--spec-draft-n-max",
+          "4",
+          "--spec-draft-p-min",
+          "0.75"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "google-gemma-4-31b-it--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrvyvfeo09rslg01sq5skopk"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-31b-q4-k-m-intel-arc-pro-b70-32gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,15 +1,193 @@
-export type RegistryId = string
-export type RecipeStatus = "candidate" | "validated"
-export type LaunchKind = "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
-export type Capability = boolean | null
-export type FactState = "known" | "unknown" | "unavailable" | "not_applicable"
-export type ContainerState = "digest-pinned" | "mutable" | "indirect" | "none"
-export type ComputePrecision = "fp32" | "tf32" | "fp16" | "bf16" | "fp8" | "fp4" | "int8" | "int4"
-export type ComputeSparsity = "dense" | "structured_2_4" | "unstructured" | "unknown"
+/**
+ * GENERATED FILE — do not edit by hand.
+ * Source of truth: registry/schema/*.schema.json
+ * Regenerate with: npm run gen:types
+ */
 
+/**
+ * Per-field provenance and knowledge state. The field value itself lives once, at the record path the facts key names; facts never carry a duplicate value.
+ */
+export type Fact = {
+  state: "known" | "unknown" | "unavailable" | "not_applicable"
+  reason?:
+    | string
+    | {
+        code: string
+        detail: string
+      }
+  note?: string
+  scope?: string
+  unit?: string
+  as_of?: string
+  provenance: Provenance
+}
+export type HuggingfaceIdentity = {
+  repository: string | null
+  url: string
+  status: "known" | "unknown" | "unavailable"
+  link_type: "repository" | "search"
+  reason:
+    | string
+    | {
+        code: string
+        detail: string
+      }
+  provenance: Provenance
+}
+export type Recipe = {
+  schema_version: "local-ai-registry/v1"
+  id: string
+  recipe_source: string
+  status: "candidate" | "validated"
+  description?: string | null
+  model_instance_id: string
+  hardware_id: string
+  hardware_count: number
+  engine: {
+    name: string
+    version: string | null
+    graph_mode: string | null
+    [k: string]: unknown
+  }
+  launch: {
+    kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
+    container?: Container
+    [k: string]: unknown
+  }
+  serving: {}
+  capabilities: {
+    chat: boolean | null
+    reasoning: boolean | null
+    tools: boolean | null
+    vision: boolean | null
+  }
+  metadata: {}
+  provenance: Provenance
+  facts: Facts
+  speed_sweep_ids: string[]
+}
+export type Container = {
+  state: "digest-pinned" | "mutable" | "indirect" | "none"
+  runtime: "docker" | "docker-compose" | null
+  image: string | null
+  digest: string | null
+  compose_file: string | null
+  /**
+   * @minItems 1
+   */
+  source: [Source, ...Source[]]
+  captured_at: string
+  reason: string
+}
+
+export interface RegistryBundle {
+  hardware?: Hardware
+  model?: Model
+  model_instance?: ModelInstance
+  recipe?: Recipe
+  speed_sweep?: SpeedSweep
+  benchmark?: Benchmark
+  price?: PriceRecord
+  asset?: Asset
+  index?: RegistryCollectionsIndex
+  index_recipes?: RegistryRecipesIndex
+}
+export interface Hardware {
+  schema_version: "local-ai-registry/v1"
+  id: string
+  vendor: "nvidia" | "amd" | "intel" | "apple"
+  name: string
+  family?: string | null
+  kind: "discrete" | "integrated" | "unified"
+  accelerator_backend: "nvidia" | "amd-rocm" | "intel-xpu" | "metal"
+  memory: {
+    vram_gb: number
+    vram_type: string | null
+    cpu_memory_gb: number | null
+    bandwidth_gb_per_s:
+      | number
+      | null
+      | {
+          min: number
+          max: number
+        }
+    [k: string]: unknown
+  }
+  aliases?: string[]
+  products?: string[]
+  sources: {
+    kind: string
+    url: string
+    [k: string]: unknown
+  }[]
+  commercial?: {
+    availability: {
+      state: "available" | "unavailable" | "unknown" | "not_applicable"
+      reason?:
+        | string
+        | {
+            code: string
+            detail: string
+          }
+      note?: string
+      provenance: Provenance
+      scope?: string
+    }
+    prices: {
+      amount: number
+      currency: string
+      unit: string
+      region?: string | null
+      kind?: string
+      scope?: string
+      configuration?: string
+      as_of?: string
+      source: Source
+      captured_at: string
+    }[]
+    msrp?: {
+      amount: number
+      currency: string
+    } | null
+    current_street_price?: {
+      amount: number
+      currency: string
+    } | null
+    exact_configuration_price?: {
+      amount: number
+      currency: string
+    } | null
+    channel_status?: string | null
+    current_stock?: string | boolean | null
+    current_system_price?: {
+      amount: number
+      currency: string
+    } | null
+  }
+  compute?: {
+    stats: {
+      [k: string]: unknown
+    }
+    [k: string]: unknown
+  }
+  provenance?: Provenance
+  facts?: Facts
+  /**
+   * Marketed product names this chip/configuration ships in (e.g. MacBook Pro 16-inch); products holds price-record product ids.
+   */
+  product_names?: string[]
+  [k: string]: unknown
+}
+export interface Provenance {
+  /**
+   * @minItems 1
+   */
+  sources: [Source, ...Source[]]
+  captured_at: string
+}
 export interface Source {
-  kind?: string
-  url?: string
+  kind: string
+  url: string
   repository?: string | null
   commit?: string | null
   paths?: string[] | null
@@ -17,89 +195,35 @@ export interface Source {
   publisher?: string
   retrieved_from?: string
 }
-
-export interface Provenance {
-  sources: Source[]
-  captured_at: string
+export interface Facts {
+  [k: string]: Fact
 }
-
-export interface Fact<T = unknown> {
-  value?: T
-  state: FactState
-  reason?: string | { code: string; detail: string }
-  note?: string
-  scope?: string
-  unit?: string
-  as_of?: string
-  provenance: Provenance
-}
-
-export interface HuggingFaceIdentity {
-  repository: string | null
-  url: string
-  status: "known" | "unknown" | "unavailable"
-  link_type: "repository" | "search"
-  reason: string | { code: string; detail: string }
-  provenance: Provenance
-}
-
-export interface ContainerProvenance {
-  state: ContainerState
-  runtime: "docker" | "docker-compose" | null
-  image: string | null
-  digest: string | null
-  compose_file: string | null
-  source: Source[]
-  captured_at: string
-  reason: string
-}
-
-export interface Hardware {
-  schema_version: "local-ai-registry/v1"
-  id: RegistryId
-  vendor: "nvidia" | "amd" | "intel" | "apple"
-  name: string
-  family: string | null
-  kind: "discrete" | "integrated" | "unified"
-  accelerator_backend: "nvidia" | "amd-rocm" | "intel-xpu" | "metal"
-  memory: {
-    vram_gb: number
-    cpu_memory_gb: number | null
-    vram_type: string | null
-    bandwidth_gb_per_s: number | { min: number; max: number } | null
-  }
-  aliases: string[]
-  products: string[]
-  sources: Source[]
-  commercial?: { availability: Fact; prices: Array<{ amount: number; currency: string; unit: string; region?: string | null; source: Source; captured_at: string }> }
-  accelerator?: Record<string, unknown>
-  compute?: {
-    stats: Partial<Record<ComputePrecision, Partial<Record<ComputeSparsity, { value?: number | null; state: FactState; reason?: string | { code: string; detail: string }; provenance: Provenance; unit: string }>>>>
-    [key: string]: unknown
-  }
-  captured_at?: string
-  provenance?: Provenance
-  facts?: Record<string, Fact>
-}
-
 export interface Model {
   schema_version: "local-ai-registry/v1"
-  id: RegistryId
+  id: string
   family: string
   name: string
-  params: number | null
+  params: number
   active_params: number | null
   architecture: string | null
   url: string | null
-  huggingface: HuggingFaceIdentity
+  huggingface: HuggingfaceIdentity
   provenance: Provenance
-  facts: Record<string, Fact>
+  facts: Facts
+  /**
+   * Hugging Face download counts for the canonical repository; null when the model has no known repo.
+   */
+  downloads: {
+    last_30d: number | null
+    all_time: number | null
+    captured_at: string
+    source: "huggingface-api"
+  }
 }
-
 export interface ModelInstance {
   schema_version: "local-ai-registry/v1"
-  id: RegistryId
-  model_id: RegistryId
+  id: string
+  model_id: string
   repository: string
   url?: string | null
   revision: string | null
@@ -108,48 +232,28 @@ export interface ModelInstance {
     format: string | null
     precision: string | null
     size_gb: number | null
-    artifact?: string
-    source?: string
-    publication_id?: string
+    [k: string]: unknown
   }
   kind: "base" | "quant" | "fine-tune"
-  huggingface: HuggingFaceIdentity
+  huggingface: HuggingfaceIdentity
   provenance: Provenance
-  facts: Record<string, Fact>
+  facts: Facts
 }
-
-export interface Recipe {
+export interface SpeedSweep {
   schema_version: "local-ai-registry/v1"
-  id: RegistryId
-  recipe_source: string
-  status: RecipeStatus
-  description?: string | null
-  model_instance_id: RegistryId
-  hardware_id: RegistryId
-  hardware_count: number
-  engine: { name: string; version: string | null; graph_mode: string | null; [key: string]: unknown }
-  launch: { kind: LaunchKind; container: ContainerProvenance; [key: string]: unknown }
-  serving: Record<string, unknown>
-  capabilities: { chat: Capability; reasoning: Capability; tools: Capability; vision: Capability }
-  speed_sweeps_ids: RegistryId[]
-  metadata: Record<string, unknown>
-  provenance: Provenance
-  facts: Record<string, Fact>
+  id: string
+  recipe_id: string
+  measured_at: string | null
+  accepted_at: string | null
+  source: {} | null
+  metrics: SpeedMetrics
+  provenance?: Provenance
+  facts?: Facts
+  /**
+   * @minItems 1
+   */
+  rows: [SpeedRow, ...SpeedRow[]]
 }
-
-export interface SpeedRow {
-  concurrency: number | null
-  context_tokens: number | null
-  output_tokens: number | null
-  prefill_tok_s: number | null
-  decode_tok_s: number | null
-  decode_tok_s_per_stream?: number | null
-  ttft_ms_p50: number | null
-  peak_vram_gb: number | null
-  samples: number | null
-  status: string
-}
-
 export interface SpeedMetrics {
   inference_engine_version?: string | null
   concurrency?: number | null
@@ -177,35 +281,51 @@ export interface SpeedMetrics {
   memory_max_context_tokens?: number | null
   latest_point_at?: string | null
 }
-
-export interface SpeedSweep {
+export interface SpeedRow {
+  concurrency: number | null
+  context_tokens: number | null
+  output_tokens: number | null
+  prefill_tok_s: number | null
+  decode_tok_s: number | null
+  decode_tok_s_per_stream?: number | null
+  ttft_ms_p50: number | null
+  peak_vram_gb: number | null
+  samples: number | null
+  status: string
+  [k: string]: unknown
+}
+export interface Benchmark {
   schema_version: "local-ai-registry/v1"
-  id: RegistryId
-  recipe_id: RegistryId
-  measured_at: string | null
-  accepted_at: string | null
-  source: Source | null
-  metrics?: SpeedMetrics
-  rows: SpeedRow[]
-  provenance?: Provenance
-  facts?: Record<string, Fact>
+  id: string
+  name: string
+  category: string | null
+  source: {
+    kind?: string
+    url?: string | null
+    paths?: string[]
+  }
+  rows: BenchmarkScoreRow[]
 }
-
-export interface PriceObservation {
-  retailer: string
-  title: string
-  condition: "new" | "refurbished" | "used"
-  amount: number
-  currency: string
-  in_stock: boolean | null
-  quantity: number | null
-  url: string
-  observed_at: string
+export interface BenchmarkScoreRow {
+  rank: number
+  variant: string | null
+  root: string | null
+  org: string | null
+  score: number | null
+  conf?: string | null
+  context?: string | null
+  /**
+   * Registry model id resolved from the row's root HF repository (or curated alias); null when the model is not in the registry.
+   */
+  model_id: string | null
+  [k: string]: unknown
 }
-
+/**
+ * Regional market price record: retailer observations for one product in one region.
+ */
 export interface PriceRecord {
   schema_version: "local-ai-registry/v1"
-  id: RegistryId
+  id: string
   product: {
     id: string
     name: string
@@ -216,40 +336,104 @@ export interface PriceRecord {
     name: string
     currency: string
   }
-  hardware: Array<{
-    id: RegistryId
+  hardware: {
+    id: string
     match_scope: "exact" | "family"
-  }>
+  }[]
   observed_at: string
-  summary: {
-    listing_count: number
-    retailer_count: number
-    in_stock_count: number
-    lowest_new: number | null
-    lowest_refurbished: number | null
-    lowest_used: number | null
+  summary: PriceSummary
+  /**
+   * @minItems 1
+   */
+  observations: [PriceObservation, ...PriceObservation[]]
+  verification: PriceVerification
+  provenance: PriceProvenance
+}
+export interface PriceSummary {
+  listing_count: number
+  retailer_count: number
+  in_stock_count: number
+  lowest_new: number | null
+  lowest_refurbished: number | null
+  lowest_used: number | null
+}
+export interface PriceObservation {
+  retailer: string
+  title: string
+  condition: "new" | "refurbished" | "used" | "unknown"
+  amount: number
+  currency: string
+  in_stock: boolean | null
+  quantity: number | null
+  url: string
+  observed_at: string
+}
+export interface PriceVerification {
+  state: "candidate" | "validated"
+  method: string
+  rejected_observations: number
+}
+export interface PriceProvenance {
+  scanner: string
+  snapshot_generated_at: string
+  source_error_count: number
+}
+/**
+ * One engine config, patch, or other launch artifact stored beside its manifest in registry/asset/. Recipes reference assets via launch.asset_ids and mount the blob path directly.
+ */
+export interface Asset {
+  schema_version: "local-ai-registry/v1"
+  id: string
+  /**
+   * Blob filename inside registry/asset/.
+   */
+  file: string
+  /**
+   * Original basename the launch expects (e.g. config.yml).
+   */
+  filename: string
+  media_type: string
+  purpose: string
+  sha256: string
+  size_bytes: number
+}
+/**
+ * registry/index/collections.json: collection id lists and counts. Compact recipe rows live in index/recipes.json; reverse lookups in the sibling *-by-* shards.
+ */
+export interface RegistryCollectionsIndex {
+  schema_version: "local-ai-registry/v1"
+  resolver_rule: string
+  collections: {
+    [k: string]: string[]
   }
-  observations: PriceObservation[]
-  verification: {
-    state: "candidate"
-    method: string
-    rejected_observations: number
+  counts: {
+    [k: string]: number
   }
-  provenance: {
-    scanner: string
-    snapshot_generated_at: string
-    source_error_count: number
+}
+/**
+ * registry/index/recipes.json: compact recipe rows for filtering without fetching full records.
+ */
+export interface RegistryRecipesIndex {
+  schema_version: "local-ai-registry/v1"
+  recipes: IndexRecipeRow[]
+}
+export interface IndexRecipeRow {
+  id: string
+  model_instance_id: string
+  hardware_id: string
+  hardware_count: number
+  engine: string
+  status: "candidate" | "validated"
+  recipe_source: string
+  launch_kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
+  has_evidence: boolean
+  capabilities: {
+    chat: boolean | null
+    reasoning: boolean | null
+    tools: boolean | null
+    vision: boolean | null
   }
 }
 
-export interface RegistryIndex {
-  schema_version: "local-ai-registry/v1"
-  resolver_rule: string
-  collections: Record<string, RegistryId[]>
-  counts: Record<string, number>
-  recipes: Array<Pick<Recipe, "id" | "recipe_source" | "status" | "model_instance_id" | "hardware_id" | "hardware_count" | "capabilities"> & {
-    engine: string
-    launch_kind: LaunchKind
-    has_evidence: boolean
-  }>
-}
+// Stable aliases kept for existing imports.
+export type RegistryId = string

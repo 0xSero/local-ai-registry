@@ -1,0 +1,196 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.23.1rc1.dev272+gb7abab517.d20260717"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "huihui-qwen3-6-27b-abliterated-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms8fne9m00g5pf017012j22d"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms8fne9m00g5pf017012j22d",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms8fne9m00g5pf017012j22d"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Four-concurrent-request text throughput benchmark: 2 warmup waves followed by 5 measured streaming greedy waves; aggregate median reported (102.71-102.80 output tok/s). Each request used 361 prompt and 512 output tokens; batchSize is concurrent requests, while promptTokens/outputTokens are per request. This is 4.29x the same profile's 23.97 tok/s single-stream result. ModelOpt W4A4 NVFP4 checkpoint with mixed higher-precision tensors, FP8 KV, FlashInfer attention, and MTP-3. vLLM warned that FP8 KV q/prob scaling factors were not calibrated in the checkpoint and used 1.0. Prefix caching was enabled, so repeated-prompt TTFT is warm-cache. Metrics use server usage counters and client-observed token timing.",
+      "observed_command": "vllm serve sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP --served-model-name huihui-qwen36-27b-ablit-nvfp4 --tensor-parallel-size 1 --trust-remote-code --quantization modelopt --kv-cache-dtype fp8 --attention-backend flashinfer --gpu-memory-utilization 0.4 --max-model-len 262144 --max-num-seqs 8 --max-num-batched-tokens 8192 --enable-chunked-prefill --async-scheduling --enable-prefix-caching --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}' --load-format fastsafetensors --reasoning-parser qwen3 --tool-call-parser qwen3_xml --enable-auto-tool-choice",
+      "run_id": "cms8fne9m00g5pf017012j22d",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP",
+          "--served-model-name",
+          "huihui-qwen36-27b-ablit-nvfp4",
+          "--tensor-parallel-size",
+          "1",
+          "--trust-remote-code",
+          "--quantization",
+          "modelopt",
+          "--kv-cache-dtype",
+          "fp8",
+          "--attention-backend",
+          "flashinfer",
+          "--gpu-memory-utilization",
+          "0.4",
+          "--max-model-len",
+          "262144",
+          "--max-num-seqs",
+          "8",
+          "--max-num-batched-tokens",
+          "8192",
+          "--enable-chunked-prefill",
+          "--async-scheduling",
+          "--enable-prefix-caching",
+          "--speculative-config",
+          "{\"method\":\"mtp\",\"num_speculative_tokens\":3}",
+          "--load-format",
+          "fastsafetensors",
+          "--reasoning-parser",
+          "qwen3",
+          "--tool-call-parser",
+          "qwen3_xml",
+          "--enable-auto-tool-choice"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-mtp--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms8fne9m00g5pf017012j22d"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "huihui-qwen3-6-27b-abliterated-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

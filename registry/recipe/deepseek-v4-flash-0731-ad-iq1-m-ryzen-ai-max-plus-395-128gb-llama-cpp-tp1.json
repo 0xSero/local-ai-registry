@@ -1,0 +1,204 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10103-185-g360e134"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:10:02Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "ryzen-ai-max-plus-395-128gb",
+  "id": "deepseek-v4-flash-0731-ad-iq1-m-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:10:02Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:10:02Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmsgewu9j016hpp01l0uk04fy"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmsgewu9j016hpp01l0uk04fy",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmsgewu9j016hpp01l0uk04fy"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "rocm",
+      "hardware_label": "Ryzen AI Max 395",
+      "notes": "llama.cpp master b322 (360e134) ROCm on Framework Desktop Strix Halo 128G unified, DSpark speculative decode (--spec-type draft-dspark, n-max 5), --no-mmap. Median of 3.",
+      "observed_command": "/home/mikekey/llama.cpp/build-rocm-master/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 --no-mmap -m /home/mikekey/models/gguf/deepseek/DeepSeek-V4-Flash-0731-AD-IQ1_M-00001-of-00004.gguf -md /home/mikekey/models/gguf/dspark-DeepSeek-V4-Flash-0731-MXFP4.gguf --spec-type draft-dspark --spec-draft-n-max 5 --reasoning-format auto --temp 0.6 --top-p 0.95 --min-p 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -np 1 -c 32768",
+      "run_id": "cmsgewu9j016hpp01l0uk04fy",
+      "tokenized": {
+        "arguments": [
+          "/home/mikekey/llama.cpp/build-rocm-master/bin/llama-server",
+          "--port",
+          "${PORT}",
+          "--host",
+          "0.0.0.0",
+          "--no-webui",
+          "-ngl",
+          "99",
+          "--jinja",
+          "--flash-attn",
+          "auto",
+          "--cache-reuse",
+          "256",
+          "--prio",
+          "3",
+          "--no-mmap",
+          "-m",
+          "/home/mikekey/models/gguf/deepseek/DeepSeek-V4-Flash-0731-AD-IQ1_M-00001-of-00004.gguf",
+          "-md",
+          "/home/mikekey/models/gguf/dspark-DeepSeek-V4-Flash-0731-MXFP4.gguf",
+          "--spec-type",
+          "draft-dspark",
+          "--spec-draft-n-max",
+          "5",
+          "--reasoning-format",
+          "auto",
+          "--temp",
+          "0.6",
+          "--top-p",
+          "0.95",
+          "--min-p",
+          "0.0",
+          "--repeat-penalty",
+          "1.0",
+          "-ctk",
+          "f16",
+          "-ctv",
+          "f16",
+          "-np",
+          "1",
+          "-c",
+          "32768"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--ad-iq1-m",
+  "provenance": {
+    "captured_at": "2026-08-30T09:10:02Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:10:02Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmsgewu9j016hpp01l0uk04fy"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 782,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-flash-0731-ad-iq1-m-ryzen-ai-max-plus-395-128gb-llama-cpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

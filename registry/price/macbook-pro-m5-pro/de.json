@@ -1,16 +1,4 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "macbook-pro-m5-pro--de",
-  "product": {
-    "id": "macbook-pro-m5-pro",
-    "name": "MacBook Pro M5 Pro",
-    "category": "apple"
-  },
-  "region": {
-    "code": "DE",
-    "name": "Germany",
-    "currency": "EUR"
-  },
   "hardware": [
     {
       "id": "apple-m5-pro-24gb",
@@ -25,69 +13,92 @@
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.883Z",
-  "summary": {
-    "listing_count": 4,
-    "retailer_count": 2,
-    "in_stock_count": 3,
-    "lowest_new": 1942.16,
-    "lowest_refurbished": null,
-    "lowest_used": null
-  },
+  "id": "macbook-pro-m5-pro--de",
   "observations": [
     {
-      "retailer": "amazon",
-      "title": "MacBook Pro M5 Pro",
-      "condition": "new",
       "amount": 1942.16,
+      "condition": "new",
       "currency": "EUR",
       "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.882Z",
       "quantity": 6,
-      "url": "https://www.amazon.de/dp/B0FWDZ45GQ",
-      "observed_at": "2026-08-27T11:28:59.882Z"
-    },
-    {
       "retailer": "amazon",
       "title": "MacBook Pro M5 Pro",
-      "condition": "new",
+      "url": "https://www.amazon.de/dp/B0FWDZ45GQ"
+    },
+    {
       "amount": 2531.32,
+      "condition": "new",
       "currency": "EUR",
       "in_stock": false,
+      "observed_at": "2026-08-27T11:28:59.882Z",
       "quantity": 0,
-      "url": "https://www.amazon.de/dp/B0GR17JPC4",
-      "observed_at": "2026-08-27T11:28:59.882Z"
+      "retailer": "amazon",
+      "title": "MacBook Pro M5 Pro",
+      "url": "https://www.amazon.de/dp/B0GR17JPC4"
     },
     {
+      "amount": 4249,
+      "condition": "new",
+      "currency": "EUR",
+      "in_stock": true,
+      "observed_at": "2026-08-31T11:49:41.803Z",
+      "quantity": null,
+      "retailer": "Apple",
+      "title": "MacBook Pro, 16-Zoll, M5 Pro Chip, 64 GB Arbeitsspeicher, 2 TB Speicher",
+      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro/16-zoll-space-black-standard-display-apple-m5-pro-chip-18-core-cpu-20%E2%80%91core-gpu-64-gb-arbeitsspeicher-2tb-speicher"
+    },
+    {
+      "amount": 2899,
+      "condition": "new",
+      "currency": "EUR",
+      "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.883Z",
+      "quantity": null,
       "retailer": "apple-store",
       "title": "MacBook Pro M5 Pro (m5pro-15-16)",
-      "condition": "new",
-      "amount": 2899,
-      "currency": "EUR",
-      "in_stock": true,
-      "quantity": null,
-      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro",
-      "observed_at": "2026-08-27T11:28:59.883Z"
+      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro"
     },
     {
-      "retailer": "apple-store",
-      "title": "MacBook Pro M5 Pro (m5pro-18-20)",
-      "condition": "new",
       "amount": 3149,
+      "condition": "new",
       "currency": "EUR",
       "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.883Z",
       "quantity": null,
-      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro",
-      "observed_at": "2026-08-27T11:28:59.883Z"
+      "retailer": "apple-store",
+      "title": "MacBook Pro M5 Pro (m5pro-18-20)",
+      "url": "https://www.apple.com/de/shop/buy-mac/macbook-pro"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T11:49:41.803Z",
+  "product": {
+    "category": "apple",
+    "id": "macbook-pro-m5-pro",
+    "name": "MacBook Pro M5 Pro"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 60
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "DE",
+    "currency": "EUR",
+    "name": "Germany"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 4,
+    "listing_count": 5,
+    "lowest_new": 1942.16,
+    "lowest_refurbished": null,
+    "lowest_used": null,
+    "retailer_count": 3
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 0,
+    "state": "candidate"
   }
 }

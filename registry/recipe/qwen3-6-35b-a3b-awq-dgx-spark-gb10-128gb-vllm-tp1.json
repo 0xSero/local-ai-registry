@@ -1,0 +1,191 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-30T09:26:09Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-6-35b-a3b-awq-dgx-spark-gb10-128gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-30T09:26:09Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-30T09:26:09Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cms0l7o3h008cs20117h9q3ye"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cms0l7o3h008cs20117h9q3ye",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cms0l7o3h008cs20117h9q3ye"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "backend": "cuda",
+      "hardware_label": "GB10 Grace Blackwell",
+      "notes": "Qwen3.6-35B-A3B (MoE, AWQ) on GB10 Grace Blackwell 128GB unified memory. Conthroughput run: 6 concurrent requests (saturates max-num-seqs=6), 128 output tokens each. 2 warmup + 3 measured batches, median reported. Aggregate 157.00 tok/s (4.0x single-stream 39.68). Per-stream 26.20 tok/s. Consistent: 155.51-160.58 tok/s. AWQ batching efficiency (4.0x) is comparable to FP8 (3.8x at batch=8), showing the quant format does not materially impact batching efficiency.",
+      "observed_command": "vllm serve QuantTrio/Qwen3.6-35B-A3B-AWQ --served-model-name vision --gpu-memory-utilization 0.28 --enable-prefix-caching --max-model-len 131072 --max-num-batched-tokens 8192 --max-num-seqs 6 --kv-cache-dtype fp8 --attention-backend FLASHINFER --reasoning-parser qwen3 --tool-call-parser qwen3_xml --enable-auto-tool-choice --enable-chunked-prefill --async-scheduling --host 0.0.0.0 --port 8103",
+      "run_id": "cms0l7o3h008cs20117h9q3ye",
+      "tokenized": {
+        "arguments": [
+          "vllm",
+          "serve",
+          "QuantTrio/Qwen3.6-35B-A3B-AWQ",
+          "--served-model-name",
+          "vision",
+          "--gpu-memory-utilization",
+          "0.28",
+          "--enable-prefix-caching",
+          "--max-model-len",
+          "131072",
+          "--max-num-batched-tokens",
+          "8192",
+          "--max-num-seqs",
+          "6",
+          "--kv-cache-dtype",
+          "fp8",
+          "--attention-backend",
+          "FLASHINFER",
+          "--reasoning-parser",
+          "qwen3",
+          "--tool-call-parser",
+          "qwen3_xml",
+          "--enable-auto-tool-choice",
+          "--enable-chunked-prefill",
+          "--async-scheduling",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8103"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "quanttrio-qwen3-6-35b-a3b-awq--awq",
+  "provenance": {
+    "captured_at": "2026-08-30T09:26:09Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-30T09:26:09Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cms0l7o3h008cs20117h9q3ye"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 6,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-6-35b-a3b-awq-dgx-spark-gb10-128gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

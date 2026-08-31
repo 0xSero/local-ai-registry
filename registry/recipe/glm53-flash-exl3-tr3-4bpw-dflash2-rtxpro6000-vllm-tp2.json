@@ -1,0 +1,177 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Publisher-qualified language-only GLM-5.3 Flash TR3 EXL3 4bpw recipe for two RTX PRO 6000 Blackwell GPUs. Uses TP2/EP2/DCP2, B12X sparse MLA, NVFP4 MLA KV, external DFlash2 with seven draft tokens, and full-and-piecewise CUDA graphs. Speed evidence uses the model card's sustained streaming methodology; C2/C4 rows are intentionally omitted because the card marks them capacity-limited rather than throughput claims.",
+  "engine": {
+    "graph_mode": "full-and-piecewise CUDA graphs; DFlash2 full graph capture",
+    "name": "vllm",
+    "version": "0.1.dev20111+g7f1e92bec.d20260827"
+  },
+  "facts": {},
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp2",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--language-model-only",
+      "--tensor-parallel-size",
+      "2",
+      "--enable-expert-parallel",
+      "--decode-context-parallel-size",
+      "2",
+      "--dcp-comm-backend",
+      "a2a",
+      "--dtype",
+      "bfloat16",
+      "--load-format",
+      "safetensors",
+      "--moe-backend",
+      "b12x",
+      "--attention-backend",
+      "B12X_MLA_SPARSE",
+      "--kv-cache-dtype",
+      "nvfp4_ds_mla",
+      "--max-model-len",
+      "98304",
+      "--max-num-batched-tokens",
+      "2072",
+      "--max-num-seqs",
+      "4",
+      "--gpu-memory-utilization",
+      "0.986",
+      "--enable-chunked-prefill",
+      "--no-enable-prefix-caching",
+      "--generation-config",
+      "/model",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-auto-tool-choice",
+      "--disable-custom-all-reduce",
+      "--speculative-config",
+      "{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7,\"draft_tensor_parallel_size\":2,\"draft_sample_method\":\"probabilistic\",\"rejection_sample_method\":\"standard\",\"attention_backend\":\"TRITON_ATTN\",\"kv_cache_dtype\":\"auto\"}"
+    ],
+    "container": {
+      "captured_at": "2026-08-28T16:57:48Z",
+      "compose_file": null,
+      "digest": "sha256:0f1cdcc8891f1cc3a444121eb61d366289a1cbba285f0892dcbb24bc94961692",
+      "image": "verdictai/glm53-flash-exl3-k4:r19-sm120-tp2-ep2-dcp2-v84-language-only@sha256:0f1cdcc8891f1cc3a444121eb61d366289a1cbba285f0892dcbb24bc94961692",
+      "reason": "publisher-digest-and-live-image-id-confirmed",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-28T16:57:48Z",
+          "kind": "oci-provenance",
+          "url": "https://github.com/brandonmmusic-max/glm-5.3-flash-exl3-4bpw"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_GL53_ROUTE128_HYBRID_TAIL": "1",
+      "B12X_GL53_ROUTE128_WIDE": "1",
+      "KV_FP8_ROPE": "0",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "4",
+      "OMP_NUM_THREADS": "2",
+      "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+      "VLLM_EXL3_PREFILL_BLOCK_M": "128",
+      "VLLM_EXL3_PREFILL_TRELLIS": "1",
+      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0",
+      "VLLM_NVFP4_MLA_SCALES_FILE": "/opt/glm53/calibration/glm53_nvfp4_mla_outer_scales_mtp_power2_v2.json",
+      "VLLM_PCIE_ALLREDUCE_BACKEND": "cpp",
+      "VLLM_USE_B12X_DCP_A2A": "1"
+    },
+    "host_port": 8000,
+    "image": "verdictai/glm53-flash-exl3-k4:r19-sm120-tp2-ep2-dcp2-v84-language-only@sha256:0f1cdcc8891f1cc3a444121eb61d366289a1cbba285f0892dcbb24bc94961692",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-tr3-4bpw",
+        "target": "/model"
+      },
+      {
+        "provision": {
+          "repository": "incoai/GLM-5.3-Flash-DFlash2",
+          "revision": "bf582e4eacc1810f76656d1811693ff6c6737d2a",
+          "size_gb": 2.2
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2",
+        "target": "/draft"
+      },
+      {
+        "read_only": false,
+        "source": "${MODEL_ROOT}/cache_glm53_tr3_dflash_v84",
+        "target": "/cache"
+      }
+    ],
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance": {
+      "completion": true,
+      "context_96017_tokens": true,
+      "dflash_active": true,
+      "health": true,
+      "tools": true
+    },
+    "dflash_accepted_tokens_after_sweep": 4395,
+    "full_context_resident_concurrency": 1.5365853658536586,
+    "local_power_limit_w_each": 275,
+    "published_benchmark_conditions": {
+      "gpu_count": 2,
+      "gpu_power_limit_w_each": 600,
+      "memory_clock_offset_mhz": 6000,
+      "published_kv_cache_tokens": 184619,
+      "sustained_decode": true
+    }
+  },
+  "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
+  "provenance": {
+    "captured_at": "2026-08-28T16:57:48Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-28T16:57:48Z",
+        "kind": "model-card",
+        "url": "https://huggingface.co/brandonmusic/GLM-5.3-Flash-tr3-4bpw"
+      },
+      {
+        "captured_at": "2026-08-28T16:57:48Z",
+        "kind": "runtime-source",
+        "url": "https://github.com/brandonmmusic-max/glm-5.3-flash-exl3-4bpw"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 151052,
+    "max_concurrency": 4,
+    "max_context_tokens": 98304,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-exl3-tr3-4bpw-dflash2-rtxpro6000-vllm-tp2-sweep"
+  ],
+  "status": "validated"
+}
