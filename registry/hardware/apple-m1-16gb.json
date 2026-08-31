@@ -43,9 +43,13 @@
           }
         ]
       },
-      "state": "known",
-      "value": "unavailable"
+      "reason": {
+        "code": "not-currently-sold",
+        "detail": "Audited vendor sources indicate this configuration is not offered for sale new; state promoted from the facts entry during the value-once migration."
+      },
+      "state": "unavailable"
     },
+    "exact_configuration_price": null,
     "prices": [
       {
         "amount": 999,
@@ -406,12 +410,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": {
-        "max": 8,
-        "min": 7,
-        "variant_note": "Memory-only registry ID spans Apple GPU variants."
-      }
+      "state": "known"
     },
     "accelerator.neural_engine_cores": {
       "provenance": {
@@ -443,8 +442,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": 16
+      "state": "known"
     },
     "accelerator_backend": {
       "provenance": {
@@ -476,8 +474,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": "metal"
+      "state": "known"
     },
     "commercial.availability": {
       "provenance": {
@@ -509,8 +506,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": "unavailable"
+      "state": "known"
     },
     "commercial.exact_configuration_price": {
       "provenance": {
@@ -578,11 +574,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": {
-        "count": 3,
-        "scope": "representative_product_starting_price"
-      }
+      "state": "known"
     },
     "memory.bandwidth_gb_per_s": {
       "provenance": {
@@ -620,7 +612,7 @@
       },
       "state": "unknown"
     },
-    "memory.capacity_gb": {
+    "memory.vram_gb": {
       "provenance": {
         "captured_at": "2026-08-27T04:55:00Z",
         "sources": [
@@ -650,10 +642,9 @@
           }
         ]
       },
-      "state": "known",
-      "value": 16
+      "state": "known"
     },
-    "memory.type": {
+    "memory.vram_type": {
       "provenance": {
         "captured_at": "2026-08-27T04:55:00Z",
         "sources": [
@@ -683,10 +674,9 @@
           }
         ]
       },
-      "state": "known",
-      "value": "unified"
+      "state": "known"
     },
-    "products": {
+    "product_names": {
       "provenance": {
         "captured_at": "2026-08-27T04:55:00Z",
         "sources": [
@@ -716,13 +706,7 @@
           }
         ]
       },
-      "state": "known",
-      "value": [
-        "MacBook Air",
-        "MacBook Pro 13-inch",
-        "Mac mini",
-        "iMac 24-inch"
-      ]
+      "state": "known"
     }
   },
   "family": "m1",
@@ -735,6 +719,12 @@
     "vram_type": "unified"
   },
   "name": "Apple M1 16GB",
+  "product_names": [
+    "MacBook Air",
+    "MacBook Pro 13-inch",
+    "Mac mini",
+    "iMac 24-inch"
+  ],
   "products": [],
   "schema_version": "local-ai-registry/v1",
   "sources": [

@@ -153,7 +153,81 @@
       ],
       "properties": {
         "availability": {
-          "$ref": "common.schema.json#/$defs/fact"
+          "type": "object",
+          "required": [
+            "state",
+            "provenance"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "available",
+                "unavailable",
+                "unknown",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "detail"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "detail": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            },
+            "provenance": {
+              "$ref": "common.schema.json#/$defs/provenance"
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "unknown",
+                      "not_applicable"
+                    ]
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ]
         },
         "prices": {
           "type": "array",
@@ -212,6 +286,103 @@
             },
             "additionalProperties": false
           }
+        },
+        "msrp": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "amount": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ],
+          "additionalProperties": false
+        },
+        "current_street_price": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "amount": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ],
+          "additionalProperties": false
+        },
+        "exact_configuration_price": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "amount": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ],
+          "additionalProperties": false
+        },
+        "channel_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_stock": {
+          "type": [
+            "string",
+            "boolean",
+            "null"
+          ]
+        },
+        "current_system_price": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "amount": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "currency": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ],
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -323,6 +494,13 @@
     },
     "facts": {
       "$ref": "common.schema.json#/$defs/facts"
+    },
+    "product_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Marketed product names this chip/configuration ships in (e.g. MacBook Pro 16-inch); products holds price-record product ids."
     }
   },
   "$defs": {
