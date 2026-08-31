@@ -1,6 +1,7 @@
 import { ConfigurationCard, configurationFromRecipe } from "@/app/components/configuration-card"
 import { CopyActions } from "@/app/components/copy-actions"
 import { RecordSheet } from "@/app/components/record-sheet"
+import { HardwareMarket } from "@/app/components/hardware-market"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
 import { ModelScores } from "@/app/components/model-scores"
 import { RecordEvidence } from "@/app/components/record-evidence"
@@ -49,6 +50,7 @@ export function RecordBody({
         </>
       )}
       <RecordEvidence collection={collection} record={record} />
+      {collection === "hardware" && typeof record.id === "string" && <HardwareMarket hardwareId={record.id} />}
       {collection === "models" && typeof record.id === "string" && <ModelScores modelId={record.id} />}
       <RelatedRecords groups={groups} />
       {variant === "page" ? (
