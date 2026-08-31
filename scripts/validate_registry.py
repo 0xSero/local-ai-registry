@@ -10,7 +10,7 @@ from pathlib import Path
 from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 
-COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweeps", "benchmarks")
+COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark")
 SCHEMA = "local-ai-registry/v1"
 FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
@@ -299,9 +299,9 @@ def validate(root):
         validate_facts(recipe, errors)
         validate_container(recipe, errors)
         validate_launch_assets(root, recipe, errors)
-        for sweep_id in recipe.get("speed_sweeps_ids", []):
-            if sweep_id not in data["speed-sweeps"]:
-                errors.append(f"{recipe['id']}: unresolved speed_sweeps_ids {sweep_id!r}")
+        for sweep_id in recipe.get("speed_sweep_ids", []):
+            if sweep_id not in data["speed-sweep"]:
+                errors.append(f"{recipe['id']}: unresolved speed_sweep_ids {sweep_id!r}")
         status = recipe.get("status")
         launch = recipe.get("launch", {})
         kind = launch.get("kind")
@@ -324,7 +324,7 @@ def validate(root):
             instance = data["model-instance"].get(recipe.get("model_instance_id"), {})
             if not instance.get("revision"):
                 errors.append(f"{recipe['id']}: validated recipe has an unpinned model revision")
-            if not recipe.get("speed_sweeps_ids"):
+            if not recipe.get("speed_sweep_ids"):
                 errors.append(f"{recipe['id']}: validated recipe has no speed evidence")
             if kind == "docker" and not re.search(r"@sha256:[0-9a-f]{64}$", launch.get("image", "")):
                 errors.append(f"{recipe['id']}: validated Docker launch has no image digest")
@@ -335,7 +335,7 @@ def validate(root):
                 if forbidden in launch_text:
                     errors.append(f"{recipe['id']}: validated launch contains forbidden option {forbidden}")
 
-    for sweep in data["speed-sweeps"].values():
+    for sweep in data["speed-sweep"].values():
         require_reference(sweep, "recipe_id", data["recipe"], errors)
         if not sweep.get("rows"):
             errors.append(f"{sweep['id']}: speed sweep has no rows")
@@ -345,7 +345,7 @@ def validate(root):
                 if value is not None and (not isinstance(value, (int, float)) or value < 0):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
 
-    for benchmark in data.get("benchmarks", {}).values():
+    for benchmark in data.get("benchmark", {}).values():
         if not benchmark.get("name"):
             errors.append(f"{benchmark['id']}: benchmark has no name")
         for row in benchmark.get("rows", []):

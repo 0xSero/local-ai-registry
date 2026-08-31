@@ -59,10 +59,10 @@ export type Recipe = {
     tools: boolean | null
     vision: boolean | null
   }
-  speed_sweeps_ids: string[]
   metadata: {}
   provenance: Provenance
   facts: Facts
+  speed_sweep_ids: string[]
 }
 export type Container = {
   state: "digest-pinned" | "mutable" | "indirect" | "none"

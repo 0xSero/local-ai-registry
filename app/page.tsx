@@ -31,7 +31,7 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
-type Topic = "recipes" | "hardware" | "models" | "prices" | "benchmarks" | "speed-sweeps"
+type Topic = "recipes" | "hardware" | "models" | "prices" | "benchmark" | "speed-sweep"
 
 type EvidenceRow = SpeedRow & {
   sweepId: string
@@ -48,8 +48,8 @@ const TOPICS: Array<{ key: Topic; label: string; countKey: string | null; descri
   { key: "hardware", label: "Hardware", countKey: "hardware", description: "Accelerator specifications connected to compatible models, recipes, and regional prices." },
   { key: "models", label: "Models", countKey: "model", description: "Canonical models connected to artifacts, supported hardware, and recipes." },
   { key: "prices", label: "Prices", countKey: "price", description: "Fresh regional listing observations in native currency. Candidate matches remain inspectable." },
-  { key: "benchmarks", label: "Leaderboards", countKey: "benchmarks", description: "Scraped public quality scores from GitHub Pages leaderboards such as Terminal-Bench 2.1. These are not local speed measurements." },
-  { key: "speed-sweeps", label: "Speed Sweeps", countKey: "speed_sweeps", description: "Measured token/s evidence connected back to the recipe that produced it. These are not public quality leaderboards." },
+  { key: "benchmark", label: "Leaderboards", countKey: "benchmark", description: "Scraped public quality scores from GitHub Pages leaderboards such as Terminal-Bench 2.1. These are not local speed measurements." },
+  { key: "speed-sweep", label: "Speed Sweeps", countKey: "speed_sweep", description: "Measured token/s evidence connected back to the recipe that produced it. These are not public quality leaderboards." },
 ]
 
 const USD_FORMATTER = new Intl.NumberFormat("en-US", {
@@ -85,7 +85,7 @@ function formatAmount(amount: number, currency: string): string {
 }
 
 function recipeEvidence(result: CompatibilityResult): EvidenceRow[] {
-  return result.recipe.speed_sweeps_ids.flatMap((sweepId) => {
+  return result.recipe.speed_sweep_ids.flatMap((sweepId) => {
     const sweep = getSpeedSweep(sweepId)
     return sweep ? sweep.rows.map((row) => ({ ...row, sweepId })) : []
   })
@@ -294,16 +294,16 @@ export default async function Home({ searchParams }: PageProps) {
     retailer: value("retailer"),
   }, pagination) : { data: [], total: 0 }
   const priceTotal = counts.price ?? (topic === "prices" ? priceResults.total : listPrices({}, { limit: 1, offset: 0 }).total)
-  const sweepResults = topic === "speed-sweeps" ? listSpeedSweeps({ q: query, recipe_id: value("recipe_id") }, pagination) : { data: [], total: 0 }
-  const benchmarkResults = topic === "benchmarks" ? listBenchmarks({ q: query, category: value("category") }, pagination) : { data: [], total: 0 }
+  const sweepResults = topic === "speed-sweep" ? listSpeedSweeps({ q: query, recipe_id: value("recipe_id") }, pagination) : { data: [], total: 0 }
+  const benchmarkResults = topic === "benchmark" ? listBenchmarks({ q: query, category: value("category") }, pagination) : { data: [], total: 0 }
   const matchCounts = !topic && query
     ? {
         recipes: queryCompatibility({ q: query }, { limit: 1, offset: 0 }).total,
         hardware: listHardware({ q: query }, { limit: 1, offset: 0 }).total,
         models: listModels({ q: query }, { limit: 1, offset: 0 }).total,
         prices: listPrices({ q: query }, { limit: 1, offset: 0 }).total,
-        benchmarks: listBenchmarks({ q: query }, { limit: 1, offset: 0 }).total,
-        "speed-sweeps": undefined as number | undefined,
+        benchmark: listBenchmarks({ q: query }, { limit: 1, offset: 0 }).total,
+        "speed-sweep": undefined as number | undefined,
       }
     : null
 
@@ -312,8 +312,8 @@ export default async function Home({ searchParams }: PageProps) {
     models: ["family", "architecture"],
     prices: ["region", "category", "condition", "retailer", "in_stock"],
     recipes: ["by", "hardware_id", "model_id", "validation", "engine", "runtime", "evidence"],
-    benchmarks: ["category"],
-    "speed-sweeps": ["recipe_id"],
+    benchmark: ["category"],
+    "speed-sweep": ["recipe_id"],
   }
   const viewState = new URLSearchParams()
   if (topic) viewState.set("topic", topic)
@@ -337,7 +337,7 @@ export default async function Home({ searchParams }: PageProps) {
         ? modelResults.total
         : topic === "prices"
           ? priceResults.total
-          : topic === "benchmarks" ? benchmarkResults.total : topic === "speed-sweeps" ? sweepResults.total : 0
+          : topic === "benchmark" ? benchmarkResults.total : topic === "speed-sweep" ? sweepResults.total : 0
   const topicLabel = TOPICS.find((item) => item.key === topic)?.label
   const topicDescription = TOPICS.find((item) => item.key === topic)?.description
 
@@ -391,7 +391,7 @@ export default async function Home({ searchParams }: PageProps) {
         ? modelSearchFilters
         : topic === "prices"
           ? priceSearchFilters
-          : topic === "benchmarks"
+          : topic === "benchmark"
             ? benchmarkSearchFilters
             : []
 
@@ -482,7 +482,7 @@ export default async function Home({ searchParams }: PageProps) {
             </div>
           )}
           {topic === "prices" && <PriceRows data={priceResults.data} state={viewState} />}
-          {topic === "benchmarks" && (
+          {topic === "benchmark" && (
             <div className="browser-list collection-list">
               {benchmarkResults.data.map((benchmark) => {
                 const top = benchmark.rows[0]
@@ -503,7 +503,7 @@ export default async function Home({ searchParams }: PageProps) {
               })}
             </div>
           )}
-          {topic === "speed-sweeps" && (
+          {topic === "speed-sweep" && (
             <div className="browser-list collection-list">
               {sweepResults.data.map((sweep) => {
                 const speed = peakSweepSpeed(sweep)
