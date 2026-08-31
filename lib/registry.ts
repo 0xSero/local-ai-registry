@@ -202,6 +202,27 @@ export function getSpeedSweep(id: string): SpeedSweep | undefined {
   return readRecord("speed-sweep", id)
 }
 
+export type ModelBenchmarkScore = {
+  benchmark_id: string
+  category: string | null
+  rank: number | null
+  score: number | null
+  variant: string | null
+  conf: string | null
+}
+
+let cachedScores: Record<string, ModelBenchmarkScore[]> | undefined
+
+export function getModelBenchmarkScores(modelId: string): ModelBenchmarkScore[] {
+  if (!cachedScores) {
+    cachedScores = readJson<{ benchmarks_by_model: Record<string, ModelBenchmarkScore[]> }>(
+      "index",
+      "benchmarks-by-model.json",
+    ).benchmarks_by_model
+  }
+  return cachedScores[modelId] ?? []
+}
+
 export function getBenchmark(id: string): Benchmark | undefined {
   return dataset().benchmarks.get(id)
 }
