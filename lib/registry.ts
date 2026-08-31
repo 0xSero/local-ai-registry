@@ -384,12 +384,19 @@ export function queryCompatibility(
 }
 
 export function listModels(filters: Record<string, string>, pagination: Pagination) {
-  const all = [...dataset().models.values()].filter(
-    (model) =>
-      contains(model, filters.q) &&
-      equals(model.family, filters.family) &&
-      (filters.architecture === "unknown" ? model.architecture === null : equals(model.architecture, filters.architecture)),
-  )
+  const all = [...dataset().models.values()]
+    .filter(
+      (model) =>
+        contains(model, filters.q) &&
+        equals(model.family, filters.family) &&
+        (filters.architecture === "unknown" ? model.architecture === null : equals(model.architecture, filters.architecture)),
+    )
+    .sort(
+      (left, right) =>
+        (right.downloads?.last_30d ?? -1) - (left.downloads?.last_30d ?? -1) ||
+        left.name.localeCompare(right.name, undefined, { numeric: true }) ||
+        left.id.localeCompare(right.id),
+    )
   return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
 }
 

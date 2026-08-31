@@ -20,6 +20,7 @@ pipeline before committing.
 | 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
 | 1. Import | `import_market_snapshot.py` | local-ai-scanner-cli snapshot | `registry/price/` |
 | 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
+| 1. Import | `fetch_hf_downloads.py` | public Hugging Face API | `model.downloads` (30-day + all-time counts; drives the models-page sort) |
 | 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |
 | 2. Tokenize | `tokenize_observed_command.py` | observed shell strings on records | `metadata.<source>.tokenized` (never the launch contract) |
 | 3. Enrich | `enrich_registry.py` | records | shared enrichment contract fields (facts, provenance) |

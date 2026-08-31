@@ -14,7 +14,8 @@
     "url",
     "huggingface",
     "provenance",
-    "facts"
+    "facts",
+    "downloads"
   ],
   "properties": {
     "schema_version": {
@@ -63,6 +64,40 @@
     },
     "facts": {
       "$ref": "common.schema.json#/$defs/facts"
+    },
+    "downloads": {
+      "type": "object",
+      "required": [
+        "last_30d",
+        "all_time",
+        "captured_at",
+        "source"
+      ],
+      "properties": {
+        "last_30d": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "all_time": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "const": "huggingface-api"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Hugging Face download counts for the canonical repository; null when the model has no known repo."
     }
   },
   "additionalProperties": false
