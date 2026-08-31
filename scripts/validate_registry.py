@@ -349,6 +349,10 @@ def validate(root):
                     errors.append(f"{sweep['id']}: {field} must be non-negative or null")
 
     for benchmark in data.get("benchmark", {}).values():
+        for row in benchmark.get("rows", []):
+            model_id = row.get("model_id")
+            if model_id is not None and model_id not in data["model"]:
+                errors.append(f"{benchmark['id']}: row model_id {model_id!r} does not resolve to a model")
         if not benchmark.get("name"):
             errors.append(f"{benchmark['id']}: benchmark has no name")
         for row in benchmark.get("rows", []):
