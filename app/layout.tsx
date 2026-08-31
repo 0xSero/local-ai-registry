@@ -19,7 +19,12 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header className="site-header">
           <Link className="wordmark" href="/">
-            <span className="wordmark-mark" aria-hidden="true">LAI</span>
+            <svg aria-hidden="true" className="wordmark-mark" fill="none" viewBox="0 0 30 30">
+              <rect height="21" rx="4.5" stroke="currentColor" strokeWidth="1.6" width="21" x="4.5" y="4.5" />
+              <path d="M9.5 4.5V2.2M15 4.5V2.2M20.5 4.5V2.2M9.5 27.8v-2.3M15 27.8v-2.3M20.5 27.8v-2.3M4.5 9.5H2.2M4.5 15H2.2M4.5 20.5H2.2M27.8 9.5h-2.3M27.8 15h-2.3M27.8 20.5h-2.3" stroke="currentColor" strokeLinecap="round" strokeWidth="1.4" />
+              <circle cx="15" cy="15" fill="currentColor" r="2.6" />
+              <path d="M15 10.2v2.2M15 17.6v2.2M10.2 15h2.2M17.6 15h2.2" stroke="currentColor" strokeLinecap="round" strokeWidth="1.4" />
+            </svg>
             <span>Local AI Registry</span>
           </Link>
           <nav aria-label="Primary navigation">

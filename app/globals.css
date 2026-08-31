@@ -78,17 +78,13 @@ code, pre, kbd, .mono-label, .row-status, .topic-total, .pagination { font-famil
 }
 .wordmark:hover { color: white; }
 .wordmark-mark {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  place-items: center;
-  color: var(--cream-ink);
-  background: var(--cream);
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  width: 26px;
+  height: 26px;
+  color: var(--cream);
+  flex-shrink: 0;
+  transition: color 0.15s ease;
 }
+.wordmark:hover .wordmark-mark { color: white; }
 .site-header nav { display: flex; gap: 18px; font-size: 0.75rem; }
 .site-header nav a { color: #c4c3be; text-decoration: none; }
 .site-header nav a:hover { color: white; }
