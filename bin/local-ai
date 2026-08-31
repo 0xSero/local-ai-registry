@@ -208,6 +208,66 @@ choose() {
   resolve "$selected"
 }
 
+
+launch_args() {
+  # Build the docker argv for a VALIDATED docker recipe into the global array LAUNCH.
+  local recipe=$1 launch status kind
+  status=$(jq -r '.status' <<<"$recipe")
+  kind=$(jq -r '.launch.kind' <<<"$recipe")
+  if [[ $status != validated || $kind != docker ]]; then
+    fail "only validated docker recipes materialize to a launch command; this recipe is ${status}/${kind}. Candidates are evidence, not launch contracts."
+  fi
+  launch=$(jq -c '.launch' <<<"$recipe")
+  LAUNCH=(docker run --rm)
+  if [[ $(jq -r '.accelerator_backend // empty' <<<"$launch") == nvidia ]]; then LAUNCH+=(--gpus all); fi
+  local value
+  value=$(jq -r '.ipc // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--ipc "$value"); fi
+  value=$(jq -r '.shm_size // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--shm-size "$value"); fi
+  value=$(jq -r '.network_mode // empty' <<<"$launch")
+  if [[ -n $value && $value != bridge ]]; then LAUNCH+=(--network "$value"); fi
+  local host_port container_port
+  host_port=$(jq -r '.host_port // empty' <<<"$launch")
+  container_port=$(jq -r '.container_port // empty' <<<"$launch")
+  if [[ -n $host_port && -n $container_port ]]; then LAUNCH+=(-p "${host_port}:${container_port}"); fi
+  local pair
+  while IFS= read -r pair; do
+    if [[ -n $pair ]]; then LAUNCH+=(-e "$pair"); fi
+  done < <(jq -r '(.environment // {}) | to_entries[] | "\(.key)=\(.value)"' <<<"$launch")
+  local source target ro suffix
+  while IFS=$'\t' read -r source target ro; do
+    [[ -n $source ]] || continue
+    source=${source/#\~/$HOME}
+    if [[ $source == asset/* ]]; then source="$ROOT/$source"; fi
+    suffix=""
+    if [[ $ro == true ]]; then suffix=":ro"; fi
+    LAUNCH+=(-v "${source}:${target}${suffix}")
+  done < <(jq -r '(.mounts // [])[] | [.source, .target, (.read_only // false | tostring)] | @tsv' <<<"$launch")
+  value=$(jq -r '.entrypoint // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--entrypoint "$value"); fi
+  LAUNCH+=("$(jq -r '.image' <<<"$launch")")
+  while IFS= read -r -d '' value; do
+    LAUNCH+=("$value")
+  done < <(jq -j '(.arguments // [])[] | . + "\u0000"' <<<"$launch")
+}
+
+cmd_command() {
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  printf '%q ' "${LAUNCH[@]}"
+  printf '\n'
+}
+
+cmd_run() {
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  printf 'launching validated recipe %s\n' "$1" >&2
+  exec "${LAUNCH[@]}"
+}
+
 usage() {
   cat <<'EOF'
 Usage: local-ai [command]
@@ -218,6 +278,8 @@ Usage: local-ai [command]
   show <recipe-id>               resolve a recipe and its references
   get <collection> <id>          print one record
   search <text>                  search all registry records
+  command <recipe-id>            print the exact docker command for a validated recipe
+  run <recipe-id>                launch a validated recipe with docker
 EOF
 }
 
@@ -225,6 +287,8 @@ need jq
 [[ -f $ROOT/index/recipes.json ]] || fail "registry not found at $ROOT"
 
 case ${1:-choose} in
+  command) shift; [[ $# -eq 1 ]] || fail "usage: local-ai command <recipe-id>"; cmd_command "$1" ;;
+  run) shift; [[ $# -eq 1 ]] || fail "usage: local-ai run <recipe-id>"; cmd_run "$1" ;;
   detect) detect ;;
   list) shift; list "$@" ;;
   choose) choose "${2:-}" ;;
