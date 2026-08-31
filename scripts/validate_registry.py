@@ -264,13 +264,11 @@ def validate(root):
     errors = []
     data = {name: load_collection(root, name, errors) for name in COLLECTIONS}
 
+    # Pure shape rules (required fields, types, ranges, URL formats) live in
+    # registry/schema/*.schema.json and are enforced by ajv in `npm test`.
+    # This validator keeps what schemas cannot express: referential integrity,
+    # cross-field logic, the trust boundary, and index staleness.
     for record in data["hardware"].values():
-        for field in ("vendor", "name", "kind", "accelerator_backend", "memory", "sources"):
-            if field not in record:
-                errors.append(f"{record.get('id')}: missing hardware.{field}")
-        capacity = record.get("memory", {}).get("vram_gb")
-        if not isinstance(capacity, (int, float)) or capacity <= 0:
-            errors.append(f"{record.get('id')}: memory.vram_gb must be positive")
         if "facts" in record:
             validate_facts(record, errors)
         availability = (record.get("commercial") or {}).get("availability")
@@ -366,10 +364,6 @@ def validate(root):
         if identifier in prices:
             errors.append(f"{path}: duplicate id {identifier}")
         prices[identifier] = record
-        if record.get("schema_version") != SCHEMA:
-            errors.append(f"{path}: schema_version must be {SCHEMA}")
-        if not record.get("observations"):
-            errors.append(f"{identifier}: price record has no observations")
         if not valid_timestamp(record.get("observed_at")):
             errors.append(f"{identifier}: observed_at must be RFC3339 UTC")
         currency = (record.get("region") or {}).get("currency")
@@ -381,12 +375,8 @@ def validate(root):
         for observation in record.get("observations", []):
             if observation.get("currency") != currency:
                 errors.append(f"{identifier}: observation currency does not match region")
-            if not isinstance(observation.get("amount"), (int, float)) or observation["amount"] <= 0:
-                errors.append(f"{identifier}: observation amount must be positive")
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
-            if not isinstance(observation.get("url"), str) or not re.match(r"^https?://", observation["url"]):
-                errors.append(f"{identifier}: observation URL is malformed")
 
     index_path = root / "index.json"
     try:
