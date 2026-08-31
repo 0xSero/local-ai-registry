@@ -330,6 +330,18 @@ def validate(root):
         if recipe.get("recipe_source") == "omlx":
             errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
+            if kind == "docker":
+                # materializability: a validated docker recipe must produce a complete command
+                if not launch.get("entrypoint") and not launch.get("arguments"):
+                    errors.append(f"{recipe['id']}: validated docker launch has neither entrypoint nor arguments")
+                for port_field in ("host_port", "container_port"):
+                    if not isinstance(launch.get(port_field), int):
+                        errors.append(f"{recipe['id']}: validated docker launch missing {port_field}")
+                if not launch.get("accelerator_backend"):
+                    errors.append(f"{recipe['id']}: validated docker launch missing accelerator_backend")
+                for mount in launch.get("mounts", []):
+                    if not isinstance(mount, dict) or not mount.get("source") or not mount.get("target"):
+                        errors.append(f"{recipe['id']}: validated docker launch has a malformed mount")
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")
             instance = data["model-instance"].get(recipe.get("model_instance_id"), {})
