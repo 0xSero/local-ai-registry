@@ -53,7 +53,16 @@ function keyedTableRows(value: Record<string, unknown>): Record<string, unknown>
   if (populated < 2) return null
   const shared = [...keyCounts.values()].filter((count) => count >= populated / 2).length
   if (shared === 0) return null
-  return entries.map(([key, item]) => ({ "": key, ...unwrap((item ?? {}) as Record<string, unknown>) }))
+  return entries.flatMap(([key, item]) => explode(key, (item ?? {}) as Record<string, unknown>))
+}
+
+function explode(name: string, value: Record<string, unknown>): Record<string, unknown>[] {
+  const entries = Object.entries(value)
+  const allObjects = entries.length > 0 && entries.every(([, item]) => item !== null && typeof item === "object" && !Array.isArray(item))
+  if (allObjects) {
+    return entries.map(([variant, item]) => ({ "": name, variant, ...(item as Record<string, unknown>) }))
+  }
+  return [{ "": name, ...value }]
 }
 
 function unwrap(value: Record<string, unknown>): Record<string, unknown> {
