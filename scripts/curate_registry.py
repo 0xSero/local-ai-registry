@@ -224,7 +224,7 @@ def link_products(root):
 
 def rebuild_index(root):
     collections = {}
-    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark"):
+    for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark", "asset"):
         collections[name] = sorted(path.stem for path in (root / name).glob("*.json"))
     collections["price"] = sorted(
         json.loads(path.read_text())["id"] for path in (root / "price").glob("*/*.json")

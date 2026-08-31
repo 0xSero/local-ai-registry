@@ -30,6 +30,7 @@ This is the progressive-disclosure rule: index, choice, then the exact record an
 | `speed-sweep/` | Measured inference evidence attached to one recipe |
 | `benchmark/` | Scraped public leaderboard scores per benchmark, keyed by model variant |
 | `price/<product-id>/` | Current retailer observations split by region and native currency |
+| `asset/` | Engine configs and patches recipes mount, stored as manifest + blob |
 
 Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
 
