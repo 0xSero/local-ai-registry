@@ -4,17 +4,24 @@ A hardware-aware registry of local model artifacts, launch recipes, measured spe
 
 ## Start here
 
-[`registry/index.json`](registry/index.json) is the only discovery document a client needs. It contains collection IDs and compact recipe rows for filtering. Fetch full records only after the user chooses something.
+[`registry/index/`](registry/index/) holds the discovery shards. A client fetches only what its question needs: `collections.json` (ids + counts), `recipes.json` (compact filter rows), and four reverse lookups — `recipes-by-hardware.json`, `instances-by-model.json`, `benchmarks-by-model.json`, `prices-by-hardware.json`. Fetch full records only after the user chooses something.
 
 ```text
-index.json
-  recipe/<id>.json
-    model_instance_id  -> model-instance/<id>.json
-      model_id         -> model/<id>.json
-    hardware_id        -> hardware/<id>.json
-    speed_sweeps_ids[] -> speed-sweeps/<id>.json
-  price/<product-id>/<region>.json
-    hardware[].id      -> hardware/<id>.json
+index/collections.json          ids + counts for every collection
+index/recipes.json              compact recipe rows for filtering
+index/recipes-by-hardware.json  hardware_id -> [recipe ids]
+index/instances-by-model.json   model_id    -> [model-instance ids]
+index/benchmarks-by-model.json  model_id    -> [leaderboard score rows]
+index/prices-by-hardware.json   hardware_id -> [price record ids]
+
+recipe/<id>.json
+  model_instance_id -> model-instance/<id>.json
+    model_id        -> model/<id>.json
+  hardware_id       -> hardware/<id>.json
+  speed_sweep_ids[] -> speed-sweep/<id>.json
+  launch.asset_ids[]-> asset/<id>.json
+price/<product-id>/<region>.json
+  hardware[].id     -> hardware/<id>.json  (hardware.products[] points back)
 ```
 
 This is the progressive-disclosure rule: index, choice, then the exact record and immediate references needed for the selected view. The API adds compact `relationships` links to the same records used by the site; it does not maintain a second UI-specific dataset or recursively embed the entire graph.
@@ -27,11 +34,12 @@ This is the progressive-disclosure rule: index, choice, then the exact record an
 | `model/` | One canonical base model |
 | `model-instance/` | One downloadable artifact or quantization |
 | `recipe/` | One artifact × hardware × engine compatibility unit |
-| `speed-sweeps/` | Measured inference evidence attached to one recipe |
-| `benchmarks/` | Scraped public leaderboard scores per benchmark, keyed by model variant |
+| `speed-sweep/` | Measured inference evidence attached to one recipe |
+| `benchmark/` | Scraped public leaderboard scores per benchmark, keyed by model variant |
 | `price/<product-id>/` | Current retailer observations split by region and native currency |
+| `asset/` | Engine configs and patches recipes mount, stored as manifest + blob |
 
-Current counts are published from the source of truth in [`registry/index.json`](registry/index.json) and `/api/v1/index`.
+Current counts are published from the source of truth in [`registry/index/collections.json`](registry/index/collections.json) and `/api/v1/index`.
 
 The shared contract is defined twice for different consumers: JSON Schema files under [`registry/schema/`](registry/schema/) and TypeScript interfaces in [`registry/schema/types.ts`](registry/schema/types.ts).
 
@@ -84,8 +92,8 @@ Versioned JSON routes live under `/api/v1`. `GET` and `HEAD` are supported. Muta
 | `/api/v1/prices` and `/api/v1/prices/:id` | Regional market observations and linked hardware specifications |
 | `/api/v1/recipes` and `/api/v1/recipes/:id` | Compatibility units and fully resolved details |
 | `/api/v1/compatibility` | Model × hardware compatibility query |
-| `/api/v1/speed-sweeps` and `/api/v1/speed-sweeps/:id` | Measured speed evidence |
-| `/api/v1/benchmarks` and `/api/v1/benchmarks/:id` | Scraped public leaderboard scores |
+| `/api/v1/speed-sweep` and `/api/v1/speed-sweep/:id` | Measured speed evidence |
+| `/api/v1/benchmark` and `/api/v1/benchmark/:id` | Scraped public leaderboard scores |
 
 List routes accept `limit` (maximum 100) and `offset`. Common compatibility filters are `model`, `hardware`, `model_id`, `model_instance_id`, `hardware_id`, `status`, `launchable`, `engine`, `launch_kind`, `precision`, `instance_kind`, `vendor`, `backend`, `min_vram_gb`, `max_vram_gb`, `hardware_count`, `evidence`, and the tri-state capability filters `chat`, `reasoning`, `tools`, and `vision`. Capability values are `true`, `false`, or `unknown`. Model-instance lists also accept `huggingface_status` and `huggingface_link_type`.
 
@@ -162,7 +170,7 @@ The default `choose` command uses `gum` when available and a numbered terminal m
 
 ## Source layout
 
-`registry/` is the normalized contract and the schema for new imports. Measured local inference evidence lives in `speed-sweeps/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmarks/` and never attach to recipes. `local-ai/` is the earlier denormalized dataset retained temporarily for existing consumers; it is not the schema for new imports.
+`registry/` is the normalized contract and the schema for new imports. Measured local inference evidence lives in `speed-sweep/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmark/` and never attach to recipes.
 
 Data provenance and recovery decisions are in [`docs/PROVENANCE.md`](docs/PROVENANCE.md). The behavior-only product prompt for a registry browser is in [`docs/UI_BEHAVIOR_PROMPT.md`](docs/UI_BEHAVIOR_PROMPT.md).
 

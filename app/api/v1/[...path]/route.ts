@@ -124,10 +124,10 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
       page,
     )
   }
-  if (resource === "benchmarks") {
+  if (resource === "benchmark") {
     return listResponse(request, listBenchmarks(selectedFilters, page), page)
   }
-  if (resource === "speed-sweeps") {
+  if (resource === "speed-sweep") {
     return listResponse(request, listSpeedSweeps(selectedFilters, page), page)
   }
 

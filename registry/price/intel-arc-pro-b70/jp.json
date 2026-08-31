@@ -1,63 +1,74 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "intel-arc-pro-b70--jp",
-  "product": {
-    "id": "intel-arc-pro-b70",
-    "name": "Intel Arc Pro b70",
-    "category": "gpu"
-  },
-  "region": {
-    "code": "JP",
-    "name": "Japan",
-    "currency": "JPY"
-  },
   "hardware": [
     {
       "id": "intel-arc-pro-b70-32gb",
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-29T22:45:40.199Z",
-  "summary": {
-    "listing_count": 2,
-    "retailer_count": 1,
-    "in_stock_count": 0,
-    "lowest_new": 259800.0,
-    "lowest_refurbished": null,
-    "lowest_used": null
-  },
+  "id": "intel-arc-pro-b70--jp",
   "observations": [
     {
-      "retailer": "kakaku",
-      "title": "Intel Arc Pro B70 Creator 32GB [PCIExp 32GB]",
+      "amount": 219800,
       "condition": "new",
-      "amount": 259800.0,
       "currency": "JPY",
-      "in_stock": null,
+      "in_stock": false,
+      "observed_at": "2026-08-31T11:51:51Z",
       "quantity": null,
-      "url": "https://kakaku.com/item/K0001790661/",
-      "observed_at": "2026-08-29T22:45:40.199Z"
+      "retailer": "dospara",
+      "title": "SPARKLE Intel Arc Pro B70 SBP70W-32G",
+      "url": "https://www.dospara.co.jp/SBR1750/IC627450.html"
     },
     {
-      "retailer": "kakaku",
-      "title": "SPARKLE Intel Arc Pro B70 32GB Blower SBP70W-32G [PCIExp 32GB]",
+      "amount": 259800.0,
       "condition": "new",
-      "amount": 269308.0,
       "currency": "JPY",
       "in_stock": null,
+      "observed_at": "2026-08-29T22:45:40.199Z",
       "quantity": null,
-      "url": "https://kakaku.com/item/K0001782220/",
-      "observed_at": "2026-08-29T22:45:40.198Z"
+      "retailer": "kakaku",
+      "title": "Intel Arc Pro B70 Creator 32GB [PCIExp 32GB]",
+      "url": "https://kakaku.com/item/K0001790661/"
+    },
+    {
+      "amount": 269308.0,
+      "condition": "new",
+      "currency": "JPY",
+      "in_stock": null,
+      "observed_at": "2026-08-29T22:45:40.198Z",
+      "quantity": null,
+      "retailer": "kakaku",
+      "title": "SPARKLE Intel Arc Pro B70 32GB Blower SBP70W-32G [PCIExp 32GB]",
+      "url": "https://kakaku.com/item/K0001782220/"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T11:51:51Z",
+  "product": {
+    "category": "gpu",
+    "id": "intel-arc-pro-b70",
+    "name": "Intel Arc Pro b70"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-29T22:45:49.751Z",
-    "source_error_count": 0
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "JP",
+    "currency": "JPY",
+    "name": "Japan"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 0,
+    "listing_count": 3,
+    "lowest_new": 219800,
+    "lowest_refurbished": null,
+    "lowest_used": null,
+    "retailer_count": 2
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 1,
+    "state": "candidate"
   }
 }

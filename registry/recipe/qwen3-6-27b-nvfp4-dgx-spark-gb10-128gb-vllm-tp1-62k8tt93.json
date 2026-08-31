@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "GB10 Grace Blackwell",
-      "notes": "PrismaSCOUT mixed BF16/NVFP4 (~5.5 bit avg). MTP\u00d71 speculative decoding. marlin MoE backend. ~21 GB weights. DeltaNet layers give 4\u00d7 smaller KV cache.",
+      "notes": "PrismaSCOUT mixed BF16/NVFP4 (~5.5 bit avg). MTP×1 speculative decoding. marlin MoE backend. ~21 GB weights. DeltaNet layers give 4× smaller KV cache.",
       "observed_command": "vllm serve rdtand/Qwen3.6-27B-PrismaSCOUT-Blackwell-NVFP4-BF16-vllm --port 8000 --trust-remote-code --quantization compressed-tensors --max-model-len 262144 --gpu-memory-utilization 0.60 --max-num-seqs 4 --max-num-batched-tokens 8192 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --kv-cache-dtype fp8 --attention-backend flashinfer --speculative-config {method:mtp,num_speculative_tokens:1} --moe-backend marlin",
       "run_id": "cmqw0fns0034zqr0162k8tt93",
       "tokenized": {
@@ -186,7 +186,7 @@
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "qwen3-6-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1-62k8tt93-sweep"
   ],
   "status": "candidate"

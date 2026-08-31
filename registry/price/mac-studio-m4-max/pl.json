@@ -1,16 +1,4 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "mac-studio-m4-max--pl",
-  "product": {
-    "id": "mac-studio-m4-max",
-    "name": "Mac Studio M4 Max",
-    "category": "apple"
-  },
-  "region": {
-    "code": "PL",
-    "name": "Poland",
-    "currency": "PLN"
-  },
   "hardware": [
     {
       "id": "apple-m4-max-128gb",
@@ -29,36 +17,59 @@
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-27T11:28:59.893Z",
-  "summary": {
-    "listing_count": 1,
-    "retailer_count": 1,
-    "in_stock_count": 1,
-    "lowest_new": null,
-    "lowest_refurbished": 12299,
-    "lowest_used": null
-  },
+  "id": "mac-studio-m4-max--pl",
   "observations": [
     {
-      "retailer": "apple-refurbished",
-      "title": "Odnowiony Mac Studio z czipem Apple M4 Max z 16‑rdzeniowym CPU i 40‑rdzeniowym GPU",
-      "condition": "refurbished",
-      "amount": 12299,
+      "amount": 9999,
+      "condition": "new",
       "currency": "PLN",
       "in_stock": true,
+      "observed_at": "2026-08-31T16:12:00.000Z",
       "quantity": null,
-      "url": "https://www.apple.com/pl/shop/product/g1cd0ze/a/Odnowiony-Mac-Studio-z-czipem-Apple-M4-Max-z-16‑rdzeniowym-CPU-i-40‑rdzeniowym-GPU",
-      "observed_at": "2026-08-27T11:28:59.893Z"
+      "retailer": "apple",
+      "title": "Mac Studio, czip M4 Max, 14-rdzeniowe CPU, 32-rdzeniowe GPU, pamięć RAM 36 GB, pamięć masowa 512 GB",
+      "url": "https://www.apple.com/pl/shop/buy-mac/mac-studio/czip-m4-max-14%E2%80%91rdzeniowe-cpu-32%E2%80%91rdzeniowe-gpu-pami%C4%99%C4%87-ram-36-gb-pami%C4%99%C4%87-masowa-512gb"
+    },
+    {
+      "amount": 12299,
+      "condition": "refurbished",
+      "currency": "PLN",
+      "in_stock": true,
+      "observed_at": "2026-08-27T11:28:59.893Z",
+      "quantity": null,
+      "retailer": "apple-refurbished",
+      "title": "Odnowiony Mac Studio z czipem Apple M4 Max z 16‑rdzeniowym CPU i 40‑rdzeniowym GPU",
+      "url": "https://www.apple.com/pl/shop/product/g1cd0ze/a/Odnowiony-Mac-Studio-z-czipem-Apple-M4-Max-z-16‑rdzeniowym-CPU-i-40‑rdzeniowym-GPU"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T16:12:00.000Z",
+  "product": {
+    "category": "apple",
+    "id": "mac-studio-m4-max",
+    "name": "Mac Studio M4 Max"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-27T11:32:26.483Z",
-    "source_error_count": 75
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "PL",
+    "currency": "PLN",
+    "name": "Poland"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 2,
+    "listing_count": 2,
+    "lowest_new": 9999,
+    "lowest_refurbished": 12299,
+    "lowest_used": null,
+    "retailer_count": 2
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 0,
+    "state": "candidate"
   }
 }
