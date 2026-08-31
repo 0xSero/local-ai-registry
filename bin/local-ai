@@ -209,6 +209,74 @@ choose() {
 }
 
 
+
+warn() { printf 'local-ai: warning: %s\n' "$*" >&2; }
+
+preflight() {
+  # Foolproofing before launch: verify this machine can actually run the recipe.
+  # LOCAL_AI_FORCE=1 (or run --force) downgrades hardware-mismatch failures to warnings.
+  local recipe=$1 force=${2:-0}
+  local required_hw required_count backend host_port detected detected_count
+  required_hw=$(jq -r '.hardware_id' <<<"$recipe")
+  required_count=$(jq -r '.hardware_count // 1' <<<"$recipe")
+  backend=$(jq -r '.launch.accelerator_backend // empty' <<<"$recipe")
+  host_port=$(jq -r '.launch.host_port // empty' <<<"$recipe")
+
+  if [[ $backend == nvidia ]]; then
+    command -v nvidia-smi >/dev/null 2>&1 || fail "this recipe targets NVIDIA hardware (${required_hw} x${required_count}); no NVIDIA driver detected on this machine (nvidia-smi not found)."
+  fi
+  command -v docker >/dev/null 2>&1 || fail "Docker is required to run this recipe. Install Docker and retry."
+  docker info >/dev/null 2>&1 || fail "The Docker daemon is not running. Start Docker and retry."
+  if [[ $backend == nvidia ]] && ! docker info 2>/dev/null | grep -qi 'nvidia'; then
+    warn "the NVIDIA container runtime was not visible in 'docker info'; if launch fails with a GPU error, install nvidia-container-toolkit."
+  fi
+
+  detected=$(detect 2>/dev/null || true)
+  detected_count=$(detect_count 2>/dev/null || printf '1')
+  if [[ -z $detected ]]; then
+    if [[ $force == 1 ]]; then
+      warn "could not detect local hardware; continuing because --force was given."
+    else
+      fail "could not detect local hardware. Set LOCAL_AI_HARDWARE to your registry hardware id, or pass --force to skip this check."
+    fi
+  elif [[ $detected != "$required_hw" ]]; then
+    local msg="this recipe was validated on ${required_hw} x${required_count}; this machine detects as ${detected} x${detected_count}."
+    if [[ $force == 1 ]]; then
+      warn "$msg Continuing because --force was given."
+      local need_vram have_vram
+      need_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$required_hw")")
+      have_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$detected")")
+      if [[ -n $need_vram && -n $have_vram ]] && (( $(printf '%.0f' "$have_vram") * detected_count < $(printf '%.0f' "$need_vram") * required_count )); then
+        warn "detected VRAM ($(printf '%.0f' "$have_vram")GB x${detected_count}) is below the validated requirement ($(printf '%.0f' "$need_vram")GB x${required_count}); the launch will likely fail or OOM."
+      fi
+    else
+      fail "$msg A validated recipe is a contract for its exact hardware. Pass --force to run anyway."
+    fi
+  elif (( detected_count < required_count )); then
+    if [[ $force == 1 ]]; then
+      warn "recipe needs ${required_count} accelerators, detected ${detected_count}; continuing because --force was given."
+    else
+      fail "this recipe needs ${required_count} accelerators; only ${detected_count} detected. Pass --force to run anyway."
+    fi
+  fi
+
+  if [[ -n $host_port ]] && command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$host_port" -sTCP:LISTEN >/dev/null 2>&1; then
+    fail "host port ${host_port} is already in use. Free it or stop the conflicting service, then retry."
+  fi
+
+  local instance size_gb cache_dir free_gb
+  instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$recipe")")
+  size_gb=$(jq -r '.weights.size_gb // empty' <<<"$instance")
+  cache_dir="$HOME/.cache/huggingface"
+  mkdir -p "$cache_dir" 2>/dev/null || true
+  if [[ -n $size_gb ]]; then
+    free_gb=$(df -Pk "$cache_dir" 2>/dev/null | awk 'NR==2 {printf "%d", $4/1048576}')
+    if [[ -n $free_gb ]] && (( free_gb < $(printf '%.0f' "$size_gb") + 5 )); then
+      fail "weights need ~${size_gb}GB but only ${free_gb}GB is free under ${cache_dir}. Free disk space and retry."
+    fi
+  fi
+}
+
 launch_args() {
   # Build the docker argv for a VALIDATED docker recipe into the global array LAUNCH.
   local recipe=$1 launch status kind
@@ -285,10 +353,15 @@ cmd_command() {
 }
 
 cmd_run() {
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
   local recipe
   recipe=$(record recipe "$1")
   launch_args "$recipe"
-  printf 'launching validated recipe %s\n' "$1" >&2
+  preflight "$recipe" "$force"
+  printf 'preflight passed; launching validated recipe %s\n' "$1" >&2
+  printf 'the server will listen on http://localhost:%s (OpenAI-compatible)\n' "$(jq -r '.launch.host_port' <<<"$recipe")" >&2
   exec "${LAUNCH[@]}"
 }
 
@@ -303,7 +376,7 @@ Usage: local-ai [command]
   get <collection> <id>          print one record
   search <text>                  search all registry records
   command <recipe-id>            print the exact docker command for a validated recipe
-  run <recipe-id>                launch a validated recipe with docker
+  run [--force] <recipe-id>      preflight this machine, then launch a validated recipe
 EOF
 }
 
@@ -312,7 +385,7 @@ need jq
 
 case ${1:-choose} in
   command) shift; [[ $# -eq 1 ]] || fail "usage: local-ai command <recipe-id>"; cmd_command "$1" ;;
-  run) shift; [[ $# -eq 1 ]] || fail "usage: local-ai run <recipe-id>"; cmd_run "$1" ;;
+  run) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai run [--force] <recipe-id>"; cmd_run "$@" ;;
   detect) detect ;;
   list) shift; list "$@" ;;
   choose) choose "${2:-}" ;;
