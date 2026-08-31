@@ -205,6 +205,23 @@ def sanitize_candidates(root):
             write(path, record)
 
 
+
+def link_products(root):
+    """Derive hardware.products from the price records that reference each SKU."""
+    by_hardware = {}
+    for path in sorted((root / "price").glob("*/*.json")):
+        record = json.loads(path.read_text())
+        product_id = record["product"]["id"]
+        for hardware in record.get("hardware", []):
+            by_hardware.setdefault(hardware.get("id"), set()).add(product_id)
+    for path in sorted((root / "hardware").glob("*.json")):
+        record = json.loads(path.read_text())
+        products = sorted(by_hardware.get(record.get("id"), set()))
+        if record.get("products") != products:
+            record["products"] = products
+            write(path, record)
+
+
 def rebuild_index(root):
     collections = {}
     for name in ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark"):
@@ -245,6 +262,7 @@ def main():
     if not args.index_only:
         curate_hardware(root)
         sanitize_candidates(root)
+        link_products(root)
     rebuild_index(root)
 
 
