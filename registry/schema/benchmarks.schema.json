@@ -3,18 +3,48 @@
   "$id": "https://local-ai-registry.dev/schema/benchmarks.schema.json",
   "title": "Benchmark",
   "type": "object",
-  "required": ["schema_version", "id", "name", "category", "source", "rows"],
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "category",
+    "source",
+    "rows"
+  ],
   "properties": {
-    "schema_version": { "const": "local-ai-registry/v1" },
-    "id": { "type": "string" },
-    "name": { "type": "string" },
-    "category": { "type": ["string", "null"] },
+    "schema_version": {
+      "const": "local-ai-registry/v1"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "category": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "source": {
       "type": "object",
       "properties": {
-        "kind": { "type": "string" },
-        "url": { "type": ["string", "null"] },
-        "paths": { "type": "array", "items": { "type": "string" } }
+        "kind": {
+          "type": "string"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "additionalProperties": false
     },
@@ -22,17 +52,57 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["rank", "variant", "root", "org", "score"],
+        "required": [
+          "rank",
+          "variant",
+          "root",
+          "org",
+          "score"
+        ],
         "properties": {
-          "rank": { "type": "integer", "minimum": 1 },
-          "variant": { "type": ["string", "null"] },
-          "root": { "type": ["string", "null"] },
-          "org": { "type": ["string", "null"] },
-          "score": { "type": ["number", "null"] },
-          "conf": { "type": ["string", "null"] },
-          "context": { "type": ["string", "null"] }
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "variant": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "root": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "org": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "conf": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "context": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "title": "Benchmark score row"
       }
     }
   },
