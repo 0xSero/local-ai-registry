@@ -126,7 +126,7 @@
     "localmaxxing": {
       "backend": "cuda",
       "hardware_label": "RTX PRO 6000 Blackwell",
-      "notes": "Automated 3-run llama-benchy 0.4.0 measurement. Fixed 512-token prompt and 1024-token output, batch 1, cold prefix cache, exact output length, greedy temperature=0. Output 150.03 \u00b1 7.20 tok/s; prefill 12,222.93 \u00b1 1,042.48 tok/s; TTFT 177.17 \u00b1 3.82 ms. GPU power values are means during >=50% utilization. Peak VRAM is the sum across both 96 GB GPUs. GPU 0 also drives the Hyprland desktop; vLLM memory utilization lowered from 0.975 to 0.972 for desktop headroom.",
+      "notes": "Automated 3-run llama-benchy 0.4.0 measurement. Fixed 512-token prompt and 1024-token output, batch 1, cold prefix cache, exact output length, greedy temperature=0. Output 150.03 ± 7.20 tok/s; prefill 12,222.93 ± 1,042.48 tok/s; TTFT 177.17 ± 3.82 ms. GPU power values are means during >=50% utilization. Peak VRAM is the sum across both 96 GB GPUs. GPU 0 also drives the Hyprland desktop; vLLM memory utilization lowered from 0.975 to 0.972 for desktop headroom.",
       "observed_command": "vllm serve /model --served-model-name GLM-5.3-Flash-EXL3-4bpw --host 0.0.0.0 --port 8012 --language-model-only --tensor-parallel-size 2 --decode-context-parallel-size 2 --dcp-comm-backend a2a --dtype bfloat16 --load-format safetensors --moe-backend b12x --attention-backend FLASHINFER_MLA_SPARSE_SM120 --kv-cache-dtype fp8_ds_mla --max-model-len 352512 --max-num-batched-tokens 2048 --max-num-seqs 1 --gpu-memory-utilization 0.972 --enable-chunked-prefill --generation-config /model --reasoning-parser glm45 --enable-auto-tool-choice --tool-call-parser glm47 --disable-custom-all-reduce --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"draft_sample_method\":\"probabilistic\"}' --no-enable-prefix-caching",
       "run_id": "cmteg7yq5000cn001lurymje8",
       "tokenized": {
@@ -201,7 +201,7 @@
     "max_context_tokens": 352512,
     "tensor_parallel": 2
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "glm-5-3-flash-exl3-4bit-rtx-pro-6000-blackwell-96gb-vllm-tp2-sweep"
   ],
   "status": "candidate"

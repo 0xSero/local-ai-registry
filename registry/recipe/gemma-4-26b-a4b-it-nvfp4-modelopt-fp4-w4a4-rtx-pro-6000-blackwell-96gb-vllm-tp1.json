@@ -247,7 +247,7 @@
         "tensorParallel": null
       },
       "hardware_label": "1x RTX PRO 6000 Blackwell 96GB",
-      "notes": "Concurrency=16 aggregate throughput, sweet-spot config. 16 parallel chat completions, 8 distinct prompts cycled with per-request seeding to defeat prefix caching, temp=0.7, max_tokens=600 (avg actual=564). Wall 8.62s, total 9,029 tokens, no queueing (max-num-seqs=16), p95 \u2248 p50, 0 KV preemptions. Continuous batching only \u2014 Eagle3 spec-decode tested and dropped (27% accept on NVFP4 target \u2192 -29% throughput). Per-stream ~69 t/s under load vs 128 t/s single-stream. KV cache FP8. EPYC 32c/64t host, 160 GB DDR5. Run 2026-05-09.",
+      "notes": "Concurrency=16 aggregate throughput, sweet-spot config. 16 parallel chat completions, 8 distinct prompts cycled with per-request seeding to defeat prefix caching, temp=0.7, max_tokens=600 (avg actual=564). Wall 8.62s, total 9,029 tokens, no queueing (max-num-seqs=16), p95 ≈ p50, 0 KV preemptions. Continuous batching only — Eagle3 spec-decode tested and dropped (27% accept on NVFP4 target → -29% throughput). Per-stream ~69 t/s under load vs 128 t/s single-stream. KV cache FP8. EPYC 32c/64t host, 160 GB DDR5. Run 2026-05-09.",
       "revision_unpinned": true,
       "run_id": "cmozt9exg0085lo01c1g3q2i7"
     }
@@ -271,7 +271,7 @@
     "max_context_tokens": null,
     "tensor_parallel": 1
   },
-  "speed_sweeps_ids": [
+  "speed_sweep_ids": [
     "gemma-4-26b-a4b-it-nvfp4-modelopt-fp4-w4a4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep"
   ],
   "status": "candidate"

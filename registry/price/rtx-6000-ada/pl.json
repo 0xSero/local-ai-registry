@@ -1,63 +1,74 @@
 {
-  "schema_version": "local-ai-registry/v1",
-  "id": "rtx-6000-ada--pl",
-  "product": {
-    "id": "rtx-6000-ada",
-    "name": "RTX 6000 ada",
-    "category": "gpu"
-  },
-  "region": {
-    "code": "PL",
-    "name": "Poland",
-    "currency": "PLN"
-  },
   "hardware": [
     {
       "id": "rtx-6000-ada-48gb",
       "match_scope": "family"
     }
   ],
-  "observed_at": "2026-08-29T22:37:59.840Z",
-  "summary": {
-    "listing_count": 2,
-    "retailer_count": 1,
-    "in_stock_count": 2,
-    "lowest_new": 39633.55,
-    "lowest_refurbished": null,
-    "lowest_used": null
-  },
+  "id": "rtx-6000-ada--pl",
   "observations": [
     {
+      "amount": 39633.55,
+      "condition": "new",
+      "currency": "PLN",
+      "in_stock": true,
+      "observed_at": "2026-08-29T22:37:59.840Z",
+      "quantity": null,
       "retailer": "ceneo",
       "title": "Pny NVIDIA RTX 6000 ADA 48GB GDDR6 ECC (VCNRTX6000ADAPB)",
-      "condition": "new",
-      "amount": 39633.55,
-      "currency": "PLN",
-      "in_stock": true,
-      "quantity": null,
-      "url": "https://www.ceneo.pl/154997032?utm_medium=organic&utm_source=listing_carousel&utm_content=/Komputery;szukaj-rtx+6000+ada",
-      "observed_at": "2026-08-29T22:37:59.840Z"
+      "url": "https://www.ceneo.pl/154997032?utm_medium=organic&utm_source=listing_carousel&utm_content=/Komputery;szukaj-rtx+6000+ada"
     },
     {
-      "retailer": "ceneo",
-      "title": "Pny NVIDIA RTX 6000 Ada Generation Quadro RTX 6000 48 GB GDDR6 (VCNRTX6000ADASB)",
+      "amount": 40012.89,
       "condition": "new",
-      "amount": 42052.91,
       "currency": "PLN",
       "in_stock": true,
+      "observed_at": "2026-08-31T16:12:00.000Z",
       "quantity": null,
-      "url": "https://www.ceneo.pl/158270641?utm_medium=organic&utm_source=listing_carousel&utm_content=/Komputery;szukaj-rtx+6000+ada",
-      "observed_at": "2026-08-29T22:37:59.840Z"
+      "retailer": "ceneo",
+      "title": "PNY NVIDIA RTX 6000 ADA 48GB GDDR6 ECC",
+      "url": "https://www.ceneo.pl/154997032"
+    },
+    {
+      "amount": 42052.91,
+      "condition": "new",
+      "currency": "PLN",
+      "in_stock": true,
+      "observed_at": "2026-08-29T22:37:59.840Z",
+      "quantity": null,
+      "retailer": "ceneo",
+      "title": "Pny NVIDIA RTX 6000 Ada Generation Quadro RTX 6000 48 GB GDDR6 (VCNRTX6000ADASB)",
+      "url": "https://www.ceneo.pl/158270641?utm_medium=organic&utm_source=listing_carousel&utm_content=/Komputery;szukaj-rtx+6000+ada"
     }
   ],
-  "verification": {
-    "state": "candidate",
-    "method": "retailer query result with regional currency and robust lower-outlier rejection",
-    "rejected_observations": 0
+  "observed_at": "2026-08-31T16:12:00.000Z",
+  "product": {
+    "category": "gpu",
+    "id": "rtx-6000-ada",
+    "name": "RTX 6000 ada"
   },
   "provenance": {
-    "scanner": "https://github.com/0xSero/local-ai-scanner-cli",
-    "snapshot_generated_at": "2026-08-29T22:45:49.751Z",
-    "source_error_count": 0
+    "scanner": "https://github.com/openai/codex",
+    "snapshot_generated_at": "2026-08-31T16:12:00.000Z",
+    "source_error_count": 200
+  },
+  "region": {
+    "code": "PL",
+    "currency": "PLN",
+    "name": "Poland"
+  },
+  "schema_version": "local-ai-registry/v1",
+  "summary": {
+    "in_stock_count": 3,
+    "listing_count": 3,
+    "lowest_new": 39633.55,
+    "lowest_refurbished": null,
+    "lowest_used": null,
+    "retailer_count": 1
+  },
+  "verification": {
+    "method": "codex-cli (gpt-5.6-terra) live web search with per-region subagents; gated by validate_research.py: structure, native currency, https product URL, ISO timestamps, and plausibility vs prior lowest-new (0.35x-3x); URLs verified reachable; pre-existing scanner observations retained and merged",
+    "rejected_observations": 0,
+    "state": "candidate"
   }
 }
