@@ -2,6 +2,7 @@ import { ConfigurationCard, configurationFromRecipe } from "@/app/components/con
 import { CopyActions } from "@/app/components/copy-actions"
 import { DataTree } from "@/app/components/data-tree"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
+import { ModelScores } from "@/app/components/model-scores"
 import { RecordEvidence } from "@/app/components/record-evidence"
 import { RecordFacts } from "@/app/components/record-facts"
 import { RelatedRecords } from "@/app/components/related-records"
@@ -48,6 +49,7 @@ export function RecordBody({
         </>
       )}
       <RecordEvidence collection={collection} record={record} />
+      {collection === "models" && typeof record.id === "string" && <ModelScores modelId={record.id} />}
       <RelatedRecords groups={groups} />
       {variant === "page" ? (
         <section className="record-sheet">
