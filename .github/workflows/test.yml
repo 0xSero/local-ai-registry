@@ -1,0 +1,13 @@
+name: test
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the plugin test suite
+        run: ./test/all
+      - name: Validate the manifest against Omarchy quattro
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/basecamp/omarchy/quattro/bin/omarchy-plugin-validate -o /tmp/validate
+          bash /tmp/validate .
