@@ -288,6 +288,25 @@ export type HardwareComparisonRow = {
   lowest_new_usd: number | null
   price_observed_at: string | null
   recipe_count: number
+  speed_sweep_count: number
+  evidence_point_count: number
+  measured_model_count: number
+  peak_prefill_tok_s: number | null
+  peak_decode_tok_s: number | null
+  fastest_ttft_ms: number | null
+  max_observed_context_tokens: number | null
+  peak_observed_vram_gb: number | null
+}
+
+type HardwareSpeedEvidence = {
+  sweep_count: number
+  point_count: number
+  model_count: number
+  peak_prefill_tok_s?: number
+  peak_decode_tok_s?: number
+  fastest_ttft_ms?: number
+  max_observed_context_tokens?: number
+  peak_observed_vram_gb?: number
 }
 
 function bestThroughput(record: Hardware, dtype: string): { value: number | null; sparse: boolean } {
@@ -303,6 +322,10 @@ function bestThroughput(record: Hardware, dtype: string): { value: number | null
 
 export function hardwareComparison(): HardwareComparisonRow[] {
   const data = dataset()
+  const evidenceByHardware = readJson<{ hardware: Record<string, HardwareSpeedEvidence> }>(
+    "index",
+    "hardware-speed-evidence.json",
+  ).hardware
   return [...data.hardware.values()].map((record) => {
     const fp16 = bestThroughput(record, "fp16")
     const fp8 = bestThroughput(record, "fp8")
@@ -310,6 +333,7 @@ export function hardwareComparison(): HardwareComparisonRow[] {
     const int8 = bestThroughput(record, "int8")
     const market = getHardwareMarket(record.id)
     const us = market.find((row) => row.region === "US" && row.lowest_new !== null)
+    const evidence = evidenceByHardware[record.id]
     return {
       id: record.id,
       name: record.name,
@@ -327,6 +351,14 @@ export function hardwareComparison(): HardwareComparisonRow[] {
       lowest_new_usd: us?.lowest_new ?? null,
       price_observed_at: us?.observed_at ?? null,
       recipe_count: recipeCountForHardware(record.id),
+      speed_sweep_count: evidence?.sweep_count ?? 0,
+      evidence_point_count: evidence?.point_count ?? 0,
+      measured_model_count: evidence?.model_count ?? 0,
+      peak_prefill_tok_s: evidence?.peak_prefill_tok_s ?? null,
+      peak_decode_tok_s: evidence?.peak_decode_tok_s ?? null,
+      fastest_ttft_ms: evidence?.fastest_ttft_ms ?? null,
+      max_observed_context_tokens: evidence?.max_observed_context_tokens ?? null,
+      peak_observed_vram_gb: evidence?.peak_observed_vram_gb ?? null,
     }
   })
 }
@@ -350,6 +382,7 @@ export function dockerCommand(recipe: Recipe): string | null {
   const preamble: string[] = []
   const lines: string[][] = [["docker", "run", "--rm"]]
   if (launch.accelerator_backend === "nvidia") lines.push(["--gpus", "all"])
+  for (const device of (launch.devices as string[]) ?? []) lines.push(["--device", device])
   if (typeof launch.ipc === "string") lines.push(["--ipc", launch.ipc])
   if (typeof launch.shm_size === "string") lines.push(["--shm-size", launch.shm_size])
   if (typeof launch.network_mode === "string" && launch.network_mode !== "bridge") lines.push(["--network", launch.network_mode as string])

@@ -240,6 +240,8 @@ def validate_container(recipe, errors):
         image = launch.get("image")
         if not image:
             errors.append(f"{identifier}: Docker launch has no image")
+        if recipe.get("status") == "validated" and str(image).startswith("local/"):
+            errors.append(f"{identifier}: validated Docker launch cannot use an unpullable local/ image")
         expected = "digest-pinned" if isinstance(image, str) and re.search(r"@sha256:[0-9a-f]{64}$", image) else "mutable"
         if state != expected:
             errors.append(f"{identifier}: Docker container state does not match image digest")
@@ -365,8 +367,6 @@ def validate(root):
                 errors.append(f"{recipe['id']}: validated recipe has no speed evidence")
             if kind == "docker" and not re.search(r"@sha256:[0-9a-f]{64}$", launch.get("image", "")):
                 errors.append(f"{recipe['id']}: validated Docker launch has no image digest")
-            if kind == "docker" and str(launch.get("image", "")).startswith("local/"):
-                errors.append(f"{recipe['id']}: validated Docker launch cannot use an unpullable local/ image")
             if kind == "script" and not re.search(r"(?:^|/)[0-9a-f]{40}/", launch.get("script", {}).get("file", "")):
                 errors.append(f"{recipe['id']}: validated script launch has no commit pin")
             launch_text = json.dumps(launch).lower()

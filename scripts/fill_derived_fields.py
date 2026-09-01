@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from import_localmaxxing import server_capacity, workload_concurrency
+from import_localmaxxing import server_capacity, server_context_limit, workload_concurrency
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "registry"
@@ -91,7 +91,99 @@ def fill_recipes(captured_at: str) -> int:
         updates += 1
     return updates
 
-def correct_localmaxxing_concurrency_semantics(captured_at: str) -> tuple[int, int]:
+
+def explicit_integer(
+    launch: dict[str, Any],
+    argument_names: tuple[str, ...],
+    environment_names: tuple[str, ...],
+) -> int | None:
+    values: set[int] = set()
+    arguments = launch.get("arguments")
+    if isinstance(arguments, list):
+        for index, argument in enumerate(arguments[:-1]):
+            if argument not in argument_names:
+                continue
+            try:
+                value = int(arguments[index + 1])
+            except (TypeError, ValueError):
+                continue
+            if value > 0:
+                values.add(value)
+    environment = launch.get("environment")
+    if isinstance(environment, dict):
+        for name in environment_names:
+            try:
+                value = int(environment.get(name))
+            except (TypeError, ValueError):
+                continue
+            if value > 0:
+                values.add(value)
+    return values.pop() if len(values) == 1 else None
+
+
+def fill_explicit_serving_limits(captured_at: str) -> tuple[int, int]:
+    file_updates = 0
+    field_updates = 0
+    for path in sorted((REGISTRY / "recipe").glob("*.json")):
+        record = load(path)
+        launch = record.get("launch")
+        serving = record.get("serving")
+        if not isinstance(launch, dict) or not isinstance(serving, dict):
+            continue
+
+        changed = False
+        concurrency = explicit_integer(
+            launch,
+            ("--parallel", "--max-num-seqs", "--max-running-requests"),
+            ("PARALLEL", "MAX_NUM_SEQS", "MAX_RUNNING_REQUESTS"),
+        )
+        if serving.get("max_concurrency") is None and concurrency is not None:
+            serving["max_concurrency"] = concurrency
+            record.setdefault("facts", {})["serving.max_concurrency"] = known_fact(
+                "explicit-launch-concurrency-limit", captured_at
+            )
+            changed = True
+            field_updates += 1
+
+        direct_context = explicit_integer(
+            launch,
+            ("--max-model-len", "--context-length", "--max-context-length"),
+            ("MAX_MODEL_LEN", "CONTEXT_LENGTH", "MAX_CONTEXT_LENGTH"),
+        )
+        llama_context = explicit_integer(launch, ("--ctx-size",), ("CTX_SIZE",))
+        parallel = explicit_integer(launch, ("--parallel",), ("PARALLEL",))
+        llama_per_request = None
+        if llama_context is not None and parallel is not None and llama_context % parallel == 0:
+            llama_per_request = llama_context // parallel
+        context_values = {value for value in (direct_context, llama_per_request) if value is not None}
+        per_request_context = context_values.pop() if len(context_values) == 1 else None
+        if serving.get("max_context_tokens") is None and per_request_context is not None:
+            serving["max_context_tokens"] = per_request_context
+            record.setdefault("facts", {})["serving.max_context_tokens"] = known_fact(
+                "explicit-launch-context-limit", captured_at
+            )
+            changed = True
+            field_updates += 1
+
+        engine_name = str((record.get("engine") or {}).get("name") or "").lower()
+        if (
+            serving.get("kv_cache_tokens") is None
+            and engine_name in ("llama-cpp", "llama.cpp")
+            and llama_context is not None
+        ):
+            serving["kv_cache_tokens"] = llama_context
+            record.setdefault("facts", {})["serving.kv_cache_tokens"] = known_fact(
+                "explicit-llama-cpp-total-context-capacity", captured_at
+            )
+            changed = True
+            field_updates += 1
+
+        if changed:
+            save(path, record)
+            file_updates += 1
+    return file_updates, field_updates
+
+def correct_localmaxxing_serving_semantics(captured_at: str) -> tuple[int, int]:
     recipe_updates = 0
     sweep_updates = 0
     for path in sorted((REGISTRY / "recipe").glob("*.json")):
@@ -111,46 +203,42 @@ def correct_localmaxxing_concurrency_semantics(captured_at: str) -> tuple[int, i
             "engineFlags": {"commandSnippet": local_metadata.get("observed_command")},
             "notes": local_metadata.get("notes"),
         }
-        concurrency = workload_concurrency(source_row)
-        capacity = server_capacity(source_row, concurrency)
+        observed_concurrency = workload_concurrency(source_row)
+        capacity = server_capacity(source_row)
+        context_limit = server_context_limit(source_row)
+        source_url = ((record.get("launch") or {}).get("url") or REGISTRY_URL)
         changed = False
-        fact = (record.get("facts") or {}).get("serving.max_concurrency")
-        if (
-            capacity is None
-            and isinstance(fact, dict)
-            and fact.get("state") == "known"
-            and fact.get("reason") == "server-capacity-derived-from-source-evidence"
-            and isinstance(serving.get("max_concurrency"), int)
-            and serving["max_concurrency"] > 0
-        ):
-            capacity = serving["max_concurrency"]
-        if (
-            not isinstance(fact, dict)
-            and "batch_size" not in local_metadata
-            and serving.get("max_concurrency") is not None
-        ):
-            local_metadata["batch_size"] = serving.get("max_concurrency")
-            changed = True
-        if serving.get("max_concurrency") != capacity:
-            serving["max_concurrency"] = capacity
-            changed = True
-
-        if capacity is None:
-            reason = "server-capacity-not-evidenced"
-        else:
-            reason = "server-capacity-derived-from-source-evidence"
-        expected_state = "unknown" if capacity is None else "known"
-        if (
-            not isinstance(fact, dict)
-            or fact.get("reason") != reason
-            or fact.get("state") != expected_state
-        ):
-            source_url = ((record.get("launch") or {}).get("url") or REGISTRY_URL)
-            fact_builder = unknown_fact if capacity is None else known_fact
-            record.setdefault("facts", {})["serving.max_concurrency"] = fact_builder(
-                reason, captured_at, source_url
-            )
-            changed = True
+        limits = (
+            (
+                "max_context_tokens",
+                context_limit,
+                "explicit-source-context-limit",
+                "context-limit-not-evidenced",
+            ),
+            (
+                "max_concurrency",
+                capacity,
+                "explicit-source-server-capacity",
+                "server-capacity-not-evidenced",
+            ),
+        )
+        for field, value, known_reason, unknown_reason in limits:
+            if serving.get(field) != value:
+                serving[field] = value
+                changed = True
+            fact = (record.get("facts") or {}).get(f"serving.{field}")
+            expected_reason = known_reason if value is not None else unknown_reason
+            expected_state = "known" if value is not None else "unknown"
+            if (
+                not isinstance(fact, dict)
+                or fact.get("reason") != expected_reason
+                or fact.get("state") != expected_state
+            ):
+                fact_builder = known_fact if value is not None else unknown_fact
+                record.setdefault("facts", {})[f"serving.{field}"] = fact_builder(
+                    expected_reason, captured_at, source_url
+                )
+                changed = True
         if changed:
             save(path, record)
             recipe_updates += 1
@@ -162,12 +250,15 @@ def correct_localmaxxing_concurrency_semantics(captured_at: str) -> tuple[int, i
             sweep = load(sweep_path)
             sweep_changed = False
             for row in sweep.get("rows") or []:
-                if row.get("concurrency") != concurrency:
-                    row["concurrency"] = concurrency
+                if row.get("concurrency") != observed_concurrency:
+                    row["concurrency"] = observed_concurrency
                     sweep_changed = True
             metrics = sweep.get("metrics")
-            if isinstance(metrics, dict) and metrics.get("concurrency") != concurrency:
-                metrics["concurrency"] = concurrency
+            if (
+                isinstance(metrics, dict)
+                and metrics.get("concurrency") != observed_concurrency
+            ):
+                metrics["concurrency"] = observed_concurrency
                 sweep_changed = True
             if sweep_changed:
                 save(sweep_path, sweep)
@@ -703,7 +794,8 @@ def main() -> int:
     captured_at = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     organisations, variants = fill_benchmarks()
     descriptions = fill_recipes(captured_at)
-    localmaxxing_recipes, localmaxxing_sweeps = correct_localmaxxing_concurrency_semantics(captured_at)
+    serving_files, serving_fields = fill_explicit_serving_limits(captured_at)
+    localmaxxing_recipes, localmaxxing_sweeps = correct_localmaxxing_serving_semantics(captured_at)
     sweeps = fill_sweep_metrics()
     sweep_engine_versions = fill_sweep_engine_versions()
     per_stream_files, per_stream_rows = fill_per_stream_decode()
@@ -716,8 +808,10 @@ def main() -> int:
     exact_hardware_prices = fill_exact_hardware_prices()
     print(
         f"benchmark organisations: {organisations}; variants: {variants}; "
-        f"recipe descriptions: {descriptions}; "
-        f"LocalMaxxing concurrency recipes: {localmaxxing_recipes}; sweeps: {localmaxxing_sweeps}; "
+        f"recipe descriptions: {descriptions}; explicit serving files: {serving_files}; "
+        f"fields: {serving_fields}; "
+        f"LocalMaxxing serving recipes: {localmaxxing_recipes}; "
+        f"sweeps: {localmaxxing_sweeps}; "
         f"sweep files: {sweeps}; sweep engine versions: {sweep_engine_versions}; "
         f"per-stream files: {per_stream_files}; rows: {per_stream_rows}; "
         f"source paths: {source_paths}; engine versions: {engine_versions}; graph modes: {graph_modes}; "
