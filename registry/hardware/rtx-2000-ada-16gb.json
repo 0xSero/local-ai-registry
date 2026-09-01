@@ -29,8 +29,27 @@
       "amount": 849.0,
       "currency": "USD"
     },
-    "msrp": null,
+    "msrp": {
+      "amount": 625,
+      "currency": "USD"
+    },
     "prices": [
+      {
+        "amount": 625,
+        "as_of": "2026-09-01",
+        "captured_at": "2026-09-01T08:29:50Z",
+        "currency": "USD",
+        "kind": "MSRP",
+        "region": "US",
+        "scope": "manufacturer_marketplace_list_price",
+        "source": {
+          "captured_at": "2026-09-01T08:29:50Z",
+          "kind": "vendor",
+          "publisher": "NVIDIA",
+          "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-2000-ada-generation/"
+        },
+        "unit": "one_time"
+      },
       {
         "amount": 849.0,
         "as_of": "2026-08-31T12:11:18Z",
@@ -322,39 +341,39 @@
     },
     "commercial.msrp": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-2000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-2000-ada-generation/"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "NVIDIA product page routes to partners without a public MSRP"
-      },
-      "state": "unknown"
+      "reason": "manufacturer-marketplace-list-price",
+      "state": "known"
     },
     "commercial.prices": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-2000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-2000-ada-generation/"
+          },
+          {
+            "captured_at": "2026-08-31T12:11:18Z",
+            "kind": "retailer",
+            "publisher": "bhphotovideo",
+            "url": "https://www.bhphotovideo.com/c/replacement_for/1882047-REG/nvidia_900_5g192_2240_000_rtx_2000_ada_graphic.html"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "No validated price observation was captured for this exact hardware record."
-      },
-      "state": "unknown"
+      "reason": "validated-msrp-and-street-price-observations",
+      "state": "known"
     },
     "compute.architecture": {
       "provenance": {

@@ -231,6 +231,8 @@ def rebuild_index(root):
     )
     recipes = []
     recipes_by_hardware = {}
+    sweep_owners = {}
+    evidence_models_by_hardware = {}
     instances_by_model = {}
     for path in sorted((root / "model-instance").glob("*.json")):
         instance = json.loads(path.read_text())
@@ -250,6 +252,47 @@ def rebuild_index(root):
             "has_evidence": bool(recipe.get("speed_sweep_ids")),
         })
         recipes_by_hardware.setdefault(recipe["hardware_id"], []).append(recipe["id"])
+        sweep_ids = recipe.get("speed_sweep_ids") or []
+        if sweep_ids:
+            evidence_models_by_hardware.setdefault(recipe["hardware_id"], set()).add(
+                recipe["model_instance_id"]
+            )
+        for sweep_id in sweep_ids:
+            sweep_owners[sweep_id] = recipe["hardware_id"]
+    hardware_speed_evidence = {}
+    aggregates = (
+        ("prefill_tok_s", "peak_prefill_tok_s", max),
+        ("decode_tok_s", "peak_decode_tok_s", max),
+        ("ttft_ms_p50", "fastest_ttft_ms", min),
+        ("context_tokens", "max_observed_context_tokens", max),
+        ("peak_vram_gb", "peak_observed_vram_gb", max),
+    )
+    for path in sorted((root / "speed-sweep").glob("*.json")):
+        sweep = json.loads(path.read_text())
+        owner = sweep_owners.get(sweep["id"])
+        if owner is None:
+            continue
+        hardware_id = owner
+        evidence = hardware_speed_evidence.setdefault(
+            hardware_id,
+            {
+                "sweep_count": 0,
+                "point_count": 0,
+            },
+        )
+        evidence["sweep_count"] += 1
+        evidence["point_count"] += len(sweep.get("rows") or [])
+        for point in sweep.get("rows") or []:
+            for source_field, target_field, aggregate in aggregates:
+                value = point.get(source_field)
+                if not isinstance(value, (int, float)) or isinstance(value, bool):
+                    continue
+                existing = evidence.get(target_field)
+                evidence[target_field] = (
+                    value if existing is None else aggregate(existing, value)
+                )
+    for hardware_id, evidence in hardware_speed_evidence.items():
+        evidence["model_count"] = len(evidence_models_by_hardware.get(hardware_id, set()))
     benchmarks_by_model = {}
     for path in sorted((root / "benchmark").glob("*.json")):
         benchmark = json.loads(path.read_text())
@@ -272,7 +315,7 @@ def rebuild_index(root):
     index_dir = root / "index"
     write(index_dir / "collections.json", {
         "schema_version": SCHEMA,
-        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in field names become hyphens in collection directories. Resolve price ids from price/<product-id>/<region>.json. Reverse lookups live beside this file: recipes.json (compact filter rows), recipes-by-hardware.json, instances-by-model.json, benchmarks-by-model.json, prices-by-hardware.json.",
+        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in field names become hyphens in collection directories. Resolve price ids from price/<product-id>/<region>.json. Reverse lookups live beside this file: recipes.json (compact filter rows), recipes-by-hardware.json, instances-by-model.json, benchmarks-by-model.json, prices-by-hardware.json, hardware-speed-evidence.json.",
         "collections": collections,
         "counts": {name.replace("-", "_"): len(ids) for name, ids in collections.items()},
     })
@@ -281,6 +324,10 @@ def rebuild_index(root):
     write(index_dir / "instances-by-model.json", {"schema_version": SCHEMA, "instances_by_model": instances_by_model})
     write(index_dir / "benchmarks-by-model.json", {"schema_version": SCHEMA, "benchmarks_by_model": benchmarks_by_model})
     write(index_dir / "prices-by-hardware.json", {"schema_version": SCHEMA, "prices_by_hardware": prices_by_hardware})
+    write(index_dir / "hardware-speed-evidence.json", {
+        "schema_version": SCHEMA,
+        "hardware": hardware_speed_evidence,
+    })
 
 
 def main():

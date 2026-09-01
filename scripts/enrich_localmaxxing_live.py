@@ -18,11 +18,19 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from import_localmaxxing import evidenced_sweep_metrics, server_capacity, workload_concurrency
+from import_localmaxxing import (
+    evidenced_sweep_metrics,
+    server_capacity,
+    server_context_limit,
+    workload_concurrency,
+)
 from sweep_metrics import derive_metrics
 
 SOURCE = "https://www.localmaxxing.com"
 USER_AGENT = "local-ai-registry-enrichment/1.0 (+https://github.com/0xSero/local-ai-registry)"
+EXACT_CAPABILITIES: dict[str, dict[str, bool]] = {
+    "cmsjb7t7600hnqm017dlr64zo": {"vision": True},
+}
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -116,6 +124,12 @@ def known_fact(reason: str, captured_at: str, url: str) -> dict[str, Any]:
         "reason": reason,
         "state": "known",
     }
+
+
+def unknown_fact(reason: str, captured_at: str, url: str) -> dict[str, Any]:
+    fact = known_fact(reason, captured_at, url)
+    fact["state"] = "unknown"
+    return fact
 
 def run_text(live: dict[str, Any]) -> str:
     flags = live.get("engineFlags") or {}
@@ -260,23 +274,50 @@ def enrich_recipe(
                 reason, captured_at, run_url
             )
             changed = True
-
-    serving = record.get("serving")
-    observed_concurrency = workload_concurrency(live)
-    capacity = server_capacity(live, observed_concurrency)
-    if isinstance(serving, dict):
-        if fill(serving, "max_context_tokens", live.get("contextLength")):
-            updates["serving.max_context_tokens"] = 1
-            record.setdefault("facts", {})["serving.max_context_tokens"] = known_fact(
-                "exact-live-run-context-length", captured_at, run_url
-            )
-            changed = True
-        if fill(serving, "max_concurrency", capacity):
-            updates["serving.max_concurrency"] = 1
-            record.setdefault("facts", {})["serving.max_concurrency"] = known_fact(
-                "server-capacity-derived-from-source-evidence", captured_at, run_url
-            )
-            changed = True
+    launch = record.get("launch")
+    container = launch.get("container") if isinstance(launch, dict) else None
+    if (
+        isinstance(launch, dict)
+        and launch.get("kind") == "reference"
+        and isinstance(container, dict)
+        and container.get("state") != "none"
+    ):
+        source = container.get("source")
+        source_captured_at = (
+            source[0].get("captured_at")
+            if isinstance(source, list) and source and isinstance(source[0], dict)
+            else captured_at
+        )
+        container.update(
+            {
+                "captured_at": source_captured_at,
+                "compose_file": None,
+                "digest": None,
+                "image": None,
+                "reason": "reference-only-launch",
+                "runtime": None,
+                "state": "none",
+            }
+        )
+        facts = record.get("facts")
+        if isinstance(facts, dict):
+            facts.pop("launch.container.image", None)
+        updates["launch.reference_container_reset"] = 1
+        changed = True
+    capabilities = record.get("capabilities")
+    capability_evidence = EXACT_CAPABILITIES.get(run_id, {})
+    if isinstance(capabilities, dict):
+        for capability, value in capability_evidence.items():
+            if fill(capabilities, capability, value):
+                updates[f"capabilities.{capability}"] = 1
+                record.setdefault("facts", {})[
+                    f"capabilities.{capability}"
+                ] = known_fact(
+                    "exact-live-run-modality-measurement",
+                    captured_at,
+                    run_url,
+                )
+                changed = True
 
     metadata = record.get("metadata")
     local = metadata.get("localmaxxing") if isinstance(metadata, dict) else None
@@ -300,6 +341,50 @@ def enrich_recipe(
                 if fill(stored_flags, key, flags.get(key)):
                     updates[f"metadata.engine_flags.{key}"] = 1
                     changed = True
+
+    serving = record.get("serving")
+    if isinstance(serving, dict) and isinstance(local, dict):
+        source_row = {
+            "engine": {"engineName": (record.get("engine") or {}).get("name")},
+            "batchSize": local.get("batch_size"),
+            "engineFlags": {"commandSnippet": local.get("observed_command")},
+            "notes": local.get("notes"),
+        }
+        capacity = server_capacity(source_row)
+        context_limit = server_context_limit(source_row)
+        limits = (
+            (
+                "max_context_tokens",
+                context_limit,
+                "explicit-source-context-limit",
+                "context-limit-not-evidenced",
+            ),
+            (
+                "max_concurrency",
+                capacity,
+                "explicit-source-server-capacity",
+                "server-capacity-not-evidenced",
+            ),
+        )
+        for field, value, known_reason, unknown_reason in limits:
+            if serving.get(field) != value:
+                serving[field] = value
+                updates[f"serving.{field}"] = 1
+                changed = True
+            fact = (record.get("facts") or {}).get(f"serving.{field}")
+            expected_state = "known" if value is not None else "unknown"
+            expected_reason = known_reason if value is not None else unknown_reason
+            if (
+                not isinstance(fact, dict)
+                or fact.get("state") != expected_state
+                or fact.get("reason") != expected_reason
+            ):
+                fact_builder = known_fact if value is not None else unknown_fact
+                record.setdefault("facts", {})[f"serving.{field}"] = fact_builder(
+                    expected_reason, captured_at, run_url
+                )
+                updates[f"facts.serving.{field}"] = 1
+                changed = True
 
     return changed, updates
 

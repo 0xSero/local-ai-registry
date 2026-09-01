@@ -162,17 +162,31 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-31T23:03:15Z",
+        "captured_at": "2026-09-01T10:20:39Z",
         "sources": [
           {
-            "captured_at": "2026-08-31T23:03:15Z",
+            "captured_at": "2026-09-01T10:20:39Z",
             "kind": "registry-derived",
             "url": "https://www.localmaxxing.com/en/runs/cms0cmhvq0032s2014bolsk2a"
           }
         ]
       },
-      "reason": "server-capacity-derived-from-source-evidence",
+      "reason": "explicit-source-server-capacity",
       "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cms0cmhvq0032s2014bolsk2a"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -241,7 +255,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 64,
-    "max_context_tokens": 2048,
+    "max_context_tokens": null,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [

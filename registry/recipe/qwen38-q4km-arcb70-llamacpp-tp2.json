@@ -2,43 +2,155 @@
   "capabilities": {
     "chat": true,
     "reasoning": false,
-    "tools": false,
-    "vision": false
+    "tools": true,
+    "vision": true
   },
-  "description": "Two-B70 Qwen3.8-27B Q4_K_M llama.cpp SYCL candidate. A fresh live screen found four 65,536-token slots, correct chat output, and C1/C2/C4 measurements through 8K, but the checked-in parallel-4 profile cannot expose the claimed 128K per-request context and becomes strongly asymmetric under concurrency.",
+  "description": "Validated two-B70 Qwen3.8-27B Q4_K_M llama.cpp SYCL TP2 runtime with four 65,536-token slots, MTP speculative decoding, pinned OCI identity, correct uncapped chat output, a valid forced tool call, correct inline-image recognition, and 13 historical or candidate speed-sweep points through 245K aggregate context.",
   "engine": {
-    "graph_mode": "not-applicable",
+    "graph_mode": "disabled at compile time (-DGGML_SYCL_GRAPH=OFF)",
     "name": "llama-cpp",
     "version": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126+b70-patches"
   },
   "facts": {
-    "metadata": {
+    "capabilities.chat": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:21:24Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "live-uncapped-chat-completion-returned-the-correct-answer-and-stopped-naturally",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "resolved-launch-arguments-disable-reasoning-output",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-forced-tool-call-returned-get-weather-with-the-required-paris-argument",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-inline-png-sidecar-correctly-identified-the-solid-red-image",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "startup-log-reported-sycl-graph-disabled-by-compile-flag",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-server-fingerprint-and-pinned-dockerfile-source-resolved-commit-4302fb599-plus-b70-patches",
+      "state": "known"
+    },
+    "launch.container.digest": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-identity-and-oci-manifest",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-container-repodigest-and-published-oci-index-both-resolved-sha256-5f3f585c",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:21:24Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
           }
         ]
       },
-      "reason": "kv-cache-capacity-not-published",
-      "state": "unknown"
+      "reason": "startup-log-reported-four-independent-65536-token-slots-for-262144-total-kv-capacity",
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "startup-log-reported-four-server-slots",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "runtime-model-endpoint",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-model-endpoint-and-startup-log-reported-65536-tokens-per-slot",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -46,33 +158,36 @@
   "id": "qwen38-q4km-arcb70-llamacpp-tp2",
   "launch": {
     "accelerator_backend": "intel-xpu",
-    "compose": {
-      "file": "compose.yml",
-      "project_name": "qwen38-b70-tp2"
-    },
+    "asset_ids": [
+      "qwen38-b70-llamacpp-entrypoint"
+    ],
     "container": {
-      "captured_at": "2026-08-27T06:04:13.773Z",
-      "compose_file": "compose.yml",
-      "digest": null,
-      "image": null,
-      "reason": "compose-manifest-resolves-image-outside-normalized-record",
-      "runtime": "docker-compose",
+      "captured_at": "2026-09-01T09:21:24Z",
+      "compose_file": null,
+      "digest": "sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+      "image": "ghcr.io/0xsero/qwen38-b70@sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+      "reason": "published-oci-index-verified-and-standalone-docker-launch-paired-with-the-sha256-matched-live-entrypoint-asset",
+      "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-08-27T06:04:13.773Z",
-          "kind": "recipe-launch",
-          "url": "https://github.com/0xSero/local-ai-registry"
+          "captured_at": "2026-09-01T09:21:24Z",
+          "kind": "runtime-identity-and-oci-manifest",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
         }
       ],
-      "state": "indirect"
+      "state": "digest-pinned"
     },
     "container_port": 8010,
+    "devices": [
+      "/dev/dri"
+    ],
+    "entrypoint": "/entrypoint.sh",
     "environment": {
       "BATCH": "8192",
       "DRAFT_NGL": "0",
       "DRAFT_THREADS": "16",
       "ENABLE_MTP": "1",
-      "ENABLE_VISION": "0",
+      "ENABLE_VISION": "1",
       "GPU_COUNT": "2",
       "PARALLEL": "4",
       "SPEC_DRAFT_N_MAX": "5",
@@ -80,33 +195,70 @@
       "UBATCH": "8192"
     },
     "host_port": 8010,
+    "image": "ghcr.io/0xsero/qwen38-b70@sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
     "ipc": "host",
-    "kind": "docker-compose",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "asset/qwen38-b70-llamacpp-entrypoint.sh",
+        "target": "/entrypoint.sh"
+      },
+      {
+        "read_only": true,
+        "source": "/dev/dri/by-path",
+        "target": "/dev/dri/by-path"
+      },
+      {
+        "read_only": false,
+        "source": "~/.cache/inference-index/models/qwen38-b70",
+        "target": "/models"
+      }
+    ],
     "network_mode": "bridge",
     "shm_size": "8g"
   },
-  "metadata": {},
+  "metadata": {
+    "runtime_identity": {
+      "build_fingerprint": "b10552-4302fb599",
+      "container_id": "492127af2f8d43c085aa5ea88790a9e022dc07ba4af235777266ad0d0bd72346",
+      "entrypoint_asset_sha256": "7e3af3242ee29801981b032211f5158d8143f94aead2e817c46fe84e3e2662e9",
+      "image_config_id": "sha256:28dc88a5aba40fb81e6e56b977b55ed9ad15f1e791de23461f9193366672e834",
+      "local_image_id": "sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+      "model_context_per_slot": 65536,
+      "model_parameters": 26895998464,
+      "model_revision": "0669b98607d47046c7c2b3f801011d54a08cfccf",
+      "published_oci_index_digest": "sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+      "published_oci_manifest_digest": "sha256:415131b2703a99c6a5057ae1d35e9569ae5fecc32d2fe4da6ce41c0eb202269f",
+      "slot_count": 4
+    }
+  },
   "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
   "provenance": {
-    "captured_at": "2026-08-27T06:04:13.773Z",
+    "captured_at": "2026-09-01T09:21:24Z",
     "sources": [
       {
-        "captured_at": "2026-08-27T06:04:13.773Z",
-        "kind": "normalized-recipe",
-        "url": "https://github.com/0xSero/local-ai-registry"
+        "captured_at": "2026-09-01T09:21:24Z",
+        "kind": "live-runtime-acceptance",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/qwen38-q4km-arcb70-llamacpp-tp2-20260901.json"
+      },
+      {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "kind": "recipe-source",
+        "url": "https://github.com/0xSero/qwen38-b70"
       }
     ]
   },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": null,
+    "kv_cache_tokens": 262144,
     "max_concurrency": 4,
-    "max_context_tokens": 8192,
+    "max_context_tokens": 65536,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [
     "qwen38-q4km-arcb70-llamacpp-tp2-sweep"
   ],
-  "status": "candidate"
+  "status": "validated"
 }

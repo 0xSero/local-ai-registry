@@ -306,6 +306,17 @@ def architecture(payload: dict[str, Any]) -> str | None:
     explicit_markers = ("moe", "mixtureofexperts", "mixtral", "deepseekv2", "deepseekv3")
     if any(marker in label for label in normalized_labels for marker in explicit_markers):
         return "moe"
+    vision_config = config.get("vision_config")
+    llm_config = config.get("llm_config")
+    if (
+        config.get("model_type") == "internvl_chat"
+        and isinstance(vision_config, dict)
+        and vision_config.get("use_moe") is False
+        and isinstance(llm_config, dict)
+        and llm_config.get("moe_config") is None
+    ):
+        return "dense"
+
 
     expert_evidence = False
     for key, value in config_pairs(config):

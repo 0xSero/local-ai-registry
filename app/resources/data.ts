@@ -499,6 +499,17 @@ export const resources = [
     sourceUrls: ["https://swebench.com/", "https://github.com/SWE-bench/SWE-bench", "https://github.com/SWE-bench/SWE-bench/blob/main/LICENSE"],
   },
   {
+    id: "swe-bench-live",
+    name: "SWE-bench Live",
+    owner: "SWE-bench Live team",
+    description: "Continuously updated software-engineering agent benchmark with Lite, Verified, Windows, and multilingual language-specific leaderboards backed by public submission artifacts.",
+    category: "benchmark",
+    access: "Public leaderboard and submissions; evaluation repository is open source under the MIT License",
+    url: "https://swe-bench-live.github.io/",
+    repositoryUrl: "https://github.com/SWE-bench-Live/SWE-bench-Live",
+    sourceUrls: ["https://swe-bench-live.github.io/", "https://github.com/SWE-bench-Live/SWE-bench-Live", "https://github.com/SWE-bench-Live/SWE-bench-Live/blob/main/LICENSE", "https://github.com/SWE-bench-Live/submission"],
+  },
+  {
     id: "livecodebench",
     name: "LiveCodeBench",
     owner: "LiveCodeBench team",
