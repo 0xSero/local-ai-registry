@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqssec6z00xiqr01mv2s8mpt"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M5 Pro",
       "notes": null,
       "observed_command": "# Remote endpoint: http://192.168.0.1:8080  servedModel: unsloth/gemma-4-31B-it-qat-GGUF",
@@ -151,7 +166,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 8192,
     "tensor_parallel": 1
   },

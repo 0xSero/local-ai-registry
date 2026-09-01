@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmottw16x002wqy01jvbluobl"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6 27B FP8 compressed-tensors on vLLM XPU, TP=4 PP=1, 4x Arc Pro B70. 2048 prompt / 512 output, max_model_len=4096, gpu_memory_utilization=0.85, CPU ngram speculative decode num_speculative_tokens=4 prompt_lookup 2..4. Runtime note: venv lib first in LD_LIBRARY_PATH, no oneAPI setvars before vLLM, CCL_ATL_TRANSPORT=ofi. Log: /home/steve/bench-results/qwen36-fp8-vllm/vllm-qwen36-fp8-compressed-tensors-tp4-pp1-in2048-out512-bs1-20260506T085730Z.log",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 4
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmryunxmz044go401zsoiaq2m"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": null,
       "observed_command": "# Remote endpoint: http://localhost:8003  servedModel: /home/jack/unsloth/Qwen3.6-27B-MTP-GGUF/models--unsloth--Qwen3.6-27B-MTP-GGUF/snapshots/0da008d9b980b76520a952bb3aa4abbaa0955647/Qwen3.6-27B-UD-Q4_K_XL.gguf",
@@ -151,7 +166,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

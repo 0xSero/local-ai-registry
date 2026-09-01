@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqznm4yn02rmoe01nv85v1t0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Horizon Step-3.7-Flash Q4_K_S benchmark. 198B MoE VL model (~11B active). BIOS UMA=1GB; kernel cmdline amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856. ROCm sees Radeon 8060S as 126976 MiB; GTT 124 GiB. Measured via kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4 on port 8020. Scenario: single streamed chat-completion, ctx=65536, target ~8k content tokens, max_tokens=64, temperature=0. tokSPrefill = native llama.cpp metrics delta (prompt_tokens_total / prompt_seconds_total). Run-specific nonce + cold prompt prevents KV cache reuse. Prompt delta verified (8460). Includes mmproj-step3.7-flash-f16.gguf for vision support. Server flags: -ngl 999 -fa 1 --no-mmap --jinja --metrics --reasoning-format auto --no-webui. No MTP/speculative flags. Local artifact: /home/joshua/benchmarks/step-3.7-flash-q4ks-2026-06-29/run-8k.json",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 65536,
     "tensor_parallel": 1
   },

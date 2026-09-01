@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "piecewise",
     "name": "vllm",
     "version": "0.20.2rc1.dev2+gc51df4300.d20260523"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq8yhxvo001ipb0149aoa79o"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq8yhxvo001ipb0149aoa79o"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -124,7 +138,8 @@
   },
   "metadata": {
     "localmaxxing": {
-      "backend": null,
+      "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Quality-gated Qwen3.6 35B Quark W8A8 INT8 run on 4x Intel Arc Pro B70. Metric is p512/n512 streaming /v1/completions, temperature 0, four repeats after warmup. tokSOut is corrected steady-state output throughput after first streamed text chunk; e2e output mean was 98.16 tok/s. Frontdoor quality rerun8 passed exact canaries, JSON schema/semantics, copy phrase, 8K long-context needle, repeat stability, and baseline hash parity. Peak VRAM was not submitted because this run used --skip-vram.",
       "observed_command": "VLLM_USE_V1=1 VLLM_TARGET_DEVICE=xpu XPU_GRAPH=1 VLLM_XPU_ENABLE_XPU_GRAPH=1 VLLM_XPU_FORCE_GRAPH_WITH_COMM=1 VLLM_XPU_GRAPH_NOOP_COMM_CAPTURE=1 VLLM_XPU_USE_CUSTOM_OP_COLLECTIVES=1 VLLM_XPU_COMPILE_ALLREDUCE_CUSTOM_OP=1 VLLM_XPU_CUSTOM_ALLREDUCE_GRAPH_CLONE_INPUT=1 VLLM_XPU_CUSTOM_ALLREDUCE_CLONE_INPUT=1 VLLM_XPU_QUARK_W8A8_MOE=1 VLLM_XPU_GDN_REUSE_QKVZ_BA_QUANT=clone ONEAPI_DEVICE_SELECTOR=level_zero:0,1,2,3 ZE_AFFINITY_MASK=0,1,2,3 CCL_ATL_TRANSPORT=ofi CCL_TOPO_P2P_ACCESS=1 FI_TCP_IFACE=eth1 CCL_KVS_IFACE=eth1 vllm serve /mnt/fast-ai/llm-cache/hf/models--nameistoken--Qwen3.6-35B-A3B-Quark-W8A8-INT8/snapshots/cced56592e8c8935f8220836b4baa04dfd389118 --host 127.0.0.1 --port 18080 --trust-remote-code --served-model-name qwen36-35b-a3b-fp8 --dtype auto --quantization quark --tensor-parallel-size 4 --pipeline-parallel-size 1 --distributed-executor-backend mp --max-model-len 32768 --max-num-batched-tokens 8192 --max-num-seqs 48 --gpu-memory-utilization 0.95 --kv-cache-dtype auto --no-enable-prefix-caching --language-model-only --compilation-config {\"cudagraph_mode\":\"PIECEWISE\"} --generation-config vllm",
@@ -207,7 +222,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 48,
     "max_context_tokens": 32768,
     "tensor_parallel": 4
   },

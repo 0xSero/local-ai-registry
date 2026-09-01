@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "Preyazz/Muse-Glimmer-30B-NVFP4",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "4096"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnh2s9x00eio001fqi3w6vy"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "NVFP4 weight-only Marlin target with DFlash 10 tokens and an online-FP8 DFlash assistant, the best confirmed single-stream setting. Vision was disabled to fit on 31.84 GB; context was reduced to 4096. BS8 565.4 tok/s aggregate (70.7 per stream). Alternate best-BS8 config: 7 draft tokens, 697.7 tok/s aggregate (87.2 per stream); single 124.1 tok/s. DFlash 10 single 124.8 tok/s; prefill 2986.4 tok/s on a 3020-token prompt.",
       "observed_command": "cd {PROJECT_ROOT} && source .venv-vllm/bin/activate && MAX_JOBS=4 NVCC_THREADS=2 TORCH_CUDA_ARCH_LIST=12.0a VLLM_USE_DEEP_GEMM=0 HF_HOME={PROJECT_ROOT}/.cache/huggingface XDG_CACHE_HOME={PROJECT_ROOT}/.cache vllm serve {PROJECT_ROOT}/models/preyazz-muse-glimmer-30b-nvfp4 --served-model-name muse-glimmer --host 127.0.0.1 --port 8000 --tensor-parallel-size 1 --gpu-memory-utilization 0.92 --max-model-len 4096 --max-num-seqs 8 --max-num-batched-tokens 4096 --language-model-only --enable-auto-tool-choice --tool-call-parser muse_glimmer --reasoning-parser muse_glimmer --generation-config auto --speculative-config '{\"method\":\"dflash\",\"model\":\"{PROJECT_ROOT}/models/meta-muse-glimmer-30b-assistant\",\"num_speculative_tokens\":10,\"quantization\":\"fp8\"}'",
@@ -264,7 +294,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 8,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

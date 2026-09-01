@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofvuf7v0005jv046xvcrah0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 4070 Super",
       "notes": "Qwen3.5-9B-Q4_K_M (nouveau modèle non encore sur HF) - Métriques réelles depuis logs - RTX 4070 SUPER 12GB - TurboQuant turbo2",
       "observed_command": "llama-bench -m Qwen3.5-9B-Q4_K_M.gguf -ngl 99 -fa 1 -pg 65536,128 -ctk turbo2 -ctv turbo2",
@@ -164,7 +179,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 65536,
     "tensor_parallel": 1
   },

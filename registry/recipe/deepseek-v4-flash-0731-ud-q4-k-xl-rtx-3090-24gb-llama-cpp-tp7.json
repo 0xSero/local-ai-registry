@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cms9cb8f5008epm01di0avwat"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 7,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": null,
       "observed_command": "llama-server --model DeepSeek-V4-Flash-0731-UD-Q4_K_XL-00001-of-00005.gguf --alias deepseek-v4-flash-0731-ud-q4-k-xl --host 0.0.0.0 --port 18081 --ctx-size 262144 --parallel 1 --device CUDA0,CUDA1,CUDA2,CUDA3,CUDA4,CUDA5,CUDA6 --split-mode layer --tensor-split 7,6,6,6,6,6,7 --n-gpu-layers all --n-cpu-moe 1 --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 --batch-size 256 --ubatch-size 256 --threads 24 --threads-batch 48 --temp 1.0 --top-p 0.95 --cache-prompt --cache-ram 2048 --reasoning on --reasoning-format deepseek --jinja",

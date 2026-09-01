@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmph5zm7j00gwpc0104tq6x4m"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Lucebox-Hub test_dflash on RTX 5090 (Blackwell sm_120). 10-run validation: mean 222.64, best 228.56, min 214.33, std 4.06 tok/s. Same merge_sort thinking-off prompt class (25 input tokens, 256 forced output tokens, temp=0) as the hipfire reference. DFlash speculative decoding + DDTree (budget=16) + fast-rollback. Block-diffusion draft from z-lab/Qwen3.6-27B-DFlash (3.46GB BF16). Mean acceptance length 8.83 tokens/step, 55.2% accept rate, 29 draft steps for 256 tokens. AR baseline same hardware: 72.7 tok/s (llama.cpp mainline UD-Q4_K_XL) -> 3.14x speedup.",
       "observed_command": "DFLASH27B_TOKENIZER=Qwen/Qwen3.6-27B python3 scripts/run.py --raw --prompt \"$(cat merge_sort_thinking_off.txt)\" --n-gen 256 --target models/Qwen3.6-27B-Q4_K_M.gguf --draft models/draft-3.6 --budget 16 --max-ctx 1024 --fa-window 0",
@@ -149,7 +164,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 1024,
     "tensor_parallel": 1
   },

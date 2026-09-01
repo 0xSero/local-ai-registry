@@ -113,8 +113,9 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
     return response({ error: { code: "not_found", message: "API route not found" } }, 404)
   }
 
+  const collection = resource === "benchmarks" ? "benchmark" : resource
   if (id) {
-    const detail = getEntityDetail(resource, id)
+    const detail = getEntityDetail(collection, id)
     if (!detail) {
       return response(
         { error: { code: "not_found", message: `${resource} record '${id}' was not found` } },
@@ -153,7 +154,7 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
       page,
     )
   }
-  if (resource === "benchmark") {
+  if (resource === "benchmarks") {
     return listResponse(request, listBenchmarks(selectedFilters, page), page)
   }
   if (resource === "speed-sweep") {

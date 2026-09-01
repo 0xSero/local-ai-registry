@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmokq33sw0004ks0413sul32a"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "DFlash speculative decoding via Lucebox-Hub test_dflash binary on RTX 5090 ROG Astral OC (Blackwell GB202). Same bench methodology as prior #19 submission (3090 Ti, 140.28 t/s mean) — scripts/bench_he.py --n-gen 512 --ddtree-budget 22 over 10 HumanEval prompts, single-stream batch=1. 5090 result: mean 215.43 t/s (range 116.5-273.3), peak sum_product 250.4 / filter_by_substring 273.3. Acceptance length 8.83, accept rate 55.2%. +53.6% over prior 3090 Ti same-binary-same-recipe submission. Required rebuild for sm_120 — CUDA 12.9 toolkit, gcc-12 host compiler (gcc-13 + _Float128 glibc clash on Ubuntu 24.04), CMAKE_CUDA_ARCHITECTURES=120, GGML_CUDA_GRAPHS=ON. Critical CMake flags from #19 still apply. Display IS attached to this 5090 — Xorg pstate flicker likely costs ~10% decode (per the 2026-04-27 monitor-on-Ti finding). Production vLLM endpoint stopped during bench.",
       "observed_command": "build/test_dflash Qwen3.6-27B-Q4_K_M.gguf z-lab/Qwen3.6-27B-DFlash --fast-rollback --ddtree --ddtree-budget=22 --max-ctx=1024 (rebuild for sm_120: cmake -DCMAKE_CUDA_ARCHITECTURES=120 -DGGML_CUDA_GRAPHS=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.9/bin/nvcc -DCMAKE_CUDA_HOST_COMPILER=/usr/bin/gcc-12)",
@@ -166,7 +181,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 1024,
     "tensor_parallel": 1
   },

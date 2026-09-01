@@ -1,10 +1,9 @@
 """Resolve leaderboard rows to registry model ids.
 
-A row joins a model only through evidence: an exact (case-insensitive)
-match between the row's root Hugging Face repository and a model's
-huggingface.repository, or an entry in the curated alias map beside this
-script. Everything else stays model_id null — explicitly unmatched, never
-guessed.
+A row joins a model only through evidence: an exact (case-insensitive) match
+between the row's root Hugging Face repository and a model or unambiguous model
+instance repository, or an entry in the curated alias map beside this script.
+Everything else stays model_id null — explicitly unmatched, never guessed.
 """
 
 import json
@@ -20,6 +19,17 @@ def model_ids_by_repo(root):
         repository = (record.get("huggingface") or {}).get("repository")
         if isinstance(repository, str) and repository:
             mapping[repository.lower()] = record["id"]
+
+    instance_models = {}
+    for path in sorted((root / "model-instance").glob("*.json")):
+        record = json.loads(path.read_text())
+        repository = (record.get("huggingface") or {}).get("repository") or record.get("repository")
+        if isinstance(repository, str) and repository:
+            instance_models.setdefault(repository.lower(), set()).add(record["model_id"])
+    for repository, model_ids in instance_models.items():
+        if len(model_ids) == 1:
+            mapping.setdefault(repository, next(iter(model_ids)))
+
     for alias, model_id in json.loads(ALIASES_PATH.read_text()).items():
         mapping[alias.lower()] = model_id
     return mapping

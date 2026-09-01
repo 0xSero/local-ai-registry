@@ -21,12 +21,12 @@
       "32768"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt6lu7cs008mlk0129wtmtlb"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "First RTX 3080 10GB entry for gpt-oss-20b. The 12.1 GB MXFP4 build does not fit a 10GB card outright, so it runs via --n-cpu-moe 9 (experts of the first 9 of 24 layers on CPU). TUNING NOTE: fewer offloaded layers is NOT automatically better. --n-cpu-moe 7 keeps more experts on the GPU but tips into host spill (574 MiB shared) and is worse on every axis: 43.9 tok/s decode, 404 tok/s prefill, 6190 ms TTFT. Backing off to 9 removes the spill (126 MiB shared) and gives 57.1 / 1463 / 1558 ms -- decode +30%, prefill 3.6x, TTFT 4x. VARIANCE: CPU-offloaded MoE decode is unstable here; five reps gave 62.2 / 32.9 / 61.7 / 50.3 / 57.1 tok/s, so treat 57.1 as a median rather than a repeatable figure. Also note ~1.2 GB of this card's VRAM is held by the Windows desktop (dwm + explorer) at idle, which moves the spill threshold between runs. Measured on an RTX 3080 10GB. Decode is the MEDIAN of 5 reps, not the best. Prompt is deliberately non-repetitive (repeated filler inflates decode on speculative setups by ~25%) and ignore_eos is set so output token count is identical across runs. Peak VRAM 9485 MiB with 126 MiB host-shared; elevated host-shared only indicates spill when the decode rate drops with it.",
       "observed_command": "llama-server \\\n  -m gpt-oss-20b-MXFP4.gguf \\\n  --host 127.0.0.1 --port 8099 \\\n  --device CUDA0 --n-gpu-layers 99 \\\n  --ctx-size 32768 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 --cache-type-v q8_0 \\\n  --parallel 1 --jinja \\\n  --spec-type none",

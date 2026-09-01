@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmq1eccf500mko6015zitbqv8"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M1 Max",
       "notes": "M1 Max (Metal) via prebuilt llama.cpp b9535, llama-bench best-of-5. tg128=83.58 t/s, pp512=1021.94 t/s. Comparison vs 1x AMD R9700 Vulkan (123.4 tg / 3159 pp).",
       "observed_command": "llama-bench -m gpt-oss-20b-Q8_0.gguf -p 512 -n 128",
@@ -158,7 +173,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 640,
     "tensor_parallel": 1
   },

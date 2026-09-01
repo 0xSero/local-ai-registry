@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpif7wik005moe01m1m74syz"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 4,
       "hardware_label": "RX 7900 XTX",
       "notes": "Evaluation Batch Size: 4048\n\n\"stats\": {\n  \"stopReason\": \"eosFound\", -numGpuLayers: -1,\n  \"timeToFirstTokenSec\": 0.197,\n  \"totalTimeSec\": 3.683,\n  \"promptTokensCount\": 12,\n  \"predictedTokensCount\": 542,\n  \"totalTokensCount\": 554\n}",
       "observed_command": "[{\"type\":\"llm\",\"modelKey\":\"qwen3.6-35b-a3b\",\"format\":\"gguf\",\"displayName\":\"Qwen3.6 35B A3B UD\",\"publisher\":\"unsloth\",\"path\":\"unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-UD-IQ4_NL.gguf\",\"sizeBytes\":19827193536,\"indexedModelIdentifier\":\"unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-UD-IQ4_NL.gguf\",\"deviceIdentifier\":null,\"paramsString\":\"35B-A3B\",\"architecture\":\"qwen35moe\",\"quantization\":{\"name\":\"IQ4_NL\",\"bits\":4},\"identifier\":\"qwen3.6-35b-a3b\",\"ttlMs\":null,\"lastUsedTime\":1779543988864,\"vision\":true,\"trainedForToolUse\":true,\"maxContextLength\":262144,\"contextLength\":32000,\"status\":\"idle\",\"queued\":0,\"parallel\":4}]",
@@ -152,7 +167,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 4,
+    "max_concurrency": null,
     "max_context_tokens": 32000,
     "tensor_parallel": 1
   },

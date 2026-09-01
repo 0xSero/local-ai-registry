@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjok7ys02t7mj01i0yhx8v9"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 2048,
       "hardware_label": "RTX 3060",
       "notes": "qwen36-iq3 sweep; local file /mnt/hdd/models/qwen3.6-35b-mtp/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf; BeeLlama build 85e22ea0b build 10102.",
       "observed_command": "llama-bench -m /mnt/hdd/models/qwen3.6-35b-mtp/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf -p 512 -n 128 -b 2048 -ub 512 -t 16 -ngl 30 -fa on -r 2 -o json",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqdxgli700nzmp01qzuxcy3a"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Single-stream throughput on RTX 5090 (display attached, ~10% pstate handicap). llama.cpp b741 (commit 1fd6dfe) rebuilt for sm_120/Blackwell with CUDA graphs + native FP4; cohere2moe MoE architecture. UD-Q6_K_XL unsloth dynamic quant (26 GB). Flash attention on, q8_0 KV cache, full GPU offload, n_ctx 8192 (model trains to 500k). Reasoning model: output tokens include the thinking trace. Measured via lmx CLI remote OpenAI-compat loop: 211-token coding prompt, 512 output tokens, temperature 0, warmup 2, median of 3 iterations. peakVramGb = llama-server process VRAM via nvidia-smi (26.9 of 32 GB).",
       "observed_command": "llama-server -m North-Mini-Code-1.0-UD-Q6_K_XL.gguf --alias north-mini-code -ngl 999 -fa on -c 8192 -ctk q8_0 -ctv q8_0 -np 1 --temp 0 --host 127.0.0.1 --port 8080",

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsvyj92g08g4ms011m4f9hpw"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 4060 Ti",
       "notes": null,
       "observed_command": "/app/llama-server  \\\n    --models-preset /presets/glimmer_models.ini \\\n    --models-max 1 \\\n    --host 0.0.0.0 \\\n    --port 8001 \\\n    -lv 4\n\n[A-glimmer-30b-2gpu]\nhf-repo = unsloth/Muse-Glimmer-30B-GGUF\nhf-file = Muse-Glimmer-30B-UD-Q6_K_XL.gguf\nspec-draft-model = /root/.cache/huggingface/hub/models--unsloth--Muse-Glimmer-30B-GGUF/snapshots/faa5b025c584459c13febfa5c59883516710ae39/dflash-kquant.gguf\nsplit-mode = tensor\ntensor-split = 1,1\nctx-size = 125000 \nspec-type = draft-dflash\nspec-draft-n-max = 4\ntemperature = 1.0\ntop-p = 0.95\ntop-k = 64\nload-mode = mmap\nflash-attn = on\nparallel = 1 \njinja = true\nreasoning = on\nreasoning-budget = 1000",
@@ -265,7 +280,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 125000,
     "tensor_parallel": 2
   },

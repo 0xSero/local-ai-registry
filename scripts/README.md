@@ -24,6 +24,10 @@ pipeline before committing.
 | 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |
 | 2. Tokenize | `tokenize_observed_command.py` | observed shell strings on records | `metadata.<source>.tokenized` (never the launch contract) |
 | 3. Enrich | `enrich_registry.py` | records | shared enrichment contract fields (facts, provenance) |
+| 3. Enrich | `enrich_localmaxxing_live.py` | paginated public LocalMaxxing leaderboard API | exact live fields on existing recipes + speed sweeps; never creates records |
+| 3. Enrich | `enrich_hardware_prices.py` | fresh, exact US price observations | current hardware street/system prices, stock, availability, price history |
+| 3. Enrich | `enrich_hf_metadata.py`, `enrich_hf_active_params.py`, `enrich_hf_model_lineage.py`, `enrich_benchmark_aliases.py` | public Hugging Face API/model cards | exact model metadata, active parameters, lineage, benchmark aliases |
+| 3. Enrich | `fill_derived_fields.py` | already cited registry evidence | deterministic exact derivations only |
 | 4. Curate | `curate_registry.py` | records | curated hardware, sanitized candidates, **`registry/index/` shards** (`--index-only` for just the index) |
 | 5. Format | `format_registry.py` | every `registry/**/*.json` | canonical form: 2-space indent, sorted keys (schemas keep hand order), raw UTF-8, trailing newline |
 | 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |

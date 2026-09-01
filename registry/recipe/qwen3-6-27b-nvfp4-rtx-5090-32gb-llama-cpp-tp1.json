@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr2iwjvn06cspi01jphtk06h"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Automated import from local Hermes benchmark JSON hermes-benchmark-results-llamacpp-nvfp4/nvidia-Qwen3.6-27B-NVFP4-llamacpp-20260630-154200.json. Converted GGUF from local HF checkpoint. tokSOut/tokSPrefill are medians from matched prompts; TTFT is from the streaming case. Temperature 0 benchmark requests. Local filesystem paths redacted from commandSnippet.",
       "observed_command": "llama-server -m Qwen3.6-27B-NVFP4.gguf --host 0.0.0.0 --port 8003 -ngl 999 -c 131072 -fa on -ctk q8_0 -ctv turbo4 --jinja --chat-template-kwargs {enable_thinking:false} --reasoning off --reasoning-budget 0 --no-mmap -b 4096 -ub 512 -np 1",

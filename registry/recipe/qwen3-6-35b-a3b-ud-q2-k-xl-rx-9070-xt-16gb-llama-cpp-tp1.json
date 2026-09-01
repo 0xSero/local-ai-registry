@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmois9z5f000cl104wvvqf8mv"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1024,
       "hardware_label": "RX 9070 XT",
       "notes": "Best recursive optimizer run. candidate=i8_carry_i7_ctx32768 source=recursive-20260428-120732 score=96,57 api_tps=70,586 prompt_tps=638,09",
       "observed_command": "C:\\llama.cpp.custom\\llama-b8933-bin-win-hip-radeon-x64\\llama-server.exe -m C:\\Users\\<user>\\.lmstudio\\models\\unsloth\\Qwen3.6-35B-A3B-GGUF\\Qwen3.6-35B-A3B-UD-Q2_K_XL.gguf -ngl 99 -c 32768 -b 1024 -fa on -ctk f16 -ctv f16 --jinja --reasoning off --port 1234 --host 127.0.0.1 -c 32768",
@@ -175,7 +190,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1024,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

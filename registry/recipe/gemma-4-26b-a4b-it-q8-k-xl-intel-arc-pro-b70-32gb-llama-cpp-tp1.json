@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr1u77na01k2ld01kalwzs1e"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Gemma 4 26B A4B Q8/INT8-quality single-B70 realistic-suite result. Primary metric is median generated-token throughput for tokens 1-100 after TTFT across the fixed cold prompt suite. Each prompt was sent exactly once; every request reported cached_tokens=0; context checkpoints, prompt/KV cache reuse, response reuse, n-gram/history acceleration, and warmed repeated prompts were disabled. Target and verifier are UD-Q8_K_XL; only the MTP draft is Q4_0, and accepted tokens are verified by the target model. Supporting confirmations are listed in engineFlags.supportingConfirmationRuns.",
       "observed_command": "LLAMA_SERVER=/home/steve/src/llama.cpp-gemma-record-repro-c926/build-sycl-b70-aot-bmg-g31-q8reorder-vdr2/bin/llama-server GPU_INDEX=0 PORT=18530 LABEL=gemma4-q8-gpu0-finalpostnorm-reproexact-full512-20260701T084728Z BATCH_SIZE=1024 UBATCH_SIZE=1024 POLL=100 REALISTIC_GATE=1 REALISTIC_METRIC_TOKENS=100 EXTRA_LLAMA_ARGS='--parallel 1 --cache-ram 0 --spec-type draft-mtp --spec-draft-model /mnt/fast-ai/llm-models/gemma4-26b-a4b-it-q8-gguf/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf --spec-draft-n-max 3 --spec-draft-device SYCL0 --spec-draft-ngl all --spec-draft-type-k f16 --spec-draft-type-v f16 --spec-draft-n-min 2 --spec-draft-p-min 0.0475 --no-spec-draft-backend-sampling --spec-draft-threads 32 --spec-draft-threads-batch 32 --ctx-checkpoints 0' scripts/run-gemma4-26b-first-baseline.sh",
@@ -164,7 +179,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

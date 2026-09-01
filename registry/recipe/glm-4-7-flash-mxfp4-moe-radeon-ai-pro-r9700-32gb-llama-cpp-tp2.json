@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmorfk362001nl804ciajvsm6"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "llama.cpp Vulkan, single R9700 (-ts 0/1), c=131072, kv q8_0, flash-attn auto. Best of 3 streamed runs, ~512 input / 256 output.",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 131072,
     "max_context_tokens": 783,
     "tensor_parallel": 2
   },

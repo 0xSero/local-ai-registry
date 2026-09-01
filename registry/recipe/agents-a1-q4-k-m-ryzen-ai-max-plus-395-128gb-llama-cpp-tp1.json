@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr2t0krk06lppi011zaxdmf6"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Measured on Horizon Strix Halo using llama-bench in llama.cpp ROCm container docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4. Model is official GGUF sibling of InternScience/Agents-A1: InternScience/Agents-A1-Q4_K_M-GGUF / Agents-A1-Q4_K_M.gguf. SHA256 31aefa25b7e1edbde436e643e2b5e3f6e57820a4811d97b131130e48ff0772c2. Flags: -ngl 999 -fa on -mmp 0, n_batch=2048, n_ubatch=512, K/V f16. tokSPrefill is native llama-bench pp32768 r=3 average, samples 700.966/702.342/702.682 tok/s; tokSOut is separate llama-bench tg128 r=3 average, samples 61.448/62.298/62.309 tok/s. ttftMs is represented as the pp32768 average prompt-processing wall time from llama-bench, not an OpenAI streaming SSE TTFT. Additional measured prefill sweep: pp512 1044.181 tok/s, pp4096 936.192, pp8192 889.821, pp65536 single probe 554.919. Raw artifacts under /home/joshua/benchmarks/agents-a1-2026-07-01.",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

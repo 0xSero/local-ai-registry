@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "262144"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cms8fne9m00g5pf017012j22d"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 4,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Four-concurrent-request text throughput benchmark: 2 warmup waves followed by 5 measured streaming greedy waves; aggregate median reported (102.71-102.80 output tok/s). Each request used 361 prompt and 512 output tokens; batchSize is concurrent requests, while promptTokens/outputTokens are per request. This is 4.29x the same profile's 23.97 tok/s single-stream result. ModelOpt W4A4 NVFP4 checkpoint with mixed higher-precision tensors, FP8 KV, FlashInfer attention, and MTP-3. vLLM warned that FP8 KV q/prob scaling factors were not calibrated in the checkpoint and used 1.0. Prefix caching was enabled, so repeated-prompt TTFT is warm-cache. Metrics use server usage counters and client-observed token timing.",
       "observed_command": "vllm serve sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP --served-model-name huihui-qwen36-27b-ablit-nvfp4 --tensor-parallel-size 1 --trust-remote-code --quantization modelopt --kv-cache-dtype fp8 --attention-backend flashinfer --gpu-memory-utilization 0.4 --max-model-len 262144 --max-num-seqs 8 --max-num-batched-tokens 8192 --enable-chunked-prefill --async-scheduling --enable-prefix-caching --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}' --load-format fastsafetensors --reasoning-parser qwen3 --tool-call-parser qwen3_xml --enable-auto-tool-choice",
@@ -220,7 +250,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 4,
+    "max_concurrency": 8,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

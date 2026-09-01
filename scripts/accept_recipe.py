@@ -31,32 +31,44 @@ def http_json(url, payload=None, timeout=120):
         return json.load(response)
 
 
-def measure(endpoint, model, prompt_tokens=256, output_tokens=128, samples=3):
+def measure(endpoint, model, prompt_tokens=256, samples=3):
     prompt = "Summarize the history of computing. " * (prompt_tokens // 8)
     rows = []
     for _ in range(samples):
         started = time.monotonic()
-        first = None
-        completion_tokens = 0
+        first = last = None
+        completion_tokens = None
         request = urllib.request.Request(
             f"{endpoint}/v1/chat/completions",
-            data=json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": output_tokens, "stream": True}).encode(),
+            data=json.dumps({
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "stream": True,
+                "stream_options": {"include_usage": True},
+            }).encode(),
             headers={"Content-Type": "application/json"},
         )
         with urllib.request.urlopen(request, timeout=600, context=CTX) as response:
             for line in response:
                 if not line.startswith(b"data:"):
                     continue
-                chunk = line[5:].strip()
-                if chunk == b"[DONE]":
+                raw = line[5:].strip()
+                if raw == b"[DONE]":
                     break
-                if first is None:
-                    first = time.monotonic()
-                completion_tokens += 1
+                chunk = json.loads(raw)
+                usage = chunk.get("usage")
+                if isinstance(usage, dict) and usage.get("completion_tokens") is not None:
+                    completion_tokens = int(usage["completion_tokens"])
+                for choice in chunk.get("choices") or []:
+                    delta = choice.get("delta") or {}
+                    if delta.get("content") or delta.get("reasoning_content"):
+                        now = time.monotonic()
+                        first = first or now
+                        last = now
         finished = time.monotonic()
-        if first is None or completion_tokens < 8:
-            raise SystemExit("acceptance FAILED: the server produced no usable completion")
-        decode = (completion_tokens - 1) / max(finished - first, 1e-6)
+        if first is None or completion_tokens is None or completion_tokens < 8:
+            raise SystemExit("acceptance FAILED: the server produced no usable completion or usage")
+        decode = (completion_tokens - 1) / max((last or finished) - first, 1e-6)
         rows.append({"ttft_ms": (first - started) * 1000, "decode_tok_s": decode, "tokens": completion_tokens})
     return rows
 
@@ -86,6 +98,7 @@ def main() -> int:
     runs = measure(args.endpoint, served)
     decode = sorted(run["decode_tok_s"] for run in runs)[len(runs) // 2]
     ttft = sorted(run["ttft_ms"] for run in runs)[len(runs) // 2]
+    completion_tokens = sorted(run["tokens"] for run in runs)[len(runs) // 2]
     print(f"acceptance measurements: decode {decode:.1f} tok/s, ttft {ttft:.0f} ms over {len(runs)} samples")
 
     instance_path = ROOT / "model-instance" / f"{recipe['model_instance_id']}.json"
@@ -109,7 +122,7 @@ def main() -> int:
     row = {
         "concurrency": 1,
         "context_tokens": serving.get("max_context_tokens"),
-        "output_tokens": 128,
+        "output_tokens": completion_tokens,
         "prefill_tok_s": None,
         "decode_tok_s": round(decode, 1),
         "decode_tok_s_per_stream": round(decode, 1),

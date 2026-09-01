@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrgn4jtk005hmj01022ts8t3"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "DS4 (antirez DwarfStar) via kyuz0/strix-halo-ds4-toolbox:rocm-7.2.4, rootless podman on Framework Desktop (Strix Halo gfx1151, 120G GTT). antirez/deepseek-v4-gguf Q2/Q4 hybrid quant (97G: layers 37-42 experts Q4_K, other expert layers IQ2_XXS gate/up + Q2_K down, attn/shared-expert/output Q8) + MTP draft for spec decode. llama.cpp's V4 path hangs on prefill on this hw; DS4 is the working engine for DeepSeek-V4 GGUFs here.",
       "observed_command": "ds4-server -m DeepSeek-V4-Flash-Layers37-42Q4KExperts-OtherExpertLayersIQ2XXSGateUp-Q2KDown-AProjQ8-SExpQ8-OutQ8-chat-v2-imatrix-fixed.gguf --mtp DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf --ctx 16384 --host 0.0.0.0 --port 8000",
@@ -162,7 +177,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 16384,
     "tensor_parallel": 1
   },
