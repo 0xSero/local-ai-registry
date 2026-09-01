@@ -4,7 +4,7 @@ Run validated [local-ai-registry](https://github.com/0xSero/local-ai-registry)
 models on your local GPUs from the Omarchy bar. One labeled Docker container,
 one loopback endpoint, wired straight into Pi / Oh My Pi.
 
-![Dashboard](media/dashboard.png)
+![Dashboard](preview.png)
 
 ## Install
 
