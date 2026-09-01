@@ -1,0 +1,94 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Qwen3.5-9B-Q4_K_M Q4_K_M validated candidate on rtx-3090-24gb via native ollama: Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend. Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "ollama",
+    "version": "0.33.2"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://vast.ai"
+          }
+        ]
+      },
+      "reason": "validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen35-9b-q4-k-m-rtx-3090-24gb-ollama-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "validation-run",
+          "url": "https://vast.ai"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "observed_command": "/usr/bin/ollama pull hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M",
+    "serve_command": "/usr/local/bin/ollama serve",
+    "source": "vast-validation-2026-09-01"
+  },
+  "metadata": {
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "eval_count": 184,
+        "eval_duration_ns": 2319987000,
+        "load_duration_ns": 7413182952,
+        "prompt_eval_count": 16,
+        "prompt_eval_duration_ns": 911153000,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": 10647708137
+      },
+      "hardware_note": "Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768. Engine timings from engine usage counters. Host: Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend."
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "normalized-recipe",
+        "url": "https://vast.ai"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen35-9b-q4-k-m-rtx-3090-24gb-ollama-tp1-sweep"
+  ],
+  "status": "candidate"
+}
