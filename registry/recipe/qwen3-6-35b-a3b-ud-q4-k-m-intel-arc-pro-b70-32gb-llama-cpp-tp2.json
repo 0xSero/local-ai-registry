@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrwextu7009snz0111hjv2na"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Dual-GPU -sm layer with explicit -ts 1/1 and -ub 1024. Prefill 1778.6 +/- 4.8 (pp2048, llama-bench r=5) = 1.43x over single-GPU (1245.2 +/- 3.3) via scheduler pipeline parallelism (sched copies=4) - the overlap is real for multi-ubatch prefill; single-ubatch prompts see none. IMPORTANT: default VRAM-proportional layer split silently cost ~19% when another service held VRAM on GPU1 - pin -ts explicitly. Decode from llama-server /completion timings (temp 0, 150-tok gens, fresh state). Sustained-serving decode sags without periodic GPU burst (see clock-governor note on our Nemotron run). SR-IOV VFs: no power telemetry.",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 2
   },

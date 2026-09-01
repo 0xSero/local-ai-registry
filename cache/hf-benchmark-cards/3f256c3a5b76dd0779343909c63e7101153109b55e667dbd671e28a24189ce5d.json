@@ -1,0 +1,6 @@
+{
+  "readme": "---\nlanguage:\n- ja\npipeline_tag: automatic-speech-recognition\n---\nFor usage instructions follow [openai/whisper-large-v3-turbo](https://huggingface.co/openai/whisper-large-v3-turbo).\nNote for faster-whisper vocab changes make model.is_multilingual and suppress_tokens wrong. Please adjust the code as required if you want to use this with faster-whisper.\n\nTurbo finetune with japanese tokenizer. Full finetune trained 2^19 steps, batch size 64. Smaller vocab with ~1.6x bytes/token allows faster speed with 4 layers vs 2 layer distil (10% larger decoder).\n\n[Benchmarks](BENCH.md). Short form slightly behind v0.2 (trained less?) but long form much better. Also trained for lyrics but untested.\n\n# Acknowledgements\n\n* Train sets: OOPPEENN, Reazon, 小虫哥_, Common Voice 20, deepghs\n* Test sets: KitsuneX07, TEDxJP, kotoba-tech, Saruwatari-lab, grider-withourai\n\nResearch supported with Cloud TPUs from Google's TPU Research Cloud (TRC)\n",
+  "readme_url": "https://huggingface.co/efwkjn/whisper-ja-anime-v0.3/resolve/1810e1626c33fba535a3f0c74b0adcadfa66ae7e/README.md",
+  "repo": "efwkjn/whisper-ja-anime-v0.3",
+  "revision": "1810e1626c33fba535a3f0c74b0adcadfa66ae7e"
+}

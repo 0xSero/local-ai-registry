@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp7ymlnl00j1o401tduzlt7q"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 512,
       "hardware_label": "RX 9070",
       "notes": "ROCm 7.2.2, test after some HIP fixes and speedups were merged. Starts at 49 tok/s near the start and drops down slowly to ~47. No longer seeing any hitching during generation. Also note that power consumption during idle is ~80w which can be fixed by setting GPU_MAX_HW_QUEUES=1 but it dropped tok/s to more like 37 :/",
       "observed_command": "sudo ./llama-server  --threads 12  --ctx-size 131072  --flash-attn on  --fit on  --main-gpu 0  --split-mode none  --context-shift  --cache-type-k q8_0 --cache-type-v q8_0  --n-cpu-moe 22  --reasoning off  --parallel 1  --cache-ram 4096 --temp 0.7  --top-p 0.95  --top-k 20  --repeat-penalty 1.00  --min-p 0.00  --model /mnt/816d99c9-d5f0-40ae-96fd-b44f7f62faa4/misc/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf  --mmproj /mnt/816d99c9-d5f0-40ae-96fd-b44f7f62faa4/misc/models/Qwen3.6-35B-A3B-mmproj-F16.gguf  --host 192.168.1.102  --port 8080",
@@ -196,7 +211,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 512,
+    "max_concurrency": 1,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

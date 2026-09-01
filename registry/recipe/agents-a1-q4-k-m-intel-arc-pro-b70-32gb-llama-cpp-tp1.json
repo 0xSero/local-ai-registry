@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr2jjbhl06eqpi01aywxom7x"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "q5_0-q4_1 asymmetric KV (92.65% tail precision). 150W power cap. 256K context at 73 t/s engine. Agent-optimized 35B MoE model. Intel Arc Pro B70 32GB. llama.cpp SYCL b9851. oneAPI 2026.0.0. GPU temp: 67C. Zero context scaling penalty.",
       "observed_command": "llama-server -m Agents-A1-Q4_K_M.gguf -c 262144 -ngl 99 -ncmoe 0 -fa on -ctk q5_0 -ctv q4_1 -t 8 --no-mmap",
@@ -169,7 +184,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

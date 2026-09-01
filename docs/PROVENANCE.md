@@ -42,6 +42,8 @@ Response hashes:
 - leaderboard: `198336939c76e88bd7e32925ade48be62c697517a20aed73b2ffdd4aede39806`
 - models: `653bcaf27702ea919654e12a1f5f6a32cfd05a742d759ce1744dcf33aa5469c2`
 
+A second leaderboard-only refresh was captured on 2026-09-01 at 01:31 UTC. It contained 5,913 rows across 100 hardware groups and 633 used Hugging Face model IDs; its SHA-256 was `b7a23a82eedb48fa2b6f52098bfa07702e93a73e227c1782d9657d968fbb605b`. `enrich_localmaxxing_live.py` matched the source's exact run IDs to existing registry records and filled only fields published by those rows. It did not create records or infer missing measurements.
+
 Nine newly observed rows mapped to hardware already supported by this registry and were added as reference-only candidates. One Tesla P100 row was intentionally skipped because that hardware is outside the current workstation/local-device coverage target.
 
 The same-day live GLM-5.3 Flash NVFP4 four-RTX-PRO-6000 record was normalized separately from repository evidence. Its model revision and source bundle commit are pinned and its completion, multimodal, context, concurrency, and speed evidence are retained. It remains a candidate because the locally built launch image is still identified by a mutable tag rather than a published digest.

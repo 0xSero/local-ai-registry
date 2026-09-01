@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "none",
     "name": "vllm",
     "version": "0.27.0rc2+rocm724"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsp1ut7n00i7mp015640hvon"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -94,6 +94,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsp1ut7n00i7mp015640hvon"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 16,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Ran on 2 of the 3 R9700s (tp2, x8-slot pair). zen-7.0.14 kernel (7.1.x amdgpu RCCL regression bypassed); FP8 on-the-fly; DFlash spec decode k=15. Corrected resubmission of a run that misreported gpuCount=2.",
       "observed_command": "vllm serve Muse-Glimmer-30B -tp 2 --quantization fp8 --disable-custom-all-reduce --compilation-config '{\"cudagraph_mode\":\"NONE\"}' --speculative-config dflash k=15",
@@ -164,7 +179,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 16,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 3
   },

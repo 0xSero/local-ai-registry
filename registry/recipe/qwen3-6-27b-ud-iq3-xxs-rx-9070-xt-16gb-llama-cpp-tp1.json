@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoirwuce000bl804xwmvtkuf"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1024,
       "hardware_label": "RX 9070 XT",
       "notes": "Best local structured run. model=Qwen3.6-27B-IQ3_XXS config=opt_np1_ngram_n24 source=20260426-043813 api_tps=22,36 prompt_tps=106,95 acceptance=n/a",
       "observed_command": "C:\\llama.cpp.custom\\llama-b8933-bin-win-hip-radeon-x64\\llama-server.exe -m C:\\Users\\<user>\\.lmstudio\\models\\unsloth\\Qwen3.6-27B-GGUF\\Qwen3.6-27B-UD-IQ3_XXS.gguf -ngl 99 -c 32768 -b 1024 -fa on -ctk f16 -ctv f16 --ctx-checkpoints 16 --jinja --reasoning off --port 1234 --host 0.0.0.0 -np 1 --spec-type ngram-mod --spec-ngram-size-n 24 --draft-min 48 --draft-max 64",
@@ -185,7 +200,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1024,
+    "max_concurrency": 1,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

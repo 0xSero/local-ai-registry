@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmskrj2t3009ipb01f83je7m9"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 2048,
       "hardware_label": "RTX 4070",
       "notes": null,
       "observed_command": "llama-bench -m /home/llm/models/btl4/BTL-4-IQ2_XXS.gguf -p 512 -n 128 -d 4096 -o json",
@@ -162,7 +177,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofezrun000cie04z5y0b83e"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "hipfire @ f16eceb (master post-perf-recovery)\nprompt: \"Explain the theory of general relativity in simple terms.\"\nruns: 3\ndecode mode: AR\nkv_cache: asym3\nprompt_normalize: true (default since 2026-04-26)\npp128: 325.4 tok/s\npp512: 322.0 tok/s\npp1024: 320.4 tok/s\npp2048: 316.8 tok/s\nvram_loaded: 22660 MB",
       "observed_command": "hipfire bench qwen3.6:35b-a3b --runs 3 \"Explain the theory of general relativity in simple terms.\"",
@@ -157,7 +172,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

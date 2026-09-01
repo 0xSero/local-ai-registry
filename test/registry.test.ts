@@ -1,9 +1,11 @@
 import assert from "node:assert/strict"
+import { readFileSync } from "node:fs"
 import test from "node:test"
 
 import { configurationFromRecipe, flagRows } from "../app/components/configuration-card"
 import {
   collectionCounts,
+  dockerCommand,
   getBenchmark,
   getEntityDetail,
   getFacets,
@@ -49,6 +51,45 @@ test("candidate and reference recipes are never launchable", () => {
     { limit: 100, offset: 0 },
   )
   assert.equal(result.total, 0)
+})
+
+test("synthesized draft entrypoints preserve executable and argv boundaries", () => {
+  const cases = [
+    {
+      id: "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4",
+      entrypoint: "vllm",
+      firstArgument: "serve",
+    },
+    {
+      id: "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-sglang-tp2-y0tyt5cf",
+      entrypoint: "/opt/nvidia/nvidia_entrypoint.sh",
+      firstArgument: "python3",
+    },
+    {
+      id: "deepseek-v4-flash-iq2-xxs-rtx-3090-24gb-llama-cpp-tp1",
+      entrypoint: "/app/llama-server",
+      firstArgument: "-hf",
+    },
+  ]
+
+  for (const fixture of cases) {
+    const recipe = JSON.parse(
+      readFileSync(`registry/recipe/${fixture.id}.json`, "utf8"),
+    ) as Record<string, unknown>
+    const draft = recipe.draft_launch as { image: string }
+    const command = dockerCommand({
+      ...recipe,
+      status: "validated",
+      launch: recipe.draft_launch,
+    } as Parameters<typeof dockerCommand>[0])
+
+    assert.ok(command)
+    const segments = command.split(" \\\n  ")
+    const entrypointIndex = segments.indexOf(`--entrypoint ${fixture.entrypoint}`)
+    assert.ok(entrypointIndex >= 0, `${fixture.id}: missing entrypoint segment`)
+    assert.equal(segments[entrypointIndex + 1], draft.image)
+    assert.equal(segments[entrypointIndex + 2], fixture.firstArgument)
+  }
 })
 
 test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3 and TP2", () => {
@@ -345,8 +386,8 @@ test("Prices topic exposes regional market records without flattening currencies
   assert.ok(new Set(prices.data.map((record) => record.product.id)).size >= 45)
   assert.ok(prices.data.reduce((count, record) => count + record.observations.length, 0) >= 1000)
   assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
-  assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
-  assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
+  assert.deepEqual(facets.prices.region, ["AT", "CH", "DE", "GB", "JP", "PL", "US"])
+  assert.deepEqual(facets.prices.currency, ["CHF", "EUR", "GBP", "JPY", "PLN", "USD"])
   assert.deepEqual(facets.prices.condition, ["new", "refurbished", "unknown", "used"])
   assert.ok(prices.data.some((record) => record.product.id === "rtx-5060"))
   assert.ok(prices.data.some((record) => record.product.id === "intel-arc-pro-b70"))

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpnq9jov0048pb01lhk755sd"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": null,
       "observed_command": "llama-server.exe -hf unsloth/Qwen3.6-27B-MTP-GGUF:UD-Q4_K_XL -c 131072 -ngl 999 -fa on -np 1 --jinja --port 8033 --spec-type draft-mtp --spec-draft-n-max 2",

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0dtpqo0eqams013p8rvp9k"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Unsloth Dynamic V3.0 (final) UD-Q4_K_XL. Optimized benchmark: MTP=2 speculative decoding, q8_0 KV cache, flash-attention, Vulkan on AMD Radeon AI PRO R9700. 512-token prompt, measured via llama-server.",
       "observed_command": "llama-server -m Qwen3.8-27B-UD-Q4_K_XL.gguf --ctx-size 32768 --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 --spec-type draft-mtp --spec-draft-n-max 2 --no-mmap --device Vulkan0",
@@ -169,7 +184,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

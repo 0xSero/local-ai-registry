@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "Qwen/Qwen3.6-27B",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "262144"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp8te6o3035mo401sg1v1o0x"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Submitted under parent/root hfId Qwen/Qwen3.6-27B for leaderboard grouping; actual served weights are AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-Multimodal-NVFP4-MTP-XS (ModelOpt NVFP4) from /models/aeon-xs. Cell=dflash/think-on/code, spark-3 DGX Spark, vLLM/FlashAttention, llama-benchy 0.3.7, pp=2048 tg=128 c=1 runs=30, first sample dropped (warm n=29). tokSOut=34.94, tokSPrefill=2286.10, tokSTotal=477.29, ttftMs=900.22. DFlash uses z-lab/Qwen3.6-27B-DFlash with num_speculative_tokens=15; companion AR row has specDecoding=false. Raw receipts + submission package: https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/qwen36-aeon-combined-flashqla-dflash-spark/submission-tg128-pp2048-balanced-root-hfid-20260516 and https://github.com/my-other-github-account/spark-bench-reproducers/tree/main/qwen36-aeon-combined-flashqla-dflash-spark/results/tg128-pp2048-code-prose-think-grid-20260516_054837. Commit 47d3c4b. By @banana_baeee.",
       "observed_command": "vllm serve /models/aeon-xs --served-model-name aeon-ultimate qwen36-ultimate aeon-fast aeon-deep qwen36-ultimate-xs --host 0.0.0.0 --port 8000 --tensor-parallel-size 1 --dtype auto --quantization modelopt --kv-cache-dtype auto --max-model-len 262144 --max-num-seqs 64 --max-num-batched-tokens 32768 --gpu-memory-utilization 0.85 --enable-chunked-prefill --no-enable-prefix-caching --generation-config vllm --load-format safetensors --trust-remote-code --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --attention-backend flash_attn --compilation-config \\{\\\"inductor_compile_config\\\":\\{\\\"combo_kernels\\\":false\\,\\\"benchmark_combo_kernel\\\":false\\}\\} --limit-mm-per-prompt \\{\\\"image\\\":4\\,\\\"video\\\":2\\} --mm-encoder-tp-mode data --mm-processor-cache-type shm --mm-shm-cache-max-object-size-mb 256 --speculative-config \\{\\\"method\\\":\\\"dflash\\\"\\,\\\"model\\\":\\\"/models/dflash-drafter\\\"\\,\\\"num_speculative_tokens\\\":15\\,\\\"attention_backend\\\":\\\"FLASH_ATTN\\\"\\}",
@@ -241,7 +271,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 64,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

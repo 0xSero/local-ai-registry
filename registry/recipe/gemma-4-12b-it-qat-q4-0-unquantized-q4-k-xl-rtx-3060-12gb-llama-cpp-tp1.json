@@ -21,12 +21,12 @@
       "65536"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqffnk1t008gmt01jrdzrpbz"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": null,
       "observed_command": ".\\llama.cpp\\build\\bin\\Release\\llama-server.exe ^\n    --model unsloth\\gemma-4-12B-it-qat-GGUF\\gemma-4-12B-it-qat-UD-Q4_K_XL.gguf ^\n    --model-draft unsloth\\gemma-4-12B-it-qat-GGUF\\mtp-gemma-4-12B-it.gguf ^\n    --spec-type draft-mtp ^\n    --spec-draft-n-max 2 ^\n    --spec-draft-p-min 0.05 ^\n    --temp 1.0 ^\n    --top-p 0.95 ^\n    --top-k 64 ^\n    --alias \"unsloth/gemma-4-12b-it-qat-GGUF\" ^\n    --port 8001 ^\n    --reasoning on ^\n    --jinja ^\n    -ngl 999 ^\n    -fa on ^\n    -c 65536 ^\n    -t 6 ^\n    --mlock ^\n    -np 1 ^\n    -b 1024 ^\n    -ub 1024",

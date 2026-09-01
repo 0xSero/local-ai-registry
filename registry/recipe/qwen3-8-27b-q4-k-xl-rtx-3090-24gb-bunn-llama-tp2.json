@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmswepd2r08pzms011etmnl7c"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Engine requested as buun-llama; LocalMaxxing canonical enum is bunn-llama. Setup: buun-llama-cpp CUDA/NCCL tensor parallel on 2x RTX 3090, Qwen3.8-27B Q4_K_XL target plus Q8_0 MTP sidecar on CUDA1. Benchmark used --no-cache-prompt, 1,044 prompt tokens, 2 warmups, 5 timed 512-token streaming iterations. Server flags: -m /home/lotto/Downloads/Qwen3.8-27B-UD-Q4_K_XL.gguf -md /home/lotto/models/Qwen3.8-27B-MTP-GGUF/Qwen3.8-27B-MTP-ONLY-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0 -dev CUDA0,CUDA1 -devd CUDA1 -ngl all -ngld all -sm tensor -ts 1,1 -mg 0 -c 8192 -ct f16 -fa on -np 1 --no-cache-prompt --host 127.0.0.1 --port 8087. tokSPrefill is estimated from TTFT and includes request/scheduling/first-decode/streaming overhead.",
       "observed_command": "/home/lotto/.local/bin/buun-llama-server -m /home/lotto/Downloads/Qwen3.8-27B-UD-Q4_K_XL.gguf -md /home/lotto/models/Qwen3.8-27B-MTP-GGUF/Qwen3.8-27B-MTP-ONLY-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0 -dev CUDA0,CUDA1 -devd CUDA1 -ngl all -ngld all -sm tensor -ts 1,1 -mg 0 -c 8192 -ct f16 -fa on -np 1 --no-cache-prompt --host 127.0.0.1 --port 8087",
