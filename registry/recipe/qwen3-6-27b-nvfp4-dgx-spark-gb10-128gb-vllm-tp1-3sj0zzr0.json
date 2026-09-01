@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "262144"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqqxt0i601d8qo013sj0zzr0"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 8192,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "LocalMaxxing C1 rerun for the same-upstream Qwen3.6 27B NVFP4 MTP checkpoint. vLLM/eugr image, TP=1, max context 262144, max_num_seqs=4, FP8 KV, native MTP speculative tokens=3. Speculative decoding/MTP details are also in the sanitized launch command because the form switch did not toggle reliably in Chrome automation.",
       "observed_command": "vllm serve sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP --host 0.0.0.0 --port 8811 --served-model-name sakamakismile/Qwen3.6-27B-Text-NVFP4-MTP --trust-remote-code --max-model-len 262144 --max-num-batched-tokens 8192 --max-num-seqs 4 --moe-backend marlin --language-model-only --gpu-memory-utilization 0.40 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --dtype auto --kv-cache-dtype fp8 --load-format fastsafetensors --attention-backend flashinfer --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\"}' --enable-chunked-prefill --async-scheduling --enable-prefix-caching -tp 1 -pp 1 --default-chat-template-kwargs '{\"enable_thinking\":true,\"preserve_thinking\":true}' --generation-config vllm --override-generation-config '{\"temperature\":0.6,\"top_p\":0.95,\"top_k\":20,\"min_p\":0.0,\"presence_penalty\":0.0,\"repetition_penalty\":1.0}'",
@@ -235,7 +265,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 8192,
+    "max_concurrency": 4,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

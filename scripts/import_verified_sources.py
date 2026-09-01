@@ -18,6 +18,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from tokenize_observed_command import parse_observed_command, tokenized_record
+from import_localmaxxing import server_capacity, workload_concurrency
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -87,6 +88,9 @@ def http_text(url: str, timeout: int = 45) -> str:
 
 def unknown_fact(reason: str) -> dict:
     return {"state": "unknown", "reason": reason, "provenance": provenance("registry-enrichment", "https://github.com/0xSero/local-ai-registry")}
+
+def known_fact(reason: str, url: str) -> dict:
+    return {"state": "known", "reason": reason, "provenance": provenance("source-evidence", url)}
 
 
 class Registry:
@@ -421,6 +425,8 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             recipe_id = f"{recipe_id}-{run_id[-8:]}"
         sweep_id = f"{recipe_id}-sweep"
         url = f"{LMX}/en/runs/{run_id}"
+        concurrency = workload_concurrency(row)
+        capacity = server_capacity(row, concurrency)
         flags = row.get("engineFlags") or {}
         snippet = flags.get("commandSnippet")
         launch = {
@@ -433,6 +439,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
         localmaxxing_meta = {
             "run_id": run_id,
             "hardware_label": row.get("hardwareGroupLabel"),
+            "batch_size": row.get("batchSize"),
             "observed_command": snippet,
             "backend": engine.get("backend"),
             "notes": row.get("notes"),
@@ -457,7 +464,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             "serving": {
                 "tensor_parallel": count,
                 "max_context_tokens": row.get("contextLength"),
-                "max_concurrency": row.get("batchSize"),
+                "max_concurrency": capacity,
                 "kv_cache_tokens": None,
             },
             "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
@@ -473,6 +480,11 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
                 "capabilities.vision": unknown_fact("capability-not-verified"),
                 "engine.graph_mode": unknown_fact("runtime-detail-not-published"),
                 "serving.kv_cache_tokens": unknown_fact("kv-cache-capacity-not-published"),
+                "serving.max_concurrency": (
+                    unknown_fact("server-capacity-not-evidenced")
+                    if capacity is None
+                    else known_fact("server-capacity-derived-from-source-evidence", url)
+                ),
             },
         }
         sweep = {
@@ -483,7 +495,7 @@ def import_localmaxxing(registry: Registry, rows: list[dict]) -> None:
             "accepted_at": None,
             "source": {"kind": "leaderboard", "url": url, "repository": LMX, "commit": None, "paths": [f"/en/runs/{run_id}"]},
             "rows": [{
-                "concurrency": row.get("batchSize") or 1,
+                "concurrency": concurrency,
                 "context_tokens": row.get("contextLength"),
                 "output_tokens": row.get("outputTokens"),
                 "prefill_tok_s": row.get("tokSPrefill"),

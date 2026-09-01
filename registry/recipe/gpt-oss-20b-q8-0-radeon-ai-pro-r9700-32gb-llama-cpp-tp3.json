@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmro8aut3026plg017ff5vard"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 48,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "3 independent llama-server replicas, one per GPU (GGML_VK_VISIBLE_DEVICES pinning), client round-robin. Aggregate tok/s across replicas, median of 3 rounds, cold prefill (cache_prompt off). Replicate-over-fewest-cards layout.",
       "observed_command": "3x: GGML_VK_VISIBLE_DEVICES=$i llama-server --port 910$((1+i)) -ngl 99 --jinja --flash-attn auto --prio 3 -m gpt-oss-20b-Q8_0.gguf -ctk f16 -ctv f16 -np 16 -c 131072",
@@ -149,7 +164,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 48,
+    "max_concurrency": 16,
     "max_context_tokens": 845,
     "tensor_parallel": 3
   },

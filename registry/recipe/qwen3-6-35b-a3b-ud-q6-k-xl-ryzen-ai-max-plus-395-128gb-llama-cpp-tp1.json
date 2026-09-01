@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofabj2r0003l4043o4pjtu7"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Bosgame M5 mini PC: AMD Ryzen AI Max 395 (Strix Halo, gfx1151), 128 GB LPDDR5X unified memory, ROCm 7.2.1. llama.cpp via kyuz0 amd-strix-halo-llm-finetuning Docker image, served by llama-server. Model is unsloth dynamic Q6_K_XL (31.8 GB on disk). Single-stream 512/512 via vllm bench serve at concurrency 1, 20 prompts. Median TPOT 18.80 ms (~53 t/s decode). KV cache quantized to q8_0. Same MoE on dual-3090 vLLM FP8 = 140 t/s output (2.78x faster), but M5 draws ~50-80W vs ~600W.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-Q6_K_XL.gguf -c 32768 --host 0.0.0.0 --port 8000 -ctk q8_0 -ctv q8_0 --no-context-shift -b 2048 -ub 2048 --metrics --parallel 8",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 8,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr9oedbl00slqr01cqd6le9w"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 8192,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Intel Arc Pro B70 (30.3GiB), llama.cpp SYCL. Q8_K_XL=38.45GB > VRAM, so 11/40 MoE expert layers on CPU (-n-cpu-moe 11 --no-op-offload); f16 KV, -b 8192 -ub 4096, GGML_SYCL_DISABLE_DNN=1. llama-bench pp4096/tg128 depth0, r2. NOT fully VRAM-resident.",
       "observed_command": "llama-bench -m /home/frosty40/models/Qwen3.6-35B-A3B/Qwen3.6-35B-A3B-UD-Q8_K_XL.gguf -p 4096 -n 128 -b 8192 -ub 4096 -r 2 -ctk f16 -ctv f16 -fa 1",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 8192,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

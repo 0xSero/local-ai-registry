@@ -21,12 +21,12 @@
       "131072"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0nl2j30f22ms019spiygf2"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "Companion to the Q5_K_M entry for the same model, to show the quant-vs-context trade on a 10GB card. Q6_K CANNOT hold this model's full 262144 native context here: at 262K it reports 1306 MiB host-shared and decode halves to 42 tok/s. 131072 is a comfortably resident config for Q6_K (8668 MiB peak, 224 MiB host-shared); the measured resident ceiling for Q6_K is about 177K. Q5_K_M reaches the full 262K at 92 tok/s, so on this card Q5_K_M strictly dominates: more context AND faster, because smaller weights mean less memory bandwidth per token. On quality the two are a wash in aggregate over a 40-item slice (GSM8K 19/20 vs 18/20, HumanEval+ 19/20 vs 19/20) but they disagree on 5 of those 40 items, so this is 'no measurable net difference at n=40', not 'identical'. KV cost measured at 14.0 KiB/token at q4_0. Decode is the median of 3 reps. Non-repetitive prompt; ignore_eos set.",
       "observed_command": "llama-server \\\n  -m Ornith-1.5-9B-Q6_K.gguf \\\n  --host 127.0.0.1 \\\n  --port 8099 \\\n  --device CUDA0 \\\n  --n-gpu-layers 99 \\\n  --ctx-size 131072 \\\n  --flash-attn on \\\n  --cache-type-k q4_0 \\\n  --cache-type-v q4_0 \\\n  --parallel 1 \\\n  --jinja \\\n  --spec-type none",

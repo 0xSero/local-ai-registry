@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6hnvna004tmn01fhszp3n1"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 32,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Curated DGX Spark/GB10 sweep for Qwen AgentWorld-35B-A3B Spark from /home/frosty40/agentic-arcade/benchmarks/AGENTWORLD_35B_SPARK_20260629.md. Excluded warmup and per-sweep lowest tokSOut rows from submission. Measured with fixed 256 completion tokens per request through llama-server; model file qwen-agentworld-35b-a3b-GGUF_NVFP4.official.gguf, sha256=8e68a30a5dade5c355fe7af4cc88c84e590218ba9909fc6c191f6af417191d77.",
       "observed_command": "/home/frosty40/llama.cpp-qwen36/build/bin/llama-server -m qwen-agentworld-35b-a3b-GGUF_NVFP4.official.gguf --host 127.0.0.1 --port 8371 -ngl 99 -c 32768 -np 32 -b 8192 -ub 4096 -fa on -ctk q8_0 -ctv q8_0 --jinja --no-mmap -a agentworld-35b-spark; ornith_aeon_vllm_sweep.py --max-tokens 256 --min-tokens 256 --ignore-eos",

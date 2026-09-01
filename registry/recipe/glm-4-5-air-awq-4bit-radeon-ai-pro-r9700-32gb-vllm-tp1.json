@@ -5,7 +5,7 @@
     "tools": null,
     "vision": null
   },
-  "description": null,
+  "description": "vllm recipe for GLM-4.5-Air-AWQ-4bit on Radeon AI PRO R9700 with tensor parallelism 1.",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -70,17 +70,17 @@
     },
     "description": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T22:39:04Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-08-31T22:39:04Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "derived-from-recipe-identifiers",
+      "state": "known"
     },
     "engine.graph_mode": {
       "provenance": {
@@ -182,31 +182,31 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T23:03:15Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr2uuv7706mypi01o7epgvid"
           }
         ]
       },
-      "reason": "not-observed",
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T01:30:07Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:30:07Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmr2uuv7706mypi01o7epgvid"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "exact-live-run-context-length",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -268,7 +268,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": null,
-    "max_context_tokens": null,
+    "max_context_tokens": 16384,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

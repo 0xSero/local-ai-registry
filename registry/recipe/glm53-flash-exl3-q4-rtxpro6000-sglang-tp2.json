@@ -22,7 +22,7 @@
       "30000"
     ],
     "container_port": 30000,
-    "entrypoint": null,
+    "entrypoint": "/opt/nvidia/nvidia_entrypoint.sh",
     "environment": {},
     "host_port": 30000,
     "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
@@ -47,7 +47,22 @@
     "name": "sglang",
     "version": "selective-EXL3 TP2 adaptation not implemented"
   },
-  "facts": {},
+  "facts": {
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/lmsysorg/sglang/manifests/sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    }
+  },
   "hardware_count": 2,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "glm53-flash-exl3-q4-rtxpro6000-sglang-tp2",

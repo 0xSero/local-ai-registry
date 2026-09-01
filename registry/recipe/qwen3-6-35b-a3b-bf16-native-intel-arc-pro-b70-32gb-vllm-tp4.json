@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "full-decode-only",
     "name": "vllm",
     "version": "vllm-main d272418f4 (XPU graph + PatchB)"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqszbv1q012hqr01fsmv2wnu"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqszbv1q012hqr01fsmv2wnu"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -124,7 +138,8 @@
   },
   "metadata": {
     "localmaxxing": {
-      "backend": null,
+      "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6-35B-A3B NATIVE BF16 (no quantization) on 4x Intel Arc Pro B70 (TP=4) via vLLM-XPU graph-mode. b1 DECODE = 120.76 t/s (corrected after-first-token, mean-of-5, temp 0, deterministic 120.71-120.81). FULL_DECODE_ONLY XPU graph capture (4-way XCCL allreduce captured cleanly) on vllm-main d272418f4 + locally-patched cutlass work_group_scratch attention kernel. Cold prefill ~6500 tok/s (5.3k-tok prompt); align prefix-cache warm re-prefill 145ms vs 810ms cold (~5.6x). Higher-batch aggregate (single TP=4 instance): b8=593, b16=602, b24=596 tok/s. Full-precision BF16 BEATS our own online-FP8 TP=2 (110.73 b1) by ~9% on decode AND beats the prior B70 BF16-TP4 community best (102.5) by +18 t/s -- FP8 dequant overhead exceeds its bandwidth savings on this 3B-active MoE. qwen3_coder tool-calling verified. No power-limit changes; high-power B70 variant card excluded (4 matched regular-power cards).",
       "observed_command": "ZE_AFFINITY_MASK=0,2,3,4 VLLM_XPU_ENABLE_XPU_GRAPH=1 vllm serve qwen36-35b-a3b-bf16-hf --tensor-parallel-size 4 --dtype bfloat16 --enable-prefix-caching --mamba-cache-mode align --max-model-len 65536 --max-num-seqs 8 --gpu-memory-utilization 0.90 --max-num-batched-tokens 8192 --trust-remote-code --enable-auto-tool-choice --tool-call-parser qwen3_coder --compilation-config '{\"cudagraph_mode\":\"FULL_DECODE_ONLY\",\"cudagraph_capture_sizes\":[1,2,4,8]}'",
@@ -179,7 +194,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 8,
     "max_context_tokens": 65536,
     "tensor_parallel": 4
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt38y1zc0lprmv01ft85edfl"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M1 Max",
       "notes": "M1 Max 64GB (Metal) via lmx local llama-bench, upstream ggml-org MXFP4 GGUF. Cross-check: llama-server real-request 73.1 tok/s; ollama same model 57.9.",
       "observed_command": "/opt/homebrew/bin/llama-bench -m /Users/sgtpooki/Library/Caches/llama.cpp/gpt-oss-20b-MXFP4.gguf -p 512 -n 128",
@@ -158,7 +173,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

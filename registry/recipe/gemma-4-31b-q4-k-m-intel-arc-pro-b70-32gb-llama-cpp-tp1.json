@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrvyvfeo09rslg01sq5skopk"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Single Intel Arc Pro B70 clean-suite result from 2026-07-16. Independent phases: prefill uses the recorded ~4K prompt at temperature 0; decode uses a separate 350-token task at temperature 0.2. Batch/concurrency 1; full GPU offload; Flash Attention on; K=q8_0,V=q4_1; b=8192,ub=4096. Engine: llama.cpp SYCL b9853 (7af4279f4), IntelLLVM 2026.0.0. Actual host: AMD Ryzen 7 5700X3D, 32 GB RAM, Ubuntu 26.04. LocalMaxxing currently reuses an older B70 hardware profile for this account; its structured CPU/RAM/OS/power fields are stale and should be ignored. Raw source SHA-256: 6d4f82df37f469d3f0aba0e1cc3e5642919b1f9c50d2ef5d5c37e4750f20ba4c. Power cap 180 W. MTP-4 enabled; decode draft acceptance 225/297 (75.76%).",
       "observed_command": "llama-server -m gemma-4-31B-it-Q4_K_M.gguf -dev SYCL0 --parallel 1 -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -t 8 -b 8192 -ub 4096 --spec-type draft-mtp --spec-draft-model mtp-gemma-4-31B-it.gguf --spec-draft-n-max 4 --spec-draft-p-min 0.75",

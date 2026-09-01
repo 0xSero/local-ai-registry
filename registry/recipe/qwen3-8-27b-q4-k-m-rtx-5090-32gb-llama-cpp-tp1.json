@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0m4z190f04ms015j99yif1"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Created by Mani Chandrasekaran. Five-prompt suite, temperature 0, 170K context, one slot, q8_0 K/V cache, DFlash2 draft decoding with n-max 4. Full raw responses and hardware samples are retained in the linked local artifact.",
       "observed_command": "/home/mani/llama.cpp-dflash2/build/bin/llama-server -m Qwen3.8-27B-UD-Q4_K_M.gguf -md Qwen3.8-27B-DFlash2-Q4_K_M.gguf --alias qwen3.8-27b-dflash2-q4km --spec-type draft-dflash --spec-draft-n-max 4 -np 1 -c 170000 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --jinja --reasoning off",

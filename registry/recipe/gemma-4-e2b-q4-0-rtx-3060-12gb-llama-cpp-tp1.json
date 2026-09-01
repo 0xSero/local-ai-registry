@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr3pjxbz06xvpi01add4ufo5"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "Gemma4 E2B (4.6B params, ~2B active) QAT quantized to Q4_0. Fully offloaded (-ngl 99). Fedora 43, CUDA 13.0, driver 580.159.04. Max context = 262144 (native limit, VRAM headroom available). Benchmark at 4096 ctx, greedy decode.",
       "observed_command": "llama-bench -m gemma-4-E2B_q4_0-it.gguf -p 512 -n 128 -ngl 99 -fa on -r 3 -o json",
@@ -166,7 +181,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtb2rtue001xqq01fyt8iwhv"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "lucebox dflash_server, tensor-parallel across 2x R9700 (no P2P, host-staged transfers), DFlash2 drafter (z-lab/Qwen3.8-27B-DFlash2 safetensors, block size 8) on same GPU as shard 0. HIP build @ f547513 with the CUDA-only TP gate patched to accept HIP. KV f16, ctx 32768. Code-generation workload (LRU cache + DP prompt), spec accept 36%, avg commit 2.88. Highly predictable boilerplate reaches ~60 tok/s at 57% accept; prose drops to ~23.",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 352,
     "tensor_parallel": 3
   },

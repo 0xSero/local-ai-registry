@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmoj9uhlc0007jl04y8ygqwap"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M5 Max",
       "notes": "total duration:       20.85862475s\nload duration:        20.927791ms\nprompt eval count:    60 token(s)\nprompt eval duration: 149.81525ms\nprompt eval rate:     400.49 tokens/s\neval count:           2524 token(s)\neval duration:        20.6869895s\neval rate:            122.01 tokens/s",
       "observed_command": "ollama run --verbose --think false --hidethinking \"Explain the concept of attention mechanisms in  transformer models. Include the key components: query, key, value pairs. Discuss how scaled dot-product attention works. Provide a detailed Python code example. Aim for at least 300 words.\"",
@@ -158,7 +173,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

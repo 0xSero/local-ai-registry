@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsf7nuos00r7pp01a9q85iih"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Automated sweep via llama-swap on 3x R9700. llama.cpp rocm, best of 3 runs, cold prefill.",
       "observed_command": "/home/mikekey/Experiments/llama.cpp-master/build-rocm/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 --no-mmap -m /home/mikekey/models/hf/hub/models--AtomicChat--DeepSeek-V4-Flash-0731-GGUF/snapshots/b744b2af48c0008788234b5421122c62b6811b2e/AD-IQ1_M/DeepSeek-V4-Flash-0731-AD-IQ1_M-00001-of-00004.gguf -md /home/mikekey/models/gguf/deepseek/dspark-DeepSeek-V4-Flash-0731-MXFP4.gguf --spec-type draft-dspark --reasoning-format auto --temp 0.6 --top-p 0.95 --min-p 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -ts 1/1/1 -np 1 -c 32768",

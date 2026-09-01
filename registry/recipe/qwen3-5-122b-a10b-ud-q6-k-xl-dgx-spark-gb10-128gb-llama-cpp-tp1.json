@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmof5xmak0004jy04vgp81qqc"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "DGX Spark TurboQuant KV test. Qwen3.5-122B-A10B UD-Q6_K_XL, K q8_0, V turbo3, 100K context. Source: /home/radar/bench_pp_decode_100k.json and TurboQuant runbook.",
       "observed_command": "llama-bench -m Qwen3.5-122B-A10B-UD-Q6_K_XL-00001-of-00004.gguf -ngl 99 -fa 1 -ctk q8_0 -ctv turbo3 -p 0 -n 128",
@@ -166,7 +181,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 100000,
     "tensor_parallel": 1
   },

@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "deepseek-ai/DeepSeek-V4-Flash-0731",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "262144"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -42,7 +43,7 @@
     }
   },
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "full-and-piecewise",
     "name": "vllm",
     "version": "0.11.2.dev279+eldritch.enlightenment.v45c1582.b12xf3686b5.cu132.20260704"
   },
@@ -103,19 +104,33 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
-    "engine.graph_mode": {
+    "draft_launch.entrypoint": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:41:26Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:32:29Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsb828qn0061qd01l1fsm6pa"
+          }
+        ]
+      },
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsb828qn0061qd01l1fsm6pa"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "First DeepSeek-V4-Flash-0731 (re-post-trained, same 284B/13B arch) on 2x RTX PRO 6000 Blackwell (SM120). Backend: FLASHINFER_MLA_SPARSE_DSV4 attn + flashinfer_cutlass MoE (voipmonitor 'lucifer-cutlass'), NOT b12x. Native DSpark draft head, K5 (dspark_block_size=5 is baked into config.json = hard ceiling).\n\nWORKLOAD: tokSOut 276.0 is single-stream CODE generation, to stay comparable with the other 2x RTX PRO 6000 DSpark runs here. Same runs gave prose 149.8 and math 285.8 t/s - prose is ~46% below code on this stack, so workload choice dominates any hardware difference.\n\nMETHOD: greedy (temp 0), thinking=false, two-point decode (64 vs 896 max_tokens on a prefix-warmed identical prompt) so prefill cancels. Mean of 3 runs; spread ~7%. Code prompt = 'commented B-tree with insert/search/delete plus a test harness'. tokSPrefill measured separately as TTFT on a 107,016-token prompt (10.24 s). Short-prompt TTFT 63 ms. peakVramGb is PER CARD, measured: 96799/96917 MiB of 97887 MiB at gpu-memory-utilization 0.93.\n\nVS PREDECESSOR: re-benched the older DeepSeek-V4-Flash-DSpark checkpoint on this exact stack, same session, fresh-vs-fresh, 3 runs each: code 262.6 / prose 155.0 / math 274.9. So 0731 is ~5% faster on code, ~4% on math, ~3% slower on prose - net a wash. 0731 ran on a COLD JIT/autotune cache vs the predecessor's warm one, so it's if anything understated. Spec acceptance unchanged: 48.6% (2.43 per 5-token draft) vs 49.9% (2.50).\n\nCONTEXT: server configured at the full 262144 (not 2048), and the decode figure above is with that KV budget allocated. Cold prefill of a 211,722-token prompt takes 34.6 s (~6.1k tok/s - prefill throughput degrades with length; the 10.4k tok/s above is at 107k). A repeat of the same prompt returns in 0.9 s on the prefix cache. Config allows 1M, but fp8 weights (~81 GiB/card at TP2) cap usable KV at 256k on 2 cards.\n\nHOST: ASRock Rack TURIND8UD-2T, Turin ES 64c/128t, 125 GB, Deb13, drv 590.48.01, TP2 over PCIe Gen5 P2P (no NVLink), 600 W/card.",
       "observed_command": "vllm serve deepseek-ai/DeepSeek-V4-Flash-0731 --tensor-parallel-size 2 --decode-context-parallel-size 1 --kv-cache-dtype fp8 --block-size 256 --gpu-memory-utilization 0.93 --max-model-len 262144 --max-num-seqs 64 --max-num-batched-tokens 8192 --max-cudagraph-capture-size 512 --compilation-config '{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"custom_ops\":[\"all\"]}' --async-scheduling --enable-chunked-prefill --enable-flashinfer-autotune --tokenizer-mode deepseek_v4 --speculative-config '{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"draft_sample_method\":\"probabilistic\"}' --attention-backend FLASHINFER_MLA_SPARSE_DSV4 --kernel-config.moe_backend flashinfer_cutlass --enable-prefix-caching",
@@ -221,7 +251,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 64,
     "max_context_tokens": 262144,
     "tensor_parallel": 2
   },

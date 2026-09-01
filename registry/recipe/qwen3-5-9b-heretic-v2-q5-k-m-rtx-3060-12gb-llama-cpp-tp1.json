@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjj23qj02k8mj01ra3k3ik1"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 2048,
       "hardware_label": "RTX 3060",
       "notes": "Qwen3.5-9B Heretic Q5_K_M, fully offloaded on RTX 3060. Server loaded and completed a real completion at 262144 context. Optimization sweep tested batch/ubatch/thread combinations; winner b2048 ub512 threads16. Peak VRAM measured after warmup at 262K context with q4_0 KV cache.",
       "observed_command": "llama-bench -m /mnt/hdd/models/qwen35-heretic-v2/Qwen3.5-9B-ultra-uncensored-heretic-v2-Q5_K_M.gguf -p 512 -n 128 -b 2048 -ub 512 -t 16 -ngl 99 -fa on -r 2 -o json",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

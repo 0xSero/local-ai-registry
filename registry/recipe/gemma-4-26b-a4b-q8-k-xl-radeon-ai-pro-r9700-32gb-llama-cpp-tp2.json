@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtewcr4300b2n001qknqnn05"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Unsloth UD-Q8_K_XL target + sidecar Q8_0-MTP draft (no in-file nextn). NOT llama-benchy. tokSOut = median of 3 essay decode-512 legs (131.39/91.94/148.31; accept 0.81/0.46/0.94). Code-prompt median was 121.95 (not submitted as tokSOut). tokSPrefill = ~10k prompt (10270 tok, 1974.69 t/s); 8k=1568, 16k=2184, 40k=2097, 80k=1678. VOID=false 512/512; draft_n present. Dual R9700 tensor-split 1,1 (Raphael iGPU unused). HIP overlay libamdhip64.so.7.2.53211. llama 5ea1b124e build-rocm-rdna-02, FA on, KV q8_0, mmap, draft-mtp n-max3 p-min0 draft on ROCm0,ROCm1 (ROCm0-only Meta() abort). HIP PR: ROCm/rocm-systems#10940. Recipe: github.com/onchainapps/rocm-llama.cpp",
       "observed_command": "llama-server -m gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf --host 127.0.0.1 --port 18080 --device ROCm0,ROCm1 --split-mode tensor --tensor-split 1,1 -ngl 99 -c 262144 -fit off --cache-ram 0 --mmap --no-warmup --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 --parallel 1 --n-predict 4096 --spec-type draft-mtp --spec-draft-model gemma-4-26B-A4B-it-Q8_0-MTP.gguf --spec-draft-device ROCm0,ROCm1 --spec-draft-ngl 99 --spec-draft-type-k q8_0 --spec-draft-type-v q8_0 --spec-draft-n-max 3 --spec-draft-p-min 0.0",
