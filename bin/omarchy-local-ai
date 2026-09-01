@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# omarchy:summary=Run validated registry models on detected local hardware
+# omarchy:args=<scan|download|run|unload|remove|open-agent|default|switch>
+set -euo pipefail
+HOME_DIR="${OMARCHY_AI_USER_HOME:-$HOME}"
+REPO="${OMARCHY_AI_REGISTRY_REPO:-$HOME_DIR/omarchy/local-ai}"
+REG="${OMARCHY_AI_REGISTRY:-$REPO/registry}"
+IDX="$REG/index/recipes.json"
+REMOTE="${OMARCHY_AI_REGISTRY_REMOTE:-https://github.com/0xSero/local-ai-registry.git}"
+# The registry is pinned by commit; registry.pin moves it deliberately. Empty OMARCHY_AI_REGISTRY_PIN tracks main.
+MODELS_SUB='~/.cache/omarchy/local-ai/models'
+CACHE_SUB='~/.cache/omarchy/local-ai/cache'
+ST="${OMARCHY_AI_STATE:-${XDG_STATE_HOME:-$HOME_DIR/.local/state}/omarchy/local-ai}"
+SNAP="$ST/snapshot.json"
+CTR="${OMARCHY_AI_CONTAINER:-omarchy-local-ai}"
+PREV="$CTR-previous"
+PORT="${OMARCHY_AI_PORT:-12434}"
+LABEL=io.omarchy.local-ai
+POLL="${OMARCHY_AI_POLL:-2}"
+TIMEOUT="${OMARCHY_AI_TIMEOUT:-7200}"
+HERE=$(cd -- "$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || printf '%s' "${BASH_SOURCE[0]}")")" && pwd)
+SELF="$HERE/$(basename "${BASH_SOURCE[0]}")"
+PIN=${OMARCHY_AI_REGISTRY_PIN-$([[ -f $HERE/../registry.pin ]] && tr -d '[:space:]' <"$HERE/../registry.pin" || true)}
+EMPTY='{"schemaVersion":"omarchy-local-ai/4","state":"uninitialized","updatedAt":"","error":"","operation":{"name":"","recipeId":"","percent":0,"indeterminate":false,"detail":""},"active":{"recipeId":"","modelId":"","name":"","servedModel":"","container":"","endpoint":"","port":0,"gpuIndices":[],"apiReady":false,"toolCallReady":false,"tools":false,"ctxTokens":0,"toksPerSec":0,"agents":{}},"gpus":[],"registry":{"path":"","revision":"","matching":0,"total":0},"hardware":{"groups":[]},"models":[]}'
+# shellcheck source=../lib/state.sh
+source "$HERE/../lib/state.sh"
+# shellcheck source=../lib/hardware.sh
+source "$HERE/../lib/hardware.sh"
+# shellcheck source=../lib/registry.sh
+source "$HERE/../lib/registry.sh"
+# shellcheck source=../lib/runtime.sh
+source "$HERE/../lib/runtime.sh"
+# shellcheck source=../lib/agent.sh
+source "$HERE/../lib/agent.sh"
+# shellcheck source=../lib/lifecycle.sh
+source "$HERE/../lib/lifecycle.sh"
+spawn() {
+  if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then "$SELF" "$@" >/dev/null 2>&1 || true; return; fi
+  if command -v setsid >/dev/null 2>&1; then setsid "$SELF" "$@" >/dev/null 2>&1 </dev/null & disown
+  else ( "$SELF" "$@" >/dev/null 2>&1 </dev/null & ) ; fi
+}
+guard() {
+  mkdir -p "$ST"
+  if ((HAVE_FLOCK)); then exec 8>"$ST/op.lock"; flock -n 8 || { fail "another operation is running"; return 1; }
+  else mkdir "$ST/op.lockd" 2>/dev/null || { fail "another operation is running"; return 1; }
+       trap 'rmdir "$ST/op.lockd" 2>/dev/null || true' EXIT; fi
+}
+usage() {
+  echo 'Usage: omarchy-local-ai <command>
+  scan                   refresh the registry and rescan hardware
+  download <recipe>      download the image and weights for one recipe
+  run <recipe>           load one downloaded recipe
+  unload                 free the hardware; keep downloads
+  remove <recipe>        delete one recipe'\''s weights and image to reclaim disk
+  open-agent [pi|omp]    open an agent wired to the running model
+  default                make the running model the default agent model (pi and omp)
+  switch <recipe>        replace the running model, rolling back on failure
+  snapshot               print the canonical state snapshot'
+}
+cmd=${1:-help}; shift || true
+case $cmd in
+  scan) setstate scanning; spawn _worker-scan ;;
+  download) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate downloading; op download "$1" 0 true "queued"; spawn _worker-download "$1" ;;
+  run) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate starting; op starting "$1" 0 true "queued"; spawn _worker-run "$1" starting ;;
+  switch) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate switching; op switching "$1" 0 true "queued"; spawn _worker-run "$1" switching ;;
+  unload) setstate unloading; op unload "" 0 true "queued"; spawn _worker-unload ;;
+  remove) [[ -n ${1:-} ]] || fail 'choose a recipe'; do_remove "$1" ;;
+  open-agent) open_agent "${1:-pi}" ;;
+  default) set_default ;;
+  snapshot) emit ;;
+  _worker-scan) w_scan ;;
+  _worker-download) w_download "$1" ;;
+  _worker-run) w_run "$1" "$2" ;;
+  _worker-unload) w_unload ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac
