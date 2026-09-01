@@ -1,0 +1,93 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "hf.co/unsloth/gemma-4-12b-it-GGUF:Q4_K_M validated candidate on one RTX PRO 4500 Blackwell via native ollama 0.33.2 (Vast rental). Exact 'validation-ok' completion probe, temperature 0, ctx 32768. Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "ollama",
+    "version": "0.33.2"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://vast.ai"
+          }
+        ]
+      },
+      "reason": "validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "gemma-4-12b-q4-k-m-rtx-pro-4500-blackwell-32gb-ollama-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "validation-run",
+          "url": "https://vast.ai"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "observed_command": "/usr/local/bin/ollama pull hf.co/unsloth/gemma-4-12b-it-GGUF:Q4_K_M",
+    "serve_command": "/usr/local/bin/ollama serve",
+    "source": "vast-validation-2026-09-01"
+  },
+  "metadata": {
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "eval_count": 44,
+        "eval_duration_ns": 3792617000,
+        "load_duration_ns": 30090696486,
+        "prompt_eval_count": 23,
+        "prompt_eval_duration_ns": 17152484000,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": 51037648643
+      },
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768"
+    }
+  },
+  "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "validation-run",
+        "url": "https://vast.ai"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-12b-q4-k-m-rtx-pro-4500-blackwell-32gb-ollama-tp1-sweep"
+  ],
+  "status": "candidate"
+}

@@ -1,208 +1,145 @@
 #!/usr/bin/env python3
-"""Write validated-candidate recipes for the 2026-09-01 focus-model matrix.
+"""Extend the focus-model matrix with the Vast all-GPU validation sweep (2026-09-01).
 
-Target models (user-pinned):
-  gemma-4-12b-it, lfm2.5-2.6b, qwen3.8-27b, qwen3.6-35b-a3b, qwen3.5-9b
-Hardware targets:
-  vast RTX 3090 24GB (ollama 0.33.2, native on-host, CUDA 560.35.03)
-  vast RTX 5090 32GB (ollama 0.33.2, native on-host, CUDA 12.8.93 / driver 580.95.05)
-  local Apple M1 Max 32GB (llama.cpp 9430 Metal / mlx-lm 0.31.3 + mlx 0.32.2)
+Inputs (lane evidence, captured live today):
+  /tmp/ampere-lane-report.json        — AmpereLane  (3060 Ti, 3070, 3080, 3080 Ti, A4000)
+  /tmp/focus-blackwell-results.json     — BlackwellLane (5060 Ti, 5070, 5070 Ti, 5080; 5060 blocked)
+  agent://AdaLane                       — AdaLane   (4060 Ti, 4070, 4070S Ti, 4080)
+  /Users/sero/exo-ai/focus-probes/*.json — DatacenterLane (A100 PCIE/SXM4, H100, H200,
+                                           RTX PRO 4000/4500, RTX 6000 Ada, RTX A6000,
+                                           RTX 5000 Ada, RTX A5000, V100; B200/RTX 4000 Ada/RTX A4000 no-offer)
 
-These are launch.kind "reference" candidates: the observed native
-command + probe evidence is preserved verbatim; status stays
-candidate because no digest-pinned container replay exists. All probe
-evidence was captured live on 2026-09-01 (exact "validation-ok"
-completion probes with usage timing).
+Emits one recipe + one speed-sweep per (model, GPU) pair whose probe returned ok.
+Skips and no-offer findings are NOT recipes — they are printed as a gap report.
+Same candidate/reference contract as the first matrix commit.
 """
 import json
+import re
+import urllib.request
 from pathlib import Path
 
 ROOT = Path("registry")
 NOW = "2026-09-01T00:00:00Z"
 REGISTRY_URL = "https://github.com/0xSero/local-ai-registry"
-HF = "https://huggingface.co"
+EVIDENCE_DIR = Path("/Users/sero/exo-ai/focus-probes")
 
-# model-instance id -> (repository, revision, gguf_file, quant, size_gb, served_name, base_model_id)
-MODELS = {
-    "gemma-4-12b-it": dict(
-        mi="unsloth-gemma-4-12b-it-gguf--q4-k-m",
-        repo="unsloth/gemma-4-12b-it-GGUF",
-        rev="fc034cfff751157913579611efad8462ac1be606",
-        gguf="gemma-4-12b-it-Q4_K_M.gguf",
-        quant="Q4_K_M", size_gb=7.3, served="gemma-4-12b-it-Q4_K_M",
-        model_id="gemma-4-12b-it"),
-    "lfm2.5-2.6b": dict(
-        mi="liquidai-lfm2-5-2-6b-gguf--q4-k-m",
-        repo="LiquidAI/LFM2.5-2.6B-GGUF",
-        rev="84022ce711b28455e8c4fc364ce68c00cf995875",
-        gguf="LFM2.5-2.6B-Q4_K_M.gguf",
-        quant="Q4_K_M", size_gb=1.7, served="LFM2.5-2.6B-Q4_K_M",
-        model_id="lfm2.5-2.6b"),
-    "qwen3.8-27b": dict(
-        mi="unsloth-qwen3-8-27b-gguf--q4-k-m",
-        repo="unsloth/Qwen3.8-27B-GGUF",
-        rev="4ca720788d1e01f1bff70c033e0d0028fd02e502",
-        gguf="Qwen3.8-27B-UD-Q4_K_M.gguf",
-        quant="UD-Q4_K_M", size_gb=17, served="Qwen3.8-27B-UD-Q4_K_M",
-        model_id="qwen3.8-27b"),
-    "qwen3.6-35b-a3b": dict(
-        mi="unsloth-qwen3-6-35b-a3b-gguf--q4-k-m",
-        repo="unsloth/Qwen3.6-35B-A3B-GGUF",
-        rev="a483e9e6cbd595906af30beda3187c2663a1118c",
-        gguf="Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
-        quant="UD-Q4_K_M", size_gb=23, served="Qwen3.6-35B-A3B-UD-Q4_K_M",
-        model_id="qwen3.6-35b-a3b"),
-    "qwen3.5-9b": dict(
-        mi="unsloth-qwen3-5-9b-gguf--q4-k-m",
-        repo="unsloth/Qwen3.5-9B-GGUF",
-        rev="3885219b6810b007914f3a7950a8d1b469d598a5",
-        gguf="Qwen3.5-9B-Q4_K_M.gguf",
-        quant="Q4_K_M", size_gb=6.6, served="Qwen3.5-9B-Q4_K_M",
-        model_id="qwen3.5-9b"),
+MODEL_TAGS = {
+    "gemma-4-12b-it": "hf.co/unsloth/gemma-4-12b-it-GGUF:Q4_K_M",
+    "lfm2.5-2.6b": "hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M",
+    "qwen3.8-27b": "hf.co/unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M",
+    "qwen3.6-35b-a3b": "hf.co/unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M",
+    "qwen3.5-9b": "hf.co/unsloth/Qwen3.5-9B-GGUF:Q4_K_M",
 }
-
-# hardware_id -> observed facts
-HARDWARE = {
-    "rtx-3090-24gb": dict(
-        engine="ollama", version="0.33.2",
-        note="Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend"),
-    "rtx-5090-32gb": dict(
-        engine="ollama", version="0.33.2",
-        note="Vast rental RTX 5090, driver 580.95.05 (CUDA 12.8.93 toolkit), native ollama serve on host"),
-    "apple-m1-max-32gb": dict(
-        engine=None, version=None,
-        note="local MacBook Pro M1 Max 32GB, unified memory, Metal backend"),
+MODEL_INSTANCE = {
+    "gemma-4-12b-it": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+    "lfm2.5-2.6b": "liquidai-lfm2-5-2-6b-gguf--q4-k-m",
+    "qwen3.8-27b": "unsloth-qwen3-8-27b-gguf--q4-k-m",
+    "qwen3.6-35b-a3b": "unsloth-qwen3-6-35b-a3b-gguf--q4-k-m",
+    "qwen3.5-9b": "unsloth-qwen3-5-9b-gguf--q4-k-m",
 }
-
-# (model, hardware) -> probe evidence: (total_s, load_s, pe_count, pe_s, eval_count, eval_s, ctx)
-# pe = prompt_eval; measured live 2026-09-01, temperature 0, exact-completion probe.
-EVIDENCE = {
-    ("gemma-4-12b-it", "rtx-3090-24gb"): (10637884037, 9683440906, 23, 176862000, 47, 773518000, 16384),
-    ("gemma-4-12b-it", "rtx-5090-32gb"): (24052063618, 15773651717, 23, 4454440000, 44, 3821725000, 16384),
-    ("lfm2.5-2.6b", "rtx-3090-24gb"): (4297083430, 3053848607, 17, 450344000, 102, 789890000, 32768),
-    ("lfm2.5-2.6b", "rtx-5090-32gb"): (4373769226, 4215298684, 17, 53630000, 53, 102981000, 32768),
-    ("qwen3.8-27b", "rtx-3090-24gb"): (None, None, 58, None, 37, 450957000, 16384),
-    ("qwen3.8-27b", "rtx-5090-32gb"): (43529517647, 42860811255, 58, 215746000, 37, 450957000, 16384),
-    ("qwen3.6-35b-a3b", "rtx-3090-24gb"): (24155217832, 18967422267, 16, 2500557000, 197, 2680760000, 16384),
-    ("qwen3.6-35b-a3b", "rtx-5090-32gb"): (29940088013, 21365283144, 16, 7851893000, 190, 720934000, 16384),
-    ("qwen3.5-9b", "rtx-3090-24gb"): (10647708137, 7413182952, 16, 911153000, 184, 2319987000, 32768),
-    ("qwen3.5-9b", "rtx-5090-32gb"): (9568912147, 8424607522, 16, 105878000, 225, 103675000, 32768),
-    # local M1 Max probes
-    ("gemma-4-12b-it", "apple-m1-max-32gb"): (None, None, 23, None, 47, None, 16384),
-    ("lfm2.5-2.6b", "apple-m1-max-32gb"): (None, None, None, None, 102, None, 32768),
-    ("qwen3.5-9b", "apple-m1-max-32gb"): (None, None, None, None, 116, None, 32768),
+MODEL_SLUG = {
+    "gemma-4-12b-it": "gemma-4-12b",
+    "lfm2.5-2.6b": "lfm25-26b",
+    "qwen3.8-27b": "qwen38-27b",
+    "qwen3.6-35b-a3b": "qwen36-35b",
+    "qwen3.5-9b": "qwen35-9b",
 }
-
-# Local-engine launch command templates (observed, verbatim shape).
-LOCAL_COMMANDS = {
-    "ollama": '/usr/bin/ollama serve (host-native systemd-style process); model pulled via: ollama pull hf.co/{repo}:{quant}',
-    "llama.cpp": 'llama-server -hf {repo}:{quant} --no-mmproj -c {ctx} -ngl 99 --host 127.0.0.1 --port 8080 (Apple Metal; --no-mmproj required: ggml gated-delta-net/multimodal projector paths crash build 9430 on Metal)',
-    "mlx-lm": 'mlx_lm.server --model {snapshot_path} --port 8080 (mlx-lm 0.31.3, mlx 0.32.2; snapshot revision {rev})',
+QUANT = {
+    "gemma-4-12b-it": "q4-k-m", "lfm2.5-2.6b": "q4-k-m",
+    "qwen3.8-27b": "ud-q4-k-m", "qwen3.6-35b-a3b": "ud-q4-k-m",
+    "qwen3.5-9b": "q4-k-m",
 }
+# Registry hardware_id by Vast gpu_name (validated lanes only); keys normalized (memory suffix stripped)
+GPU_HW = {re.sub(r"[\s(]*\d+\s*GB\)?$", "", k).strip(): v for k, v in {
+    "RTX 3060 Ti": "rtx-3060-ti-8gb", "RTX 3070": "rtx-3070-8gb",
+    "RTX 3080": "rtx-3080-10gb", "RTX 3080 Ti": "rtx-3080-ti-12gb",
+    "RTX A4000": "rtx-a4000-16gb",
+    "RTX 4060 Ti": "rtx-4060-ti-16gb", "RTX 4070": "rtx-4070-12gb",
+    "RTX 4070S Ti": "rtx-4070-ti-super-16gb", "RTX 4080": "rtx-4080-16gb",
+    "RTX 5060 Ti": "rtx-5060-ti-16gb", "RTX 5070": "rtx-5070-12gb",
+    "RTX 5070 Ti": "rtx-5070-ti-16gb", "RTX 5080": "rtx-5080-16gb",
+    "A100 PCIE 40GB": "rtx-a100-pcie-40gb", "A100 SXM4 40GB": "rtx-a100-sxm4-40gb",
+    "H100 SXM 80GB": "rtx-h100-sxm-80gb", "H200 141GB": "rtx-h200-141gb",
+    "RTX PRO 4000 Blackwell 24GB": "rtx-pro-4000-blackwell-24gb",
+    "RTX PRO 4500 Blackwell 32GB": "rtx-pro-4500-blackwell-32gb",
+    "RTX 6000 Ada 48GB": "rtx-6000-ada-48gb", "RTX A6000 48GB": "rtx-a6000-48gb",
+    "RTX 5000 Ada 32GB": "rtx-5000-ada-32gb", "RTX A5000 24GB": "rtx-a5000-24gb",
+    "Tesla V100 16GB": "rtx-v100-16gb",
+}.items()}
 
-UNSUPPORTED = {
-    ("qwen3.8-27b", "apple-m1-max-32gb"): "27B-class weights exceed the 32GB unified-memory budget for a quality-usable local serve",
-    ("qwen3.6-35b-a3b", "apple-m1-max-32gb"): "35B MoE weights exceed the 32GB unified-memory budget for a quality-usable local serve",
-    ("gemma-4-12b-it", "apple-m1-max-32gb"): None,  # supported via llama.cpp
-}
+
+def provenance(url, kind="validation-run"):
+    return {"captured_at": NOW, "sources": [{"captured_at": NOW, "kind": kind, "url": url}]}
 
 
-def provenance(sources):
-    return {"captured_at": NOW, "sources": sources}
+def load_json(path):
+    return json.loads(Path(path).read_text())
 
 
-def registry_source(url):
-    return {"captured_at": NOW, "kind": "normalized-recipe", "url": url}
+def probe_ok(model, ev):
+    return ev.get("status") == "ok"
 
 
-def hf_api(url):
-    return {"captured_at": NOW, "kind": "huggingface-api", "url": url}
-
-
-def recipe_for(model, hw, evidence):
-    m = MODELS[model]
-    total_s, load_s, pe_count, pe_s, eval_count, eval_s, ctx = evidence
-    hw_note = HARDWARE[hw]["note"]
-    is_apple = hw == "apple-m1-max-32gb"
-    engine = "llama.cpp" if (is_apple and model != "qwen3.5-9b") else ("mlx-lm" if is_apple else "ollama")
-    version = {"llama.cpp": "9430 (d48a56eff)", "mlx-lm": "0.31.3+mlx-0.32.2", "ollama": "0.33.2"}[engine]
-    slug = model.replace(".", "").replace("-a3b", "").replace("-it", "")
-    rid = f"{slug}-{m['quant'].lower().replace('_', '-')}-{hw.replace('apple-','apple-')}-{'llamacpp' if engine=='llama.cpp' else ('mlxml' if engine=='mlx-lm' else 'ollama')}-tp1"
-
-    launch_meta = {
-        "ollama": dict(
-            kind="reference",
-            source="vast-validation-2026-09-01",
-            observed_command=f"/usr/bin/ollama pull hf.co/{m['repo']}:{m['quant']}",
-            serve_command="/usr/local/bin/ollama serve",
-        ),
-        "llama.cpp": dict(
-            kind="reference",
-            source="vast-validation-2026-09-01",
-            observed_command=f"llama-server -hf {m['repo']}:{m['quant']} --no-mmproj -c {ctx} -ngl 99 --host 127.0.0.1 --port 8080",
-            note="--no-mmproj required: multimodal projector (mmproj) load aborts in llama.cpp 9430 Metal build",
-        ),
-        "mlx-lm": dict(
-            kind="reference",
-            source="vast-validation-2026-09-01",
-            observed_command=f"mlx_lm.server --model ~/.cache/huggingface/hub/models--mlx-community--Qwen3.5-9B-MLX-4bit/snapshots/{m['rev']} --port 8080",
-            note="mlx-lm 0.31.3 with mlx 0.32.2; mlx-lm 0.30.7 cannot load this artifact layout",
-        ),
-    }[engine]
-
+def build(model, gpu, ev, rental):
+    model = model.split(":", 1)[0]
+    m_tag = MODEL_TAGS[model]
+    gpu = re.sub(r"[\s(]*\d+\s*GB\)?$", "", gpu).strip()
+    hw = GPU_HW[gpu]
+    slug = MODEL_SLUG[model]
+    quant = QUANT[model]
+    ctx = ev.get("ctx") or (16384 if model in ("qwen3.8-27b", "qwen3.6-35b-a3b") else 32768)
+    decode = round(ev["eval_duration_ns"] / ev["eval_count"] * 1e9, 1)
+    prefill = round(ev["prompt_eval_duration_ns"] / ev["prompt_eval_count"] * 1e9, 1) if ev.get("prompt_eval_duration_ns") else None
+    rid = f"{slug}-{quant}-{hw}-ollama-tp1"
     sweep_id = f"{rid}-sweep"
-    decode = round(eval_s / eval_count * 1e9, 1) if eval_s and eval_count else None
-    metrics = {
-        "concurrency": 1,
-        "inference_engine_version": version,
-        "latest_point_at": NOW,
-        "max_context_tokens": ctx,
-        "peak_generation_tps": decode,
-        "peak_prompt_tps": round(pe_s / pe_count * 1e9, 1) if pe_s and pe_count else None,
-        "point_count": 1,
-    }
-    row = {
-        "concurrency": 1,
-        "context_tokens": ctx,
-        "decode_tok_s": decode,
-        "decode_tok_s_per_stream": decode,
-        "output_tokens": eval_count,
-        "peak_vram_gb": None,
-        "prefill_tok_s": metrics["peak_prompt_tps"],
-        "samples": 1,
-        "status": "observed",
-        "ttft_ms_p50": round(load_s / 1e6, 1) if load_s else None,
-    }
     sweep = {
         "schema_version": "local-ai-registry/v1",
         "id": sweep_id,
         "recipe_id": rid,
         "measured_at": NOW,
         "accepted_at": None,
-        "source": {"kind": "validation-run", "url": REGISTRY_URL, "repository": REGISTRY_URL, "commit": None, "paths": None},
-        "metrics": metrics,
-        "rows": [row],
+        "source": {"kind": "validation-run", "url": REGISTRY_URL, "repository": None, "commit": None, "paths": None},
+        "metrics": {
+            "concurrency": 1,
+            "inference_engine_version": "0.33.2",
+            "latest_point_at": NOW,
+            "max_context_tokens": ctx,
+            "peak_generation_tps": decode,
+            "peak_prompt_tps": prefill,
+            "point_count": 1,
+        },
+        "rows": [{
+            "concurrency": 1,
+            "context_tokens": ctx,
+            "decode_tok_s": decode,
+            "decode_tok_s_per_stream": decode,
+            "output_tokens": ev["eval_count"],
+            "peak_vram_gb": None,
+            "prefill_tok_s": prefill,
+            "samples": 1,
+            "status": "observed",
+            "ttft_ms_p50": round(ev["load_duration_ns"] / 1e6, 1),
+        }],
     }
-    probe_note = (
-        f"Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx {ctx}. "
-        f"Engine timings from engine usage counters. Host: {hw_note}."
-    )
     recipe = {
         "schema_version": "local-ai-registry/v1",
         "id": rid,
         "recipe_source": "0xsero",
         "status": "candidate",
-        "model_instance_id": m["mi"],
+        "model_instance_id": MODEL_INSTANCE[model],
         "hardware_id": hw,
         "hardware_count": 1,
         "description": (
-            f"{m['served']} {m['quant']} validated candidate on {hw} via native {engine}"
-            + (f": {hw_note}" if not is_apple else " (Apple Metal)")
-            + ". Observed reference launch; not a digest-pinned container contract."
+            f"{m_tag} validated candidate on one {gpu} via native ollama 0.33.2 (Vast rental). "
+            f"Exact 'validation-ok' completion probe, temperature 0, ctx {ctx}. "
+            "Observed reference launch; not a digest-pinned container contract."
         ),
-        "engine": {"name": engine, "version": version, "graph_mode": None},
+        "engine": {"name": "ollama", "version": "0.33.2", "graph_mode": None},
         "launch": {
-            **launch_meta,
+            "kind": "reference",
+            "source": "vast-validation-2026-09-01",
+            "observed_command": f"/usr/local/bin/ollama pull {m_tag}",
+            "serve_command": "/usr/local/bin/ollama serve",
             "container": {
                 "captured_at": NOW,
                 "compose_file": None,
@@ -225,42 +162,107 @@ def recipe_for(model, hw, evidence):
         "metadata": {
             "validation": {
                 "date": "2026-09-01",
-                "probe": probe_note,
+                "probe": f"Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx {ctx}",
                 "evidence": {
-                    "total_duration_ns": total_s,
-                    "load_duration_ns": load_s,
-                    "prompt_eval_count": pe_count,
-                    "prompt_eval_duration_ns": pe_s,
-                    "eval_count": eval_count,
-                    "eval_duration_ns": eval_s,
+                    "total_duration_ns": ev["total_duration_ns"],
+                    "load_duration_ns": ev["load_duration_ns"],
+                    "prompt_eval_count": ev["prompt_eval_count"],
+                    "prompt_eval_duration_ns": ev.get("prompt_eval_duration_ns"),
+                    "eval_count": ev["eval_count"],
+                    "eval_duration_ns": ev["eval_duration_ns"],
                     "response_excerpt": "validation-ok",
                 },
-                "hardware_note": hw_note,
-            }
+            },
         },
-        "provenance": provenance([registry_source("https://vast.ai")]),
+        "provenance": provenance("https://vast.ai"),
         "facts": {
             "metadata": {
                 "state": "known",
                 "reason": "validation-evidence-recorded",
-                "provenance": provenance([{"captured_at": NOW, "kind": "validation-run", "url": "https://vast.ai"}]),
+                "provenance": provenance("https://vast.ai"),
             },
         },
     }
     return rid, recipe, sweep
 
 
+def iter_lane(lane):
+    """Yield (model, gpu_name, evidence) from a lane report."""
+    for gpu_block in lane.get("results", lane.get("gpu_results", {}).get("gpu_lanes", {}).values() if False else []):
+        pass
+    return []
+
+
 def main():
     (ROOT / "speed-sweep").mkdir(exist_ok=True)
-    for (model, hw), evidence in sorted(EVIDENCE.items()):
-        unsupported = UNSUPPORTED.get((model, hw))
-        if unsupported:
-            print(f"skip {model} on {hw}: {unsupported}")
+    pairs = []   # (model, gpu_name, evidence, rental)
+    gaps = []
+
+    amp = load_json("/tmp/ampere-lane-report.json")
+    for hw_key, block in amp["gpu_lanes"].items():
+        gpu = block["gpu"]
+        for model, ev in block["models"].items():
+            if probe_ok(model, ev):
+                pairs.append((model, gpu, ev, block.get("rental", {})))
+            else:
+                gaps.append((model, gpu, ev.get("status"), ev.get("reason", "")))
+
+    with open("/tmp/focus-blackwell-results.json") as f:
+        bw = json.load(f)
+    for hw_key, block in bw["gpu"].items():
+        gpu = block["gpu_name"]
+        for model, ev in block["models"].items():
+            if probe_ok(model, ev):
+                pairs.append((model, gpu, ev, block.get("rental", {})))
+            else:
+                gaps.append((model, gpu, ev.get("status"), ev.get("reason", "")))
+
+    # AdaLane via artifact url
+    # AdaLane via staged report file
+    ada = load_json("/Users/sero/exo-ai/focus-probes/ada-lane.json")
+    for (hw_key, block), rental in zip(ada["results"].items(), ada.get("rentals", [])):
+        gpu_name = rental.get("gpu") or hw_key
+        for model, ev in block.items():
+            if probe_ok(model, ev):
+                pairs.append((model, gpu_name, ev, rental))
+            else:
+                gaps.append((model, gpu_name, ev.get("status"), ev.get("reason", "")))
+    for path in sorted(EVIDENCE_DIR.glob("*.json")):
+        if path.name == "ada-lane.json":
             continue
-        rid, recipe, sweep = recipe_for(model, hw, evidence)
+        dc = load_json(path)
+        gpu = dc["gpu"]
+        rental = {"offer_id": dc.get("offer_id"), "instance_id": dc.get("instance_id"), "ssh": dc.get("ssh"), "dph": None}
+        for model, ev in dc["models"].items():
+            if probe_ok(model, ev):
+                pairs.append((model, gpu, ev, rental))
+            else:
+                gaps.append((model, gpu, ev.get("status"), ev.get("reason", "")))
+                gaps.append((model, gpu, ev.get("status"), ev.get("reason", "")))
+
+    # Explicit no-offer / infra-blocked findings from DatacenterLane summary
+    for gpu, finding in (
+        ("B200", "No single-GPU verified rentable B200 offer at run time (snapshot ids stale no_such_ask; live verified listings all rentable=false, cheapest $5.31/hr)"),
+        ("RTX 4000 Ada 20GB", "No rentable single-GPU offer under this exact name; only RTX A4000 (Ampere) exists as a distinct gpu_name"),
+        ("RTX A4000 20GB", "Verified rentable offer existed ($0.095/hr) but host sshd persistently rejected key auth across 6 attempts incl. onstart pubkey injection; host-side key injection broken; no probe evidence"),
+    ):
+        gaps.append((None, gpu, "no-offer", finding))
+
+    # RTX 5060 infra-blocked finding from BlackwellLane
+    gaps.append((None, "RTX 5060", "blocked", "No working full-GPU 5060 host rentable at run time: 6 rental attempts all failed on host infra (SSH pubkey denial / docker registry failures)"))
+
+    written = 0
+    for model, gpu, ev, rental in pairs:
+        rid, recipe, sweep = build(model, gpu, ev, rental)
         (ROOT / "recipe" / f"{rid}.json").write_text(json.dumps(recipe, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
         (ROOT / "speed-sweep" / f"{rid}-sweep.json").write_text(json.dumps(sweep, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
-        print(f"wrote {rid} + sweep")
+        written += 1
+        print(f"wrote {rid}")
+
+    print(f"\nrecipes written: {written}")
+    print("gaps (no recipe):")
+    for model, gpu, status, reason in gaps:
+        print(f"  {gpu}: {model or '*'} — {status}: {reason}")
 
 
 if __name__ == "__main__":
