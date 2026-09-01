@@ -7,6 +7,12 @@ import re
 import sys
 from pathlib import Path
 
+from import_market_snapshot import (
+    gpu_signature,
+    listing_title_matches,
+    listing_url_is_specific,
+    product_name,
+)
 from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 
@@ -359,6 +365,8 @@ def validate(root):
                 errors.append(f"{recipe['id']}: validated recipe has no speed evidence")
             if kind == "docker" and not re.search(r"@sha256:[0-9a-f]{64}$", launch.get("image", "")):
                 errors.append(f"{recipe['id']}: validated Docker launch has no image digest")
+            if kind == "docker" and str(launch.get("image", "")).startswith("local/"):
+                errors.append(f"{recipe['id']}: validated Docker launch cannot use an unpullable local/ image")
             if kind == "script" and not re.search(r"(?:^|/)[0-9a-f]{40}/", launch.get("script", {}).get("file", "")):
                 errors.append(f"{recipe['id']}: validated script launch has no commit pin")
             launch_text = json.dumps(launch).lower()
@@ -407,11 +415,29 @@ def validate(root):
                 errors.append(f"{identifier}: unresolved hardware {hardware.get('id')!r}")
             if hardware.get("match_scope") not in ("exact", "family"):
                 errors.append(f"{identifier}: invalid hardware match_scope")
+        product_id = (record.get("product") or {}).get("id")
+        scanner_owned_gpu = (
+            isinstance((record.get("provenance") or {}).get("scanner"), str)
+            and isinstance(product_id, str)
+            and gpu_signature(product_name(product_id)) is not None
+        )
         for observation in record.get("observations", []):
             if observation.get("currency") != currency:
                 errors.append(f"{identifier}: observation currency does not match region")
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
+            if scanner_owned_gpu and not listing_title_matches(
+                product_id, observation.get("title") or ""
+            ):
+                errors.append(
+                    f"{identifier}: observation title does not identify the exact GPU SKU"
+                )
+            if scanner_owned_gpu and not listing_url_is_specific(
+                observation.get("url") or ""
+            ):
+                errors.append(
+                    f"{identifier}: observation URL is not a product-specific retailer URL"
+                )
 
     import hashlib
     for asset in data["asset"].values():

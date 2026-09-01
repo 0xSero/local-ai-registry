@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnp34or00nco001vjgo5dg0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 9070 XT",
       "notes": "SINGLE-STREAM. hipfire Redline retained-PM4 vs plain HIP A/B on identical MQ4 weights, 3 fresh processes x5 measurement rows, campaign medians. PM4 545.272 tok/s vs HIP 477.981 tok/s, speedup 1.141x (PM4 wins).\nengine: hipfire 0.3.0+44eb828cc804, backend rocm, gfx1201 AMD Radeon RX 9070 XT\nquant: MQ4 = MagnumQuant 4-bit group-256 FWHT-rotated, 0.53125 B/weight =4.25 bpw ideal, file 549751424 B =>5.04 bpw effective on 0.87B total params (5.50 bpw on 0.80B text)\nmodel file: qwen3.5-0.8b.registry.mq4 sha256 aedfe31be68213dbcd13cff3a63ba150c330d0d0547df30f2c629e76ab5dda39\nprompt: cap.txt md5 bbf2d0483ecacaa2eb7296f9c8083f95, 13 prompt tokens (est.), context 128, iterations 100\nmethod: median of 3 runs, fresh process, temperature 0 (greedy), PM4 retained replay verified at positions 128/227 each process\nevidence: sealed case qwen08-mq4-redline-pm4-20260809-gfx1201-rx9070xt, corpus manifest 44eb828cc804\nnot measured: peak VRAM (not instrumented this campaign)\nTTFT 67.0 ms is the median of the same campaign's coherence pass (3 rows, auto arm, same binary/model/route); tok/s is the bench median. Separate passes, both measured.",
       "observed_command": "scripts/lmx_redline_campaign.py --model /home/kaden/.hipfire/models/qwen3.5-0.8b.registry.mq4 --prompt-file benchmarks/prompts/sweep/cap.txt --device 0 --process-runs 3 --bench-runs 5 --transport pm4 --kv-mode q8 --context 128 --iterations 100 --max-seq 2048",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 128,
     "tensor_parallel": 1
   },

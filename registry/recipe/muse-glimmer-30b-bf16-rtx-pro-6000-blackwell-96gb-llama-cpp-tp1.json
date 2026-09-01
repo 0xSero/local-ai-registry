@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoveowo00dsmp01cf38c65a"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "BF16 GGUF converted from meta-models/Muse-Glimmer-30B safetensors and benchmarked with llama.cpp llama-server on RTX PRO 6000 Blackwell 96 GB. Five prompts, temperature 0, 131072-token context, 16000-token output cap, 99 GPU layers, sequential requests. Weighted output speed 28.75 tok/s and weighted prefill 3665 tok/s; all prompts completed with stop. Measured peak VRAM 52.32 GB and peak power 496 W.",
       "observed_command": "llama-server -m /home/<USER>/models/Muse-Glimmer-30B-GGUF-BF16/Muse-Glimmer-30B-BF16-00001-of-00002.gguf --host 0.0.0.0 --port 8094 -ngl 99 -c 131072 -n 16000 --reasoning off --jinja --alias muse-bf16-llamacpp",
@@ -169,7 +184,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "piecewise",
     "name": "vllm",
     "version": "0.20.2rc1.dev2+gc51df4300.d20260523"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqq4mwgm00yiqo0133bj962q"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -94,6 +94,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqq4mwgm00yiqo0133bj962q"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -124,7 +138,8 @@
   },
   "metadata": {
     "localmaxxing": {
-      "backend": null,
+      "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Best safer TP2 reference for Qwen3.6 35B A3B Quark W8A8 INT8 on 2x Intel Arc Pro B70. Shape p512/o512 through OpenAI-compatible vLLM/XPU endpoint, temperature 0, corrected output throughput after first streamed chunk. Validation: JSON canary 16/16 pass and color/order canary 16/16 pass; quality suite was skipped, so this is a safe-smoke/reference submission rather than the stronger TP4 deep gate. Older TP2 raw metrics reached about 91 tok/s but were not promoted under the current gates. GitHub result packet: https://github.com/steveseguin/b70-optimization-lab/blob/main/results/qwen36-35b-quark-int8-b70/2x-b70-reference.md . Evidence: data/qwen36-ablation-prefill-safe-int8-mixed-workspace-async-tp2-smoke-summary-20260615tp2safe1.json and data/qwen36-ablation-prefill-safe-int8-mixed-workspace-async-tp2-smoke-p512o512-20260615tp2safe1.json.",
       "observed_command": "SERVER_LAUNCHER=scripts/launch-qwen36-quark-int8-accepted.sh TP_SIZE=2 ONEAPI_DEVICE_SELECTOR=level_zero:0,1 ZE_AFFINITY_MASK=0,1 XPU_GRAPH=1 VLLM_XPU_ENABLE_XPU_GRAPH=1 VLLM_XPU_FORCE_GRAPH_WITH_COMM=1 VLLM_XPU_GRAPH_NOOP_COMM_CAPTURE=1 COMPILATION_CONFIG='{\"cudagraph_mode\":\"PIECEWISE\"}' VLLM_XPU_GDN_NATIVE_FALLBACK=prefill VLLM_XPU_GDN_PREFILL_RECURRENT_FALLBACK=1 VLLM_XPU_DISABLE_PREFILL_CUDAGRAPH_REPLAY=1 VLLM_XPU_GREEDY_SAMPLE_TOPK_FALLBACK=1 VLLM_XPU_INT8_MOE_MIXED_WORKSPACE=1 GPU_MEMORY_UTILIZATION=0.90 MAX_NUM_SEQS=24 VLLM_EXTRA_ARGS='--uvicorn-log-level warning' METRICS_REPEATS=1 JSON_REPEATS=16 COLOR_REPEATS=16 ABLATION_RUN_QUALITY=0 bash scripts/run-qwen36-ablation-candidate.sh prefill-safe-int8-mixed-workspace-async-tp2-smoke",
@@ -177,7 +192,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 2
   },

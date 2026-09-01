@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqqqup2b01a2qo01lwvrysjs"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 10,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "GLM-5.2 REAP50 Q3_K_M GGUF on 10x RTX 3090 via llama.cpp CUDA, 262144 context, q4_0 K/V cache, server-side reasoning disabled, single streaming request, 5 measured 1000-token runs after 1 warmup. PCIe 3.0 host, no NVLink. Real-use note: in day-to-day local agent and chat workflows, this GLM-5.2 trial did not perform as well as the restored Qwen 27B coordinator despite the benchmark result.",
       "observed_command": "llama-server --ctx-size 262144 --cache-type-k q4_0 --cache-type-v q4_0 --parallel 1 --flash-attn on --split-mode layer --tensor-split 1,1,1,1,1,1,1,1,1,1 --n-gpu-layers 999 --jinja --reasoning off --no-webui",

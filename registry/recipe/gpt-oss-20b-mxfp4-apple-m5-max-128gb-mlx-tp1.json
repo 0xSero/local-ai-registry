@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqszh407012sqr01oer5egep"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 16,
       "hardware_label": "M5 Max",
       "notes": "Aggregate end-to-end throughput across 16 concurrent streams (256 max_tokens each, distinct prompts so no prefix-cache reuse), mlx-vlm 0.6.3 server continuous batching. Weights: mlx-community/gpt-oss-20b-MXFP4-Q8 (native MXFP4). tokSOut = aggregate output tok/s; per-stream median ~24 tok/s. Reproducible (382-389 across two runs). Peak unified memory ~12.3 GB (RSS). Apple M5 Max / 128GB, macOS 27.0. Single-stream (bs=1) ~126 tok/s.",
       "observed_command": "mlx_vlm.server --model mlx-community/gpt-oss-20b-MXFP4-Q8 --port 8125 --max-kv-size 16384  # 16 concurrent streams, 256 max_tokens each, temperature 0.7, continuous batching (default), no prompt cache",

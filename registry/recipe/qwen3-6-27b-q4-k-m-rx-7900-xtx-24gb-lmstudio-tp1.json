@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpib3m5i0046oe01ur87qxfi"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 4,
       "hardware_label": "RX 7900 XTX",
       "notes": "\"stats\": {\n    \"stopReason\": \"eosFound\",\n    \"tokensPerSecond\": 62.89607379284365,\n    \"numGpuLayers\": -1,\n    \"timeToFirstTokenSec\": 0.34,\n    \"totalTimeSec\": 39.819,\n    \"promptTokensCount\": 43,\n    \"predictedTokensCount\": 2508,\n    \"totalTokensCount\": 2551,\n    \"totalDraftTokensCount\": 2370,\n    \"acceptedDraftTokensCount\": 1718,\n    \"rejectedDraftTokensCount\": 0,\n    \"ignoredDraftTokensCount\": 652\n}",
       "observed_command": "[{\"type\":\"llm\",\"modelKey\":\"qwen3.6-27b-mtp\",\"format\":\"gguf\",\"displayName\":\"Qwen3.6 27B\",\"publisher\":\"unsloth\",\"path\":\"unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-Q4_K_M.gguf\",\"sizeBytes\":18949713600,\"indexedModelIdentifier\":\"unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-Q4_K_M.gguf\",\"deviceIdentifier\":null,\"paramsString\":\"27B\",\"architecture\":\"qwen35\",\"quantization\":{\"name\":\"Q4_K_M\",\"bits\":4},\"identifier\":\"qwen3.6-27b-mtp\",\"ttlMs\":null,\"lastUsedTime\":1779536836778,\"vision\":true,\"trainedForToolUse\":true,\"maxContextLength\":262144,\"contextLength\":32000,\"status\":\"idle\",\"queued\":0,\"parallel\":4}]",
@@ -152,7 +167,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 4,
+    "max_concurrency": null,
     "max_context_tokens": 32000,
     "tensor_parallel": 1
   },

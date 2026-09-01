@@ -21,12 +21,12 @@
       "2048"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -131,6 +145,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt05msex0eitms01l7yvwzwd"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "llama.cpp built from PR #27342 with CUDA (sm_120), target Q6_K fully GPU-resident on the RTX 5090 with the 2 GB z-lab/Qwen3.8-27B-DFlash2-GGUF Q8_0 drafter alongside it (--spec-type draft-dflash --spec-draft-ngl 999), 8k context, flash attention on, greedy decode. Key tuning: --spec-draft-n-max 3 instead of the README's default 7 — draft acceptance on this workload ran ~2.4 tokens per block (vs ~5.3 on GSM8K), and sweeping n-max 2→7 gave 87.1 / 97.7 / 87.8 / 84.3 / 73.6 tok/s",
       "observed_command": "llama-server --model Qwen3.8-27B-Q6_K.gguf --spec-draft-model Qwen3.8-27B-DFlash2-Q8_0.gguf --spec-type draft-dflash --spec-draft-n-max 3 --spec-draft-ngl 999 --ctx-size 8192 --n-gpu-layers 999 --flash-attn on --jinja --threads 8",
@@ -208,7 +237,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

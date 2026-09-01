@@ -21,12 +21,12 @@
       "128000"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt1zgkzp08yxmv01h4zcha9k"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "Companion to the Q4_K_M entry on the same card, for the quant-vs-speed curve: Q6_K gives 278 tok/s in 8266 MiB versus Q4_K_M at 328 tok/s in 6546 MiB, both at 128K context and both fully resident. Sparse MoE, 8B total with ~1B active per token, which is why decode is far above a dense 8B. Measured on an RTX 3080 10GB. Decode is the MEDIAN of 3 reps, not the best. Prompt is deliberately non-repetitive (repeated filler inflates decode on speculative setups by ~25%) and ignore_eos is set so output token count is identical across runs. Peak VRAM 8266 MiB with 212 MiB host-shared; elevated host-shared only indicates spill when the decode rate drops with it.",
       "observed_command": "llama-server \\\n  -m LFM2.5-8B-A1B-Q6_K.gguf \\\n  --host 127.0.0.1 --port 8099 \\\n  --device CUDA0 --n-gpu-layers 99 \\\n  --ctx-size 128000 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 --cache-type-v q8_0 \\\n  --parallel 1 --jinja \\\n  --spec-type none",

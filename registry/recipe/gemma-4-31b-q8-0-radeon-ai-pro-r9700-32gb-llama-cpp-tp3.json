@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsvu0o9408dems01dcdpuvai"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "stew675 rdna-boosts fork + ROCm 7.14 TheRock, 2x R9700 -sm tensor, GGML_CUDA_ALLREDUCE=internal over GPU P2P (kernel 7.1.8). Was 14 t/s layer-split Vulkan.",
       "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec --compute-only /home/mikekey/Experiments/llama.cpp-rdna/build-rocm-tweaked714/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -sm tensor -m /home/mikekey/models/gguf/gemma/gemma-4-31B-it-Q8_0.gguf --reasoning-format auto --temp 1.0 --top-k 64 --top-p 0.95 -ctk q8_0 -ctv q8_0 -ts 1/1 -np 1 -c 262144",

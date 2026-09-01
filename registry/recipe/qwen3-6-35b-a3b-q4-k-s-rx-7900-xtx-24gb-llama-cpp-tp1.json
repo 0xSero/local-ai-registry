@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmoeusq0f0007l804y0oofytc"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "llama-bench on ROCm (hip-radeon); tg128 metric; b/ub 1024; q4_0/q4_0 KV; -ot cutoff=33 (layers 0-32 GPU / 33-39 CPU) gives 3x better prefill vs baseline; UD unsloth dynamic quant; MoE A3B",
       "observed_command": "-b 1024 -ub 1024 --cache-type-k q4_0 --cache-type-v q4_0 -sm row -ot \"blk\\.(3[3-9])\\.ffn_.*_exps=CPU\"",
@@ -163,7 +178,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 640,
     "tensor_parallel": 1
   },

@@ -3,7 +3,8 @@
   "id": "gemma-4-26b-a4b-it-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1-sweep",
   "measured_at": "2026-05-10",
   "metrics": {
-    "concurrency": 1,
+    "concurrency": 16,
+    "inference_engine_version": "0.20.1",
     "latest_point_at": "2026-05-10",
     "max_context_tokens": 65536,
     "peak_generation_tps": 128.3,
@@ -13,10 +14,10 @@
   "recipe_id": "gemma-4-26b-a4b-it-nvfp4-rtx-pro-6000-blackwell-96gb-vllm-tp1",
   "rows": [
     {
-      "concurrency": 1,
+      "concurrency": 16,
       "context_tokens": 65536,
       "decode_tok_s": 128.3,
-      "decode_tok_s_per_stream": null,
+      "decode_tok_s_per_stream": 8.01875,
       "output_tokens": 600,
       "peak_vram_gb": 87.5,
       "prefill_tok_s": null,
@@ -28,7 +29,9 @@
   "schema_version": "local-ai-registry/v1",
   "source": {
     "commit": null,
-    "paths": null,
+    "paths": [
+      "/en/runs/cmoz9mgf9001ppd01fsc7a4au"
+    ],
     "repository": "https://www.localmaxxing.com"
   }
 }

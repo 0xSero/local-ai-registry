@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrfmz9y700b9qd01bkdgwe4k"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp on Framework Desktop (Strix Halo gfx1151, 120G GTT) via llama-swap. Median of 3 runs.",
       "observed_command": "/home/mikekey/llama.cpp/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/gguf/gpt-oss/gpt-oss-120b-F16.gguf -ctk f16 -ctv f16 -np 1 -c 131072",

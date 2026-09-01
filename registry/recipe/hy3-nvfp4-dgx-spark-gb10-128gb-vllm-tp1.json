@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "Jiunsong/SuperHY3-abliterated-NVFP4",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "4096"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -42,7 +43,7 @@
     }
   },
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "eager",
     "name": "vllm",
     "version": "0.25.1.dev24+g96bb89286.d20260710"
   },
@@ -103,19 +104,33 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
-    "engine.graph_mode": {
+    "draft_launch.entrypoint": {
       "provenance": {
-        "captured_at": "2026-08-30T09:26:09Z",
+        "captured_at": "2026-09-01T01:41:26Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:26:09Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:38:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:38:26Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjee41802humj01va09q9a1"
+          }
+        ]
+      },
+      "reason": "explicit-eager-execution-in-source",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjee41802humj01va09q9a1"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Official LocalMaxxing CLI v0.1.19 remote-endpoint run against commit bc41c8ce4ce0be46b60cc4d728e1b85eee1107a1: 2 untimed warmups + 7 timed streamed iterations, temperature=0, standard CLI prompt, 132 prompt / 256 output tokens, batch=1. Reported values are medians: 19.0 decode tok/s (18.8-19.4, mean 19.06, stddev 0.21), 195.56 ms TTFT, 675 tok/s estimated prefill, and 28.5 total tok/s.\n\nRuntime: 2x NVIDIA DGX Spark (GB10), 256 GB aggregate unified memory, TP=2 over direct 200GbE/RoCE (NCCL NET/IB); vLLM 0.25.1.dev24+g96bb89286.d20260710; compressed-tensors MARLIN NVFP4 W4A16 routed experts with BF16 non-experts and BF16 KV; max_model_len=4096, max_num_seqs=1, eager, gpu_memory_utilization=0.85, native MTP spec-1. Session MTP counters after integrity plus benchmark: 896/1555 accepted draft tokens (57.62%). Peak VRAM is the max per node: 101.72 GiB target allocation (~203.44 GiB aggregate); vLLM loaded 84.49-84.50 GiB weights per rank.\n\nPre-submit integrity suite passed 5/5: arithmetic, strict JSON, Korean, Python AST, and exact-format generation; no empty output, invalid UTF-8, or special-token leakage. Model files were full-checksum verified across both nodes.\n\nLocalMaxxing hardware memory is reported per node (128 GB); the two-node cluster total is 256 GB.",
       "observed_command": "vllm serve Jiunsong/SuperHY3-abliterated-NVFP4 --served-model-name superhy3 --host 0.0.0.0 --port 8600 --tensor-parallel-size 2 --distributed-executor-backend ray --max-model-len 4096 --max-num-seqs 1 --max-num-batched-tokens 4096 --gpu-memory-utilization 0.85 --kv-cache-dtype bfloat16 --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":1}' --generation-config vllm --trust-remote-code --enforce-eager",

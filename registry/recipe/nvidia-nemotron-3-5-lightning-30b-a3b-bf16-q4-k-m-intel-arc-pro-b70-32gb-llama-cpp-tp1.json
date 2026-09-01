@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsp3a44z00j0mp01ajotkpic"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Nemotron 3.5 Lightning 30B-A3B (hybrid Mamba2-Transformer MoE). Decode with native MTP speculative decoding (draft-mtp, n-max=4, 98.6% acceptance, n=5 median). No-spec decode: 38.2 t/s. Measured power draw: 140.3W avg (cap 230W). GPU temp: 63.9C avg. Custom kernel fusion: ssm_conv bias+SiLU fused, ssm_scan dt_bias+D*x fused, MMQ/XMX dispatch override for K-quant GEMV. Build: llama.cpp SYCL f785fc9ea. KV: q8_0 K + q4_1 V, FA on, -ngl 99 -ncmoe 0.",
       "observed_command": "llama-server -m NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_K_M.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 16384 -b 8192 -ub 4096 -t 8 --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0.75 -dev SYCL0",
@@ -180,7 +195,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 16384,
     "tensor_parallel": 1
   },

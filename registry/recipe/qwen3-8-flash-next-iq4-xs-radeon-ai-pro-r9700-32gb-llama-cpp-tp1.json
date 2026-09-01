@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtbqjvpj003bqq01595qg0db"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Semantically validated Lucebox dual-GPU run. The LocalMaxxing hardware schema records the discrete R9700; the Radeon 8060S unified-memory iGPU also executed the 55% layer share and is disclosed here. Three-shard Qwen3.8-Flash-Next IQ4_XS GGUF, 2549-token synthetic prompt, natural 87-token completion, temperature 0, batch/concurrency 1, 32K context, one discarded warmup plus three measured streams. Decode and prefill use server-authoritative timings; total is (prompt+output)/client dispatch-to-DONE wall time; TTFT is dispatch to first content token. Peak VRAM is the maximum R9700 workload allocation from unique amdgpu DRM fdinfo clients at PCI 0000:c5:00.0, not device capacity or combined system memory. All three outputs shared SHA-256 93231b0b1ec900896c2237684dadd72a894e2c56cc865b8c10f7a5a87d996c4d. Greeting, multi-turn recall, streaming content, and terminal DONE semantic canaries passed.",
       "observed_command": "LLAMA_QWEN4EXP_QSA_MIN_KV=32768 llama-server -m Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf --device ROCm0,ROCm1 --tensor-split 0.45,0.55 --split-mode layer --main-gpu 1 --n-gpu-layers 99 --ctx-size 32768 --parallel 1 --threads 32 --threads-batch 32 --ubatch-size 1024 --jinja --flash-attn on --load-mode none --spec-type none --reasoning off",
