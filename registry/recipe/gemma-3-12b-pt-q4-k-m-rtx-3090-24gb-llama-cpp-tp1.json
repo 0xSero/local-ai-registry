@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrsafsdc069klg01ib6blea4"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "7900 (homelab), AMD Ryzen 9 7900X (12c/24t, 3.7GHz), 64GB DDR5, RTX 3090 power-limited to 250W, Linux 6.8.0. Single GPU, flash attention ON, fp16 KV cache (auto-detected per model). Benchmarked with llama-bench (-r 5 reps).",
       "observed_command": "llama-bench -m gemma-3-12b-it-Q4_K_M.gguf -p 512 -n 128 -ngl 999 -fa on -ctk f16 -ctv f16 -fitt 1024 -r 5",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 512,
     "tensor_parallel": 1
   },

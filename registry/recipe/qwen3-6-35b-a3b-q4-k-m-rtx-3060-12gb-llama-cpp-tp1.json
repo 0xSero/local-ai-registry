@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmooopbvw0006jo047l68qlux"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "prompt eval time =     211.14 ms /    12 tokens (   17.60 ms per token,    56.83 tokens per second)\n       eval time =   11001.73 ms /   390 tokens (   28.21 ms per token,    35.45 tokens per second)\n      total time =   11212.87 ms /   402 tokens\n",
       "observed_command": "llama-server \\\n    -m Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \\\n    --alias qwen3.6-35b-128k \\\n    --host 0.0.0.0 \\\n    --port 8080 \\\n    -ngl 999 -ncmoe 25 -fa on \\\n    --cache-type-k q8_0 --cache-type-v q8_0 \\\n    -c 131072 -np 1 -t 8 \\\n    --no-warmup --jinja --metrics\n",

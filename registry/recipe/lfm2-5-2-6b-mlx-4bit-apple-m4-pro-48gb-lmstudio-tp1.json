@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsqqubai00q8mr01lfuonow0"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M4 Pro",
       "notes": "OptiQ mixed-precision MLX quant. Model metadata: target 5.0 BPW, achieved 5.12833764 BPW; LM Studio reports 4-bit format. Median of 3 timed runs after 1 warmup; each timed run used a unique 543-token prompt and generated 254 output tokens at temperature 0. Prefill estimated as prompt tokens divided by LM Studio native time-to-first-token.",
       "observed_command": "lms server start --port 1234 --bind 127.0.0.1 && lms load lfm2.5-2.6b-optiq --context-length 64000 --parallel 4 --identifier lfm2.5-2.6b-optiq --yes",
@@ -184,7 +199,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 4,
     "max_context_tokens": 64000,
     "tensor_parallel": 1
   },

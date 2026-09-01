@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsvu2c7q08dhms01lqgs3oyg"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "stew675 rdna-boosts fork + ROCm 7.14 TheRock, 2x R9700 -sm tensor, MTP draft n-max 2, GGML_CUDA_ALLREDUCE=internal over GPU P2P (kernel 7.1.8). Was 28.4 layer-split.",
       "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec --compute-only /home/mikekey/Experiments/llama.cpp-rdna/build-rocm-tweaked714/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -sm tensor -m /home/mikekey/models/Qwen3.8-27B-Q4_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 2 --reasoning-format auto --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 -ctk q8_0 -ctv q8_0 -ts 1/1 -np 1 -c 262144",

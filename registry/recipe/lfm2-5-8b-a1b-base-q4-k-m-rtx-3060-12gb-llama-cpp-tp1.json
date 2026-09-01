@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
-    "version": null
+    "version": "13f2b28"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:34:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:34:02Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmry6eef401rso4016uzm60l6"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -94,6 +108,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmry6eef401rso4016uzm60l6"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "Dell Precision T7810 (7810), Dual Intel Xeon E5-2650 v4 (2x12c/24t, 2.20GHz), 32GB DDR4 ECC 2133 MT/s (8x4GB), PCIe Gen 3 x16 (8GT/s, both GPUs at x16), both GPUs on same NUMA node (NUMA 0, PHB topology). Layer split (-sm layer), flash attention, f16 KV cache at all contexts. Stock llama.cpp build (commit 13f2b28, NOT PrismML fork). Benchmarked with llama-bench. Dual GPU via llama.cpp layer split.",
       "observed_command": "llama-bench -m  -p 512 -n 128 -ngl 24 -sm layer -fa on -ctk f16 -ctv f16 -r 5",
@@ -169,7 +198,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 512,
     "tensor_parallel": 1
   },

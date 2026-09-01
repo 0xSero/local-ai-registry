@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsf83e4s00sjpp013ba7wj90"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Automated sweep via llama-swap on 3x R9700. llama.cpp vulkan, best of 3 runs, cold prefill.",
       "observed_command": "/home/mikekey/Experiments/llama.cpp/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/gguf/qwen/Qwen3.6-35B-A3B-Q8_0.gguf --reasoning-format auto --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.00 --repeat-penalty 1.0 -ctk f16 -ctv f16 -ts 0/1/1 -np 1 -c 262144 --chat-template-kwargs '{\"preserve_thinking\": true}'",

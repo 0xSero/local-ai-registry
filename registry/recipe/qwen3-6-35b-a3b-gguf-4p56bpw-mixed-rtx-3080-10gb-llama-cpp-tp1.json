@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoxkd7n900efml01j4xhmy5l"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "Needle retrieval: PASS. peak_vram_total_mib=9636, baseline_vram_mib=1336, peak_vram_delta_mib=8300. peak_ram_used_mib=19974, peak_swap_used_mib=4708. short_http_s=2.060, needle_http_s=324.208.",
       "observed_command": "llama-server -m <MODEL.gguf> -np 1 -fa on -ctk q4_0 -ctv q4_0 -ngl 99 -c 188416 --n-cpu-moe 28 -b 512 -ub 128 --cache-ram 0 -t 10 -tb 10 --threads-http 4 --reasoning-budget -1",

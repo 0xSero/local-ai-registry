@@ -2,31 +2,45 @@
   "facts": {
     "revision": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-08-31T22:28:38Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T22:28:38Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash?blobs=true"
           }
         ]
       },
-      "reason": "artifact-revision-not-pinned",
-      "state": "unknown"
+      "reason": "huggingface-repository-revision",
+      "state": "known"
+    },
+    "weights.precision": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:43:51Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash?blobs=true"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config-dtype",
+      "state": "known"
     },
     "weights.size_gb": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T02:43:54Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T02:43:54Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true"
           }
         ]
       },
-      "reason": "artifact-size-not-published",
-      "state": "unknown"
+      "reason": "huggingface-logical-artifact-blob-size-sum",
+      "state": "known"
     }
   },
   "huggingface": {
@@ -60,13 +74,13 @@
     ]
   },
   "repository": "deepseek-ai/DeepSeek-V4-Flash",
-  "revision": null,
+  "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
   "schema_version": "local-ai-registry/v1",
   "served_name": "DeepSeek-V4-Flash",
   "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
   "weights": {
     "format": "unknown",
-    "precision": "unknown",
-    "size_gb": null
+    "precision": "FP8",
+    "size_gb": 159.617
   }
 }

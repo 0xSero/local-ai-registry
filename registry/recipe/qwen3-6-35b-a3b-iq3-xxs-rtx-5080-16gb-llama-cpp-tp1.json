@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmolpeunj000el2045o540qlc"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5080",
       "notes": "OS/Screen already take 0.8-1.2GB VRAM\nTotal usage with everything (model + OS): ~15.2GB \n",
       "observed_command": "/llama.cpp/build/bin/llama-server \\\n  -m Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf \\\n  -ngl 99 \\\n  -np 1 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 \\\n  --cache-type-v q8_0 \\\n  --ctx-size 131072 \\\n  --host 0.0.0.0",

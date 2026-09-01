@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmp99vyrv046co401ny0b512u"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "from 2k to 64k depth with llama-benchy, goes from just under 1k prefill down to just under 500. decode goes from 28 to around 23 but didn't test long outputs.",
       "observed_command": "llama-server \\\n  -m Qwen3.6-27B-UD-Q4_K_XL.gguf \\\n  --mmproj mmproj-BF16.gguf \\\n  --host 0.0.0.0 \\\n  --port 1234 \\\n  -c 65536 \\\n  -ngl 999 \\\n  --flash-attn on \\\n  --jinja \\\n  --no-mmap \\\n  -fit off\n",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 65536,
     "tensor_parallel": 1
   },

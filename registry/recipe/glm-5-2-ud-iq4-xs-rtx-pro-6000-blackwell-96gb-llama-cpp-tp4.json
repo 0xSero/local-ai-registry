@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr1ipwec01eeld01nn27xd9d"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "GLM-5.2-504B via Unsloth UD-IQ4_XS on 4x RTX PRO 6000 Blackwell Max-Q, llama.cpp source-build (0eca4d4), CUDA 13.1 sm_120. Companion run to my earlier 131072-ctx submission — this one is at --ctx-size 65536 to see how much VRAM+speed the smaller KV reservation buys. Answer: essentially nothing on speed (39.7 -> 39.7 tok/s output, 562 -> 561 prefill server-side) and only ~6.6 GB less peak VRAM. At UD-IQ4_XS the model weights dominate; KV cache for 131k tokens is only ~10 GB total, so halving it is not the lever people might expect. Same bench methodology as my other run: 2 warmup, 3 measurement, greedy decode, unique per-run prompt to bust prefix caching, server-side print_timing for tokSPrefill/tokSOut, client TTFT.",
       "observed_command": "CUDA_VISIBLE_DEVICES=0,1,2,3 LD_LIBRARY_PATH=~/code/ggml-org/llama.cpp/build/bin llama-server --model GLM-5.2-UD-IQ4_XS-00001-of-00009.gguf --host 0.0.0.0 --port 8001 --alias GLM-5.2-UD-IQ4_XS --ctx-size 65536 --n-gpu-layers 999 --parallel 1 --flash-attn on --jinja --metrics",

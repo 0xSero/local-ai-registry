@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsql8moh00oumr01xysi0qbl"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Five-prompt suite using repository prompts. Short constraint run used a 512-token cap; matched 90,320-token retrieval passed at 219.806 tok/s with 17285.899 ms TTFT.",
       "observed_command": "llama-server --model Kimi-Linear-48B-A3B-Instruct-{quant}.gguf --ctx-size 262144 --gpu-layers 999 --flash-attn on --parallel 1 --cont-batching --jinja",

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmswnic7k09o4ms015ttaok1i"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": null,
       "observed_command": "/home/kev/projects/ROCmFPX/build-strix-vulkan-new/bin/llama-server -m /home/kev/models/Qwen/qwen3.8-27b-strix-lean/Qwen3.8-27B-Q4_0_ROCMFP4_STRIX_LEAN.gguf -dev Vulkan0 -ngl 999 -fa on -c 131072 --spec-type draft-mtp --spec-draft-n-max 4 -ctk f16 -ctv f16 --alias qwen3.8-27b --host 127.0.0.1 --port 8081",
@@ -176,7 +191,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

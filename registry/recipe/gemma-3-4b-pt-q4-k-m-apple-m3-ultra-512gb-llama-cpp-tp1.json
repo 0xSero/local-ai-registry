@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqpwubh900u5qo01vedtzx2t"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M3 Ultra",
       "notes": "Automated nightly Foundry/Tes LocalMaxxing candidate run. Candidate artifact deleted after successful submit where policy allows.",
       "observed_command": "/opt/homebrew/bin/llama-server -m /Volumes/Extreme Pro/Lilly-transfer/localmaxxing-candidates/ggml-org__gemma-3-4b-it-GGUF/gemma-3-4b-it-Q4_K_M.gguf --host 127.0.0.1 --port 8097 -ngl 99 --fit off -c 8192 -fa on --reasoning off --reasoning-format none",
@@ -171,7 +186,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 8192,
     "tensor_parallel": 1
   },

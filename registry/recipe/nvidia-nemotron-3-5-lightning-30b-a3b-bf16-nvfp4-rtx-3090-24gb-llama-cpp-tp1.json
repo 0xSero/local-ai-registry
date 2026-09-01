@@ -21,12 +21,12 @@
       "8192"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmspe7wa500pwmp01c2szra70"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Imported from immutable run 20260812T004722Z: 2 warmups + 7 scored serial requests; exact 512-token array; 1024 output; temperature 0; prompt cache off; median server decode 353.7255 tok/s (353.3801 timer-corrected), client output/wall 324.0063 tok/s; 100% NextN MTP draft acceptance. Highly predictable decode workload, not arbitrary-prose throughput. Complete recurrent rollback PR 26623 plus local memory-classification fix. Exact NVFP4 model SHA 7827805ae9f2d20cc71e46bf05d9cb045e222d3fa0429363c324bbf6d3cab959; 12/12 semantic canaries passed separately. This is official ggml-org NVFP4, not LM Studio Community Q4_K_M.",
       "observed_command": "/home/aliii/opt/llama.cpp-mtp-rollback/build/bin/llama-server --model /home/aliii/models/nemotron-nvfp4/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4.gguf --alias nemotron-nvfp4-complete-rollback-n7 --host 127.0.0.1 --port 8012 --ctx-size 8192 --parallel 1 --metrics --batch-size 512 --ubatch-size 256 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on --jinja --n-gpu-layers 999 --fit off --spec-type draft-mtp --spec-draft-n-max 7 --threads 16 --threads-batch 16",

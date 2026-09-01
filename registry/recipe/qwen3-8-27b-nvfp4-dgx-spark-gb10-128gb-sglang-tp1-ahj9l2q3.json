@@ -24,7 +24,7 @@
       "131072"
     ],
     "container_port": 30000,
-    "entrypoint": null,
+    "entrypoint": "/opt/nvidia/nvidia_entrypoint.sh",
     "environment": {},
     "host_port": 30000,
     "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
@@ -106,6 +106,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/lmsysorg/sglang/manifests/sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-27T06:04:13.773Z",
@@ -132,6 +146,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmta4vbq501coli01ahj9l2q3"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -162,6 +190,7 @@
   },
   "metadata": {
     "localmaxxing": {
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Single-stream decode, batch 1, one concurrent request. n=9 generations (3 prompt kinds x 3 repeats), 512 output tokens each, streaming, temperature 0.6 / top_p 0.95 / top_k 20. Context length 131072 is the CONFIGURED window, not the prompt depth; prompts here are short. mem-fraction-static 0.80, kv-cache-dtype fp8_e4m3, attention backend flashinfer, tp 1, max-running-requests 32. Idle box, one model loaded at a time, and all 6 cells of this battery ran back to back in one session on one machine. SPECULATIVE DECODING OFF, no draft model loaded. This is the no-draft baseline arm of a DFlash2 comparison, so it is deliberately low and should not be read as this stack's practical speed. Per-workload decode: code 10.97, reasoning 10.97, prose 10.99 tok/s; the headline is the mean of all 9. Spread across workloads is under 0.03 tok/s, which is what a decode path with no draft looks like. Quantization detail: Unsloth Dynamic V3.0 compressed-tensors mixed precision, MLP gate/up/down NVFP4 W4A4 group 16, attention and layers 56-63 MLP FP8, lm_head FP8 per-channel, MTP head BF16 unquantised. Served from a local copy, so the Hugging Face revision was not recorded; the checkpoint is pinned instead by its config.json sha256 1b3c71868d1299e52df6fc907deb202d5132b1ef0f72aae0ef6d15185dd53a5c. TTFT is the mean of the same 9 runs.",
       "revision_unpinned": true,
@@ -183,7 +212,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpdzvqpx00sipd01t74sf3wk"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "hipfire @ 4840f0b6 (master post-sync 2026-05-20)\nprompt: merge_sort thinking-OFF (md5=253c7ac50857fe6d0e10fb0d2c5e35c0)\n  benchmarks/prompts/merge_sort_thinking_off.txt (27 input tokens)\ndecode mode: DFlash speculative (adaptive block_size, mean B=16)\n  drafter: qwen35-27b-dflash-mq4.hfq (z-lab Qwen3.5-DFlash native head, MQ4 weights)\n  target: qwen3.5-27b.mq4 (MQ4 weights)\nkv_cache: q8\nprompt_normalize: true (default)\nτ: 13.1818   accept_rate: 0.8788\noutput: 256 tokens emitted\nruns: 3 (median reported); per-run tok/s: [196.53, 196.23, 196.09], spread 0.22%\nAR baseline (same binary same hardware, --ar-baseline): 35.41 tok/s — DFlash speedup 5.54x\nHardware: single R9700 (32 GB), ROCm 7.x, hiptrx host (HIP_VISIBLE_DEVICES=0)",
       "observed_command": "HIP_VISIBLE_DEVICES=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.5-27b.mq4 --draft ~/.hipfire/models/qwen35-27b-dflash-mq4.hfq --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 4096",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

@@ -21,12 +21,12 @@
       "4608"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -131,6 +145,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrz00bvh05h6o401em8c6unn"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "4096 prompt / 512 generation. Two throwaway llama-bench runs preceded the recorded sweep. Winner selected by minimum measured TTFT across (b2048/ub512/t16), (b4096/ub1024/t16), and (b4096/ub512/t32), with exact command preserved. Local file: /mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf. Temperature 0. Peak VRAM and maximum sampled sustained GPU power were measured during the winner run.",
       "observed_command": "/home/dario/llama.cpp/build/bin/llama-bench -m /mnt/hdd/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf -p 4096 -n 512 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json --no-warmup",
@@ -210,7 +239,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4608,
     "tensor_parallel": 1
   },

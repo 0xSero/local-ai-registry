@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cms8lztrn0011pm01khyyqij8"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Single-stream text benchmark on four discrete 96 GB PCIe GPUs: 2 warmups followed by 5 measured streaming temperature-0/top-p-1 runs; median reported (47.80-47.93 output tok/s). Experimental abliterated Q2_K_MXFP4 split GGUF; use requires output review. Official llama.cpp CUDA build 9445 used one 524,288-token slot, Q8 K/V, layer split, continuous batching, no speculative decoding, and automatic fit with a 4 GiB per-GPU safety target. Repeated-prompt TTFT is warm-cache. Generation authentication, exact identity/context, coherent text, automatic tools, streaming, cancellation, and zero restart/OOM passed. Metrics use server usage counters and client-observed token timing.",
       "observed_command": "llama-server --model GLM-5.2-UD-Q2_K_MXFP4-00001-of-00007.gguf --alias GLM-5.2 --ctx-size 524288 --parallel 1 --threads 32 --threads-batch 32 --batch-size 2048 --ubatch-size 512 --gpu-layers auto --split-mode layer --fit on --fit-target 4096 --fit-ctx 32768 --flash-attn auto --cache-type-k q8_0 --cache-type-v q8_0 --jinja --reasoning auto --reasoning-format deepseek --cont-batching",

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqd2eqmk00e8mp01u1fq6h3u"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 2048,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Upstream llama.cpp b9553 (Vulkan backend), running natively on Windows 11 (NOT through WSL — Vulkan B70 path requires native Windows). Intel Arc Pro B70 32GB.\n\nCritical flag: --device Vulkan2 is REQUIRED to pin execution to the B70. Without it, llama.cpp layer-splits across detected Vulkan devices (RTX 3090 + Intel iGPU + B70), and the iGPU running on system RAM becomes the bottleneck — observed regression from 107 t/s to ~22 t/s. Single-device pinning gives stable performance.\n\nKnown regressions on this build/model combo (DO NOT USE):\n- -fa / flash attention: crashes or severe degradation\n- -ctk q8_0 -ctv q8_0: 107 -> 8-13 t/s (Vulkan KV-quant path unoptimized)\n- --spec-type draft-mtp: 107 -> 27 t/s (4x regression — confirmed by upstream issue ggml-org/llama.cpp#23769, Qwen3.6-35B-A3B MoE class on Intel Arc Vulkan crashes/degrades; PR #24312 attempted fix was closed, bug remains unfixed in upstream master as of build b9553)\n\nBench methodology: 5 sequential completions of \"Write a 300 word explanation of the rule against perpetuities\" at temperature 0.7, max_tokens=400, 26-token prompt, via /v1/chat/completions. Token/sec values from llama.cpp predicted_per_second timing field.\n\nIndividual runs (t/s): paste your actual 5 numbers here\n\nMedian: 107.78 t/s, mean ~107.5 t/s.\n\nSystem: AMD Ryzen 7 9800X3D, 128GB DDR5, Windows 11 native (B70 driver only available on Windows, not WSL2). ",
       "observed_command": "llama-server \\\n  -m Qwopus3.6-35B-A3B-v1-MTP-Q4_K_M.gguf \\\n  --host 0.0.0.0 --port 8080 \\\n  -ngl 99 -c 262144 -np 1 \\\n  --device Vulkan2 \\\n  --jinja --no-webui \\\n  --reasoning-format deepseek",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": 1,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

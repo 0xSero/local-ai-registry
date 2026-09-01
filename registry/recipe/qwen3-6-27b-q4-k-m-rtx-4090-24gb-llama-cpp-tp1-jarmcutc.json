@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmolvxd82000alb04jarmcutc"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 2048,
       "hardware_label": "RTX 4090",
       "notes": "RTX 4090 24GB, WSL2, CUDA toolkit 12.8, Windows NVIDIA driver 591.59. llama.cpp build b8818-b572d1ecd, CUDA arch 89. Command used -ngl 99 -c 90200 -b 2048 -ub 512 --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 -np 1 --jinja --no-mmap. Model fully offloaded: 65/65 layers.",
       "observed_command": "Launch command:\nllama-server -m Qwen3.6-27B-Q4_K_M.gguf --host 0.0.0.0 --port 8080 -ngl 99 -c 90200 -b 2048 -ub 512 --flash-attn on --cache-type-k q8_0 --cache-type-v q8_0 -np 1 --jinja --no-mmap",
@@ -209,7 +224,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": 1,
     "max_context_tokens": 90200,
     "tensor_parallel": 1
   },

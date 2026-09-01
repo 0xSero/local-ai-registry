@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmoute8kg00mbld017ye0dfbz"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Q4_0 GGUF, 4x B70 assist split 1/1/1/0.05 after guard fix. Quality-preserving stack: f16 KV, flash attention, Q8 activation cache, fused MMVQ2, SwiGLU, RMS_NORM+MUL, allreduce+ADD, final GET_ROWS, single-kernel allreduce. No speculative decode or power changes. Full flags/artifacts in steveseguin/llm-optimizations.",
       "observed_command": "",
@@ -146,7 +161,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 1024,
     "tensor_parallel": 4
   },

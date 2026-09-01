@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt2ta3q50hsvmv01ow8ar74a"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "My custom llama.cpp fork and dflash2 enabled https://github.com/LaurentZuijdwijk/llama.cpp",
       "observed_command": "llama-server --hf-repo-draft incoai/Qwen3.8-27B-DFlash2-GGUF:Q4_K_M --spec-draft-n-max 7 --spec-type draft-dflash --hf-repo lmcoleman/Qwen3.8-27B-ROCmFPX-GGUF:Q4",
@@ -160,7 +175,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },
