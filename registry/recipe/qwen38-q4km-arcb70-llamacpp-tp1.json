@@ -123,7 +123,7 @@
       "UBATCH": "8192"
     },
     "host_port": 8010,
-    "image": "ghcr.io/0xsero/qwen38-b70@sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
+    "image": "ghcr.io/0xsero/qwen38-b70-attested@sha256:1fef1f7daa986210b60c06a1155fbd4bd7c4a218ac262d785ffb2adf2bdbb9ed",
     "kind": "docker",
     "mounts": [
       {
@@ -140,9 +140,11 @@
     "network_mode": "bridge",
     "shm_size": "8g",
     "provenance": {
-      "kind": "self-built",
+      "kind": "self-built-attested",
       "source": "https://github.com/0xSero/qwen38-b70",
-      "dockerfile": "https://github.com/0xSero/qwen38-b70/blob/main/Dockerfile"
+      "dockerfile": "https://github.com/0xSero/qwen38-b70/blob/main/Dockerfile",
+      "workflow": "https://github.com/0xSero/qwen38-b70/actions/runs/33563767780",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/qwen38-b70-attested@sha256:1fef1f7daa986210b60c06a1155fbd4bd7c4a218ac262d785ffb2adf2bdbb9ed -o 0xSero"
     }
   },
   "metadata": {
