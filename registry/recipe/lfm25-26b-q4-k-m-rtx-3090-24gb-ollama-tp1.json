@@ -5,7 +5,7 @@
     "tools": null,
     "vision": null
   },
-  "description": "LFM2.5-2.6B-Q4_K_M Q4_K_M validated candidate on rtx-3090-24gb via native ollama: Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend. Observed reference launch; not a digest-pinned container contract.",
+  "description": "hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M validated candidate on one omarchy GPU via native ollama 0.33.2 (local fleet host). Exact 'validation-ok' completion probe, temperature 0, ctx 32768. Observed reference launch; not a digest-pinned container contract.",
   "engine": {
     "graph_mode": null,
     "name": "ollama",
@@ -19,11 +19,11 @@
           {
             "captured_at": "2026-09-01T00:00:00Z",
             "kind": "validation-run",
-            "url": "https://vast.ai"
+            "url": "https://github.com/0xSero/ai-fleet"
           }
         ]
       },
-      "reason": "validation-evidence-recorded",
+      "reason": "fleet-validation-evidence-recorded",
       "state": "known"
     }
   },
@@ -41,31 +41,31 @@
       "source": [
         {
           "captured_at": "2026-09-01T00:00:00Z",
-          "kind": "validation-run",
-          "url": "https://vast.ai"
+          "kind": "fleet-validation-run",
+          "url": "https://github.com/0xSero/ai-fleet"
         }
       ],
       "state": "none"
     },
     "kind": "reference",
-    "observed_command": "/usr/bin/ollama pull hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M",
-    "serve_command": "/usr/local/bin/ollama serve",
-    "source": "vast-validation-2026-09-01"
+    "observed_command": "~/ollama-fleet/bin/ollama pull hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M",
+    "serve_command": "~/ollama-fleet/bin/ollama serve",
+    "source": "fleet-validation-2026-09-01"
   },
   "metadata": {
     "validation": {
       "date": "2026-09-01",
       "evidence": {
         "eval_count": 102,
-        "eval_duration_ns": 789890000,
-        "load_duration_ns": 3053848607,
+        "eval_duration_ns": 616383000,
+        "load_duration_ns": 3611856255,
         "prompt_eval_count": 17,
-        "prompt_eval_duration_ns": 450344000,
+        "prompt_eval_duration_ns": 107288000,
         "response_excerpt": "validation-ok",
-        "total_duration_ns": 4297083430
+        "total_duration_ns": 4337547316
       },
-      "hardware_note": "Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend",
-      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768. Engine timings from engine usage counters. Host: Vast rental RTX 3090, driver 560.35.03, native ollama serve on host, CUDA backend."
+      "hardware_note": "Single RTX 3090 24GB of four (CUDA_VISIBLE_DEVICES=0), local fleet host; Arc Pro B70s untouched.",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768"
     }
   },
   "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q4-k-m",
@@ -74,8 +74,8 @@
     "sources": [
       {
         "captured_at": "2026-09-01T00:00:00Z",
-        "kind": "normalized-recipe",
-        "url": "https://vast.ai"
+        "kind": "validation-run",
+        "url": "https://github.com/0xSero/ai-fleet"
       }
     ]
   },

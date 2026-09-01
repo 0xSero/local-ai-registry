@@ -88,8 +88,8 @@ def build(model, gpu, ev, rental):
     slug = MODEL_SLUG[model]
     quant = QUANT[model]
     ctx = ev.get("ctx") or (16384 if model in ("qwen3.8-27b", "qwen3.6-35b-a3b") else 32768)
-    decode = round(ev["eval_duration_ns"] / ev["eval_count"] * 1e9, 1)
-    prefill = round(ev["prompt_eval_duration_ns"] / ev["prompt_eval_count"] * 1e9, 1) if ev.get("prompt_eval_duration_ns") else None
+    decode = round(ev["eval_count"] / ev["eval_duration_ns"] * 1e9, 1)
+    prefill = round(ev["prompt_eval_count"] / ev["prompt_eval_duration_ns"] * 1e9, 1) if ev.get("prompt_eval_duration_ns") else None
     rid = f"{slug}-{quant}-{hw}-ollama-tp1"
     sweep_id = f"{rid}-sweep"
     sweep = {
