@@ -1,0 +1,94 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M validated candidate on one spark-2384 GPU via native ollama 0.33.2 (local fleet host). Exact 'validation-ok' completion probe, temperature 0, ctx 32768. Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "ollama",
+    "version": "0.33.2"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://github.com/0xSero/ai-fleet"
+          }
+        ]
+      },
+      "reason": "fleet-validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "lfm25-26b-q4-k-m-dgx-spark-gb10-128gb-ollama-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "fleet-validation-run",
+          "url": "https://github.com/0xSero/ai-fleet"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "observed_command": "~/ollama-fleet/bin/ollama pull hf.co/LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M",
+    "serve_command": "~/ollama-fleet/bin/ollama serve",
+    "source": "fleet-validation-2026-09-01"
+  },
+  "metadata": {
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "eval_count": 102,
+        "eval_duration_ns": 1212048000,
+        "load_duration_ns": 9675541933,
+        "prompt_eval_count": 17,
+        "prompt_eval_duration_ns": 8149048000,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": 19039331200
+      },
+      "hardware_note": "DGX Spark GB10 aarch64, 128GB unified, local fleet host; host went offline mid-run.",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768"
+    }
+  },
+  "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "validation-run",
+        "url": "https://github.com/0xSero/ai-fleet"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "lfm25-26b-q4-k-m-dgx-spark-gb10-128gb-ollama-tp1-sweep"
+  ],
+  "status": "candidate"
+}
