@@ -4,7 +4,7 @@ A hardware-aware registry of local model artifacts, launch recipes, measured spe
 
 ## Start here
 
-[`registry/index/`](registry/index/) holds the discovery shards. A client fetches only what its question needs: `collections.json` (ids + counts), `recipes.json` (compact filter rows), and four reverse lookups — `recipes-by-hardware.json`, `instances-by-model.json`, `benchmarks-by-model.json`, `prices-by-hardware.json`. Fetch full records only after the user chooses something.
+[`registry/index/`](registry/index/) holds the discovery shards. A client fetches only what its question needs: `collections.json` (ids + counts), `recipes.json` (compact filter rows), and five reverse lookups — `recipes-by-hardware.json`, `instances-by-model.json`, `benchmarks-by-model.json`, `prices-by-hardware.json`, `hardware-speed-evidence.json`. Fetch full records only after the user chooses something.
 
 ```text
 index/collections.json          ids + counts for every collection
@@ -12,7 +12,7 @@ index/recipes.json              compact recipe rows for filtering
 index/recipes-by-hardware.json  hardware_id -> [recipe ids]
 index/instances-by-model.json   model_id    -> [model-instance ids]
 index/benchmarks-by-model.json  model_id    -> [leaderboard score rows]
-index/prices-by-hardware.json   hardware_id -> [price record ids]
+index/hardware-speed-evidence.json hardware_id -> aggregated sweep evidence
 
 recipe/<id>.json
   model_instance_id -> model-instance/<id>.json

@@ -149,16 +149,30 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-31T23:03:15Z",
+        "captured_at": "2026-09-01T10:20:39Z",
         "sources": [
           {
-            "captured_at": "2026-08-31T23:03:15Z",
+            "captured_at": "2026-09-01T10:20:39Z",
             "kind": "registry-derived",
             "url": "https://www.localmaxxing.com/en/runs/cmr1yd2vf01mvld01nao0pepu"
           }
         ]
       },
-      "reason": "server-capacity-derived-from-source-evidence",
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr1yd2vf01mvld01nao0pepu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
       "state": "known"
     }
   },
@@ -246,7 +260,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 8,
-    "max_context_tokens": 524288,
+    "max_context_tokens": 65536,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

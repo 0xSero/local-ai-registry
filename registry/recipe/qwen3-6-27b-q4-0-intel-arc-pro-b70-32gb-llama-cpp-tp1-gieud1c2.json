@@ -109,6 +109,20 @@
       },
       "reason": "server-capacity-not-evidenced",
       "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmof8rzb40005l404gieud1c2"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -142,7 +156,7 @@
       "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Best-of-3 generation-only llama-bench result using the common 512-output short-context shape: Vulkan backend on Intel Arc Pro B70 as Vulkan1, Q4_0, 0 prompt tokens, 512 generated tokens, reported as 2K context class for LocalMaxxing comparability, no warmup. Samples: 28.8449, 28.7802, 28.7663 tok/s. Command: llama-bench -m Qwen3.6-27B.q4_0.gguf -dev Vulkan1 -ngl 99 -fa 1 -p 0 -n 512 -d 0 -sm layer -b 512 -ub 64 -ctk f16 -ctv f16 -t 8 --poll 50 -r 3 -o jsonl --no-warmup --progress.",
-      "observed_command": "",
+      "observed_command": "llama-bench -m Qwen3.6-27B.q4_0.gguf -dev Vulkan1 -ngl 99 -fa 1 -p 0 -n 512 -d 0 -sm layer -b 512 -ub 64 -ctk f16 -ctv f16 -t 8 --poll 50 -r 3 -o jsonl --no-warmup --progress",
       "run_id": "cmof8rzb40005l404gieud1c2"
     }
   },
@@ -162,7 +176,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": null,
-    "max_context_tokens": 2048,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

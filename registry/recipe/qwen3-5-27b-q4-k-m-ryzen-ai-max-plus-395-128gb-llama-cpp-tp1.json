@@ -123,6 +123,20 @@
       },
       "reason": "server-capacity-not-evidenced",
       "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofn98l9000qkv040b35vf8a"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -156,7 +170,7 @@
       "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp b8672, backend=vulkan, runtime=RADV Vulkan, Mesa 25.2.6, amdgpu, GFX1151. Hardware: AMD Ryzen AI MAX 395 / Radeon 8060S Strix Halo, 128GB unified memory, NixOS 25.11, Linux 6.19.9. Settings: -ngl 999, -fa 1, prompt/context=32768, generated=128, reps=2, output=md. Scores: PP=210.91 tok/s, TG=12.97 tok/s, peak_vram=19.03 GiB. Command: /home/crown/.local/llama-current/llama-bench -m /srv/llm/models/Qwopus3.5-27B-v3/Qwopus3.5-27B-v3.gguf -ngl 999 -fa 1 -p 32768 -n 128 -r 2 -o md.",
-      "observed_command": "",
+      "observed_command": "/home/crown/.local/llama-current/llama-bench -m /srv/llm/models/Qwopus3.5-27B-v3/Qwopus3.5-27B-v3.gguf -ngl 999 -fa 1 -p 32768 -n 128 -r 2 -o md",
       "run_id": "cmofn98l9000qkv040b35vf8a"
     }
   },
@@ -176,7 +190,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": null,
-    "max_context_tokens": 32768,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

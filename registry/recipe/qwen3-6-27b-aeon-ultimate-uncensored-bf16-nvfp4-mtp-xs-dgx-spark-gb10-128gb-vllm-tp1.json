@@ -148,17 +148,31 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-31T23:03:15Z",
+        "captured_at": "2026-09-01T10:20:39Z",
         "sources": [
           {
-            "captured_at": "2026-08-31T23:03:15Z",
-            "kind": "registry-derived",
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
             "url": "https://www.localmaxxing.com/en/runs/cmr809ymf002bqr016nfronrc"
           }
         ]
       },
-      "reason": "server-capacity-derived-from-source-evidence",
-      "state": "known"
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr809ymf002bqr016nfronrc"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -225,8 +239,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 32,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

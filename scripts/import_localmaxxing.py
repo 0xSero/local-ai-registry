@@ -84,18 +84,46 @@ def workload_concurrency(row):
     return None
 
 
-def server_capacity(row, observed_concurrency):
-    command, _ = _concurrency_evidence(row)
-    match = re.search(
-        r"(?:^|\s)(?:--parallel|-np|--max-num-seqs|--max-concurrency)(?:=|\s+)(\d+)\b",
+def _explicit_positive_integers(command, options):
+    values = set()
+    option_pattern = "|".join(re.escape(option) for option in options)
+    for match in re.finditer(
+        rf"(?:^|\s)(?:{option_pattern})(?:=|\s+)(\d+)\b",
         command,
         re.IGNORECASE,
+    ):
+        value = int(match.group(1))
+        if value > 0:
+            values.add(value)
+    return values
+
+
+def server_capacity(row):
+    command, _ = _concurrency_evidence(row)
+    values = _explicit_positive_integers(
+        command,
+        ("--parallel", "-np", "--max-num-seqs", "--max-concurrency"),
     )
-    if match:
-        return int(match.group(1))
-    if isinstance(observed_concurrency, int) and observed_concurrency > 1:
-        return observed_concurrency
-    return None
+    return next(iter(values)) if len(values) == 1 else None
+
+
+def server_context_limit(row):
+    command, _ = _concurrency_evidence(row)
+    direct_values = _explicit_positive_integers(
+        command,
+        ("--max-model-len", "--context-length", "--max-context-length"),
+    )
+    llama_values = _explicit_positive_integers(command, ("--ctx-size", "-c"))
+    llama_parallel = _explicit_positive_integers(command, ("--parallel", "-np"))
+    if len(llama_values) == 1:
+        llama_context = next(iter(llama_values))
+        if len(llama_parallel) == 1:
+            parallel = next(iter(llama_parallel))
+            if llama_context % parallel != 0:
+                return None
+            llama_context //= parallel
+        direct_values.add(llama_context)
+    return next(iter(direct_values)) if len(direct_values) == 1 else None
 
 
 def import_row(root, row):
@@ -138,7 +166,7 @@ def import_row(root, row):
     run_id = row["id"]
     concurrency = workload_concurrency(row)
     evidenced_metrics = evidenced_sweep_metrics(row)
-    capacity = server_capacity(row, concurrency)
+    capacity = server_capacity(row)
     recipe_id = f"{model_id}-{slug(precision)}-{hardware_id}-{slug(row['engine']['engineName'])}-tp{row['hardware'].get('gpuCount') or 1}-{run_id[-8:]}"
     sweep_id = f"{recipe_id}-sweep"
     write(root / "recipe" / f"{recipe_id}.json", {
@@ -163,7 +191,7 @@ def import_row(root, row):
         },
         "serving": {
             "tensor_parallel": row["hardware"].get("gpuCount") or 1,
-            "max_context_tokens": row.get("contextLength"),
+            "max_context_tokens": server_context_limit(row),
             "max_concurrency": capacity,
             "kv_cache_tokens": None,
         },
