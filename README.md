@@ -20,6 +20,10 @@ prerequisites for inference.
 Review the diff Omarchy shows before enabling: third-party plugins run as
 unsandboxed user code inside the shell.
 
+To remove: `unload` first (stops the managed container and deletes the
+`omarchy-local` provider entries it wrote), `remove <recipe>` per downloaded
+recipe to reclaim disk, then `omarchy plugin remove sero.local-ai`.
+
 ## Use
 
 Bar icon (place with `omarchy bar put sero.local-ai` if you skipped the
