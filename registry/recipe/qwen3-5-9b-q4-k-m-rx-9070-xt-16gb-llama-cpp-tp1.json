@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoir6k6z0001l804ypft8cze"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1024,
       "hardware_label": "RX 9070 XT",
       "notes": "Best local structured run. model=Qwopus3.5-9B-v3-Q4_K_M config=opt_np1_ctx4096 source=20260426-050859 api_tps=65,84 prompt_tps=361,85 acceptance=n/a",
       "observed_command": "C:\\llama.cpp.custom\\llama-b8933-bin-win-vulkan-x64\\llama-server.exe -m C:\\Users\\<user>\\.lmstudio\\models\\Jackrong\\Qwopus3.5-9B-v3-GGUF\\Qwopus3.5-9B-v3.Q4_K_M.gguf -ngl 99 -c 32768 -b 1024 -fa on -ctk f16 -ctv f16 --ctx-checkpoints 16 --jinja --reasoning off --port 1234 --host 0.0.0.0 -np 1 -c 4096",
@@ -179,7 +194,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1024,
+    "max_concurrency": 1,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

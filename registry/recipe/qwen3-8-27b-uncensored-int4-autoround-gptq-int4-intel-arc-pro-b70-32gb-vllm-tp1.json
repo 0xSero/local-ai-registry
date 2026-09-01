@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0vrxjk0fvpms01n4i9cmns"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "johannrplaster/Qwen3.8-27B-Uncensored-int4-AutoRound GPTQ-Int4 served via vLLM Marlin after auto-round->gptq config flip; GDN linear-attention in_proj_a/b kept FP16 (quality-preserving); load-time INT8 W8A8 lm_head (per-channel RTN). 1x Intel Arc Pro B70, MTP3 speculative decode, FP16 KV, greedy. Strict cold suite 66.8 tok/s, quality gates pass.",
       "observed_command": "VLLM_XPU_LM_HEAD_INT8=1 VLLM_XPU_HOST_STAGED_COLLECTIVES=1 CCL_TOPO_P2P_ACCESS=0 ZE_AFFINITY_MASK=0 ONEAPI_DEVICE_SELECTOR=level_zero:0 vllm serve johannrplaster/Qwen3.8-27B-Uncensored-int4-AutoRound --host 0.0.0.0 --port 19622 --served-model-name Qwen3.8-27B-UNC-G128-AR --tensor-parallel-size 1 --dtype float16 --max-model-len 8192 --max-num-seqs 1 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.88 --quantization gptq --speculative-config '{\"method\":\"qwen3_5_mtp\",\"num_speculative_tokens\":3}'",

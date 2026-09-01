@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6rr2kv008imn019frg0x3m"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Strict fresh realistic rapid snapshot: each prompt once, cache_prompt=false, cached_tokens=0 on all prompts, no speculation/history/reuse; quick same-window knob screen found no reproducible recipe win over the simple FA-on/F16-KV recipe.",
       "observed_command": "llama-server -m /mnt/usb-models/llm-models/qwen3-30b-a3b-instruct-2507-gguf/Qwen3-30B-A3B-Instruct-2507-UD-Q4_K_XL.gguf -c 4096 -ngl 99 -b 1024 -ub 256 -fa on",
@@ -164,7 +179,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

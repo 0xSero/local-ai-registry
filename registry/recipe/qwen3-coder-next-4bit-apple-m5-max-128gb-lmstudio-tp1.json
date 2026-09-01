@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoq5mt94000iky04gpzs449x"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M5 Max",
       "notes": "Automated benchmark via LM Studio local API. 2 warm-up runs; median of 3 measured greedy chat completions with max_tokens=256.",
       "observed_command": "lms load qwen/qwen3-coder-next --context-length 8192 --parallel 1 --gpu max; LM Studio /api/v0/chat/completions temperature=0 max_tokens=256",

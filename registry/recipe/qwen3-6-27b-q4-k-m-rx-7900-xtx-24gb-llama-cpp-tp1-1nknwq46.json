@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqjwex4d00rpnv011nknwq46"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "Benchmark via localmaxx-bench CLI. MTP speculative decoding (draft-mtp, n_max=2). Q8_0 KV cache. ROCm backend on Ubuntu 26.04. Flags auto-detected from service file.",
       "observed_command": "-m /home/ghazni/models/Qwen3.6-27B-MTP-Q4_K_M.gguf --host 0.0.0.0 --port 8080 -ngl 99 --no-mmap -c 150000 -fa on -ctk q8_0 -ctv q8_0 --reasoning on -np 1 --spec-type draft-mtp --spec-draft-n-max 2 -fit off Restart=on-failure RestartSec=10 StandardOutput=append:/home/ghazni/llama-server.log StandardError=append:/home/ghazni/llama-server.log TimeoutStartSec=300 '[Install]' WantedBy=multi-user.target",

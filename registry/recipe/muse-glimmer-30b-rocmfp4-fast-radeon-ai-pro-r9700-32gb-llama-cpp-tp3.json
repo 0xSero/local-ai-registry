@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmso8xev00005mp01f3uco1go"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "llama.cpp (ROCmFPX fork) ROCm, single R9700, FP4_FAST 13.8GiB + DFlash draft Q8_0 2.6GiB. Greedy, ~1.4k-tok code prompt. spec: draft-dflash p-min 0.3 n-max 16, reasoning_strength=zero. Median of 3.",
       "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec /home/mikekey/Experiments/ROCmFPX/build-rdna4/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn on --cache-reuse 256 --prio 3 -m /home/mikekey/models/gguf/meta/Muse-Glimmer-30B-ROCMFP4_FAST.gguf -md /home/mikekey/models/gguf/meta/Muse-Glimmer-30B-dflash-draft-Q8_0.gguf --spec-type draft-dflash --spec-draft-p-min 0.3 --spec-draft-n-max 16 --chat-template-kwargs '{\"reasoning_strength\":\"zero\"}' --reasoning-format auto --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -ts 1/0/0 -np 1 -c 131072",

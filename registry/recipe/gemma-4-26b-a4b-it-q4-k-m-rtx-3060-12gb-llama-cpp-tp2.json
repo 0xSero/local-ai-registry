@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjbenyu02ccmj01vqay6404"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "7810, Dual Intel Xeon E5-2650 v4 (2x12c/24t, 2.20GHz), 32GB DDR4 ECC 2133 MT/s, Layer split (-sm layer), flash attention, f16 KV cache. Benchmarked with llama-bench. Dual GPU via llama.cpp layer split.",
       "observed_command": "llama-bench -m google_gemma-4-26B-A4B-it-Q4_K_M.gguf -p 512 -n 128 -ngl 30 -sm layer -fa on -ctk f16 -ctv f16 -r 5",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 512,
     "tensor_parallel": 2
   },

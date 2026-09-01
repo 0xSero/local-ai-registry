@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cms8cr7d700efpf01ghl7scrj"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Single client, single GPU, non-batched. NOT tensor-parallel, NOT pipeline-parallel, NOT a batched serve: one request at a time via the standalone dflash_spec_demo binary, not an HTTP server. Host has 4x R9700; this uses exactly one (HIP dev 3).\nPure DFlash speculative decode: 5-layer trained draft head, block B=16, adaptive-B 8..16 which settled at B=16 for 100% of cycles. No MTP, n-gram, prompt-lookup, tree, or CASK. Greedy temp 0.0, deterministic. Identical every rep: tau=11.3846, accept_rate=0.7590, cycles=13, committed=174, accepted=148, emitted=162, EOS reached.\n3 fresh-process reps after one discarded JIT warmup, GPU-lock serialized, clocks untouched: decode 278.24/277.97/276.92 -> median 277.97 (spread 0.47%); prefill 466.57/466.68/461.68; ttft 102.97/103.13/103.86.\nTwo non-default flags. HIPFIRE_HFQ4G256_LDSSTAGE=1 (gfx12 LDS-staged HFQ4-G256 WMMA, default off): same-binary A/B gave 254.88 with it off, i.e. +9.06%. HIPFIRE_Q8_PREFILL_M4=0 disables the four-query Q8 prefill tile, a ~4% LOSS on the speculative path though a win on AR prefill. Routing verified not assumed: LDS-on must emit gemm_gate_up_hfq4g256_wmma_gfx12_ldsstage.hsaco (17448 B) and gemm_hfq4g256_residual_wmma_gfx12_ldsstage.hsaco (15400 B); both present.\nNOT bit-exact by construction: LDS staging reorders f32 K-accumulation across 8 waves. Output matched byte-for-byte (md5 4d3a55e4) but that is one prompt at temp 0, not a quality result.\nQuantized artifact: schuttdev/hipfire-qwen3.6-27b @ f9b326a657f1 (qwen3.6-27b.mq4).\nProvenance: tree bcd1ef0082e7f7f7a1eff9252da5d76e17d042b0 (0 dirty); binary sha256 a107cf8640abf1d7; trunk sha256 86a5f80fd29d545a; draft md5 204c4c4c; prompt md5 253c7ac5; ROCm/HIP 7.14.60850. peakVramGb = 17034 MiB reported by the runtime. Unedited logs retained. Coherence eyeballed (correct Python merge_sort, ends <|im_end|> then <|endoftext|>), not a scored gate. No AR baseline rerun.",
       "observed_command": "HIP_VISIBLE_DEVICES=3 HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_Q8_PREFILL_M4=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.6-27b-awq.mq4 --draft ~/.hipfire/models/qwen36-27b-dflash-mq4.hf4 --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 2048",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

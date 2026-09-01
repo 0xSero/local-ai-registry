@@ -21,12 +21,12 @@
       "262144"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqw5k2wu039dqr01j2yh9kg5"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Ornith-1.0 35B GGUF Q4_K_M on 1x RTX 3090 via llama.cpp CUDA, full 262144 context, q4_0 KV cache, flash-attn, no prompt cache, single streaming request, 5 measured 1000-token runs after 1 warmup, no-thinking template forced with chat_template_kwargs enable_thinking=false. single GPU. Performance-window run with GPU power autotune paused and test GPUs capped at 350W. GPU reached 89C and software thermal slowdown was observed in 22 telemetry samples, so later runs tapered. Host is PCIe 3.0/no NVLink; this row uses one card.",
       "observed_command": "llama-server --model ornith-1.0-35b-Q4_K_M.gguf --ctx-size 262144 --cache-type-k q4_0 --cache-type-v q4_0 --parallel 1 --batch-size 1024 --ubatch-size 256 --flash-attn on --n-gpu-layers 999 --jinja --reasoning-format deepseek --reasoning auto --no-cache-prompt --cache-ram 0",

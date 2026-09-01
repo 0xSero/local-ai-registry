@@ -21,12 +21,12 @@
       "1000000"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmozdo5940030q201948atk3q"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "MiMo V2.5 (309.77B params, 51 layers, MoE) Q4_K_M GGUF on dual NVIDIA DGX Spark cluster via llama.cpp RPC backend. tokSOut=16.08 t/s median c=1 (5 runs max_tokens=256, mean 16.4, stdev 0.91). Aggregate at c=4 concurrent ~32 t/s (8.15 per stream). TTFR 606ms median. Context 1M (5x what M2.7 supports on same cluster). Built from ggml-org/llama.cpp master commit 1e5ad35 with GGML_RPC=ON GGML_CUDA=ON sm_121a target. Includes PR 22493 (model arch May 7) + PR 22812 (FA kernels May 9). Layer split: 50/52 layers offloaded, CUDA0 80.6 GiB on Spark 2 + RPC0 98.3 GiB on Spark 1 over QSFP56 200G. AesSedai vision branch not used (text-only).",
       "observed_command": "llama-server -m MiMo-V2.5-Q4_K_M-00001-of-00005.gguf --host 0.0.0.0 --port 10000 --ctx-size 1000000 -np 4 --n-gpu-layers 999 --rpc 192.168.101.1:50052 --threads 8 --threads-batch 8 -fa 1 --batch-size 2048 --ubatch-size 512",
@@ -213,7 +242,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 4,
     "max_context_tokens": 1000000,
     "tensor_parallel": 1
   },

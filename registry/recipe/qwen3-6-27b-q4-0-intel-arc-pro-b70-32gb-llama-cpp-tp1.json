@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjbx8bc02g8mj01yzz2v701"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "One active generation on one Intel Arc Pro B70. The fixed realistic cold suite passed with cached_tokens=0 for all 12 prompts. Native DFlash accepted tokens are verified by the unchanged Q4_0 target. This row adds a fused, exact Q6_K x Q8_1 M=6 draft LM-head top-1 boundary to the promoted 187-projection Xe2 verifier and GDN snapshot-cache fusion. The exact matching AOT control reproduced 44.2205 tok/s, making this confirmed 47.8188 tok/s result a measured 8.14% end-to-end fusion gain and an 8.05% improvement over the prior 44.2554 tok/s LocalMaxxing record. The first independent strict candidate also passed at 47.1143 tok/s. The fused path fails closed and re-decodes ordinary logits after compact-read failure.",
       "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:* ZE_AFFINITY_MASK=2 GGML_SYCL_ENABLE_GRAPH=0 GGML_SYCL_XE2_Q4_M6_FFN=1 GGML_SYCL_XE2_Q4_M6_PACK_LIMIT=187 GGML_SYCL_XE2_Q4_M6_GATE_UP=1 GGML_SYCL_FUSE_GDN_CACHE=1 LLAMA_DFLASH_FUSED_TOP1=1 GGML_SYCL_XE2_Q6_M6_TOP1=1 llama-server -m Qwen3.6-27B-Q4_0.gguf -dev SYCL0 -ngl 99 -c 4096 -np 1 -b 1024 -ub 256 -ctk q8_0 -ctv q8_0 -fa on --spec-type draft-dflash --spec-draft-model Qwen3.6-27B-DFlash-Q8_0.gguf --spec-draft-type-k f16 --spec-draft-type-v f16 --spec-draft-n-max 5 --cache-ram 0 --ctx-checkpoints 0 -fit off",

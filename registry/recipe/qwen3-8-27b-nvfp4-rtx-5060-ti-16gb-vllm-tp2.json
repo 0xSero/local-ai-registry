@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "Qwen/Qwen3.8-27B",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "2048"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -44,7 +45,7 @@
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": null
+    "version": "0.26.0"
   },
   "facts": {
     "capabilities.chat": {
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -117,6 +132,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:38:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:38:26Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxttyo00fjmp01nmrwtmkn"
+          }
+        ]
+      },
+      "reason": "copied-from-synthesized-image-provenance",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -129,6 +158,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdklchh005clm01b8ev1mrk"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -160,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5060 Ti",
       "notes": "vLLM V2 on dual RTX 5060 Ti 16GB (Unraid 7, 6.18.38). MTP speculative decoding: num_speculative_tokens=3, TP=2, NVFP4 quant, max-model-len 131072, KV-cache nvfp4 4.5GB budget, prefix-caching + chunked-prefill enabled, cudagraph_capture_sizes [1,2,4,8,16]. This is the warm-cache representative run (4 consecutive back-to-back benchmark iterations, prefix cache hot): 63.2-63.7 tok/s decode, ~186-195 ms TTFT. MTP draft acceptance during this window: avg 54.8% (41.4-71.1%, p50 52.6%, 18 samples) — well above the ~30% breakeven for 3 draft tokens, i.e. MTP spec-decode is net-positive here. For contrast, a cold-cache benchmark window earlier in the session measured 38.2 tok/s at ~35% acceptance; full-lifetime real-world Hermes traffic averages ~50.6% token-weighted acceptance (2.69M samples, per-position pos1=0.647 pos2=0.495 pos3=0.393). Engine: vLLM, quant NVFP4.",
       "observed_command": "# Remote endpoint: http://192.168.0.45:30000  servedModel: gittensor-model-hub/Qwen3.8-27B-NVFP4-RTX5090-LMHead4",
@@ -186,7 +230,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 2
   },

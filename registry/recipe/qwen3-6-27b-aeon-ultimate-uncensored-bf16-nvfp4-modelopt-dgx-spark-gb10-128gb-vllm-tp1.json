@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-Multimodal-NVFP4-MTP-XS",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "262144"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -130,6 +145,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp029g8200cqlo012cwzc7qm"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "AEON-7 v4 6-category bench validation. Average tokSOut=34.98 t/s median (across Coding/Math/Reasoning/Prose/NaturalLanguage/Extraction-JSON, 3 runs each, max_tokens=512). Per-category: Coding 31.65 t/s, Math 34.77, Reasoning 38.17, Prose 27.05, Natural-Language 26.51, Extraction/JSON 51.72. Average TTFR 256.6ms, TPOT 30.10ms. AEON-7 published v4: 31.89/37.76/42.41/31.85/31.99/49.48 avg 37.56. We are 7pct under published avg, matched Coding (99pct), beat Extraction/JSON (+4pct). Streaming bench methodology vs their llama-bench.",
       "observed_command": "vllm serve /models/xs --tensor-parallel-size 1 --quantization modelopt --max-model-len 262144 --max-num-seqs 16 --max-num-batched-tokens 32768 --gpu-memory-utilization 0.85 --enable-chunked-prefill --enable-prefix-caching --speculative-config {method:dflash,model:/models/dflash-drafter,num_speculative_tokens:15} --tool-call-parser qwen3_coder --reasoning-parser qwen3 --attention-backend flash_attn",
@@ -211,7 +241,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 16,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

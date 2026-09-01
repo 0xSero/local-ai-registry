@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrjitcih02jvmj0173biwp25"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 4096,
       "hardware_label": "RTX 3060",
       "notes": "Qwen3.5-9B UD Q4_K_XL, fully offloaded on RTX 3060. Maximum tested context 262144; server loaded and completed a real completion at that context. BeeLlama build 85e22ea0b build 10102, CUDA, Flash Attention, f16 benchmark KV cache. Optimization sweep tested batch/ubatch/thread combinations; winner b4096 ub1024 threads16. Peak VRAM measured after warmup at 262144 context with q4_0 KV cache.",
       "observed_command": "llama-bench -m /mnt/hdd/models/Qwen3.5-9B-UD-Q4_K_XL.gguf -p 512 -n 128 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json",
@@ -172,7 +187,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 4096,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

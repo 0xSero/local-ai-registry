@@ -21,12 +21,12 @@
       "4096"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -131,6 +145,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt8wx9zq00ftli014hldgmc6"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "IBM Granite 4.2 8B dense (8.79B params, llama-bench reports 'granite 3B Q4_K - Medium' arch label; 40 layers, GQA 32/8 heads, head_dim 128, native ctx 131072). Official ibm-granite GGUF repo rev 31239b3e4a93. Cold-start bench: pp512 1717 tok/s, tg128 53.55-55.8 tok/s (r=3). KV q4_0 vs f16: no measurable speed difference at this size. Peak VRAM 6571 MiB during bench. Max context verified live on RTX 3060 12GB full offload with q4_0 KV + FA: 104K (106496) loads and completes; 112K OOM on KV alloc; 128K OOM. Serving prefill at ~2.6K-token real prompt: 1635 tok/s, decode 47.5 tok/s (thinking model: output goes to reasoning_content first, so serving decode includes thinking tokens). Model is a native reasoning model (thinking always on in weights); benchmark used raw completions-style measurement. TTFT estimated from bench medians (prompt_ms + first-token) at 512/128 cold start.",
       "observed_command": "llama-bench -m granite-4.2-8b-Q4_K_M.gguf -p 512 -n 128 -ngl 99 -fa on -ctk q4_0 -ctv q4_0 -r 3 -o json; server check: llama-server -c 106496 -ngl 99 -fa on -ctk q4_0 -ctv q4_0",
@@ -220,7 +249,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },

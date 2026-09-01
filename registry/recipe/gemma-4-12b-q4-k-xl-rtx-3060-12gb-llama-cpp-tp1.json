@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr3ynprv0007nv0192k93bri"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "Gemma4 12B QAT Q4_K_XL + MTP draft head (Q8_0, 444 MB). OPTIMAL: MTP enabled (--spec-type draft-mtp --spec-draft-n-max 3, draft model gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf). 42 dense attn layers, fully offloaded. KV cache q4_0. MTP speedup: 2.38x. Acceptance rate: 94% (188/200). Max context with MTP: 196608 (192K) at ~11.5 GB. Fedora 43, CUDA 13.0.",
       "observed_command": "llama-server -m gemma-4-12B-it-qat-UD-Q4_K_XL.gguf --model-draft gemma-4-12B-it-qat-assistant-MTP-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 3 -ngl 99 -fa on -ctk q4_0 -ctv q4_0 -c 196608 -np 1",

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrz3enlm064co4016dvuc0cm"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "4096 prompt / 512 generation. Two throwaway loads preceded three measured configurations; winner selected by minimum measured TTFT. Q8_0 GGUF: /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen3-0.6b/Qwen3-0.6B-Q8_0.gguf. All weights fully offloaded with Flash Attention. Peak VRAM and max sampled GPU power recorded during winner configuration. MobileLLM GGUF filename reports the converted parameter count (see local file).",
       "observed_command": "/home/dario/llama.cpp/build/bin/llama-bench -m /mnt/hdd/lmstudio_models/tiny-throughput-bench/gguf/qwen3-0.6b/Qwen3-0.6B-Q8_0.gguf -p 4096 -n 512 -b 4096 -ub 1024 -t 16 -ngl 99 -fa on -r 2 -o json --no-warmup",
@@ -173,7 +188,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4608,
     "tensor_parallel": 1
   },

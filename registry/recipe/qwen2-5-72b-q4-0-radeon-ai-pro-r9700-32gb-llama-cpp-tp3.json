@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmorr5jit0003jj04f3z7ti9t"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Vulkan 3× R9700 + speculative decoding: Qwen2.5-Coder-0.5B-Instruct Q8_0 draft, --spec-draft-n-max 8 --spec-draft-p-min 0.7. Best of 3.",
       "observed_command": "/home/mikekey/Experiments/llama.cpp/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --cache-reuse 256 --parallel 2 -m /home/mikekey/models/gguf/misc/Kimi-Dev-72B-Q4_0.gguf --spec-draft-model /home/mikekey/models/gguf/drafts/Qwen2.5-Coder-0.5B-Instruct-Q8_0.gguf --spec-draft-n-max 8 --spec-draft-n-min 1 --spec-draft-p-min 0.7 --spec-draft-ngl 99 --temp 0.7 --top-p 0.8 --top-k 20 --repeat-penalty 1.05 -ctk q8_0 -ctv q8_0 --flash-attn auto -ts 1/1/1 -c 131072",
@@ -194,7 +209,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 2,
     "max_context_tokens": 131072,
     "tensor_parallel": 3
   },

@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrh7bdda009smj0170x1khux"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "hipfire (Rust RDNA-native engine, Kaden-Schutt/hipfire rev 5d3683a) on Framework Desktop Strix Halo gfx1151, 120G GTT, ROCm 7.2.4. nwoolmer/hipfire-deepseek-v4-flash MQ2-Lloyd mixed precision (86.2G, 2-bit MagnumQuant-Lloyd routed experts, Q8F16/F16 elsewhere) + 2.0G MTP sidecar, Q8 KV cache, spec decode K=2 (K=2 beat K=1/3/4 in sweep). Measured on diverse code-review prompt, streaming timing: pp1887 depth: 15.2 tok/s decode / 144.5 prefill. Depth-honest long-context: pp15317: 13.2 decode / 140.7 prefill. Spec decode is load-bearing: no-spec decode is 4.1 tok/s.",
       "observed_command": "HIPFIRE_DEEPSEEK4_SPEC_DECODE=1 HIPFIRE_DEEPSEEK4_SPEC_K=2 hipfire serve deepseek-v4-flash 0.0.0.0:11435 --kv-mode q8",
@@ -161,7 +176,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 16384,
     "tensor_parallel": 1
   },

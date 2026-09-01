@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpa7afsw001no101gjvl1hye"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": null,
       "observed_command": "--model /models/Qwen3.6-27B-Q4_K_M-mtp.gguf --host 0.0.0.0 --port 30069 --alias qwen3.6-27b-mtp -ngl 99 --ctx-size 100352 --flash-attn true -ctk q4_0 -ctv q4_0 -b 1024 -ub 1024 --parallel 1 --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0.5 --cache-ram 0 --metrics --jinja --chat-template-kwargs {\"preserve_thinking\":true} -cb",

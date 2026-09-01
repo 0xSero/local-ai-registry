@@ -21,12 +21,12 @@
       "65536"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsibq7us01vfpp012ji34541"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "2 warmup + 3 measured runs. temp=0, batch=1, 55 prompt / 512 output tokens. Model already loaded in VRAM (container warm). MoE A3B + Unsloth UD-IQ4_XS + draft-mtp n-max=2. Peak VRAM from nvidia-smi memory.used with model resident (~28.6 GB on 32 GB RTX 5090).",
       "observed_command": "llama-server -hf unsloth/Qwen3.6-35B-A3B-MTP-GGUF:UD-IQ4_XS -ngl 99 -c 65536 -fa on -np 1 -n 8192 --verbosity 2 --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.0 --cache-type-k q4_0 --cache-type-v q4_0 --cache-prompt --cache-reuse 256 --cache-ram 16384 --cache-idle-slots --slot-prompt-similarity 0.50 --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --alias qwen3.6-35b-a3b-mtp --jinja --sleep-idle-seconds -1 --mlock --no-mmap --warmup",

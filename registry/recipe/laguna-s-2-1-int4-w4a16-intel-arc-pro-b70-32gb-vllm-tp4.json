@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cms9wuuf300cqpm01t5i285tq"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Cold fixed 13-prompt Laguna S2.1 INT4 TP4+EP4 BF16-KV record using exact width-12 verification, DFlash11, inline graph-safe draft attention, decode-only GRF128 with transposed BF16 group scales, exact M12 Q/K RMSNorm plus NeoX RoPE, and exact M12 shared-expert SiLU/multiply plus routed-scale/add fusions. Conventional 99-interval median 125.4619731637751 tok/s; historical compatibility 126.72926582199506. The first formally valid final-source score was 13/13 token-and-text exact and cache-zero with target 146/145, draft 14/13, and selector evidence on all ranks; no warmup, benchmark retry, cache, history, or response reuse.",
       "observed_command": "run_laguna_replemb_measurement_leg.sh candidate B1 RUN_DIR 12 11 1 0 0 1 0 0 0 1 1 0 0 empty 64 0 empty 6 0 1 0 0 1 0 0.90 0 0 0 1 0 1 1 0 0 0 1",
@@ -191,7 +206,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 8192,
     "tensor_parallel": 4
   },

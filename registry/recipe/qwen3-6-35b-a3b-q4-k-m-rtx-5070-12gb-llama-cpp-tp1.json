@@ -21,12 +21,12 @@
       "64000"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp7ni9vb00byo40126r1j4tf"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5070",
       "notes": "move from 5200 to 6000 MT/s for DDR5 raised tok/s 2-3/s",
       "observed_command": "& \"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\tools\\quins-llama-cpp-turboquant-build\\bin\\llama-server.exe\" `\n  --model \"C:\\Users\\sjake\\OneDrive\\Documents\\New project\\models\\Qwen3.6-35B-A3B-MTP-GGUF\\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf\" `\n  --host 127.0.0.1 `\n  --port 8080 `\n  --ctx-size 64000 `\n  --cache-type-k q8_0 `\n  --cache-type-v q8_0 `\n  --reasoning on `\n  --n-cpu-moe 30 `\n  --gpu-layers 99 `\n  --flash-attn on `\n  --parallel 1 `\n  --cache-ram 0 `\n  --spec-type mtp `\n  --spec-draft-n-max 2 `\n  --temp 0.6 `\n  --top-p 0.95 `\n  --top-k 20 `\n  --min-p 0.0 `\n  --presence-penalty 0.0 `\n  --repeat-penalty 1.0\n",

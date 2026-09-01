@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt7on43l0055nn013h1hif2u"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Lucebox-native DFlash2 Qwen3.8-27B target. Task: count_to_30. One discarded warmup + three measured requests, median rates/timing; greedy decode (temperature omitted); target 27-token prompt -> 110 output tokens; 131072 context; batch 1. Target IQ4_XS GGUF with Q8_0 DFlash2 draft, DFlash2 spec-decode confirmed in server journal; identical output hashes across measured repetitions. Placement: R9700 eGPU (gfx1201) at PCIe 0000:c5:00.0, load from model file into dedicated GDDR6; Q8 K/V cache. Peak VRAM is the maximum dflash_server DRM-client workload allocation (vram+gtt) on 0000:c5:00.0; power is peak observed GPU power. tokSOut uses server decode timing, tokSPrefill server prefill timing, tokSTotal client dispatch-to-DONE wall time.",
       "observed_command": "/home/soulrider4ever/lucebox-src/server/build-hip-dual/dflash_server /home/soulrider4ever/lucebox-src/server/models/Qwen3.8-27B-UD-IQ4_XS.gguf --draft /home/soulrider4ever/lucebox-src/server/models/draft/qwen38-dflash2-q8_0.gguf --draft-block-size 16 --max-ctx 131072 --cache-type-k q8_0 --cache-type-v q8_0 --host 0.0.0.0 --port 8086 --target-device hip:0 --draft-device hip:0",
@@ -171,7 +186,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

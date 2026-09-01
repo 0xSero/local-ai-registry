@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrnbufer003ilg0182dgqwqk"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6-27B-MTP-Q5_K_M dense + draft-mtp n-max 4. Single-stream. Prefill ~4k. Profile qwen27-mtp-q5-256k-165w @165W. 2026-07-16.",
       "observed_command": "llama-server -m Qwen3.6-27B-MTP-Q5_K_M.gguf --spec-type draft-mtp --spec-draft-n-max 4 -fa on -ctk q8_0 -ctv q4_1 -c 204800 -b 8192 -ub 4096",
@@ -170,7 +185,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 204800,
     "tensor_parallel": 1
   },

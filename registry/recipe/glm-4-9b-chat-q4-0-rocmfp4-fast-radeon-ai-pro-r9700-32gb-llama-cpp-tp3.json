@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsf8rkep00uppp01ite0252x"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Automated sweep via llama-swap on 3x R9700. llama.cpp rocm, best of 3 runs, cold prefill.",
       "observed_command": "/home/mikekey/Experiments/ROCmFPX/build-rdna4/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui --device ROCm0 -ngl 999 --jinja -fa on -m /home/mikekey/models/gguf/glm/glm-4-9b-chat-Q4_0_ROCMFP4_FAST.gguf -np 1 -c 65536",

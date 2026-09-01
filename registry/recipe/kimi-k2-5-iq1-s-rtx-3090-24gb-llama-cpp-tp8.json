@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmowla4rq004io201otfp0rdo"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 8,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Kimi-K2.5 IQ1_S GGUF feasibility row on 8x RTX 3090. Full offload did not fit; first stable route used n_gpu_layers=48 with substantial CPU offload, so this is not a speed-match row. 3 measured 512-token runs after 1 warmup; wall tok/s varied 6.21, 6.44, 3.94. Raw log: /home/mattsav/Documents/data/glm51_8x3090_20260507/kimi_k25_iq1s_8x_ngl48_b512_bench512.log",
       "observed_command": "CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9 llama-server -m /data/models/kimi-k25-gguf/bartowski-moonshotai-kimi-k25-iq1s/moonshotai_Kimi-K2.5-IQ1_S-00001-of-00006.gguf -c 4096 -b 512 -ub 128 -ngl 48 --split-mode layer --tensor-split 1,1,1,1,1,1,1,1 -fa -ctk q4_0 -ctv q4_0",
@@ -174,7 +189,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 8
   },

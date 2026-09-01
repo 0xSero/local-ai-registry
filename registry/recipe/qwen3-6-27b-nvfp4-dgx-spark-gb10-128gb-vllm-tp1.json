@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "unsloth/Qwen3.6-27B-NVFP4",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "2048"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -129,6 +144,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmri5obsn016xmj01joh0exn5"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Caveat: The benchmark measured the streaming decode rate (time between first and last token). On llama-benchy which uses --exact-tg which measures differently (it counts the\n full request latency divided by output tokens) the numbers were more conservative PP: 772.7 tok/s (±46.4), TG: 18.0 tok/s (±4.1), Peak TG: 29.7 tok/s (±11.2), TTFT: 311.9 ms (±9.4)",
       "observed_command": "```\n﻿export CUTE_DSL_ARCH=\"${CUTE_DSL_ARCH:-sm_121a}\"\n\n# Prevent OpenBLAS/MKL from spawning too many threads (crashes under systemd)\nexport OPENBLAS_NUM_THREADS=\"${OPENBLAS_NUM_THREADS:-1}\"\nexport OMP_NUM_THREADS=\"${OMP_NUM_THREADS:-1}\"\nexport MKL_NUM_THREADS=\"${MKL_NUM_THREADS:-1}\"\nexport RAYON_NUM_THREADS=\"${RAYON_NUM_THREADS:-1}\"\nexport TOKENIZERS_PARALLELISM=\"${TOKENIZERS_PARALLELISM:-false}\"\n\n# --- Paths ---\nVENV_DIR=\"${VENV_DIR:-./<local-dir>}\" # see unsloth recipe (https://unsloth.ai/docs/models/qwen3.6#dgx-spark-with-nvfp4-quants)\nVLLM_BIN=\"$VENV_DIR/bin/vllm\"\nMODEL_PATH=\"${MODEL_PATH:-$HOME/models/Qwen3.6-27B-NVFP4}\"\nSERVED_NAME=\"${SERVED_NAME:-qwen36-27b}\"\n\n# --- Speculative decoding ---\nSPEC_METHOD=\"${SPEC_METHOD:-mtp}\"\nDFLASH_MODEL=\"${DFLASH_MODEL:-$HOME/models/Qwen3.6-27B-DFlash}\"\n\nif [ \"$SPEC_METHOD\" = \"dflash\" ]; then\n    SPEC_TOKENS=\"${SPEC_TOKENS:-15}\"\n    SPEC_CONFIG=\"{\\\"method\\\":\\\"dflash\\\",\\\"model\\\":\\\"$DFLASH_MODEL\\\",\\\"num_speculative_tokens\\\":${SPEC_TOKENS}}\"\nelse\n    SPEC_TOKENS=\"${SPEC_TOKENS:-2}\"\n    SPEC_CONFIG=\"{\\\"method\\\":\\\"mtp\\\",\\\"num_speculative_tokens\\\":${SPEC_TOKENS}}\"\nfi\n\n# --- Thinking mode ---\nENABLE_THINKING=\"${ENABLE_THINKING:-1}\"\nif [ \"$ENABLE_THINKING\" = \"1\" ]; then\n    THINK_KWARGS='{\"enable_thinking\": true}'\n    REASONING_FLAG=\"--reasoning-parser qwen3\"\nelse\n    THINK_KWARGS='{\"enable_thinking\": false}'\n    REASONING_FLAG=\"\"\nfi\n\n# --- Serving ---\nMAX_MODEL_LEN=\"${MAX_MODEL_LEN:-262144}\"\nMAX_NUM_SEQS=\"${MAX_NUM_SEQS:-8}\"\nMAX_BATCH_TOKENS=\"${MAX_BATCH_TOKENS:-4096}\"\nGPU_MEM_UTIL=\"${GPU_MEM_UTIL:-0.92}\"\n\n# --- Optional flags ---\nEXTRA_FLAGS=()\nif [ \"${LANGUAGE_ONLY:-1}\" = \"1\" ]; then\n    EXTRA_FLAGS+=(--language-model-only)\nfi\nif [ \"${CHUNKED_PREFILL:-1}\" = \"1\" ] && [ \"$MAX_NUM_SEQS\" -gt 1 ]; then\n    EXTRA_FLAGS+=(--enable-chunked-prefill)\nfi\n# --- Launch ---\nexec \"$VLLM_BIN\" serve \"$MODEL_PATH\" \\\n  --served-model-name \"$SERVED_NAME\" \\\n  --host 0.0.0.0 --port 8000 \\\n  --tensor-parallel-size 1 \\\n  --gpu-memory-utilization \"$GPU_MEM_UTIL\" \\\n  --max-model-len \"$MAX_MODEL_LEN\" \\\n  --max-num-batched-tokens \"$MAX_BATCH_TOKENS\" \\\n  --max-num-seqs \"$MAX_NUM_SEQS\" \\\n  --trust-remote-code \\\n  --speculative-config \"$SPEC_CONFIG\" \\\n  --enable-auto-tool-choice \\\n  --tool-call-parser qwen3_coder \\\n  $REASONING_FLAG \\\n  --default-chat-template-kwargs \"$THINK_KWARGS\" \\\n  ${OVERRIDE_GENERATION_CONFIG:+--override-generation-config \"$OVERRIDE_GENERATION_CONFIG\"} \\\n  \"${EXTRA_FLAGS[@]}\" \\\n  --seed 0\n```",
@@ -184,7 +214,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

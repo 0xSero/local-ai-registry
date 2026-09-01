@@ -21,12 +21,12 @@
       "2048"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmogpa6m10002k004199sqmb4"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "DFlash speculative decoding benchmark submitted by Codex after two warmup requests against llama-server /v1/chat/completions. Recorded request used temperature=0, max_tokens=500, prompt: Write a Python binary search tree implementation with insert, search, delete, and traversal methods. DFlash acceptance on recorded run: 452 accepted draft tokens out of 693 draft tokens. This is a prompt-sensitive high-acceptance coding workload; earlier open-ended prose prompt on the same setup was much slower. Server launched with -c 4096; DFlash recurrent backup makes usable slot n_ctx 2048.",
       "observed_command": "/home/joao/buun-llama-cpp/build-cuda/bin/llama-server -m Qwen3.6-27B-UD-Q4_K_XL.gguf -md dflash-draft-3.6-q4_k_m.gguf --spec-type dflash -dev CUDA1 -devd CUDA1 -sm none -ngl 99 -ngld 99 -np 1 -c 4096 -cd 256 -fa on -b 512 -ub 128 --draft-max 16 --draft-min 1 --temp 0 --reasoning off --host 127.0.0.1 --port 8081 --no-webui",

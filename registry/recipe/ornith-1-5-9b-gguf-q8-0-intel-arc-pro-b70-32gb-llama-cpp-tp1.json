@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt9m8ht100yxli01gdop0ol4"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Ornith 1.5 9B Q8_0 target-only on one Intel Arc Pro B70 with stock pinned llama.cpp SYCL. Fresh cold 12-prompt suite, 512-token responses, conventional 99-interval median, cache_prompt=false and cached_tokens=0; second fresh server measured 49.573292 tok/s. Model pin, commands, and measured decode/prefill through 32K: https://neural.download/models/ornith-15-9b-q8-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/ornith-15-9b-q8-b70.",
       "observed_command": "llama-server -m Ornith-1.5-9B-Q8_0.gguf --reasoning off -c 8192 -ctk f16 -ctv f16 --device SYCL0 -ngl 99 -fa auto --parallel 1 --cache-ram 0 --ctx-checkpoints 0 --fit off",

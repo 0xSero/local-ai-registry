@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrfs5e3100deqd01g2m8ratz"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp Vulkan (tnhnyzc/llama-mimo-mtp fork) on Framework Desktop Strix Halo, MTP self-speculative (--spec-type draft-mtp). Median of 3.",
       "observed_command": "/home/mikekey/llama-mimo-mtp/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --prio 3 --spec-type draft-mtp --spec-draft-n-max 1 -m /home/mikekey/models/gguf/mimo/MiMO-V2.5-MTP-GGUF/IQ2_XXS/MiMo-V2.5-IQ2_XXS-00001-of-00017.gguf -ctk q8_0 -ctv q8_0 -np 1 -c 65536 --temp 0.6 --top-p 0.95",

@@ -9,6 +9,7 @@
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "serve",
       "--model",
       "madeby561/GLM-5.2-MXFP8-NVFP4-NF3-Hybrid",
       "--tensor-parallel-size",
@@ -21,7 +22,7 @@
       "131072"
     ],
     "container_port": 8000,
-    "entrypoint": null,
+    "entrypoint": "vllm",
     "environment": {},
     "host_port": 8000,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
@@ -103,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -129,6 +144,20 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrq0hblz05n6lg01cswo0exb"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     }
   },
@@ -160,6 +189,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Fresh LocalMaxxing remote contract: one untimed warmup plus three timed streaming iterations; median reported; temperature 0; 256 max/output tokens; decode measured first-to-last streamed token. Decode throughput and TTFT are from this fresh run. Prefill is intentionally omitted: the CLI-style prompt_tokens/TTFT estimate used a 34-token default prompt and was dominated by fixed request overhead. A separate OLS estimate over 1,147 real Hybrid requests is 3,149 tok/s (R^2 0.828); methodology: https://services.turquoisebay.ai/share/glm52-official-api-vs-hybrid/",
       "observed_command": "vllm serve madeby561/GLM-5.2-MXFP8-NVFP4-NF3-Hybrid --tensor-parallel-size 4 --decode-context-parallel-size 1 --max-model-len 131072 --gpu-memory-utilization 0.95 --enable-prefix-caching",
@@ -198,7 +228,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 4
   },

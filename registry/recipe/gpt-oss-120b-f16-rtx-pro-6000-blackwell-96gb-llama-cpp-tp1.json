@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrk4wyg20314mj01pzu6ogi5"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Rented JarvisLabs RTX PRO 6000 Blackwell 96GB (cloud), CUDA 13 build sm_120. Median of 3 runs, temp 0, cold prefill, prompt ~589 tok. Head-to-head vs my 3x R9700 rig, same GGUF quants.",
       "observed_command": "llama-server -m gpt-oss-120b-F16.gguf -ctk f16 -ctv f16 -c 131072 -np 1 -ngl 999",

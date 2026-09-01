@@ -21,12 +21,12 @@
       "16384"
     ],
     "container_port": 8080,
-    "entrypoint": null,
+    "entrypoint": "/app/llama-server",
     "environment": {
       "LLAMA_CACHE": "/root/.cache/huggingface"
     },
     "host_port": 8080,
-    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107f0f0857e259672d1cb85b71c2",
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
     "ipc": "host",
     "kind": "docker",
     "mounts": [
@@ -105,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -132,6 +146,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsy6c9rz0crzms01hfssqgv8"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -162,6 +190,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "MTP arm of a paired A/B (+58.3% over the spec-off row). Draft acceptance 0.796 (156/196), identical across all 3 reps. Headless card (both displays moved to the 7900X iGPU; desktop holds 64 MiB on the 3080 - with displays attached dwm holds 1846 MiB, full offload does not fit, and baseline drops to 33.0). Full offload, every layer on GPU. Workload: single 2700-token non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off; medians of 3 reps. Prefill/decode from llama-server timings, TTFT measured client-side on a streaming request. NOTE ON WORKLOAD SENSITIVITY: a repeated-sentence prompt drives MTP acceptance to 0.98 and inflates decode to 81.4 tok/s; this prompt is deliberately non-repetitive. Cross-check with the qwen38-mtp repo's stock probe.py (3 diverse code/prose prompts, medians of 3 complete passes) gives 45.1 spec-off and 64.4 with MTP n-max 2 (+43%) at 0.74 acceptance - lower than this row's +58% because acceptance is workload-dependent. Context ceiling on this card: 16K is the largest window where the MTP arm stays fully resident; at 32K it spills to host RAM over PCIe and inverts to ~25 tok/s.",
       "observed_command": "llama-server -m Qwen3.8-27B-UD-IQ2_XXS.gguf -c 16384 -ngl 99 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type draft-mtp --spec-draft-n-max 2",

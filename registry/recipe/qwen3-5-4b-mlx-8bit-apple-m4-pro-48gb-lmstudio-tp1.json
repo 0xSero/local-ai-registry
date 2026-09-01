@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsqri9h200qvmr01wcj8yjo5"
+          }
+        ]
+      },
+      "reason": "server-capacity-derived-from-source-evidence",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M4 Pro",
       "notes": "MLX 8-bit quantization. Median of 3 timed runs after 1 warmup using the same deterministic 512-word source-prompt protocol at temperature 0. The model-specific chat template produced 547 prompt tokens; each run generated 254 output tokens. Prefill estimated as prompt tokens divided by LM Studio native time-to-first-token.",
       "observed_command": "lms server start --port 1234 --bind 127.0.0.1 && lms load qwen3.5-4b-mlx --context-length 262144 --parallel 4 --identifier benchmark-qwen35-4b-mlx --yes",
@@ -184,7 +199,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 4,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

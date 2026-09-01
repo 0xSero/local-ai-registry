@@ -95,6 +95,20 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmq45u04k003lmu01cnd8jgzt"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +139,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 32768,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Evidence: eval=137.91 tok/s; output=50 tokens.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-NSC-ACE-SABER-ROCmFP4-STRIX_LEAN.gguf -c 500000 -b 32768 -ub 2048 -t 32 --threads-batch 16 --cache-ram 4096 --ctx-checkpoints 0 --cache-type-k f16 --cache-type-v f16 --spec-type draft-mtp --spec-type ngram-mod --draft-max 6 --no-mmap --kv-unified --no-cont-batching --no-cache-idle",
@@ -182,7 +197,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 32768,
+    "max_concurrency": null,
     "max_context_tokens": 500000,
     "tensor_parallel": 1
   },
