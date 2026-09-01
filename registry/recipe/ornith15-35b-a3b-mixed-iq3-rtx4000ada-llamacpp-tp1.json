@@ -144,12 +144,11 @@
     "environment": {},
     "host_port": 8080,
     "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
-    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
         "read_only": true,
-        "source": "~/.cache/inference-index/models/ornith15-mixed-iq3",
+        "source": "${MODEL_ROOT}/ornith15-mixed-iq3",
         "target": "/models"
       }
     ],
