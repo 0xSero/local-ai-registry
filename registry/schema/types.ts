@@ -39,6 +39,10 @@ export type Recipe = {
   id: string
   recipe_source: string
   status: "candidate" | "validated"
+  /**
+   * Curator flag: the one recipe the Omarchy plugin ships for this hardware id. At most one per hardware id.
+   */
+  recommended?: boolean
   description?: string | null
   model_instance_id: string
   hardware_id: string
