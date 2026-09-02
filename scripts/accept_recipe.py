@@ -85,6 +85,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("recipe_id")
     parser.add_argument("--endpoint", required=True)
+    parser.add_argument("--harness", default="local-ai validate", help="recorded in metadata.acceptance.harness")
+    parser.add_argument("--min-decode", type=float, default=5.0, help="tok/s floor; below it the GPU is not in use")
     args = parser.parse_args()
 
     path = ROOT / "recipe" / f"{args.recipe_id}.json"
@@ -100,6 +102,9 @@ def main() -> int:
     ttft = sorted(run["ttft_ms"] for run in runs)[len(runs) // 2]
     completion_tokens = sorted(run["tokens"] for run in runs)[len(runs) // 2]
     print(f"acceptance measurements: decode {decode:.1f} tok/s, ttft {ttft:.0f} ms over {len(runs)} samples")
+    if decode < args.min_decode:
+        raise SystemExit(f"acceptance FAILED: decode {decode:.1f} tok/s is below the {args.min_decode} tok/s floor; "
+                         "the accelerator is not being used (CUDA init failure and CPU fallback look exactly like this)")
 
     instance_path = ROOT / "model-instance" / f"{recipe['model_instance_id']}.json"
     instance = json.loads(instance_path.read_text())
@@ -161,7 +166,7 @@ def main() -> int:
     recipe.setdefault("speed_sweep_ids", [])
     if sweep_id not in recipe["speed_sweep_ids"]:
         recipe["speed_sweep_ids"].append(sweep_id)
-    recipe.setdefault("metadata", {})["acceptance"] = {"accepted_at": NOW, "served_model_id": served, "harness": "local-ai validate"}
+    recipe.setdefault("metadata", {})["acceptance"] = {"accepted_at": NOW, "served_model_id": served, "harness": args.harness}
     path.write_text(json.dumps(recipe, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
     print(f"PROMOTED {recipe['id']} to validated with evidence {sweep_id}")
     print("next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR")

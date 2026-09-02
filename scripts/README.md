@@ -65,3 +65,26 @@ is never rewritten. The path to a validated, replayable recipe:
    everything the promotion claims.
 
 A failed acceptance changes nothing: the recipe stays a candidate.
+
+## Validation on rented GPUs
+
+For hardware nobody on the team owns, the same acceptance runs on a rented
+box. The recipe's digest-pinned image is the container image and its
+arguments are the container command, so the contract under test is the
+published one; rented containers have no docker daemon, so nothing is
+docker-in-docker.
+
+| Script | Does |
+|---|---|
+| `clone_candidate.py <source> <hardware-id>` | derives a candidate for another card from a validated launch or a draft: contract copied, evidence not. `--ctx`, `--instance`, `--id` adjust it. |
+| `validate_rented.py <recipe-id> [--provider vast\|runpod]` | rents the card, waits for `/v1/models`, runs `accept_recipe.py` against the box's public endpoint, promotes (`--recommend` also flags it), always destroys the box. Retries once on a host whose image pull stalls. |
+| `validate_batch.sh <recipe-id>...` | runs several, logs under `../runs/`, prints PROMOTED/FAILED per recipe. `PARALLEL=N` rents N boxes at once; `PROVIDER` picks the provider. |
+| `export_plugin_recipes.py` | emits the file the Omarchy plugin vendors: one validated, recommended, single-GPU docker recipe per hardware id. Fails on two recommended for one card; lists cards with validated but no recommended recipe. |
+
+Providers: **Vast.ai** (`vastai` CLI, key in `~/.config/vastai/vast_api_key`)
+pulls any public registry through the host's docker and is the default.
+**RunPod** (`~/.runpod/config.toml`) cannot pull from ghcr.io on community
+hosts, so it only works for Docker Hub images such as vllm and sglang.
+
+`ipc: host` is dropped from a contract validated this way: the box ran
+without it, and the Omarchy plugin refuses recipes that ask for it.
