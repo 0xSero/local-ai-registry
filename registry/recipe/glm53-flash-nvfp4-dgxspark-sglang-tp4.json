@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP4/EP4 across four DGX Spark GB10 nodes with 1,048,576-token context, C8 acceptance and soak, NEXTN speculation, full decode CUDA graphs, tools, image, and video evidence.",
+  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP4/EP4 across four DGX Spark GB10 nodes with 1,048,576-token context, online FP8 dense linears, adaptive NEXTN 5/6, full decode CUDA graphs, thinking on. Fastest measured thinking-on C1 essay 59 tok/s.",
   "engine": {
     "graph_mode": "full target-verify and draft capture bs1-8; KDA hybrid attention automatically leaves prefill capture unavailable",
     "name": "sglang",
@@ -121,6 +121,8 @@
       "NCCL_NET": "IB",
       "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
       "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LM_HEAD": "0",
       "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },

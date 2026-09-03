@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP2/EP2 across two DGX Spark GB10 nodes with 131,072-token context, C2 acceptance, NEXTN speculation, full decode CUDA graphs, tools, image, and video evidence.",
+  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP2/EP2 across two DGX Spark GB10 nodes with 262,144-token context, online FP8 dense linears, pinned NEXTN 5/6 (adaptive off), full decode CUDA graphs, thinking on. Fastest measured thinking-on C1 essay 38 tok/s.",
   "engine": {
     "graph_mode": "full target-verify and draft capture bs1-2; KDA hybrid attention automatically leaves prefill capture unavailable",
     "name": "sglang",
@@ -48,7 +48,7 @@
       "--dist-init-addr",
       "${HEAD_FABRIC_ADDRESS}:27000",
       "--context-length",
-      "131072",
+      "262144",
       "--quantization",
       "modelopt_fp4",
       "--attention-backend",
@@ -82,7 +82,6 @@
       "1",
       "--speculative-num-draft-tokens",
       "6",
-      "--speculative-adaptive",
       "--media-url-max-file-size-mb",
       "1024",
       "--enable-multimodal",
@@ -121,7 +120,10 @@
       "NCCL_NET": "IB",
       "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
       "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LM_HEAD": "0",
       "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "SPEC_ADAPTIVE": "0",
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },
     "host_port": 8000,
@@ -171,7 +173,7 @@
   "serving": {
     "kv_cache_tokens": 992128,
     "max_concurrency": 2,
-    "max_context_tokens": 131072,
+    "max_context_tokens": 262144,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

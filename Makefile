@@ -3,10 +3,10 @@
 # All Python scripts are stdlib-only (Python >= 3.10). Node is needed for
 # tests, typecheck, and the site. `make check` is what CI runs.
 
-.PHONY: check format index types validate test typecheck build py-tests trust
+.PHONY: check format index types validate plugin-gate test typecheck build py-tests trust
 
 ## The full verification suite — identical to CI.
-check: format-check validate test typecheck types-check index-check
+check: format-check validate plugin-gate test typecheck types-check index-check
 	python3 -m unittest discover -s scripts -p 'test_*.py'
 
 ## Derive `status` (validated/candidate) from evidence and rewrite it. validate refuses any drift.
@@ -42,6 +42,14 @@ types-check:
 ## Referential integrity, trust boundary, index staleness.
 validate:
 	python3 scripts/validate_registry.py
+
+## Omarchy local-ai plugin gate over every validated Docker recipe.
+plugin-gate:
+	python3 scripts/check_plugin_gate.py
+
+## Node test suite (includes ajv validation of every record).
+test:
+	npm test
 
 py-tests:
 	python3 -m unittest discover -s scripts -p 'test_*.py'
