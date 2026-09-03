@@ -90,7 +90,7 @@ accept() {
   (( toks < 8 || tps >= floor )) || { fail "decode ${tps} tok/s is below the ${floor} tok/s floor: the GPU is not being used (driver too old for this image?)"; return 1; }
   apis='["chat"]'
   op starting "$id" "messages acceptance" 0
-  reply=$(post messages "$(jq -nc --arg m "$served" '{model:$m,max_tokens:64,messages:[{role:"user",content:"Reply with exactly: LOCAL_AI_READY"}]}')") \
+  reply=$(post messages "$(jq -nc --arg m "$served" '{model:$m,max_tokens:2048,messages:[{role:"user",content:"Reply with exactly: LOCAL_AI_READY"}]}')") \
     && jq -e '[.content[]?|select(.type=="text")|.text]|join(" ")|contains("LOCAL_AI_READY")' >/dev/null <<<"$reply" && apis=$(jq -c '.+["messages"]' <<<"$apis")
   op starting "$id" "responses acceptance" 0
   reply=$(post responses "$(jq -nc --arg m "$served" '{model:$m,input:"Reply with exactly: LOCAL_AI_READY"}')") \
