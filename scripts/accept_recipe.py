@@ -149,6 +149,17 @@ def main() -> int:
     (ROOT / "speed-sweep" / f"{sweep_id}.json").write_text(json.dumps(sweep, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
     launch = {key: value for key, value in draft.items() if key != "synthesized"}
+    # drafts cannot carry asset_ids (schema); derive them from asset/ mounts at promotion
+    asset_files = [m["source"][len("asset/"):] for m in launch.get("mounts", []) if str(m.get("source", "")).startswith("asset/")]
+    if asset_files:
+        ids = []
+        for record_path in (ROOT / "asset").glob("*.json"):
+            record = json.loads(record_path.read_text())
+            if record.get("file") in asset_files:
+                ids.append(record["id"])
+        if len(ids) != len(asset_files):
+            raise SystemExit(f"acceptance FAILED to promote: asset records missing for {asset_files}")
+        launch["asset_ids"] = sorted(ids)
     digest = "sha256:" + launch["image"].split("@sha256:")[1]
     launch["container"] = {
         "state": "digest-pinned",
@@ -160,6 +171,10 @@ def main() -> int:
         "captured_at": NOW,
         "source": [{"kind": "acceptance-run", "url": "https://github.com/0xSero/local-ai-registry", "captured_at": NOW}],
     }
+    # drafts cannot carry image provenance (schema); candidates park it in metadata until promotion
+    image_provenance = (recipe.get("metadata") or {}).pop("image_provenance", None)
+    if image_provenance:
+        launch["provenance"] = image_provenance
     recipe["launch"] = launch
     recipe.pop("draft_launch", None)
     recipe["status"] = "validated"

@@ -1,0 +1,102 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": false
+  },
+  "description": "Candidate: Qwen3.5-9B-EXL3-4bpw on one rtx-2000-ada-16gb via TabbyAPI/ExLlamaV3, 262144 tokens, Q4 cache, bridge networking. Pending acceptance on the card.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "main.py",
+      "--config",
+      "/app/config.yml"
+    ],
+    "container_port": 5000,
+    "entrypoint": "/opt/venv/bin/python3",
+    "environment": {
+      "NVIDIA_VISIBLE_DEVICES": "all"
+    },
+    "host_port": 5000,
+    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-4bpw",
+        "target": "/workspace/models"
+      },
+      {
+        "read_only": true,
+        "source": "asset/qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml",
+        "target": "/app/config.yml"
+      }
+    ],
+    "shm_size": "8g",
+    "synthesized": {
+      "generated_at": "2026-09-02T22:33:55Z",
+      "image_provenance": "gemma-4-12b-it-exl3-4bpw-rtx3090-tabbyapi-tp1",
+      "template": "tabbyapi-exl3-bridge-v1"
+    }
+  },
+  "engine": {
+    "graph_mode": "piecewise",
+    "name": "tabbyapi",
+    "version": "0.0.1+e632af41"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-2000-ada-16gb",
+  "id": "qwen359b-exl3-4bpw-rtx2000ada-tabbyapi-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-02T22:33:55Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "draft-pending-acceptance",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-02T22:33:55Z",
+          "kind": "normalized-recipe",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference"
+  },
+  "metadata": {
+    "image_provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448 -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/tabbyapi-exl3/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/local-ai-images",
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33690503239"
+    },
+    "weights_subdir": "Qwen3.5-9B-EXL3-4bpw"
+  },
+  "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+  "provenance": {
+    "captured_at": "2026-09-02T22:33:55Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-02T22:33:55Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 262144,
+    "max_concurrency": 2,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
