@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqpiopug00ouqo01gtohwf4l"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqpiopug00ouqo01gtohwf4l"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "M5 Max",
       "notes": "antirez/ds4 (DwarfStar) custom Metal engine for DeepSeek-V4-Flash (filed as llama.cpp per cell convention; not actual llama.cpp). IQ2_XXS asymmetric MoE quant. Decode measured at the 32k context frontier via ds4-bench, greedy, in-memory KV (no disk KV cache, no MTP): gen 26.33 t/s, prefill 319.95 t/s. Apple M5 Max 128GB macOS 27.0.",
       "observed_command": "ds4-server --model ds4flash.gguf --ctx 32768  (antirez/ds4 \"DwarfStar\" native Metal engine; q2-imatrix IQ2_XXS GGUF from antirez/deepseek-v4-gguf; in-memory KV, no MTP)",
@@ -170,8 +199,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

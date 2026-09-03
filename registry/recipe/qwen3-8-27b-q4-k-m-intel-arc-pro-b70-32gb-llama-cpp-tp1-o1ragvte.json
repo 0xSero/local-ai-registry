@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt9m8i0b00z3li01o1ragvte"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt9m8i0b00z3li01o1ragvte"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.8 27B Q4_K_M target-only on one Intel Arc Pro B70. Fixed 12-prompt cold realistic suite, one request per unique prompt, cache_prompt=false, cached_tokens=0, no draft model or speculation. Primary score is the conventional median over the 99 intervals between generated events 1 and 100; the second fresh run measured 27.813629 tok/s. The lab TP1 fusion ladder improved the 26.05 baseline by 6.8-7.0% with 24/24 oracle-exact outputs. Complete patches, clean-host scripts, model hash, context curves, and commands: https://neural.download/models/qwen38-27b-q4km-tp1-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/qwen38-27b-q4km-tp1-b70.",
       "observed_command": "MODEL_DIR=/path/to/qwen3.8-27b-q4km BUILD_DIR=/path/to/llama.cpp/build-sycl-aot-bmg-g31 repro/qwen38-27b-q4km-tp1-b70/run-server.sh",
@@ -156,8 +185,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 8192,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

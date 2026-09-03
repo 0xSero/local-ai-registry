@@ -26,10 +26,10 @@
     {
       "conf": "medium",
       "context": "BigCodeBench (Pass@1)",
-      "model_id": null,
+      "model_id": "deepseek-v4-flash",
       "org": "deepseek-ai",
       "rank": 3,
-      "root": "—",
+      "root": "deepseek-ai/DeepSeek-V4-Flash",
       "score": 63.9,
       "variant": "DeepSeek-V4-Flash-DSpark"
     },
@@ -75,7 +75,7 @@
     },
     {
       "conf": "high",
-      "context": null,
+      "context": "BigCodeBench (Full)",
       "model_id": "seed-coder-8b-instruct",
       "org": "unsloth",
       "rank": 8,
@@ -85,7 +85,7 @@
     },
     {
       "conf": "high",
-      "context": null,
+      "context": "BigCodeBench (Full)",
       "model_id": "seed-coder-8b-instruct",
       "org": "unsloth",
       "rank": 9,
@@ -95,7 +95,7 @@
     },
     {
       "conf": "low",
-      "context": null,
+      "context": "BigCodeBench",
       "model_id": "olmo-3-1125-32b",
       "org": "allenai",
       "rank": 10,
@@ -142,43 +142,14 @@
       "root": "inclusionAI/LLaDA2.0-mini-preview",
       "score": 35.0,
       "variant": "LLaDA2.0-mini-preview"
-    },
-    {
-      "conf": "low",
-      "context": null,
-      "model_id": "olmo-3-1025-7b",
-      "org": "allenai",
-      "rank": 15,
-      "root": "allenai/Olmo-3-1025-7B",
-      "score": 21.5,
-      "variant": "Olmo-3-1025-7B"
-    },
-    {
-      "conf": "low",
-      "context": null,
-      "model_id": "olmo-hybrid-7b",
-      "org": "allenai",
-      "rank": 16,
-      "root": "allenai/Olmo-Hybrid-7B",
-      "score": 21.5,
-      "variant": "Olmo-Hybrid-7B"
-    },
-    {
-      "conf": "low",
-      "context": null,
-      "model_id": "olmo-3-1025-7b",
-      "org": "Mungert",
-      "rank": 17,
-      "root": "allenai/Olmo-3-1025-7B",
-      "score": 21.5,
-      "variant": "Olmo-3-1025-7B-GGUF"
     }
   ],
   "schema_version": "local-ai-registry/v1",
   "source": {
     "kind": "leaderboard-scrape",
     "paths": [
-      "benchmarks/bigcodebench.html"
+      "benchmarks/bigcodebench.html",
+      "docs/notes/hf-benchmark-contexts.json"
     ],
     "url": "https://huggingface.co/spaces/bigcodebench"
   }

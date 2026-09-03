@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsk153ne00q1qm01369d61m8"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsk153ne00q1qm01369d61m8"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": null,
       "observed_command": "vllm serve /models/Qwen3.6-35B-A3B-GPTQ-Int4 \\\n  --dtype float16 --max-model-len 32768 --max-num-seqs 16 \\\n  --kv-cache-dtype fp8 --max-num-batched-tokens 16384 --block-size 64 \\\n  --language-model-only --trust-remote-code \\\n  --enable-auto-tool-choice --tool-call-parser qwen3_coder \\\n  --reasoning-parser qwen3 \\\n  --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":4}'",
@@ -175,7 +204,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 16,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmro7rltq025plg01hffh4jjx"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmro7rltq025plg01hffh4jjx"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": null,
       "observed_command": "# build the server (CUDA 12+, sm_86+)\ngit clone https://github.com/Luce-Org/lucebox-hub && cd lucebox-hub/server\ncmake -B build -DCMAKE_CUDA_ARCHITECTURES=86 && cmake --build build -j\n\n# target (poolside official), our q4 drafter, and the PFlash residency scorer\nhuggingface-cli download poolside/Laguna-XS-2.1-GGUF Laguna-XS-2.1-Q4_K_M.gguf --local-dir models\nhuggingface-cli download Lucebox/Laguna-XS-2.1-DFlash-GGUF laguna-xs21-dflash-q4.gguf --local-dir models\nhuggingface-cli download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models\n\n# the measured configuration: 296 tok/s short context, 152 tok/s at 256K\n./build/dflash_server models/Laguna-XS-2.1-Q4_K_M.gguf \\\n    --draft models/laguna-xs21-dflash-q4.gguf \\\n    --prefill-drafter models/Qwen3-0.6B-Q8_0.gguf \\\n    --max-ctx 262144 --kvflash 8192 --chunk 1024\n\n# pool sized from free VRAM instead of fixed:\n./build/dflash_server models/Laguna-XS-2.1-Q4_K_M.gguf \\\n    --draft models/laguna-xs21-dflash-q4.gguf \\\n    --prefill-drafter models/Qwen3-0.6B-Q8_0.gguf \\\n    --max-ctx 262144 --kvflash auto",
@@ -240,8 +269,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

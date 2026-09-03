@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqe1zyj700wjmp01uf8rwu45"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqe1zyj700wjmp01uf8rwu45"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Batch bench via lmx remote loop (warmup 2, median of 3, 512 out, temp 0). RTX 5090, display attached. llama-server -m Qwen3.6-27B-Q3_K_M.gguf --alias qwen3.6-27b-q3km -ngl 999 -fa on -c 8192 -ctk q8_0 -ctv q8_0 -np 1 --temp 0 --host 127.0.0.1 --port 8080",
       "observed_command": "llama-server -m Qwen3.6-27B-Q3_K_M.gguf --alias qwen3.6-27b-q3km -ngl 999 -fa on -c 8192 -ctk q8_0 -ctv q8_0 -np 1 --temp 0 --host 127.0.0.1 --port 8080",

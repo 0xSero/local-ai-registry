@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdonksq005olm01t0itg4cs"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdonksq005olm01t0itg4cs"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Lucebox R9700-only Muse Glimmer 30B deployment. Full target is meta-models Dynamic Q4_K_XL (18.30 GiB), paired with z-lab/Muse-Glimmer-30B-DFlash2-GGUF Q4_K_M draft (1.53 GiB) and the Q4 multimodal projector. One discarded warmup plus three measured streamed requests; medians of per-run rates/timing. Low reasoning, deterministic temperature 0/top-k 1, cache_prompt=false, one slot, 32K context, Q8 K/V, flash attention, DFlash2 block size 16 / draft n-max 15. Decode and prefill are server-authoritative; total is (82 prompt + 225 output tokens) / dispatch-to-DONE wall time; TTFT is dispatch to first non-empty generated reasoning/content token. Peak VRAM is the maximum service-process amdgpu DRM fdinfo drm-memory-vram allocation on R9700 PCI 0000:c5:00.0, sampled every 10 ms, not device capacity. All measured outputs were byte-identical (SHA-256 48e5a6129f994b07b862d12db2490a847ad000e55a0ac9f1772dac527004c128). The Q4 DFlash2 draft accelerates verification while preserving the target model output; it is not a standalone model.",
       "observed_command": "llama-server -m Muse-Glimmer-30B-KQuant-Dynamic-Q4_K_XL.gguf --mmproj mmproj-Muse-Glimmer-30B-Q4_K_M.gguf -md Muse-Glimmer-30B-DFlash2-Q4_K_M.gguf --spec-type draft-dflash --spec-draft-n-max 15 -ngld 99 -ngl 99 -c 32768 -np 1 -ctk q8_0 -ctv q8_0 -fa on --jinja --chat-template-kwargs '{reasoning_strength: low}'",
