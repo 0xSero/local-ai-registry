@@ -76,6 +76,16 @@ agent_command() {
   esac
 }
 
+agent_window_appeared() { # true once a window with our app id exists (or after a grace period without a compositor query)
+  local i
+  command -v hyprctl >/dev/null 2>&1 && [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]] || { sleep 1; return 0; }
+  for i in $(seq 1 16); do
+    hyprctl clients -j 2>/dev/null | jq -e '[.[] | select(.class=="org.omarchy.agent")] | length > 0' >/dev/null 2>&1 && return 0
+    sleep 0.5
+  done
+  return 1
+}
+
 open_agent() { # open_agent [name]: default agent when omitted; refuses out loud when not ready
   local name=${1:-} snap model key
   snap=$(cat "$SNAPSHOT" 2>/dev/null || printf '{}')
@@ -87,5 +97,17 @@ open_agent() { # open_agent [name]: default agent when omitted; refuses out loud
   local -a argv=(); while IFS= read -r -d '' v; do argv+=("$v"); done < <(agent_command "$name" "$model" "$key") || return 1
   log "open-agent $name"
   if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then printf '%q ' "${argv[@]}"; echo; return 0; fi
-  omarchy-launch-tui --app-id=org.omarchy.agent "${argv[@]}"
+  # The proof that an agent opened is its window, not the launcher's exit code: uwsm-app's handshake
+  # can time out (and wedge its app daemon) while the terminal is already on screen. Launch detached
+  # through omarchy-launch-tui when the app daemon answers a two-second ping, else through the plain
+  # uwsm client, then wait for a window with our app id.
+  local err
+  if ! command -v uwsm-app >/dev/null 2>&1 || timeout 2 uwsm-app ping >/dev/null 2>&1; then
+    setsid omarchy-launch-tui --app-id=org.omarchy.agent "${argv[@]}" >/dev/null 2>"$STATE/launch.err" </dev/null &
+  elif command -v uwsm >/dev/null 2>&1 && command -v xdg-terminal-exec >/dev/null 2>&1; then
+    log "uwsm app daemon is not answering; opening $name through uwsm app"
+    setsid uwsm app -- xdg-terminal-exec --app-id=org.omarchy.agent -e "${argv[@]}" >/dev/null 2>"$STATE/launch.err" </dev/null &
+  else fail "could not open a terminal for $name: the uwsm app daemon is not answering"; return 1; fi
+  agent_window_appeared || { err=$(grep -v '^warn:' "$STATE/launch.err" 2>/dev/null | tail -1); fail "could not open a terminal for $name${err:+: $err}"; return 1; }
+  lwrite '.error=""'; snapshot_write   # a launch that worked retires an earlier refusal
 }
