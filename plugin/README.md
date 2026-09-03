@@ -73,7 +73,7 @@ Face cache, whichever the recipe mounts.
 
 ```bash
 bash test/all        # isolated state, shimmed docker/curl/tailscale; no GPU needed
-make sync REGISTRY=~/path/to/local-ai-registry   # regenerate recipes.json
+make sync   # regenerate recipes.json from ../registry (this repo)
 ```
 
 `recipes.json` carries the registry commit it was exported from; CI fails if
