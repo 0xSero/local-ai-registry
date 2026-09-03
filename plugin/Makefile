@@ -1,6 +1,6 @@
 # sync:  regenerate recipes.json from a registry checkout (its export stamps the commit)
 # check: tests plus a recipes.json sanity check
-REGISTRY ?= ../local-ai-registry
+REGISTRY ?= ..
 
 .PHONY: sync check test
 
