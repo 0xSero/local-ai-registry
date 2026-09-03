@@ -99,7 +99,9 @@ accept() {
     && jq -e '[.output[]?|select(.type=="message")|.content[]?|.text]|join(" ")|contains("LOCAL_AI_READY")' >/dev/null <<<"$reply" && apis=$(jq -c '.+["responses"]' <<<"$apis")
   if [[ $(jq -r '.capabilities.tools//false' <<<"$r") == true ]]; then
     op starting "$id" "tool-call acceptance" 0
-    local tools='[{"type":"function","function":{"name":"shell","description":"Run a shell command","parameters":{"type":"object","properties":{"command":{"type":"string"}},"required":["command"]}}}]'
+    # the schema carries a regex pattern with an escape llama.cpp's grammar cannot take and a format hint,
+    # as Claude Code's tools do: the gateway must scrub them or this fails here rather than in the agent
+    local tools='[{"type":"function","function":{"name":"shell","description":"Run a shell command","parameters":{"type":"object","properties":{"command":{"type":"string","pattern":"^[A-Za-z0-9 _\\\\-.~:@+]+$"},"cwd":{"type":"string","format":"uri"}},"required":["command"]}}}]'
     reply=$(post chat/completions "$(jq -nc --arg m "$served" --argjson t "$tools" '{model:$m,stream:false,tools:$t,tool_choice:"auto",messages:[{role:"user",content:"Use the shell tool to run: echo LOCAL_AI_TOOL_OK"}]}')") || { fail "tool-call request failed"; return 1; }
     jq -e '[(.choices[0].message.tool_calls//[])[]|select(.function.name=="shell" and ((.function.arguments//"")|contains("LOCAL_AI_TOOL_OK")))]|length>0' >/dev/null <<<"$reply" || { fail "tool-call acceptance failed"; return 1; }
   fi
