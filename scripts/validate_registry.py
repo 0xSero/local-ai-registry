@@ -7,6 +7,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import trust  # noqa: E402
+
 from import_market_snapshot import (
     gpu_signature,
     listing_title_matches,
@@ -308,7 +311,20 @@ def validate(root):
         if not isinstance(params, (int, float)) or params <= 0:
             errors.append(f"{record.get('id')}: model params must be positive")
 
+    recommended_by_hardware = {}
     for recipe in data["recipe"].values():
+        # status is derived, never asserted: scripts/trust.py is the single definition
+        instance = data["model-instance"].get(recipe.get("model_instance_id"))
+        sweeps = [data["speed-sweep"].get(s) for s in recipe.get("speed_sweep_ids") or []]
+        derived = trust.derive_status(recipe, instance, sweeps)
+        if recipe.get("status") != derived:
+            why = "; ".join(trust.failures(recipe, instance, sweeps)) or "meets every criterion"
+            errors.append(f"{recipe['id']}: status {recipe.get('status')!r} but derived {derived!r} ({why}); run scripts/trust.py --apply")
+        if recipe.get("recommended"):
+            why = trust.recommendable(recipe)
+            if why:
+                errors.append(f"{recipe['id']}: recommended but {why}")
+            recommended_by_hardware.setdefault(recipe.get("hardware_id"), []).append(recipe["id"])
         require_reference(recipe, "model_instance_id", data["model-instance"], errors)
         require_reference(recipe, "hardware_id", data["hardware"], errors)
         validate_provenance(recipe.get("provenance"), f"{recipe.get('id')}", errors)
@@ -373,6 +389,10 @@ def validate(root):
             for forbidden in FORBIDDEN_LAUNCH:
                 if forbidden in launch_text:
                     errors.append(f"{recipe['id']}: validated launch contains forbidden option {forbidden}")
+
+    for hardware_id, ids in recommended_by_hardware.items():
+        if len(ids) > 1:
+            errors.append(f"{hardware_id}: more than one recommended recipe: {', '.join(sorted(ids))}")
 
     for sweep in data["speed-sweep"].values():
         require_reference(sweep, "recipe_id", data["recipe"], errors)
