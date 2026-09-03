@@ -43,8 +43,8 @@ download_weights() {
   [[ $served == *.gguf ]] && pattern="${served##*/}"
   local -a cmd
   if [[ -z ${OMARCHY_AI_NO_HOST_HF:-} ]] && hf=$(bin_of hf 2>/dev/null); then
-    if [[ $kind == dir ]]; then cmd=("$hf" download "$repo" --revision "$rev" --local-dir "$base" ${pattern:+--include "$pattern" "*mmproj*"})
-    else cmd=(env HF_HOME="$base" "$hf" download "$repo" --revision "$rev" ${pattern:+--include "$pattern" "*mmproj*"}); fi
+    if [[ $kind == dir ]]; then cmd=("$hf" download "$repo" --revision "$rev" --local-dir "$base" ${pattern:+--include "$pattern" --include "*mmproj*"})
+    else cmd=(env HF_HOME="$base" "$hf" download "$repo" --revision "$rev" ${pattern:+--include "$pattern" --include "*mmproj*"}); fi
   else
     local py="from huggingface_hub import snapshot_download as d; d('$repo', revision='$rev'"
     [[ -n $pattern ]] && py+=", allow_patterns=['$pattern', '*mmproj*']"
