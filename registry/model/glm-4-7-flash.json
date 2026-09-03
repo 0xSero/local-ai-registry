@@ -1,6 +1,6 @@
 {
-  "active_params": null,
-  "architecture": "dense",
+  "active_params": 3,
+  "architecture": "moe",
   "downloads": {
     "all_time": 12418524,
     "captured_at": "2026-08-31T12:36:33Z",
@@ -14,13 +14,41 @@
         "sources": [
           {
             "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/zai-org/GLM-4.7-Flash"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "publisher-source-explicit-active-parameter-count",
+      "state": "known"
+    },
+    "architecture": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:43:51Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/zai-org/GLM-4.7-Flash?blobs=true"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/zai-org/GLM-4.7-Flash?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "glm",
@@ -43,7 +71,7 @@
   },
   "id": "glm-4-7-flash",
   "name": "GLM-4.7-Flash",
-  "params": 4,
+  "params": 31,
   "provenance": {
     "captured_at": "2026-08-27T06:04:13.773Z",
     "sources": [
@@ -51,6 +79,11 @@
         "captured_at": "2026-08-27T06:04:13.773Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/zai-org/GLM-4.7-Flash"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/zai-org/GLM-4.7-Flash?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

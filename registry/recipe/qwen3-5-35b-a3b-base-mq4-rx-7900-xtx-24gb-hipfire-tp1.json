@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofkye0g0009l404ap3uadyl"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofkye0g0009l404ap3uadyl"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "hipfire @ f16eceb (master post-perf-recovery PR #47)\nprompt: LRU cache PEP-8 strict (md5=df5dedc8040c, see benchmarks/prompts/lru_cache_pep8_strict.txt)\nruns: 3 (median reported); range 66.4–155.9\ndecode mode: DFlash speculative (block_size=16)\nkv_cache: asym3\nprompt_normalize: true (default since 2026-04-26)\nτ (median): 5.611\naccept_rate (median): 0.374\nall runs tok/s: [66.38, 154.62, 155.92]",
       "observed_command": "./target/release/examples/dflash_spec_demo --target qwen3.5-35b-a3b.mq4 --draft qwen35-35b-a3b-dflash-mq4.hfq --prompt $(cat benchmarks/prompts/lru_cache_pep8_strict.txt) --max 120 --no-chatml --kv-mode asym3",
@@ -149,8 +178,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 4096,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

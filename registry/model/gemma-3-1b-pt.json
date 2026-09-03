@@ -1,59 +1,97 @@
 {
-  "active_params": null,
+  "active_params": 1.0,
   "architecture": "dense",
   "downloads": {
-    "all_time": 49275026,
-    "captured_at": "2026-08-31T12:36:33Z",
-    "last_30d": 3374554,
+    "all_time": 1309790,
+    "captured_at": "2026-09-01T10:30:02Z",
+    "last_30d": 65171,
     "source": "huggingface-api"
   },
   "facts": {
     "active_params": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T10:30:02Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T10:30:02Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/google/gemma-3-1b-pt/revision/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29?blobs=true"
+          },
+          {
+            "captured_at": "2026-09-01T10:30:02Z",
+            "kind": "huggingface-config",
+            "url": "https://huggingface.co/google/gemma-3-1b-pt/resolve/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29/config.json"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "all-parameters-active-in-dense-model",
+      "state": "known"
+    },
+    "architecture": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:30:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:30:02Z",
+            "kind": "huggingface-config",
+            "url": "https://huggingface.co/google/gemma-3-1b-pt/resolve/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29/config.json"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:30:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:30:02Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/google/gemma-3-1b-pt/revision/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29?blobs=true"
+          }
+        ]
+      },
+      "reason": "immutable-safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "gemma",
   "huggingface": {
     "link_type": "repository",
     "provenance": {
-      "captured_at": "2026-08-30T09:10:02Z",
+      "captured_at": "2026-09-01T10:30:02Z",
       "sources": [
         {
-          "captured_at": "2026-08-30T09:10:02Z",
+          "captured_at": "2026-09-01T10:30:02Z",
           "kind": "huggingface-api",
-          "url": "https://huggingface.co/api/models/google/gemma-3-1b-it"
+          "url": "https://huggingface.co/api/models/google/gemma-3-1b-pt?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
         }
       ]
     },
     "reason": "hf-api-confirmed-public",
-    "repository": "google/gemma-3-1b-it",
+    "repository": "google/gemma-3-1b-pt",
     "status": "known",
-    "url": "https://huggingface.co/google/gemma-3-1b-it"
+    "url": "https://huggingface.co/google/gemma-3-1b-pt"
   },
   "id": "gemma-3-1b-pt",
   "name": "gemma-3-1b-pt",
   "params": 1.0,
   "provenance": {
-    "captured_at": "2026-08-30T09:10:02Z",
+    "captured_at": "2026-09-01T10:30:02Z",
     "sources": [
       {
-        "captured_at": "2026-08-30T09:10:02Z",
-        "kind": "normalized-model",
-        "url": "https://huggingface.co/google/gemma-3-1b-it"
+        "captured_at": "2026-09-01T10:30:02Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/google/gemma-3-1b-pt?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+      },
+      {
+        "captured_at": "2026-09-01T10:30:02Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/google/gemma-3-1b-pt/revision/fcf18a2a879aab110ca39f8bffbccd5d49d8eb29?blobs=true"
       }
     ]
   },
   "schema_version": "local-ai-registry/v1",
-  "url": "https://huggingface.co/google/gemma-3-1b-it"
+  "url": "https://huggingface.co/google/gemma-3-1b-pt"
 }

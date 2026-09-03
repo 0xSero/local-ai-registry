@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "mlx",
-    "version": null
+    "version": "oMLX 0.6.3"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:34:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:34:02Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmtexa40u00bdn001g5h1qak0"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -94,6 +108,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtexa40u00bdn001g5h1qak0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtexa40u00bdn001g5h1qak0"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +167,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "metal",
+      "batch_size": 1,
       "hardware_label": "M3 Ultra",
       "notes": "oMLX v0.6.3, MLX 4-bit, on-demand. Idle machine: no Darkbloom fleet inference in flight, no other model loading.",
       "observed_command": "# Remote endpoint: http://127.0.0.1:8001  servedModel: Qwen3-235B-A22B-Thinking-2507-MLX-4bit",
@@ -151,8 +194,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

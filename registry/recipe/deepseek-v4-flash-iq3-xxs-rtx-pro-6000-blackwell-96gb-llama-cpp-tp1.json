@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrch4u4u00hro201qqq1pwiz"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrch4u4u00hro201qqq1pwiz"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Full 284B-A13B MoE resident on ONE 96GB card with in-graph K=1 MTP speculative decoding: the DS4 graph drafts its own next token each decode (antirez's 3.8GB MTP module side-loaded) and the server verifies it in a constant nt=2 batch. Draft acceptance 75-83%, ~1.45x over the same quant without MTP (42-47 t/s). Decode is steady-state from a 10-hour soak: 80.8 t/s held across a continuous 47K-token generation at temp 0. Prefill re-measured after two custom CUDA prefill patches in the fork (batched lightning-indexer top-k, fixing a >1M-kernel launch storm; compact MoE stream-k work-list, fixing last-wave quantization): 15.6K-token prompt at 1688 t/s (was 486 pre-patch, ~3.5x). Custom mixed quant (2.58bpw): antirez q2 imatrix recipe with ffn_down_exps upgraded Q2_K -> IQ3_XXS (wikitext PPL 4.505 vs 4.717 stock). Fork lineage: fairydreaming dsv4 graph/kernels + K=1 MTP ported from alesha-pro ds4-longctx. HumanEval+ pass@1 93.1% (official localmaxxing eval shard run, this quant, temp 0). Aider polyglot (Python, diff): pass@2 64.7%. Fork: github.com/sigkaiser/llama.cpp (mtp-k1 branch). Quant: hf.co/starvingcheetah/DeepSeek-V4-Flash-custom-iq3down-GGUF.",
       "observed_command": "DSV4_MTP_GGUF=DeepSeek-V4-Flash-MTP-Q4K-Q8_0-F32.gguf DSV4_MTP_SPEC=1 llama-server -m DeepSeek-V4-Flash-custom-iq3down.gguf -c 262144 -ngl 99 -np 1 -b 2048 -ub 512 --spec-type dsv4-mtp --cache-reuse 256 --no-mmap --flash-attn on",

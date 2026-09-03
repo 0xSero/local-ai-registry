@@ -68,6 +68,7 @@ export default async function Home({ searchParams }: PageProps) {
     evidence: value("evidence"),
     hardware_id: value("hardware_id"),
     launchable: validation === "validated" ? "true" : validation === "candidate" ? "false" : "",
+    min_context: value("min_context"),
     min_vram_gb: value("min_vram_gb"),
     model_id: value("model_id"),
     q: query,
@@ -151,6 +152,7 @@ export default async function Home({ searchParams }: PageProps) {
       { label: "Evidence only", value: "reference" },
     ] },
     { label: "Evidence", name: "evidence", value: value("evidence"), options: facetOptions(["true", "false"], "Any evidence", (item) => item === "true" ? "Measured speed attached" : "No measured speed") },
+    { label: "Context", name: "min_context", value: value("min_context"), options: facetOptions(["32768", "65536", "131072", "262144", "499968"], "Any context", (item) => `At least ${Math.round(Number(item) / 1024)}K tokens`) },
   ]
   const topicFilters = topic === "recipes"
     ? recipeSearchFilters

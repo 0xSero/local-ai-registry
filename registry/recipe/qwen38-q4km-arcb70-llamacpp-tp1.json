@@ -5,40 +5,68 @@
     "tools": true,
     "vision": false
   },
-  "description": "Qwen3.8-27B Q4_K_M on one Intel Arc Pro B70 using the digest-pinned llama.cpp SYCL image, one 131K slot, and fresh completion and tool-call acceptance without speculative decoding",
+  "description": "Validated one-B70 Qwen3.8-27B Q4_K_M llama.cpp SYCL runtime using the published digest-pinned image, one 131,072-token slot, correct completion and tool-call acceptance, and six accepted or historical speed points through 128K context.",
   "engine": {
-    "graph_mode": "not-applicable",
+    "graph_mode": "disabled at compile time (-DGGML_SYCL_GRAPH=OFF)",
     "name": "llama-cpp",
     "version": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126+b70-patches"
   },
   "facts": {
-    "metadata": {
+    "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:21:24Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "recipe-source",
+            "url": "https://github.com/0xSero/qwen38-b70/blob/e8738535c8914a4fe6a54235754e27eeb8078601/Dockerfile"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "published-dockerfile-builds-llama-cpp-with-ggml-sycl-graph-off",
+      "state": "known"
+    },
+    "launch.container.digest": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "oci-registry-manifest",
+            "url": "https://github.com/0xSero/qwen38-b70/pkgs/container/qwen38-b70"
+          }
+        ]
+      },
+      "reason": "docker-manifest-inspect-verified-the-published-oci-index-and-linux-amd64-manifest",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:21:24Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "recipe-source",
+            "url": "https://github.com/0xSero/qwen38-b70/blob/e8738535c8914a4fe6a54235754e27eeb8078601/README.md"
           }
         ]
       },
-      "reason": "kv-cache-capacity-not-published",
-      "state": "unknown"
+      "reason": "published-single-gpu-launch-defines-one-131072-token-slot",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T09:21:24Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T09:21:24Z",
+            "kind": "recipe-source",
+            "url": "https://github.com/0xSero/qwen38-b70/blob/e8738535c8914a4fe6a54235754e27eeb8078601/README.md"
+          }
+        ]
+      },
+      "reason": "published-single-gpu-launch-and-performance-table-cover-the-131072-token-envelope",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -95,8 +123,7 @@
       "UBATCH": "8192"
     },
     "host_port": 8010,
-    "image": "ghcr.io/0xsero/qwen38-b70@sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
-    "ipc": "host",
+    "image": "ghcr.io/0xsero/qwen38-b70-attested@sha256:6ce7771eaa155e31916ac3144bd3aa34bed6584b9a43052a8f6b583b9c8f5db1",
     "kind": "docker",
     "mounts": [
       {
@@ -105,15 +132,30 @@
         "target": "/dev/dri/by-path"
       },
       {
-        "read_only": false,
-        "source": "~/.cache/inference-index/models/qwen38-b70",
+        "read_only": true,
+        "source": "${MODEL_ROOT}/qwen38-b70",
         "target": "/models"
       }
     ],
     "network_mode": "bridge",
+    "provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/qwen38-b70-attested@sha256:6ce7771eaa155e31916ac3144bd3aa34bed6584b9a43052a8f6b583b9c8f5db1 -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/qwen38-b70/blob/main/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/qwen38-b70",
+      "workflow": "https://github.com/0xSero/qwen38-b70/actions/runs/33567506333"
+    },
     "shm_size": "8g"
   },
-  "metadata": {},
+  "metadata": {
+    "runtime_identity": {
+      "model_revision": "0669b98607d47046c7c2b3f801011d54a08cfccf",
+      "published_oci_index_digest": "sha256:37219eaeeb2e8398f59e427ec0c723bbe2eeb8ec59e6b154ea63c4172238c342",
+      "published_oci_manifest_digest": "sha256:f537fc6d1cf93d7d80253e23e11cbd6a8e821382c87ac050f025743643f49629",
+      "slot_count": 1,
+      "source_commit": "e8738535c8914a4fe6a54235754e27eeb8078601"
+    }
+  },
   "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
   "provenance": {
     "captured_at": "2026-08-27T06:04:13.773Z",
@@ -126,11 +168,12 @@
     ]
   },
   "recipe_source": "0xsero",
+  "recommended": true,
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": null,
+    "kv_cache_tokens": 131072,
     "max_concurrency": 1,
-    "max_context_tokens": 8024,
+    "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

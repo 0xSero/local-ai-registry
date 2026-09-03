@@ -2,9 +2,9 @@
 """Re-resolve model_id on every benchmark row against the current model set.
 
 Idempotent pipeline step: run after importing models or growing the
-alias map, then rebuild the index. Rows resolve by exact
-case-insensitive HF-repository match or the curated alias map
-(scripts/model_aliases.json); everything else stays explicitly null.
+alias map, then rebuild the index. Rows resolve by exact case-insensitive
+HF-repository match, the curated repository alias map, or a curated exact
+organisation/variant/root tuple; everything else stays explicitly null.
 """
 
 import json

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsr2sedj00z6mr01roppmbu8"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsr2sedj00z6mr01roppmbu8"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Mean prompts 1-4 from the five-prompt RTX 5090 suite at temperature 0; prompt 5 is a four-turn session completed in 2.128 s. Prompt 2 ended at the 8192-token output limit and remained length-truncated at 16384. Peak GPU utilization 100%, peak temperature 63 C. Separate context probes at configured 131072 reached 98399 actual input tokens without OOM; near-limit decode was 226.00 tok/s.",
       "observed_command": "llama-server --model /path/to/moonshotai_Kimi-Linear-48B-A3B-Instruct-IQ4_XS.gguf --alias kimi-linear-48b-a3b-iq4xs --host 127.0.0.1 --port 8094 -ngl 99 -c 32768 -n 8192 --reasoning off --jinja",
@@ -169,7 +198,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

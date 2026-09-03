@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmogjhzqv0004jv04sl792yp8"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmogjhzqv0004jv04sl792yp8"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Tom Turney's TurboQuant+ fork of llama.cpp. Asymmetric KV: q8_0 keys + turbo4 values per @no_stp_on_snek's twitter post. 2× RTX 3090 layer-split, 50/50 tensor-split. Pascal (2× 1080 Ti) got 14 TPS at 65K; Ampere gets 37.78 = 2.7× faster. CV 0.1% across 5 runs (essentially deterministic). Combined with the 35B-A3B Q3_K_XL bench (125.94 TPS), MoE-vs-dense advantage = 3.3× on Ampere (vs Pascal's 2.6×). Bench: 800-word essay × 1000 max_tokens × temp 0.6 streaming.",
       "observed_command": "llama-server --model Qwen3.6-27B-Q4_K_M.gguf --ctx-size 65536 --n-gpu-layers 999 --split-mode layer --tensor-split 0.5,0.5 --cache-type-k q8_0 --cache-type-v turbo4 --batch-size 2048 --ubatch-size 512 --threads 8",
@@ -172,7 +201,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 65536,
     "tensor_parallel": 2
   },

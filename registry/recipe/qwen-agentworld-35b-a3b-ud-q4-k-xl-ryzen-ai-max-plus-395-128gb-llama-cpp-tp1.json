@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqya4ttk0098pk01kjz0gjj8"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqya4ttk0098pk01kjz0gjj8"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Measured on Horizon via sequential llama-server (llama.cpp ROCm b9631) five-model prefill comparison. Scenario: single cold streamed chat-completion pass, target ~8192 content tokens (8400 tokenizer content tokens), max_tokens=64, temperature=0, ctx=65536. tokSPrefill is native llama.cpp metrics delta: prompt_tokens_total / prompt_seconds_total. Run-specific nonce at beginning of user content prevents prompt/KV cache reuse; prompt token delta verified near target. TTFT is wall-clock first SSE chunk from client; tokSOut is native tokens_predicted_total / tokens_predicted_seconds_total. Server flags: --ctx-size 65536 --jinja --metrics --no-webui --no-mmap --reasoning-format auto. Model file: Qwen-AgentWorld-35B-A3B-UD-Q4_K_XL.gguf.",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 65536,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsiwwqmt00a9qm010iekvi3u"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsiwwqmt00a9qm010iekvi3u"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 64,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "CONCURRENCY MAX: 64 concurrent users. Aggregate 1967.7 t/s wall-agg, generation 1139.8 t/s, diverse 512-token prompts, median TPOT 56ms. No-MTP native int4 v4 (MTP+concurrency blocked by GDN kernel). max-num-seqs 64. 165W. Multi-user aggregate throughput, not single-stream decode. 2026-08-07.",
       "observed_command": "vllm serve /model --quantization gptq --dtype float16 --max-model-len 16384 --max-num-seqs 64 --max-num-batched-tokens 8192 --served-model-name Qwen3.6-35B-A3B-MTP-Preserved-GPTQ-Int4 --language-model-only",

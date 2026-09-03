@@ -42,45 +42,45 @@
     },
     "serving.kv_cache_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "kv-cache-capacity-not-published",
-      "state": "unknown"
+      "reason": "explicit-llama-cpp-total-context-capacity",
+      "state": "known"
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-launch-concurrency-limit",
+      "state": "known"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-launch-context-limit",
+      "state": "known"
     },
     "speed_sweep_ids": {
       "provenance": {
@@ -144,12 +144,11 @@
     "environment": {},
     "host_port": 8080,
     "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
-    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
         "read_only": true,
-        "source": "~/.cache/inference-index/models/ornith15-iq2-xxs",
+        "source": "${MODEL_ROOT}/ornith15-iq2-xxs",
         "target": "/models"
       }
     ],
@@ -171,9 +170,9 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": null,
-    "max_concurrency": null,
-    "max_context_tokens": null,
+    "kv_cache_tokens": 131072,
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [],

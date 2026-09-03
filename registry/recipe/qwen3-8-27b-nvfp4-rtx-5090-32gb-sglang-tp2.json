@@ -5,7 +5,45 @@
     "tools": null,
     "vision": null
   },
-  "description": null,
+  "description": "sglang recipe for Qwen3.8-27B-NVFP4-BF16-LMHead on GeForce RTX 5090 with tensor parallelism 2.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "RadixArk/Qwen3.8-27B-NVFP4-BF16-LMHead",
+      "--tp",
+      "2",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "262144"
+    ],
+    "container_port": 30000,
+    "entrypoint": "/opt/nvidia/nvidia_entrypoint.sh",
+    "environment": {},
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
+      "template": "sglang-launch-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "sglang",
@@ -70,17 +108,31 @@
     },
     "description": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T22:39:04Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-08-31T22:39:04Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "derived-from-recipe-identifiers",
+      "state": "known"
+    },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/lmsysorg/sglang/manifests/sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
     },
     "engine.graph_mode": {
       "provenance": {
@@ -154,30 +206,30 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T23:03:15Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt95jc0d00mjli01o8zm465s"
           }
         ]
       },
-      "reason": "not-observed",
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T10:20:39Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt95jc0d00mjli01o8zm465s"
           }
         ]
       },
-      "reason": "not-observed",
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },

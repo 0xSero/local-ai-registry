@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoxkh3j500esml01xhu99xca"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmoxkh3j500esml01xhu99xca"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "Needle retrieval: PASS. peak_vram_total_mib=9780, baseline_vram_mib=1307, peak_vram_delta_mib=8473. peak_ram_used_mib=20013, peak_swap_used_mib=4675, short_http_s=2.015, needle_http_s=318.961.",
       "observed_command": "llama-server -m <MODEL.gguf> -np 1 -fa on -ctk q4_0 -ctv q4_0 -ngl 99 --n-cpu-moe 28 -b 512 -ub 128 --cache-ram 0 -t 10 -tb 10 --threads-http 4 --reasoning-budget -1",
@@ -181,7 +210,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 184320,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

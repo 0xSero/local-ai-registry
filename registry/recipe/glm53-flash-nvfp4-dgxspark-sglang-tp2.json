@@ -5,13 +5,28 @@
     "tools": true,
     "vision": true
   },
-  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP2/EP2 across two DGX Spark GB10 nodes with 131,072-token context, C2 acceptance, NEXTN speculation, full decode CUDA graphs, tools, image, and video evidence.",
+  "description": "Validated GLM-5.3 Flash NVFP4 SGLang TP2/EP2 across two DGX Spark GB10 nodes with 262,144-token context, online FP8 dense linears, pinned NEXTN 5/6 (adaptive off), full decode CUDA graphs, thinking on. Fastest measured thinking-on C1 essay 38 tok/s.",
   "engine": {
     "graph_mode": "full target-verify and draft capture bs1-2; KDA hybrid attention automatically leaves prefill capture unavailable",
     "name": "sglang",
     "version": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b"
   },
-  "facts": {},
+  "facts": {
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "published-runtime-manifest",
+            "url": "https://github.com/0xSero/glm-5.3-flash-sglang-sm121/blob/dfb1bb7e45c20058d37df7a39cceda45a9d216a8/manifest.json"
+          }
+        ]
+      },
+      "reason": "published-runtime-manifest-records-full-target-verify-and-draft-capture-at-batch-sizes-1-2",
+      "state": "known"
+    }
+  },
   "hardware_count": 2,
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "glm53-flash-nvfp4-dgxspark-sglang-tp2",
@@ -33,7 +48,7 @@
       "--dist-init-addr",
       "${HEAD_FABRIC_ADDRESS}:27000",
       "--context-length",
-      "131072",
+      "262144",
       "--quantization",
       "modelopt_fp4",
       "--attention-backend",
@@ -67,7 +82,6 @@
       "1",
       "--speculative-num-draft-tokens",
       "6",
-      "--speculative-adaptive",
       "--media-url-max-file-size-mb",
       "1024",
       "--enable-multimodal",
@@ -84,7 +98,7 @@
     ],
     "container": {
       "captured_at": "2026-08-27T06:04:13.773Z",
-      "compose_file": null,
+      "compose_file": "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-sglang-compose.yml",
       "digest": "sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
       "image": "ghcr.io/0xsero/glm-5.3-flash-sglang-sm121@sha256:f9ac60ba4071f8acd64f0f3c074aca308f6d659405fee46fc8031489a1e8b19b",
       "reason": "image-reference-in-launch",
@@ -106,7 +120,10 @@
       "NCCL_NET": "IB",
       "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
       "SGLANG_FP8_PAGED_MQA_LOGITS_TORCH": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+      "SGLANG_GLM53_ONLINE_FP8_LM_HEAD": "0",
       "SGLANG_OPT_USE_TILELANG_INDEXER": "1",
+      "SPEC_ADAPTIVE": "0",
       "TORCH_CUDA_ARCH_LIST": "12.1a"
     },
     "host_port": 8000,
@@ -156,7 +173,7 @@
   "serving": {
     "kv_cache_tokens": 992128,
     "max_concurrency": 2,
-    "max_context_tokens": 131072,
+    "max_context_tokens": 262144,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

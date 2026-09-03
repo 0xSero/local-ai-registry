@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp4xieqn0002pg01fz0ir9ry"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp4xieqn0002pg01fz0ir9ry"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Single RTX 5090 ASUS ROG Astral OC (Blackwell GB202, sm_120a, 32 GB GDDR7), Ryzen 9 9950X + 96 GB DDR5-6000 CL28, Ubuntu 24.04 kernel 6.17, driver 580.159.03 / CUDA 13.0. Q4_K_M weights fully resident on GPU (-ngl 999), Q8 KV cache, 4K context, flash attention. Methodology: vllm bench serve random 512in/512out, 20 prompts, max-concurrency 1. Peak output token throughput 249.00 t/s during sustained decode; mean TPOT 4.12 ms.",
       "observed_command": "/home/steven/dev/llama.cpp/build/bin/llama-server -m Qwen3.6-35B-A3B-Q4_K_M.gguf --alias qwen3.6-35b-a3b-q4km -fa 1 -ngl 999 -c 4096 -ctk q8_0 -ctv q8_0 --no-context-shift --parallel 1 -b 2048 -ub 1024 --metrics --jinja --reasoning off --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --host 0.0.0.0 --port 8000",
