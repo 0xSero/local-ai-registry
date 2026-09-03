@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrllgsxd0z25mj01rsfw040w"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrllgsxd0z25mj01rsfw040w"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Horizon Strix Halo synthetic llama-bench run using PrismML llama.cpp b9591 commit 62061f910 inside docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4. Model prism-ml/Bonsai-27B-gguf / Bonsai-27B-Q1_0.gguf, SHA256 17ef842e47450caeb8eaa3ebfbbab5d2f2278b62b79be107985fb69a2f819aa0. Flags: -ngl 999 -fa on -mmp 0, n_batch=2048, n_ubatch=512, K/V f16, no DSpark drafter. tokSPrefill is native llama-bench pp4096 r=3 average; samples 275.070/274.755/273.732 tok/s. tokSOut is a separate tg128 r=3 average; samples 33.005/33.877/33.837 tok/s. ttftMs is the average pp4096 prompt-processing wall time, not OpenAI SSE TTFT. tokSTotal combines the separate pp and tg average durations. BIOS UMA=1GB; kernel cmdline includes amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856. Raw artifacts: /home/joshua/benchmarks/2026-07-14-bonsai-27b.",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 262144,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

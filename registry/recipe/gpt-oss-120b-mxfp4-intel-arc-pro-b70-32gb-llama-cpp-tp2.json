@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrws0j0500i4nz01jduaji7l"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrws0j0500i4nz01jduaji7l"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "117B MoE (gpt-oss-120b) MXFP4 59.02 GiB across dual B70, -sm layer -fa 1 -ngl 99. llama-bench r=5: tg128 59.44 +/- 1.15, pp2048 1124.67 +/- 98.37 (pp variance from cold-load effects across reps; treat as ~1100). Notably faster than published dual-B70 120B-MoE dataset figures (~43 t/s). Mainline llama.cpp - no patches needed for this model. Same rig/series as our Nemotron-75B/Qwen3.6-35B/27B/Coder-30B entries; SR-IOV VFs, no power telemetry. peakVramGb approximate (model 59GiB + buffers, near the 63.6GB combined ceiling).",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

@@ -17,7 +17,7 @@ import sys
 import urllib.error
 import urllib.request
 
-API = "https://huggingface.co/api/models/{repo}?expand[]=downloads&expand[]=downloadsAllTime"
+API = "https://huggingface.co/api/models/{repo}?expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime"
 CONTEXT = ssl.create_default_context()
 
 

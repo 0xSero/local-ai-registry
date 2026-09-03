@@ -30,8 +30,28 @@
     "channel_status": "legacy_partner_channel",
     "current_stock": null,
     "current_street_price": null,
-    "msrp": null,
-    "prices": []
+    "msrp": {
+      "amount": 4650,
+      "currency": "USD"
+    },
+    "prices": [
+      {
+        "amount": 4650,
+        "as_of": "2026-09-01",
+        "captured_at": "2026-09-01T08:29:50Z",
+        "currency": "USD",
+        "kind": "MSRP",
+        "region": "US",
+        "scope": "manufacturer_marketplace_list_price",
+        "source": {
+          "captured_at": "2026-09-01T08:29:50Z",
+          "kind": "vendor",
+          "publisher": "NVIDIA",
+          "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
+        },
+        "unit": "one_time"
+      }
+    ]
   },
   "compute": {
     "architecture": "NVIDIA Ampere",
@@ -448,39 +468,33 @@
     },
     "commercial.msrp": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "NVIDIA product is partner/distribution priced"
-      },
-      "state": "unknown"
+      "reason": "manufacturer-marketplace-list-price",
+      "state": "known"
     },
     "commercial.prices": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "No validated price observation was captured for this exact hardware record."
-      },
-      "state": "unknown"
+      "reason": "validated-manufacturer-price-observation",
+      "state": "known"
     },
     "compute.architecture": {
       "provenance": {

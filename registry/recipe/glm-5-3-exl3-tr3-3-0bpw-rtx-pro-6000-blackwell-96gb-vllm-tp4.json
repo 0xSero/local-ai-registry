@@ -1,0 +1,296 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "description": "Validated GLM-5.3 EXL3/TR3 3.0 bpw recipe on four RTX PRO 6000 Blackwell 96 GB GPUs with TP4/DCP4, MTP3, quantized KV cache, full and piecewise CUDA graphs, an 800k context envelope, and uncapped C1-C3 matched-window measurements.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "0.26.1rc0+infernal.invocation.cu133.r17.vllmc53cc73.b12xc0a44a1"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "live-quality-sidecar",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "natural-stop-chat-completion-passed",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/zai-org/GLM-5.3/resolve/187fb9fff6319062325ff825627ef6db084d9bc6/README.md"
+          },
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "live-quality-sidecar",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "official-reasoning-effort-support-and-live-low-effort-natural-stop",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "live-quality-sidecar",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "required-function-call-produced-correct-tool-name-and-arguments",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "huggingface-config",
+            "url": "https://huggingface.co/zai-org/GLM-5.3/resolve/187fb9fff6319062325ff825627ef6db084d9bc6/config.json"
+          }
+        ]
+      },
+      "reason": "language-model-only-glm-moe-dsa-architecture",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "runtime-identity",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "runtime-captured-full-and-piecewise-cuda-graphs",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "runtime-version-endpoint",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-vllm-version-endpoint",
+      "state": "known"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "runtime-capacity",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-runtime-kv-pool-capacity",
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "matched-window-benchmark",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "uncapped-c3-sustained-decode-completed-with-effective-concurrency-3-and-no-queue",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "runtime-identity",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-served-model-context-envelope",
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--default-chat-template-kwargs",
+      "{\"reasoning_effort\":\"none\"}",
+      "--attention-config",
+      "{\"indexer_kv_dtype\":\"fp8\"}",
+      "--kv-cache-memory-bytes",
+      "8589934592"
+    ],
+    "container": {
+      "captured_at": "2026-09-01T04:00:19Z",
+      "compose_file": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-compose.yml",
+      "digest": "sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+      "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+      "reason": "published-oci-manifest-and-compose-launch-captured-during-accepted-sweep",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-01T04:00:19Z",
+          "kind": "runtime-identity",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "entrypoint": "/usr/local/bin/serve-infernal-invocation.sh",
+    "environment": {
+      "ASYNC_SCHEDULING": "0",
+      "B12X_PCIE_DMA": "0",
+      "CUDA_DEVICE_MAX_CONNECTIONS": "1",
+      "DCP": "4",
+      "DCP_A2A_LARGE_BACKEND": "ag_rs",
+      "DCP_BACKEND": "a2a",
+      "DCP_CKV_GATHER_MAX_TOKENS": "262144",
+      "DCP_CKV_PREFETCH_DEPTH": "0",
+      "DCP_CKV_PREFETCH_WORKSPACE_MIB": "0",
+      "F8_DMA": "0",
+      "GPU_MEMORY_UTILIZATION": "0.98",
+      "GRAPH": "12",
+      "INSTANTTENSOR_BACKEND": "BUFFERED",
+      "INSTANTTENSOR_COPY": "0",
+      "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+      "KV_FP8_ROPE": "0",
+      "LMCACHE_MODE": "off",
+      "LOAD_FORMAT": "instanttensor",
+      "MAX_BATCHED_TOKENS": "3072",
+      "MAX_MODEL_LEN": "800000",
+      "MAX_NUM_SEQS": "3",
+      "MODEL": "/model",
+      "MODEL_FAMILY": "glm52-exl3",
+      "MOE_BACKEND": "b12x",
+      "MOE_MODE": "a16",
+      "MTP": "3",
+      "MTP_DRAFT_SAMPLE_METHOD": "greedy",
+      "MTP_MOE_BACKEND": "triton",
+      "PCIE_CALIBRATION": "off",
+      "QUANTIZATION": "exl3",
+      "SERVED_MODEL_NAME": "glm-5.3",
+      "TP": "4",
+      "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+      "VLLM_EXL3_PREFILL_CAPACITY": "2048",
+      "VLLM_EXL3_PREFILL_CHUNK": "128",
+      "VLLM_EXL3_PREFILL_TRELLIS": "1",
+      "VLLM_EXL3_TRELLIS_BLOCK_M": "8",
+      "VLLM_EXL3_TRELLIS_MAX_M": "16",
+      "VLLM_EXL3_TRELLIS_MIN_M": "1",
+      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
+        "target": "/model"
+      },
+      {
+        "provision": {
+          "repository": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
+          "revision": "ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe",
+          "size_gb": 316.42026932
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance_evidence": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json",
+    "quality_sidecars": {
+      "arithmetic": true,
+      "reasoning_request": true,
+      "structured_json": true,
+      "tool_call": true
+    },
+    "runtime_identity": {
+      "architecture": "GlmMoeDsaForCausalLM",
+      "cuda_graphs": "full-and-piecewise",
+      "indexer_kv_dtype": "fp8",
+      "kv_cache_dtype": "nvfp4_ds_mla",
+      "load_format": "instanttensor",
+      "parallelism": "tp4-dcp4",
+      "quantization": "exl3",
+      "speculation": "mtp3"
+    },
+    "scheduler": {
+      "kv_cache_memory_bytes_per_rank": 8589934592,
+      "max_num_batched_tokens": 3072,
+      "max_num_seqs": 3
+    }
+  },
+  "model_instance_id": "davidsyoung-glm-5-3-exl3-tr3-3-0bpw--3-0-bpw",
+  "provenance": {
+    "captured_at": "2026-09-01T04:00:19Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "kind": "validated-runtime-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "data_context_parallel": 4,
+    "explicit_kv_cache_bytes_per_rank": 8589934592,
+    "kv_cache_tokens": 862975,
+    "max_concurrency": 3,
+    "max_context_tokens": 800000,
+    "max_num_batched_tokens": 3072,
+    "max_num_seqs": 3,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

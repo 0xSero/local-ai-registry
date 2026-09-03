@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "AtomicChat/Qwen3.6-27B-UDT-MTP-GGUF:Q4_K_XL",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "2048"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpsnmdz9009zmq01k1vkl3qa"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpsnmdz9009zmq01k1vkl3qa"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Using Atomic Chat fork of llama.cpp with Turboquant and spec decoding of 2. 3090 running at 480w pwr limit.",
       "observed_command": "ExecStart=/home/garrett/llama.cpp/build/bin/llama-server \\\n  -m /home/garrett/.cache/huggingface/hub/models--AtomicChat--Qwen3.6-27B-UDT-MTP-GGUF/snapshots/4b31c9f1e5be79eaea778e24ac50aab8a19e6dad/Qwen3.6-27B-UDT-Q4_K_XL_MTP.gguf \\\n  -md /home/garrett/.cache/huggingface/hub/models--AtomicChat--Qwen3.6-27B-UDT-MTP-GGUF/snapshots/4b31c9f1e5be79eaea778e24ac50aab8a19e6dad/Qwen3.6-27B-UDT-Q4_K_XL_MTP.gguf \\\n#  --mmproj /home/garrett/.cache/huggingface/hub/models--AtomicChat--Qwen3.6-27B-UDT-MTP-GGUF/snapshots/4b31c9f1e5be79eaea778e24ac50aab8a19e6dad/mmproj-BF16.gguf \\\n  --host 127.0.0.1 \\\n  --port 18080 \\\n  -ngl 99 \\\n  -ngld 99 \\\n  -fa on \\\n  -c 150000 \\\n  --parallel 1 \\\n  --spec-type nextn \\\n  --draft-max 2 \\\n  --draft-min 1 \\\n  -ctk turbo3 \\\n  -ctv turbo3 \\\n  --cache-ram 3000 \\\n  --jinja \\\n  --temp 0.85 \\\n  --top-k 20 \\\n  --top-p 0.95 \\\n  --min-p 0.0 \\\n  --presence-penalty 1.5 \\\n  --repeat-penalty 1.0",
@@ -201,7 +281,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_context_tokens": 150000,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

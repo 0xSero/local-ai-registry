@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofh9moz0013l4058iav5vtk"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofh9moz0013l4058iav5vtk"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,9 +153,10 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Imported from /home/crown/machine-setup/BENCHMARK_HISTORY.md. Date: 2026-04-24. Prompt processing: 454.13 tok/s. Host: NixOS 25.11, Linux 6.19.9, AMD Ryzen AI MAX 395, Radeon 8060S, amdgpu/RADV GFX1151. Command: /home/crown/.local/llama-current/llama-bench -m /srv/llm/models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf -ngl 999 -fa 1 -p 128000 -n 128 -r 1 -o md. Log: /srv/llm/runs/20260424-175106-qwen36-35b-q8-vulkan-rocm-128k-vulkan-q8-p128000.log.",
-      "observed_command": "",
+      "observed_command": "/home/crown/.local/llama-current/llama-bench -m /srv/llm/models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf -ngl 999 -fa 1 -p 128000 -n 128 -r 1 -o md",
       "run_id": "cmofh9moz0013l4058iav5vtk"
     }
   },
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 128000,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
