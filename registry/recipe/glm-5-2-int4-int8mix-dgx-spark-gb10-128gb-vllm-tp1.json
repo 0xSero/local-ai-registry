@@ -6,10 +6,46 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "QuantTrio/GLM-5.2-Int4-Int8Mix",
+      "--tensor-parallel-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "200000"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": null
+    "version": "0.26.0"
   },
   "facts": {
     "capabilities.chat": {
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -82,6 +132,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:38:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:38:26Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxttyo00fjmp01nmrwtmkn"
+          }
+        ]
+      },
+      "reason": "copied-from-synthesized-image-provenance",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -95,6 +159,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr7eu1a7009tni01n3wqp3ti"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr7eu1a7009tni01n3wqp3ti"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +217,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "[STRUCTURED / JSON-output workload] GLM-5.2 UNPRUNED 744B (QuantTrio Int4-Int8Mix, all 256 experts) TP=4 across 4x NVIDIA DGX Spark GB10 over ConnectX-7 RoCE, MTP k=4 spec-decode, fp8 sparse-MLA (DSA) KV, full CUDA graphs, vLLM native multi-node (no Ray). Single-stream decode is MTP-content-dependent (temp 0, batch 1, warm): ~31 code / ~38 structured-JSON / ~24 prose. Aggregate ~60 tok/s at 6 concurrent. Recipe: https://github.com/tonyd2wild/GLM-5.2-QuantTrio-200K-4x-DGX-Spark",
       "observed_command": "vllm serve QuantTrio/GLM-5.2-Int4-Int8Mix --tensor-parallel-size 4 --max-model-len 200000 --max-num-seqs 6 --speculative-config {method:mtp,num_speculative_tokens:4,draft_tensor_parallel_size:1,attention_backend:FLASHMLA_SPARSE} --tool-call-parser glm47 --enable-auto-tool-choice --reasoning-parser glm45 (4x DGX Spark GB10, RoCE, Bluey head :8210)",
@@ -175,7 +268,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 6,
     "max_context_tokens": 200000,
     "tensor_parallel": 1
   },

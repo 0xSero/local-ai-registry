@@ -5,7 +5,43 @@
     "tools": null,
     "vision": null
   },
-  "description": null,
+  "description": "vllm recipe for Qwen3.6-27B-NVFP4 on GeForce RTX 5090 with tensor parallelism 1.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "nvidia/Qwen3.6-27B-NVFP4",
+      "--tensor-parallel-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "148000"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -70,17 +106,31 @@
     },
     "description": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T22:39:04Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-08-31T22:39:04Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "derived-from-recipe-identifiers",
+      "state": "known"
+    },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
     },
     "engine.graph_mode": {
       "provenance": {
@@ -168,30 +218,30 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T10:22:25Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T10:22:25Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr12irkh010eld01w7zjfjld"
           }
         ]
       },
-      "reason": "not-observed",
+      "reason": "server-capacity-not-evidenced",
       "state": "unknown"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T10:22:25Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T10:22:25Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr12irkh010eld01w7zjfjld"
           }
         ]
       },
-      "reason": "not-observed",
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },

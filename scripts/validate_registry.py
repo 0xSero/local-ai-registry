@@ -7,6 +7,15 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import trust  # noqa: E402
+
+from import_market_snapshot import (
+    gpu_signature,
+    listing_title_matches,
+    listing_url_is_specific,
+    product_name,
+)
 from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 
@@ -234,6 +243,8 @@ def validate_container(recipe, errors):
         image = launch.get("image")
         if not image:
             errors.append(f"{identifier}: Docker launch has no image")
+        if recipe.get("status") == "validated" and str(image).startswith("local/"):
+            errors.append(f"{identifier}: validated Docker launch cannot use an unpullable local/ image")
         expected = "digest-pinned" if isinstance(image, str) and re.search(r"@sha256:[0-9a-f]{64}$", image) else "mutable"
         if state != expected:
             errors.append(f"{identifier}: Docker container state does not match image digest")
@@ -300,7 +311,20 @@ def validate(root):
         if not isinstance(params, (int, float)) or params <= 0:
             errors.append(f"{record.get('id')}: model params must be positive")
 
+    recommended_by_hardware = {}
     for recipe in data["recipe"].values():
+        # status is derived, never asserted: scripts/trust.py is the single definition
+        instance = data["model-instance"].get(recipe.get("model_instance_id"))
+        sweeps = [data["speed-sweep"].get(s) for s in recipe.get("speed_sweep_ids") or []]
+        derived = trust.derive_status(recipe, instance, sweeps)
+        if recipe.get("status") != derived:
+            why = "; ".join(trust.failures(recipe, instance, sweeps)) or "meets every criterion"
+            errors.append(f"{recipe['id']}: status {recipe.get('status')!r} but derived {derived!r} ({why}); run scripts/trust.py --apply")
+        if recipe.get("recommended"):
+            why = trust.recommendable(recipe)
+            if why:
+                errors.append(f"{recipe['id']}: recommended but {why}")
+            recommended_by_hardware.setdefault(recipe.get("hardware_id"), []).append(recipe["id"])
         require_reference(recipe, "model_instance_id", data["model-instance"], errors)
         require_reference(recipe, "hardware_id", data["hardware"], errors)
         validate_provenance(recipe.get("provenance"), f"{recipe.get('id')}", errors)
@@ -327,9 +351,29 @@ def validate(root):
             if recipe.get("hardware_id") != "apple-m5-max-128gb":
                 errors.append(f"{recipe['id']}: mlx.fast official scores map only to apple-m5-max-128gb")
         validate_tokenized_launch(recipe, errors)
+        draft = recipe.get("draft_launch")
+        if draft is not None:
+            if status != "candidate":
+                errors.append(f"{recipe['id']}: draft_launch is only allowed on candidates")
+            if not re.search(r"@sha256:[0-9a-f]{64}$", str(draft.get("image", ""))):
+                errors.append(f"{recipe['id']}: draft_launch image must be digest-pinned")
         if recipe.get("recipe_source") == "omlx":
             errors.append(f"{recipe['id']}: speculative oMLX recipes are outside the registry contract")
         if status == "validated":
+            if kind == "docker":
+                # materializability: a validated docker recipe must produce a complete command
+                if not launch.get("entrypoint") and not launch.get("arguments"):
+                    errors.append(f"{recipe['id']}: validated docker launch has neither entrypoint nor arguments")
+                for port_field in ("host_port", "container_port"):
+                    if not isinstance(launch.get(port_field), int):
+                        errors.append(f"{recipe['id']}: validated docker launch missing {port_field}")
+                if not launch.get("accelerator_backend"):
+                    errors.append(f"{recipe['id']}: validated docker launch missing accelerator_backend")
+                if (recipe.get("serving") or {}).get("max_context_tokens") is None:
+                    errors.append(f"{recipe['id']}: validated recipe must state serving.max_context_tokens")
+                for mount in launch.get("mounts", []):
+                    if not isinstance(mount, dict) or not mount.get("source") or not mount.get("target"):
+                        errors.append(f"{recipe['id']}: validated docker launch has a malformed mount")
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")
             instance = data["model-instance"].get(recipe.get("model_instance_id"), {})
@@ -345,6 +389,10 @@ def validate(root):
             for forbidden in FORBIDDEN_LAUNCH:
                 if forbidden in launch_text:
                     errors.append(f"{recipe['id']}: validated launch contains forbidden option {forbidden}")
+
+    for hardware_id, ids in recommended_by_hardware.items():
+        if len(ids) > 1:
+            errors.append(f"{hardware_id}: more than one recommended recipe: {', '.join(sorted(ids))}")
 
     for sweep in data["speed-sweep"].values():
         require_reference(sweep, "recipe_id", data["recipe"], errors)
@@ -387,11 +435,29 @@ def validate(root):
                 errors.append(f"{identifier}: unresolved hardware {hardware.get('id')!r}")
             if hardware.get("match_scope") not in ("exact", "family"):
                 errors.append(f"{identifier}: invalid hardware match_scope")
+        product_id = (record.get("product") or {}).get("id")
+        scanner_owned_gpu = (
+            isinstance((record.get("provenance") or {}).get("scanner"), str)
+            and isinstance(product_id, str)
+            and gpu_signature(product_name(product_id)) is not None
+        )
         for observation in record.get("observations", []):
             if observation.get("currency") != currency:
                 errors.append(f"{identifier}: observation currency does not match region")
             if not valid_timestamp(observation.get("observed_at")):
                 errors.append(f"{identifier}: observation observed_at must be RFC3339 UTC")
+            if scanner_owned_gpu and not listing_title_matches(
+                product_id, observation.get("title") or ""
+            ):
+                errors.append(
+                    f"{identifier}: observation title does not identify the exact GPU SKU"
+                )
+            if scanner_owned_gpu and not listing_url_is_specific(
+                observation.get("url") or ""
+            ):
+                errors.append(
+                    f"{identifier}: observation URL is not a product-specific retailer URL"
+                )
 
     import hashlib
     for asset in data["asset"].values():

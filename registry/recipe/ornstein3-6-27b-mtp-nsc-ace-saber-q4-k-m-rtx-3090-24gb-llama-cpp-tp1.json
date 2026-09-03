@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "GestaltLabs/Ornstein3.6-27B-MTP-NSC-ACE-SABER-GGUF:Q4_K_M",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "262144"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpcxbhcw00fynw017wgjyvsp"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpcxbhcw00fynw017wgjyvsp"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 256,
       "hardware_label": "RTX 3090",
       "notes": "Batch/ubatch sweep | batch=256 ubatch=128 | MTP n_max=2 p_min=0.75 | KV K=turbo3_tcq V=turbo2_tcq | --fit off --flash-attn on",
       "observed_command": "llama-server --threads 12 --prio 3 --n-predict 32768 --batch-size 256 --ubatch-size 128 --flash-attn on --cache-type-k turbo3_tcq --cache-type-v turbo2_tcq --no-mmap --n-gpu-layers all --fit off --ctx-size 262144 --model Ornstein3.6-27B-MTP-NSC-ACE-SABER-Q4_K_M-MTP.gguf --cache-type-k-draft turbo3_tcq --cache-type-v-draft turbo2_tcq --temperature 0.6 --top-p 0.95 --min-p 0.01 --repeat-penalty 1.0 --presence-penalty 0.0 --ctx-checkpoints 8 --cache-ram 8192 --kv-unified --parallel 1 --mmproj mmproj-Ornstein3.6-27B-MTP-NSC-ACE-SABER-F16.gguf --no-mmproj-offload --image-min-tokens 1024 --alias Qwen3.6-27B --props --reasoning on --chat-template-kwargs '{\"preserve_thinking\":true}' --reasoning-budget 8192 --reasoning-budget-message '. My reasoning budget is exhausted, but I have enough information to answer directly now.' --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.75",
@@ -220,7 +300,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 256,
+    "max_concurrency": 1,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

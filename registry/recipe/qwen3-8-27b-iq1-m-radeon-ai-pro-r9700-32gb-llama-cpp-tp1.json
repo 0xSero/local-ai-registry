@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0um9230fq2ms017s2z5npw"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0um9230fq2ms017s2z5npw"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "HIP/ROCm (native gfx1201, ROCm 7.2.1). Dynamic V3.0 UD-IQ1_M with separate MTP draft module (mtp-Qwen3.8-27B-Q4_0.gguf), MTP=2 speculative decoding, q8_0 KV, flash-attn. 0.75 draft acceptance.",
       "observed_command": "llama-server -m Qwen3.8-27B-UD-IQ1_M.gguf --model-draft mtp-Qwen3.8-27B-Q4_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --flash-attn on -ctk q8_0 -ctv q8_0",
@@ -166,8 +195,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

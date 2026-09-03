@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofnviki000ll704ogjm0ei2"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofnviki000ll704ogjm0ei2"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "M3 Ultra",
       "notes": "Mac Studio M3 Ultra 512GB. Temperature=0, max_tokens=256. Prompt: LRU cache Python function (~220 chars). 3 rounds, median reported. llama.cpp b8920 with flash attention enabled. Model served from external SSD.",
       "observed_command": "llama-server -m Qwen3-Coder-Next-UD-Q5_K_XL-00001-of-00003.gguf -c 32768 --port 8081 -ngl 99 -fa on --fit off",
@@ -164,8 +193,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 8192,
+    "max_concurrency": null,
+    "max_context_tokens": 32768,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -175,7 +175,7 @@
         "chat": null,
         "reasoning": null,
         "tools": null,
-        "vision": null
+        "vision": true
       },
       "engine": "llama.cpp",
       "hardware_count": 1,
@@ -1507,7 +1507,7 @@
       "hardware_count": 1,
       "hardware_id": "rtx-3060-12gb",
       "has_evidence": true,
-      "id": "gemma-3-1b-pt-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "id": "gemma-3-1b-it-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
       "launch_kind": "reference",
       "model_instance_id": "google-gemma-3-1b-it--q4-k-m",
       "recipe_source": "localmaxxing",
@@ -1558,7 +1558,7 @@
       "hardware_count": 1,
       "hardware_id": "apple-m3-ultra-512gb",
       "has_evidence": true,
-      "id": "gemma-3-4b-pt-q4-k-m-apple-m3-ultra-512gb-llama-cpp-tp1",
+      "id": "gemma-3-4b-it-q4-k-m-apple-m3-ultra-512gb-llama-cpp-tp1",
       "launch_kind": "reference",
       "model_instance_id": "google-gemma-3-4b-it--q4-k-m",
       "recipe_source": "localmaxxing",
@@ -1575,7 +1575,7 @@
       "hardware_count": 1,
       "hardware_id": "rtx-3060-12gb",
       "has_evidence": true,
-      "id": "gemma-3-4b-pt-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "id": "gemma-3-4b-it-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
       "launch_kind": "reference",
       "model_instance_id": "google-gemma-3-4b-it--q4-k-m",
       "recipe_source": "localmaxxing",
@@ -1715,7 +1715,7 @@
       "launch_kind": "docker",
       "model_instance_id": "turboderp-gemma-4-12b-it-exl3--3-bpw",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -1800,7 +1800,7 @@
       "launch_kind": "docker",
       "model_instance_id": "unsloth-gemma-4-12b-it-nvfp4--nvfp4",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -1817,7 +1817,7 @@
       "launch_kind": "docker",
       "model_instance_id": "unsloth-gemma-4-12b-it-nvfp4--nvfp4",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -4048,6 +4048,74 @@
     },
     {
       "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3090-24gb",
+      "has_evidence": true,
+      "id": "gemma412b-exl3-4bpw-rtx3090-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-gemma-4-12b-it-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3090-ti-24gb",
+      "has_evidence": true,
+      "id": "gemma412b-exl3-4bpw-rtx3090ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-gemma-4-12b-it-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4090-24gb",
+      "has_evidence": true,
+      "id": "gemma412b-exl3-4bpw-rtx4090-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-gemma-4-12b-it-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-pro-4000-blackwell-24gb",
+      "has_evidence": true,
+      "id": "gemma412b-exl3-4bpw-rtxpro4000-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-gemma-4-12b-it-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
         "chat": null,
         "reasoning": null,
         "tools": null,
@@ -4694,6 +4762,23 @@
     },
     {
       "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 4,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "has_evidence": true,
+      "id": "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+      "launch_kind": "docker",
+      "model_instance_id": "davidsyoung-glm-5-3-exl3-tr3-3-0bpw--3-0-bpw",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
         "chat": null,
         "reasoning": null,
         "tools": null,
@@ -4775,6 +4860,23 @@
       "launch_kind": "reference",
       "model_instance_id": "zai-org-glm-5-3-flash--fp8",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": true
+      },
+      "engine": "vllm",
+      "hardware_count": 4,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "glm-5-3-flash-nvfp4-dgx-spark-gb10-128gb-vllm-tp4",
+      "launch_kind": "docker",
+      "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+      "recipe_source": "0xsero",
       "status": "candidate"
     },
     {
@@ -5115,7 +5217,7 @@
       "launch_kind": "docker",
       "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
       "recipe_source": "0xsero",
-      "status": "validated"
+      "status": "candidate"
     },
     {
       "capabilities": {
@@ -5132,7 +5234,41 @@
       "launch_kind": "docker",
       "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
       "recipe_source": "0xsero",
-      "status": "validated"
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": true
+      },
+      "engine": "vllm",
+      "hardware_count": 2,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "glm53-flash-nvfp4-dflash2-dgxspark-vllm-tp2",
+      "launch_kind": "docker",
+      "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+      "recipe_source": "tonyd2wild",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": true
+      },
+      "engine": "vllm",
+      "hardware_count": 4,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "glm53-flash-nvfp4-dflash2-dgxspark-vllm-tp4",
+      "launch_kind": "docker",
+      "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+      "recipe_source": "tonyd2wild",
+      "status": "candidate"
     },
     {
       "capabilities": {
@@ -7470,6 +7606,193 @@
         "tools": null,
         "vision": null
       },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-8gb",
+      "has_evidence": false,
+      "id": "lfm25-8b-a1b-q4km-rtx3070-llamacpp-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-ti-8gb",
+      "has_evidence": true,
+      "id": "lfm25-8b-a1b-q4km-rtx3070ti-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-10gb",
+      "has_evidence": true,
+      "id": "lfm25-8b-a1b-q4km-rtx3080-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3060-ti-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx3060ti-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx3070-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-ti-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx3070ti-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-10gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx3080-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4060-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx4060-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4060-ti-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx4060ti-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx5060-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "sglang",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-8gb",
+      "has_evidence": true,
+      "id": "lfm2526b-bf16-rtx5060ti-sglang-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
       "engine": "sglang",
       "hardware_count": 1,
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
@@ -7648,6 +7971,142 @@
       "launch_kind": "reference",
       "model_instance_id": "mike0021-ling-3-0-tiny-gguf--q8-0",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3060-ti-8gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-3060-ti-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-8gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-3070-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-10gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-3080-10gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-3080-ti-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-5060-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-12gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-5070-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-5070-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "liquidai-lfm2-5-2-6b-gguf--q8-0-rtx-5080-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q8-0",
+      "recipe_source": "lane-experiment",
       "status": "candidate"
     },
     {
@@ -9697,40 +10156,6 @@
         "tools": null,
         "vision": null
       },
-      "engine": "vllm",
-      "hardware_count": 1,
-      "hardware_id": "dgx-spark-gb10-128gb",
-      "has_evidence": true,
-      "id": "nvidia-nemotron-3-super-120b-a12b-bf16-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
-      "launch_kind": "reference",
-      "model_instance_id": "nvidia-nvidia-nemotron-labs-3-puzzle-75b-a9b-nvfp4--nvfp4",
-      "recipe_source": "localmaxxing",
-      "status": "candidate"
-    },
-    {
-      "capabilities": {
-        "chat": null,
-        "reasoning": null,
-        "tools": null,
-        "vision": null
-      },
-      "engine": "llama.cpp",
-      "hardware_count": 2,
-      "hardware_id": "intel-arc-pro-b70-32gb",
-      "has_evidence": true,
-      "id": "nvidia-nemotron-3-super-120b-a12b-bf16-ud-iq4-xl-intel-arc-pro-b70-32gb-llama-cpp-tp2",
-      "launch_kind": "reference",
-      "model_instance_id": "nvidia-nvidia-nemotron-labs-3-puzzle-75b-a9b-bf16--ud-iq4-xl",
-      "recipe_source": "localmaxxing",
-      "status": "candidate"
-    },
-    {
-      "capabilities": {
-        "chat": null,
-        "reasoning": null,
-        "tools": null,
-        "vision": null
-      },
       "engine": "vLLM",
       "hardware_count": 1,
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
@@ -9755,6 +10180,40 @@
       "id": "nvidia-nemotron-labs-3-elastic-30b-a3b-nvfp4-q4-k-s-rtx-5060-ti-16gb-llama-cpp-tp1",
       "launch_kind": "reference",
       "model_instance_id": "hackertwins-nvidia-nemotron-labs-3-elastic-23b-a2-8b-gguf--q4-k-s",
+      "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "nvidia-nemotron-labs-3-puzzle-75b-a9b-bf16-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "nvidia-nvidia-nemotron-labs-3-puzzle-75b-a9b-nvfp4--nvfp4",
+      "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 2,
+      "hardware_id": "intel-arc-pro-b70-32gb",
+      "has_evidence": true,
+      "id": "nvidia-nemotron-labs-3-puzzle-75b-a9b-bf16-ud-iq4-xl-intel-arc-pro-b70-32gb-llama-cpp-tp2",
+      "launch_kind": "reference",
+      "model_instance_id": "nvidia-nvidia-nemotron-labs-3-puzzle-75b-a9b-bf16--ud-iq4-xl",
       "recipe_source": "localmaxxing",
       "status": "candidate"
     },
@@ -10929,7 +11388,7 @@
       "launch_kind": "docker",
       "model_instance_id": "ornith-ai-ornith-1-5-35b-a3b-nvfp4--nvfp4",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -36688,6 +37147,23 @@
     },
     {
       "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": true,
+        "vision": false
+      },
+      "engine": "llama-cpp",
+      "hardware_count": 1,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "qwen3-8-flash-next-ud-iq1-s-dgxspark-llamacpp-tp1",
+      "launch_kind": "native",
+      "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-iq1-s",
+      "recipe_source": "sxuff",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
         "chat": null,
         "reasoning": null,
         "tools": null,
@@ -36701,6 +37177,23 @@
       "launch_kind": "reference",
       "model_instance_id": "qwen-qwen3-8-flash-next--ud-iq3-xxs",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": true
+      },
+      "engine": "llama-cpp",
+      "hardware_count": 1,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "has_evidence": true,
+      "id": "qwen3-8-flash-next-ud-q3-k-xl-dgxspark-llamacpp-tp1-ngram-mod",
+      "launch_kind": "native",
+      "model_instance_id": "unsloth-qwen3-8-flash-next-gguf--ud-q3-k-xl",
+      "recipe_source": "sxuff",
       "status": "candidate"
     },
     {
@@ -37402,6 +37895,380 @@
     },
     {
       "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-2000-ada-16gb",
+      "has_evidence": false,
+      "id": "qwen35-9b-q4km-rtx2000ada-llamacpp-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "qwen35-9b-q4km-rtx3080ti-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4070-ti-12gb",
+      "has_evidence": true,
+      "id": "qwen35-9b-q4km-rtx4070ti-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4080-16gb",
+      "has_evidence": true,
+      "id": "qwen35-9b-q4km-rtx4080-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4080-super-16gb",
+      "has_evidence": true,
+      "id": "qwen35-9b-q4km-rtx4080super-llamacpp-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "llama.cpp",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": false,
+      "id": "qwen35-9b-q4km-rtx5080-llamacpp-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-2000-ada-16gb",
+      "has_evidence": false,
+      "id": "qwen359b-exl3-4bpw-rtx2000ada-tabbyapi-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3060-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx3060-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-12gb",
+      "has_evidence": false,
+      "id": "qwen359b-exl3-4bpw-rtx3080-tabbyapi-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx3080ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4000-ada-20gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4000ada-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4060-ti-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4060ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4070-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4070-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4070-super-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4070super-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4070-ti-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4070ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4070-ti-super-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4070tisuper-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4080-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4080-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4080-super-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx4080super-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx5060ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-12gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx5070-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx5070ti-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "qwen359b-exl3-4bpw-rtx5080-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
         "chat": true,
         "reasoning": true,
         "tools": true,
@@ -37602,7 +38469,7 @@
       "launch_kind": "docker",
       "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -37659,6 +38526,91 @@
       "capabilities": {
         "chat": true,
         "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3090-ti-24gb",
+      "has_evidence": true,
+      "id": "qwen38-awq-int4-rtx3090ti-vllm-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "rtx-4090-24gb",
+      "has_evidence": true,
+      "id": "qwen38-awq-int4-rtx4090-vllm-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5090-32gb",
+      "has_evidence": false,
+      "id": "qwen38-awq-int4-rtx5090-vllm-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "rtx-pro-4000-blackwell-24gb",
+      "has_evidence": false,
+      "id": "qwen38-awq-int4-rtxpro4000-vllm-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
+        "tools": false,
+        "vision": false
+      },
+      "engine": "vllm",
+      "hardware_count": 1,
+      "hardware_id": "rtx-pro-4500-blackwell-32gb",
+      "has_evidence": false,
+      "id": "qwen38-awq-int4-rtxpro4500-vllm-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "cyankiwi-qwen3-8-27b-awq-int4--int4-w4a16",
+      "recipe_source": "0xsero",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": false,
         "tools": true,
         "vision": false
       },
@@ -37676,18 +38628,86 @@
       "capabilities": {
         "chat": true,
         "reasoning": false,
-        "tools": false,
-        "vision": false
+        "tools": true,
+        "vision": true
       },
       "engine": "llama-cpp",
       "hardware_count": 2,
       "hardware_id": "intel-arc-pro-b70-32gb",
       "has_evidence": true,
       "id": "qwen38-q4km-arcb70-llamacpp-tp2",
-      "launch_kind": "docker-compose",
+      "launch_kind": "docker",
       "model_instance_id": "ggml-org-qwen3-8-27b-gguf--q4-k-m",
       "recipe_source": "0xsero",
-      "status": "candidate"
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5090-32gb",
+      "has_evidence": true,
+      "id": "qwen3827b-exl3-4bpw-rtx5090-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-6000-ada-48gb",
+      "has_evidence": true,
+      "id": "qwen3827b-exl3-4bpw-rtx6000ada-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-a6000-48gb",
+      "has_evidence": true,
+      "id": "qwen3827b-exl3-4bpw-rtxa6000-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
+    },
+    {
+      "capabilities": {
+        "chat": true,
+        "reasoning": null,
+        "tools": null,
+        "vision": false
+      },
+      "engine": "tabbyapi",
+      "hardware_count": 1,
+      "hardware_id": "rtx-pro-4500-blackwell-32gb",
+      "has_evidence": true,
+      "id": "qwen3827b-exl3-4bpw-rtxpro4500-tabbyapi-tp1",
+      "launch_kind": "docker",
+      "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
+      "recipe_source": "0xsero",
+      "status": "validated"
     },
     {
       "capabilities": {
@@ -38180,6 +39200,414 @@
       "launch_kind": "reference",
       "model_instance_id": "baidu-unlimited-ocr--fp16",
       "recipe_source": "localmaxxing",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3060-ti-8gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-3060-ti-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-8gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-3070-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-10gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-3080-10gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-3080-ti-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-5060-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-12gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-5070-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-5070-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "unsloth-gemma-4-12b-it-gguf--q4-k-m-rtx-5080-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3060-ti-8gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-3060-ti-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3070-8gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-3070-8gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-10gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-3080-10gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-3080-ti-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-5060-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-12gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-5070-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-5070-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-5-9b-gguf--q4-k-m-rtx-5080-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m-rtx-3080-ti-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m-rtx-5060-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m-rtx-5070-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m-rtx-5080-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-6-35b-a3b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-3080-ti-12gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m-rtx-3080-ti-12gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5060-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m-rtx-5060-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5070-ti-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m-rtx-5070-ti-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
+      "status": "candidate"
+    },
+    {
+      "capabilities": {
+        "chat": null,
+        "reasoning": null,
+        "tools": null,
+        "vision": null
+      },
+      "engine": "ollama",
+      "hardware_count": 1,
+      "hardware_id": "rtx-5080-16gb",
+      "has_evidence": true,
+      "id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m-rtx-5080-16gb-ollama-tp1",
+      "launch_kind": "reference",
+      "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-m",
+      "recipe_source": "lane-experiment",
       "status": "candidate"
     },
     {

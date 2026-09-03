@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmogqkco20007l704rhj8sq83"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmogqkco20007l704rhj8sq83"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090 Ti",
       "notes": "DFlash speculative decoding via Lucebox-Hub test_dflash binary (custom C++/CUDA on top of Luce-Org/llama.cpp@luce-dflash ggml fork). Block-diffusion draft from z-lab/Qwen3.6-27B-DFlash (BF16 safetensors, 3.46 GB, 2026-04-26 z-lab snapshot). DDTree tree-verify budget=22, chain_seed=1, fa_window=2048, KV f16. Bench: scripts/bench_he.py --n-gen 512 --ddtree-budget 22, mean of 10 HumanEval-style code-completion prompts (single-stream, batch=1). Per-prompt range 75.9-203.4 tok/s; peak sum_product 203.37 tok/s. Mean acceptance length 9.22, accept rate 57.7%. AR baseline same binary on same hardware: 35.79 tok/s (3.92x speedup). vLLM FP8 production single-stream on this rig: 44.36 tok/s (3.16x speedup). Critical CMake flags: -DCMAKE_CUDA_ARCHITECTURES=86 -DGGML_CUDA_GRAPHS=ON -DCMAKE_BUILD_TYPE=Release. Defaults compile sm_52 + graphs OFF, costs 3x.",
       "observed_command": "build/test_dflash Qwen3.6-27B-Q4_K_M.gguf z-lab/Qwen3.6-27B-DFlash --fast-rollback --ddtree --ddtree-budget=22 --max-ctx=1024",
@@ -158,8 +187,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 1024,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

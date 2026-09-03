@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmogi7eik0002jx042avo1q5t"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmogi7eik0002jx042avo1q5t"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Linux best-of-3 generation-only llama-bench result on Intel Arc Pro B70. Local Mesa ANV main 26.2.0-devel git-642bed9eba selected via VK_DRIVER_FILES, llama.cpp f535774 with local B70 0xe223 core-count patch, built against LunarG Vulkan SDK 1.4.341.1. Key setting: GGML_VK_ALLOW_GRAPHICS_QUEUE=1 to use the graphics+compute queue family; -fa 0 was faster than -fa 1 on Linux. Samples: 25.1709, 25.1606, 25.1364 tok/s. Telemetry during similar decode: active card power avg ~211.5 W, GT0 ~2788 MHz, VRAM max ~80 C. This still trails the same system's Windows Vulkan result of 28.8 tok/s.",
       "observed_command": "GGML_VK_ALLOW_GRAPHICS_QUEUE=1 VK_DRIVER_FILES=/home/occulink/arc-b70-llm/src/mesa/install-anv-main/share/vulkan/icd.d/intel_icd.x86_64.json VK_ICD_FILENAMES=/home/occulink/arc-b70-llm/src/mesa/install-anv-main/share/vulkan/icd.d/intel_icd.x86_64.json LD_LIBRARY_PATH=/home/occulink/arc-b70-llm/src/mesa/install-anv-main/lib/x86_64-linux-gnu:/home/occulink/arc-b70-llm/tools/vulkan-sdk/1.4.341.1/x86_64/lib:/home/occulink/arc-b70-llm/src/llama.cpp/build-vulkan-sdk/bin llama-bench -m Qwen3.6-27B-Q4_0.gguf -dev Vulkan0 -ngl 99 -fa 0 -p 0 -n 512 -d 0 -sm layer -b 512 -ub 64 -ctk f16 -ctv f16 -t 8 --poll 50 -r 3 -o jsonl --no-warmup --progress",
@@ -192,8 +221,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
