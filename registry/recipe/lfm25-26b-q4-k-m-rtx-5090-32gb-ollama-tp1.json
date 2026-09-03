@@ -53,9 +53,36 @@
     "source": "vast-validation-2026-09-01"
   },
   "metadata": {
+    "ctx_ceiling": {
+      "max_ok_ctx": 262144,
+      "measured_at": "2026-09-01T00:00:00Z",
+      "method": "ctx-ladder-binary-search (16384 doubling to failure), ctx_probe.py v3 strict acceptance",
+      "oom_ctx": null,
+      "source": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "ctx-ceiling-run",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      },
+      "timings": {
+        "eval_count": 53,
+        "eval_duration_s": 0.098,
+        "load_duration_s": 0.024,
+        "prompt_eval_count": 17,
+        "prompt_eval_duration_s": 0.037,
+        "total_duration_s": 1.06
+      }
+    },
     "validation": {
       "date": "2026-09-01",
       "evidence": {
+        "ctx_ceiling_timings_s": {
+          "eval_count": 53,
+          "eval_duration_s": 0.098,
+          "load_duration_s": 0.024,
+          "prompt_eval_count": 17,
+          "prompt_eval_duration_s": 0.037,
+          "total_duration_s": 1.06
+        },
         "eval_count": 53,
         "eval_duration_ns": 102981000,
         "load_duration_ns": 4215298684,
@@ -84,7 +111,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
