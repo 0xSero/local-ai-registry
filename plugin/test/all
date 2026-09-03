@@ -84,7 +84,7 @@ case "$*" in
   "serve status") [[ -f $SHIM/serving ]] && echo "https://box.tail.ts.net -> http://127.0.0.1:12434" ;;
   "status --json") echo '{"Self":{"DNSName":"box.tail.ts.net."}}' ;;
   serve*off*) rm -f "$SHIM/serving" ;;
-  serve*) touch "$SHIM/serving" ;;
+  serve*) [[ "$*" == *--https=8443* ]] || { echo "shim: serve without --https=8443: $*" >&2; exit 1; }; touch "$SHIM/serving" ;;
 esac
 EOF
 for a in pi claude codex; do printf '#!/usr/bin/env bash\necho "$0 $*"\n' >"$TMP/bin/$a"; done
@@ -136,7 +136,7 @@ out=$("$CLI" open-agent codex); [[ $out == *wire_api=responses* && $out == *mode
 [[ ! -e $OMARCHY_AI_USER_HOME/.claude.json && ! -e $OMARCHY_AI_USER_HOME/.codex ]] || fail "no user files touched"; pass "no user config files were created or edited"
 
 "$CLI" share; "$CLI" snapshot >/dev/null
-[[ $(snap .share.active) == true && $(snap .share.url) == https://box.tail.ts.net ]] || fail "share on" "$(snap .share)"; pass "share: tailscale serve on, URL and key shown"
+[[ $(snap .share.active) == true && $(snap .share.url) == https://box.tail.ts.net:8443 ]] || fail "share on" "$(snap .share)"; pass "share: tailscale serve on its own port, URL and key shown"
 "$CLI" share --key "0123456789abcdef0123"; [[ $(cat "$OMARCHY_AI_STATE/gateway.key") == 0123456789abcdef0123 ]] || fail "key replaced"; pass "share --key replaces the key"
 "$CLI" share; "$CLI" snapshot >/dev/null; [[ $(snap .share.active) == false ]] || fail "share off"; pass "share toggles off"
 
@@ -148,8 +148,9 @@ grep -q "rename omarchy-local-ai-engine omarchy-local-ai-engine-previous" "$SHIM
 
 # acceptance failure rolls back to the previous pair
 SHIM_REPLY="nope" "$CLI" load
-[[ $(snap .state) == error && $(snap .error) == *"chat acceptance failed"* ]] || fail "acceptance failure reported" "$(snap .error)"; pass "failed acceptance is an error with the reason"
+[[ $(snap .error) == *"chat acceptance failed"* ]] || fail "acceptance failure reported" "$(snap .error)"; pass "failed acceptance reports the reason"
 [[ -d $SHIM/containers/omarchy-local-ai-engine && $(cat "$SHIM/containers/omarchy-local-ai-engine/state") == running ]] || fail "previous restored"; pass "previous pair restored after a failed acceptance"
+[[ $(snap .state) == ready ]] || fail "restored previous is ready" "$(snap .state)"; pass "the restored previous model is ready, with the failure shown beside it"
 
 # CPU fallback: a slow reply fails the speed floor
 SHIM_TOKENS=200 SHIM_SLOW=1 bash -c 'sleep 0' ; # (speed is wall-clock; the shim answers instantly, so exercise the floor through a tiny token count instead)
@@ -202,6 +203,24 @@ write_recipes "$(recipe good true asset)"
 jq '.op.pid='"$holder"' | .op.name="download"' "$OMARCHY_AI_STATE/ledger.json" >"$TMP/l.json" && mv "$TMP/l.json" "$OMARCHY_AI_STATE/ledger.json"
 [[ $("$CLI" load 2>&1 || true) == *"another operation is running"* ]] || fail "busy refused"; pass "a second operation while busy is refused"
 wait $holder; "$CLI" snapshot >/dev/null; [[ $(snap .state) == idle ]] || fail "dead pid clears busy" "$(snap .state)"; pass "busy clears when the worker pid is gone, no stale string"
+
+# progress: a successful Start records how long it took, and the next Start reports against it
+"$CLI" load; [[ $(jq -r .lastStartSeconds "$OMARCHY_AI_STATE/ledger.json") =~ ^[0-9]+$ ]] || fail "lastStartSeconds recorded"; pass "a successful Start records its duration for the next progress bar"
+jq '.lastStartSeconds=100 | .op={name:"starting",recipeId:"good",pid:0,startedAt:"2000-01-01T00:00:00Z",detail:"loading the model",percent:0}' "$OMARCHY_AI_STATE/ledger.json" >"$TMP/l.json" && mv "$TMP/l.json" "$OMARCHY_AI_STATE/ledger.json"
+( source "$ROOT/lib/common.sh"; source "$ROOT/lib/recipes.sh"; source "$ROOT/lib/share.sh"; source "$ROOT/lib/runtime.sh"; [[ $(start_percent) == 95 ]] ) || fail "start_percent caps at 95"; pass "engine-load progress is elapsed over the last Start, capped below done"
+( sleep 2 ) & holder=$!; jq --argjson p "$holder" '.op.pid=$p' "$OMARCHY_AI_STATE/ledger.json" >"$TMP/l.json" && mv "$TMP/l.json" "$OMARCHY_AI_STATE/ledger.json"
+"$CLI" snapshot >/dev/null; [[ $(snap .operation.expectedSeconds) == 100 ]] || fail "expectedSeconds" "$(snap .operation)"; pass "snapshot carries the expected duration while starting"
+wait $holder; "$CLI" unload
+
+# refusals the panel invokes land in the ledger, since it never sees stderr
+"$CLI" open-agent claude >/dev/null 2>&1 || true; [[ $(snap .state) == error && $(snap .error) == *"load a model first"* ]] || fail "refusal in ledger" "$(snap .error)"; pass "a refused verb writes its reason where the panel reads it"
+"$CLI" load; [[ $(snap .state) == ready && $(snap .error) == "" ]] || fail "op clears refusal"; pass "a finished operation clears an earlier refusal"
+"$CLI" open-agent nope >/dev/null 2>&1 || true; [[ $(snap .state) == ready && $(snap .error) != "" ]] || fail "refusal beside ready" "$(snap .state) $(snap .error)"; pass "a refused agent launch keeps a running model ready and shows the reason"
+OMARCHY_AI_FOREGROUND=0 "$CLI" open-agent pi >/dev/null; [[ $(snap .error) == "" ]] || fail "launch clears refusal"; pass "a launch that works clears the earlier refusal"
+"$CLI" share; "$CLI" snapshot >/dev/null; [[ $(snap .share.url) == https://box.tail.ts.net:8443 ]] || fail "share port" "$(snap .share)"; pass "share claims its own tailnet port"
+"$CLI" share; "$CLI" snapshot >/dev/null; [[ $(snap .share.active) == false ]] || fail "share port off"; pass "share off releases only its own port"
+[[ $(snap .lastStartSeconds) =~ ^[0-9]+$ ]] || fail "lastStartSeconds in snapshot"; pass "snapshot carries the last Start duration for the Start label"
+"$CLI" unload
 
 # failures during start are logged and rolled back
 SHIM_RUN_FAIL=omarchy-local-ai-engine "$CLI" load

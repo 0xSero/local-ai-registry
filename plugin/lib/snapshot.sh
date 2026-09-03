@@ -6,9 +6,10 @@
 # the ledger. Workers call it after every step so the panel, which watches the file, updates live;
 # the panel also asks for one on a slow timer so a container that died outside an op shows up.
 #
-# State rule: busy while the op's pid is alive; else error when the ledger has one; else ready
-# when an owned engine+gateway run and the gateway answers; else starting when they run but do
-# not answer yet; else idle.
+# State rule: busy while the op's pid is alive; else ready when an owned engine+gateway run and
+# the gateway answers; else error when the ledger has one; else starting when they run but do
+# not answer yet; else idle. Reality outranks the message: a model that answers is ready even
+# when the last verb was refused (the error text still shows beside it).
 
 snapshot_write() {
   mkdir -p "$STATE"
@@ -21,8 +22,8 @@ snapshot_write() {
     served=$(api models 2 2>/dev/null | jq -r '.data[0].id // empty' || true); [[ -n $served ]] && answering=true
   fi
   if $busy; then state=$(jq -r .op.name <<<"$ledger")
-  elif [[ $(jq -r .error <<<"$ledger") != "" ]]; then state=error
   elif $answering; then state=ready
+  elif [[ $(jq -r .error <<<"$ledger") != "" ]]; then state=error
   elif $engine_up; then state=starting
   else state=idle; fi
   # a running recipe that the vendored file no longer carries is still ours: say so instead of hiding it
@@ -33,9 +34,10 @@ snapshot_write() {
   [[ -n $rec && -z $gate ]] && ! driver_ok "$driver_have" "$driver_min" && gate="needs NVIDIA driver $driver_min or newer (have ${driver_have:-none})"
   jq -nc --argjson l "$ledger" --argjson rec "${rec:-null}" --arg state "$state" --arg reason "$reason" --arg gate "$gate" \
     --arg hw "$hw_id" --arg served "$served" --arg rr "$running_recipe" --argjson known "$running_known" --argjson dl "$downloaded" \
-    --argjson agents "$(agents_json)" --argjson share "$(share_state)" --arg reg "$(registry_commit)" --arg t "$(now)" '
-    {schemaVersion:"omarchy-local-ai/snapshot/6", updatedAt:$t, state:$state, error:$l.error,
-     operation:{name:$l.op.name, detail:$l.op.detail, percent:$l.op.percent, startedAt:$l.op.startedAt},
+    --argjson agents "$(agents_json)" --argjson share "$(share_state_cached)" --arg reg "$(registry_commit)" --arg t "$(now)" '
+    {schemaVersion:"omarchy-local-ai/snapshot/7", updatedAt:$t, state:$state, error:$l.error, lastStartSeconds:($l.lastStartSeconds//0),
+     operation:{name:$l.op.name, detail:$l.op.detail, percent:$l.op.percent, startedAt:$l.op.startedAt,
+       expectedSeconds:(if $l.op.name=="starting" then ($l.lastStartSeconds//0) else 0 end)},
      hardwareId:$hw, registry:$reg,
      model:(if $rec==null then null else
        {recipeId:$rec.id, name:$rec.model.name, servedName:(if $served!="" then $served else $rec.model.servedName end),

@@ -85,6 +85,8 @@ open_agent() { # open_agent [name]: default agent when omitted; refuses out loud
     || { fail "$name cannot use this model: its API dialect did not pass acceptance"; return; }
   model=$(jq -r '.model.servedName' <<<"$snap"); key=$(lread | jq -r '.share.key')
   local -a argv=(); while IFS= read -r -d '' v; do argv+=("$v"); done < <(agent_command "$name" "$model" "$key") || return 1
+  # the person's own flags for this agent (`omarchy-local-ai agent-args <name> -- <flags>`), e.g. a yolo mode
+  if [[ -s $STATE/agents/args/$name ]]; then while IFS= read -r -d '' v; do argv+=("$v"); done <"$STATE/agents/args/$name"; fi
   log "open-agent $name"
   if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then printf '%q ' "${argv[@]}"; echo; return 0; fi
   # the agent works where the person works: OMARCHY_AI_AGENT_DIR, else the directory recorded by

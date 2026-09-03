@@ -23,7 +23,15 @@ Panel {
   readonly property var operation: snap.operation || ({})
   readonly property var share: snap.share || ({})
   readonly property var agentList: (snap.agents && snap.agents.launchable) || []
-  readonly property bool busy: ["download", "starting", "unload"].indexOf(state) >= 0
+  // pending: a verb was just issued and no snapshot has confirmed the worker yet. The panel treats
+  // it as busy so the click has an immediate effect instead of a dead second while the worker starts.
+  property bool pending: false
+  readonly property bool working: ["download", "starting", "unload", "share"].indexOf(state) >= 0
+  readonly property bool busy: working || pending
+  property int elapsed: 0
+  readonly property int expected: operation.expectedSeconds || 0
+  readonly property int progress: operation.percent > 0 ? operation.percent
+    : (expected > 0 && elapsed > 0 ? Math.min(95, Math.round(elapsed * 100 / expected)) : 0)
   readonly property bool loaded: state === "ready"
   readonly property bool hasRunning: !!snap.running
   readonly property string defaultAgent: (snap.agents && snap.agents.default) || ""
@@ -35,26 +43,42 @@ Panel {
   readonly property color dim: Util.alpha(foreground, 0.55)
 
   function refresh() { if (!poll.running) poll.running = true }
-  function act(args) { if (busy || action.running) return; action.command = [cli].concat(args); action.running = true }
+  function act(args) { if (busy || action.running) return; pending = true; pendingTimeout.restart(); action.command = [cli].concat(args); action.running = true }
+  function take(json) { try { snap = JSON.parse(json); if (working || snap.error) pending = false; tick() } catch (e) {} }
+  function tick() {
+    var t = Date.parse(operation.startedAt || "")
+    elapsed = working && !isNaN(t) ? Math.max(0, Math.round((Date.now() - t) / 1000)) : 0
+  }
+  function mmss(s) { return Math.floor(s / 60) + ":" + (s % 60 < 10 ? "0" : "") + (s % 60) }
   function title() {
     if (loaded && model) return model.name
     if (hasRunning && snap.running && !snap.running.current) return "Older model running"
     return model ? model.name : "Local AI"
   }
   function status() {
-    if (snap.error) return snap.error
-    if (busy) return spinner() + " " + (operation.detail || state) + (operation.percent > 0 ? " · " + operation.percent + "%" : "")
+    if (snap.error && !pending) return snap.error
+    if (pending && !working) return spinner() + " starting"
+    if (busy) return spinner() + " " + (operation.detail || state)
+      + (elapsed > 0 ? " · " + mmss(elapsed) + (expected > 0 ? " of about " + mmss(expected) : "") : "")
+      + (progress > 0 ? " · " + progress + "%" : "")
     if (snap.reason) return snap.reason
     if (loaded && model) return model.engine + " · " + Math.round(model.ctxTokens / 1024) + "K context"
     return ""
   }
   property int spin: 0
   function spinner() { return ["|", "/", "-", "\\"][spin] }
+  readonly property int lastStart: snap.lastStartSeconds || 0
   function startLabel() {
     if (!model) return "Start"
-    return !model.downloaded && model.sizeGb > 0 ? "Start · " + model.sizeGb + " GB" : "Start"
+    var label = !model.downloaded && model.sizeGb > 0 ? "Start · " + model.sizeGb + " GB" : "Start"
+    return lastStart > 0 && model.downloaded ? label + " · usually " + mmss(lastStart) : label
   }
-  function openAgent() { if (loaded && agentSel !== "") { act(["open-agent", agentSel]); root.close() } }
+  // The launch is its own process: the panel closes only when the terminal actually opened, and a
+  // refusal (no model, wedged launcher) stays on screen instead of vanishing with the panel.
+  function openAgent() {
+    if (!loaded || agentSel === "" || busy || action.running || agentLaunch.running) return
+    agentLaunch.command = [cli, "open-agent", agentSel]; agentLaunch.running = true
+  }
 
   // The controller rewrites the snapshot after every step; watching the file is what makes
   // progress live. The timer catches reality changing outside an operation.
@@ -63,15 +87,20 @@ Panel {
     path: root.stateDir + "/snapshot.json"
     watchChanges: true
     onFileChanged: reload()
-    onLoaded: { try { root.snap = JSON.parse(text()) } catch (e) {} }
+    onLoaded: root.take(text())
   }
   Process {
     id: poll
     command: [root.cli, "snapshot"]
-    stdout: StdioCollector { waitForEnd: true; onStreamFinished: { if (text.length > 262144) return; try { root.snap = JSON.parse(text) } catch (e) {} } }
+    stdout: StdioCollector { waitForEnd: true; onStreamFinished: { if (text.length <= 262144) root.take(text) } }
   }
   Process { id: action; onExited: root.refresh() }
-  Timer { interval: root.opened ? (root.busy ? 3000 : 10000) : 60000; running: true; repeat: true; triggeredOnStart: true; onTriggered: root.refresh() }
+  Process { id: agentLaunch; onExited: function(code) { root.refresh(); if (code === 0) root.close() } }
+  // Poll fast while something runs, whether or not the panel is open, so the bar icon starts and
+  // stops moving with the operation; slow when idle. The file watch above makes this a backstop.
+  Timer { interval: root.pending ? 1000 : root.working ? 2000 : root.opened ? 10000 : 60000; running: true; repeat: true; triggeredOnStart: true; onTriggered: root.refresh() }
+  Timer { id: pendingTimeout; interval: 20000; onTriggered: root.pending = false }
+  Timer { interval: 1000; running: root.working; repeat: true; triggeredOnStart: true; onTriggered: root.tick() }
   Timer { interval: 140; running: root.busy && root.opened; repeat: true; onTriggered: root.spin = (root.spin + 1) % 4 }
 
   onOpenedChanged: if (opened) refresh()
@@ -93,14 +122,28 @@ Panel {
     bar: root.bar
     iconComponent: Component {
       Item {
-        Rectangle { // hollow = idle, pulsing = working, filled = ready, urgent ring = error
+        // The ring is the model's place; the dot inside grows with progress and breathes while
+        // working, so a glance at the bar says how far along a Start is. Full dot = ready,
+        // urgent ring = error, hollow = idle.
+        Rectangle {
+          id: ring
           anchors.centerIn: parent; width: Style.space(9); height: width; radius: width / 2
-          color: root.loaded ? root.foreground : "transparent"
-          border.width: root.loaded ? 0 : Math.max(1, Style.space(1))
+          color: "transparent"
+          border.width: Math.max(1, Style.space(1))
           border.color: root.state === "error" ? (root.bar ? root.bar.urgent : root.foreground) : root.foreground
+          opacity: root.loaded ? 0 : 1
+          Behavior on opacity { NumberAnimation { duration: 400 } }
+        }
+        Rectangle {
+          id: dot
+          anchors.centerIn: parent
+          readonly property real fill: root.loaded ? 1 : root.busy ? Math.max(0.3, root.progress / 100) : 0
+          width: ring.width * fill; height: width; radius: width / 2
+          color: root.foreground
+          Behavior on width { NumberAnimation { duration: 600; easing.type: Easing.OutCubic } }
           SequentialAnimation on opacity {
             running: root.busy; loops: Animation.Infinite; alwaysRunToEnd: true
-            NumberAnimation { to: 0.25; duration: 500 } NumberAnimation { to: 1; duration: 500 }
+            NumberAnimation { to: 0.3; duration: 600; easing.type: Easing.InOutSine } NumberAnimation { to: 1; duration: 600; easing.type: Easing.InOutSine }
           }
         }
       }
@@ -135,7 +178,7 @@ Panel {
           id: orb
           width: parent.width; height: Style.space(48)
           readonly property int rows: 9
-          readonly property real fill: root.loaded ? 1 : (root.operation.percent || 0) / 100
+          readonly property real fill: root.loaded ? 1 : root.progress / 100
           property real phase: 0
           NumberAnimation on phase { running: root.opened && (root.busy || root.loaded); loops: Animation.Infinite; from: 0; to: 1; duration: 2400 }
           Repeater {
@@ -156,7 +199,7 @@ Panel {
         }
         Text { width: parent.width; textFormat: Text.PlainText; text: root.title(); color: root.foreground; font.family: root.bar.fontFamily; font.pixelSize: Style.font.heading; font.weight: Font.Medium; elide: Text.ElideRight }
         Text { width: parent.width; textFormat: Text.PlainText; visible: root.status() !== ""; text: root.status(); color: root.snap.error ? (root.bar ? root.bar.urgent : root.foreground) : root.dim; font.family: root.bar.fontFamily; font.pixelSize: Style.font.bodySmall; wrapMode: Text.WordWrap; maximumLineCount: 3 }
-        Link { visible: !root.loaded; enabled: !root.busy && !!root.model && root.snap.reason === ""; text: root.startLabel(); onTriggered: root.act(["load"]) }
+        Link { visible: !root.loaded || (!!root.snap.error && !root.busy); enabled: !root.busy && !!root.model && root.snap.reason === ""; text: root.loaded ? "Restart" : root.startLabel(); onTriggered: root.act(["load"]) }
         Link { visible: root.loaded && root.agentList.length > 0; text: "Open agent · " + root.agentSel + (root.agentsOpen ? "  ^" : "  v"); onTriggered: root.agentsOpen = !root.agentsOpen }
         Text { visible: root.loaded && root.agentList.length === 0; width: parent.width; textFormat: Text.PlainText; text: "No installed agent can use this model"; color: root.dim; font.family: root.bar.fontFamily; font.pixelSize: Style.font.bodySmall }
         Column {
@@ -172,10 +215,22 @@ Panel {
       }
     }
   }
-  component Link: Text {
+  component Link: Item {
     signal triggered()
-    textFormat: Text.PlainText
-    color: root.foreground; opacity: enabled ? 1 : 0.32; font.family: root.bar.fontFamily; font.pixelSize: Style.font.bodySmall; elide: Text.ElideRight
-    MouseArea { anchors.fill: parent; enabled: parent.enabled; hoverEnabled: true; cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor; onClicked: parent.triggered() }
+    property alias text: label.text
+    property alias enabled: mouse.enabled
+    implicitWidth: label.implicitWidth
+    implicitHeight: label.implicitHeight
+    Rectangle { // rows are the only chrome the panel has; a hover wash says they are buttons
+      anchors.fill: parent; radius: Style.space(2)
+      color: mouse.containsMouse && mouse.enabled ? Util.alpha(root.foreground, 0.1) : "transparent"
+    }
+    Text {
+      id: label
+      width: parent.width; textFormat: Text.PlainText
+      color: root.foreground; opacity: mouse.enabled ? 1 : 0.32
+      font.family: root.bar.fontFamily; font.pixelSize: Style.font.bodySmall; elide: Text.ElideRight
+    }
+    MouseArea { id: mouse; anchors.fill: parent; hoverEnabled: true; cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor; onClicked: parent.triggered() }
   }
 }

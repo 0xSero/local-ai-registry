@@ -57,11 +57,19 @@ download_weights() {
   fi
   log "download: ${cmd[*]}"
   spawn_child "${cmd[@]}" >>"$LOGFILE" 2>&1; pid=$!
+  local prev=0 rate=0 eta=0 detail
   while kill -0 "$pid" 2>/dev/null; do
     bytes=$(dir_bytes "$base")
-    if (( exp > 0 )); then pct=$(( bytes*100/exp )); (( pct > 100 )) && pct=100
-      op download "$id" "$((bytes/1073741824)) / $((exp/1073741824)) GB" "$pct"
+    if (( exp > 0 )); then
+      pct=$(( bytes*100/exp )); (( pct > 100 )) && pct=100
+      detail="$((bytes/1073741824)) / $((exp/1073741824)) GB"
+      if (( POLL > 0 && bytes > prev && prev > 0 )); then   # a rate since the last poll gives an ETA
+        rate=$(( (bytes - prev) / POLL )); eta=$(( (exp - bytes) / rate ))
+        (( eta < 0 )) && eta=0; detail+=" · about $((eta/60))m$((eta%60))s left"
+      fi
+      op download "$id" "$detail" "$pct"
     fi
+    prev=$bytes
     sleep "$POLL"
   done
   wait "$pid" || oops "weight download failed for $id (see $LOGFILE)"

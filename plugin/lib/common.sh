@@ -23,9 +23,13 @@ CTR="${OMARCHY_AI_CONTAINER:-omarchy-local-ai}"     # engine: $CTR-engine, gatew
 LEDGER="$STATE/ledger.json"
 SNAPSHOT="$STATE/snapshot.json"
 LOGFILE="$STATE/log"
-LEDGER_EMPTY='{"schemaVersion":"omarchy-local-ai/ledger/1","op":{"name":"","recipeId":"","pid":0,"startedAt":"","detail":"","percent":0},"error":"","accepted":{"recipeId":"","servedModel":"","registry":"","apis":[]},"share":{"key":""}}'
+LEDGER_EMPTY='{"schemaVersion":"omarchy-local-ai/ledger/1","op":{"name":"","recipeId":"","pid":0,"startedAt":"","detail":"","percent":0},"error":"","accepted":{"recipeId":"","servedModel":"","registry":"","apis":[]},"share":{"key":""},"lastStartSeconds":0}'
 
 fail() { printf 'local-ai: %s\n' "$*" >&2; return 1; }
+# refuse is fail for CLI verbs the panel invokes: the message must also land in the ledger,
+# because the panel never sees the process's stderr. Never touches .op: a refusal can race a
+# live worker whose op record is authoritative.
+refuse() { printf 'local-ai: %s\n' "$*" >&2; log "error: $*"; lwrite '.error=$e' --arg e "$*"; snapshot_write; return 1; }
 now() { date -u +%Y-%m-%dT%H:%M:%SZ; }
 log() { mkdir -p "$STATE"; printf '%s %s\n' "$(now)" "$*" >>"$LOGFILE"; }
 bin_of() { [[ -x $HOME_DIR/.local/bin/$1 ]] && printf '%s\n' "$HOME_DIR/.local/bin/$1" || command -v "$1"; }
@@ -51,7 +55,10 @@ lwrite() { # lwrite <jq-filter> [jq-args...]: atomic read-modify-write under a s
 }
 op() { lwrite '.op={name:$n,recipeId:$r,pid:($p|tonumber),startedAt:(if .op.startedAt=="" or .op.name!=$n then $t else .op.startedAt end),detail:$d,percent:($c|tonumber)} | .error=""' \
   --arg n "$1" --arg r "$2" --arg p "$$" --arg t "$(now)" --arg d "${3:-}" --arg c "${4:-0}"; log "op $1 ${3:-}"; snapshot_write; }
-op_done() { lwrite '.op={name:"",recipeId:"",pid:0,startedAt:"",detail:"",percent:0}'; snapshot_write; }
+# op_pending <name> <pid>: the parent verb records the worker it just spawned so the very next
+# snapshot is busy; the worker overwrites this with its own op as soon as it holds the lock.
+op_pending() { lwrite '.op={name:$n,recipeId:"",pid:($p|tonumber),startedAt:$t,detail:"starting",percent:0} | .error=""' --arg n "$1" --arg p "$2" --arg t "$(now)"; snapshot_write; }
+op_done() { lwrite '.op={name:"",recipeId:"",pid:0,startedAt:"",detail:"",percent:0} | .error=""'; snapshot_write; } # a finished op supersedes any refusal written while it ran
 oops() { log "error: $1"; lwrite '.error=$e | .op={name:"",recipeId:"",pid:0,startedAt:"",detail:"",percent:0}' --arg e "$1"; snapshot_write; exit 1; }
 
 # ---------------------------------------------------------------- op lock

@@ -91,7 +91,8 @@ usage() {
   unload                 stop the model; keep downloads
   open-agent [name]      open an installed coding agent on the running model
   share [--key <value>]  toggle sharing on your tailnet, or replace the key
-  agent-dir <path>       directory agents open in (default: where the shell started)'
+  agent-dir <path>       directory agents open in (default: where the shell started)
+  agent-args <name> [-- flags]  extra flags for one agent when opened from the panel (none to clear)'
 }
 
 cmd=${1:-help}; shift || true
@@ -101,6 +102,7 @@ case $cmd in
   unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn unload _worker-unload ;;
   open-agent) snapshot_write; open_agent "${1:-}" 2>"$STATE/agent.err" || { m=$(sed -n '$s/^local-ai: //p' "$STATE/agent.err"); refuse "${m:-agent launch failed (see $LOGFILE)}"; exit 1; } ;;
   share) share_toggle "$@" ;;
+  agent-args) [[ -n ${1:-} ]] || { fail "agent-args <name> [-- flags...]"; exit 1; }; n=$1; shift; [[ ${1:-} == -- ]] && shift; mkdir -p "$STATE/agents/args"; if (( $# )); then printf '%s\0' "$@" >"$STATE/agents/args/$n"; else rm -f "$STATE/agents/args/$n"; fi; log "agent-args $n: $*" ;;
   agent-dir) [[ -d ${1:-} ]] && { (cd "$1" && pwd) >"$STATE/agent-dir"; log "agent-dir $1"; } || { fail "agent-dir: not a directory: ${1:-}"; exit 1; } ;;
   _worker-load) w_load ;;
   _worker-unload) w_unload ;;

@@ -77,7 +77,7 @@ accept() {
     [[ -n $served ]] && break
     (( SECONDS < deadline )) || { fail "engine did not answer within ${TIMEOUT}s"; return 1; }
     running "$ENGINE" || { fail "engine exited during startup (docker logs $ENGINE)"; return 1; }
-    op starting "$id" "waiting for the engine" 0; sleep "$POLL"
+    op starting "$id" "loading the model" "$(start_percent)"; sleep "$POLL"
   done
   [[ $served == "$want" || $want == */* && $served == *"${want##*/}"* ]] || { fail "served model $served is not $want"; return 1; }
   op starting "$id" "chat acceptance" 0
@@ -107,6 +107,15 @@ accept() {
   fi
   lwrite '.accepted={recipeId:$r,servedModel:$s,registry:$g,apis:$a}' --arg r "$id" --arg s "$served" --arg g "$(registry_commit)" --argjson a "$apis"
   log "accepted $id served=$served tps=$tps apis=$apis"
+}
+
+# start_percent: elapsed share of the last successful Start, capped so it never claims done.
+# A first Start has no history and stays at 0; the panel shows elapsed time either way.
+start_percent() {
+  local last t0 now; last=$(lread | jq -r '.lastStartSeconds // 0'); t0=$(lread | jq -r '.op.startedAt // ""')
+  (( last > 0 )) && [[ -n $t0 ]] || { printf 0; return; }
+  now=$(( $(date -u +%s) - $(date -u -d "$t0" +%s 2>/dev/null || date -u -j -f %Y-%m-%dT%H:%M:%SZ "$t0" +%s 2>/dev/null || echo 0) ))
+  (( now < 0 )) && now=0; now=$(( now * 100 / last )); (( now > 95 )) && now=95; printf '%s' "$now"
 }
 
 set_aside() { # current pair -> *-previous (removing any older previous)
