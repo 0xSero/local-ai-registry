@@ -302,11 +302,12 @@ class Vast:
         name = self.gpu_name(spec).replace(" ", "_")
         # query filter is in GB (results report MB); bound both sides so an 8 GB recipe never runs on the 16 GB variant of the same name
         lo, hi = int(max(spec.vram_gb - 1, 1)), int(spec.vram_gb + 1)
-        query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={lo} gpu_ram<={hi} "
+        query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={lo} "  # the <= side is applied below: the server reads it in MB
                  f"inet_down>={self.min_inet} disk_space>={spec.disk + 5} reliability>0.9 cuda_max_good>=12.9 "  # the pinned sglang image is CUDA 12.9; older drivers cannot init it (12.4 hosts fail llama.cpp too)
                  f"geolocation notin [CN]")  # hosts that cannot reach Hugging Face never finish the weights download
         offers = self.cli("search", "offers", query, "-o", "dph_total")
-        offers = [o for o in offers if o.get("id") not in exclude and o.get("machine_id") not in exclude]
+        offers = [o for o in offers if o.get("id") not in exclude and o.get("machine_id") not in exclude
+                  and (o.get("gpu_ram") or 0) <= hi * 1024]  # results report MB; keep the 8 GB variant off a 16 GB card and vice versa
         if not offers:
             raise SystemExit(f"no Vast offers for {query}")
         # cheapest hosts are often the slowest pullers: within 1.5x of the best price, take the fastest downlink first
