@@ -1,0 +1,121 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "gemma-4-12b-it-Q4_K_M Q4_K_M validated candidate on rtx-5090-32gb via native ollama: Vast rental RTX 5090, driver 580.95.05 (CUDA 12.8.93 toolkit), native ollama serve on host. Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "ollama",
+    "version": "0.33.2"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://vast.ai"
+          }
+        ]
+      },
+      "reason": "validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "gemma-4-12b-q4-k-m-rtx-5090-32gb-ollama-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "validation-run",
+          "url": "https://vast.ai"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "observed_command": "/usr/bin/ollama pull hf.co/unsloth/gemma-4-12b-it-GGUF:Q4_K_M",
+    "serve_command": "/usr/local/bin/ollama serve",
+    "source": "vast-validation-2026-09-01"
+  },
+  "metadata": {
+    "ctx_ceiling": {
+      "max_ok_ctx": 262144,
+      "measured_at": "2026-09-01T00:00:00Z",
+      "method": "ctx-ladder-binary-search (16384 doubling to failure), ctx_probe.py v3 strict acceptance",
+      "oom_ctx": null,
+      "source": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "ctx-ceiling-run",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      },
+      "timings": {
+        "eval_count": 44,
+        "eval_duration_s": 0.294,
+        "load_duration_s": 4.56,
+        "prompt_eval_count": 23,
+        "prompt_eval_duration_s": 0.063,
+        "total_duration_s": 4.92
+      }
+    },
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "ctx_ceiling_timings_s": {
+          "eval_count": 44,
+          "eval_duration_s": 0.294,
+          "load_duration_s": 4.56,
+          "prompt_eval_count": 23,
+          "prompt_eval_duration_s": 0.063,
+          "total_duration_s": 4.92
+        },
+        "eval_count": 44,
+        "eval_duration_ns": 3821725000,
+        "load_duration_ns": 15773651717,
+        "prompt_eval_count": 23,
+        "prompt_eval_duration_ns": 4454440000,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": 24052063618
+      },
+      "hardware_note": "Vast rental RTX 5090, driver 580.95.05 (CUDA 12.8.93 toolkit), native ollama serve on host",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 16384. Engine timings from engine usage counters. Host: Vast rental RTX 5090, driver 580.95.05 (CUDA 12.8.93 toolkit), native ollama serve on host."
+    }
+  },
+  "model_instance_id": "unsloth-gemma-4-12b-it-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "normalized-recipe",
+        "url": "https://vast.ai"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-12b-q4-k-m-rtx-5090-32gb-ollama-tp1-sweep"
+  ],
+  "status": "candidate"
+}
