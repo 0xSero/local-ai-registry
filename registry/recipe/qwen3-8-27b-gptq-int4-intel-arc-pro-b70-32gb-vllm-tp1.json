@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": null
+    "version": "XPU nightly digest f01e24f6"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmt00i0eb0eflms012anb0yau"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -94,6 +108,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt00i0eb0eflms012anb0yau"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt00i0eb0eflms012anb0yau"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +167,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Self-reported. Single Intel Arc Pro B70 32GB. vLLM XPU nightly digest f01e24f6, MTP4 speculative decoding, GDN mixed-split v5, draft-INT4 S+M1 overlay, prefix caching on, fp8 KV cache, 230W configured cap. Aggregate C32 throughput via lmx remote harness (256 output tokens, 3 iterations). Single-stream C1 is a separate record.",
       "observed_command": "# Remote endpoint: http://127.0.0.1:8000  servedModel: qwen38",
@@ -151,8 +194,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cms8csy5d00ekpf01qinnkg97"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cms8csy5d00ekpf01qinnkg97"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "Single client, single GPU, non-batched. NOT tensor-parallel, NOT pipeline-parallel, NOT a batched serve: one request at a time via the standalone dflash_spec_demo binary, not an HTTP server. Host has 4 GPUs; this uses one (gfx1100, PCI 66:00.0, link 16.0 GT/s x16). RDNA3 counterpart to our gfx1201 entry for the same model/prompt/flags.\nPure DFlash speculative decode: 5-layer trained draft head, B=16, adaptive-B 8..16 settled at 16. No MTP, n-gram, prompt-lookup, tree or CASK. Greedy temp 0.0, deterministic. Identical every rep: tau=11.3846, accept_rate=0.7590, emitted=162, EOS reached.\n3 fresh-process reps after one discarded JIT warmup, GPU-lock serialized, clocks untouched: decode 253.72/252.13/251.99 -> median 252.13; prefill 369.70/359.84/367.37; ttft 125.33/130.06/126.25.\nFlags measured on THIS arch, not assumed. HIPFIRE_HFQ4G256_LDSSTAGE=1 (default off) is live on RDNA3 via a gfx11 sibling path: same-binary A/B gives 227.96 with it off, i.e. +10.60%, larger than the +9.06% we measure on gfx1201. Routing verified: gemm_gate_up_hfq4g256_wmma_ldsstage.hsaco (17040 B) and gemm_hfq4g256_residual_wmma_ldsstage.hsaco (22288 B) under .hipfire_kernels/gfx1100/. HIPFIRE_Q8_PREFILL_M4=0 disables the four-query Q8 prefill tile (gfx12-gated, expected inert here; set for command parity).\nNOT bit-exact by construction: LDS staging reorders f32 K-accumulation across waves. Output still matched our gfx1201 run byte-for-byte (md5 4d3a55e4) and tau matched to 4 decimals across both archs; one prompt at temp 0, not a quality result.\nQuantized artifact: schuttdev/hipfire-qwen3.6-27b @ f9b326a657f1 (qwen3.6-27b.mq4).\nProvenance: tree 98d3567e29500326cb0b6313b79648c9510b249e (beta); trunk sha256 86a5f80fd29d545a; draft md5 204c4c4c; prompt md5 253c7ac5; ROCm/HIP 7.14. peakVramGb = 17172 MiB per the runtime.",
       "observed_command": "HIP_VISIBLE_DEVICES=0 HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_Q8_PREFILL_M4=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.6-27b-awq.mq4 --draft ~/.hipfire/models/qwen36-27b-dflash-mq4.hf4 --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 2048",
@@ -172,8 +201,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

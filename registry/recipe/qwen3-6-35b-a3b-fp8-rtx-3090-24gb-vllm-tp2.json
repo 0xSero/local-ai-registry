@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "Qwen/Qwen3.6-35B-A3B-FP8",
+      "--tensor-parallel-size",
+      "2",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "32768"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmof9h1970008l704j9dc7oo7"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmof9h1970008l704j9dc7oo7"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Qwen 3.6 35B-A3B MoE (3B active per token, sparse activation). Mixed-pair rig: RTX 3090 Ti (slot 1, x16) + RTX 3090 FE (slot 2, x4); TP=2 still gated by FE bandwidth. Single-stream 512/512 via `vllm bench serve` at concurrency=1, 20 prompts. Median TPOT 6.86 ms (~146 t/s decode). Required `--max-num-batched-tokens 4096` (default 2048 < hybrid Mamba block size 2096 → boot assertion). Prefix caching + torch.compile + CUDAGraphs engaged.",
       "observed_command": "vllm serve Qwen/Qwen3.6-35B-A3B-FP8 --tensor-parallel-size 2 --gpu-memory-utilization 0.88 --max-model-len 32768 --max-num-seqs 2 --max-num-batched-tokens 4096 --kv-cache-dtype fp8 --dtype auto --enable-prefix-caching --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3",
@@ -174,7 +253,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 2,
     "max_context_tokens": 32768,
     "tensor_parallel": 2
   },

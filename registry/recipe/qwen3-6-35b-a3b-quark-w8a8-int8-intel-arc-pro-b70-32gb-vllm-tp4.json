@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "piecewise",
     "name": "vllm",
     "version": "0.20.2rc1.dev2+gc51df4300.d20260523"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq9ifq0500b0r8012f27j1xl"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6-35B-A3B Quark W8A8 INT8 on 4x Intel Arc Pro B70 via vLLM XPU. Accepted production-candidate frontdoor run, not diagnostic route-capture. Mean of 4 measured streaming /v1/completions runs after warmup: corrected after-first output tok/s=99.77, e2e output tok/s=98.27, TTFT=76.53 ms. Prompt/output 512/512, batch/concurrency 1, temperature 0, top_k 1, top_p 1, prefix caching disabled. Quality gates for accepted runtime passed earlier same day: exact, repeat canary, structured/math/code prompts, and 8192-token needle. Peak VRAM is total xpu-smi allocation across 4 cards; observed about 31.89 GiB per B70 because gpu_memory_utilization=0.95 reserves nearly all visible memory.",
       "observed_command": "vllm serve /mnt/fast-ai/llm-cache/hf/models--nameistoken--Qwen3.6-35B-A3B-Quark-W8A8-INT8/snapshots/cced56592e8c8935f8220836b4baa04dfd389118 --host 127.0.0.1 --port 18080 --trust-remote-code --served-model-name qwen36-35b-a3b-fp8 --dtype auto --quantization quark --tensor-parallel-size 4 --pipeline-parallel-size 1 --distributed-executor-backend mp --max-model-len 32768 --max-num-batched-tokens 8192 --max-num-seqs 48 --gpu-memory-utilization 0.95 --kv-cache-dtype auto --no-enable-prefix-caching --language-model-only --compilation-config '{\"cudagraph_mode\":\"PIECEWISE\"}' --generation-config vllm",
@@ -187,7 +216,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 48,
     "max_context_tokens": 32768,
     "tensor_parallel": 4
   },

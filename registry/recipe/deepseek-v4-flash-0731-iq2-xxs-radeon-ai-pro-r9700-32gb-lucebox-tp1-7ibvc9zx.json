@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmta1du8p01anli017ibvc9zx"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmta1du8p01anli017ibvc9zx"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -124,6 +152,7 @@
   },
   "metadata": {
     "localmaxxing": {
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Corrected PR #640 qualification: exact c994209 dual-architecture gfx1151+gfx1201 build; DeepSeek V4 Flash ROCmFP2 target plus DSpark denseF16 draft, q=4/top-k4; R9700 hip:0 plus Strix Halo 8060S hip:1 over Oculink peer access; calibrated hotness profile; actual 10200 MiB expert budget; grouped heterogeneous MMID prefill enabled with expert-major threshold 64; PR #647 cold-input-first disabled; both GGML_BATCH_PEER_COPIES and GGML_CUDA_BATCH_PEER_COPIES disabled; sparse prefill, chunk 2048, context 8192. Protocol: one discarded warmup plus three measured streaming requests at temperature 0, 393 prompt tokens and 128 output tokens. All measured outputs shared SHA-256 0f785a7ffa406498aafb14553966eaed0f52220fed0f7cc016b66921d104d194. Activation trace proved device-resident heterogeneous expert-major prefill. TTFT and rates are client monotonic measurements. Peak VRAM is R9700 workload allocation: max /sys/class/drm/card1/device/mem_info_vram_used minus stable pre-launch driver baseline (27076444160 - 59936768 bytes). Structured hardware names the discrete R9700; Halo participation is disclosed here. Short-context benchmark profile, not a general production configuration.",
       "revision_unpinned": true,
@@ -145,8 +174,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 8192,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

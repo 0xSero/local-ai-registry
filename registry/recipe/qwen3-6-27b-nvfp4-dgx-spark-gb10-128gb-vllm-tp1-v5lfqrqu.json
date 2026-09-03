@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "sakamakismile/Qwen3.6-27B-NVFP4",
+      "--tensor-parallel-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "262144"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmogn5c7w0003l704v5lfqrqu"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmogn5c7w0003l704v5lfqrqu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Final corrected submission (replaces cmoglz0ux0004lb04zo1dhhhb and cmogm80ri0001lb04hwhu9uzx). Target weights: sakamakismile/Qwen3.6-27B-NVFP4 (community NVFP4 quant of Qwen/Qwen3.6-27B). Drafter: z-lab/Qwen3.6-27B-DFlash (DFlash spec decoding, num_speculative_tokens=15, thinking-ON). Hardware: DGX Spark GB10 (128 GB unified, peak 117 GiB measured). n=30 trials @ pp=128, tg=128, depth=0, concurrency=1, warm-pass (cold-start sample dropped): tokSOut median=32.83 (mean=40.10, std=15.63), ttfr median=268ms (mean=274). Median is the honest headline; DFlash decode std is ~40% of mean due to acceptance fluctuating with prompt content. Mean acceptance length tau=4.11 (per-position [0.75, 0.52, 0.38, ...]). Speedup vs Qwen3.6-27B-FP8 autoregressive baseline on same hardware: 4.18x (32.83 / 7.85). First DGX Spark + spec-decoding entry, first NVFP4 entry leaderboard-wide. REQUIRES the DFlash layer-tap off-by-one vLLM source patch (without it acceptance collapses ~80% -> ~3%). llama-benchy 0.3.6 (PR #11 SSE-counting fix is upstream as of 0.3.6). Full Docker reproduction: https://github.com/my-other-github-account/qwen36-dflash-spark-repro By @banana_baeee.",
       "observed_command": "# Reproduction — see https://github.com/my-other-github-account/qwen36-dflash-spark-repro\n# Download models on host:\nhf download sakamakismile/Qwen3.6-27B-NVFP4 --local-dir ~/models/Qwen3.6-27B-NVFP4\nhf download z-lab/Qwen3.6-27B-DFlash       --local-dir ~/models/Qwen3.6-27B-DFlash\n\n# Build & run:\ndocker build -t qwen36-dflash-spark .\ndocker run -d --name qwen36-dflash --runtime=nvidia --gpus all --network=host \\\n  -v ~/models:/models:ro \\\n  -e THINK_KWARGS='{\"enable_thinking\": true}' \\\n  qwen36-dflash-spark\n\n# Bench (pp=128 / tg=128 / depth=0 / c=1 / n=30) — produces the headline number:\ndocker run --rm --network=host -v ~/models:/models:ro -v $(pwd):/out \\\n  --entrypoint bash qwen36-dflash-spark \\\n  -c 'OUT=/out/result.json bash /repro/scripts/bench.sh'\n\n# Underlying vllm serve invocation (from launch_server.sh):\nvllm serve /models/Qwen3.6-27B-NVFP4 \\\n  --served-model-name qwen36-27b \\\n  --host 0.0.0.0 --port 8000 \\\n  --tensor-parallel-size 1 \\\n  --gpu-memory-utilization 0.92 \\\n  --max-model-len 262144 \\\n  --max-num-batched-tokens 4096 \\\n  --max-num-seqs 1 \\\n  --trust-remote-code \\\n  --load-format fastsafetensors \\\n  --attention-backend flash_attn \\\n  --enable-prefix-caching \\\n  --speculative-config '{\"method\":\"dflash\",\"num_speculative_tokens\":15,\"model\":\"/models/Qwen3.6-27B-DFlash\"}' \\\n  --default-chat-template-kwargs '{\"enable_thinking\": true}' \\\n  --seed 0\n\n# Required vLLM source patch: patches/apply_dflash_off_by_one.sh (DFlash layer-tap +1).",

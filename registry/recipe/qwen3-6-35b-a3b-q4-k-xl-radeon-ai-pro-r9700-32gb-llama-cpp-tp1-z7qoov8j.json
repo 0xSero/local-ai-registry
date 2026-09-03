@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr23k9rh04copi01z7qoov8j"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr23k9rh04copi01z7qoov8j"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Vulkan, mtp. Simple test prompt with no context. prompt read \"Please write a python function that calculates the trajectory in a three body problem.\"",
       "observed_command": "./llama.cpp/llama-server \\\n    -m ~/unsloth/Qwen3.6-35B-A3B-MTP/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf \\\n    --ctx-size 156000 \\\n    --flash-attn on \\\n    --no-mmap \\\n    --mlock \\\n    --jinja \\\n    --chat-template-kwargs '{\"enable_thinking\":false}' \\\n    --temp 1.0 \\\n    --top-p 0.95 \\\n    --top-k 20 \\\n    --min-p 0.00 \\\n    --host 0.0.0.0 \\\n    --port 8001 \\\n    --n-gpu-layers 99 \\\n    --parallel 1 \\\n    --spec-type draft-mtp \\\n    --spec-draft-n-max 3 \\\n    --webui-mcp-proxy \\\n    -n -1",
@@ -187,7 +216,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_context_tokens": 156000,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

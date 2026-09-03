@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdbbuqv002ylm01k5rxmfzm"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdbbuqv002ylm01k5rxmfzm"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "fisso / cachyOSFisso. CSV run 12 (ub768). Fixed prompt.txt 2797 tok, generate truncated at 96, one warmup discarded. llama.cpp /v1/chat/completions timings (prompt_per_second / predicted_per_second). TTFT here is prompt_n/prefill_tok_s, not a separate timer. Thinking xhigh + preserve_thinking. Unsloth thinking sampler. 2x RTX 3090 PCIe only (no NVLink), power cap 250 W/card. PLE n-gram table on CPU via -ot. -ncmoe 8. ubatch 768 vs run6 512",
       "observed_command": "llama-server -m /home/user/models/Qwen3.8-Flash-Next-GGUF/UD-IQ3_XXS/Qwen3.8-Flash-Next-UD-IQ3_XXS-00001-of-00003.gguf --host 0.0.0.0 --port 1234 --alias qwen38flash --override-tensor per_layer_token_embd.weight=CPU --load-mode none -ngl 99 -ncmoe 8 -sm layer -ts 1.25,1 -fa on --fit off -c 32768 -np 1 -ctk f16 -ctv f16 -b 2048 -ub 768 -t 6 -tb 16 --cpu-mask 0x555 --cpu-strict 1 --cpu-mask-batch 0x555 --jinja --reasoning-effort xhigh --reasoning-preserve --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 --metrics",

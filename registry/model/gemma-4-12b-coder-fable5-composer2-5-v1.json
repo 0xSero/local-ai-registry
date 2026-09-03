@@ -1,6 +1,6 @@
 {
   "active_params": null,
-  "architecture": null,
+  "architecture": "dense",
   "downloads": {
     "all_time": 25230,
     "captured_at": "2026-08-31T12:36:33Z",
@@ -28,13 +28,27 @@
         "sources": [
           {
             "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/mlx-community/gemma-4-12b-coder-fable5-composer2.5-8bit?blobs=true"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "resolved-huggingface-config-non-moe-architecture",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/mlx-community/gemma-4-12b-coder-fable5-composer2.5-8bit?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "gemma",
@@ -65,6 +79,11 @@
         "captured_at": "2026-08-27T06:04:13.773Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/mlx-community/gemma-4-12b-coder-fable5-composer2.5-8bit"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/mlx-community/gemma-4-12b-coder-fable5-composer2.5-8bit?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

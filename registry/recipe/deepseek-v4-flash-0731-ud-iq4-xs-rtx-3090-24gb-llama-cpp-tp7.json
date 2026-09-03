@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmshcu8v301fqpp01htchp8sl"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmshcu8v301fqpp01htchp8sl"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 7,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "6 valid measured runs in two 3-run batches, each after 2 warmups; fixed standard prompt; temperature 0; streaming. Server prefix cache enabled, but cache_prompt=false per request; cached_tokens=0/cache_n=0 verified each run. tokSOut=median llama.cpp predicted tok/s; tokSPrefill=promptTokens/client TTFT; tokSTotal=outputTokens/client end-to-end time; power=median per-GPU mean during requests. DSpark Q8_0 speculative draft, n_max=3. Temp-zero output hash stable. Reliability caveat: an initial fourth consecutive 512-token run crashed llama.cpp in ggml_cuda_mul_mat_cublas with CUBLAS_STATUS_INVALID_VALUE; systemd recovered it. The final six samples used one planned clean restart between the two 3-run batches to avoid a repeat.",
       "observed_command": "/home/thread/src/llama.cpp-dsv4-iq4-dspark-0713275/build-cuda-sm86/bin/llama-server --model /mnt/nvme/models/unsloth/DeepSeek-V4-Flash-0731-GGUF/UD-IQ4_XS/DeepSeek-V4-Flash-0731-UD-IQ4_XS-00001-of-00004.gguf --model-draft /mnt/nvme/models/unsloth/DeepSeek-V4-Flash-0731-GGUF/dspark/dspark-DeepSeek-V4-Flash-0731-Q8_0.gguf --alias deepseek-v4-flash-0731-iq4-xs-dspark --host 0.0.0.0 --port 18081 --device CUDA0,CUDA1,CUDA2,CUDA3,CUDA4,CUDA5,CUDA6 --split-mode layer --fit on --fit-target 4000 --fit-ctx 262144 --spec-type draft-dspark --spec-draft-n-max 3 --jinja --temp 1.0 --parallel 1 --no-mmap --batch-size 2048 --ubatch-size 512 --cache-type-k f16 --cache-type-v f16 --top-p 1.0 --min-p 0.0 --flash-attn on --no-warmup --cache-prompt --cache-ram 2048 --cache-idle-slots --slots --metrics --no-webui",
@@ -205,7 +234,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 262144,
+    "max_context_tokens": null,
     "tensor_parallel": 7
   },
   "speed_sweep_ids": [

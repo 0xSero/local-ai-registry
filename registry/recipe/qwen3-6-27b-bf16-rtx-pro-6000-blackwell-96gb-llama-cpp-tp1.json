@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "unsloth/Qwen3.6-27B-MTP-GGUF:BF16",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "131072"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovena500ddmp01rbj4jux0"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovena500ddmp01rbj4jux0"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Qwen3.6-27B BF16 GGUF benchmark with llama.cpp and MTP on NVIDIA RTX PRO 6000 Blackwell 96 GB. Single-user text completion, 131072 context, 128-token output cap, temperature 0, full GPU offload with MTP draft decoding. Recorded decode throughput 40.34 tok/s for 128 output tokens; 53 of 64 MTP draft tokens accepted; prompt tokens 561.",
       "observed_command": "llama-server -m /home/<USER>/models/quant/Qwen3.6-27B-Q6_K.gguf --alias Qwen3.6-27B-Q6_K --host 127.0.0.1 --port 8095 --ctx-size 131072 --gpu-layers 99 --flash-attn on --parallel 1 --batch-size 2048 --ubatch-size 1024 --cache-type-k f16 --cache-type-v f16 --jinja --reasoning off --chat-template-kwargs '{\"enable_thinking\":false}' --temp 0.7 --top-k 20 --top-p 0.80 --min-p 0.0 --presence-penalty 1.5 --repeat-penalty 1.0 --spec-type draft-mtp --spec-draft-n-max 2 --spec-draft-p-min 0.75",

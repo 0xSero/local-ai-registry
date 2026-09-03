@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofaz0qz0005l50454g8zfx6"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofaz0qz0005l50454g8zfx6"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Bosgame M5 Strix Halo (Ryzen AI Max 395, 128 GB unified). llama.cpp vulkan-radv. Qwen 3.6 35B-A3B MoE (3B active) at unsloth dynamic Q4_K_XL (21 GB on disk). Single-stream 512/512 via vllm bench serve, 20 prompts. KV q8_0. Q4 vs Q6_K_XL on same rig: 52.12 vs 50.36 t/s — barely faster, suggests memory bandwidth ceiling rather than compute.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 8",
@@ -172,8 +201,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_concurrency": 8,
+    "max_context_tokens": 4096,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

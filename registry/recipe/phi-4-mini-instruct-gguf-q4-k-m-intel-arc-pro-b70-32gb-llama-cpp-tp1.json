@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6yazhe00hcmn01i5gz2xe0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6yazhe00hcmn01i5gz2xe0"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Strict fresh-response rapid snapshot for Phi-4-mini-instruct Q4_K_M on one Intel Arc Pro B70. Fixed rapid realistic suite, one cold response per prompt, cached_tokens=0 on every row, no prompt/KV/context/response reuse, no n-gram/history acceleration, no speculation. llama.cpp/SYCL, ctx=4096, batch=1024, ubatch=256, FlashAttention on, f16 KV, server --cache-ram 0 and per-request cache_prompt=false. A same-recipe standalone repeat landed at 96.574 tok/s; the lower 96.548 tok/s confirmation is promoted conservatively. Concurrent four-GPU screen rows were lower and kept diagnostic-only for this small model.",
       "observed_command": "llama-server -m /mnt/usb-models/llm-models/phi-4-mini-instruct-gguf/microsoft_Phi-4-mini-instruct-Q4_K_M.gguf -c 4096 -ngl 99 -b 1024 -ub 256 -fa on --ctx-checkpoints 0 --jinja --reasoning off",
@@ -169,7 +198,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 4096,
     "tensor_parallel": 1
   },
