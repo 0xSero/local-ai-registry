@@ -1,0 +1,95 @@
+services:
+  inference:
+    image: ghcr.io/tonyd2wild/vllm-glm53-flash@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6
+    entrypoint: ["vllm", "serve"]
+    network_mode: host
+    ipc: host
+    shm_size: 64g
+    volumes:
+      - "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4:/models/glm-5.3-flash-nvfp4:ro"
+      - "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2:/models/dflash2-draft:ro"
+      - "../../registry/asset/glm-5-3-flash-multimodal-chat-template.jinja:/models/chat-template-mm.jinja:ro"
+      - "../../registry/asset/glm-5-3-flash-vllm-sparse-attn-indexer-kpool.py:/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/sparse_attn_indexer_kpool.py:ro"
+      - "${CACHE_ROOT}/glm53-vllm-512k:/cache"
+    environment:
+      VLLM_HOST_IP: "${NODE_FABRIC_ADDRESS}"
+      HF_HOME: /cache/huggingface
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      TORCH_NCCL_ASYNC_ERROR_HANDLING: "1"
+      NCCL_IB_GID_INDEX: "3"
+      NCCL_IB_ROCE_VERSION_NUM: "2"
+      NCCL_IB_ADDR_FAMILY: AF_INET
+      NCCL_SOCKET_IFNAME: "${FABRIC_INTERFACE}"
+      NCCL_NET: IB
+      NCCL_IB_DISABLE: "0"
+      NCCL_IB_HCA: "${NCCL_IB_HCA}"
+      NCCL_NVLS_ENABLE: "0"
+      NCCL_IB_MERGE_NICS: "0"
+      NCCL_CROSS_NIC: "0"
+      NCCL_CUMEM_ENABLE: "0"
+      NCCL_IGNORE_CPU_AFFINITY: "1"
+      NCCL_DEBUG: WARN
+      GLOO_SOCKET_IFNAME: "${FABRIC_INTERFACE}"
+      TP_SOCKET_IFNAME: "${FABRIC_INTERFACE}"
+      MN_IF_NAME: "${FABRIC_INTERFACE}"
+      PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True
+      TORCH_CUDA_ARCH_LIST: 12.1a
+      FLASHINFER_CUDA_ARCH_LIST: 12.1a
+      FLASHINFER_DISABLE_VERSION_CHECK: "1"
+      VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+    command:
+      - /models/glm-5.3-flash-nvfp4
+      - --served-model-name
+      - glm-5.3-flash
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --trust-remote-code
+      - --tensor-parallel-size
+      - "4"
+      - --gpu-memory-utilization
+      - "0.85"
+      - --max-model-len
+      - "524288"
+      - --max-num-seqs
+      - "1"
+      - --max-num-batched-tokens
+      - "2048"
+      - --block-size
+      - "2304"
+      - --moe-backend
+      - marlin
+      - --speculative-config
+      - '{"method":"dflash","model":"/models/dflash2-draft","num_speculative_tokens":7}'
+      - --kv-cache-dtype
+      - fp8_e4m3
+      - --kv-cache-memory
+      - "12884901888"
+      - --tool-call-parser
+      - glm47
+      - --enable-auto-tool-choice
+      - --reasoning-parser
+      - glm45
+      - --chat-template
+      - /models/chat-template-mm.jinja
+      - --default-chat-template-kwargs
+      - '{"enable_thinking":true}'
+      - --distributed-executor-backend
+      - mp
+      - --nnodes
+      - "4"
+      - --node-rank
+      - "${NODE_RANK}"
+      - --master-addr
+      - "${HEAD_FABRIC_ADDRESS}"
+      - --master-port
+      - "29521"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              count: 1

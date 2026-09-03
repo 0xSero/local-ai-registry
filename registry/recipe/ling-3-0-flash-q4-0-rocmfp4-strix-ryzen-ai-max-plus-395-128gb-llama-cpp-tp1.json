@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgmi5mu018ypp01rd08j2bg"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgmi5mu018ypp01rd08j2bg"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "ROCmFP4-STRIX quant format purpose-built for Strix Halo (attn K/V + embedding at Q6_K, MoE experts at Q4_0_ROCMFP4_FAST). BailingMoe3/Ling-3.0-flash arch ported to charlie12345/ROCmFPX (branch codex/ling3-rocmfpx). llama-bench -p 128 -n 32 -ngl 99 -fa 1 on Framework Desktop, gfx1151 (ROCm+Vulkan hybrid build). Decode ties the 3x R9700 discrete-GPU run (~39 t/s both) despite far lower prefill compute.",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 4096,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

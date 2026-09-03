@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrk1z0g102w3mj01nnw34zqf"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrk1z0g102w3mj01nnw34zqf"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Rented JarvisLabs RTX PRO 6000 Blackwell 96GB (cloud), CUDA 13 build sm_120. Median of 3 runs, temp 0, cold prefill, prompt ~531 tok. Self-speculative MTP (draft-mtp, n-max 2). Head-to-head vs my 3x R9700 rig, same GGUF quants.",
       "observed_command": "llama-server -m Qwen3.6-27B-MTP-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 2 --reasoning-format auto -ctk f16 -ctv f16 -c 262144 -np 1 -ngl 999",
@@ -171,7 +200,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 787,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

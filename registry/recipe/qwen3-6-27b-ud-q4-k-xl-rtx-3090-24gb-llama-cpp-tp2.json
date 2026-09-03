@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofdrmzl000dla042zyn4ihi"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofdrmzl000dla042zyn4ihi"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "PC dual-RTX-3090 (Ti slot 1 + FE slot 2), llama.cpp dual-card row-split TP=2 (-sm row -ts 1,1). Qwen 3.6 27B DENSE at unsloth UD-Q4_K_XL (17 GB). Single-stream 512/512 vllm bench serve, 20 prompts. KV q8_0. 2.1x faster than M5 same model (24.16 vs 11.46 t/s) — discrete GPU bandwidth wins on dense.",
       "observed_command": "llama-server -m Qwen3.6-27B-UD-Q4_K_XL.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -sm row -ts 1,1 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 1",

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrwexu4s009ynz01wbpwmtvs"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrwexu4s009ynz01wbpwmtvs"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Dual-GPU -sm layer, -ts 1/1, -ub 1024, c 4096. Decode: llama-server /completion timings, temp 0, fresh state, 5 observations 92.9-93.7. ttft from 23-token prompt eval (225.9ms). Same sustained-serving caveat as our other runs: long-lived multi-GPU decode degrades to ~24 t/s over ~6 requests without a periodic chunky GPU burst (clock-governor behavior; single-GPU configs immune). SR-IOV VFs: no power telemetry.",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

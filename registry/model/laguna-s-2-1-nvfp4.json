@@ -1,6 +1,6 @@
 {
-  "active_params": null,
-  "architecture": null,
+  "active_params": 8.5,
+  "architecture": "moe",
   "downloads": {
     "all_time": 718696,
     "captured_at": "2026-08-31T12:36:33Z",
@@ -10,31 +10,45 @@
   "facts": {
     "active_params": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T00:26:24Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T00:26:24Z",
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/poolside/Laguna-S-2.1-NVFP4/resolve/826aacdf6d8b2699d4e367def6f17c83b06044c2/README.md"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-total-and-active-parameter-pair",
+      "state": "known"
     },
     "architecture": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-08-31T23:43:51Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-NVFP4?blobs=true"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-NVFP4?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "laguna",
@@ -57,7 +71,7 @@
   },
   "id": "laguna-s-2-1-nvfp4",
   "name": "Laguna-S-2.1-NVFP4",
-  "params": 1,
+  "params": 118,
   "provenance": {
     "captured_at": "2026-08-30T09:10:02Z",
     "sources": [
@@ -65,6 +79,11 @@
         "captured_at": "2026-08-30T09:10:02Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/poolside/Laguna-S-2.1-NVFP4"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-NVFP4?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

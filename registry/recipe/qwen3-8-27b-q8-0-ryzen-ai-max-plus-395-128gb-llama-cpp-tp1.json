@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmstgpwjj03kjms01adt0vcal"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmstgpwjj03kjms01adt0vcal"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "MTP self-speculative (--spec-type draft-mtp, n-max 4) on Framework Desktop Strix Halo (Ryzen AI Max 395+, 128G unified, gfx1151), llama.cpp b10434 ROCm via llama-swap. Compare Qwen3.6-27B Q8_0 MTP same rig: 16.7 t/s.",
       "observed_command": "/home/mikekey/llama.cpp/build-rocm-fresh/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/Qwen3.8-27B-Q8_0.gguf --spec-type draft-mtp --spec-draft-n-max 4 --reasoning-format auto --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -np 1 -c 131072",
@@ -195,7 +224,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 829,
+    "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -6,10 +6,46 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "deepseek-ai/DeepSeek-V4-Flash",
+      "--tensor-parallel-size",
+      "2",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "500000"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "full-and-piecewise",
     "name": "vllm",
-    "version": null
+    "version": "0.26.0"
   },
   "facts": {
     "capabilities.chat": {
@@ -68,19 +104,47 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
-    "engine.graph_mode": {
+    "draft_launch.entrypoint": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:41:26Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:08:18Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:08:18Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqt53z6r01lpqr014s81mso5"
+          }
+        ]
+      },
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:38:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:38:26Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxttyo00fjmp01nmrwtmkn"
+          }
+        ]
+      },
+      "reason": "copied-from-synthesized-image-provenance",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -95,6 +159,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqt53z6r01lpqr014s81mso5"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmqt53z6r01lpqr014s81mso5"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +217,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Used config from https://github.com/local-inference-lab/rtx6kpro/blob/master/models/ds4-flash-v4.md",
       "observed_command": "vllm serve /mnt/data/llm-data/models/deepseek-ai/DeepSeek-V4-Flash --served-model-name ${MODEL_ID} --host 0.0.0.0 --port ${PORT} --kv-cache-dtype fp8 --block-size 256 --load-format safetensors --tensor-parallel-size 2 --moe-backend b12x --linear-backend b12x --gpu-memory-utilization 0.9 --max-model-len 262000 --max-num-seqs 8 --async-scheduling --no-scheduler-reserve-full-isl --max-num-batched-tokens 4096 --max-cudagraph-capture-size 192 --attention-backend B12X_MLA_SPARSE --enable-chunked-prefill --enable-prefix-caching --compilation-config=\"{\\\"cudagraph_mode\\\":\\\"FULL_AND_PIECEWISE\\\",\\\"custom_ops\\\":[\\\"all\\\"]}\" --tokenizer-mode deepseek_v4 --tool-call-parser deepseek_v4 --enable-auto-tool-choice --reasoning-parser deepseek_v4 --default-chat-template-kwargs.thinking=true --default-chat-template-kwargs.reasoning_effort=high --enable-flashinfer-autotune --speculative-config \"{\\\"method\\\":\\\"mtp\\\",\\\"num_speculative_tokens\\\":1,\\\"draft_sample_method\\\":\\\"probabilistic\\\",\\\"moe_backend\\\":\\\"b12x\\\",\\\"use_local_argmax_reduction\\\":true}\"'",
@@ -202,8 +295,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 500000,
+    "max_concurrency": 8,
+    "max_context_tokens": 262000,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [
