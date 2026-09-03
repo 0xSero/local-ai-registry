@@ -27,10 +27,14 @@ source "$HERE/../lib/snapshot.sh"
 
 recipes_ok || fail "recipes.json is missing or not the expected schema" || exit 1
 
-spawn() { # detach a worker; it takes the lock itself and reports through the ledger
+spawn() { # spawn <op-name> <worker-verb>: detach a worker; it takes the lock itself and reports through the ledger
+  local name=$1; shift
   if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then "$SELF" "$@" >/dev/null 2>>"$LOGFILE" || true; return; fi
+  # the worker is its own session so closing the panel's process never kills it; its pid goes into
+  # the ledger right away so the panel turns busy on the next snapshot, not a second later
   if command -v setsid >/dev/null 2>&1; then setsid "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & disown
-  else ( "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & ); fi
+  else "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & disown; fi
+  op_pending "$name" "$!"
 }
 
 current_recipe() { # the one recipe for this machine, gated; prints json or fails out loud
@@ -47,13 +51,15 @@ current_recipe() { # the one recipe for this machine, gated; prints json or fail
 
 w_load() {
   guard || oops "another operation is running"
-  local r id
+  local r id t0
+  op download "" "checking the GPU and recipe" 0
   r=$(current_recipe 2>"$STATE/gate.err") || oops "$(sed -n '$s/^local-ai: //p' "$STATE/gate.err")"
   id=$(jq -r .id <<<"$r")
   op download "$id" "checking" 0
   ensure_image "$(jq -r .launch.image <<<"$r")" "$id"
   ensure_image "$(gateway_image)" "$id"
   weights_present "$r" || download_weights "$r"
+  t0=$SECONDS
   op starting "$id" "setting aside the previous model" 0
   set_aside || oops "could not set aside the running containers"
   op starting "$id" "starting" 0
@@ -64,6 +70,8 @@ w_load() {
     oops "$why"
   fi
   drop_previous
+  # how long Start took from the first container step to accepted: the next Start's progress bar
+  lwrite '.lastStartSeconds=($s|tonumber)' --arg s "$((SECONDS - t0))"
   op_done; log "ready $id"
 }
 
@@ -88,9 +96,9 @@ usage() {
 cmd=${1:-help}; shift || true
 case $cmd in
   snapshot) snapshot_write; cat "$SNAPSHOT" ;;
-  load) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-load ;;
-  unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-unload ;;
-  open-agent) snapshot_write; open_agent "${1:-}" ;;
+  load) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn download _worker-load ;;
+  unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn unload _worker-unload ;;
+  open-agent) snapshot_write; open_agent "${1:-}" 2>"$STATE/agent.err" || { m=$(sed -n '$s/^local-ai: //p' "$STATE/agent.err"); refuse "${m:-agent launch failed (see $LOGFILE)}"; exit 1; } ;;
   share) share_toggle "$@" ;;
   _worker-load) w_load ;;
   _worker-unload) w_unload ;;
