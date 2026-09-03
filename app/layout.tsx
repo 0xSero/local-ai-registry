@@ -32,7 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
             <Link href="/organisations">Organisations</Link>
             <Link href="/compare">Compare</Link>
             <Link href="/api/v1">API</Link>
-            <a href="https://github.com/0xSero/local-ai-registry#read-only-api">Docs</a>
+            <a href="https://0xsero.github.io/local-ai-registry/">Docs</a>
           </nav>
         </header>
         {children}
