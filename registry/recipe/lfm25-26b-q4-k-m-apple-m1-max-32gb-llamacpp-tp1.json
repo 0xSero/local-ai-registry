@@ -1,0 +1,106 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "LFM2.5-2.6B-Q4_K_M Q4_K_M validated candidate on apple-m1-max-32gb via native llama.cpp (Apple Metal). Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "9430 (d48a56eff)"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://vast.ai"
+          }
+        ]
+      },
+      "reason": "validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m1-max-32gb",
+  "id": "lfm25-26b-q4-k-m-apple-m1-max-32gb-llamacpp-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "validation-run",
+          "url": "https://vast.ai"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "note": "--no-mmproj required: multimodal projector (mmproj) load aborts in llama.cpp 9430 Metal build",
+    "observed_command": "llama-server -hf LiquidAI/LFM2.5-2.6B-GGUF:Q4_K_M --no-mmproj -c 32768 -ngl 99 --host 127.0.0.1 --port 8080",
+    "source": "vast-validation-2026-09-01"
+  },
+  "metadata": {
+    "ctx_ceiling": {
+      "max_ok_ctx": 262144,
+      "measured_at": "2026-09-01T00:00:00Z",
+      "method": "ctx-ladder-binary-search (16384 doubling to failure), ctx_probe.py v3 strict acceptance",
+      "oom_ctx": null,
+      "source": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "ctx-ceiling-run",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      },
+      "timings": {}
+    },
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "eval_count": 102,
+        "eval_duration_ns": null,
+        "load_duration_ns": null,
+        "prompt_eval_count": null,
+        "prompt_eval_duration_ns": null,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": null
+      },
+      "hardware_note": "local MacBook Pro M1 Max 32GB, unified memory, Metal backend",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768. Engine timings from engine usage counters. Host: local MacBook Pro M1 Max 32GB, unified memory, Metal backend."
+    }
+  },
+  "model_instance_id": "liquidai-lfm2-5-2-6b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "normalized-recipe",
+        "url": "https://vast.ai"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "lfm25-26b-q4-k-m-apple-m1-max-32gb-llamacpp-tp1-sweep"
+  ],
+  "status": "candidate"
+}

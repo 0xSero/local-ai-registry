@@ -1,0 +1,153 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Qwen3.5-9B-Q4_K_M Q4_K_M validated candidate on apple-m1-max-32gb via native mlx-lm (Apple Metal). Observed reference launch; not a digest-pinned container contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx-lm",
+    "version": "0.31.3+mlx-0.32.2"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:00:00Z",
+            "kind": "validation-run",
+            "url": "https://vast.ai"
+          }
+        ]
+      },
+      "reason": "validation-evidence-recorded",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m1-max-32gb",
+  "id": "qwen35-9b-q4-k-m-apple-m1-max-32gb-mlxml-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-01T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-01T00:00:00Z",
+          "kind": "validation-run",
+          "url": "https://vast.ai"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "note": "mlx-lm 0.31.3 with mlx 0.32.2; mlx-lm 0.30.7 cannot load this artifact layout",
+    "observed_command": "mlx_lm.server --model ~/.cache/huggingface/hub/models--mlx-community--Qwen3.5-9B-MLX-4bit/snapshots/3885219b6810b007914f3a7950a8d1b469d598a5 --port 8080",
+    "source": "vast-validation-2026-09-01"
+  },
+  "metadata": {
+    "ctx_ceiling": {
+      "max_ok_ctx": 64022,
+      "measured_at": "2026-09-01T00:00:00Z",
+      "method": "observed-default ladder (mlx_lm.server has no ctx-size control); largest passing prompt exercised; hard OOM at 128022",
+      "note": "observed-default: 64022-token prompt passes (largest actually exercised); 262144 nominal max_position_embeddings NOT reachable | OOM: 128022-token prompt: metal::malloc Attempting to allocate 22011707392 bytes > max buffer 20100448256 bytes - reproduced twice; after failure the server worker thread dies and subsequent requests hang until restart",
+      "observed_ladder": [
+        {
+          "ok": true,
+          "prompt_tokens": 1062,
+          "wall_s": 7.2
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 2022,
+          "wall_s": 13.1
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 4022,
+          "wall_s": 19.8
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 8022,
+          "wall_s": 37.8
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 16022,
+          "wall_s": 57.1
+        },
+        {
+          "note": "finish=length, thinking consumed 512-token budget, reproduced 2x; passes with budget 1024",
+          "ok": false,
+          "prompt_tokens": 32022
+        },
+        {
+          "note": "re-verified on fresh server",
+          "ok": true,
+          "prompt_tokens": 64022,
+          "wall_s": 214.3
+        },
+        {
+          "note": "metal::malloc OOM 22.01GB > 20.10GB; prefill completes (~35min) then thread crashes",
+          "ok": false,
+          "prompt_tokens": 128022
+        }
+      ],
+      "oom_ctx": 128022,
+      "source": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "ctx-ceiling-run",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      },
+      "timings": {
+        "prompt_tokens": 64022,
+        "wall_s": 214.3
+      }
+    },
+    "validation": {
+      "date": "2026-09-01",
+      "evidence": {
+        "eval_count": 116,
+        "eval_duration_ns": null,
+        "load_duration_ns": null,
+        "prompt_eval_count": null,
+        "prompt_eval_duration_ns": null,
+        "response_excerpt": "validation-ok",
+        "total_duration_ns": null
+      },
+      "hardware_note": "local MacBook Pro M1 Max 32GB, unified memory, Metal backend",
+      "probe": "Exact 'validation-ok' completion probe on live server, temperature 0, num_ctx 32768. Engine timings from engine usage counters. Host: local MacBook Pro M1 Max 32GB, unified memory, Metal backend."
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-5-9b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-01T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "normalized-recipe",
+        "url": "https://vast.ai"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 64022,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen35-9b-q4-k-m-apple-m1-max-32gb-mlxml-tp1-sweep"
+  ],
+  "status": "candidate"
+}
