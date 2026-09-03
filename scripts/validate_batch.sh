@@ -13,7 +13,7 @@ mkdir -p "$RUNS"
 one() {
   local id=$1 log="$RUNS/$1.log" rc
   printf '%s start %s\n' "$(date -u +%H:%M:%S)" "$id" >&2
-  python3 "$ROOT/scripts/validate_rented.py" "$id" --provider "${PROVIDER:-vast}" --recommend >>"$log" 2>&1; rc=$?
+  python3 "$ROOT/scripts/validate_rented.py" "$id" --provider "${PROVIDER:-vast}" --recommend ${EXTRA_ARGS:-} >>"$log" 2>&1; rc=$?
   if (( rc == 0 )); then printf '%s PROMOTED %s\n' "$(date -u +%H:%M:%S)" "$id"
   else printf '%s FAILED %s (rc=%s): %s\n' "$(date -u +%H:%M:%S)" "$id" "$rc" "$(grep -E 'acceptance FAILED|failed|giving up|did not|EXITED|TERMINATED' "$log" | tail -1)"; fi
 }
