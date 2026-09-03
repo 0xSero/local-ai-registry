@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrhdwzrb00kymj010txqfsul"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrhdwzrb00kymj010txqfsul"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 96,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "vLLM (kyuz0/vllm-therock-gfx1151) on Framework Desktop Strix Halo gfx1151, ROCm 7.2.4, single APU 128G unified. GLM-4.5-Air AWQ 4bit, aggregate throughput at concurrency=96, best of 3. Concurrency sweep on this box: 1->6.3, 8->11.2, 16->19.9, 32->26.7, 48->65.3, 64->82.3, 96->101.4 tok/s decode aggregate.",
       "observed_command": "vllm serve GLM-4.5-Air-AWQ-4bit --max-model-len 32768 --max-num-seqs 128 --gpu-memory-utilization 0.85",
@@ -160,7 +189,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 96,
+    "max_concurrency": 128,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

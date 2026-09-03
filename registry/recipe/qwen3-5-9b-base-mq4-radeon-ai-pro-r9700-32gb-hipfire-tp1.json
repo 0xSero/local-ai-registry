@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpdzu8ig00sbpd01dsdrf3zr"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpdzu8ig00sbpd01dsdrf3zr"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "hipfire @ 4840f0b6 (master post-sync 2026-05-20)\nprompt: merge_sort thinking-OFF (md5=253c7ac50857fe6d0e10fb0d2c5e35c0)\n  benchmarks/prompts/merge_sort_thinking_off.txt (27 input tokens)\ndecode mode: DFlash speculative (adaptive block_size, mean B=16)\n  drafter: qwen35-9b-dflash-mq4.hfq (z-lab Qwen3.5-DFlash native head, MQ4 weights)\n  target: qwen3.5-9b.mq4 (MQ4 weights)\nkv_cache: q8\nprompt_normalize: true (default since 2026-04-26)\nτ: 13.1818   accept_rate: 0.8788\noutput: 256 tokens emitted\nAR baseline (same binary same hardware, --ar-baseline): 99.39 tok/s — DFlash speedup 3.74x\nHardware: single R9700, ROCm 7.x, hiptrx host (HIP_VISIBLE_DEVICES=0)\nGPU coordination: dedicated host (hiptrx), no concurrent GPU load",
       "observed_command": "HIP_VISIBLE_DEVICES=0 ./target/release/examples/dflash_spec_demo --target ~/.hipfire/models/qwen3.5-9b.mq4 --draft ~/.hipfire/models/qwen35-9b-dflash-mq4.hfq --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 4096",
@@ -170,8 +199,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 4096,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

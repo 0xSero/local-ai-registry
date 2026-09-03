@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6mn5ct0076mn01on3dnpyn"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr6mn5ct0076mn01on3dnpyn"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.6 27B MTP GGUF Q4 single-B70 llama.cpp/SYCL reference. This is a valid but non-record model-variation result: fixed Qwen realistic cold suite, 12 unique prompts, each prompt once, cached_tokens=0 every row, no prompt/KV/context checkpoint/response reuse, no n-gram/history acceleration, and target-verified draft-MTP speculation. Primary metric is median generated-token throughput for tokens 1-100 after TTFT. This row documents expected performance for the UD-Q4_K_XL GGUF runtime and should not be confused with the faster AutoRound vLLM/XPU result.",
       "observed_command": "llama-server on GPU0/one B70 with --parallel 1 --cache-ram 0 --ctx-size 4096 --batch-size 1024 --ubatch-size 256 --flash-attn on --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-n-min 0 --spec-draft-p-min 0.00 --ctx-checkpoints 0; python3 strict Qwen realistic suite runner against http://127.0.0.1:19431",

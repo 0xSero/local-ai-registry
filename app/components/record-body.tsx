@@ -1,7 +1,9 @@
 import { ConfigurationCard, configurationFromRecipe } from "@/app/components/configuration-card"
 import { CopyActions } from "@/app/components/copy-actions"
-import { DataTree } from "@/app/components/data-tree"
+import { RecordSheet } from "@/app/components/record-sheet"
+import { HardwareMarket } from "@/app/components/hardware-market"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
+import { LaunchCommand } from "@/app/components/launch-command"
 import { ModelScores } from "@/app/components/model-scores"
 import { RecordEvidence } from "@/app/components/record-evidence"
 import { RecordFacts } from "@/app/components/record-facts"
@@ -46,9 +48,11 @@ export function RecordBody({
               : "Candidate: useful compatibility or speed evidence. The registry does not offer Run until promotion requirements are met."}
           </p>
           <ConfigurationCard config={config} />
+          <LaunchCommand recipe={record as never} />
         </>
       )}
       <RecordEvidence collection={collection} record={record} />
+      {collection === "hardware" && typeof record.id === "string" && <HardwareMarket hardwareId={record.id} />}
       {collection === "models" && typeof record.id === "string" && <ModelScores modelId={record.id} />}
       <RelatedRecords groups={groups} />
       {variant === "page" ? (
@@ -57,10 +61,10 @@ export function RecordBody({
             <h2>Remaining fields</h2>
             <p>Identity, launch, related records, and measured speed are shown above. This is the rest of the normalized record.</p>
           </div>
-          <DataTree value={tree} />
+          <RecordSheet record={tree} />
         </section>
       ) : (
-        <DataTree value={tree} />
+        <RecordSheet record={tree} />
       )}
     </>
   )

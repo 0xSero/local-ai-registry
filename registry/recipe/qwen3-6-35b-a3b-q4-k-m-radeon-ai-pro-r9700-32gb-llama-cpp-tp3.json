@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnfwn9m00d8o001elsb3flc"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnfwn9m00d8o001elsb3flc"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "llama.cpp Vulkan on 3× R9700 via llama-swap. Best of 3 runs.",
       "observed_command": "/home/mikekey/.config/llama-swap/gpu-order.sh exec /home/mikekey/Experiments/llama.cpp/build-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 -m /home/mikekey/models/Qwen3.6-35B-A3B-Q4_K_M.gguf --reasoning-format auto --temp 0.6 --top-p 0.95 --top-k 20 --min-p 0.0 --presence-penalty 0.00 --repeat-penalty 1.0 -ctk f16 -ctv f16 -ts 1/1/0 -np 1 -c 262144 --chat-template-kwargs '{\"preserve_thinking\": true}'",
@@ -197,7 +226,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 787,
+    "max_context_tokens": 262144,
     "tensor_parallel": 3
   },
   "speed_sweep_ids": [

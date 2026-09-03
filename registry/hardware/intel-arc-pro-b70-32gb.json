@@ -28,8 +28,11 @@
       "state": "available"
     },
     "channel_status": "launched_partner_and_intel_card",
-    "current_stock": null,
-    "current_street_price": null,
+    "current_stock": true,
+    "current_street_price": {
+      "amount": 1699.99,
+      "currency": "USD"
+    },
     "msrp": {
       "amount": 949,
       "currency": "USD"
@@ -48,6 +51,23 @@
           "kind": "vendor",
           "publisher": "Intel",
           "url": "https://newsroom.intel.com/client-computing/intel-core-ultra-series-3-with-vpro-powers-next-gen-pcs-built-on-intel-18a"
+        },
+        "unit": "one_time"
+      },
+      {
+        "amount": 1699.99,
+        "as_of": "2026-08-31T21:07:10Z",
+        "captured_at": "2026-08-31T21:07:10Z",
+        "configuration": "Intel Arc Pro B70 Graphics Card 33P01IB0BB",
+        "currency": "USD",
+        "kind": "street_price",
+        "region": "US",
+        "scope": "current_in_stock_retail_listing",
+        "source": {
+          "captured_at": "2026-08-31T21:07:10Z",
+          "kind": "retailer",
+          "publisher": "bhphotovideo",
+          "url": "https://www.bhphotovideo.com/c/product/1959142-REG/intel_33p01ib0bb_arc_pro_b70_32gb.html"
         },
         "unit": "one_time"
       }
@@ -215,30 +235,27 @@
         }
       },
       "int8": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T13:46:11Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T13:46:11Z",
                 "kind": "vendor",
                 "publisher": "Intel",
-                "url": "https://www.thailand.intel.com/content/www/th/th/products/sku/245797/intel-arc-pro-b70-graphics/specifications.html"
+                "url": "https://www.intel.com/content/www/us/en/products/sku/245797/intel-arc-pro-b70-graphics/specifications.html"
               },
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T13:46:11Z",
                 "kind": "vendor",
                 "publisher": "Intel",
-                "url": "https://newsroom.intel.com/client-computing/intel-core-ultra-series-3-with-vpro-powers-next-gen-pcs-built-on-intel-18a"
+                "url": "https://www.intel.com/content/dam/www/central-libraries/us/en/documents/2026-03/datasheet-b70-gpu.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable int8 throughput was published for this exact accelerator; no FLOPS inferred."
-          },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 367
         }
       },
       "tf32": {
@@ -360,51 +377,33 @@
     },
     "commercial.current_stock": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-08-31T21:07:10Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "Intel",
-            "url": "https://www.thailand.intel.com/content/www/th/th/products/sku/245797/intel-arc-pro-b70-graphics/specifications.html"
-          },
-          {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "Intel",
-            "url": "https://newsroom.intel.com/client-computing/intel-core-ultra-series-3-with-vpro-powers-next-gen-pcs-built-on-intel-18a"
+            "captured_at": "2026-08-31T21:07:10Z",
+            "kind": "retailer",
+            "publisher": "bhphotovideo",
+            "url": "https://www.bhphotovideo.com/c/product/1959142-REG/intel_33p01ib0bb_arc_pro_b70_32gb.html"
           }
         ]
       },
-      "reason": {
-        "code": "not-captured",
-        "detail": "Audit availability note: unknown."
-      },
-      "state": "unknown"
+      "reason": "fresh-in-stock-us-retailer-observation",
+      "state": "known"
     },
     "commercial.current_street_price": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-08-31T21:07:10Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "Intel",
-            "url": "https://www.thailand.intel.com/content/www/th/th/products/sku/245797/intel-arc-pro-b70-graphics/specifications.html"
-          },
-          {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "Intel",
-            "url": "https://newsroom.intel.com/client-computing/intel-core-ultra-series-3-with-vpro-powers-next-gen-pcs-built-on-intel-18a"
+            "captured_at": "2026-08-31T21:07:10Z",
+            "kind": "retailer",
+            "publisher": "bhphotovideo",
+            "url": "https://www.bhphotovideo.com/c/product/1959142-REG/intel_33p01ib0bb_arc_pro_b70_32gb.html"
           }
         ]
       },
-      "reason": {
-        "code": "not-captured",
-        "detail": "Intel suggested price is not a live retailer offer"
-      },
-      "state": "unknown"
+      "reason": "fresh-in-stock-us-retailer-observation",
+      "state": "known"
     },
     "commercial.msrp": {
       "provenance": {

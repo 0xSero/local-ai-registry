@@ -30,8 +30,28 @@
     "channel_status": "legacy_partner_channel",
     "current_stock": null,
     "current_street_price": null,
-    "msrp": null,
-    "prices": []
+    "msrp": {
+      "amount": 4650,
+      "currency": "USD"
+    },
+    "prices": [
+      {
+        "amount": 4650,
+        "as_of": "2026-09-01",
+        "captured_at": "2026-09-01T08:29:50Z",
+        "currency": "USD",
+        "kind": "MSRP",
+        "region": "US",
+        "scope": "manufacturer_marketplace_list_price",
+        "source": {
+          "captured_at": "2026-09-01T08:29:50Z",
+          "kind": "vendor",
+          "publisher": "NVIDIA",
+          "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
+        },
+        "unit": "one_time"
+      }
+    ]
   },
   "compute": {
     "architecture": "NVIDIA Ampere",
@@ -39,45 +59,95 @@
     "rt_cores": 84,
     "stats": {
       "bf16": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable bf16 throughput was published for this exact accelerator; no FLOPS inferred."
+          "state": "known",
+          "unit": "tflops",
+          "value": 154.8
+        },
+        "structured_2_4": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
           },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 309.6
         }
       },
       "fp16": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable fp16 throughput was published for this exact accelerator; no FLOPS inferred."
+          "state": "known",
+          "unit": "tflops",
+          "value": 154.8
+        },
+        "structured_2_4": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
           },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 309.6
         }
       },
       "fp32": {
@@ -117,88 +187,196 @@
           "unit": "tflops"
         }
       },
-      "fp8": {
+      "fp4": {
         "unknown": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
           "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable fp8 throughput was published for this exact accelerator; no FLOPS inferred."
+            "code": "not-supported-by-architecture",
+            "detail": "The vendor architecture documentation for this accelerator does not provide a hardware path for this precision."
           },
-          "state": "unknown",
+          "state": "not_applicable",
+          "unit": "tflops"
+        }
+      },
+      "fp8": {
+        "unknown": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
+          },
+          "reason": {
+            "code": "not-supported-by-architecture",
+            "detail": "The vendor architecture documentation for this accelerator does not provide a hardware path for this precision."
+          },
+          "state": "not_applicable",
           "unit": "tflops"
         }
       },
       "int4": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable int4 throughput was published for this exact accelerator; no FLOPS inferred."
+          "state": "known",
+          "unit": "tflops",
+          "value": 619.3
+        },
+        "structured_2_4": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
           },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 1238.6
         }
       },
       "int8": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable int8 throughput was published for this exact accelerator; no FLOPS inferred."
+          "state": "known",
+          "unit": "tflops",
+          "value": 309.7
+        },
+        "structured_2_4": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
           },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 619.4
         }
       },
       "tf32": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T15:30:01Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T15:30:01Z",
                 "kind": "vendor",
                 "publisher": "NVIDIA",
-                "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable tf32 throughput was published for this exact accelerator; no FLOPS inferred."
+          "state": "known",
+          "unit": "tflops",
+          "value": 77.4
+        },
+        "structured_2_4": {
+          "provenance": {
+            "captured_at": "2026-08-31T15:30:01Z",
+            "sources": [
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/nvidia-rtx-a6000-datasheet.pdf"
+              },
+              {
+                "captured_at": "2026-08-31T15:30:01Z",
+                "kind": "vendor",
+                "publisher": "NVIDIA",
+                "url": "https://images.nvidia.com/aem-dam/en-zz/Solutions/geforce/ampere/pdf/NVIDIA-ampere-GA102-GPU-Architecture-Whitepaper-V1.pdf"
+              }
+            ]
           },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 154.8
         }
       }
     },
@@ -290,39 +468,33 @@
     },
     "commercial.msrp": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "NVIDIA product is partner/distribution priced"
-      },
-      "state": "unknown"
+      "reason": "manufacturer-marketplace-list-price",
+      "state": "known"
     },
     "commercial.prices": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-09-01T08:29:50Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-09-01T08:29:50Z",
             "kind": "vendor",
             "publisher": "NVIDIA",
-            "url": "https://www.nvidia.com/en-us/products/workstations/rtx-a6000/"
+            "url": "https://marketplace.nvidia.com/en-us/enterprise/laptops-workstations/nvidia-rtx-a6000/"
           }
         ]
       },
-      "reason": {
-        "code": "not-published",
-        "detail": "No validated price observation was captured for this exact hardware record."
-      },
-      "state": "unknown"
+      "reason": "validated-manufacturer-price-observation",
+      "state": "known"
     },
     "compute.architecture": {
       "provenance": {

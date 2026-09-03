@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
-    "version": null
+    "version": "b8672"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:34:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:34:02Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmofjv1x30006ic04325ox1z9"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -94,6 +108,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofjv1x30006ic04325ox1z9"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofjv1x30006ic04325ox1z9"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,9 +167,10 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp b8672, backend=vulkan, runtime=RADV Vulkan, Mesa 25.2.6, amdgpu, GFX1151. Hardware: AMD Ryzen AI MAX 395 / Radeon 8060S Strix Halo, 128GB unified memory, NixOS 25.11, Linux 6.19.9. Settings: -ngl 999, -fa 1, prompt/context=32768, generated=128, reps=2, output=md. Scores: PP=801.63 tok/s, TG=71.44 tok/s, peak_vram=26.37 GiB. Command: /home/crown/.local/llama-current/llama-bench -m /srv/llm/models/HauhauCS-Qwen3.6-35B-A3B-Uncensored-Aggressive-GGUF/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf -ngl 999 -fa 1 -p 32768 -n 128 -r 2 -o md.",
-      "observed_command": "",
+      "observed_command": "/home/crown/.local/llama-current/llama-bench -m /srv/llm/models/HauhauCS-Qwen3.6-35B-A3B-Uncensored-Aggressive-GGUF/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf -ngl 999 -fa 1 -p 32768 -n 128 -r 2 -o md",
       "run_id": "cmofjv1x30006ic04325ox1z9"
     }
   },
@@ -146,8 +189,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

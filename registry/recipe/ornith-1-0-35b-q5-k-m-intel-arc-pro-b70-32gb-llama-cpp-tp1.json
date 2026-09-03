@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr90watg00jaqr01jx0foi3r"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr90watg00jaqr01jx0foi3r"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 32,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "POWER/FREQUENCY UNLOCKED TEST: max_freq pushed to 2800 MHz, power1_cap relaxed to 230W. Telemetry logged 196W sustained draw at 73C. Memory bandwidth bottleneck confirmed: +33% power yielded only +8% throughput over the 165W/2400MHz baseline.",
       "observed_command": "llama-server -m ornith-1.0-35b-Q5_K_M.gguf --parallel 32 --ctx-size 131072 -fa on -ctk q5_0 -ctv q4_1 -b 8192 -ub 4096",
@@ -169,7 +198,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 32,
-    "max_context_tokens": 131072,
+    "max_context_tokens": 4096,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

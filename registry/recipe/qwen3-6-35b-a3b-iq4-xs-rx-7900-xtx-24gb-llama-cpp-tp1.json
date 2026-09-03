@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmolw295o000tju04uiwr820b"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmolw295o000tju04uiwr820b"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 4096,
       "hardware_label": "RX 7900 XTX",
       "notes": null,
       "observed_command": "/app/llama.cpp/build/bin/llama-server\n      --models-dir /models\n      --port 8001\n      --host 0.0.0.0\n      -ngl 99\n      --flash-attn on\n      --cont-batching\n      --no-mmap\n      --threads 30\n      --cache-type-k q4_0\n      --cache-type-v q4_0\n      --mlock\n      --batch-size 4096\n      --ubatch-size 4096\n      --models-max 1\n      --parallel 1",
@@ -179,8 +208,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 4096,
-    "max_context_tokens": 2048,
+    "max_concurrency": 1,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -1,9 +1,9 @@
 {
-  "active_params": null,
+  "active_params": 10,
   "architecture": "moe",
   "downloads": {
     "all_time": 6403830,
-    "captured_at": "2026-08-31T12:36:33Z",
+    "captured_at": "2026-08-31T15:38:41Z",
     "last_30d": 1142168,
     "source": "huggingface-api"
   },
@@ -14,13 +14,46 @@
         "sources": [
           {
             "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/nvidia/MiniMax-M2.7-NVFP4"
+          },
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "publisher-source-explicit-active-parameter-count",
+      "state": "known"
+    },
+    "architecture": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:49:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:49:15Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7?blobs=true"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "minimax",
@@ -43,7 +76,7 @@
   },
   "id": "minimax-m2-7",
   "name": "MiniMax-M2.7",
-  "params": 32,
+  "params": 229,
   "provenance": {
     "captured_at": "2026-08-27T06:04:13.773Z",
     "sources": [
@@ -51,6 +84,11 @@
         "captured_at": "2026-08-27T06:04:13.773Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/MiniMaxAI/MiniMax-M2.7"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

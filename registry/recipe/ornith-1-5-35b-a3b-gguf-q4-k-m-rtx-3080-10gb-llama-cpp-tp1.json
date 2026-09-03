@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "ornith-ai/Ornith-1.5-35B-A3B-GGUF:Q4_K_M",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "131072"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt209j9m094smv012cbmznuu"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt209j9m094smv012cbmznuu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "131K context on a 10GB card via --n-cpu-moe 27 (experts of the first 27 of 41 layers on CPU). Five reps gave 27.2 / 50.9 / 64.4 / 64.4 / 64.9 tok/s -- a clear cold start then a stable plateau, so the median of 5 (64.4) is a fair warm figure here. IMPORTANT for anyone benchmarking CPU-offloaded MoE: the first one or two requests are dominated by cold expert page-in and understate steady-state badly; a 10-token prompt generating 200 tokens reports only ~8 tok/s for this model because it never leaves that regime. MTP was tested and is NOT worth enabling here: the draft head's own footprint pushes this config into host spill (882 MiB shared, decode down to 18 tok/s), and at an offload level with headroom it was within noise of no-MTP. Measured on an RTX 3080 10GB. Decode is the MEDIAN of 5 reps, not the best. Prompt is deliberately non-repetitive (repeated filler inflates decode on speculative setups by ~25%) and ignore_eos is set so output token count is identical across runs. Peak VRAM 9842 MiB with 370 MiB host-shared; elevated host-shared only indicates spill when the decode rate drops with it.",
       "observed_command": "llama-server \\\n  -m Ornith-1.5-35B-Q4_K_M.gguf \\\n  --host 127.0.0.1 --port 8099 \\\n  --device CUDA0 --n-gpu-layers 99 \\\n  --ctx-size 131072 \\\n  --flash-attn on \\\n  --cache-type-k q8_0 --cache-type-v q8_0 \\\n  --parallel 1 --jinja \\\n  --spec-type none",

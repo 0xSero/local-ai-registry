@@ -31,7 +31,7 @@ The earlier approximately 900 tok/s observation is also reproduced and explained
 
 A cold ISL 1,024 / OSL 1 request measured 827.74 server prefill-compute tok/s. Repeating an approximately 1,022-token prefix produced a 93.75% instantaneous device-cache hit rate: 960 device-hit tokens and 64 newly computed tokens, with 466.78 ms TTFT. In the C256 run, cumulative SGLang counters recorded 32,768 device-hit tokens and 16,384 prefill-compute tokens, an effective 66.67% device-hit share. The instantaneous cache gauge returned to zero after the queue drained, so the counter-derived value is the meaningful batch result.
 
-The reproducible runner is [`scripts/benchmark_openai_chat.py`](../scripts/benchmark_openai_chat.py). It uses OpenAI-compatible streaming requests, `/tokenize`, server-reported usage, and SGLang Prometheus counter deltas. It sends `max_completion_tokens` so the requested OSL is explicit.
+The current reproducible runner is [`scripts/benchmark_openai_chat.py`](../scripts/benchmark_openai_chat.py). It uses OpenAI-compatible streaming requests, `/tokenize`, server-reported usage, and SGLang Prometheus counter deltas. It sends no output-length cap and records the model's natural completion length. The fixed-OSL table below is retained historical evidence from the earlier campaign, not a claim about the current runner's request policy.
 
 ## Concurrency sweep
 
