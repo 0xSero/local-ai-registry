@@ -7,6 +7,7 @@ import {
   collectionCounts,
   getEntityDetail,
   getFacets,
+  getRecommendations,
   getRegistryIndex,
   listHardware,
   listModelInstances,
@@ -127,6 +128,9 @@ export async function GET(request: NextRequest, context: RouteContext): Promise<
 
   if (resource === "index") {
     return response({ data: getRegistryIndex(), meta: { source: "registry" } })
+  }
+  if (resource === "recommendations") {
+    return response({ data: getRecommendations(), meta: { source: "registry" } })
   }
   if (resource === "facets") {
     return response({ data: getFacets(), meta: { counts: collectionCounts(), source: "registry" } })

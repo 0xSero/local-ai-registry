@@ -92,3 +92,7 @@ TabbyAPI recipes need weights under `<mount>/<model_name>` (the config's `model_
 
 `ipc: host` is dropped from a contract validated this way: the box ran
 without it, and the Omarchy plugin refuses recipes that ask for it.
+
+## trust.py
+
+`status` is derived, never asserted. `python3 scripts/trust.py` lists every recipe whose stored status disagrees with the criteria in the module docstring; `--apply` rewrites them and drops `recommended` from anything that no longer qualifies. `validate_registry.py` imports the same function, so CI fails on drift. `make trust` runs apply + format.
