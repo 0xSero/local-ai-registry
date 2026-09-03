@@ -183,6 +183,25 @@ export function getRegistryIndex(): RegistryIndex {
   return dataset().index
 }
 
+export type Recommendation = {
+  recipe_id: string
+  model_instance_id: string
+  engine: string
+  max_context_tokens: number | null
+  image: string | null
+}
+
+export type RecommendationsIndex = {
+  schema_version: string
+  rule: string
+  recommendations: Record<string, Recommendation>
+}
+
+/** One validated recipe per hardware id: the consumer contract behind registry/index/recommendations.json. */
+export function getRecommendations(): RecommendationsIndex {
+  return readJson<RecommendationsIndex>("index", "recommendations.json")
+}
+
 export function getModel(id: string): Model | undefined {
   return dataset().models.get(id)
 }
