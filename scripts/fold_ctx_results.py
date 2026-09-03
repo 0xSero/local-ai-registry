@@ -80,7 +80,31 @@ def main():
                 for v in o:
                     if isinstance(v, dict) and v.get("model") in MODEL_TAGS:
                         entries[v["model"]] = v
+                    walk(v)
+        if fname == "ctx-vast.json":
+            # scope per-rental: match this tuple's GPU name against the rental record
+            entries = {}
+            for rental in report.get("rentals", []):
+                if rental.get("gpu") != gpu_key:
+                    continue
+                for item in rental.get("results", []):
+                    if isinstance(item, dict) and item.get("model") in MODEL_TAGS:
+                        entries[item["model"]] = item
+        else:
+            walk(report)
         # fleet lane: compact string format "max_ok / oom X (detail) / rate"
+        if fname == "ctx-apple.json":
+            # gpu_key forms: "m1-max-llamacpp-gemma" | "m1-max-llamacpp-lfm" | "m1-max-mlx-qwen35"
+            parts = gpu_key.split("-")
+            engine_key = parts[2] if len(parts) > 2 else None  # llamacpp | mlx
+            model_key = parts[3] if len(parts) > 3 else None   # gemma | lfm | qwen35
+            engine_name = {"llamacpp": "llama.cpp", "mlx": "mlx-lm"}.get(engine_key)
+            model_short = {"gemma": "gemma", "lfm": "lfm", "qwen35": "qwen3.5"}.get(model_key)
+            entries = {}
+            if engine_name and model_short:
+                block = report.get("engines", {}).get(engine_name, {}).get("models", {}).get(model_short)
+                if isinstance(block, dict):
+                    entries[model_short] = block
         if not entries and fname == "ctx-fleet.json":
             for host_key_full, block in report.items():
                 if host_key_full in ("campaign", "GB10 note", "cleanup"):
