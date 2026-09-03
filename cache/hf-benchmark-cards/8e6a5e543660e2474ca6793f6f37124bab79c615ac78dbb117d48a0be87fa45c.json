@@ -1,0 +1,6 @@
+{
+  "readme": "---\nlicense: mit\ndatasets:\n- mozilla-foundation/common_voice_17_0\nlanguage:\n- ru\nbase_model:\n- openai/whisper-large-v3-turbo\npipeline_tag: automatic-speech-recognition\nmetrics:\n- accuracy\nlibrary_name: transformers\ntags:\n- call\n---\n\n### This model whas trained with two A100 40 GB, 128 GB RAM and 2 x Xeon 48 Core 2.4 GHz\n- Time spent ~ 7 hours\n- Count of train dataset - 118k of audio samples from Mozilla Common Voice 17\n---\nExample of usage\n```python\nfrom transformers import pipeline\nimport gradio as gr\nimport time\n\npipe = pipeline(\n    model=\"dvislobokov/whisper-large-v3-turbo-russian\",\n    tokenizer=\"dvislobokov/whisper-large-v3-turbo-russian\",\n    task='automatic-speech-recognition',\n    device='cpu'\n)\n\ndef transcribe(audio):\n    start = time.time()\n    text = pipe(audio, return_timestamps=True)['text']\n    print(time.time() - start)\n    return text\n\niface = gr.Interface(\n    fn=transcribe,\n    inputs=gr.Audio(sources=['microphone', 'upload'], type='filepath'),\n    outputs='text'\n)\n\niface.launch(share=True)\n\n```",
+  "readme_url": "https://huggingface.co/dvislobokov/whisper-large-v3-turbo-russian/resolve/fbecad6b44518d27a9b2411d0b3a031c2d5da20f/README.md",
+  "repo": "dvislobokov/whisper-large-v3-turbo-russian",
+  "revision": "fbecad6b44518d27a9b2411d0b3a031c2d5da20f"
+}
