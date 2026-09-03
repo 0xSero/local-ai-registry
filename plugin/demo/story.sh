@@ -1,88 +1,103 @@
 #!/bin/bash
-# story.sh: record "one job, eight hands" on the Arc Pro B70 through plugin v4.
-# Records HDMI-A-3, walks each installed agent through one step of fixing ~/demo/ledger,
-# and writes a mark file with the start time of every chapter for cutting.
+# story.sh: record "one job, eight hands" on the Arc Pro B70 through plugin v4, the way a person does it.
+# The cursor clicks the bar icon, picks the agent in the popup, the agent opens on the local model, the
+# prompt is typed live. Records HDMI-A-3 with the cursor; marks every chapter for cutting.
 set -u
+exec 2>>/tmp/story-trace.log
 P=$HOME/.config/omarchy/plugins/sero.local-ai; CLI=$P/bin/omarchy-local-ai
 export WAYLAND_DISPLAY=wayland-1 XDG_RUNTIME_DIR=/run/user/$(id -u) DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
 export HYPRLAND_INSTANCE_SIGNATURE=$(ls -t $XDG_RUNTIME_DIR/hypr | head -1)
 REPO=$HOME/demo/ledger; OUT=/tmp/story-raw.mp4; MARKS=/tmp/story-marks.txt; T0=$(date +%s)
 : >"$MARKS"; mark() { echo "$(( $(date +%s) - T0 )) $1" >>"$MARKS"; }
-panel() { timeout 5 qs -p /usr/share/omarchy/shell ipc call sero.local-ai "$1" >/dev/null 2>&1; }
+ipc() { timeout 5 qs -p /usr/share/omarchy/shell ipc call sero.local-ai "$@" >/dev/null 2>&1; }
 hypr() { timeout 5 hyprctl dispatch "$1" >/dev/null 2>&1; }   # Hyprland 0.56 Lua dispatch form
 state() { $CLI snapshot | jq -r .state; }
-wait_state() { local want=$1 n=0; while [[ $(state) != "$want" && $n -lt 90 ]]; do sleep 2; n=$((n+1)); done; }
-term() { tmux send-keys -t story "$@"; }
-reset_pane() { tmux respawn-pane -k -t story -c "$REPO" "bash --noprofile --norc" 2>/dev/null; sleep 1; term "clear" Enter; }
+wait_state() { local want=$1 n=0; while [[ $(state) != "$want" && $n -lt 120 ]]; do sleep 2; n=$((n+1)); done; }
 
-# place_terminal: the story window must sit fullscreen on workspace 1 of HDMI-A-3, the output the recorder
-# captures. New windows open on whichever monitor has focus, so move it and verify, retrying a few times.
-place_terminal() {
+# --- the hand ---------------------------------------------------------------------------------
+CUR_X=960; CUR_Y=540
+glide() { # glide <x> <y>: move the cursor there in a curve of small steps, like a wrist would
+  local x=$1 y=$2 i n=24 t
+  for i in $(seq 1 $n); do
+    t=$(python3 -c "import math; print((1-math.cos(math.pi*$i/$n))/2)")
+    hypr "hl.dsp.cursor.move({ x = $(python3 -c "print(round($CUR_X+($x-$CUR_X)*$t))"), y = $(python3 -c "print(round($CUR_Y+($y-$CUR_Y)*$t))") })"
+    sleep 0.018
+  done
+  CUR_X=$x; CUR_Y=$y
+}
+click() { glide "$1" "$2"; sleep 0.35; python3 "$HOME/click.py" left; sleep 0.6; }
+type_text() { wtype -d 34 -- "$1"; sleep 0.5; wtype -k Return; }
+
+# popup geometry on HDMI-A-3 (1920x1080): the bar icon, the Start/Stop row, the Open agent row,
+# and the agent rows once the list is open (order = the snapshot's launchable list)
+ICON="1766 1064"; START_OR_STOP="1700 1017"; OPEN_AGENT="1745 957"; AGENT_X=1700
+agent_y() { case $1 in pi) echo 782;; omp) echo 807;; opencode) echo 832;; claude) echo 857;; codex) echo 882;; grok) echo 907;; copilot) echo 932;; crush) echo 957;; esac; }
+
+# place_agent: the agent's window must sit fullscreen on workspace 1 of HDMI-A-3, the output the
+# recorder captures. New windows open on whichever monitor has focus, so move it and verify.
+place_agent() {
   local i where
-  for i in 1 2 3 4 5 6; do
-    sleep 1.5
+  for i in 1 2 3 4 5 6 7 8; do
+    sleep 1
     where=$(timeout 5 hyprctl clients -j 2>/dev/null | jq -r '.[] | select(.class=="org.omarchy.agent") | "\(.monitor) \(.workspace.id) \(.fullscreen)"' | head -1)
     [[ -z $where ]] && continue
     [[ $where == "0 1 2" ]] && return 0
-    hypr "hl.dsp.window.move({ workspace = 1, window = \"class:org.omarchy.agent\" })"; sleep 0.5
+    hypr "hl.dsp.window.move({ workspace = 1, window = \"class:org.omarchy.agent\" })"; sleep 0.4
     hypr "hl.dsp.window.fullscreen({ mode = \"fullscreen\", window = \"class:org.omarchy.agent\" })"
   done
-  echo "terminal not placed: $where" >&2; return 1
+  echo "agent window not placed: $where" >&2; return 1
 }
+close_agent() { hypr "hl.dsp.window.close({ window = \"class:org.omarchy.agent\" })"; sleep 1.5; }
 
-# step <agent> <mode> <extra flags> <seconds> <prompt>
-#   arg:  the agent takes the prompt on its command line (no typing race)
-#   type: the prompt is typed into the TUI after it has booted
+# step <agent> <boot seconds> <answer seconds> <prompt>
 step() {
-  local agent=$1 mode=$2 extra=$3 secs=$4 prompt=$5 cmd
-  mark "$agent"; panel close
-  cmd=$(OMARCHY_AI_FOREGROUND=1 $CLI open-agent "$agent") || { echo "skip $agent"; return; }
-  if [[ $mode == arg ]]; then
-    term "clear; $cmd $extra $(printf '%q' "$prompt")" Enter
-  else
-    term "clear; $cmd $extra" Enter; sleep 14
-    term -l "$prompt"; sleep 0.8; term Enter
+  local agent=$1 boot=$2 secs=$3 prompt=$4
+  mark "$agent"
+  click $ICON; sleep 0.8                      # popup
+  ipc pick "$agent"; click $OPEN_AGENT; sleep 0.6   # list
+  click $AGENT_X "$(agent_y "$agent")"        # the agent opens on the model
+  if ! place_agent; then                      # a launch can drop on the first try; once more, on camera
+    echo "retrying $agent" >&2; ipc close; sleep 1
+    click $ICON; sleep 0.8; ipc pick "$agent"; click $OPEN_AGENT; sleep 0.6; click $AGENT_X "$(agent_y "$agent")"
+    place_agent || return 1
   fi
+  ipc close; sleep 0.5                        # the popup would keep the keyboard
+  click 1200 700; sleep "$boot"               # into the terminal; let the TUI come up
+  type_text "$prompt"
   sleep "$secs"
-  reset_pane
+  close_agent
 }
 
 # fresh repo state for the take
 git -C "$REPO" checkout -q -- . && git -C "$REPO" reset -q --hard HEAD
-
 timeout 5 qs -p /usr/share/omarchy/shell ipc call notifications dismissAll >/dev/null 2>&1
-gpu-screen-recorder -w HDMI-A-3 -f 30 -q high -o "$OUT" >/tmp/story-rec.log 2>&1 &
-REC=$!; sleep 3
+ipc close; hypr "hl.dsp.window.close({ window = \"class:org.omarchy.agent\" })"
+hypr "hl.dsp.cursor.move({ x = $CUR_X, y = $CUR_Y })"
 
-# 0. the bar: from idle, Start, watch it come up
+gpu-screen-recorder -w HDMI-A-3 -f 30 -fm cfr -q high -cursor yes -o "$OUT" >/tmp/story-rec.log 2>&1 &
+REC=$!; sleep 3; mark "rec-start"
+
+# 0. the bar: from idle, click the circle, click Start, watch it come up
 mark "panel-load"
 [[ $(state) == ready ]] && { $CLI unload >/dev/null; wait_state idle; }
-panel open; sleep 3
-$CLI load >/dev/null
-while [[ $(state) != ready ]]; do panel open; sleep 4; [[ $(state) == error ]] && break; done
-sleep 4; panel close; sleep 1
+sleep 1; click $ICON; sleep 1.5; click $START_OR_STOP; sleep 6
+[[ $(state) == idle ]] && { ipc open; sleep 1.5; click $START_OR_STOP; sleep 6; }
+[[ $(state) == idle ]] && { echo "Start click did not take; loading directly" >&2; $CLI load >/dev/null; }
+while [[ $(state) != ready ]]; do sleep 3; [[ $(state) == error ]] && { echo "load errored: $($CLI snapshot | jq -r .error)" >&2; break; }; done
+echo "loaded: $(state)" >&2
+sleep 5; ipc close; sleep 1
 
-# the story terminal: it must live on workspace 1 of HDMI-A-3, the output the recorder captures
-tmux kill-session -t story 2>/dev/null; systemctl --user stop story-term 2>/dev/null
-systemd-run --user --collect --unit=story-term -E WAYLAND_DISPLAY=wayland-1 -E XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
-  foot -a org.omarchy.agent -e tmux new -s story -c "$REPO" >/dev/null 2>&1
-place_terminal || exit 1
-tmux set -t story status off 2>/dev/null; term "clear" Enter
-panel close; sleep 1   # the popup must not sit over the terminal
+step pi       9  40 "Run lspci | grep -i arc and curl -s http://127.0.0.1:12434/v1/models. Then tell me in two lines what hardware and which model you are running on."
+step opencode 12 50 "Run python3 -m unittest discover -s tests -t . and tell me which function has the bug and why. Do not fix it yet."
+step codex    12 60 "Fix the off-by-one in ledger/core.py statement() so every entry is included. Change only that line."
+step claude   10 95 "Review git diff and answer in one sentence: is the fix correct?"
+step crush    12 40 "Run python3 -m unittest discover -s tests -t . and show me the result."
+step omp      10 45 "Commit the change with a one-line message that names the bug."
+step copilot  20 45 "Write a three-line pull request description for the last commit."
+step grok     10 50 "Read git log -p -1 and summarize in three bullets: what was wrong, what changed, how it was verified."
 
-step pi       arg  ""                                          45 "Run lspci | grep -i arc and curl -s http://127.0.0.1:12434/v1/models. Then tell me in two lines what hardware and which model you are running on."
-step opencode type "--auto"                                    60 "Run python3 -m unittest discover -s tests -t . and tell me which function has the bug and why. Do not fix it yet."
-step codex    arg  "--dangerously-bypass-approvals-and-sandbox" 75 "Fix the off-by-one in ledger/core.py statement() so every entry is included. Change only that line."
-step claude   arg  "--permission-mode acceptEdits --allowedTools='Bash(git:*)'" 120 "Review git diff and answer in one sentence: is the fix correct?"
-step crush    type "--yolo"                                    50 "Run python3 -m unittest discover -s tests -t . and show me the result."
-step omp      arg  "--auto-approve"                            50 "Commit the change with a one-line message that names the bug."
-step copilot  arg  "--allow-all -i"                            50 "Write a three-line pull request description for the last commit."
-step grok     arg  "--always-approve"                          60 "Read git log -p -1 and summarize in three bullets: what was wrong, what changed, how it was verified."
-
-tmux kill-session -t story 2>/dev/null; systemctl --user stop story-term 2>/dev/null; sleep 1
-
-# 9. stop
+# 9. stop: the circle, then Stop
 mark "panel-stop"
-$CLI unload >/dev/null; wait_state idle; panel open; sleep 4; panel close
-mark "end"; sleep 2
+click $ICON; sleep 1.5; click $START_OR_STOP; wait_state idle; sleep 3; ipc close
+mark "end"; sleep 2; mark "rec-stop"
 kill -INT $REC; wait $REC 2>/dev/null; echo "recorded $OUT"; cat "$MARKS"
