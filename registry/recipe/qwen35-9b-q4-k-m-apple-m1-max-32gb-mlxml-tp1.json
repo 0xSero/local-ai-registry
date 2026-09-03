@@ -53,6 +53,65 @@
     "source": "vast-validation-2026-09-01"
   },
   "metadata": {
+    "ctx_ceiling": {
+      "max_ok_ctx": 64022,
+      "measured_at": "2026-09-01T00:00:00Z",
+      "method": "observed-default ladder (mlx_lm.server has no ctx-size control); largest passing prompt exercised; hard OOM at 128022",
+      "note": "observed-default: 64022-token prompt passes (largest actually exercised); 262144 nominal max_position_embeddings NOT reachable | OOM: 128022-token prompt: metal::malloc Attempting to allocate 22011707392 bytes > max buffer 20100448256 bytes - reproduced twice; after failure the server worker thread dies and subsequent requests hang until restart",
+      "observed_ladder": [
+        {
+          "ok": true,
+          "prompt_tokens": 1062,
+          "wall_s": 7.2
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 2022,
+          "wall_s": 13.1
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 4022,
+          "wall_s": 19.8
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 8022,
+          "wall_s": 37.8
+        },
+        {
+          "ok": true,
+          "prompt_tokens": 16022,
+          "wall_s": 57.1
+        },
+        {
+          "note": "finish=length, thinking consumed 512-token budget, reproduced 2x; passes with budget 1024",
+          "ok": false,
+          "prompt_tokens": 32022
+        },
+        {
+          "note": "re-verified on fresh server",
+          "ok": true,
+          "prompt_tokens": 64022,
+          "wall_s": 214.3
+        },
+        {
+          "note": "metal::malloc OOM 22.01GB > 20.10GB; prefill completes (~35min) then thread crashes",
+          "ok": false,
+          "prompt_tokens": 128022
+        }
+      ],
+      "oom_ctx": 128022,
+      "source": {
+        "captured_at": "2026-09-01T00:00:00Z",
+        "kind": "ctx-ceiling-run",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      },
+      "timings": {
+        "prompt_tokens": 64022,
+        "wall_s": 214.3
+      }
+    },
     "validation": {
       "date": "2026-09-01",
       "evidence": {
@@ -84,7 +143,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_context_tokens": 64022,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
