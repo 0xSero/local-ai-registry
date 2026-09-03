@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmokadzkk000bjl04vse1q64t"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmokadzkk000bjl04vse1q64t"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Hipfire (Kaden-Schutt/hipfire, alpha) on Strix Halo gfx1151 with native MQ4 (FWHT-pre-rotated 4-bit) format. Decode bandwidth-bound at ~17 tok/s ceiling: 256 GB/s LPDDR5X-8533 / ~15 GB MQ4 weight = ~17 tok/s theoretical, measured 16-22. Decode parity with llama.cpp expected; no decode-side optimization headroom on this hardware.",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 16384,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

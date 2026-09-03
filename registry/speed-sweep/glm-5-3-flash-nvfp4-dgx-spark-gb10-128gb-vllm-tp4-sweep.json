@@ -1,0 +1,79 @@
+{
+  "accepted_at": "2026-09-01",
+  "id": "glm-5-3-flash-nvfp4-dgx-spark-gb10-128gb-vllm-tp4-sweep",
+  "measured_at": "2026-09-01",
+  "metrics": {
+    "base_memory_bytes": "358800470016",
+    "base_memory_context_tokens": 0,
+    "concurrency": 1,
+    "decode8k_context_tokens": 8182,
+    "decode8k_tps": 112.11765965016625,
+    "decode_mode": "C1 structured JSON-schema matched-window with natural stop",
+    "inference_engine_version": "0.1.dev20051+g487ecf187",
+    "latest_point_at": "2026-09-01",
+    "max_context_tokens": 524288,
+    "max_prompt_tokens": 8183,
+    "memory8k_bytes": "359068327936",
+    "memory8k_context_tokens": 8182,
+    "peak_generation_tps": 117.99176708101733,
+    "peak_memory_bytes": "359068327936",
+    "peak_prompt_tps": 1771.8731868081966,
+    "point_count": 1
+  },
+  "recipe_id": "glm-5-3-flash-nvfp4-dgx-spark-gb10-128gb-vllm-tp4",
+  "rows": [
+    {
+      "all_stream_window": "first-emitted-token-through-last-emitted-token",
+      "base_unified_memory_gib": 334.1589775085449,
+      "cache_state": "cold-unique-cache-salt",
+      "concurrency": 1,
+      "content_class": "structured-json-schema",
+      "context_tokens": 8182,
+      "decode_tok_s": 112.11765965016625,
+      "decode_tok_s_per_stream": 112.11765965016625,
+      "draft_acceptance_rate": 0.9517276639256955,
+      "evidence_path": "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json",
+      "exact_output_correct": true,
+      "exact_token_ids_match_usage": true,
+      "finish_reason": "stop",
+      "incremental_unified_memory_gib": 0.24946212768554688,
+      "input_token_range": [
+        8179,
+        8183
+      ],
+      "measurement_seconds": 53.43698352049614,
+      "output_token_policy": "uncapped-natural-stop",
+      "output_token_range": [
+        5914,
+        7961
+      ],
+      "output_tokens": 5914,
+      "peak_gpu_utilization_pct": 96.0,
+      "peak_power_scope": "maximum single-node GPU power draw",
+      "peak_power_w": 56.47,
+      "peak_sm_clock_mhz": 2535.0,
+      "peak_temperature_c": 62.0,
+      "peak_total_power_w": 220.51999999999998,
+      "peak_vram_gb": 334.40843963623047,
+      "peak_vram_scope": "sum of MemTotal-MemAvailable across four GB10 unified-memory nodes; includes host processes",
+      "peak_vram_unit": "GiB",
+      "prefill_tok_s": 1764.8728135468746,
+      "prompt_cache_hit_tokens": 0,
+      "samples": 4,
+      "status": "accepted-sustained",
+      "ttft_ms_p50": 4636.367646002327
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "kind": "live-runtime-capture",
+    "paths": [
+      "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json",
+      "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-compose.yml",
+      "registry/asset/glm-5-3-flash-multimodal-chat-template.jinja",
+      "registry/asset/glm-5-3-flash-vllm-sparse-attn-indexer-kpool.py"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry",
+    "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+  }
+}

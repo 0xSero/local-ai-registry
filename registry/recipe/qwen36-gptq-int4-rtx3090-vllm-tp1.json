@@ -105,7 +105,6 @@
     },
     "host_port": 12434,
     "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
-    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
@@ -115,11 +114,16 @@
       },
       {
         "read_only": false,
-        "source": "~/.cache/inference-index/vllm",
+        "source": "${CACHE_ROOT}/vllm",
         "target": "/root/.cache/vllm"
       }
     ],
     "network_mode": "bridge",
+    "provenance": {
+      "kind": "upstream-published",
+      "publisher": "docker.io/vllm",
+      "source": "https://github.com/vllm-project/vllm"
+    },
     "shm_size": "16g"
   },
   "metadata": {},
@@ -139,7 +143,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 4,
-    "max_context_tokens": null,
+    "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

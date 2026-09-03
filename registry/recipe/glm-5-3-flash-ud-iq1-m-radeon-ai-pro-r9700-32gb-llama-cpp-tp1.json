@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtcyu0d10002lm01fbbv52di"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtcyu0d10002lm01fbbv52di"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "UD-IQ1_M benchmark on Lucebox. Exact live configuration: --device ROCm0,ROCm1 --split-mode layer --tensor-split 35,82 --ctx-size 32768 --parallel 1 --reasoning off --reasoning-budget 0 --override-tensor blk.*.ffn_gate_shexp.weight=ROCm0,blk.*.ffn_up_shexp.weight=ROCm0,blk.*.ffn_down_shexp.weight=ROCm0 --metrics --jinja. The structured hardware record uses the AMD Radeon AI PRO R9700 (32 GB); the model was layer-split across the R9700 (ROCm0) and AMD Radeon 8060S unified-memory GPU (ROCm1) over M.2 OCuLink PCIe 4.0 x4. One slot, 32K context, temperature 0, reasoning disabled, cache_prompt=false. Three measured streamed requests after one warmup using a fixed 26-token count prompt and 64-token output cap; all three outputs matched. Peak workload allocation is measured from amdgpu DRM per-process VRAM+GTT counters across both GPUs and reported in GiB (92.177 GiB), not device capacity. Build/runtime: llama.cpp GLM-5-Next support PR commit 2e0e57f10. TTFT and total throughput are client-derived from monotonic stream timing; prefill and decode rates are server-authoritative.",
       "observed_command": "llama-server -hf unsloth/GLM-5.3-Flash-GGUF:UD-IQ1_M --device ROCm0,ROCm1 --split-mode layer --tensor-split 35,82 --ctx-size 32768 --parallel 1 --reasoning off --reasoning-budget 0 --override-tensor blk.*.ffn_gate_shexp.weight=ROCm0,blk.*.ffn_up_shexp.weight=ROCm0,blk.*.ffn_down_shexp.weight=ROCm0 --metrics --jinja",

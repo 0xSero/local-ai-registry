@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofgfg5t000ljs04iip74hzt"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofgfg5t000ljs04iip74hzt"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 9070",
       "notes": "installed rocm 7.2.2 with this guide https://www.fixnum.org/2025-11-27-rocm7-fedora43/\nIQ3_XXS gguf, works well with qwen code but had to add a bit of repetition penalty because it got stuck in thinking occasionally ",
       "observed_command": "./llama-server --threads 7 --ctx-size 65536 --keep 512 --flash-attn on --fit on --fit-ctx 65536 --main-gpu 0 --split-mode none --no-mmap --context-shift --reasoning off --temp 0.6 --top-p 0.95 --top-k 20 --repeat-penalty 1.05 --min-p 0.00 --model /mnt/816d99c9-d5f0-40ae-96fd-b44f7f62faa4/misc/models/Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --host 192.168.1.102 --port 8080",
@@ -188,7 +217,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 65536,
     "tensor_parallel": 1
   },

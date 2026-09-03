@@ -24,10 +24,31 @@
       "state": "available"
     },
     "channel_status": "oem_systems",
-    "current_stock": null,
-    "current_system_price": null,
+    "current_stock": true,
+    "current_system_price": {
+      "amount": 3799,
+      "currency": "USD"
+    },
     "msrp": null,
-    "prices": []
+    "prices": [
+      {
+        "amount": 3799,
+        "as_of": "2026-08-27T11:28:59.877Z",
+        "captured_at": "2026-08-27T11:28:59.877Z",
+        "configuration": "MINISFORUM MS-S1 MAX 128GB Max AI Compute Edition",
+        "currency": "USD",
+        "kind": "street_price",
+        "region": "US",
+        "scope": "current_in_stock_retail_listing",
+        "source": {
+          "captured_at": "2026-08-27T11:28:59.877Z",
+          "kind": "retailer",
+          "publisher": "minisforum",
+          "url": "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc"
+        },
+        "unit": "one_time"
+      }
+    ]
   },
   "compute": {
     "architecture": "AMD Zen 5 + RDNA 3.5 + XDNA 2",
@@ -58,24 +79,27 @@
         }
       },
       "fp16": {
-        "unknown": {
+        "dense": {
           "provenance": {
-            "captured_at": "2026-08-27T04:55:00Z",
+            "captured_at": "2026-08-31T13:46:11Z",
             "sources": [
               {
-                "captured_at": "2026-08-27T04:55:00Z",
+                "captured_at": "2026-08-31T13:46:11Z",
+                "kind": "vendor",
+                "publisher": "AMD",
+                "url": "https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html"
+              },
+              {
+                "captured_at": "2026-08-31T13:46:11Z",
                 "kind": "vendor",
                 "publisher": "AMD",
                 "url": "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html"
               }
             ]
           },
-          "reason": {
-            "code": "not-published",
-            "detail": "No directly comparable fp16 throughput was published for this exact accelerator; no FLOPS inferred."
-          },
-          "state": "unknown",
-          "unit": "tflops"
+          "state": "known",
+          "unit": "tflops",
+          "value": 60
         }
       },
       "fp32": {
@@ -249,39 +273,33 @@
     },
     "commercial.current_stock": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-08-27T11:28:59.877Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "AMD",
-            "url": "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html"
+            "captured_at": "2026-08-27T11:28:59.877Z",
+            "kind": "retailer",
+            "publisher": "minisforum",
+            "url": "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc"
           }
         ]
       },
-      "reason": {
-        "code": "not-captured",
-        "detail": "Audit availability note: configuration-dependent."
-      },
-      "state": "unknown"
+      "reason": "fresh-in-stock-us-retailer-observation",
+      "state": "known"
     },
     "commercial.current_system_price": {
       "provenance": {
-        "captured_at": "2026-08-27T04:55:00Z",
+        "captured_at": "2026-08-27T11:28:59.877Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T04:55:00Z",
-            "kind": "vendor",
-            "publisher": "AMD",
-            "url": "https://www.amd.com/en/products/processors/laptop/ryzen/ai-300-series/amd-ryzen-ai-max-plus-395.html"
+            "captured_at": "2026-08-27T11:28:59.877Z",
+            "kind": "retailer",
+            "publisher": "minisforum",
+            "url": "https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc"
           }
         ]
       },
-      "reason": {
-        "code": "not-captured",
-        "detail": "System price depends on OEM configuration"
-      },
-      "state": "unknown"
+      "reason": "fresh-in-stock-exact-system-configuration",
+      "state": "known"
     },
     "commercial.msrp": {
       "provenance": {

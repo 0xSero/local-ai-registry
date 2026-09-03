@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
-    "version": null
+    "version": "8ad8aef"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -94,6 +108,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsnf37pe00bqo001jze3l8kj"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +167,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Setup: llama.cpp 8ad8aef, CUDA, 2x NVIDIA RTX 3090 24GB each (48GB total VRAM), all layers GPU-offloaded with layer split 1:1, flash attention, 131072-token server context, Q8_0 K/V cache, one parallel slot, BF16 Muse Glimmer vision projector. Decode: 31.671169 tok/s from llama-bench, 0 prompt tokens, 128 output tokens, 5 repetitions and default warmup. Prefill: 1604.010013 tok/s from a separate llama-bench prompt-processing test with 2048 prompt tokens, 0 output tokens, ubatch 2048, 5 repetitions; the shorter 66-token endpoint estimate was 374.8 tok/s because fixed TTFT/request overhead dominated. Endpoint timing: median TTFT 176.09 ms and total throughput 46.8 tok/s over 3 measured iterations after 1 warmup, using 66 actual prompt tokens and 128 generated tokens. Server command: /home/lotto/llama.cpp/build/bin/llama-server --model /home/lotto/models/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-UD-Q6_K_XL.gguf --mmproj /home/lotto/models/Muse-Glimmer-30B-GGUF/mmproj-Muse-Glimmer-30B-BF16.gguf --alias Muse-Glimmer-30B-Q6 --host 0.0.0.0 --port 8001 --device CUDA0,CUDA1 --n-gpu-layers all --split-mode layer --tensor-split 1,1 --ctx-size 131072 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on --parallel 1 --cont-batching --jinja --temp 1.0 --top-p 0.95 --top-k 64 --metrics --perf",
       "observed_command": "/home/lotto/llama.cpp/build/bin/llama-bench -m /home/lotto/models/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-UD-Q6_K_XL.gguf -p 0 -n 128 -ngl 999 -sm layer -ts 1/1 -fa 1 -ctk q8_0 -ctv q8_0 -r 5 -o json",
@@ -174,8 +217,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "nvidia/Llama-3.1-8B-Instruct-FP8",
+      "--tensor-parallel-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "32768"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxtuma00ftmp01axh5avuw"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxtuma00ftmp01axh5avuw"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Coding benchmark on RTX PRO 6000 Blackwell 96 GB. Prompt: benchmark-promptv1.md. Single request, 512 max output tokens, cold server request. Request wall time: 3239 ms. tokSOut and tokSTotal are client wall-time rates; TTFT, prefill throughput, peak VRAM, and power were not sampled.",
       "observed_command": "vllm serve nvidia/Llama-3.1-8B-Instruct-FP8 \\\n  --host 127.0.0.1 --port 8000 \\\n  --served-model-name nvidia/Llama-3.1-8B-Instruct-FP8 \\\n  --trust-remote-code --generation-config vllm \\\n  --max-model-len 32768 --gpu-memory-utilization 0.90 \\\n  --max-num-batched-tokens 8192 --max-num-seqs 4",
@@ -171,7 +250,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 4,
     "max_context_tokens": 32768,
     "tensor_parallel": 1
   },

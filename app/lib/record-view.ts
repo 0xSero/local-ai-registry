@@ -177,7 +177,15 @@ export function recordFacts(collection: string, record: Record<string, unknown>)
       fact("Backend", record.accelerator_backend),
       fact("VRAM", memory?.vram_gb === undefined ? null : `${memory.vram_gb} GB`),
       fact("Memory type", memory?.vram_type),
-      fact("Bandwidth", memory?.bandwidth_gb_per_s === undefined ? null : `${memory.bandwidth_gb_per_s} GB/s`),
+      fact("Bandwidth", (() => {
+        const bandwidth = memory?.bandwidth_gb_per_s
+        if (bandwidth === undefined || bandwidth === null) return null
+        if (typeof bandwidth === "object") {
+          const range = bandwidth as { min?: number; max?: number }
+          return `${range.min ?? "?"}–${range.max ?? "?"} GB/s`
+        }
+        return `${bandwidth} GB/s`
+      })()),
     ].filter((item): item is RecordFact => item !== null)
   }
   if (collection === "models") {

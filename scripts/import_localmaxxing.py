@@ -30,6 +30,101 @@ def write(path, value):
 def revision(value):
     return value if re.fullmatch(r"[0-9a-f]{40}", value or "") else None
 
+def _concurrency_evidence(row):
+    flags = row.get("engineFlags") or {}
+    command = flags.get("commandSnippet") if isinstance(flags.get("commandSnippet"), str) else ""
+    notes = row.get("notes") if isinstance(row.get("notes"), str) else ""
+    return command, "\n".join(value for value in (command, notes) if value)
+
+
+def evidenced_sweep_metrics(row):
+    """Return metrics stated unambiguously in the exact run notes."""
+    _, evidence = _concurrency_evidence(row)
+    values = set()
+    for pattern in (
+        r"\bPP\s*=\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(?:tok(?:en)?s?/?s|t/s)\b",
+        r"\bPrompt processing\s*(?:=|:)?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(?:tok(?:en)?s?/?s|t/s)\b",
+    ):
+        for match in re.finditer(pattern, evidence, re.IGNORECASE):
+            values.add(float(match.group(1).replace(",", "")))
+    return {"prefill_tok_s": next(iter(values))} if len(values) == 1 else {}
+
+
+
+
+def workload_concurrency(row):
+    command, evidence = _concurrency_evidence(row)
+    patterns = (
+        r"\bagents?\s*=\s*(\d+)\b",
+        r"\bconcurrent\s+throughput\b[^.\n;]{0,80}\bbatch\s*(?:=|:)\s*(\d+)\b",
+        r"\b(\d+)\s+concurrent\b[^\n.;]{0,80}\b(?:requests?|clients?|agents?|streams?)\b",
+        r"\bat\s+concurrency\s*(?:=|:)?\s*(\d+)\b",
+        r"\bconcurrency\s*(?:=|:)\s*(\d+)\b",
+        r"(?:^|[\s,;])c\s*=\s*(\d+)\b",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, evidence, re.IGNORECASE)
+        if match:
+            return int(match.group(1))
+    batch_size = row.get("batchSize")
+    if (
+        isinstance(batch_size, int)
+        and re.search(
+            r"\bbatch\s*size\b[^\n.;]{0,40}\b(?:is|means|represents)\b[^\n.;]{0,40}\bconcurrent\b",
+            evidence,
+            re.IGNORECASE,
+        )
+    ):
+        return batch_size
+    if re.search(r"\bsingle[-_ ](?:stream|request|client)\b", evidence, re.IGNORECASE):
+        return 1
+    engine_name = str((row.get("engine") or {}).get("engineName") or "").lower()
+    if "llama" in engine_name or "llama-bench" in command.lower():
+        return 1
+    return None
+
+
+def _explicit_positive_integers(command, options):
+    values = set()
+    option_pattern = "|".join(re.escape(option) for option in options)
+    for match in re.finditer(
+        rf"(?:^|\s)(?:{option_pattern})(?:=|\s+)(\d+)\b",
+        command,
+        re.IGNORECASE,
+    ):
+        value = int(match.group(1))
+        if value > 0:
+            values.add(value)
+    return values
+
+
+def server_capacity(row):
+    command, _ = _concurrency_evidence(row)
+    values = _explicit_positive_integers(
+        command,
+        ("--parallel", "-np", "--max-num-seqs", "--max-concurrency"),
+    )
+    return next(iter(values)) if len(values) == 1 else None
+
+
+def server_context_limit(row):
+    command, _ = _concurrency_evidence(row)
+    direct_values = _explicit_positive_integers(
+        command,
+        ("--max-model-len", "--context-length", "--max-context-length"),
+    )
+    llama_values = _explicit_positive_integers(command, ("--ctx-size", "-c"))
+    llama_parallel = _explicit_positive_integers(command, ("--parallel", "-np"))
+    if len(llama_values) == 1:
+        llama_context = next(iter(llama_values))
+        if len(llama_parallel) == 1:
+            parallel = next(iter(llama_parallel))
+            if llama_context % parallel != 0:
+                return None
+            llama_context //= parallel
+        direct_values.add(llama_context)
+    return next(iter(direct_values)) if len(direct_values) == 1 else None
+
 
 def import_row(root, row):
     hardware_id = HARDWARE.get(row.get("hardwareGroupLabel"))
@@ -69,6 +164,9 @@ def import_row(root, row):
         })
 
     run_id = row["id"]
+    concurrency = workload_concurrency(row)
+    evidenced_metrics = evidenced_sweep_metrics(row)
+    capacity = server_capacity(row)
     recipe_id = f"{model_id}-{slug(precision)}-{hardware_id}-{slug(row['engine']['engineName'])}-tp{row['hardware'].get('gpuCount') or 1}-{run_id[-8:]}"
     sweep_id = f"{recipe_id}-sweep"
     write(root / "recipe" / f"{recipe_id}.json", {
@@ -93,8 +191,8 @@ def import_row(root, row):
         },
         "serving": {
             "tensor_parallel": row["hardware"].get("gpuCount") or 1,
-            "max_context_tokens": row.get("contextLength"),
-            "max_concurrency": row.get("batchSize"),
+            "max_context_tokens": server_context_limit(row),
+            "max_concurrency": capacity,
             "kv_cache_tokens": None,
         },
         "capabilities": {"chat": None, "reasoning": None, "tools": None, "vision": None},
@@ -105,14 +203,16 @@ def import_row(root, row):
                 "hardware_label": row.get("hardwareGroupLabel"),
                 "revision_unpinned": revision(row.get("modelRevision")) is None,
                 "notes": row.get("notes"),
+                "observed_command": (row.get("engineFlags") or {}).get("commandSnippet"),
+                "batch_size": row.get("batchSize"),
             }
         },
     })
     sweep_rows = [{
-        "concurrency": row.get("batchSize") or 1,
+        "concurrency": concurrency,
         "context_tokens": row.get("contextLength"),
         "output_tokens": row.get("outputTokens"),
-        "prefill_tok_s": row.get("tokSPrefill"),
+        "prefill_tok_s": row.get("tokSPrefill") if row.get("tokSPrefill") is not None else evidenced_metrics.get("prefill_tok_s"),
         "decode_tok_s": row.get("tokSOut"),
         "decode_tok_s_per_stream": None,
         "ttft_ms_p50": row.get("ttftMs"),

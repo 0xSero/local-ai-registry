@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdfljvx004dlm0125ofpfqd"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdfljvx004dlm0125ofpfqd"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "llama-benchy 0.4.0 depth-ladder (pp2520 tg240, no-cache, runs=2+warmup) at depth 8192. rdna-boosts rebased onto master 50f068fff (b10690, incl. PR #27742), ROCm 7.14 TheRock, gfx1201, draft-mtp-adaptive MTP, tensor split over 2 compute cards. New: P2P peer access (ACS redirect) + butterfly allreduce — RCCL allreduce costs 20% decode on small MTP payloads. +4.6% tg over prior best 56.61, +11.5% over pre-rebase 53.13.",
       "observed_command": "llama-server -m Qwen3.8-27B-Q8_0.gguf --spec-type draft-mtp-adaptive -sm tensor -ts 1/1 -ngl 99 --flash-attn auto -ctk f16 -ctv f16 -c 262144 (GGML_CUDA_ALLREDUCE=internal + GGML_CUDA_P2P=1, pci=disable_acs_redir live, 2 of 3 GPUs visible)",
@@ -180,8 +209,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 10952,
+    "max_concurrency": null,
+    "max_context_tokens": 262144,
     "tensor_parallel": 3
   },
   "speed_sweep_ids": [

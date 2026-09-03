@@ -231,6 +231,9 @@ def rebuild_index(root):
     )
     recipes = []
     recipes_by_hardware = {}
+    recommendations = {}
+    sweep_owners = {}
+    evidence_models_by_hardware = {}
     instances_by_model = {}
     for path in sorted((root / "model-instance").glob("*.json")):
         instance = json.loads(path.read_text())
@@ -250,6 +253,55 @@ def rebuild_index(root):
             "has_evidence": bool(recipe.get("speed_sweep_ids")),
         })
         recipes_by_hardware.setdefault(recipe["hardware_id"], []).append(recipe["id"])
+        if recipe.get("recommended"):
+            recommendations.setdefault(recipe["hardware_id"], []).append({
+                "recipe_id": recipe["id"],
+                "model_instance_id": recipe["model_instance_id"],
+                "engine": recipe["engine"]["name"],
+                "max_context_tokens": (recipe.get("serving") or {}).get("max_context_tokens"),
+                "image": recipe["launch"].get("image"),
+            })
+        sweep_ids = recipe.get("speed_sweep_ids") or []
+        if sweep_ids:
+            evidence_models_by_hardware.setdefault(recipe["hardware_id"], set()).add(
+                recipe["model_instance_id"]
+            )
+        for sweep_id in sweep_ids:
+            sweep_owners[sweep_id] = recipe["hardware_id"]
+    hardware_speed_evidence = {}
+    aggregates = (
+        ("prefill_tok_s", "peak_prefill_tok_s", max),
+        ("decode_tok_s", "peak_decode_tok_s", max),
+        ("ttft_ms_p50", "fastest_ttft_ms", min),
+        ("context_tokens", "max_observed_context_tokens", max),
+        ("peak_vram_gb", "peak_observed_vram_gb", max),
+    )
+    for path in sorted((root / "speed-sweep").glob("*.json")):
+        sweep = json.loads(path.read_text())
+        owner = sweep_owners.get(sweep["id"])
+        if owner is None:
+            continue
+        hardware_id = owner
+        evidence = hardware_speed_evidence.setdefault(
+            hardware_id,
+            {
+                "sweep_count": 0,
+                "point_count": 0,
+            },
+        )
+        evidence["sweep_count"] += 1
+        evidence["point_count"] += len(sweep.get("rows") or [])
+        for point in sweep.get("rows") or []:
+            for source_field, target_field, aggregate in aggregates:
+                value = point.get(source_field)
+                if not isinstance(value, (int, float)) or isinstance(value, bool):
+                    continue
+                existing = evidence.get(target_field)
+                evidence[target_field] = (
+                    value if existing is None else aggregate(existing, value)
+                )
+    for hardware_id, evidence in hardware_speed_evidence.items():
+        evidence["model_count"] = len(evidence_models_by_hardware.get(hardware_id, set()))
     benchmarks_by_model = {}
     for path in sorted((root / "benchmark").glob("*.json")):
         benchmark = json.loads(path.read_text())
@@ -272,15 +324,26 @@ def rebuild_index(root):
     index_dir = root / "index"
     write(index_dir / "collections.json", {
         "schema_version": SCHEMA,
-        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in field names become hyphens in collection directories. Resolve price ids from price/<product-id>/<region>.json. Reverse lookups live beside this file: recipes.json (compact filter rows), recipes-by-hardware.json, instances-by-model.json, benchmarks-by-model.json, prices-by-hardware.json.",
+        "resolver_rule": "Resolve <field>_id from <field>/<id>.json and <field>_ids as an array of those records; underscores in field names become hyphens in collection directories. Resolve price ids from price/<product-id>/<region>.json. Reverse lookups live beside this file: recipes.json (compact filter rows), recipes-by-hardware.json, instances-by-model.json, benchmarks-by-model.json, prices-by-hardware.json, hardware-speed-evidence.json, recommendations.json (one validated recipe per hardware id).",
         "collections": collections,
         "counts": {name.replace("-", "_"): len(ids) for name, ids in collections.items()},
     })
     write(index_dir / "recipes.json", {"schema_version": SCHEMA, "recipes": recipes})
     write(index_dir / "recipes-by-hardware.json", {"schema_version": SCHEMA, "recipes_by_hardware": recipes_by_hardware})
+    # The consumer contract: exactly one validated recipe per hardware id. validate_registry.py
+    # refuses any hardware with more than one recommended recipe, so this map is single-valued.
+    write(index_dir / "recommendations.json", {
+        "schema_version": SCHEMA,
+        "rule": "One recommended recipe per hardware id. Every entry is status=validated, single-GPU, docker, digest-pinned, revision-pinned, with acceptance evidence. Clients ship this file and re-gate every entry before launch.",
+        "recommendations": {hw: entries[0] for hw, entries in sorted(recommendations.items())},
+    })
     write(index_dir / "instances-by-model.json", {"schema_version": SCHEMA, "instances_by_model": instances_by_model})
     write(index_dir / "benchmarks-by-model.json", {"schema_version": SCHEMA, "benchmarks_by_model": benchmarks_by_model})
     write(index_dir / "prices-by-hardware.json", {"schema_version": SCHEMA, "prices_by_hardware": prices_by_hardware})
+    write(index_dir / "hardware-speed-evidence.json", {
+        "schema_version": SCHEMA,
+        "hardware": hardware_speed_evidence,
+    })
 
 
 def main():

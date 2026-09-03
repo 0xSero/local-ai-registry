@@ -42,17 +42,17 @@
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-launch-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -141,7 +141,6 @@
     },
     "host_port": 8888,
     "image": "lmsysorg/sglang:qwen38-27b@sha256:febfb971c7352570fc445c466ebd6ffc9d896024958e544a60f2137fd85856b1",
-    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
@@ -151,6 +150,11 @@
       }
     ],
     "network_mode": "host",
+    "provenance": {
+      "kind": "upstream-published",
+      "publisher": "docker.io/lmsysorg",
+      "source": "https://github.com/sgl-project/sglang"
+    },
     "shm_size": "32g"
   },
   "metadata": {},
@@ -170,7 +174,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 16,
-    "max_context_tokens": null,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

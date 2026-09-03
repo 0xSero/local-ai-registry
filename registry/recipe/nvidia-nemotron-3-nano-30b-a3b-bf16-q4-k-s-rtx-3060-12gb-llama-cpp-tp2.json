@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmpq1po300091pl014y2iw1mu"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmpq1po300091pl014y2iw1mu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": null,
       "observed_command": "llama-server --model Nemotron-3-Nano-30B-A3B-Q4_K_S.gguf --ctx-size 262144 --n-gpu-layers 99 --flash-attn on --cache-type-k q8_0 --cache-type-v turbo3 --split-mode layer",
@@ -166,7 +195,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 2
   },

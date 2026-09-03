@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmp3zweyy003upc01aiws6030"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp3zweyy003upc01aiws6030"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "MTP speculative decoding benchmark. PFlash+TurboQuant+MTP llama.cpp fork. b=512 ub=128, spec-draft-n-max=5, spec-draft-p-min=0.90, flash-attn=1. MTP acceptance: 84.1% (185/220). GPU: RX 7900 XTX 24GB, ROCm 7.2.2.",
       "observed_command": "llama-server -m Qwen3.6-27B-UD-Q4_K_XL.gguf -ngl 99 -fa 1 -ctk turbo3 -ctv turbo3 -b 512 -ub 128 -c 16384 --no-context-shift --spec-type mtp --spec-draft-n-max 5 --spec-draft-p-min 0.90 --reasoning off --jinja --no-warmup --host 127.0.0.1 --port 8099",
@@ -183,7 +212,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 16384,
     "tensor_parallel": 1
   },

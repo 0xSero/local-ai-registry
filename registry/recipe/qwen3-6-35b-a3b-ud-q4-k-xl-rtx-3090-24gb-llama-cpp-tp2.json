@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmof29ivq000ajr047dp6behr"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmof29ivq000ajr047dp6behr"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3090",
       "notes": "Qwen3.6-35B-A3B (MoE, 3B-active) at 1M context window. Layer-split across 2× RTX 3090, llama.cpp turboquant fork (Tom Jobbins' fork supporting q4_0 KV cache + extended ctx). Short-prompt 124 TPS sustained at full 1M ctx. Loaded-context generation 37 TPS @ 128K. UD-Q4_K_XL = Unsloth Dynamic Quantization (variable-precision Q4_K_M derivative). Measured 2026-04-19 at 230W power cap, no NVLink bridge.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf --ctx-size 1048576 --n-gpu-layers 999 --split-mode layer -ctk q4_0 -ctv q4_0 -fa on --threads 16",
@@ -168,7 +197,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 1048576,
     "tensor_parallel": 2
   },

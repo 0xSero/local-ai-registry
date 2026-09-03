@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofgd9iz000ml4055xsdgvuy"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmofgd9iz000ml4055xsdgvuy"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "hipfire @ 0.1.8-alpha+f16eceb (master post-perf-recovery, PR #47)\nprompt: \"Explain the theory of general relativity in simple terms.\"\nruns: 3 (median reported)\ndecode mode: AR (autoregressive, no spec-decode)\nkv_cache: asym3 (3-bit rotated K + Q8 V; 5.5x vs fp32)\nprompt_normalize: true (default since 2026-04-26)\npp128: 328.1 tok/s\npp512: 324.6 tok/s\npp1024: 323.1 tok/s\npp2048: 318.9 tok/s\nvram_loaded: 22660 MB\nQuantized in-house: hipfire-quantize MQ4 (FWHT-rotated 4-bit, group=256)",
       "observed_command": "hipfire bench ornstein-3.6-35b-a3b --runs 3 \"Explain the theory of general relativity in simple terms.\"",
@@ -157,8 +186,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 4096,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

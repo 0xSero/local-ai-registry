@@ -28,17 +28,17 @@
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-launch-concurrency-limit",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -113,12 +113,12 @@
     "mounts": [
       {
         "read_only": true,
-        "source": "/mnt/llm_models/GLM-5.2-EXL3-TR3-3.0bpw",
+        "source": "${MODEL_ROOT}/GLM-5.2-EXL3-TR3-3.0bpw",
         "target": "/model"
       },
       {
         "read_only": false,
-        "source": "/mnt/llm_models/cache_glm52_exl3_text",
+        "source": "${CACHE_ROOT}/cache_glm52_exl3_text",
         "target": "/cache"
       }
     ],
@@ -141,7 +141,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": 1136384,
-    "max_concurrency": null,
+    "max_concurrency": 8,
     "max_context_tokens": 262144,
     "tensor_parallel": 4
   },
