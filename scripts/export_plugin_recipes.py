@@ -79,6 +79,14 @@ def entry(recipe, instance, model, hardware, sweeps):
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
+        "weights": {
+            # where the plugin puts the download under a ${MODEL_ROOT} mount; TabbyAPI loads <mount>/<model_name>
+            "subdir": (recipe.get("metadata") or {}).get("weights_subdir") or "",
+        },
+        "image": {
+            "provenance": (launch.get("provenance") or {}).get("kind") or "upstream",
+            "attestation": (launch.get("provenance") or {}).get("attestation"),
+        },
         "launch": {
             "image": launch["image"],
             "containerPort": launch.get("container_port"),
