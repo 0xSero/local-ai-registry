@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # omarchy:summary=Run the validated local model for this GPU and open coding agents on it
-# omarchy:args=<snapshot|load|unload|open-agent [name]|share [--key value]>
+# omarchy:args=<snapshot|load|unload|open-agent [name]|share [--key value]|agent-dir <path>>
 #
 # Five verbs. `snapshot` is a pure read that rewrites the state file the panel watches. `load`
 # and `unload` spawn a worker that holds the op lock; everything they do is logged. `open-agent`
@@ -90,7 +90,8 @@ usage() {
   load                   download if needed, then start the model for this GPU
   unload                 stop the model; keep downloads
   open-agent [name]      open an installed coding agent on the running model
-  share [--key <value>]  toggle sharing on your tailnet, or replace the key'
+  share [--key <value>]  toggle sharing on your tailnet, or replace the key
+  agent-dir <path>       directory agents open in (default: where the shell started)'
 }
 
 cmd=${1:-help}; shift || true
@@ -100,6 +101,7 @@ case $cmd in
   unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn unload _worker-unload ;;
   open-agent) snapshot_write; open_agent "${1:-}" 2>"$STATE/agent.err" || { m=$(sed -n '$s/^local-ai: //p' "$STATE/agent.err"); refuse "${m:-agent launch failed (see $LOGFILE)}"; exit 1; } ;;
   share) share_toggle "$@" ;;
+  agent-dir) [[ -d ${1:-} ]] && { (cd "$1" && pwd) >"$STATE/agent-dir"; log "agent-dir $1"; } || { fail "agent-dir: not a directory: ${1:-}"; exit 1; } ;;
   _worker-load) w_load ;;
   _worker-unload) w_unload ;;
   help|-h|--help) usage ;;
