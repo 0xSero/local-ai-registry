@@ -49,17 +49,26 @@ agent_command() {
         '{"$schema":"https://opencode.ai/config.json",provider:{"omarchy-local":{npm:"@ai-sdk/openai-compatible",name:"Omarchy Local",options:{baseURL:$u,apiKey:$k},models:{($m):{name:$m}}}}}')
       printf '%s\0' env "OPENCODE_CONFIG_CONTENT=$cfg" "$bin" --model "omarchy-local/$model" ;;
     pi|omp)
-      # pi reads providers from its agent dir; a plugin-owned dir keeps the user's own untouched
+      # pi reads providers from its agent dir; a plugin-owned dir keeps the user's own untouched.
+      # omp also wants a config.yml there, or it opens its first-run wizard.
       local dir="$STATE/agents/$name"; mkdir -p "$dir"
       jq -nc --arg u "$ENDPOINT/v1" --arg m "$model" --arg k "$key" \
         '{providers:{"omarchy-local":{baseUrl:$u,apiKey:$k,api:"openai-completions",models:[{id:$m,name:($m+" · local"),input:["text"],cost:{input:0,output:0,cacheRead:0,cacheWrite:0}}]}}}' \
         >"$dir/models.json"
+      [[ $name == omp ]] && printf 'modelRoles:\n  default: omarchy-local/%s\nsetupVersion: 2\n' "$model" >"$dir/config.yml"
       printf '%s\0' env "PI_CODING_AGENT_DIR=$dir" "OMP_CODING_AGENT_DIR=$dir" "$bin" --provider omarchy-local --model "$model" ;;
+    crush)
+      # crush takes providers from XDG config only, not from OPENAI_BASE_URL: give it a plugin-owned XDG_CONFIG_HOME
+      local dir="$STATE/agents/crush/crush"; mkdir -p "$dir"
+      jq -nc --arg u "$ENDPOINT/v1" --arg m "$model" --arg k "$key" \
+        '{providers:{"omarchy-local":{type:"openai",name:"Omarchy Local",base_url:$u,api_key:$k,models:[{id:$m,name:$m,context_window:131072,default_max_tokens:8192}]}},models:{large:{provider:"omarchy-local",model:$m},small:{provider:"omarchy-local",model:$m}}}' \
+        >"$dir/crush.json"
+      printf '%s\0' env "XDG_CONFIG_HOME=$STATE/agents/crush" "OPENAI_API_KEY=$key" "$bin" ;;
     copilot)
       printf '%s\0' env "COPILOT_PROVIDER_BASE_URL=$ENDPOINT/v1" "COPILOT_PROVIDER_API_KEY=$key" "$bin" --model "$model" ;;
     grok)
       printf '%s\0' env "GROK_CLI_CHAT_PROXY_BASE_URL=$ENDPOINT/v1" "XAI_API_KEY=$key" "$bin" ;;
-    *) # OpenAI-compatible by convention: crush, hermes, ori, agy read the standard variables
+    *) # OpenAI-compatible by convention: hermes, ori, agy read the standard variables
       printf '%s\0' env "OPENAI_BASE_URL=$ENDPOINT/v1" "OPENAI_API_BASE=$ENDPOINT/v1" "OPENAI_API_KEY=$key" "OPENAI_MODEL=$model" "$bin" ;;
   esac
 }
