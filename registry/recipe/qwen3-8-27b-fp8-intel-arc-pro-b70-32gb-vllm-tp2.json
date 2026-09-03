@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt2a84b70cp3mv0161xvsnfh"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt2a84b70cp3mv0161xvsnfh"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "JonathanColetti/Qwen3.8-27B-Uncensored FP8 (load-time W8A8 e4m3, Fp8PerTensorOnlineLinearMethod) served via vLLM on 2x Intel Arc Pro B70 TP2 (non-P2P host-staged collectives), MTP3 speculative decode, INT8 lm_head, FP8 KV, 262144 ctx, greedy. Prompt shape prewarmed before measuring; iterations 67.3-71.0. Strict cold-suite 66.3 tok/s (tokens 1-100 after TTFT, cached_tokens=0), quality gate passed.",
       "observed_command": "VLLM_XPU_HOST_STAGED_COLLECTIVES=1 USE_PINNED_ONECCL=1 vllm serve /data/models/Qwen3.8-27B-Uncensored-bf16-full --host 0.0.0.0 --port 19622 --served-model-name Qwen3.8-27B-UNC-FP8 --tensor-parallel-size 2 --dtype float16 --max-model-len 262144 --max-num-seqs 1 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.95 --kv-cache-dtype fp8 --enable-prompt-tokens-details --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --default-chat-template-kwargs '{\"enable_thinking\": false, \"reasoning_effort\": \"low\"}' --speculative-config '{\"method\":\"qwen3_5_mtp\",\"num_speculative_tokens\":3}' --quantization fp8 --chat-template /data/models/Qwen3.8-27B-Uncensored-g128-AutoRound/chat_template.jinja",
@@ -193,7 +222,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_context_tokens": 262144,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [

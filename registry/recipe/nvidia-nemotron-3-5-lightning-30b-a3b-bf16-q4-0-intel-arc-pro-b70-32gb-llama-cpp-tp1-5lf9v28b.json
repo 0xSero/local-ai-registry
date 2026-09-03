@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsp78jxo00mhmp015lf9v28b"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsp78jxo00mhmp015lf9v28b"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Nemotron 3.5 Lightning 30B-A3B (hybrid Mamba2-Transformer MoE, 128 experts/7 active). Q4_0 quantization (17.44 GiB, requantized from Q4_K_M). Decode with native MTP speculative decoding (draft-mtp, n-max=4, 95-99% acceptance, n=5 median). No-spec decode: 68.0 t/s. Q4_0 delivers +78% over Q4_K_M (38->68 t/s no-spec) due to simpler GEMV dequantization. Measured power: 134.0W avg (cap 230W). GPU temp: ~64C. Custom kernel fusion: ssm_conv bias+SiLU, ssm_scan dt_bias+D*x, MMQ/XMX dispatch override. Build: llama.cpp SYCL f785fc9ea. KV: q8_0/q4_1, FA on.",
       "observed_command": "llama-server -m Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 16384 -b 8192 -ub 4096 -t 8 --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0.75 -dev SYCL0",
@@ -180,7 +209,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 16384,
     "tensor_parallel": 1
   },

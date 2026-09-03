@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "meta-models/Muse-Glimmer-30B-GGUF:Q4_K_XL",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "131072"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovepne00e3mp01wvn32hkt"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovepne00e3mp01wvn32hkt"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Muse-Glimmer-30B running locally with llama.cpp on an NVIDIA RTX PRO 6000 Blackwell 96 GB. Official k-quant GGUF with quantized DFlash speculative decoding draft model, full GPU offload with 99 model and draft GPU layers, 131,072-token context, batch size 1, Flash Attention enabled, reasoning disabled. Five-prompt benchmark measured approximately 167.5 output tok/s weighted average, about 3.5x faster than Q8. All prompts completed normally.",
       "observed_command": "llama-server -m /home/<USER>/models/Muse-Glimmer-30B-GGUF/muse-glimmer-30B-kquant-dynamic.gguf --mmproj /home/<USER>/models/Muse-Glimmer-30B-GGUF/mmproj-kquant.gguf --host 127.0.0.1 --port 8093 -ngl 99 -c 131072 -n 16000 --reasoning off -md /home/<USER>/models/Muse-Glimmer-30B-GGUF/dflash-kquant.gguf --spec-type draft-dflash --spec-draft-n-max 15 -ngld 99 -fa on --jinja --alias muse-kquant-dflash",
@@ -181,7 +261,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

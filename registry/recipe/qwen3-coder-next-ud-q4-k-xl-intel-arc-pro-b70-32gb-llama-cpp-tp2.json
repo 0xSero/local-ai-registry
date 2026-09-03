@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrwyqptg00tcnz01t9rog6r3"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrwyqptg00tcnz01t9rog6r3"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 2,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "80B-A3B hybrid (DeltaNet linear-attn + MoE), 46.20 GiB weights across dual B70, -sm layer -fa 1 -ngl 99 -ub 1024. Tensor-split probe favored -ts 0.9/1 over 1/1 (1276 vs 1256 pp2048); final llama-bench r=5: tg128 58.48 +/- 1.02, pp2048 1304.83 +/- 59.60 (pp variance moderate). First llama.cpp-Vulkan dual-B70 entry for this model (existing board entries are 4x-GPU vLLM). Same standardized series/rig as our Nemotron-75B/gpt-oss-120B/Qwen entries; scheduler pipeline parallelism active; SR-IOV VFs, no power telemetry. peakVramGb approx (46.2 GiB weights + KV/compute).",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [
