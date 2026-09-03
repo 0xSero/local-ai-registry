@@ -58,12 +58,15 @@ agent_command() {
       [[ $name == omp ]] && printf 'modelRoles:\n  default: omarchy-local/%s\nsetupVersion: 2\n' "$model" >"$dir/config.yml"
       printf '%s\0' env "PI_CODING_AGENT_DIR=$dir" "OMP_CODING_AGENT_DIR=$dir" "$bin" --provider omarchy-local --model "$model" ;;
     crush)
-      # crush takes providers from XDG config only, not from OPENAI_BASE_URL: give it a plugin-owned XDG_CONFIG_HOME
+      # crush takes providers from XDG config only, not from OPENAI_BASE_URL, and its XDG data file pins the
+      # last chosen model over the config: give it a plugin-owned config and data home
       local dir="$STATE/agents/crush/crush"; mkdir -p "$dir"
+      # a mise shim would reinstall crush under the new data home: launch the real binary instead
+      [[ $bin == */mise/shims/* ]] && command -v mise >/dev/null 2>&1 && bin=$(mise which crush 2>/dev/null || printf '%s' "$bin")
       jq -nc --arg u "$ENDPOINT/v1" --arg m "$model" --arg k "$key" \
         '{providers:{"omarchy-local":{type:"openai",name:"Omarchy Local",base_url:$u,api_key:$k,models:[{id:$m,name:$m,context_window:131072,default_max_tokens:8192}]}},models:{large:{provider:"omarchy-local",model:$m},small:{provider:"omarchy-local",model:$m}}}' \
         >"$dir/crush.json"
-      printf '%s\0' env "XDG_CONFIG_HOME=$STATE/agents/crush" "OPENAI_API_KEY=$key" "$bin" ;;
+      printf '%s\0' env "XDG_CONFIG_HOME=$STATE/agents/crush" "XDG_DATA_HOME=$STATE/agents/crush" "OPENAI_API_KEY=$key" "$bin" ;;
     copilot)
       printf '%s\0' env "COPILOT_PROVIDER_BASE_URL=$ENDPOINT/v1" "COPILOT_PROVIDER_API_KEY=$key" "$bin" --model "$model" ;;
     grok)
