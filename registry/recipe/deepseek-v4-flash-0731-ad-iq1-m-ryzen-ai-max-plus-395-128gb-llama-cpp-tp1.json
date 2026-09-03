@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgewu9j016hpp01l0uk04fy"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgewu9j016hpp01l0uk04fy"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp master b322 (360e134) ROCm on Framework Desktop Strix Halo 128G unified, DSpark speculative decode (--spec-type draft-dspark, n-max 5), --no-mmap. Median of 3.",
       "observed_command": "/home/mikekey/llama.cpp/build-rocm-master/bin/llama-server --port ${PORT} --host 0.0.0.0 --no-webui -ngl 99 --jinja --flash-attn auto --cache-reuse 256 --prio 3 --no-mmap -m /home/mikekey/models/gguf/deepseek/DeepSeek-V4-Flash-0731-AD-IQ1_M-00001-of-00004.gguf -md /home/mikekey/models/gguf/dspark-DeepSeek-V4-Flash-0731-MXFP4.gguf --spec-type draft-dspark --spec-draft-n-max 5 --reasoning-format auto --temp 0.6 --top-p 0.95 --min-p 0.0 --repeat-penalty 1.0 -ctk f16 -ctv f16 -np 1 -c 32768",
@@ -194,7 +223,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 782,
+    "max_context_tokens": 32768,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0pjfxq0f4xms01naomo76q"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmt0pjfxq0f4xms01naomo76q"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Three warmed fresh-process runs on hiptrx/gfx1201: decode 282.45, 282.44, 282.45 tok/s (median 282.45); prefill 445.39, 451.32, 452.24 tok/s (median 451.32); TTFT 113.12, 111.46, 111.00 ms (median 111.46). Every run emitted the same coherent complete merge_sort implementation with tau=13.1818 and acceptance=0.8788. Prompt MD5 253c7ac50857fe6d0e10fb0d2c5e35c0; binary MD5 5b9f921e9ecb6a74c148b9cff8ceee86; target MD5 dba291397f01281cc04c0d2a488d5431; draft MD5 013395583cd04206c8aa68f4d061983d. Checkpoint declares B=8; Hipfire uses measured runtime B=16. DFlash/DFlash2 checkpoint design by z-lab/incoai; AMD runtime and MQ4V2 path implemented in Hipfire.",
       "observed_command": "HIPFIRE_HFQ4G256_LDSSTAGE=1 HIPFIRE_VERIFY_GRAPH=0 ./target/release/examples/dflash_spec_demo --target /home/kaden/qcal/q38.mq4v2.mq4 --draft /home/kaden/.hipfire/models/qwen38-27b-dflash2-mq4v2.hfq --prompt-file benchmarks/prompts/merge_sort_thinking_off.txt --max 256 --temp 0.0 --no-chatml --kv-mode q8 --ctx 4096 --no-adaptive-b",
@@ -172,8 +201,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 4096,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

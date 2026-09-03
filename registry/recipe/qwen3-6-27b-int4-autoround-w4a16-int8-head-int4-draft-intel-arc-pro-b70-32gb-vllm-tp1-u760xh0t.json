@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "piecewise",
     "name": "vllm",
     "version": "0.20.2rc1.dev13+g9557d9108.d20260620 local XPU patch stack"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr9atqb800msqr01u760xh0t"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -94,6 +94,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr9atqb800msqr01u760xh0t"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr9atqb800msqr01u760xh0t"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Current best valid Qwen3.6 27B INT4 AutoRound fresh-response row on one Intel Arc Pro B70 for the webhie AutoRound + runtime INT8 target LM-head BF16-scale + runtime INT4 draft LM-head ReplaySSM recipe. Same recipe as the approved 67.519 tok/s row, now fully quality-confirmed at 68.236 tok/s; treat as a small variance-sensitive current-confirm record, not a new mechanism. Fixed realistic suite, each prompt once cold, cached_tokens=0 on every request, no prompt/KV/cache/history/ngram/response reuse, repeat64 quality matched baseline.",
       "observed_command": "MODEL_DIR=/mnt/fast-ai/llm-cache/hf/hub/models--webhie--Qwen3.6-27B-int4-AutoRound/snapshots/f5750c90b3776db658594df5fe8051098226dd8e GPU_INDEX=0 PORT=19642 MAX_MODEL_LEN=2048 MAX_NUM_BATCHED_TOKENS=1024 QWEN36_27B_ENABLE_MTP=1 NUM_SPECULATIVE_TOKENS=3 QWEN36_27B_ENABLE_XPU_GRAPH=1 VLLM_XPU_GDN_PROMOTE_ACCEPTED_SPEC_STATE=1 VLLM_XPU_GDN_NONSPEC_POSTPROCESS_ACCEPTED_STATE=0 VLLM_XPU_GDN_REPLAYSSM_SPEC=1 VLLM_XPU_GDN_REPLAYSSM_SPEC_CACHE_LEN=8 VLLM_XPU_GDN_REPLAYSSM_TORCH_FALLBACK=0 VLLM_XPU_GDN_REPLAYSSM_STAGE_CONV_TORCH_FALLBACK=0 VLLM_XPU_GDN_REPLAYSSM_COMMIT_IN_FORWARD=1 VLLM_XPU_GDN_REPLAYSSM_SLOT_MGMT_TORCH_FALLBACK=1 VLLM_XPU_LM_HEAD_INT8=1 VLLM_XPU_LM_HEAD_INT8_SCALE_DTYPE=bf16 VLLM_XPU_DRAFT_LM_HEAD_INT4=1 VLLM_XPU_DRAFT_LM_HEAD_INT4_GROUP_SIZE=128 VLLM_XPU_DRAFT_LM_HEAD_INT4_SCALE_DTYPE=bf16 COMPILATION_CONFIG='{\"cudagraph_mode\":\"PIECEWISE\",\"max_cudagraph_capture_size\":8}' experiments/qwen36-27b-autoround-int4-b70/scripts/run-vllm-candidate.sh",
@@ -176,8 +205,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

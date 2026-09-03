@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "meta-models/Muse-Glimmer-30B-GGUF:Q4_K_M",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "16384"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsy7js0l0ctfms01fk4fmflm"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsy7js0l0ctfms01fk4fmflm"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3080",
       "notes": "Muse-Glimmer-30B KQuant-17GB Q4_K_M (Meta's official 15.61 GiB quant), 52 layers, of which only 28 fit on a 10GB card - 24 run on CPU. Result is 5.97 tok/s and a 3.8 s TTFT, with PCIe rx peaking at 23.9 GB/s streaming the CPU layers every token. This is the slowest of the six configs I measured on this GPU and is included as a negative result: the official Q4_K_M is not practical on 10GB. Unsloth's UD-Q3_K_XL of the same model (12.44 GiB, ngl 40) more than doubles it to 13.78 tok/s, and a fully-resident smaller model beats both by 5-12x. Medians of 2 reps. PROVENANCE CAVEAT: my local file is 16,756,681,056 B against 16,756,683,904 B for the current HF revision (2,848 B smaller). It loads and runs correctly, so this is most likely a re-upload rather than a bad download, but I could not byte-verify it and am flagging that rather than claiming provenance. Headless 3080 (both displays on the 7900X iGPU). Workload: single non-repetitive synthetic log-summarisation prompt, 256 output tokens, temp 0, cache_prompt off, medians of 3 reps (2 where noted). Prefill/decode from llama-server timings; TTFT client-side on a streaming request. llama.cpp b10472 (60eeeb608), Windows 11 / CUDA 12.4, driver 591.86, PCIe 4.0 x16, stock 370 W.",
       "observed_command": "llama-server -m Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf -c 16384 -ngl 28 -fa on -ctk q8_0 -ctv q8_0 --parallel 1 --jinja --spec-type none",

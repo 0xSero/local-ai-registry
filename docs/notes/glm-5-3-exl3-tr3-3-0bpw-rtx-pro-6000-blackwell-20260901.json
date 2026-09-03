@@ -1,0 +1,162 @@
+{
+  "schema_version": "local-ai-registry/evidence-v1",
+  "captured_at": "2026-09-01T04:00:19Z",
+  "model": {
+    "repository": "zai-org/GLM-5.3",
+    "revision": "187fb9fff6319062325ff825627ef6db084d9bc6",
+    "architecture": "GlmMoeDsaForCausalLM",
+    "served_model_name": "glm-5.3"
+  },
+  "artifact": {
+    "repository": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
+    "revision": "ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe",
+    "format": "EXL3 Trellis TR3",
+    "precision": "3.0 bpw",
+    "safetensors_bytes": 316420269320
+  },
+  "runtime": {
+    "engine": "vllm",
+    "engine_version": "0.26.1rc0+infernal.invocation.cu133.r17.vllmc53cc73.b12xc0a44a1",
+    "base_image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+    "runtime_image_id": "sha256:dbb66509d2f625b179b2c8cc318a3e7a451befa8a25d7744412b7fc5593490a3",
+    "entrypoint": "/usr/local/bin/serve-infernal-invocation.sh",
+    "graph_mode": "full-and-piecewise",
+    "tensor_parallel": 4,
+    "decode_context_parallel": 4,
+    "speculation": "mtp3",
+    "kv_cache_dtype": "nvfp4_ds_mla",
+    "indexer_kv_dtype": "fp8",
+    "max_context_tokens": 800000,
+    "max_num_seqs": 3,
+    "max_num_batched_tokens": 3072,
+    "kv_cache_memory_bytes_per_rank": 8589934592,
+    "kv_cache_tokens": 862975
+  },
+  "hardware": {
+    "id": "rtx-pro-6000-blackwell-96gb",
+    "count": 4,
+    "accelerator_backend": "nvidia",
+    "sweep_peak_vram_mib": 378860,
+    "sweep_peak_vram_gib": 369.98046875,
+    "vram_samples": 340,
+    "vram_sample_interval_seconds": 0.5
+  },
+  "sustained_decode": {
+    "harness_version": "0.4.29",
+    "measured_at": "2026-09-01T03:45:33.045685Z",
+    "duration_seconds_per_row": 30,
+    "temperature": 0,
+    "output_token_limit": "omitted",
+    "ignore_eos": true,
+    "aggregate_source": "openai_continuous_usage",
+    "idle_gate": "zero running and zero waiting requests before the sweep",
+    "rows": [
+      {
+        "concurrency": 1,
+        "prompt_tokens_per_stream": 78,
+        "client_output_tokens_in_window": 1836,
+        "measurement_seconds": 29.994437,
+        "measurement_wall_seconds": 30.002724,
+        "aggregate_decode_tok_s": 61.211351220680136,
+        "decode_tok_s_per_stream": 61.211351220680136,
+        "ttft_ms_p50": 325.48395899357274,
+        "effective_concurrency": 1,
+        "average_running_requests": 1,
+        "average_waiting_requests": 0,
+        "errors": 0,
+        "underfilled": false,
+        "capacity_limited": false
+      },
+      {
+        "concurrency": 2,
+        "prompt_tokens_per_stream": 78,
+        "client_output_tokens_in_window": 2572,
+        "measurement_seconds": 29.982664,
+        "measurement_wall_seconds": 30.002177,
+        "aggregate_decode_tok_s": 85.78290512963244,
+        "decode_tok_s_per_stream": 42.89145256481622,
+        "ttft_ms_p50": 503.0794579979556,
+        "effective_concurrency": 2,
+        "average_running_requests": 2,
+        "average_waiting_requests": 0,
+        "errors": 0,
+        "underfilled": false,
+        "capacity_limited": false
+      },
+      {
+        "concurrency": 3,
+        "prompt_tokens_per_stream": 78,
+        "client_output_tokens_in_window": 3464,
+        "measurement_seconds": 29.980398,
+        "measurement_wall_seconds": 30.002163,
+        "aggregate_decode_tok_s": 115.54216047003095,
+        "decode_tok_s_per_stream": 38.51405349001032,
+        "ttft_ms_p50": 675.0417910006945,
+        "effective_concurrency": 3,
+        "average_running_requests": 3,
+        "average_waiting_requests": 0,
+        "errors": 0,
+        "underfilled": false,
+        "capacity_limited": false
+      }
+    ]
+  },
+  "prefill": {
+    "method": "uncapped OpenAI streaming requests with unique exact-token prompts; prompt tokens divided by common wall time to first token",
+    "prompt_tokens_per_stream": 8192,
+    "rows": [
+      {
+        "concurrency": 1,
+        "samples": 3,
+        "aggregate_prefill_tok_s": 1752.1921570768548,
+        "ttft_seconds": [4.55336029099999, 4.793247000001429, 4.685441457993875],
+        "finish_reason": "stop",
+        "answer": "OK"
+      },
+      {
+        "concurrency": 2,
+        "samples": 1,
+        "aggregate_prefill_tok_s": 1768.0545490264913,
+        "ttft_seconds": [8.878517458004353, 9.266682416004187],
+        "finish_reason": "stop",
+        "answer": "OK"
+      },
+      {
+        "concurrency": 3,
+        "samples": 1,
+        "aggregate_prefill_tok_s": 1855.529757592193,
+        "ttft_seconds": [12.93408887500118, 12.452342415999738, 13.24473504100024],
+        "finish_reason": "stop",
+        "answer": "OK"
+      }
+    ]
+  },
+  "quality_sidecars": {
+    "arithmetic": {
+      "finish_reason": "stop",
+      "answer": "1813",
+      "expected": "1813",
+      "prompt_tokens": 25,
+      "completion_tokens": 140,
+      "passed": true
+    },
+    "tool_call": {
+      "finish_reason": "tool_calls",
+      "tool": "multiply",
+      "arguments": {"a": 37, "b": 49},
+      "passed": true
+    },
+    "structured_json": {
+      "finish_reason": "stop",
+      "value": {"left": 37, "right": 49, "product": 1813},
+      "schema_strict": true,
+      "passed": true
+    },
+    "reasoning_request": {
+      "finish_reason": "stop",
+      "reasoning_effort": "low",
+      "answer": "Yes, 17 is prime. Its only divisors are 1 and 17, since no integer between 2 and √17 (~4.1) divides it.",
+      "passed": true
+    }
+  }
+}

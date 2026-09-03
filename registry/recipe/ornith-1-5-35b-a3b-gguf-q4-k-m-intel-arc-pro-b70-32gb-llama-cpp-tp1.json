@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt9m8gvg00yeli01ylok5hfn"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt9m8gvg00yeli01ylok5hfn"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Ornith 1.5 35B-A3B Q4_K_M target-only on one Intel Arc Pro B70. Mean of two fresh-server conventional 99-interval suite medians: 130.451371 and 132.469090 tok/s; every prompt was unique, cache_prompt=false, and cached_tokens=0. The neural.download twelve-feature SYCL stack removes 780 launches/token while preserving the validated rounded FP32 boundaries. Exact patches, build, model hash, depth curves, and commands: https://neural.download/models/ornith-15-35b-a3b-q4km-b70.html and https://github.com/steveseguin/b70-optimization-lab/tree/main/repro/ornith-15-35b-a3b-q4km-b70. MoE uses about 3B active parameters per token.",
       "observed_command": "UR_L0_V2_FORCE_DISABLE_COPY_OFFLOAD=1 GGML_SYCL_ENABLE_GRAPH=0 GGML_SYCL_FUSED_MOE_ADD_REDUCE=1 GGML_SYCL_FUSED_ORNITH_CONV_SILU=1 GGML_SYCL_FUSED_RESIDUAL_RMS_NORM=1 GGML_SYCL_FUSED_ORNITH_CONCAT_STATE=1 GGML_SYCL_FUSED_ORNITH_CONCAT_STATE_DIRECT=1 GGML_SYCL_FUSED_ORNITH_ALPHA_GATE=1 GGML_SYCL_FUSED_ORNITH_MOE_GATE_UP=1 GGML_SYCL_FUSED_ORNITH_MOE_SHARED_RESIDUAL_RMS=1 GGML_SYCL_FUSED_ORNITH_GDN_RMS_GATE=1 GGML_SYCL_FUSED_ORNITH_GDN_STATE_IO=1 GGML_SYCL_FUSED_ORNITH_QK_NORM_ROPE=1 GGML_SYCL_FUSED_ORNITH_MOE_GATE_RESIDUAL_RMS=1 llama-server -m Ornith-1.5-35B-Q4_K_M.gguf --reasoning off -c 8192 -ctk f16 -ctv f16 --device SYCL0 -ngl 99 -fa auto --parallel 1 --cache-ram 0 --ctx-checkpoints 0 --fit off",

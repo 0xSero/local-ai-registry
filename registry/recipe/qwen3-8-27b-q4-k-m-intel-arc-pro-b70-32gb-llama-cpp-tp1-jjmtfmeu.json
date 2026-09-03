@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmst4iust02r7ms01jjmtfmeu"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmst4iust02r7ms01jjmtfmeu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Qwen3.8-27B (dense 27B, hybrid GDN linear+full attention, MTP head not in GGUF quant). Community quant unsloth/Qwen3.8-27B-GGUF Q4_K_M (SHA-256 7b2aec3b...cc89f1b) -- weights released 2026-08-14T15:00Z, benched same day. 230W cap (stock). llama-bench tg128 mean 22.30 t/s (+/-0.01, n=5, C1, cold cache). Cold input pp8192 mean 1121.40 t/s (+/-1.89, n=5); pp512 778.80 / pp2048 1115.99 / pp4096 1137.02. Load at -c 131072 verified, 10.2 GiB VRAM free after load. KV q8_0 K + q4_1 V, FA on. Correctness: coherent smoke 5/5, deterministic replay pass, token exactness pass; reference parity not run. Cross-cap note: at matched 150W cap this model runs tg128 mean 17.78 (n=5, separate submission); prior Qwen3.6-27B Q4_K_M ran tg128 21.3 mean (n=3, 150W, Run 9) -- comparisons across caps are directional only. Dense power scaling 150->230W measured +25% decode on this model.",
       "observed_command": "llama-server -m Qwen3.8-27B-Q4_K_M.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -b 8192 -ub 4096 -t 8 --no-mmap -dev SYCL0",
@@ -175,7 +204,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# omarchy:summary=Run the validated local model for this GPU and open coding agents on it
+# omarchy:args=<snapshot|load|unload|open-agent [name]|share [--key value]>
+#
+# Five verbs. `snapshot` is a pure read that rewrites the state file the panel watches. `load`
+# and `unload` spawn a worker that holds the op lock; everything they do is logged. `open-agent`
+# launches an agent with the endpoint in its environment. `share` toggles the tailnet route.
+set -euo pipefail
+HERE=$(cd -- "$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || printf '%s' "${BASH_SOURCE[0]}")")" && pwd)
+SELF="$HERE/$(basename "${BASH_SOURCE[0]}")"
+# shellcheck source=../lib/common.sh
+source "$HERE/../lib/common.sh"
+# shellcheck source=../lib/hardware.sh
+source "$HERE/../lib/hardware.sh"
+# shellcheck source=../lib/recipes.sh
+source "$HERE/../lib/recipes.sh"
+# shellcheck source=../lib/weights.sh
+source "$HERE/../lib/weights.sh"
+# shellcheck source=../lib/share.sh
+source "$HERE/../lib/share.sh"
+# shellcheck source=../lib/runtime.sh
+source "$HERE/../lib/runtime.sh"
+# shellcheck source=../lib/agents.sh
+source "$HERE/../lib/agents.sh"
+# shellcheck source=../lib/snapshot.sh
+source "$HERE/../lib/snapshot.sh"
+
+recipes_ok || fail "recipes.json is missing or not the expected schema" || exit 1
+
+spawn() { # detach a worker; it takes the lock itself and reports through the ledger
+  if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then "$SELF" "$@" >/dev/null 2>>"$LOGFILE" || true; return; fi
+  if command -v setsid >/dev/null 2>&1; then setsid "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & disown
+  else ( "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & ); fi
+}
+
+current_recipe() { # the one recipe for this machine, gated; prints json or fails out loud
+  local m id r gate
+  m=$(match_hardware); id=$(jq -r .hardwareId <<<"$m")
+  [[ -n $id ]] || { fail "$(jq -r .reason <<<"$m")"; return 1; }
+  r=$(recipe_for "$id") || return 1
+  r=$(jq -c --argjson m "$m" '. + {gpuIndex:$m.gpu.index, match:{backend:$m.gpu.backend}}' <<<"$r")
+  gate=$(gate_reason "$r"); [[ -z $gate ]] || { fail "recipe refused: $gate"; return 1; }
+  driver_ok "$(hardware_json | jq -r .driver)" "$(jq -r '.minDriver // ""' <<<"$r")" \
+    || { fail "needs NVIDIA driver $(jq -r .minDriver <<<"$r") or newer"; return 1; }
+  printf '%s\n' "$r"
+}
+
+w_load() {
+  guard || oops "another operation is running"
+  local r id
+  r=$(current_recipe 2>"$STATE/gate.err") || oops "$(sed -n '$s/^local-ai: //p' "$STATE/gate.err")"
+  id=$(jq -r .id <<<"$r")
+  op download "$id" "checking" 0
+  ensure_image "$(jq -r .launch.image <<<"$r")" "$id"
+  ensure_image "$(gateway_image)" "$id"
+  weights_present "$r" || download_weights "$r"
+  op starting "$id" "setting aside the previous model" 0
+  set_aside || oops "could not set aside the running containers"
+  op starting "$id" "starting" 0
+  if ! start_pair "$r" || ! accept "$r" 2>"$STATE/accept.err"; then
+    local why; why=$(sed -n '$s/^local-ai: //p' "$STATE/accept.err" 2>/dev/null); [[ -n $why ]] || why="engine failed to start (see $LOGFILE)"
+    log "rollback: $why"; op starting "$id" "rolling back" 0
+    restore_previous
+    oops "$why"
+  fi
+  drop_previous
+  op_done; log "ready $id"
+}
+
+w_unload() {
+  guard || oops "another operation is running"
+  op unload "" "stopping" 0
+  share_off
+  stop_all
+  lwrite '.accepted={recipeId:"",servedModel:"",registry:"",apis:[]}'
+  op_done; log "unloaded"
+}
+
+usage() {
+  echo 'Usage: omarchy-local-ai <command>
+  snapshot               refresh and print the state the panel renders
+  load                   download if needed, then start the model for this GPU
+  unload                 stop the model; keep downloads
+  open-agent [name]      open an installed coding agent on the running model
+  share [--key <value>]  toggle sharing on your tailnet, or replace the key'
+}
+
+cmd=${1:-help}; shift || true
+case $cmd in
+  snapshot) snapshot_write; cat "$SNAPSHOT" ;;
+  load) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-load ;;
+  unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-unload ;;
+  open-agent) snapshot_write; open_agent "${1:-}" ;;
+  share) share_toggle "$@" ;;
+  _worker-load) w_load ;;
+  _worker-unload) w_unload ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac

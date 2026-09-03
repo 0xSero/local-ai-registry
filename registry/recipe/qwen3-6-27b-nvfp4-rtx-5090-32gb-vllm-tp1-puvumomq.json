@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "unsloth/Qwen3.6-27B-NVFP4",
+      "--tensor-parallel-size",
+      "1",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "131072"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsng2oee00dno001puvumomq"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsng2oee00dno001puvumomq"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "Method: 8 single-turn requests, streaming, batch size 1, temperature 0, engine confirmed idle first (vllm:num_requests_running = 0). 3093 generated tokens in 25.59 s wall. TTFT is the median of the 8 (range 64-112 ms). Peak VRAM and power are peaks from nvidia-smi sampled every 1.5 s during the run.\n\nPrefill tok/s left blank on purpose: prompts averaged only 29 tokens, so TTFT is dominated by request overhead, not prefill throughput. Any prefill number derived from it would be meaningless.\n\nSpeculative decoding is ON and this matters for comparison: MTP (qwen3_5_mtp draft) with num_speculative_tokens=3, measured 76.2% draft acceptance / 2.29 accepted tokens per round. That is why output tok/s exceeds the ~81 tok/s naive ceiling implied by this card's memory bandwidth for a 27B NVFP4 weight read per token. Also enabled: --kv-cache-dtype fp8 and --enable-prefix-caching (prefix caching contributes nothing here - every prompt is distinct).\n\nRuns in an unprivileged Proxmox VE 9.2 LXC with GPU passthrough, gpu-memory-utilization 0.94, max context 131072, max 4 concurrent sequences (this run used 1). The card is currently link-trained at PCIe x8 instead of x16 (unresolved hardware issue); that affects model load time, not decode.",
       "observed_command": "vllm serve --model unsloth/Qwen3.6-27B-NVFP4 --served-model-name qwen3.6-27b --max-model-len 131072 --gpu-memory-utilization 0.94 --max-num-seqs 4 --kv-cache-dtype fp8 --enable-prefix-caching --speculative-config '{\"method\": \"qwen3_5_mtp\", \"num_speculative_tokens\": 3}' --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder",
@@ -173,7 +252,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": 4,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },
