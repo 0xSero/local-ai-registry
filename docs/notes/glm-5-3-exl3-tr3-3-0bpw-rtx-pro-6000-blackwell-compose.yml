@@ -1,0 +1,66 @@
+services:
+  inference:
+    image: voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0
+    ipc: host
+    shm_size: 32g
+    ports:
+      - "${HOST_PORT:-8000}:8000"
+    volumes:
+      - "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw:/model:ro"
+      - "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw:/models:ro"
+    environment:
+      ASYNC_SCHEDULING: "0"
+      B12X_PCIE_DMA: "0"
+      CUDA_DEVICE_MAX_CONNECTIONS: "1"
+      DCP: "4"
+      DCP_A2A_LARGE_BACKEND: ag_rs
+      DCP_BACKEND: a2a
+      DCP_CKV_GATHER_MAX_TOKENS: "262144"
+      DCP_CKV_PREFETCH_DEPTH: "0"
+      DCP_CKV_PREFETCH_WORKSPACE_MIB: "0"
+      F8_DMA: "0"
+      GPU_MEMORY_UTILIZATION: "0.98"
+      GRAPH: "12"
+      INSTANTTENSOR_BACKEND: BUFFERED
+      INSTANTTENSOR_COPY: "0"
+      KV_CACHE_DTYPE: nvfp4_ds_mla
+      KV_FP8_ROPE: "0"
+      LMCACHE_MODE: off
+      LOAD_FORMAT: instanttensor
+      MAX_BATCHED_TOKENS: "3072"
+      MAX_MODEL_LEN: "800000"
+      MAX_NUM_SEQS: "3"
+      MODEL: /model
+      MODEL_FAMILY: glm52-exl3
+      MOE_BACKEND: b12x
+      MOE_MODE: a16
+      MTP: "3"
+      MTP_DRAFT_SAMPLE_METHOD: greedy
+      MTP_MOE_BACKEND: triton
+      PCIE_CALIBRATION: off
+      QUANTIZATION: exl3
+      SERVED_MODEL_NAME: glm-5.3
+      TP: "4"
+      VLLM_B12X_GLM_NOPE_NVFP4: "1"
+      VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+      VLLM_EXL3_PREFILL_CAPACITY: "2048"
+      VLLM_EXL3_PREFILL_CHUNK: "128"
+      VLLM_EXL3_PREFILL_TRELLIS: "1"
+      VLLM_EXL3_TRELLIS_BLOCK_M: "8"
+      VLLM_EXL3_TRELLIS_MAX_M: "16"
+      VLLM_EXL3_TRELLIS_MIN_M: "1"
+      VLLM_NVFP4_MLA_DYNAMIC_SCALE: "0"
+    command:
+      - --default-chat-template-kwargs
+      - '{"reasoning_effort":"none"}'
+      - --attention-config
+      - '{"indexer_kv_dtype":"fp8"}'
+      - --kv-cache-memory-bytes
+      - "8589934592"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              count: 4

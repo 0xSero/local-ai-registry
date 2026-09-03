@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Measure OpenAI-compatible chat prefill and decode without hidden token caps.
+"""Measure OpenAI-compatible chat prefill and decode at natural completion.
 
 The runner reports the actual prompt and completion token counts returned by the
 server, streaming TTFT, per-stream decode rate, aggregate output throughput,
-and selected SGLang Prometheus counter deltas. It uses the OpenAI
-``max_completion_tokens`` field so input/output lengths are explicit.
+and selected SGLang Prometheus counter deltas. It never sends an output-length
+cap; every request runs until the model returns its natural finish condition.
 """
 
 from __future__ import annotations
@@ -146,7 +146,6 @@ def run_stream(
     url: str,
     model: str,
     content: str,
-    output_tokens: int,
     rows: list[StreamResult],
 ) -> None:
     body = {
@@ -155,7 +154,6 @@ def run_stream(
         "temperature": 0.0,
         "stream": True,
         "stream_options": {"include_usage": True},
-        "max_completion_tokens": output_tokens,
         "chat_template_kwargs": {"enable_thinking": False},
     }
     req = urllib.request.Request(
@@ -205,7 +203,6 @@ def main() -> None:
     parser.add_argument("--model", required=True)
     parser.add_argument("--concurrency", type=int, required=True)
     parser.add_argument("--isl", type=int, required=True, help="target input sequence length")
-    parser.add_argument("--osl", type=int, required=True, help="requested output sequence length")
     parser.add_argument("--shared-prefix", action="store_true", help="reuse one prompt to exercise prefix-cache hits")
     parser.add_argument("--summary-only", action="store_true", help="omit per-request rows from stdout")
     parser.add_argument("--label", required=True)
@@ -223,7 +220,7 @@ def main() -> None:
     threads = [
         threading.Thread(
             target=run_stream,
-            args=(index, barrier, f"{root}/v1/chat/completions", args.model, prompts[index][0], args.osl, rows),
+            args=(index, barrier, f"{root}/v1/chat/completions", args.model, prompts[index][0], rows),
         )
         for index in range(args.concurrency)
     ]
@@ -246,7 +243,12 @@ def main() -> None:
     prefill_compute_tokens = delta.get("realtime_prefill_compute_tokens", 0.0)
     result = {
         "label": args.label,
-        "requested": {"concurrency": args.concurrency, "isl": args.isl, "osl": args.osl, "shared_prefix": args.shared_prefix},
+        "requested": {
+            "concurrency": args.concurrency,
+            "isl": args.isl,
+            "completion_policy": "natural",
+            "shared_prefix": args.shared_prefix,
+        },
         "measured": {
             "wall_seconds": wall,
             "ok_requests": len(complete),

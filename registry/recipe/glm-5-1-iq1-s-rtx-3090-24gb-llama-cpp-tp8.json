@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmowl7a7m0048o201d2d6f0hu"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmowl7a7m0048o201d2d6f0hu"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 8,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 4,
       "hardware_label": "RTX 3090",
       "notes": "Full GLM-5.1 IQ1_S GGUF on 8x RTX 3090, llama.cpp CUDA, all 80/80 layers offloaded across GPUs 2-9. Parallel aggregate run: 4 concurrent 512-token requests, server ctx=8192 / per-slot ctx=2048; per-request wall rate was 10.20 tok/s. Raw log: /home/mattsav/Documents/data/glm51_8x3090_20260507/glm51_iq1s_8x_ctx2048_p4_concurrent512.log",
       "observed_command": "CUDA_VISIBLE_DEVICES=2,3,4,5,6,7,8,9 llama-server -m /data/models/glm51-gguf/bartowski-zai-org-glm51-iq1s/zai-org_GLM-5.1-IQ1_S-00001-of-00004.gguf -c 8192 -np 4 -ngl 999 --split-mode layer --tensor-split 1,1,1,1,1,1,1,1 -fa -ctk q4_0 -ctv q4_0",
@@ -173,7 +202,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 4,
-    "max_context_tokens": 8192,
+    "max_context_tokens": 2048,
     "tensor_parallel": 8
   },
   "speed_sweep_ids": [

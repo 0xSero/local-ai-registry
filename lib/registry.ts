@@ -58,6 +58,7 @@ export type CompatibilityFilters = {
   launchable?: string
   runtime?: string
   max_vram_gb?: string
+  min_context?: string
   min_vram_gb?: string
   model_id?: string
   model_instance_id?: string
@@ -182,6 +183,25 @@ export function getRegistryIndex(): RegistryIndex {
   return dataset().index
 }
 
+export type Recommendation = {
+  recipe_id: string
+  model_instance_id: string
+  engine: string
+  max_context_tokens: number | null
+  image: string | null
+}
+
+export type RecommendationsIndex = {
+  schema_version: string
+  rule: string
+  recommendations: Record<string, Recommendation>
+}
+
+/** One validated recipe per hardware id: the consumer contract behind registry/index/recommendations.json. */
+export function getRecommendations(): RecommendationsIndex {
+  return readJson<RecommendationsIndex>("index", "recommendations.json")
+}
+
 export function getModel(id: string): Model | undefined {
   return dataset().models.get(id)
 }
@@ -221,6 +241,202 @@ export function getModelBenchmarkScores(modelId: string): ModelBenchmarkScore[] 
     ).benchmarks_by_model
   }
   return cachedScores[modelId] ?? []
+}
+
+export type RegionMarket = {
+  record_id: string
+  region: string
+  currency: string
+  lowest_new: number | null
+  lowest_refurbished: number | null
+  lowest_used: number | null
+  listing_count: number
+  retailer_count: number
+  observed_at: string
+}
+
+let cachedPricesByHardware: Record<string, string[]> | undefined
+
+function pricesByHardware(): Record<string, string[]> {
+  if (!cachedPricesByHardware) {
+    cachedPricesByHardware = readJson<{ prices_by_hardware: Record<string, string[]> }>(
+      "index",
+      "prices-by-hardware.json",
+    ).prices_by_hardware
+  }
+  return cachedPricesByHardware
+}
+
+export function getHardwareMarket(hardwareId: string): RegionMarket[] {
+  const ids = pricesByHardware()[hardwareId] ?? []
+  const rows: RegionMarket[] = []
+  for (const id of ids) {
+    const record = dataset().prices.get(id)
+    if (!record) continue
+    rows.push({
+      record_id: id,
+      region: record.region.code,
+      currency: record.region.currency,
+      lowest_new: record.summary.lowest_new,
+      lowest_refurbished: record.summary.lowest_refurbished,
+      lowest_used: record.summary.lowest_used,
+      listing_count: record.summary.listing_count,
+      retailer_count: record.summary.retailer_count,
+      observed_at: record.observed_at,
+    })
+  }
+  return rows.sort((left, right) => left.region.localeCompare(right.region))
+}
+
+export type BandwidthRange = { min: number; max: number }
+
+export type HardwareComparisonRow = {
+  id: string
+  name: string
+  vendor: string
+  vram_gb: number
+  bandwidth_gb_per_s: number | BandwidthRange | null
+  fp16_tflops: number | null
+  fp8_tflops: number | null
+  fp4_tflops: number | null
+  int8_tflops: number | null
+  fp16_sparse: boolean
+  fp8_sparse: boolean
+  fp4_sparse: boolean
+  int8_sparse: boolean
+  lowest_new_usd: number | null
+  price_observed_at: string | null
+  recipe_count: number
+  speed_sweep_count: number
+  evidence_point_count: number
+  measured_model_count: number
+  peak_prefill_tok_s: number | null
+  peak_decode_tok_s: number | null
+  fastest_ttft_ms: number | null
+  max_observed_context_tokens: number | null
+  peak_observed_vram_gb: number | null
+}
+
+type HardwareSpeedEvidence = {
+  sweep_count: number
+  point_count: number
+  model_count: number
+  peak_prefill_tok_s?: number
+  peak_decode_tok_s?: number
+  fastest_ttft_ms?: number
+  max_observed_context_tokens?: number
+  peak_observed_vram_gb?: number
+}
+
+function bestThroughput(record: Hardware, dtype: string): { value: number | null; sparse: boolean } {
+  const stats = (record.compute?.stats ?? {}) as Record<string, Record<string, { state?: string; value?: number | null }>>
+  const entry = stats[dtype]
+  if (!entry) return { value: null, sparse: false }
+  const dense = entry.dense
+  if (dense?.state === "known" && typeof dense.value === "number") return { value: dense.value, sparse: false }
+  const sparse = entry.structured_2_4
+  if (sparse?.state === "known" && typeof sparse.value === "number") return { value: sparse.value, sparse: true }
+  return { value: null, sparse: false }
+}
+
+export function hardwareComparison(): HardwareComparisonRow[] {
+  const data = dataset()
+  const evidenceByHardware = readJson<{ hardware: Record<string, HardwareSpeedEvidence> }>(
+    "index",
+    "hardware-speed-evidence.json",
+  ).hardware
+  return [...data.hardware.values()].map((record) => {
+    const fp16 = bestThroughput(record, "fp16")
+    const fp8 = bestThroughput(record, "fp8")
+    const fp4 = bestThroughput(record, "fp4")
+    const int8 = bestThroughput(record, "int8")
+    const market = getHardwareMarket(record.id)
+    const us = market.find((row) => row.region === "US" && row.lowest_new !== null)
+    const evidence = evidenceByHardware[record.id]
+    return {
+      id: record.id,
+      name: record.name,
+      vendor: record.vendor,
+      vram_gb: record.memory.vram_gb,
+      bandwidth_gb_per_s: record.memory.bandwidth_gb_per_s as number | BandwidthRange | null,
+      fp16_tflops: fp16.value,
+      fp8_tflops: fp8.value,
+      fp4_tflops: fp4.value,
+      int8_tflops: int8.value,
+      fp16_sparse: fp16.sparse,
+      fp8_sparse: fp8.sparse,
+      fp4_sparse: fp4.sparse,
+      int8_sparse: int8.sparse,
+      lowest_new_usd: us?.lowest_new ?? null,
+      price_observed_at: us?.observed_at ?? null,
+      recipe_count: recipeCountForHardware(record.id),
+      speed_sweep_count: evidence?.sweep_count ?? 0,
+      evidence_point_count: evidence?.point_count ?? 0,
+      measured_model_count: evidence?.model_count ?? 0,
+      peak_prefill_tok_s: evidence?.peak_prefill_tok_s ?? null,
+      peak_decode_tok_s: evidence?.peak_decode_tok_s ?? null,
+      fastest_ttft_ms: evidence?.fastest_ttft_ms ?? null,
+      max_observed_context_tokens: evidence?.max_observed_context_tokens ?? null,
+      peak_observed_vram_gb: evidence?.peak_observed_vram_gb ?? null,
+    }
+  })
+}
+
+const REGISTRY_BASE_URL = "https://local-ai-registry.vercel.app"
+
+type AssetManifest = { id: string; file: string; sha256: string }
+
+function assetManifests(recipe: Recipe): AssetManifest[] {
+  const ids = ((recipe.launch as Record<string, unknown>).asset_ids as string[]) ?? []
+  return ids.map((id) => readJson<AssetManifest>("asset", `${id}.json`))
+}
+
+export function dockerCommand(recipe: Recipe): string | null {
+  const launch = recipe.launch as Record<string, unknown>
+  if (recipe.status !== "validated" || launch.kind !== "docker") return null
+  const quote = (part: string) => (/[\s"'$;|&<>()]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
+  const manifests = assetManifests(recipe)
+  const byFile = new Map(manifests.map((manifest) => [manifest.file, manifest]))
+
+  const preamble: string[] = []
+  const lines: string[][] = [["docker", "run", "--rm"]]
+  if (launch.accelerator_backend === "nvidia") lines.push(["--gpus", "all"])
+  for (const device of (launch.devices as string[]) ?? []) lines.push(["--device", device])
+  if (typeof launch.ipc === "string") lines.push(["--ipc", launch.ipc])
+  if (typeof launch.shm_size === "string") lines.push(["--shm-size", launch.shm_size])
+  if (typeof launch.network_mode === "string" && launch.network_mode !== "bridge") lines.push(["--network", launch.network_mode as string])
+  if (typeof launch.host_port === "number" && typeof launch.container_port === "number") {
+    lines.push(["-p", `${launch.host_port}:${launch.container_port}`])
+  }
+  for (const [key, value] of Object.entries((launch.environment as Record<string, string>) ?? {})) {
+    lines.push(["-e", `${key}=${value}`])
+  }
+  for (const mount of (launch.mounts as Array<{ source: string; target: string; read_only?: boolean }>) ?? []) {
+    let source = mount.source
+    if (source.startsWith("asset/")) {
+      const file = source.slice("asset/".length)
+      const manifest = byFile.get(file)
+      if (!manifest) return null
+      if (preamble.length === 0) {
+        preamble.push(`ASSETS="\${TMPDIR:-/tmp}/local-ai-assets" && mkdir -p "$ASSETS"`)
+      }
+      preamble.push(
+        `curl -fsSL '${REGISTRY_BASE_URL}/api/v1/asset/${manifest.id}/file' -o "$ASSETS/${file}"`,
+        `{ printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | sha256sum -c - 2>/dev/null || printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | shasum -a 256 -c -; }`,
+      )
+      source = `"$ASSETS/${file}"`
+      lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+      continue
+    }
+    lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+  }
+  if (typeof launch.entrypoint === "string" && launch.entrypoint) lines.push(["--entrypoint", launch.entrypoint])
+  lines.push([launch.image as string])
+  for (const argument of (launch.arguments as string[]) ?? []) lines.push([argument])
+  const docker = lines
+    .map((line) => line.map((part) => (part.startsWith('"$ASSETS/') ? part.replace(/^("\$ASSETS\/[^:]+")/, "$1") : quote(part))).join(" "))
+    .join(" \\\n  ")
+  return preamble.length > 0 ? `${preamble.join(" && \\\n")} && \\\n${docker}` : docker
 }
 
 export function getBenchmark(id: string): Benchmark | undefined {
@@ -341,6 +557,11 @@ function matchingCompatibilityRows(filters: CompatibilityFilters): Compatibility
     if (!booleanFilter(row.capabilities.vision, filters.vision)) return false
     if (filters.evidence === "true" && !row.has_evidence) return false
     if (filters.evidence === "false" && row.has_evidence) return false
+    if (filters.min_context) {
+      const recipeRecord = readRecord<Recipe>("recipe", row.id)
+      const context = (recipeRecord?.serving as { max_context_tokens?: number | null } | undefined)?.max_context_tokens
+      if (typeof context !== "number" || context < Number(filters.min_context)) return false
+    }
     if (filters.launchable === "true" && !isLaunchable(row)) return false
     if (filters.launchable === "false" && isLaunchable(row)) return false
     if (filters.runtime && runtimeGroup(row.launch_kind) !== filters.runtime) return false

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmota1fpx0001l404wepbjtb7"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmota1fpx0001l404wepbjtb7"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Diagnostic negative-scaling result. Qwen3.6 27B Q4_0 GGUF on 4x Intel Arc Pro B70 using llama.cpp SYCL Level Zero selector 0,1,2,3. Same quality-preserving reshape-through-ADD software path as the 3x best: Q8 cache, async copy, single-kernel allreduce, event barrier, f16 KV, no speculative decode, no power-limit changes. Prompt 102.210613 tok/s; decode 34.375523 tok/s. Clean post-reboot run; dmesg after run showed no new reset/AER/errors. JSONL: /home/steve/bench-results/qwen36-q4_0-gguf/sycl-k617023-postreboot-reshapeadd-quad0123-p512n512-r1-20260505T234410Z.jsonl",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 1024,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [

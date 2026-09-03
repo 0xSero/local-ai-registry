@@ -1,0 +1,65 @@
+name: glm53-flash-nvfp4-sm121
+
+services:
+  inference:
+    image: ${IMAGE:?set IMAGE to the published digest or a local candidate tag}
+    container_name: glm53-flash-spark-tp${TP_SIZE:?set TP_SIZE}-rank${NODE_RANK:?set NODE_RANK}
+    restart: "no"
+    gpus: all
+    network_mode: host
+    ipc: host
+    shm_size: 64gb
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    cap_add:
+      - IPC_LOCK
+    security_opt:
+      - label=disable
+    devices:
+      - /dev/infiniband:/dev/infiniband
+    entrypoint: ["/opt/glm53/launch-spark.sh"]
+    volumes:
+      - ${MODEL_PATH:?set MODEL_PATH}:/model:ro
+      - ${CACHE_PATH:?set CACHE_PATH}:/root/.cache:rw
+    environment:
+      NNODES: ${NNODES:?set NNODES}
+      NODE_RANK: ${NODE_RANK}
+      DIST_INIT_ADDR: ${DIST_INIT_ADDR:?set DIST_INIT_ADDR}
+      TP_SIZE: ${TP_SIZE}
+      EP_SIZE: ${EP_SIZE:?set EP_SIZE}
+      CONTEXT_LENGTH: ${CONTEXT_LENGTH:?set CONTEXT_LENGTH}
+      MAX_RUNNING_REQUESTS: ${MAX_RUNNING_REQUESTS:?set MAX_RUNNING_REQUESTS}
+      MEM_FRACTION_STATIC: ${MEM_FRACTION_STATIC:?set MEM_FRACTION_STATIC}
+      CUDA_GRAPH_MAX_BS: ${CUDA_GRAPH_MAX_BS:?set CUDA_GRAPH_MAX_BS}
+      CHUNKED_PREFILL_SIZE: ${CHUNKED_PREFILL_SIZE:?set CHUNKED_PREFILL_SIZE}
+      PORT: ${PORT:?set PORT}
+      CUDA_DEVICE_ORDER: PCI_BUS_ID
+      TORCH_CUDA_ARCH_LIST: 12.1a
+      FLASHINFER_CUDA_ARCH_LIST: 12.1a
+      CUTE_DSL_ARCH: sm_121a
+      SGLANG_OPT_USE_TOPK_V2: "0"
+      SGLANG_OPT_USE_TILELANG_INDEXER: "1"
+      SGLANG_FP8_PAGED_MQA_LOGITS_TORCH: "1"
+      SGLANG_OPT_DEEPGEMM_HC_PRENORM: "0"
+      SGLANG_OPT_FP8_WO_A_GEMM: "0"
+      NCCL_NET: IB
+      NCCL_IB_DISABLE: "0"
+      NCCL_IB_HCA: rocep1s0f1,roceP2p1s0f1
+      NCCL_IB_GID_INDEX: "3"
+      NCCL_IB_ROCE_VERSION_NUM: "2"
+      NCCL_IB_ADDR_FAMILY: AF_INET
+      NCCL_IB_ADDR_RANGE: 10.10.0.0/16
+      NCCL_SOCKET_IFNAME: ${NCCL_SOCKET_IFNAME:-enp1s0f1np1}
+      GLOO_SOCKET_IFNAME: ${GLOO_SOCKET_IFNAME:-enp1s0f1np1}
+      TP_SOCKET_IFNAME: ${NCCL_SOCKET_IFNAME:-enp1s0f1np1}
+      NCCL_CROSS_NIC: "1"
+      NCCL_CUMEM_ENABLE: "0"
+      NCCL_NVLS_ENABLE: "0"
+      NCCL_MAX_NCHANNELS: "4"
+      NCCL_MIN_NCHANNELS: "4"
+      NCCL_IGNORE_CPU_AFFINITY: "1"
+      NCCL_DEBUG: WARN
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      PYTHONUNBUFFERED: "1"

@@ -6,10 +6,46 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing result. It is evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "zai-org/GLM-5.3-Flash",
+      "--tensor-parallel-size",
+      "4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "2048"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": null
+    "version": "0.26.0"
   },
   "facts": {
     "capabilities.chat": {
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-27T06:04:13.773Z",
@@ -84,17 +134,17 @@
     },
     "engine.version": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-08-31T23:38:26Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T23:38:26Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsoxttyo00fjmp01nmrwtmkn"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "copied-from-synthesized-image-provenance",
+      "state": "known"
     },
     "metadata.localmaxxing.notes": {
       "provenance": {
@@ -122,6 +172,34 @@
         ]
       },
       "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:22:25Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:22:25Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtaja4rx01j1li017mfqe264"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmtaja4rx01j1li017mfqe264"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
       "state": "unknown"
     }
   },
@@ -152,6 +230,7 @@
   },
   "metadata": {
     "localmaxxing": {
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": null,
       "revision_unpinned": true,
@@ -173,8 +252,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 2048,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [

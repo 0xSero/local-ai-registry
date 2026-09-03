@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrxwns7r01kao401civuks43"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrxwns7r01kao401civuks43"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 3,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "llama-bench legs on 3x R9700 Vulkan (RADV): pp131072 = 436.6 tok/s (full 131k prefill, ub 128), tg256 = 51.59 tok/s at depth 0. f16 KV, layer split 0.78/1/1.",
       "observed_command": "llama-bench -ngl 999 -fa 1 -ctk f16 -ctv f16 -b 512 -ub 128 -t 16 -ts 0.78/1/1 -r 1 --no-warmup -p 131072 -n 256",
@@ -175,8 +204,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 131072,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 3
   },
   "speed_sweep_ids": [
