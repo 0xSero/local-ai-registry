@@ -1,0 +1,154 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "tonyd2wild GLM-5.3-Flash NVFP4 + DFlash2 speculative decode on 2 DGX Spark GB10 nodes at TP2, vLLM route, fp8 KV cache (first fp8 KV for a NoPE-MLA model on consumer Blackwell), 262,144-token context, incoai DFlash2 1B drafter at zero extra KV pool (slot-shares MLA tensors), vision/tools on. First working DFlash2 deployment of GLM-5.3-Flash on GB10. ",
+  "engine": {
+    "graph_mode": "full decode CUDA graphs; GLM custom KV fast path (generic uniform-page path cannot serve GLM with a drafter attached)",
+    "name": "vllm",
+    "version": "ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v11-dflash2@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6"
+  },
+  "facts": {},
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm53-flash-nvfp4-dflash2-dgxspark-vllm-tp2",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--tensor-parallel-size",
+      "2",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-model-len",
+      "262144",
+      "--speculative-config",
+      "{\"method\": \"dflash\", \"model\": \"/models/dflash2-draft\", \"num_speculative_tokens\": 7}",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--kv-cache-memory",
+      "5905580032",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+    ],
+    "container": {
+      "captured_at": "2026-08-28T05:00:00.000Z",
+      "compose_file": null,
+      "digest": "sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+      "image": "ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v11-dflash2@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-28T05:00:00.000Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/tonyd2wild/GLM-5.3-Flash-NVFP4-DFlash2-2x-DGX-Spark"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "environment": {
+      "FLASHINFER_CUDA_ARCH_LIST": "12.1a",
+      "TORCH_CUDA_ARCH_LIST": "12.1a"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v11-dflash2@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "/var/tmp/glm-5.3-flash-nvfp4",
+        "target": "/model"
+      },
+      {
+        "read_only": true,
+        "source": "/var/tmp/models/GLM-5.3-Flash-DFlash2",
+        "target": "/models/dflash2-draft"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {
+    "base_image": {
+      "digest": "sha256:d77d375c742fc54f436dec5108b440f58f021bc6600052bf0e8fe5840357e78f",
+      "note": "sm121-v8 = base fp8-KV patched image; sm121-v11-dflash2 = v8 + DFlash2 overlay",
+      "tag": "ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v8"
+    },
+    "baseline_ladder_tok_s": {
+      "dflash2_tp2": 46.9,
+      "dflash2_tp4": 68.5,
+      "mtp4_tp2": 21.8,
+      "mtp4_tp4": 35.7
+    },
+    "draft_acceptance_by_concurrency": {
+      "c1": 0.53,
+      "c2": 0.45,
+      "c3": 0.42,
+      "c4": 0.4,
+      "c5": 0.51,
+      "c6": 0.4,
+      "warm_code_single_stream": 0.741
+    },
+    "eval": {
+      "harness": "2wild-model-eval 69-scenario (thinking-off)",
+      "lossless": true,
+      "note": "equals-or-beats fp8+MTP baseline (61/3/5, 90.4) - spec-decode does not change outputs",
+      "result": "62 pass / 5 partial / 2 fail, 129/138, Deployability 93.9"
+    },
+    "kv_cache_dtype": "fp8",
+    "kv_cache_tokens": 672606,
+    "model_revision": "9e0d74e3cef17f634e84fb8e2223707e02616290",
+    "source_repo": "https://github.com/tonyd2wild/GLM-5.3-Flash-NVFP4-DFlash2-2x-DGX-Spark",
+    "speculation": {
+      "drafter_repo": "incoai/GLM-5.3-Flash-DFlash2",
+      "drafter_size_gb": 2.2,
+      "kv_cost": "zero (drafter slot-shares the MLA tensors like GLM's mamba layers)",
+      "method": "dflash",
+      "num_speculative_tokens": 7
+    },
+    "status_note": "candidate: fully specified, measured, and reproducible on tonyd2wild hardware; pending registry-side acceptance evidence (completion/tool/image/video) to promote to validated.",
+    "warm_single_stream": {
+      "alphabet_tok_s": 54.0,
+      "code_acceptance": 0.741,
+      "code_tok_s": 46.9,
+      "multiplier_vs_mtp4_baseline": "2.5-2.8x",
+      "structured_count_tok_s": 60.6,
+      "ttft_s": 0.44
+    },
+    "weights_note": "benched on LibertAIDAI/GLM-5.3-Flash-NVFP4 (censored NVFP4). The same fp8+DFlash2 lane also runs the drowzeys uncensored NVFP4 ablit weights drop-in on the same launcher; TP2 DFlash2 sweep was measured on the LibertAIDAI censored build."
+  },
+  "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-08-28T05:00:00.000Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-28T05:00:00.000Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/tonyd2wild/GLM-5.3-Flash-NVFP4-DFlash2-2x-DGX-Spark"
+      }
+    ]
+  },
+  "recipe_source": "tonyd2wild",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 672606,
+    "max_concurrency": 6,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-nvfp4-dflash2-dgxspark-vllm-tp2-sweep"
+  ],
+  "status": "candidate"
+}
