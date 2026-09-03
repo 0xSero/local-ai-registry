@@ -24,9 +24,8 @@ place_terminal() {
     where=$(timeout 5 hyprctl clients -j 2>/dev/null | jq -r '.[] | select(.class=="org.omarchy.agent") | "\(.monitor) \(.workspace.id) \(.fullscreen)"' | head -1)
     [[ -z $where ]] && continue
     [[ $where == "0 1 2" ]] && return 0
-    hypr "hl.dsp.window.focus({ class = \"org.omarchy.agent\" })" 2>/dev/null
-    hypr "hl.dsp.window.move({ workspace = 1 })"; sleep 0.5
-    hypr "hl.dsp.window.fullscreen({ mode = \"fullscreen\" })"
+    hypr "hl.dsp.window.move({ workspace = 1, window = \"class:org.omarchy.agent\" })"; sleep 0.5
+    hypr "hl.dsp.window.fullscreen({ mode = \"fullscreen\", window = \"class:org.omarchy.agent\" })"
   done
   echo "terminal not placed: $where" >&2; return 1
 }
@@ -74,7 +73,7 @@ panel close; sleep 1   # the popup must not sit over the terminal
 step pi       arg  ""                                          45 "Run lspci | grep -i arc and curl -s http://127.0.0.1:12434/v1/models. Then tell me in two lines what hardware and which model you are running on."
 step opencode type "--auto"                                    60 "Run python3 -m unittest discover -s tests -t . and tell me which function has the bug and why. Do not fix it yet."
 step codex    arg  "--dangerously-bypass-approvals-and-sandbox" 75 "Fix the off-by-one in ledger/core.py statement() so every entry is included. Change only that line."
-step claude   arg  "--permission-mode acceptEdits --allowedTools='Bash(git:*)'" 50 "Review git diff and answer in one sentence: is the fix correct?"
+step claude   arg  "--permission-mode acceptEdits --allowedTools='Bash(git:*)'" 120 "Review git diff and answer in one sentence: is the fix correct?"
 step crush    type "--yolo"                                    50 "Run python3 -m unittest discover -s tests -t . and show me the result."
 step omp      arg  "--auto-approve"                            50 "Commit the change with a one-line message that names the bug."
 step copilot  arg  "--allow-all -i"                            50 "Write a three-line pull request description for the last commit."

@@ -21,6 +21,10 @@ The hard part of local inference is not downloading a model. A working setup is 
 - **`validated` is derived, never asserted.** A recipe is validated when, and only when, the record itself proves it: pinned revision, pinned image, an acceptance run or a commit-pinned campaign sweep, no forbidden flags. Anyone can rerun `scripts/trust.py` and get the same answer.
 - **A blank metric means unmeasured, never zero.** Imported observations from LocalMaxxing, local.ai, and mlx.fast are kept as `candidate` compatibility evidence. They are useful. They are not a promise.
 
+## See it
+
+[Two-minute demo](https://github.com/0xSero/local-ai-registry/raw/main/plugin/media/demo.mp4): one click on the Omarchy bar loads the recommended recipe on an Arc Pro B70, then eight coding agents each take one step of the same fix on that local model.
+
 ## Where it is used
 
 - **Omarchy plugin**: one bar button. Detects the GPU, loads the recommended recipe, proves a real completion, hands the endpoint to every installed coding agent.

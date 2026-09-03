@@ -7,6 +7,8 @@ hardware match, download, launch, acceptance, agent launch, rollback.
 
 ![Local AI](preview.png)
 
+[Watch the demo](media/demo.mp4): from the bar, Start loads Qwen3.8-27B on an Intel Arc Pro B70; then pi, opencode, codex, claude, crush, omp, copilot and grok each do one step of the same fix on that model. How it was recorded is in [`demo/`](demo/README.md).
+
 ## Install
 
 ```bash
