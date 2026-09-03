@@ -73,6 +73,53 @@ def measure(endpoint, model, prompt_tokens=256, samples=3):
     return rows
 
 
+def probe_dialects(endpoint, model, gateway):
+    """Run the plugin's gateway locally in front of the engine and ask for LOCAL_AI_READY in all three
+    dialects. Returns the list that answered, or None when no gateway was given. The plugin repeats
+    this on the user's machine; recording it here says what the pair was validated for."""
+    if not gateway:
+        return None
+    import socket
+    import subprocess
+    import os
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        port = probe.getsockname()[1]
+    env = dict(os.environ, UPSTREAM=endpoint, GATEWAY_PORT=str(port), MODEL=model, GATEWAY_KEY_FILE="")
+    proc = subprocess.Popen([sys.executable, gateway], env=env, stderr=subprocess.DEVNULL)
+    base = f"http://127.0.0.1:{port}"
+    prompt = "Reply with exactly: LOCAL_AI_READY"
+    try:
+        for _ in range(50):
+            try:
+                http_json(f"{base}/v1/models"); break
+            except Exception:
+                time.sleep(0.1)
+        apis = []
+        try:
+            reply = http_json(f"{base}/v1/chat/completions", {"model": model, "messages": [{"role": "user", "content": prompt}], "stream": False})
+            if "LOCAL_AI_READY" in (reply["choices"][0]["message"].get("content") or ""):
+                apis.append("chat")
+        except Exception:
+            pass
+        try:
+            reply = http_json(f"{base}/v1/messages", {"model": model, "max_tokens": 64, "messages": [{"role": "user", "content": prompt}]})
+            if "LOCAL_AI_READY" in " ".join(b.get("text", "") for b in reply.get("content", []) if b.get("type") == "text"):
+                apis.append("messages")
+        except Exception:
+            pass
+        try:
+            reply = http_json(f"{base}/v1/responses", {"model": model, "input": prompt})
+            text = " ".join(part.get("text", "") for item in reply.get("output", []) if item.get("type") == "message" for part in item.get("content", []))
+            if "LOCAL_AI_READY" in text:
+                apis.append("responses")
+        except Exception:
+            pass
+        return apis
+    finally:
+        proc.terminate()
+
+
 def pinned_revision(repo):
     data = http_json(f"https://huggingface.co/api/models/{repo}")
     sha = data.get("sha")
@@ -87,16 +134,23 @@ def main() -> int:
     parser.add_argument("--endpoint", required=True)
     parser.add_argument("--harness", default="local-ai validate", help="recorded in metadata.acceptance.harness")
     parser.add_argument("--min-decode", type=float, default=5.0, help="tok/s floor; below it the GPU is not in use")
+    parser.add_argument("--gateway", help="path to the plugin gateway (gateway.py); probes all three dialects through it")
+    parser.add_argument("--revalidate", action="store_true", help="re-run acceptance on an already validated recipe and refresh its evidence")
     args = parser.parse_args()
 
     path = ROOT / "recipe" / f"{args.recipe_id}.json"
     recipe = json.loads(path.read_text())
     draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") == "docker" else None)
-    if recipe["status"] != "candidate" or draft is None:
-        raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch")
+    if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
+        raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
 
     served = http_json(f"{args.endpoint}/v1/models")["data"][0]["id"]
     print(f"server is healthy; serving model id: {served}")
+    apis = probe_dialects(args.endpoint, served, args.gateway)
+    if apis is not None:
+        print(f"dialects through the gateway: {', '.join(apis) or 'none'}")
+        if "chat" not in apis:
+            raise SystemExit("acceptance FAILED: the gateway could not complete a chat request against the engine")
     runs = measure(args.endpoint, served)
     decode = sorted(run["decode_tok_s"] for run in runs)[len(runs) // 2]
     ttft = sorted(run["ttft_ms"] for run in runs)[len(runs) // 2]
@@ -181,7 +235,10 @@ def main() -> int:
     recipe.setdefault("speed_sweep_ids", [])
     if sweep_id not in recipe["speed_sweep_ids"]:
         recipe["speed_sweep_ids"].append(sweep_id)
-    recipe.setdefault("metadata", {})["acceptance"] = {"accepted_at": NOW, "served_model_id": served, "harness": args.harness}
+    acceptance = {"accepted_at": NOW, "served_model_id": served, "harness": args.harness}
+    if apis is not None:
+        acceptance["apis"] = apis
+    recipe.setdefault("metadata", {})["acceptance"] = acceptance
     path.write_text(json.dumps(recipe, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
     print(f"PROMOTED {recipe['id']} to validated with evidence {sweep_id}")
     print("next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR")

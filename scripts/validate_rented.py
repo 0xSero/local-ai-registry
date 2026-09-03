@@ -383,13 +383,13 @@ PROVIDERS = {"runpod": RunPod, "vast": Vast}
 
 
 # ----------------------------------------------------------------------------- recipe handling
-def load_recipe(recipe_id):
+def load_recipe(recipe_id, revalidate=False):
     path = REG / "recipe" / f"{recipe_id}.json"
     if not path.exists():
         raise SystemExit(f"no recipe {recipe_id}")
     recipe = json.loads(path.read_text())
-    if recipe.get("status") != "candidate":
-        raise SystemExit(f"only candidates can be validated; {recipe_id} is {recipe.get('status')}")
+    if recipe.get("status") != "candidate" and not revalidate:
+        raise SystemExit(f"only candidates can be validated; {recipe_id} is {recipe.get('status')} (pass --revalidate)")
     launch = recipe.get("launch") or {}
     contract = launch if launch.get("kind") == "docker" else recipe.get("draft_launch")
     if not contract:
@@ -463,9 +463,15 @@ def run_once(provider, spec, path, recipe, args, attempt, exclude):
         harness = f"validate_rented.py on {provider.name} {handle.get('gpu')}"
         if spec.provision:
             harness += " (weights and config materialized in-container in place of the bind mounts)"
-        result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "accept_recipe.py"), recipe["id"], "--endpoint", endpoint, "--harness", harness],
-            cwd=ROOT)
+        gateway = os.environ.get("LOCAL_AI_GATEWAY") or str(Path.home() / "local-registry" / "local-ai-images" / "gateway" / "gateway.py")
+        accept_argv = [sys.executable, str(ROOT / "scripts" / "accept_recipe.py"), recipe["id"], "--endpoint", endpoint, "--harness", harness]
+        if args.revalidate:
+            accept_argv.append("--revalidate")
+        if Path(gateway).exists():
+            accept_argv += ["--gateway", gateway]
+        else:
+            log("no local gateway.py found; dialects will not be recorded (set LOCAL_AI_GATEWAY)")
+        result = subprocess.run(accept_argv, cwd=ROOT)
         if result.returncode != 0:
             raise SystemExit("acceptance failed; recipe stays candidate")
         if args.recommend:
@@ -509,9 +515,10 @@ def main():
     parser.add_argument("--keep", action="store_true", help="leave the box running after acceptance")
     parser.add_argument("--recommend", action="store_true", help="flag the promoted recipe recommended for its hardware id")
     parser.add_argument("--dry-run", action="store_true", help="print the container spec and exit")
+    parser.add_argument("--revalidate", action="store_true", help="re-run acceptance on a validated recipe (refreshes evidence and dialects)")
     args = parser.parse_args()
 
-    path, recipe, contract = load_recipe(args.recipe_id)
+    path, recipe, contract = load_recipe(args.recipe_id, args.revalidate)
     spec = Spec(recipe, contract, args)
     provider = PROVIDERS[args.provider](args)
     if args.dry_run:
