@@ -7,7 +7,7 @@
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
   "engine": {
-    "graph_mode": null,
+    "graph_mode": "piecewise",
     "name": "vllm",
     "version": "0.20.1-local"
   },
@@ -70,17 +70,17 @@
     },
     "engine.graph_mode": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T01:32:29Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T01:32:29Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp4f31dh000amz01uqa329e6"
           }
         ]
       },
-      "reason": "runtime-detail-not-published",
-      "state": "unknown"
+      "reason": "explicit-cudagraph-mode-in-observed-command",
+      "state": "known"
     },
     "serving.kv_cache_tokens": {
       "provenance": {
@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp4f31dh000amz01uqa329e6"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmp4f31dh000amz01uqa329e6"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "MiniMax M2.7 AutoRound W4A16 on 4x Intel Arc Pro B70 via vLLM/XPU TP4. Local weights are Lasimeri/MiniMax-M2.7-int4-AutoRound submitted under base MiniMaxAI/MiniMax-M2.7. Same recipe as prior 73.23 run, now repeated at 73.31 output tok/s and 97.74 total tok/s at p512/n1536. This is a variance-confirmed measured high, not a new quality-changing optimization. No model weight, quantization, router precision, expert routing, KV dtype, sampler, speculative decoding, or power-limit changes. Q/K RMS variance allreduces remain preserved. Total tok/s includes the 512-token prompt plus 1536 decoded tokens; no isolated prefill-only metric is emitted by this vLLM bench mode.",
       "observed_command": "VLLM_MINIMAX_M2_ATTN_DELAY_ALLREDUCE=1 VLLM_XPU_ENABLE_XPU_GRAPH=1 VLLM_XPU_FORCE_GRAPH_WITH_COMM=1 VLLM_XPU_GRAPH_NOOP_COMM_CAPTURE=1 VLLM_XPU_USE_LLM_SCALER_MOE=1 CCL_TOPO_P2P_ACCESS=1 VLLM_CACHE_ROOT=/mnt/fast-ai/vllm-cache-exp/minimax-xpugraph-attndelay-block256-mbt512-noprefix-20260513T171301Z vllm bench throughput --backend vllm --async-engine --block-size 256 --no-enable-prefix-caching --model /mnt/fast-ai/llm-models/minimax-m2.7-int4-autoround --tokenizer /mnt/fast-ai/llm-models/minimax-m2.7-int4-autoround --trust-remote-code --dtype float16 --tensor-parallel-size 4 --distributed-executor-backend mp --max-model-len 2048 --max-num-batched-tokens 512 --max-num-seqs 1 --dataset-name random --random-input-len 512 --random-output-len 1536 --random-range-ratio 0 --num-prompts 1 --disable-log-stats --compilation-config '{\"use_inductor_graph_partition\":true,\"compile_sizes\":[1],\"cudagraph_mode\":\"PIECEWISE\"}'",

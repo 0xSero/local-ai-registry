@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoi6yfxh000nk304si0uyyp5"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmoi6yfxh000nk304si0uyyp5"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "MiniMax-M2.7-UD-IQ4_XS (unsloth dynamic Q4, 101 GB GGUF) on a single DGX Spark with llama.cpp ngram-simple speculative decode: draft-max=16, draft-min=1, p-min=0.5, ngram-size=4. Sherlock prose, pp=128, tg=128, c=1, n=29 warm. tokSOut = 30.98 t/s MEDIAN (std 4.08). 1.255× over AR baseline (24.68 t/s). Tested all 5 llama.cpp ngram variants — ngram-simple won, ngram-mod 2nd, ngram-cache regressed below AR, the two ngram-map-* variants crashed. peakVramGb=107 via free -g (101 GB GGUF + KV + overhead in 128 GiB UMA, basically no headroom). Note: clean reproductions on different Sparks produce medians anywhere from 30–42 t/s (std 4–17) — fitting a 101 GB model in 128 GiB UMA leaves the kernel paging weights opportunistically and you catch some 'fast' windows depending on luck. Submitting the most-reproducible cell. Repo: github.com/my-other-github-account/spark-bench-reproducers/tree/main/minimax-m27-ngram-spec-spark. By @banana_baeee.",
       "observed_command": "/opt/llama.cpp/build-cuda/bin/llama-server --jinja -fa on --no-warmup -t 20 -c 32768 -ctk q8_0 -ctv q8_0 -np 1 -a MiniMax-M2.7-UD-IQ4_XS -m /models/MiniMax-M2.7-GGUF/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf --host 127.0.0.1 --port 8012 --spec-type ngram-simple --draft-max 16 --draft-min 1 --draft-p-min 0.5 --spec-ngram-size-n 4",

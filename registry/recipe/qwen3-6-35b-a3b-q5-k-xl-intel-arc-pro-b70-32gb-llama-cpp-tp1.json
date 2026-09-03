@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrfte3xr00dvqd01q1xe4xcz"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrfte3xr00dvqd01q1xe4xcz"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 8192,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Turbo StateTree 0.1.0-rc.1 custom B70 SYCL/oneAPI 2026 package. Full-offload Q5_K_XL, f16 KV, flash attention, -b 8192 -ub 1024, pinned physical CPUs 0-10,12-15. Standard LocalMax row is pp4096/tg128; package also passed the 262144-context 12-slot StateTree dense and fragmented transaction matrices plus a pinned frozen-vs-RC A/B.",
       "observed_command": "llama-bench -m Qwen3.6-35B-A3B-UD-Q5_K_XL.gguf -p 4096 -n 128 -d 0 -r 2 -b 8192 -ub 1024 -t 15 -ctk f16 -ctv f16 -fa on -ngl 99 -ncmoe 0 -nopo 1",
@@ -180,8 +209,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 8192,
-    "max_context_tokens": 262144,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

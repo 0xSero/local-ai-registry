@@ -1,6 +1,6 @@
 {
-  "active_params": null,
-  "architecture": null,
+  "active_params": 3,
+  "architecture": "moe",
   "downloads": {
     "all_time": 7100018,
     "captured_at": "2026-08-31T15:38:41Z",
@@ -14,13 +14,18 @@
         "sources": [
           {
             "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-model-card",
+            "url": "https://huggingface.co/deepreinforce-ai/Ornith-1.0-35B-GGUF"
+          },
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "base-model-card",
+            "url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "publisher-identifies-qwen3.5-35b-a3b-lineage-with-3b-activated",
+      "state": "known"
     },
     "architecture": {
       "provenance": {
@@ -28,16 +33,30 @@
         "sources": [
           {
             "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepreinforce-ai/Ornith-1.0-35B-GGUF?blobs=true"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "resolved-huggingface-config-moe-architecture",
+      "state": "known"
+    },
+    "family": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:43:51Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepreinforce-ai/Ornith-1.0-35B-GGUF?blobs=true"
+          }
+        ]
+      },
+      "reason": "canonical-model-name-family",
+      "state": "known"
     }
   },
-  "family": "unknown",
+  "family": "ornith",
   "huggingface": {
     "link_type": "repository",
     "provenance": {

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt00amga0eeums015vw8ttp3"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmt00amga0eeums015vw8ttp3"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "RX 7900 XTX",
       "notes": "Record decode on Windows 11 Pro + official AMD Vulkan ICD (not RADV). llama.cpp master 9731ad3 build-vulkan llama-server, Unsloth Qwen3.8-27B-UD-Q4_K_XL, native MTP n-max 3 (no p-min), -fa on, q4_0 KV, GGML_VK_ALLOW_GRAPHICS_QUEUE=1. Measured with bench_src.py on a 32k slot: code decode mean 90.74 tok/s (3 runs, 11.04 ms/tok), prose 64.99, mixed 77.81, prefill 326.5 tok/s, TTFT 101.7 ms, dedicated VRAM 17.48 GiB. Daily serve is the same stack at 100k (88.4 code / 62.3 prose). 128k and 132k lose hard on code decode and were not submitted.",
       "observed_command": "GGML_VK_VISIBLE_DEVICES=0 GGML_VK_ALLOW_GRAPHICS_QUEUE=1 llama-server -m Qwen3.8-27B-UD-Q4_K_XL.gguf --device Vulkan0 -c 32768 -ngl 999 -fa on --cache-type-k q4_0 --cache-type-v q4_0 --spec-type draft-mtp --spec-draft-n-max 3 --spec-draft-type-k q4_0 --spec-draft-type-v q4_0 --parallel 1 --no-mmproj --jinja --reasoning-budget 0 --alias qwen38-27b-src",

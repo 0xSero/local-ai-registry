@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmohirwjq0002l4042ghcjq51"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmohirwjq0002l4042ghcjq51"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Backend: SYCL level_zero (Intel oneAPI). Abliterated-Heretic finetune. Intel Arc Pro B70 BMG G31 32GB GDDR6, xe driver, kernel 6.17. Fused MoE MMVQ + xe GT freq pinning. Mean of 5 runs, warmup discarded.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-Abliterated-Heretic-Q4_K_M.gguf -c 8192 -ngl 99 -fa 1 -ctk q8_0 -ctv q8_0 -t 1",
@@ -166,7 +195,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 8192,
     "tensor_parallel": 1
   },

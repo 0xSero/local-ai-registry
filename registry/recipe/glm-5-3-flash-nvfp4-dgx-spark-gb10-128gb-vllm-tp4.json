@@ -1,0 +1,368 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Validated GLM-5.3 Flash NVFP4 vLLM TP4 across four DGX Spark GB10 nodes with DFlash2 speculation, FP8 KV cache, breakable piecewise/full CUDA graphs, a 524,288-token context envelope, uncapped C1 structured matched-window measurements, unified-memory telemetry, and chat, reasoning, tool, structured-output, and vision sidecars.",
+  "engine": {
+    "graph_mode": "breakable CUDA graph with piecewise target capture, full target capture at C1, and full DFlash2 capture at C1",
+    "name": "vllm",
+    "version": "0.1.dev20051+g487ecf187"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-chat-completion-sidecar-passed",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-reasoning-sidecar-returned-separated-reasoning-and-correct-answer",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-forced-tool-call-sidecar-returned-the-required-function-and-arguments",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-inline-png-sidecar-identified-the-solid-red-image",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "startup-log-confirmed-breakable-piecewise-full-target-and-full-dflash2-cuda-graph-capture",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "runtime-version-endpoint",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-version-endpoint-returned-vllm-0.1.dev20051+g487ecf187",
+      "state": "known"
+    },
+    "metadata.runtime_identity.published_oci_manifest_digest": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "oci-registry-manifest",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "skopeo-resolved-the-pullable-ghcr-manifest-digest",
+      "state": "known"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "runtime-startup-log",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "startup-log-reported-1816492-kv-cache-tokens",
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "live-runtime-acceptance",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "scheduler-is-configured-for-max-num-seqs-1-and-all-accepted-measurements-used-c1",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T06:34:14Z",
+            "kind": "runtime-model-endpoint",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+          }
+        ]
+      },
+      "reason": "live-model-endpoint-and-startup-log-reported-524288-token-context",
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm-5-3-flash-nvfp4-dgx-spark-gb10-128gb-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--trust-remote-code",
+      "--tensor-parallel-size",
+      "4",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--max-model-len",
+      "524288",
+      "--max-num-seqs",
+      "1",
+      "--max-num-batched-tokens",
+      "2048",
+      "--block-size",
+      "2304",
+      "--moe-backend",
+      "marlin",
+      "--speculative-config",
+      "{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7}",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--kv-cache-memory",
+      "12884901888",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-auto-tool-choice",
+      "--reasoning-parser",
+      "glm45",
+      "--chat-template",
+      "/chat-template-mm.jinja",
+      "--default-chat-template-kwargs",
+      "{\"enable_thinking\":true}",
+      "--distributed-executor-backend",
+      "mp",
+      "--nnodes",
+      "4",
+      "--node-rank",
+      "${NODE_RANK}",
+      "--master-addr",
+      "${HEAD_FABRIC_ADDRESS}",
+      "--master-port",
+      "29521"
+    ],
+    "asset_ids": [
+      "glm-5-3-flash-multimodal-chat-template",
+      "glm-5-3-flash-vllm-sparse-attn-indexer-kpool"
+    ],
+    "container": {
+      "captured_at": "2026-09-01T06:34:14Z",
+      "compose_file": "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-compose.yml",
+      "digest": "sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+      "image": "ghcr.io/tonyd2wild/vllm-glm53-flash@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+      "reason": "published-oci-manifest-verified-with-skopeo-and-live-four-node-launch-captured",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-01T06:34:14Z",
+          "kind": "runtime-identity-and-oci-manifest",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {
+      "FLASHINFER_CUDA_ARCH_LIST": "12.1a",
+      "FLASHINFER_DISABLE_VERSION_CHECK": "1",
+      "GLOO_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
+      "HF_HOME": "/cache/huggingface",
+      "HF_HUB_OFFLINE": "1",
+      "MN_IF_NAME": "${FABRIC_INTERFACE}",
+      "NCCL_CROSS_NIC": "0",
+      "NCCL_CUMEM_ENABLE": "0",
+      "NCCL_DEBUG": "WARN",
+      "NCCL_IB_ADDR_FAMILY": "AF_INET",
+      "NCCL_IB_DISABLE": "0",
+      "NCCL_IB_GID_INDEX": "3",
+      "NCCL_IB_HCA": "${NCCL_IB_HCA}",
+      "NCCL_IB_MERGE_NICS": "0",
+      "NCCL_IB_ROCE_VERSION_NUM": "2",
+      "NCCL_IGNORE_CPU_AFFINITY": "1",
+      "NCCL_NET": "IB",
+      "NCCL_NVLS_ENABLE": "0",
+      "NCCL_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TORCH_CUDA_ARCH_LIST": "12.1a",
+      "TORCH_NCCL_ASYNC_ERROR_HANDLING": "1",
+      "TP_SOCKET_IFNAME": "${FABRIC_INTERFACE}",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+      "VLLM_HOST_IP": "${NODE_FABRIC_ADDRESS}"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/tonyd2wild/vllm-glm53-flash@sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+        "target": "/model"
+      },
+      {
+        "provision": {
+          "repository": "incoai/GLM-5.3-Flash-DFlash2",
+          "revision": "bf582e4eacc1810f76656d1811693ff6c6737d2a",
+          "size_gb": 2.2
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2",
+        "target": "/draft"
+      },
+      {
+        "read_only": true,
+        "source": "asset/glm-5-3-flash-multimodal-chat-template.jinja",
+        "target": "/chat-template-mm.jinja"
+      },
+      {
+        "read_only": true,
+        "source": "asset/glm-5-3-flash-vllm-sparse-attn-indexer-kpool.py",
+        "target": "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/sparse_attn_indexer_kpool.py"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/glm53-vllm-512k",
+        "target": "/cache"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "64g"
+  },
+  "metadata": {
+    "acceptance_evidence": "docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json",
+    "content_class": "structured JSON-schema generation",
+    "launch_path_normalization": "Registry launch normalizes live model and chat-template bind targets to plugin-compatible paths without changing arguments or runtime behavior.",
+    "measurement": {
+      "accepted_samples": 4,
+      "all_stream_common_window": "first-token-to-last-token",
+      "cache_hit_delta": 0,
+      "exact_streamed_token_ids": true,
+      "median_decode_tok_s": 112.11765965016625,
+      "median_prefill_tok_s": 1764.8728135468746,
+      "median_ttft_ms": 4636.367646002327,
+      "peak_unified_memory_used_bytes": 359068327936,
+      "unified_memory_scope": "sum of MemTotal-MemAvailable across four GB10 unified-memory nodes; includes host processes"
+    },
+    "quality_sidecars": {
+      "arithmetic": true,
+      "reasoning": true,
+      "structured_json": true,
+      "tool_call": true,
+      "vision": true
+    },
+    "request_policy": "uncapped natural-stop requests",
+    "runtime_identity": {
+      "architecture": "Glm5NextForConditionalGeneration",
+      "container_config_id": "sha256:35c6f70ffcba62fd67d7b9d4b4e8300ad177201792ce9cdb1ea18fd449bc23b6",
+      "draft_architecture": "DFlash2DraftModel",
+      "kv_cache_dtype": "fp8_e4m3",
+      "parallelism": "four-node-tp4",
+      "published_oci_manifest_digest": "sha256:4def0ef644cb2e9814136dcffd5e385e21bc594f48f3b292234051904abe85a6",
+      "quantization": "NVFP4",
+      "speculation": "dflash2-7"
+    },
+    "scheduler": {
+      "block_size": 2304,
+      "kv_cache_memory_bytes_per_rank": 12884901888,
+      "max_num_batched_tokens": 2048,
+      "max_num_seqs": 1
+    }
+  },
+  "model_instance_id": "libertaidai-glm-5-3-flash-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-01T06:34:14Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "kind": "live-four-node-runtime-acceptance",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-flash-nvfp4-dgx-spark-vllm-tp4-20260901.json"
+      },
+      {
+        "captured_at": "2026-09-01T06:34:14Z",
+        "kind": "published-oci-manifest",
+        "url": "https://github.com/tonyd2wild/vllm-glm53-flash/pkgs/container/vllm-glm53-flash"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 1816492,
+    "max_concurrency": 1,
+    "max_context_tokens": 524288,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "glm-5-3-flash-nvfp4-dgx-spark-gb10-128gb-vllm-tp4-sweep"
+  ],
+  "status": "candidate"
+}

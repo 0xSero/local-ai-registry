@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "poolside/Laguna-S-2.1-GGUF:Q4_K_M",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "9280"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:26:09Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmryoj31g0435o401cbxy7hen"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmryoj31g0435o401cbxy7hen"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "GB10 Grace Blackwell",
       "notes": "Corrected ordinary-decoding GGUF result on one NVIDIA DGX Spark GB10. Seven distinct semantic prompts were measured once each with no warmup or prefix reuse. Six prompts contained 8,192 endpoint tokens and one contained 8,190; every request generated 1,024 tokens at concurrency one. Decode samples were 19.2, 19.3, 19.3, 19.3, 19.4, 19.4, and 19.4 tok/s; median 19.3. Fresh TTFT samples were 10,897.33, 10,419.64, 10,418.99, 10,462.31, 10,454.06, 10,376.58, and 10,431.60 ms; median 10,431.60 ms. Effective fresh-prefill samples were 751.7, 786.2, 786.3, 782.8, 783.6, 789.5, and 785.3 prompt tok/s; median 785.3. Poolside Laguna llama.cpp fork 04b2b72 served Q4_K_M revision e08e1fe855bb2d43f96ad78e24495283f3426c67, artifact SHA-256 7da520c5f44bc3c79d4eeebfd1151ba7114c5d7568e72a995638417093c5753f. Stable configuration: 9,280-token declared capacity, one slot, Q4_0 K/V cache, batch 2,048, microbatch 1,024, FlashAttention, all 49 layers offloaded, cache RAM disabled, prompt caching disabled, context checkpoints disabled, and no speculation. Minimum available RAM was 41.59 GiB and minimum free swap was 7.54 GiB; no guard event occurred. The old 18,155.28 ms result was real but used batch and microbatch 256, forcing 32 prompt-processing chunks, and left server prompt-cache/checkpoint behavior enabled. Prefill here is prompt tokens divided by fresh, client-observed TTFT, not kernel-only throughput. Rejected candidates and guard events are archived.",
       "observed_command": "llama-server --model laguna-s-2.1-Q4_K_M.gguf --alias poolside/Laguna-S-2.1-GGUF --ctx-size 9280 --parallel 1 --batch-size 2048 --ubatch-size 1024 --n-gpu-layers auto --fit on --fit-target 24576 --flash-attn on --cache-type-k q4_0 --cache-type-v q4_0 --cache-ram 0 --cache-reuse 0 --context-checkpoints 0 --host 127.0.0.1 --port 8000 --metrics",

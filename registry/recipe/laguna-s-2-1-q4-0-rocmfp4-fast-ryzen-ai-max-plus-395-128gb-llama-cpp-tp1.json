@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgf1kg8016npp01h89b7kt8"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgf1kg8016npp01h89b7kt8"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "ROCmFPX fork (build-strix-vulkan) on Framework Desktop Strix Halo 128G unified, via llama-swap. FAST quant, -b 512 -ub 128 strix flags. Median of 3.",
       "observed_command": "/home/mikekey/ROCmFPX/build-strix-vulkan/bin/llama-server --port ${PORT} --host 0.0.0.0 -dev Vulkan0 -ngl 999 --flash-attn on --jinja --reasoning-format auto --temp 1.0 --top-k 20 --top-p 1.0 -ctk f16 -ctv f16 -b 512 -ub 128 -t 16 -np 1 -c 65536 -m /home/mikekey/models/gguf/Laguna-S-2.1-Q4_0_ROCMFP4_FAST.gguf",
@@ -188,7 +217,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 1,
-    "max_context_tokens": 820,
+    "max_context_tokens": 65536,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

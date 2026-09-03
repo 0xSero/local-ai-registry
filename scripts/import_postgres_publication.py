@@ -6,6 +6,7 @@ import json
 import re
 from collections import defaultdict
 from pathlib import Path
+from fill_derived_fields import explicit_precision
 
 
 SCHEMA = "local-ai-registry/v1"
@@ -59,14 +60,15 @@ def engine_name(value):
 
 def format_name(model_id, engine):
     lower = model_id.lower()
-    if ".gguf" in lower:
+    normalized_engine = engine_name(engine)
+    if normalized_engine == "llama.cpp" or ".gguf" in lower or "gguf" in lower:
         return "GGUF"
-    if engine == "mlx" or "mlx" in lower:
+    if normalized_engine == "mlx" or "mlx" in lower:
         return "MLX"
     return None
 
 
-def metric_row(run, context_key, decode_key, memory_key, ttft=False):
+def metric_row(run, context_key, decode_key, memory_key):
     context = run.get(context_key)
     decode = run.get(decode_key)
     memory = run.get(memory_key)
@@ -79,8 +81,27 @@ def metric_row(run, context_key, decode_key, memory_key, ttft=False):
         "prefill_tok_s": None,
         "decode_tok_s": decode,
         "decode_tok_s_per_stream": None,
-        "ttft_ms_p50": run.get("ttft32k_seconds") * 1000 if ttft and run.get("ttft32k_seconds") is not None else None,
+        "ttft_ms_p50": None,
         "peak_vram_gb": int(memory) / 2**30 if memory is not None else None,
+        "samples": 1,
+        "status": "observed",
+    }
+
+
+def ttft_row(run):
+    context = run.get("ttft32k_context_tokens")
+    seconds = run.get("ttft32k_seconds")
+    if context is None or seconds is None:
+        return None
+    return {
+        "concurrency": run.get("concurrency"),
+        "context_tokens": context,
+        "output_tokens": None,
+        "prefill_tok_s": None,
+        "decode_tok_s": None,
+        "decode_tok_s_per_stream": None,
+        "ttft_ms_p50": seconds * 1000,
+        "peak_vram_gb": None,
         "samples": 1,
         "status": "observed",
     }
@@ -100,7 +121,12 @@ def import_publication(publication, root):
         source = model_rows[source_id]
         base_id = slug(source.get("base_model_family") or source["route_slug"])
         repository = source.get("hf_repo") or source_id
-        precision = source.get("quantization") or "unknown"
+        source_precision = source.get("quantization")
+        precision = (
+            explicit_precision(source_id)
+            if source_precision in (None, "", "unknown")
+            else source_precision
+        ) or "unknown"
         instance_id = f"{slug(source_id)}--{slug(precision)}"
         base_name = source.get("base_model_family") or source["display_name"]
         model_records[base_id] = {
@@ -157,8 +183,9 @@ def import_publication(publication, root):
             wanted_sweeps.add(sweep_id)
             selected = [
                 metric_row(run, "decode8k_context_tokens", "decode8k_tps", "memory8k_bytes"),
-                metric_row(run, "decode32k_context_tokens", "decode32k_tps", "peak_memory_bytes", True),
+                metric_row(run, "decode32k_context_tokens", "decode32k_tps", "peak_memory_bytes"),
                 metric_row(run, "decode_max_context_tokens", "decode_max_context_tps", "memory_max_context_bytes"),
+                ttft_row(run),
             ]
             selected = [row for row in selected if row is not None]
             selected = list({json.dumps(row, sort_keys=True): row for row in selected}.values())

@@ -37,6 +37,7 @@ test("every validated docker recipe passes the Omarchy launch gate", () => {
     const args: string[] = launch.arguments ?? []
 
     assert.match(String(launch.image ?? ""), /@sha256:[0-9a-f]{64}$/, `${row.id}: image is not digest-pinned`)
+    assert.ok(!String(launch.image).startsWith("local/"), `${row.id}: validated image uses unpullable local/ namespace`)
     assert.match(String(instance.revision ?? ""), /^[0-9a-f]{40,64}$/, `${row.id}: model revision is not pinned`)
     assert.equal(typeof launch.container_port, "number", `${row.id}: container_port must be a number`)
     assert.ok(

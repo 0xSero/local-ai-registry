@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "zai-org/GLM-5.3-Flash",
+      "--tensor-parallel-size",
+      "2",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "8192"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmteqhpnj003an001xz0us0uj"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmteqhpnj003an001xz0us0uj"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Automated 3-run llama-benchy 0.4.0 measurement of the custom selective EXL3 3.0bpw artifact. Fixed 512-token prompt and 1024-token output, batch 1, cold prefix cache, exact output length, temperature=0. Output 193.80 ± 12.60 tok/s; prefill 3,712.33 ± 207.24 tok/s; TTFT 177.14 ± 8.03 ms; peak one-second output 281 ± 47 tok/s. Logical checkpoint TP4 is folded onto two physical TP workers (two serialized 512-wide K3 slices per GPU). DFlash2 TP2 speculative decoding uses seven draft tokens and CUDA graphs. GPU power values are means during samples at >=50% utilization. Peak VRAM is the sum of per-card peaks. GPU 0 also drives the Hyprland desktop. Experimental custom loader; source checkpoint revision 8b099bf276507a17faea920deff3f62d5597fb52 preserved unchanged.",
       "observed_command": "python -m vllm.entrypoints.openai.api_server --model /home/rarri/ai/spikes/001-selective-exl3-loader/model-view --served-model-name GLM-5.3-Flash-EXL3-3.0bpw --host 0.0.0.0 --port 8012 --language-model-only --tensor-parallel-size 2 --dtype bfloat16 --load-format safetensors --moe-backend b12x --attention-backend FLASHINFER_MLA_SPARSE_SM120 --kv-cache-dtype fp8_ds_mla --max-model-len 8192 --max-num-batched-tokens 1024 --max-num-seqs 1 --gpu-memory-utilization 0.90 --enable-chunked-prefill --reasoning-parser glm45 --enable-auto-tool-choice --tool-call-parser glm47 --disable-custom-all-reduce --speculative-config '{\"method\":\"dflash\",\"model\":\"/draft\",\"num_speculative_tokens\":7,\"draft_tensor_parallel_size\":2,\"draft_sample_method\":\"probabilistic\",\"kv_cache_dtype\":\"auto\"}' --no-enable-prefix-caching",

@@ -6,6 +6,43 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-hf",
+      "AtomicChat/Qwen3.8-27B-GGUF:Q6_K",
+      "--n-gpu-layers",
+      "999",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "-c",
+      "131000"
+    ],
+    "container_port": 8080,
+    "entrypoint": "/app/llama-server",
+    "environment": {
+      "LLAMA_CACHE": "/root/.cache/huggingface"
+    },
+    "host_port": 8080,
+    "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "gemma-4-12b-q4-k-m-rtx-3060-12gb-llama-cpp-tp1",
+      "template": "llama-cpp-server-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
@@ -68,6 +105,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://ghcr.io/v2/ggml-org/llama.cpp/manifests/sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +146,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsy69kh50crlms01r1fveril"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsy69kh50crlms01r1fveril"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +204,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "https://x.com/Rabbit_Hole_Ai\nas-served llama-swap serving flags EXCEPT sampling forced greedy (temp 0 top-k 1; production serves temp 1.0); median of 3 single-stream runs on 3 distinct ~420-token prompts, 512 tok out, each run first sight of its prompt (cache_prompt=false, no prompt reuse, fresh server); spec draft acceptance per run: 0.414/0.530/0.464 (greedy sampling raises acceptance vs production temp 1.0 - no-spec tg128 baseline is the floor); no-spec llama-bench baseline: pp512=3451.734905 tg128=59.337835; context allocated 131000, throughput measured at ~420-token depth; peak VRAM = whole-card nvidia-smi incl 572 MiB desktop baseline; raw /completion (chat template not applied); GPU power = max 0.5s nvidia-smi sample during generation; Qwen3.8-27B (AtomicChat AD-Q6_K, control)",
       "observed_command": "llama-server.exe --host 127.0.0.1 --port 8099 -m C:\\\\models--AtomicChat--Qwen3.8-27B-GGUF\\\\snapshots\\\\a76565f9430ab69145ea4e51c53f394ab5ffafac\\\\Qwen3.8-27B-AD-Q6_K.gguf --no-mmproj --fit-target 512 --load-mode dio --spec-type draft-mtp,ngram-mod,ngram-map-k4v --spec-draft-n-max 3 --spec-draft-p-min 0.0 --spec-ngram-mod-n-match 24 --spec-ngram-mod-n-min 48 --spec-ngram-mod-n-max 64 --spec-ngram-map-k4v-size-n 16 --spec-ngram-map-k4v-size-m 96 --spec-ngram-map-k4v-min-hits 1 -ngl 999 -c 131000 -b 512 -ub 512 -np 1 -fa on -ctk q8_0 -ctv q8_0 --temp 0.0 --top-k 1 --jinja --chat-template-file C:\\\\qwen3.8_chat_template_froggeric6level.jinja",

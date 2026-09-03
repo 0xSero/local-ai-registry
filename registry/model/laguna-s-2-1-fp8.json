@@ -1,6 +1,6 @@
 {
-  "active_params": null,
-  "architecture": "moe",
+  "active_params": 1.11,
+  "architecture": "dense",
   "downloads": {
     "all_time": 8543,
     "captured_at": "2026-08-31T12:36:33Z",
@@ -10,20 +10,62 @@
   "facts": {
     "active_params": {
       "provenance": {
-        "captured_at": "2026-08-30T09:10:02Z",
+        "captured_at": "2026-09-01T00:18:17Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:10:02Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-DFlash-FP8?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "all-parameters-active-in-dense-model",
+      "state": "known"
+    },
+    "architecture": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:43:51Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-DFlash-FP8?blobs=true"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "family": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:43:51Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-DFlash-FP8?blobs=true"
+          }
+        ]
+      },
+      "reason": "canonical-model-name-family",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-DFlash-FP8?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
-  "family": "unknown",
+  "family": "laguna",
   "huggingface": {
     "link_type": "repository",
     "provenance": {
@@ -43,7 +85,7 @@
   },
   "id": "laguna-s-2-1-fp8",
   "name": "Laguna-S-2.1-FP8",
-  "params": 118.0,
+  "params": 1.11,
   "provenance": {
     "captured_at": "2026-08-30T09:10:02Z",
     "sources": [
@@ -51,6 +93,11 @@
         "captured_at": "2026-08-30T09:10:02Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/poolside/Laguna-S-2.1-DFlash-FP8"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/poolside/Laguna-S-2.1-DFlash-FP8?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

@@ -1,0 +1,120 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Candidate derived from lfm25-26b-bf16-rtx3090-sglang-tp1 for rtx-3070-8gb; the launch contract is copied, the evidence is not. Pending acceptance on the target card.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "sglang",
+    "version": "0.0.0.dev1+geec794bce.d20260823"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-3070-8gb",
+  "id": "lfm2526b-bf16-rtx3070-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "LiquidAI/LFM2.5-2.6B",
+      "--revision",
+      "a334ee78cd38458bb71eda24109ac42dcec1309d",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--tp",
+      "1",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.90",
+      "--attention-backend",
+      "flashinfer",
+      "--max-running-requests",
+      "4",
+      "--cuda-graph-max-bs-decode",
+      "4",
+      "--enable-cache-report",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "qwen3-thinking",
+      "--tool-call-parser",
+      "lfm2"
+    ],
+    "container": {
+      "captured_at": "2026-09-03T10:22:59Z",
+      "compose_file": null,
+      "digest": "sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+      "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-03T10:22:59Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": "/opt/sglang/bin/python",
+    "environment": {
+      "HF_HOME": "/root/.cache/huggingface"
+    },
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-03T10:22:59Z",
+      "apis": [
+        "chat",
+        "messages",
+        "responses"
+      ],
+      "harness": "validate_rented.py on vast RTX 3070",
+      "served_model_id": "LiquidAI/LFM2.5-2.6B"
+    },
+    "derived_from": "lfm25-26b-bf16-rtx3090-sglang-tp1"
+  },
+  "model_instance_id": "liquidai-lfm2-5-2-6b--bf16",
+  "provenance": {
+    "captured_at": "2026-09-02T21:50:48Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-02T21:50:48Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "recommended": true,
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "lfm2526b-bf16-rtx3070-sglang-tp1-acceptance"
+  ],
+  "status": "validated"
+}

@@ -6,6 +6,42 @@
     "vision": null
   },
   "description": "Observed LocalMaxxing leaderboard run. Evidence for compatibility, not an executable launch contract.",
+  "draft_launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "--model",
+      "poolside/Laguna-S-2.1-NVFP4",
+      "--tensor-parallel-size",
+      "4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "262144"
+    ],
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g",
+    "synthesized": {
+      "generated_at": "2026-08-31T22:12:17Z",
+      "image_provenance": "deepseek-fp8-rtx-pro-6000-blackwell-96gb-vllm-tp1",
+      "template": "vllm-openai-v1"
+    }
+  },
   "engine": {
     "graph_mode": null,
     "name": "vllm",
@@ -68,6 +104,20 @@
       "reason": "capability-not-verified",
       "state": "unknown"
     },
+    "draft_launch.entrypoint": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:41:26Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:41:26Z",
+            "kind": "container-config",
+            "url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967"
+          }
+        ]
+      },
+      "reason": "linux-amd64-container-config-entrypoint",
+      "state": "known"
+    },
     "engine.graph_mode": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +145,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrxk8q0x00dco401yhwzjx9m"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrxk8q0x00dco401yhwzjx9m"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -125,6 +203,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 5090",
       "notes": "poolside Laguna-S-2.1-NVFP4 (117.6B MoE / 8.5B active, 256 experts, 36 SWA@512 + 12 global layers) on 4x RTX 5090 32GB, tensor-parallel 4 (no-NVLink, --disable-custom-all-reduce), no speculative decode. FP8 KV cache, FlashInfer, CUDA graphs, prefix caching. b1 = pure single-stream decode over 1024 forced tokens (ignore_eos), 3 runs temp 0.7 / top_p 0.95: 157.02 / 157.13 / 157.18 tok/s (mean 157.11, stdev 0.07); TTFT ~5.1s over the 32k prompt (tokSPrefill from prompt/TTFT, tokSTotal = (prompt+output)/end-to-end). Full 262144 context fits at TP=4.",
       "observed_command": "docker run --gpus all --ipc=host --network=host --shm-size=32g -e CUTE_DSL_ARCH=sm_120a -v <MODEL_DIR>:/model:ro vllm/vllm-openai:<nightly-cu13> --model /model --served-model-name laguna --trust-remote-code --tensor-parallel-size 4 --disable-custom-all-reduce --dtype bfloat16 --kv-cache-dtype fp8 --max-model-len 262144 --gpu-memory-utilization 0.90 --max-num-seqs 1 --max-num-batched-tokens 8192 --enable-prefix-caching --override-generation-config '{\"temperature\":0.7,\"top_p\":0.95}'",

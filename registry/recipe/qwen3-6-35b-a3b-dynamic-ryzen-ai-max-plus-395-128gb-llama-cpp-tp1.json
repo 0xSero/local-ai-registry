@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofbcuu4000al204o4zlq1xb"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmofbcuu4000al204o4zlq1xb"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "M5 Strix Halo. 0xSero-strix custom DYNAMIC quant of Qwen 3.6 35B-A3B MoE (20 GB) — purpose-built for Strix Halo. Fastest 35B-A3B variant tested on this rig: 56.77 t/s vs Q4 52.12 / Q6 50.36 / Q8 41.40 / Claude-distilled Q6_K 55.65.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-DYNAMIC.gguf -ngl 999 -fa 1 --no-mmap --mlock -c 32768 -ctk q8_0 -ctv q8_0 -b 4096 -ub 4096 --parallel 8",
@@ -172,8 +201,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 32768,
+    "max_concurrency": 8,
+    "max_context_tokens": 4096,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

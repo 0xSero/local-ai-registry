@@ -208,6 +208,209 @@ choose() {
   resolve "$selected"
 }
 
+
+
+warn() { printf 'local-ai: warning: %s\n' "$*" >&2; }
+
+preflight() {
+  # Foolproofing before launch: verify this machine can actually run the recipe.
+  # LOCAL_AI_FORCE=1 (or run --force) downgrades hardware-mismatch failures to warnings.
+  local recipe=$1 force=${2:-0}
+  local required_hw required_count backend host_port detected detected_count
+  required_hw=$(jq -r '.hardware_id' <<<"$recipe")
+  required_count=$(jq -r '.hardware_count // 1' <<<"$recipe")
+  backend=$(jq -r '.launch.accelerator_backend // empty' <<<"$recipe")
+  host_port=$(jq -r '.launch.host_port // empty' <<<"$recipe")
+
+  if [[ $backend == nvidia ]]; then
+    command -v nvidia-smi >/dev/null 2>&1 || fail "this recipe targets NVIDIA hardware (${required_hw} x${required_count}); no NVIDIA driver detected on this machine (nvidia-smi not found)."
+  fi
+  command -v docker >/dev/null 2>&1 || fail "Docker is required to run this recipe. Install Docker and retry."
+  docker info >/dev/null 2>&1 || fail "The Docker daemon is not running. Start Docker and retry."
+  if [[ $backend == nvidia ]] && ! docker info 2>/dev/null | grep -qi 'nvidia'; then
+    warn "the NVIDIA container runtime was not visible in 'docker info'; if launch fails with a GPU error, install nvidia-container-toolkit."
+  fi
+
+  detected=$(detect 2>/dev/null || true)
+  detected_count=$(detect_count 2>/dev/null || printf '1')
+  if [[ -z $detected ]]; then
+    if [[ $force == 1 ]]; then
+      warn "could not detect local hardware; continuing because --force was given."
+    else
+      fail "could not detect local hardware. Set LOCAL_AI_HARDWARE to your registry hardware id, or pass --force to skip this check."
+    fi
+  elif [[ $detected != "$required_hw" ]]; then
+    local msg="this recipe was validated on ${required_hw} x${required_count}; this machine detects as ${detected} x${detected_count}."
+    if [[ $force == 1 ]]; then
+      warn "$msg Continuing because --force was given."
+      local need_vram have_vram
+      need_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$required_hw")")
+      have_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$detected")")
+      if [[ -n $need_vram && -n $have_vram ]] && (( $(printf '%.0f' "$have_vram") * detected_count < $(printf '%.0f' "$need_vram") * required_count )); then
+        warn "detected VRAM ($(printf '%.0f' "$have_vram")GB x${detected_count}) is below the validated requirement ($(printf '%.0f' "$need_vram")GB x${required_count}); the launch will likely fail or OOM."
+      fi
+    else
+      fail "$msg A validated recipe is a contract for its exact hardware. Pass --force to run anyway."
+    fi
+  elif (( detected_count < required_count )); then
+    if [[ $force == 1 ]]; then
+      warn "recipe needs ${required_count} accelerators, detected ${detected_count}; continuing because --force was given."
+    else
+      fail "this recipe needs ${required_count} accelerators; only ${detected_count} detected. Pass --force to run anyway."
+    fi
+  fi
+
+  if [[ -n $host_port ]] && command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$host_port" -sTCP:LISTEN >/dev/null 2>&1; then
+    fail "host port ${host_port} is already in use. Free it or stop the conflicting service, then retry."
+  fi
+
+  local instance size_gb cache_dir free_gb
+  instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$recipe")")
+  size_gb=$(jq -r '.weights.size_gb // empty' <<<"$instance")
+  cache_dir="$HOME/.cache/huggingface"
+  mkdir -p "$cache_dir" 2>/dev/null || true
+  if [[ -n $size_gb ]]; then
+    free_gb=$(df -Pk "$cache_dir" 2>/dev/null | awk 'NR==2 {printf "%d", $4/1048576}')
+    if [[ -n $free_gb ]] && (( free_gb < $(printf '%.0f' "$size_gb") + 5 )); then
+      fail "weights need ~${size_gb}GB but only ${free_gb}GB is free under ${cache_dir}. Free disk space and retry."
+    fi
+  fi
+}
+
+launch_args() {
+  # Build the docker argv for a VALIDATED docker recipe into the global array LAUNCH.
+  local recipe=$1 launch status kind
+  status=$(jq -r '.status' <<<"$recipe")
+  kind=$(jq -r '.launch.kind' <<<"$recipe")
+  if [[ $status != validated || $kind != docker ]]; then
+    fail "only validated docker recipes materialize to a launch command; this recipe is ${status}/${kind}. Candidates are evidence, not launch contracts."
+  fi
+  launch=$(jq -c '.launch' <<<"$recipe")
+  LAUNCH=(docker run --rm)
+  if [[ $(jq -r '.accelerator_backend // empty' <<<"$launch") == nvidia ]]; then LAUNCH+=(--gpus all); fi
+  local value
+  value=$(jq -r '.ipc // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--ipc "$value"); fi
+  value=$(jq -r '.shm_size // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--shm-size "$value"); fi
+  value=$(jq -r '.network_mode // empty' <<<"$launch")
+  if [[ -n $value && $value != bridge ]]; then LAUNCH+=(--network "$value"); fi
+  local host_port container_port
+  host_port=$(jq -r '.host_port // empty' <<<"$launch")
+  container_port=$(jq -r '.container_port // empty' <<<"$launch")
+  if [[ -n $host_port && -n $container_port ]]; then LAUNCH+=(-p "${host_port}:${container_port}"); fi
+  local pair
+  while IFS= read -r pair; do
+    if [[ -n $pair ]]; then LAUNCH+=(-e "$pair"); fi
+  done < <(jq -r '(.environment // {}) | to_entries[] | "\(.key)=\(.value)"' <<<"$launch")
+  local source target ro suffix
+  while IFS=$'\t' read -r source target ro; do
+    [[ -n $source ]] || continue
+    source=${source/#\~/$HOME}
+    if [[ $source == asset/* ]]; then
+      if [[ -f $ROOT/$source ]]; then
+        source="$ROOT/$source"
+      else
+        # cartridge mode: no checkout — fetch the asset and verify its recorded digest
+        local asset_file asset_id manifest sha cache
+        asset_file=${source#asset/}
+        cache="${TMPDIR:-/tmp}/local-ai-assets"
+        mkdir -p "$cache"
+        asset_id=""
+        while IFS= read -r candidate; do
+          manifest=$(curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$candidate" 2>/dev/null | jq -c '.data // .' 2>/dev/null) || continue
+          if [[ $(jq -r '.file // empty' <<<"$manifest") == "$asset_file" ]]; then asset_id=$candidate; break; fi
+        done < <(jq -r '.launch.asset_ids[]?' <<<"$recipe")
+        [[ -n $asset_id ]] || fail "asset $asset_file is not declared by this recipe"
+        sha=$(jq -r '.sha256' <<<"$manifest")
+        curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$asset_id/file" -o "$cache/$asset_file" || fail "could not fetch asset $asset_file"
+        if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | shasum -a 256 -c - >/dev/null 2>&1; then
+          if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | sha256sum -c - >/dev/null 2>&1; then
+            fail "asset $asset_file failed sha256 verification"
+          fi
+        fi
+        source="$cache/$asset_file"
+      fi
+    fi
+    suffix=""
+    if [[ $ro == true ]]; then suffix=":ro"; fi
+    LAUNCH+=(-v "${source}:${target}${suffix}")
+  done < <(jq -r '(.mounts // [])[] | [.source, .target, (.read_only // false | tostring)] | @tsv' <<<"$launch")
+  value=$(jq -r '.entrypoint // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--entrypoint "$value"); fi
+  LAUNCH+=("$(jq -r '.image' <<<"$launch")")
+  while IFS= read -r -d '' value; do
+    LAUNCH+=("$value")
+  done < <(jq -j '(.arguments // [])[] | . + "\u0000"' <<<"$launch")
+}
+
+
+cmd_validate() {
+  # Run a candidate's draft (or docker candidate launch) on THIS machine,
+  # accept it with a real completion + speed measurement, and promote it.
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
+  local id=$1 recipe contract cname port
+  recipe=$(record recipe "$id")
+  [[ $(jq -r '.status' <<<"$recipe") == candidate ]] || fail "only candidates can be validated; this recipe is $(jq -r '.status' <<<"$recipe")"
+  if [[ $(jq -r '.launch.kind' <<<"$recipe") == docker ]]; then
+    contract=$(jq -c '.launch' <<<"$recipe")
+  else
+    contract=$(jq -c '.draft_launch // empty' <<<"$recipe")
+    [[ -n $contract ]] || fail "this candidate has no docker launch and no draft_launch; run scripts/synthesize_launches.py or curate one"
+  fi
+  # stage the contract first so preflight sees the draft backend and ports
+  local staged
+  staged=$(jq -c --argjson launch "$contract" '.launch = $launch | .status = "validated"' <<<"$recipe")
+  preflight "$staged" "$force"
+  launch_args "$staged"
+  port=$(jq -r '.host_port' <<<"$contract")
+  cname="local-ai-accept-$$"
+  printf 'launching draft for acceptance (container %s, port %s)...\n' "$cname" "$port" >&2
+  # detach: replace 'docker run --rm' with named detached run
+  local detached=("${LAUNCH[@]:0:2}" -d --name "$cname" "${LAUNCH[@]:2}")
+  "${detached[@]}" >/dev/null || fail "docker launch failed"
+  trap 'docker rm -f "'"$cname"'" >/dev/null 2>&1 || true' EXIT
+  printf 'waiting for the server (weights may download; up to 60 minutes)...\n' >&2
+  local waited=0
+  until curl -fsS -m 5 "http://localhost:${port}/v1/models" >/dev/null 2>&1; do
+    if ! docker inspect -f '{{.State.Running}}' "$cname" 2>/dev/null | grep -q true; then
+      docker logs --tail 40 "$cname" >&2 || true
+      fail "the server exited before becoming healthy (last logs above)"
+    fi
+    sleep 10; waited=$((waited+10))
+    (( waited % 120 == 0 )) && printf '  still waiting (%ss)...\n' "$waited" >&2
+    (( waited >= 3600 )) && { docker logs --tail 40 "$cname" >&2 || true; fail "server did not become healthy within 60 minutes"; }
+  done
+  printf 'server healthy after %ss; running acceptance...\n' "$waited" >&2
+  python3 "$ROOT/../scripts/accept_recipe.py" "$id" --endpoint "http://localhost:${port}" || fail "acceptance failed; recipe stays candidate"
+  docker rm -f "$cname" >/dev/null 2>&1 || true
+  trap - EXIT
+  printf 'done. Rebuild the index, run make check, and open a PR with the promotion.\n' >&2
+}
+
+cmd_command() {
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  printf '%q ' "${LAUNCH[@]}"
+  printf '\n'
+}
+
+cmd_run() {
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  preflight "$recipe" "$force"
+  printf 'preflight passed; launching validated recipe %s\n' "$1" >&2
+  printf 'the server will listen on http://localhost:%s (OpenAI-compatible)\n' "$(jq -r '.launch.host_port' <<<"$recipe")" >&2
+  exec "${LAUNCH[@]}"
+}
+
 usage() {
   cat <<'EOF'
 Usage: local-ai [command]
@@ -218,6 +421,9 @@ Usage: local-ai [command]
   show <recipe-id>               resolve a recipe and its references
   get <collection> <id>          print one record
   search <text>                  search all registry records
+  command <recipe-id>            print the exact docker command for a validated recipe
+  run [--force] <recipe-id>      preflight this machine, then launch a validated recipe
+  validate [--force] <recipe-id> run a candidate draft here, accept it, and promote to validated
 EOF
 }
 
@@ -225,6 +431,9 @@ need jq
 [[ -f $ROOT/index/recipes.json ]] || fail "registry not found at $ROOT"
 
 case ${1:-choose} in
+  command) shift; [[ $# -eq 1 ]] || fail "usage: local-ai command <recipe-id>"; cmd_command "$1" ;;
+  run) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai run [--force] <recipe-id>"; cmd_run "$@" ;;
+  validate) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai validate [--force] <recipe-id>"; cmd_validate "$@" ;;
   detect) detect ;;
   list) shift; list "$@" ;;
   choose) choose "${2:-}" ;;
