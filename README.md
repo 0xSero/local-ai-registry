@@ -1,5 +1,7 @@
 # Local AI Registry
 
+Docs: [overview](https://0xsero.github.io/local-ai-registry/) · [system and schema](https://0xsero.github.io/local-ai-registry/system) · [deep breakdown](https://0xsero.github.io/local-ai-registry/deep) · [contributing](CONTRIBUTING.md)
+
 A hardware-aware registry of local model artifacts, launch recipes, measured speed sweeps, and public quality leaderboards. The standalone registry is data first: clients can read it from disk, serve it as static JSON, or resolve it over any static HTTP host.
 
 ## Start here
