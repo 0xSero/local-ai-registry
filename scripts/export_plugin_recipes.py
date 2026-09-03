@@ -24,6 +24,32 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REG = ROOT / "registry"
 SCHEMA = "omarchy-local-ai/recipes/1"
+# The gateway every launch pairs with the engine. Built and attested by github.com/0xSero/local-ai-images.
+GATEWAY_IMAGE = "ghcr.io/0xsero/gateway@sha256:daed3f94508953219edb0cf2182c4b2cdc3b07ace7e438bc341744d251cd0b41"
+GATEWAY_PROVENANCE = {
+    "kind": "self-built-attested",
+    "source": "https://github.com/0xSero/local-ai-images",
+    "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/gateway/Dockerfile",
+    "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33741422966",
+    "attestation": f"gh attestation verify oci://{GATEWAY_IMAGE} -o 0xSero",
+}
+# Minimum NVIDIA driver per image family, from each image's CUDA version (NVIDIA_REQUIRE_CUDA):
+# SGLang dev-cu12 is CUDA 12.9 (needs 575+); the vLLM image is CUDA 12.8 (570+); llama.cpp
+# server-cuda12 failed CUDA init on 550 and ran on 570+; TabbyAPI cu13 ships forward-compat for 535+.
+MIN_DRIVER = [
+    ("lmsysorg/sglang", "575.0"),
+    ("vllm/vllm-openai", "570.0"),
+    ("ghcr.io/ggml-org/llama.cpp", "570.0"),
+    ("ghcr.io/0xsero/tabbyapi-exl3", "535.0"),
+    ("ghcr.io/theroyallab/tabbyapi", "535.0"),
+]
+
+
+def min_driver(image):
+    for prefix, version in MIN_DRIVER:
+        if image.startswith(prefix):
+            return version
+    return ""
 NORM = re.compile(r"nvidia|geforce|intel|amd|radeon|generation|workstation|edition|[0-9]+gb|[^a-z0-9]")
 
 
@@ -79,6 +105,7 @@ def entry(recipe, instance, model, hardware, sweeps):
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
+        "minDriver": min_driver(launch["image"]) if hardware.get("accelerator_backend") == "nvidia" else "",
         "weights": {
             # where the plugin puts the download under a ${MODEL_ROOT} mount; TabbyAPI loads <mount>/<model_name>
             "subdir": (recipe.get("metadata") or {}).get("weights_subdir") or "",
@@ -154,10 +181,20 @@ def main():
             print(f"error: {error}", file=sys.stderr)
         return 1
 
+    # config assets the recipes mount, shipped inline so the plugin needs no registry checkout
+    assets = {}
+    for exported in out.values():
+        for mount in exported["recipe"]["launch"]["mounts"]:
+            source = str(mount.get("source") or "")
+            if source.startswith("asset/"):
+                name = source[len("asset/"):]
+                assets[name] = (REG / "asset" / name).read_text()
     document = {
         "schemaVersion": SCHEMA,
         "registryCommit": registry_commit(),
         "generatedAt": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "gateway": {"image": GATEWAY_IMAGE, "provenance": GATEWAY_PROVENANCE},
+        "assets": assets,
         "hardware": out,
     }
     text = json.dumps(document, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
