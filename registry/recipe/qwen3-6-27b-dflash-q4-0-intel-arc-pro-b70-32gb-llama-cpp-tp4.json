@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmor2e5r00004jl04o99d26p8"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmor2e5r00004jl04o99d26p8"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -124,7 +152,8 @@
   },
   "metadata": {
     "localmaxxing": {
-      "backend": null,
+      "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Quality-preserving Qwen3.6 27B Q4_0 GGUF tensor-split run on four Intel Arc Pro B70 32GB GPUs. Same Q4_0 weights and f16 KV cache, greedy decode, no speculative decode, no power-limit changes. Uses experimental direct 2-4 GPU single-kernel F32 allreduce. This is intentionally submitted as a negative scaling datapoint: 4-way tensor split regresses versus the best 3-GPU result because the root-kernel fanout must peer-read and write four partial tensors across 128 small F32 allreduces per generated token. 4-GPU root sweep stayed around 30.76-31.31 tok/s at 128 tokens, so the issue appears to be communication fanout/synchronization rather than a single bad root choice. Best TP3 result was 41.737 tok/s; best TP2 result was 39.849 tok/s; single-B70 baseline was 24.723 tok/s.",
       "observed_command": "ONEAPI_DEVICE_SELECTOR=level_zero:0,1,2,3 GGML_SYCL_DISABLE_GRAPH=0 GGML_SYCL_DISABLE_DNN=1 GGML_SYCL_DISABLE_OPT=0 GGML_SYCL_PRIORITIZE_DMMV=0 GGML_SYCL_ASYNC_PEER_COPY=0 GGML_SYCL_ASYNC_CPY_TENSOR=1 GGML_SYCL_COMM_ALLREDUCE=1 GGML_SYCL_COMM_SINGLE_KERNEL=1 /home/steve/src/llama.cpp-q4-b70/build-sycl-2026-bmg-g31/bin/llama-bench -m /home/steve/models/qwen3.6-27b-q4_0-gguf/Qwen3.6-27B-Q4_0.gguf --prio 0 -dev SYCL0/SYCL1/SYCL2/SYCL3 -ngl 99 -p 0 -n 512 -sm tensor -ts 1/1/1/1 -b 512 -ub 32 -ctk f16 -ctv f16 -t 8 --poll 50 -fa 1 -r 1 -o jsonl",
@@ -197,8 +226,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 512,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [

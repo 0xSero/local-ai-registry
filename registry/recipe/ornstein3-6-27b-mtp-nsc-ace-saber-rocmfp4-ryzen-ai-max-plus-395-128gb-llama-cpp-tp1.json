@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmq45u8d8003umu01scv0irgo"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmq45u8d8003umu01scv0irgo"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 32768,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Evidence: eval=49.50 tok/s; prompt eval=264.16 tok/s; output=93 tokens.",
       "observed_command": "llama-server -m Ornstein3.6-27B-MTP-NSC-ACE-SABER-ROCmFP4-STRIX_LEAN-MTP.gguf -c 262144 -b 32768 -ub 1536 -t 32 --threads-batch 16 --cache-ram 4096 --ctx-checkpoints 0 --cache-type-k f16 --cache-type-v f16 --spec-type draft-mtp --spec-type ngram-mod --no-mmap --kv-unified",
@@ -178,7 +207,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 32768,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmry883cb01vbo401egtte91p"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmry883cb01vbo401egtte91p"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "llama.cpp Vulkan on Framework Desktop (Strix Halo, 128G unified). ngram-simple speculative decoding: 29.9 tok/s vs 29.5 plain (+1.5%, noise-level on this prompt shape). Best-of-3, cold prefill each run.",
       "observed_command": "llama-server -ngl 99 --flash-attn auto --spec-type ngram-simple -ctk f16 -ctv f16 -c 65536",
@@ -164,8 +193,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 820,
+    "max_concurrency": null,
+    "max_context_tokens": 65536,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

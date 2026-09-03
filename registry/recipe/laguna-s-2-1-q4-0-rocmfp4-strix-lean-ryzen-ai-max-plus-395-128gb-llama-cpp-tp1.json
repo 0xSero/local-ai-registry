@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrzfao8z06vyo401rrjxt60j"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmrzfao8z06vyo401rrjxt60j"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Automated benchmark via Hermes agent. Steady-state output tok/s with 128-token generation, temp=0 (greedy). ROCmFPX STRIX_LEAN Q4 quant on Vulkan backend.",
       "observed_command": "llama-server -m laguna-s-2.1-Q4_0_ROCMFP4_STRIX_LEAN.gguf --host 127.0.0.1 --port 8081 -dev Vulkan0 -ngl 999 -fa on --jinja -c 262144 -b 512 -ub 512 -np 1 --reasoning off --alias laguna-s-2.1-rocmfp4",

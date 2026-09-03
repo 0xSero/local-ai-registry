@@ -7,6 +7,7 @@ const routes = {
   facets: "/api/v1/facets",
   hardware: "/api/v1/hardware",
   index: "/api/v1/index",
+  recommendations: "/api/v1/recommendations",
   model_instances: "/api/v1/model-instances",
   models: "/api/v1/models",
   prices: "/api/v1/prices",
