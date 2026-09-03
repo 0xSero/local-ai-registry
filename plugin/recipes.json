@@ -6,16 +6,16 @@
     "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
   },
   "gateway": {
-    "image": "ghcr.io/0xsero/gateway@sha256:f8cad0b00d082f0826ef4586bd90dca7d944f984a338a8bcce05f9039eaa2165",
+    "image": "ghcr.io/0xsero/gateway@sha256:a4d529170473cb9e1c96012edf79ba6b06a0100aa7b3ccf584a25c03aa3e4478",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/gateway@sha256:f8cad0b00d082f0826ef4586bd90dca7d944f984a338a8bcce05f9039eaa2165 -o 0xSero",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/gateway@sha256:a4d529170473cb9e1c96012edf79ba6b06a0100aa7b3ccf584a25c03aa3e4478 -o 0xSero",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/gateway/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
-      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33764705429"
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33771944172"
     }
   },
-  "generatedAt": "2026-09-03T14:06:42Z",
+  "generatedAt": "2026-09-03T15:21:13Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -2927,6 +2927,6 @@
       }
     }
   },
-  "registryCommit": "1c3b05086466aa2756296880e39445265d8194be",
+  "registryCommit": "7f320db60b4ba4159306ab9b716bd38d523c7780",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
