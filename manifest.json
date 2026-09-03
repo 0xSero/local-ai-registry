@@ -2,17 +2,18 @@
   "schemaVersion": 1,
   "id": "sero.local-ai",
   "name": "Local AI",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "author": "0xSero",
   "license": "MIT",
-  "description": "Local model serving as one button on the bar.",
+  "description": "Run the validated local model for your GPU and open any coding agent on it.",
   "kinds": ["bar-widget"],
-  "entryPoints": {"barWidget": "Panel.qml"},
+  "activation": "on-demand",
+  "entryPoints": { "barWidget": "Panel.qml" },
   "barWidget": {
     "displayName": "Local AI",
-    "description": "Load, unload, and share the recommended local model.",
+    "description": "One model for your GPU: Start, Stop, open an agent on it, share it on your tailnet.",
     "category": "AI",
-    "aliases": ["local-ai", "models", "gpu"],
+    "aliases": ["local-ai", "local-model", "gpu"],
     "defaultSection": "right",
     "allowMultiple": false
   }

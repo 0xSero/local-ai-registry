@@ -1,92 +1,98 @@
 #!/usr/bin/env bash
-# omarchy:summary=Run validated registry models on detected local hardware
-# omarchy:args=<load|unload|open-agent|share|scan|download|run|switch|remove|default|snapshot>
+# omarchy:summary=Run the validated local model for this GPU and open coding agents on it
+# omarchy:args=<snapshot|load|unload|open-agent [name]|share [--key value]>
+#
+# Five verbs. `snapshot` is a pure read that rewrites the state file the panel watches. `load`
+# and `unload` spawn a worker that holds the op lock; everything they do is logged. `open-agent`
+# launches an agent with the endpoint in its environment. `share` toggles the tailnet route.
 set -euo pipefail
-HOME_DIR="${OMARCHY_AI_USER_HOME:-$HOME}"
-REPO="${OMARCHY_AI_REGISTRY_REPO:-$HOME_DIR/omarchy/local-ai}"
-REG="${OMARCHY_AI_REGISTRY:-$REPO/registry}"
-IDX="$REG/index/recipes.json"
-REMOTE="${OMARCHY_AI_REGISTRY_REMOTE:-https://github.com/0xSero/local-ai-registry.git}"
-# The registry is pinned by commit; registry.pin moves it deliberately. Empty OMARCHY_AI_REGISTRY_PIN tracks main.
-MODELS_SUB='~/.cache/omarchy/local-ai/models'
-CACHE_SUB='~/.cache/omarchy/local-ai/cache'
-ST="${OMARCHY_AI_STATE:-${XDG_STATE_HOME:-$HOME_DIR/.local/state}/omarchy/local-ai}"
-SNAP="$ST/snapshot.json"
-CTR="${OMARCHY_AI_CONTAINER:-omarchy-local-ai}"
-PREV="$CTR-previous"
-PORT="${OMARCHY_AI_PORT:-12434}"
-LABEL=io.omarchy.local-ai
-POLL="${OMARCHY_AI_POLL:-2}"
-TIMEOUT="${OMARCHY_AI_TIMEOUT:-7200}"
 HERE=$(cd -- "$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || printf '%s' "${BASH_SOURCE[0]}")")" && pwd)
 SELF="$HERE/$(basename "${BASH_SOURCE[0]}")"
-PIN=${OMARCHY_AI_REGISTRY_PIN-$([[ -f $HERE/../registry.pin ]] && tr -d '[:space:]' <"$HERE/../registry.pin" || true)}
-EMPTY='{"schemaVersion":"omarchy-local-ai/5","state":"uninitialized","updatedAt":"","error":"","operation":{"name":"","recipeId":"","percent":0,"indeterminate":false,"detail":""},"active":{"recipeId":"","modelId":"","name":"","servedModel":"","container":"","endpoint":"","port":0,"gpuIndices":[],"apiReady":false,"toolCallReady":false,"tools":false,"ctxTokens":0,"toksPerSec":0,"agents":{}},"gpus":[],"registry":{"path":"","revision":"","matching":0,"total":0},"hardware":{"groups":[]},"models":[],"recommended":"","share":{"available":false,"active":false,"dns":""},"agents":{"default":"","installed":[]}}'
-# shellcheck source=../lib/state.sh
-source "$HERE/../lib/state.sh"
+# shellcheck source=../lib/common.sh
+source "$HERE/../lib/common.sh"
 # shellcheck source=../lib/hardware.sh
 source "$HERE/../lib/hardware.sh"
-# shellcheck source=../lib/registry.sh
-source "$HERE/../lib/registry.sh"
+# shellcheck source=../lib/recipes.sh
+source "$HERE/../lib/recipes.sh"
+# shellcheck source=../lib/weights.sh
+source "$HERE/../lib/weights.sh"
+# shellcheck source=../lib/share.sh
+source "$HERE/../lib/share.sh"
 # shellcheck source=../lib/runtime.sh
 source "$HERE/../lib/runtime.sh"
-# shellcheck source=../lib/agent.sh
-source "$HERE/../lib/agent.sh"
-# shellcheck source=../lib/lifecycle.sh
-source "$HERE/../lib/lifecycle.sh"
-spawn() {
-  if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then "$SELF" "$@" >/dev/null 2>&1 || true; return; fi
-  if command -v setsid >/dev/null 2>&1; then setsid "$SELF" "$@" >/dev/null 2>&1 </dev/null & disown
-  else ( "$SELF" "$@" >/dev/null 2>&1 </dev/null & ) ; fi
+# shellcheck source=../lib/agents.sh
+source "$HERE/../lib/agents.sh"
+# shellcheck source=../lib/snapshot.sh
+source "$HERE/../lib/snapshot.sh"
+
+recipes_ok || fail "recipes.json is missing or not the expected schema" || exit 1
+
+spawn() { # detach a worker; it takes the lock itself and reports through the ledger
+  if [[ ${OMARCHY_AI_FOREGROUND:-0} == 1 ]]; then "$SELF" "$@" >/dev/null 2>>"$LOGFILE" || true; return; fi
+  if command -v setsid >/dev/null 2>&1; then setsid "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & disown
+  else ( "$SELF" "$@" >/dev/null 2>>"$LOGFILE" </dev/null & ); fi
 }
-guard() {
-  mkdir -p "$ST"
-  if ((HAVE_FLOCK)); then exec 8>"$ST/op.lock"; flock -n 8 || { fail "another operation is running"; return 1; }
-  else mkdir "$ST/op.lockd" 2>/dev/null || { fail "another operation is running"; return 1; }
-       trap 'rmdir "$ST/op.lockd" 2>/dev/null || true' EXIT; fi
+
+current_recipe() { # the one recipe for this machine, gated; prints json or fails out loud
+  local m id r gate
+  m=$(match_hardware); id=$(jq -r .hardwareId <<<"$m")
+  [[ -n $id ]] || { fail "$(jq -r .reason <<<"$m")"; return 1; }
+  r=$(recipe_for "$id") || return 1
+  r=$(jq -c --argjson m "$m" '. + {gpuIndex:$m.gpu.index, match:{backend:$m.gpu.backend}}' <<<"$r")
+  gate=$(gate_reason "$r"); [[ -z $gate ]] || { fail "recipe refused: $gate"; return 1; }
+  driver_ok "$(hardware_json | jq -r .driver)" "$(jq -r '.minDriver // ""' <<<"$r")" \
+    || { fail "needs NVIDIA driver $(jq -r .minDriver <<<"$r") or newer"; return 1; }
+  printf '%s\n' "$r"
 }
+
+w_load() {
+  guard || oops "another operation is running"
+  local r id
+  r=$(current_recipe 2>"$STATE/gate.err") || oops "$(sed -n '$s/^local-ai: //p' "$STATE/gate.err")"
+  id=$(jq -r .id <<<"$r")
+  op download "$id" "checking" 0
+  ensure_image "$(jq -r .launch.image <<<"$r")" "$id"
+  ensure_image "$(gateway_image)" "$id"
+  weights_present "$r" || download_weights "$r"
+  op starting "$id" "setting aside the previous model" 0
+  set_aside || oops "could not set aside the running containers"
+  op starting "$id" "starting" 0
+  if ! start_pair "$r" || ! accept "$r" 2>"$STATE/accept.err"; then
+    local why; why=$(sed -n '$s/^local-ai: //p' "$STATE/accept.err" 2>/dev/null); [[ -n $why ]] || why="engine failed to start (see $LOGFILE)"
+    log "rollback: $why"; op starting "$id" "rolling back" 0
+    restore_previous
+    oops "$why"
+  fi
+  drop_previous
+  op_done; log "ready $id"
+}
+
+w_unload() {
+  guard || oops "another operation is running"
+  op unload "" "stopping" 0
+  share_off
+  stop_all
+  lwrite '.accepted={recipeId:"",servedModel:"",registry:"",apis:[]}'
+  op_done; log "unloaded"
+}
+
 usage() {
   echo 'Usage: omarchy-local-ai <command>
-  load <recipe>          one button: download if needed, then run
-  unload                 free the hardware; keep downloads
-  open-agent [name]      open the Omarchy default agent on the running model
-  share                  toggle sharing the endpoint on your tailnet
-  scan                   refresh the registry and rescan hardware
-  download <recipe>      download the image and weights for one recipe
-  run <recipe>           load one downloaded recipe
-  switch <recipe>        replace the running model, rolling back on failure
-  remove <recipe>        delete one recipe'\''s weights and image to reclaim disk
-  default                make the running model the default agent model (pi and omp)
-  snapshot               print the canonical state snapshot'
+  snapshot               refresh and print the state the panel renders
+  load                   download if needed, then start the model for this GPU
+  unload                 stop the model; keep downloads
+  open-agent [name]      open an installed coding agent on the running model
+  share [--key <value>]  toggle sharing on your tailnet, or replace the key'
 }
+
 cmd=${1:-help}; shift || true
 case $cmd in
-  scan) setstate scanning; spawn _worker-scan ;;
-  load)
-    [[ -n ${1:-} ]] || fail 'choose a recipe'
-    if jq -e --arg i "$1" '[.models[]|select(.recipeId==$i and .imageDownloaded and .weightsDownloaded)]|length>0' >/dev/null <<<"$(sread)"; then
-      phase=starting; [[ $(sread | jq -r '.active.apiReady') == true ]] && phase=switching
-      setstate "$phase"; op "$phase" "$1" 0 true "queued"; spawn _worker-run "$1" "$phase"
-    else
-      setstate downloading; op download "$1" 0 true "queued"; spawn _worker-load "$1"
-    fi ;;
-  share)
-    jq -e '.available' >/dev/null <<<"$(share_state)" || fail 'tailscale is not installed'
-    [[ $(sread | jq -r '.active.apiReady') == true ]] || fail 'load a model first'
-    if jq -e '.active' >/dev/null <<<"$(share_state)"; then share_off
-    else share_on 2>"$ST/share.err" || fail "$(awk 'NF{l=$0} END{print (l==""?"tailscale serve failed":l)}' "$ST/share.err" 2>/dev/null)"; fi ;;
-  download) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate downloading; op download "$1" 0 true "queued"; spawn _worker-download "$1" ;;
-  run) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate starting; op starting "$1" 0 true "queued"; spawn _worker-run "$1" starting ;;
-  switch) [[ -n ${1:-} ]] || fail 'choose a recipe'; setstate switching; op switching "$1" 0 true "queued"; spawn _worker-run "$1" switching ;;
-  unload) setstate unloading; op unload "" 0 true "queued"; spawn _worker-unload ;;
-  remove) [[ -n ${1:-} ]] || fail 'choose a recipe'; do_remove "$1" ;;
-  open-agent) open_agent "${1:-}" ;;
-  default) set_default ;;
-  snapshot) emit | head -c 262144 ;; # hard cap at the producer: the UI collector can never buffer more
-  _worker-scan) w_scan ;;
-  _worker-download) w_download "$1" ;;
-  _worker-load) w_load "$1" ;;
-  _worker-run) w_run "$1" "$2" ;;
+  snapshot) snapshot_write; cat "$SNAPSHOT" ;;
+  load) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-load ;;
+  unload) [[ -z $(busy_pid) ]] || fail "another operation is running" || exit 1; spawn _worker-unload ;;
+  open-agent) snapshot_write; open_agent "${1:-}" ;;
+  share) share_toggle "$@" ;;
+  _worker-load) w_load ;;
   _worker-unload) w_unload ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;

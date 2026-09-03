@@ -1,37 +1,34 @@
 #!/usr/bin/env bash
-# Live GPU inventory. Sourced by omarchy-local-ai; do not run.
+# Live GPU inventory and driver. Sourced; do not run.
+# Output shape: {"gpus":[{backend,index,product,totalMiB,usedMiB,freeMiB}],"driver":"580.65.06"}
+
 hardware_json() {
   [[ -n ${OMARCHY_AI_HARDWARE_JSON:-} ]] && { jq -c . <<<"$OMARCHY_AI_HARDWARE_JSON"; return; }
-  local rows='' nvidia='[]'
-  command -v nvidia-smi >/dev/null 2>&1 && rows=$(nvidia-smi --query-gpu=index,name,memory.total,memory.used,memory.free --format=csv,noheader,nounits 2>/dev/null || true)
+  local rows='' nvidia='[]' driver=''
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    rows=$(nvidia-smi --query-gpu=index,name,memory.total,memory.used,memory.free --format=csv,noheader,nounits 2>/dev/null || true)
+    driver=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null | head -1 | tr -d ' ' || true)
+  fi
   [[ -n $rows ]] && nvidia=$(jq -Rsc 'split("\n")|map(select(length>0)|split(",")|map(gsub("^ +| +$";"")))
-    |map({backend:"nvidia",index:(.[0]|tonumber),product:.[1],totalMiB:(.[2]|tonumber),usedMiB:(.[3]|tonumber),freeMiB:(.[4]|tonumber)})
-    |group_by(.product)|map({backend:"nvidia",product:.[0].product,count:length,memoryBytesEach:(.[0].totalMiB*1048576),
-       devices:map({index,name:.product,totalMiB,usedMiB,freeMiB})})' <<<"$rows")
-  jq -nc --argjson n "$nvidia" --argjson i "$(intel_arc_groups)" '{groups:($n+$i)}'
+    |map({backend:"nvidia",index:(.[0]|tonumber),product:.[1],totalMiB:(.[2]|tonumber),usedMiB:(.[3]|tonumber),freeMiB:(.[4]|tonumber)})' <<<"$rows")
+  jq -nc --argjson n "$nvidia" --argjson i "$(intel_gpus)" --arg d "$driver" '{gpus:($n+$i),driver:$d}'
 }
-intel_arc_groups() {
+
+intel_gpus() { # Intel Arc Pro B70 by PCI id, only when a render node exists for it
   command -v lspci >/dev/null 2>&1 || { printf '[]'; return; }
-  local dri="${OMARCHY_AI_DRI_PATH:-/dev/dri/by-path}" addrs devices='[]' idx=0 a node count
-  addrs=$(lspci -Dnn 2>/dev/null | grep -i 'Arc Pro B70' | awk '{print $1}') || true
+  local dri="${OMARCHY_AI_DRI_PATH:-/dev/dri/by-path}" a idx=0 out='[]'
   while IFS= read -r a; do
-    [[ -n $a ]] || continue
-    node="$dri/pci-$a-render"
-    [[ -e $node ]] || continue
-    devices=$(jq -c --argjson idx "$idx" '.+[{index:$idx,name:"Intel Arc Pro B70",totalMiB:32768,usedMiB:null,freeMiB:null}]' <<<"$devices")
+    [[ -n $a && -e "$dri/pci-$a-render" ]] || continue
+    out=$(jq -c --argjson i "$idx" '.+[{backend:"intel-xpu",index:$i,product:"Intel Arc Pro B70",totalMiB:32768,usedMiB:null,freeMiB:null}]' <<<"$out")
     idx=$((idx+1))
-  done <<<"$addrs"
-  count=$(jq 'length' <<<"$devices")
-  (( count > 0 )) || { printf '[]'; return; }
-  jq -nc --argjson d "$devices" --argjson c "$count" \
-    '[{backend:"intel-xpu",product:"Intel Arc Pro B70",count:$c,memoryBytesEach:34359738368,devices:$d}]'
+  done < <(lspci -Dnn 2>/dev/null | grep -i 'Arc Pro B70' | awk '{print $1}')
+  printf '%s' "$out"
 }
-hardware_matched() {
-  jq -c --slurpfile known <(jq -s '[.[]|{id,name,accelerator_backend,memory,aliases}]' "$REG"/hardware/*.json) '
-    def norm: ascii_downcase|gsub("nvidia|geforce|intel|generation|workstation|edition|[0-9]+gb|[^a-z0-9]";"");
-    .groups |= map(. as $g | ([$known[0][] | select(.accelerator_backend==$g.backend)
-      | select((.name|norm)==($g.product|norm) or any(.aliases[]?; (.|norm)==($g.product|norm)))
-      | select(((((.memory.vram_gb//0)*1024)-($g.memoryBytesEach/1048576))|fabs)<=1024)][0]) as $m
-      | .+{registryId:($m.id//""),registryName:($m.name//"")})' <<<"$(hardware_json)"
+
+# normalize a product name the way the registry export does, so a match is a string compare
+norm() { tr '[:upper:]' '[:lower:]' <<<"$1" | sed -E 's/nvidia|geforce|intel|amd|radeon|generation|workstation|edition|[0-9]+gb|[^a-z0-9]//g'; }
+
+driver_ok() { # driver_ok <have> <min>  (dotted versions; empty min means no requirement)
+  [[ -z $2 ]] && return 0
+  [[ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -1)" == "$2" ]]
 }
-gpus_json() { hardware_json | jq -c '[.groups[]| . as $g | .devices[]|{index,name,usedMiB,totalMiB,backend:$g.backend}]'; }

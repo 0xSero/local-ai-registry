@@ -1,13 +1,11 @@
-# Omarchy Local AI
+# Local AI for Omarchy
 
-One button on the Omarchy bar for local models. The plugin detects your GPUs,
-picks the recommended [local-ai-registry](https://github.com/0xSero/local-ai-registry)
-recipe for that hardware, and loads it into one labeled Docker container on a
-loopback OpenAI endpoint. Click to load, click to unload, click to open your
-Omarchy agent on the running model, click to share the endpoint on your
-tailnet.
+One bar button that runs the validated local model for your GPU and opens any
+coding agent on it. You see the model name, Start/Stop, an agent picker, and a
+Tailscale share toggle. Everything else is automatic and refuses out loud:
+hardware match, download, launch, acceptance, agent launch, rollback.
 
-![Popup](preview.png)
+![Local AI](preview.png)
 
 ## Install
 
@@ -15,64 +13,74 @@ tailnet.
 omarchy plugin add https://github.com/0xSero/omarchy-local-ai.git --enable
 ```
 
-That is the whole setup. The plugin adds no packages, services, or build
-steps — it uses the Bash, Git, jq, curl, Docker, Hyprland, and Quickshell
-already on Omarchy. A vendor GPU driver and Docker GPU runtime are runtime
-prerequisites for inference. Nothing downloads without a click: the load
-button shows the download size before anything lands on disk.
+Then click the bar icon and press **Start**. The first start downloads the
+model for your card; later starts are seconds.
 
-Review the diff Omarchy shows before enabling: third-party plugins run as
-unsandboxed user code inside the shell.
+Requirements: Docker with the NVIDIA container toolkit (or an Intel Arc Pro
+B70 with its render nodes), `jq`, `curl`, `flock`. Optional: `tailscale` for
+sharing, `hf` for faster downloads (the recipe's own image downloads otherwise).
 
-To remove: `unload` first (stops the managed container and deletes the
-`omarchy-local` provider entries it wrote), `remove <recipe>` per downloaded
-recipe to reclaim disk, then `omarchy plugin remove sero.local-ai`.
-
-## Use
-
-The bar icon is an empty circle until a model is accepted, then filled.
-Left-click opens the popup: the recommended model first, up to five runnable
-models total, each one click to load or switch. Right-click or "Open agent"
-launches your Omarchy default agent — Pi and Oh My Pi get the local model
-passed explicitly; other agents launch through `omarchy-agent`. "Share on
-Tailscale" publishes the endpoint to your tailnet via `tailscale serve` and
-unload always unpublishes it.
-
-The popup and CLI share one controller:
+## Remove
 
 ```bash
-~/.config/omarchy/plugins/sero.local-ai/bin/omarchy-local-ai <command>
+omarchy-local-ai unload          # stops the model, keeps downloads
+omarchy plugin remove sero.local-ai
+rm -rf ~/.cache/omarchy/local-ai  # optional: the downloaded weights
+rm -rf ~/.local/state/omarchy/local-ai
 ```
 
-`load <recipe>` (download if needed, then run), `unload`, `open-agent
-[name]`, `share`, `scan`, `download`, `run`, `switch`, `remove`, `default`
-(make the running model the default agent model), `snapshot` (the canonical
-JSON state the UI renders from).
+The plugin never edits files you own. Agents get the local endpoint only when
+launched from the panel; typed in a terminal they keep their own provider.
 
-## Safety
+## What runs
 
-- Recipes come from the registry at the exact commit in `registry.pin`. A
-  recipe only launches if it is `validated`, pins its image by `@sha256`
-  digest and its weights by full commit hash, and every mount resolves under
-  the managed cache. Host networking, multi-node launches, and unknown
-  placeholders are refused with a visible reason.
-- Only containers labeled `io.omarchy.local-ai=1` are ever adopted, started,
-  stopped, or removed. The endpoint binds to `127.0.0.1` unless you
-  explicitly share it on your own tailnet.
-- Ready means accepted: model identity, a real chat completion, and a real
-  `shell` tool call for tool recipes. A failed switch rolls back to the
-  previously accepted model.
-- Downloads refuse to start when the filesystem cannot fit the weights.
+- **One recipe per GPU**, from `recipes.json`, vendored from the
+  [local-ai registry](https://github.com/0xSero/local-ai-registry) and
+  validated on that exact card. Digest-pinned image, pinned weights revision,
+  bridge networking, no extra capabilities; the plugin re-checks all of that
+  on every start and refuses anything else.
+- **Two containers** the plugin owns and labels: the engine (TabbyAPI,
+  SGLang, vLLM, or llama.cpp) on a private network, and the
+  [gateway](https://github.com/0xSero/local-ai-images) on `127.0.0.1:12434`,
+  which serves OpenAI chat, Anthropic Messages, and OpenAI Responses so every
+  agent talks to one endpoint.
+- **Acceptance** before "ready": the served model matches, all three dialects
+  answer, tool calls work when the recipe claims them, and decode speed is not
+  a CPU fallback. Failure rolls back to the previous model.
+- **Agents**: pi, omp, opencode, ori, claude, codex, grok, agy, hermes,
+  copilot, crush, launched through `omarchy-launch-tui` with the endpoint,
+  key, and model in the environment. An agent whose dialect failed
+  acceptance is hidden.
+- **Share**: `tailscale serve` to the gateway. A key is generated on first
+  start and shown with the URL; `omarchy-local-ai share --key <value>`
+  replaces it.
 
-## Tests
+## Commands
+
+```
+omarchy-local-ai snapshot               refresh and print the state the panel renders
+omarchy-local-ai load                   download if needed, then start
+omarchy-local-ai unload                 stop; keep downloads
+omarchy-local-ai open-agent [name]      open an agent on the running model
+omarchy-local-ai share [--key <value>]  toggle tailnet sharing, or replace the key
+```
+
+State: `~/.local/state/omarchy/local-ai/` (`snapshot.json`, `ledger.json`,
+`log`). Weights: `~/.cache/omarchy/local-ai/models/` or the shared Hugging
+Face cache, whichever the recipe mounts.
+
+## Development
 
 ```bash
-./test/all
+bash test/all        # isolated state, shimmed docker/curl/tailscale; no GPU needed
+make sync REGISTRY=~/path/to/local-ai-registry   # regenerate recipes.json
 ```
 
-34 isolated cases against a temp registry and shimmed `docker`/`curl`/
-`tailscale`/GPU tools — no GPU, network, or Docker daemon needed.
+`recipes.json` carries the registry commit it was exported from; CI fails if
+the file and the commit disagree.
 
 ## License
 
-MIT
+MIT. Container images are pinned by digest and documented in
+`recipes.json`; self-built images carry a build attestation you can verify
+with `gh attestation verify`.
