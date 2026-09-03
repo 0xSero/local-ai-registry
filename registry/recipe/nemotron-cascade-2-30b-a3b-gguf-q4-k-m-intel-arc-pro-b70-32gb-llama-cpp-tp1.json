@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmr7128uq00jdmn01dn0uttm7"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr7128uq00jdmn01dn0uttm7"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Strict rapid realistic suite: 12 unique cold prompts, cache_prompt=false, cached_tokens=0 every row, no prompt/KV/context/response reuse, no speculation. Runtime is llama.cpp SYCL/Level Zero on one Intel Arc Pro B70. Nemotron-Cascade Q4_K_M expected-performance snapshot; ctx/batch/ubatch/poll/thread probes were flat around 50.7-50.9 tok/s.",
       "observed_command": "llama-server -m /mnt/usb-models/llm-models/nemotron-cascade-2-30b-a3b-gguf/nvidia_Nemotron-Cascade-2-30B-A3B-Q4_K_M.gguf -c 2048 -ngl 99 -b 1024 -ub 256 -fa on --ctx-checkpoints 0 --jinja --reasoning off",
@@ -169,7 +198,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 2048,
     "tensor_parallel": 1
   },

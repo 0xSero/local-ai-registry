@@ -1,13 +1,16 @@
 import assert from "node:assert/strict"
+import { readFileSync } from "node:fs"
 import test from "node:test"
 
 import { configurationFromRecipe, flagRows } from "../app/components/configuration-card"
 import {
   collectionCounts,
+  dockerCommand,
   getBenchmark,
   getEntityDetail,
   getFacets,
   isLaunchable,
+  hardwareComparison,
   listBenchmarks,
   listHardware,
   marketPriceCount,
@@ -49,6 +52,45 @@ test("candidate and reference recipes are never launchable", () => {
     { limit: 100, offset: 0 },
   )
   assert.equal(result.total, 0)
+})
+
+test("synthesized draft entrypoints preserve executable and argv boundaries", () => {
+  const cases = [
+    {
+      id: "laguna-s-2-1-nvfp4-rtx-5090-32gb-vllm-tp4",
+      entrypoint: "vllm",
+      firstArgument: "serve",
+    },
+    {
+      id: "qwen3-8-27b-w4a16-autoround-rtx-3090-24gb-sglang-tp2-y0tyt5cf",
+      entrypoint: "/opt/nvidia/nvidia_entrypoint.sh",
+      firstArgument: "python3",
+    },
+    {
+      id: "deepseek-v4-flash-iq2-xxs-rtx-3090-24gb-llama-cpp-tp1",
+      entrypoint: "/app/llama-server",
+      firstArgument: "-hf",
+    },
+  ]
+
+  for (const fixture of cases) {
+    const recipe = JSON.parse(
+      readFileSync(`registry/recipe/${fixture.id}.json`, "utf8"),
+    ) as Record<string, unknown>
+    const draft = recipe.draft_launch as { image: string }
+    const command = dockerCommand({
+      ...recipe,
+      status: "validated",
+      launch: recipe.draft_launch,
+    } as Parameters<typeof dockerCommand>[0])
+
+    assert.ok(command)
+    const segments = command.split(" \\\n  ")
+    const entrypointIndex = segments.indexOf(`--entrypoint ${fixture.entrypoint}`)
+    assert.ok(entrypointIndex >= 0, `${fixture.id}: missing entrypoint segment`)
+    assert.equal(segments[entrypointIndex + 1], draft.image)
+    assert.equal(segments[entrypointIndex + 2], fixture.firstArgument)
+  }
 })
 
 test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3 and TP2", () => {
@@ -159,6 +201,15 @@ test("validated recipes for the Omarchy GPUs use Docker", () => {
   const capabilities = detail.capabilities
   assert.ok(capabilities && typeof capabilities === "object" && "tools" in capabilities)
   assert.equal(capabilities.tools, true)
+  const b70Recipe = JSON.parse(
+    readFileSync("registry/recipe/qwen38-q4km-arcb70-llamacpp-tp2.json", "utf8"),
+  ) as Parameters<typeof dockerCommand>[0]
+  const command = dockerCommand(b70Recipe)
+  assert.ok(command)
+  assert.match(command, /--device \/dev\/dri/)
+  assert.match(command, /-v \/dev\/dri\/by-path:\/dev\/dri\/by-path:ro/)
+  assert.match(command, /-v ~\/\.cache\/inference-index\/models\/qwen38-b70:\/models/)
+  assert.match(command, /--entrypoint \/entrypoint\.sh/)
 })
 
 test("repository link results expose the authoritative body identity", () => {
@@ -212,6 +263,27 @@ test("hardware filters use normalized vendor and memory fields", () => {
     assert.equal(hardware.vendor, "nvidia")
     assert.ok(hardware.memory.vram_gb >= 96)
   }
+})
+
+test("hardware comparison exposes measured speed evidence beside sparse vendor specs", () => {
+  const rows = hardwareComparison()
+  assert.equal(rows.length, collectionCounts().hardware)
+  assert.ok(rows.filter((row) => row.speed_sweep_count > 0).length >= 50)
+
+  const apple = rows.find((row) => row.id === "apple-m3-ultra-96gb-80c")
+  assert.ok(apple)
+  assert.equal(apple.fp16_tflops, null)
+  assert.ok(apple.speed_sweep_count > 200)
+  assert.ok(apple.evidence_point_count > apple.speed_sweep_count)
+  assert.ok(apple.measured_model_count > 100)
+  assert.ok((apple.peak_decode_tok_s ?? 0) > 200)
+  assert.ok((apple.max_observed_context_tokens ?? 0) >= 262_080)
+
+  const blackwell = rows.find((row) => row.id === "rtx-pro-6000-blackwell-96gb")
+  assert.ok(blackwell)
+  assert.ok((blackwell.peak_prefill_tok_s ?? 0) > 1_000_000)
+  assert.ok((blackwell.peak_decode_tok_s ?? 0) > 2_000)
+  assert.ok((blackwell.peak_observed_vram_gb ?? 0) > 90)
 })
 
 test("recipe detail progressively resolves related records and speed evidence", () => {
@@ -336,6 +408,33 @@ test("scraped benchmark leaderboards expose quality scores separate from speed s
   assert.equal(sweepQuery.total, 0)
 })
 
+test("Gemma 3 PT and IT identities remain distinct across models, recipes, and benchmarks", () => {
+  const agieval = getBenchmark("agieval")
+  assert.ok(agieval)
+  const expectedByRoot: Record<string, string> = {
+    "google/gemma-3-1b-it": "gemma-3-1b-it",
+    "google/gemma-3-1b-pt": "gemma-3-1b-pt",
+    "google/gemma-3-4b-it": "gemma-3-4b-it",
+    "google/gemma-3-4b-pt": "gemma-3-4b-pt",
+  }
+  for (const [root, modelId] of Object.entries(expectedByRoot)) {
+    const matching = agieval.rows.filter((row) => row.root === root && row.variant === root.split("/")[1])
+    assert.ok(matching.length > 0)
+    assert.ok(matching.every((row) => row.model_id === modelId))
+  }
+
+  const oneBit = getEntityDetail("model-instances", "google-gemma-3-1b-it--q4-k-m") as {
+    model_id: string
+  }
+  const fourBit = getEntityDetail("model-instances", "google-gemma-3-4b-it--q4-k-m") as {
+    model_id: string
+  }
+  assert.equal(oneBit.model_id, "gemma-3-1b-it")
+  assert.equal(fourBit.model_id, "gemma-3-4b-it")
+  assert.ok(getEntityDetail("recipes", "gemma-3-1b-it-q4-k-m-rtx-3060-12gb-llama-cpp-tp1"))
+  assert.equal(getEntityDetail("recipes", "gemma-3-1b-pt-q4-k-m-rtx-3060-12gb-llama-cpp-tp1"), undefined)
+})
+
 test("Prices topic exposes regional market records without flattening currencies", () => {
   const prices = listPrices({}, { limit: 500, offset: 0 })
   const facets = getFacets()
@@ -345,8 +444,8 @@ test("Prices topic exposes regional market records without flattening currencies
   assert.ok(new Set(prices.data.map((record) => record.product.id)).size >= 45)
   assert.ok(prices.data.reduce((count, record) => count + record.observations.length, 0) >= 1000)
   assert.ok(prices.data.every((record) => record.observations.every((observation) => observation.currency === record.region.currency)))
-  assert.deepEqual(facets.prices.region, ["DE", "GB", "JP", "PL", "US"])
-  assert.deepEqual(facets.prices.currency, ["EUR", "GBP", "JPY", "PLN", "USD"])
+  assert.deepEqual(facets.prices.region, ["AT", "CH", "DE", "GB", "JP", "PL", "US"])
+  assert.deepEqual(facets.prices.currency, ["CHF", "EUR", "GBP", "JPY", "PLN", "USD"])
   assert.deepEqual(facets.prices.condition, ["new", "refurbished", "unknown", "used"])
   assert.ok(prices.data.some((record) => record.product.id === "rtx-5060"))
   assert.ok(prices.data.some((record) => record.product.id === "intel-arc-pro-b70"))
@@ -409,8 +508,9 @@ test("model topic filters family and architecture together", () => {
     assert.equal(model.architecture, sample.architecture)
   }
 
-  const unknown = listModels({ architecture: "unknown" }, { limit: 200, offset: 0 })
-  assert.ok(unknown.total > 0)
+  const allModels = listModels({}, { limit: 2_000, offset: 0 })
+  const unknown = listModels({ architecture: "unknown" }, { limit: 2_000, offset: 0 })
+  assert.equal(unknown.total, allModels.data.filter((model) => model.architecture === null).length)
   assert.ok(unknown.data.every((model) => model.architecture === null))
 })
 
@@ -555,6 +655,54 @@ test("observed LocalMaxxing commands are tokenized in metadata, not onto the lau
   assert.ok(wrapped.metadata.localmaxxing.tokenized.arguments?.includes("--port"))
   assert.ok(!wrapped.metadata.localmaxxing.tokenized.steps)
   assert.ok(!("arguments" in wrapped.launch))
+})
+
+test("LocalMaxxing workload observations do not become serving maxima", () => {
+  type ServingEvidence = {
+    facts: Record<string, { reason: string; state: string }>
+    serving: { max_concurrency: number | null; max_context_tokens: number | null }
+  }
+  const observed = getEntityDetail(
+    "recipes",
+    "acereason-nemotron-1-1-7b-q4-k-m-rtx-3060-ti-8gb-llama-cpp-tp1",
+  ) as ServingEvidence
+  assert.equal(observed.serving.max_context_tokens, null)
+  assert.equal(observed.serving.max_concurrency, null)
+  assert.deepEqual(
+    {
+      reason: observed.facts["serving.max_context_tokens"].reason,
+      state: observed.facts["serving.max_context_tokens"].state,
+    },
+    { reason: "context-limit-not-evidenced", state: "unknown" },
+  )
+  assert.deepEqual(
+    {
+      reason: observed.facts["serving.max_concurrency"].reason,
+      state: observed.facts["serving.max_concurrency"].state,
+    },
+    { reason: "server-capacity-not-evidenced", state: "unknown" },
+  )
+
+  const explicit = getEntityDetail(
+    "recipes",
+    "qwen3-5-27b-nvfp4-dgx-spark-gb10-128gb-vllm-tp1",
+  ) as ServingEvidence
+  assert.equal(explicit.serving.max_context_tokens, 4096)
+  assert.equal(explicit.serving.max_concurrency, 1)
+  assert.deepEqual(
+    {
+      reason: explicit.facts["serving.max_context_tokens"].reason,
+      state: explicit.facts["serving.max_context_tokens"].state,
+    },
+    { reason: "explicit-source-context-limit", state: "known" },
+  )
+  assert.deepEqual(
+    {
+      reason: explicit.facts["serving.max_concurrency"].reason,
+      state: explicit.facts["serving.max_concurrency"].state,
+    },
+    { reason: "explicit-source-server-capacity", state: "known" },
+  )
 })
 
 test("observed LocalMaxxing and Postgres recipes stay reference-only candidates", () => {

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmows9org00b7o201bx92fk1a"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmows9org00b7o201bx92fk1a"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Automated 32k/64k Pro 6000 batch benchmark. Local model: Qwen3.5 122B A10B HauhauCS Aggressive GGUF Q4_K_P at /LINUX/Models/HauhauCS/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf.",
       "observed_command": "CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES=1 /usr/local/bin/llama-server -m /LINUX/Models/HauhauCS/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive/Qwen3.5-122B-A10B-Uncensored-HauhauCS-Aggressive-Q4_K_P.gguf --host 127.0.0.1 --port 8001 --ctx-size 32768 --alias qwen35-hauhau-q4kp -ngl 999 --flash-attn on --batch-size 512 --ubatch-size 512 --cache-type-k q8_0 --cache-type-v q8_0 --parallel 1 --jinja",

@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqzkn29102pnoe01xeq0nohr"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmqzkn29102pnoe01xeq0nohr"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Ryzen AI Max 395",
       "notes": "Horizon Qwopus-MoE-35B-A3B post-GTT benchmark. BIOS UMA=1GB; active kernel cmdline includes amd_iommu=off amdgpu.gttsize=126976 ttm.pages_limit=32505856. ROCm sees Radeon 8060S as 126976 MiB; sysfs GTT total 124 GiB. Model downloaded from samuelcardillo/Qwopus-MoE-35B-A3B-GGUF, file Qwopus-MoE-35B-A3B-Q4_K_M.gguf, size about 20G. Measured via temporary Docker container kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4 on port 8040; container removed after run. Scenario: 3 streamed chat-completion runs, ctx=8192, target ~7.5k content tokens, max_tokens=128, temperature=0. Reported numbers are means across runs. Native prompt token deltas: 7646, 7652, 7649. tokSPrefill is native llama.cpp metrics delta prompt_tokens_total / prompt_seconds_total; tokSOut is native tokens_predicted_total / tokens_predicted_seconds_total; TTFT is wall-clock first SSE chunk. Run-specific nonce at beginning of user content prevents prompt/KV cache reuse. Server flags: --ctx-size 8192 -ngl 999 -fa 1 --no-mmap --jinja --metrics --reasoning-format auto --no-webui. No MTP/spec flags were used; this is Qwen3.5 MoE Q4_K_M, not the Qwen3.6 MTP checkpoint. Local artifact: /home/joshua/benchmarks/qwopus-moe35b-rocm724-8k-2026-06-29/summary.json",
       "observed_command": "",
@@ -146,8 +175,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 8192,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

@@ -37,6 +37,10 @@
         "validated"
       ]
     },
+    "recommended": {
+      "type": "boolean",
+      "description": "Curator flag: the one recipe the Omarchy plugin ships for this hardware id. At most one per hardware id."
+    },
     "description": {
       "type": [
         "string",
@@ -155,6 +159,106 @@
         "type": "string"
       },
       "uniqueItems": true
+    },
+    "draft_launch": {
+      "type": "object",
+      "description": "Synthesized, UNVERIFIED docker launch draft used only by the acceptance harness (local-ai validate). Never a launch contract: the observed launch stays authoritative until acceptance promotes the recipe, at which point draft_launch becomes launch and is removed.",
+      "required": [
+        "kind",
+        "image",
+        "arguments",
+        "host_port",
+        "container_port",
+        "accelerator_backend",
+        "synthesized"
+      ],
+      "properties": {
+        "kind": {
+          "const": "docker"
+        },
+        "image": {
+          "type": "string",
+          "pattern": "@sha256:[0-9a-f]{64}$"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entrypoint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "mounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "source",
+              "target"
+            ],
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "target": {
+                "type": "string"
+              },
+              "read_only": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "host_port": {
+          "type": "integer"
+        },
+        "container_port": {
+          "type": "integer"
+        },
+        "ipc": {
+          "type": "string"
+        },
+        "shm_size": {
+          "type": "string"
+        },
+        "accelerator_backend": {
+          "type": "string"
+        },
+        "synthesized": {
+          "type": "object",
+          "required": [
+            "template",
+            "generated_at",
+            "image_provenance"
+          ],
+          "properties": {
+            "template": {
+              "type": "string"
+            },
+            "generated_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "image_provenance": {
+              "type": "string",
+              "description": "Which audited registry recipe this image digest was taken from."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
   },
   "allOf": [

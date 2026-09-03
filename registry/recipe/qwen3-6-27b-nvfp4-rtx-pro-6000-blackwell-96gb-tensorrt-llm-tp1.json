@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovenrm00djmp013kbi4jf0"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsovenrm00djmp013kbi4jf0"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX PRO 6000 Blackwell",
       "notes": "Qwen3.6-27B NVFP4 benchmark with source-built TensorRT-LLM 1.3.0rc24+3d1596b755 on NVIDIA RTX PRO 6000 Blackwell 96 GB. Single-user text completion, 131072 max context, 2048-token output cap, temperature 0. Recorded wall time 29382 ms for 2048 output tokens, equivalent to 69.70 tok/s by wall time; prompt tokens 559.",
       "observed_command": "trtllm-serve --model nvidia/Qwen3.6-27B-NVFP4 --host 0.0.0.0 --port 8090 --max_batch_size 1 --max_num_tokens 4096 --max_seq_len 131072 --served_model_name qwen3.6-27b-nvfp4-trtllm",
@@ -166,8 +195,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 131072,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

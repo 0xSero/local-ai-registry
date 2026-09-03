@@ -42,17 +42,17 @@
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-08-27T06:04:13.773Z",
+        "captured_at": "2026-09-01T09:34:45Z",
         "sources": [
           {
-            "captured_at": "2026-08-27T06:04:13.773Z",
-            "kind": "registry-enrichment",
+            "captured_at": "2026-09-01T09:34:45Z",
+            "kind": "registry-derived",
             "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-launch-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -126,7 +126,6 @@
     },
     "host_port": 8888,
     "image": "ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest@sha256:19627342e1da2607f4db50745dca30e57d7dd0ebff06062f03fd69b43a252931",
-    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
@@ -155,7 +154,7 @@
   "serving": {
     "kv_cache_tokens": null,
     "max_concurrency": 8,
-    "max_context_tokens": null,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

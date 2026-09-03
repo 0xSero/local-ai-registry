@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr3ynhvk0002nv01hn2vs1zi"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmr3ynhvk0002nv01hn2vs1zi"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "MoE 35B/3B act, IQ3_XXS (3.44 bpw). OPTIMAL: MTP enabled (--spec-type draft-mtp --spec-draft-n-max 3), all attention on GPU (-ngl 99), 17 MoE layers CPU/31 GPU (-ncmoe 17), KV cache q8_0, np=1. MTP acceptance ~65%. Also ~6 GB model weights on CPU mmap. Max context with MTP: 64K (65536 at 11.79 GB). Fedora 43, CUDA 13.0.",
       "observed_command": "llama-server -m Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf --spec-type draft-mtp --spec-draft-n-max 3 -ngl 99 -ncmoe 17 -fa on -ctk q8_0 -ctv q8_0 -np 1 --kv-unified -c 4096",

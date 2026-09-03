@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgbo9jl014fpp01hvmzqiif"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsgbo9jl014fpp01hvmzqiif"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "rocm",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "Run 4/10 of a full 10-run distribution (submitting all runs, no cherry-pick). Code-generation prompt, temp 0.6, 256 tok out, fresh prefill (no prompt cache). DSpark speculative decode, external MXFP4 draft, draft n-max 5. Eco power profile (-75mV, 250W/GPU cap). Median of the 10: 42.4 tok/s decode.",
       "observed_command": "llama-server -m DeepSeek-V4-Flash-0731-AD-IQ1_M.gguf -md dspark-DeepSeek-V4-Flash-0731-MXFP4.gguf --spec-type draft-dspark --spec-draft-n-max 5 -ngl 99 --flash-attn auto --no-mmap -ts 0.8/1.05/1.15 -ctk f16 -ctv f16 -c 32768 -np 1",

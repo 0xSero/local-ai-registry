@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from html import unescape
 from pathlib import Path
 from urllib.parse import quote_plus, urljoin
+from import_market_snapshot import listing_title_matches, listing_url_is_specific
 
 TIMEOUT = 8
 UA = "Mozilla/5.0 (compatible; local-ai-registry-price-fetch/1.0)"
@@ -73,6 +74,8 @@ PRODUCTS = [
     ("dgx-spark", "DGX Spark", "gpu"),
 ]
 
+PRODUCT_IDS_BY_QUERY = {name: product_id for product_id, name, _ in PRODUCTS}
+
 ACCESSORIES = (
     "cable", "adapter", "bracket", "riser", "laptop", "notebook",
     "prebuilt", "pre-built", "gaming pc", "sticker", "waterblock",
@@ -111,7 +114,8 @@ def title_ok(text, query):
     haystack = norm(text)
     if any(word in haystack for word in ACCESSORIES):
         return False
-    return all(word in haystack for word in norm(query).split() if len(word) > 1)
+    product_id = PRODUCT_IDS_BY_QUERY.get(query)
+    return product_id is not None and listing_title_matches(product_id, text)
 
 
 def parse_number(text, decimal=","):
@@ -134,7 +138,7 @@ def listing(product, retailer, region_code, title, amount, url, in_stock=None):
     floor = MIN_PRICE.get((region_code, region["currency"]))
     if floor and amount < floor:
         return None
-    if not url.startswith("http"):
+    if not listing_url_is_specific(url):
         return None
     return {
         "productId": product[0],
@@ -168,7 +172,7 @@ def scan_alternate(product):
             continue
         url = urljoin("https://www.alternate.de", href.group(1))
         in_stock = True if re.search(r"auf\s*lager", title, re.I) else False if re.search(r"nicht\s*lieferbar|ausverkauft", title, re.I) else None
-        item = listing(product, "alternate", "DE", product[1], amount, url, in_stock)
+        item = listing(product, "alternate", "DE", title, amount, url, in_stock)
         if item:
             rows.append(item)
         if len(rows) >= 8:

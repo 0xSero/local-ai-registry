@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdisbpb004vlm01bnqoytpq"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtdisbpb004vlm01bnqoytpq"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 3,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "vulkan",
+      "batch_size": 1,
       "hardware_label": "Radeon AI Pro R9700",
       "notes": "3x R9700 tensor split (desktop card protected at 0.8). Self-speculative MTP via built-in nextn layer (nextn_predict_layers=1), draft n-max 2 (sweep: 1=30.3, 2=35.4, 4=32.3, 6=30.5, 8=24.4 tok/s @ depth 8192). benchy pp2520/tg240 no-cache protocol, depth 8192.",
       "observed_command": "llama-server --jinja --flash-attn auto -ctk f16 -ctv f16 -ts 1/1/0.8 -np 1 -c 262144 --spec-type draft-mtp --spec-draft-n-max 2",

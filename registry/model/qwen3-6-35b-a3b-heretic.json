@@ -1,26 +1,54 @@
 {
-  "active_params": null,
-  "architecture": "dense",
+  "active_params": 3.0,
+  "architecture": "moe",
   "downloads": {
     "all_time": 1133806,
-    "captured_at": "2026-08-31T15:38:41Z",
+    "captured_at": "2026-08-31T22:53:20Z",
     "last_30d": 633222,
     "source": "huggingface-api"
   },
   "facts": {
     "active_params": {
       "provenance": {
-        "captured_at": "2026-08-30T09:26:09Z",
+        "captured_at": "2026-08-31T23:43:51Z",
         "sources": [
           {
-            "captured_at": "2026-08-30T09:26:09Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "captured_at": "2026-08-31T23:43:51Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4?blobs=true"
           }
         ]
       },
-      "reason": "not-observed",
-      "state": "unknown"
+      "reason": "explicit-aNb-model-name",
+      "state": "known"
+    },
+    "architecture": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:03:42Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:03:42Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "resolved-huggingface-config",
+      "state": "known"
+    },
+    "params": {
+      "provenance": {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T00:18:17Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
+          }
+        ]
+      },
+      "reason": "safetensors-parameter-metadata",
+      "state": "known"
     }
   },
   "family": "qwen",
@@ -43,7 +71,7 @@
   },
   "id": "qwen3-6-35b-a3b-heretic",
   "name": "Qwen3.6-35B-A3B-heretic",
-  "params": 35.0,
+  "params": 21,
   "provenance": {
     "captured_at": "2026-08-30T09:26:09Z",
     "sources": [
@@ -51,6 +79,11 @@
         "captured_at": "2026-08-30T09:26:09Z",
         "kind": "normalized-model",
         "url": "https://huggingface.co/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4"
+      },
+      {
+        "captured_at": "2026-09-01T00:18:17Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4?blobs=true&expand%5B%5D=sha&expand%5B%5D=config&expand%5B%5D=downloads&expand%5B%5D=downloadsAllTime&expand%5B%5D=safetensors"
       }
     ]
   },

@@ -39,7 +39,7 @@ export const TOPIC_FILTERS: Record<Topic, string[]> = {
   hardware: ["vendor", "backend", "min_vram_gb", "priced_only", "has_recipes"],
   models: ["family", "architecture"],
   prices: ["region", "category", "condition", "retailer", "in_stock"],
-  recipes: ["by", "hardware_id", "model_id", "validation", "engine", "runtime", "evidence"],
+  recipes: ["by", "hardware_id", "model_id", "validation", "engine", "runtime", "evidence", "min_context"],
   benchmark: ["category"],
 }
 
