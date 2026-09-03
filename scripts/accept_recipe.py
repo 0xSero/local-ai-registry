@@ -103,7 +103,8 @@ def probe_dialects(endpoint, model, gateway):
         except Exception:
             pass
         try:
-            reply = http_json(f"{base}/v1/messages", {"model": model, "max_tokens": 64, "messages": [{"role": "user", "content": prompt}]})
+            # thinking models spend tokens before the answer; a small cap would fail them for the wrong reason
+            reply = http_json(f"{base}/v1/messages", {"model": model, "max_tokens": 2048, "messages": [{"role": "user", "content": prompt}]})
             if "LOCAL_AI_READY" in " ".join(b.get("text", "") for b in reply.get("content", []) if b.get("type") == "text"):
                 apis.append("messages")
         except Exception:
