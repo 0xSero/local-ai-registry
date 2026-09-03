@@ -42,9 +42,18 @@ REG = ROOT / "registry"
 # registry hardware id -> provider GPU names. vast names use underscores for spaces in queries.
 GPUS = {
     "rtx-3060-12gb": {"runpod": ["NVIDIA GeForce RTX 3060"], "vast": "RTX 3060"},
+    "rtx-3060-ti-8gb": {"runpod": ["NVIDIA GeForce RTX 3060 Ti"], "vast": "RTX 3060 Ti"},
+    "rtx-4060-8gb": {"runpod": ["NVIDIA GeForce RTX 4060"], "vast": "RTX 4060"},
+    "rtx-4060-ti-8gb": {"runpod": ["NVIDIA GeForce RTX 4060 Ti"], "vast": "RTX 4060 Ti"},
+    "rtx-4060-ti-16gb": {"runpod": ["NVIDIA GeForce RTX 4060 Ti"], "vast": "RTX 4060 Ti"},
+    "rtx-5060-8gb": {"runpod": ["NVIDIA GeForce RTX 5060"], "vast": "RTX 5060"},
+    "rtx-5060-ti-8gb": {"runpod": ["NVIDIA GeForce RTX 5060 Ti"], "vast": "RTX 5060 Ti"},
     "rtx-3070-8gb": {"runpod": ["NVIDIA GeForce RTX 3070"], "vast": "RTX 3070"},
     "rtx-3070-ti-8gb": {"runpod": ["NVIDIA GeForce RTX 3070 Ti"], "vast": "RTX 3070 Ti"},
     "rtx-3080-10gb": {"runpod": ["NVIDIA GeForce RTX 3080"], "vast": "RTX 3080"},
+    "rtx-3080-12gb": {"runpod": ["NVIDIA GeForce RTX 3080"], "vast": "RTX 3080"},
+    "rtx-4070-super-12gb": {"runpod": ["NVIDIA GeForce RTX 4070 SUPER"], "vast": "RTX 4070S"},
+    "rtx-5060-ti-16gb": {"runpod": ["NVIDIA GeForce RTX 5060 Ti"], "vast": "RTX 5060 Ti"},
     "rtx-3080-ti-12gb": {"runpod": ["NVIDIA GeForce RTX 3080 Ti"], "vast": "RTX 3080 Ti"},
     "rtx-3090-24gb": {"runpod": ["NVIDIA GeForce RTX 3090"], "vast": "RTX 3090"},
     "rtx-3090-ti-24gb": {"runpod": ["NVIDIA GeForce RTX 3090 Ti"], "vast": "RTX 3090 Ti"},
@@ -110,6 +119,59 @@ class Spec:
         self.vram_gb = (hw.get("memory") or {}).get("vram_gb") or 0
         self.gpu_override = args.gpu
         self.hardware_id = recipe["hardware_id"]
+        self.instance = json.loads((REG / "model-instance" / f"{recipe['model_instance_id']}.json").read_text())
+        self.provision = self.materialize_plan()
+
+    def materialize_plan(self):
+        """What the plugin provides through bind mounts, expressed as steps a rented container runs itself.
+
+        `${MODEL_ROOT}/x -> target`: download the pinned weights into target (into the subdirectory the
+        server config names, when there is one). `asset/f -> target`: write the registry asset there.
+        `~/.cache/huggingface`: nothing, the server fetches its own weights. Returns [] when the
+        contract needs no help.
+        """
+        steps = []
+        subdir = ""
+        for mount in self.contract.get("mounts") or []:
+            source = mount.get("source") or ""
+            if source.startswith("asset/"):
+                text = (REG / source).read_text()
+                match = re.search(r"^\s*model_name:\s*(\S+)", text, re.MULTILINE)
+                if match:
+                    subdir = match.group(1).strip("\"'")
+                    text = re.sub(r"^(\s*host:\s*)127\.0\.0\.1", r"\g<1>0.0.0.0", text, flags=re.MULTILINE)
+                steps.append(("asset", mount["target"], text))
+        for mount in self.contract.get("mounts") or []:
+            source = mount.get("source") or ""
+            if source.startswith("${MODEL_ROOT}/"):
+                provision = mount.get("provision") or {}
+                repo = provision.get("repository") or self.instance.get("repository")
+                revision = provision.get("revision") or self.instance.get("revision")
+                target = mount["target"].rstrip("/")
+                if not provision and subdir:
+                    target = f"{target}/{subdir}"
+                steps.append(("weights", target, (repo, revision)))
+        return steps
+
+    def onstart_script(self):
+        """One /bin/sh line: provision, then exec the contract's entrypoint and arguments."""
+        import base64
+        import shlex
+        python = self.entrypoint if self.entrypoint and re.search(r"python3?$", self.entrypoint) else "python3"
+        parts = []
+        for kind, target, payload in self.provision:
+            if kind == "asset":
+                encoded = base64.b64encode(payload.encode()).decode()
+                parts.append(f"mkdir -p {shlex.quote(os.path.dirname(target))} && printf %s {encoded} | base64 -d > {shlex.quote(target)}")
+            else:
+                repo, revision = payload
+                code = f"from huggingface_hub import snapshot_download as d; d({repo!r}, revision={revision!r}, local_dir={target!r})"
+                parts.append(f"mkdir -p {shlex.quote(target)}")
+                parts.append(f"({shlex.join([python, '-c', 'import huggingface_hub'])} || {shlex.join([python, '-m', 'pip', 'install', '-q', 'huggingface_hub'])})")
+                parts.append(shlex.join([python, "-c", code]))
+        command = [self.entrypoint] if self.entrypoint else []
+        parts.append("exec " + shlex.join(command + self.arguments))
+        return " && ".join(parts)
 
     def shown(self):
         return {"image": self.image, "entrypoint": self.entrypoint, "arguments": self.arguments, "port": self.port,
@@ -238,25 +300,37 @@ class Vast:
 
     def offers(self, spec, exclude):
         name = self.gpu_name(spec).replace(" ", "_")
-        vram_gb = int(max(spec.vram_gb - 1, 1))  # query filter is in GB (results report MB)
-        query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={vram_gb} "
-                 f"inet_down>={self.min_inet} disk_space>={spec.disk + 5} reliability>0.9 cuda_max_good>=12.8 "  # 12.4 drivers cannot init the pinned CUDA images
+        # query filter is in GB (results report MB); bound both sides so an 8 GB recipe never runs on the 16 GB variant of the same name
+        lo, hi = int(max(spec.vram_gb - 1, 1)), int(spec.vram_gb + 1)
+        query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={lo} gpu_ram<={hi} "
+                 f"inet_down>={self.min_inet} disk_space>={spec.disk + 5} reliability>0.9 cuda_max_good>=12.9 "  # the pinned sglang image is CUDA 12.9; older drivers cannot init it (12.4 hosts fail llama.cpp too)
                  f"geolocation notin [CN]")  # hosts that cannot reach Hugging Face never finish the weights download
         offers = self.cli("search", "offers", query, "-o", "dph_total")
         offers = [o for o in offers if o.get("id") not in exclude and o.get("machine_id") not in exclude]
         if not offers:
             raise SystemExit(f"no Vast offers for {query}")
-        return offers
+        # cheapest hosts are often the slowest pullers: within 1.5x of the best price, take the fastest downlink first
+        cap = (offers[0].get("dph_total") or 0) * 1.5
+        cheap = [o for o in offers if (o.get("dph_total") or 0) <= cap]
+        cheap.sort(key=lambda o: -(o.get("inet_down") or 0))
+        return cheap + [o for o in offers if o not in cheap]
 
     def create(self, spec, exclude):
         env = f"-p {spec.port}:{spec.port} " + " ".join(f"-e {k}={v}" for k, v in spec.env.items())
         for offer in self.offers(spec, exclude)[:5]:  # search results go stale; try the next cheapest
             argv = ["create", "instance", str(offer["id"]), "--image", spec.image, "--disk", str(spec.disk),
                     "--env", env, "--label", spec.name, "--cancel-unavail"]
-            if spec.entrypoint:
-                argv += ["--entrypoint", spec.entrypoint]
-            if spec.arguments:
-                argv += ["--args", *spec.arguments]
+            if spec.provision:
+                # the plugin bind-mounts weights and config; here the container provisions them, then execs the contract
+                if not spec.entrypoint:
+                    raise SystemExit("in-container provisioning needs an explicit entrypoint in the contract")
+                # the onstart override is exec'd as one argv token, so the shell must be the entrypoint
+                argv += ["--onstart-cmd", "/bin/sh", "--args", "-c", spec.onstart_script()]
+            else:
+                if spec.entrypoint:
+                    argv += ["--entrypoint", spec.entrypoint]
+                if spec.arguments:
+                    argv += ["--args", *spec.arguments]
             try:
                 result = self.cli(*argv)
             except SystemExit as error:
@@ -274,7 +348,11 @@ class Vast:
     def poll(self, handle):
         info = self.cli("show", "instance", str(handle["id"]))
         status = info.get("actual_status") or info.get("cur_state") or "?"
-        msg = (info.get("status_msg") or "").strip().splitlines()
+        full = (info.get("status_msg") or "").strip()
+        if full and full != handle.get("last_msg"):
+            handle["last_msg"] = full
+            log(f"vast status: {full[:600]}")
+        msg = full.splitlines()
         msg = msg[-1][:80] if msg else ""
         if status in ("exited", "stopped", "error") or (info.get("intended_status") == "stopped"):
             raise SystemExit(f"vast instance {status}: {msg}")
@@ -357,7 +435,7 @@ def run_once(provider, spec, path, recipe, args, attempt, exclude):
             started, note = provider.poll(handle)
             container_up = container_up or started
             elapsed = int(time.monotonic() - started_at)
-            if not container_up and elapsed > args.start_timeout:
+            if not started and elapsed > args.start_timeout:  # current status, not latched: a host stuck on the pull stays "loading"
                 exclude.update({handle.get("offer"), handle.get("machine")})
                 raise StartStalled(f"container not started after {elapsed}s ({note})")
             # a closed container port drops packets on some hosts, so a timeout only means "firewalled"
@@ -382,6 +460,8 @@ def run_once(provider, spec, path, recipe, args, attempt, exclude):
 
         strip_host_ipc(path, recipe)
         harness = f"validate_rented.py on {provider.name} {handle.get('gpu')}"
+        if spec.provision:
+            harness += " (weights and config materialized in-container in place of the bind mounts)"
         result = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / "accept_recipe.py"), recipe["id"], "--endpoint", endpoint, "--harness", harness],
             cwd=ROOT)

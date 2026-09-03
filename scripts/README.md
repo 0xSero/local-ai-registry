@@ -79,12 +79,16 @@ docker-in-docker.
 | `clone_candidate.py <source> <hardware-id>` | derives a candidate for another card from a validated launch or a draft: contract copied, evidence not. `--ctx`, `--instance`, `--id` adjust it. |
 | `validate_rented.py <recipe-id> [--provider vast\|runpod]` | rents the card, waits for `/v1/models`, runs `accept_recipe.py` against the box's public endpoint, promotes (`--recommend` also flags it), always destroys the box. Retries once on a host whose image pull stalls. |
 | `validate_batch.sh <recipe-id>...` | runs several, logs under `../runs/`, prints PROMOTED/FAILED per recipe. `PARALLEL=N` rents N boxes at once; `PROVIDER` picks the provider. |
+| `make_tabbyapi_candidate.py --repo R --branch B --model M --hardware H --ctx N` | writes the EXL3 model-instance for a branch head, a TabbyAPI config asset for the context and cache mode, and a bridge-networked candidate recipe. `--image` and `--image-provenance` pin a self-built image. |
+| `recommend.py [--dry-run]` | keeps exactly one `recommended` recipe per hardware id by the V1 tier map (VRAM picks the model; TabbyAPI/SGLang ahead of llama.cpp; larger context first), never a host-networked or host-IPC recipe. |
 | `export_plugin_recipes.py` | emits the file the Omarchy plugin vendors: one validated, recommended, single-GPU docker recipe per hardware id. Fails on two recommended for one card; lists cards with validated but no recommended recipe. |
 
 Providers: **Vast.ai** (`vastai` CLI, key in `~/.config/vastai/vast_api_key`)
 pulls any public registry through the host's docker and is the default.
 **RunPod** (`~/.runpod/config.toml`) cannot pull from ghcr.io on community
 hosts, so it only works for Docker Hub images such as vllm and sglang.
+
+TabbyAPI recipes need weights under `<mount>/<model_name>` (the config's `model_name`); the rented run provisions that in-container and `metadata.weights_subdir` records it for the plugin.
 
 `ipc: host` is dropped from a contract validated this way: the box ran
 without it, and the Omarchy plugin refuses recipes that ask for it.
