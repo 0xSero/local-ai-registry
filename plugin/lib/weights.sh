@@ -49,8 +49,10 @@ download_weights() {
     local py="from huggingface_hub import snapshot_download as d; d('$repo', revision='$rev'"
     [[ -n $pattern ]] && py+=", allow_patterns=['$pattern', '*mmproj*']"
     if [[ $kind == dir ]]; then py+=", local_dir='/weights')"; else py+=")"; fi
+    # HF_HOME must be writable for the hub cache and xet chunks: the mounted /hf in hub mode, /tmp in dir mode
     cmd=(docker run --rm --user "$(id -u):$(id -g)" --label "$LABEL.download=1" --network bridge
-         --env HF_HOME=/hf --env HF_TOKEN="${HF_TOKEN:-}" --volume "$base:$([[ $kind == dir ]] && echo /weights || echo /hf)"
+         --env HF_HOME="$([[ $kind == dir ]] && echo /tmp/hf || echo /hf)" --env HOME=/tmp --env HF_TOKEN="${HF_TOKEN:-}"
+         --volume "$base:$([[ $kind == dir ]] && echo /weights || echo /hf)"
          --entrypoint python3 "$img" -c "$py")
   fi
   log "download: ${cmd[*]}"
