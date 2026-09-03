@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtetla50005mn001yx2cfcy6"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmtetla50005mn001yx2cfcy6"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Single Intel Arc Pro B70 (one of two in the box; model runs on one card, ~23.2 GB VRAM used). llama.cpp SYCL build b10621. Speculative decoding via the repo-bundled MTP draft head (--spec-type draft-mtp, n-max 4), ~64% acceptance on mixed prose. Context 262144 = 2x RoPE extension over the GGUF n_ctx_train of 131072 (HF card lists 262144). Measured: 2845-token prompt, 256-token generation, temp 0.7; median of 4 iterations after warmup. Short-context (~100-token prompt) decode runs ~65-76 tok/s.",
       "observed_command": "llama-server (b10621 SYCL) -m Gemma4-26B-A4B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf --mmproj mmproj-...-BF16.gguf -ngl 99 -fit off -np 1 -c 262144 -t 16 --load-mode dio -ctk q8_0 -ctv q8_0 -b 2048 -ub 1024 -fa on --jinja --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-ngl all --spec-draft-model mtp-gemma-4-26B-A4B-it.gguf\nONEAPI_DEVICE_SELECTOR=level_zero:0  GGML_SYCL_ENABLE_VMM=0  UR_L0_ENABLE_RELAXED_ALLOCATION_LIMITS=1",

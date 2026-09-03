@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmsfsouer00ygpp01uhyfa9ck"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmsfsouer00ygpp01uhyfa9ck"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "ThinkingCap-Qwen3.6-27B Q5_K_M-MTP with MTP-4 spec decoding (draft-mtp n-max 4). Decode = engine rate timings.predicted_per_second, 4 diverse prompts x 3 reps steady-state (reps 2-3), 200W, 128K ctx (MTP VRAM ceiling for dense). Prefill = llama-bench pp4096 (Run 9, same build). q8_0 K + q4_1 V, FA on.",
       "observed_command": "llama-server -m ThinkingCap-Qwen3.6-27B-Q5_K_M-MTP.gguf -ngl 99 -ncmoe 0 -fa on -ctk q8_0 -ctv q4_1 -c 131072 -b 8192 -ub 4096 -t 8 --no-mmap -dev SYCL0 --spec-type draft-mtp --spec-draft-n-max 4 --spec-draft-p-min 0.75",
@@ -181,7 +210,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
+    "max_concurrency": null,
     "max_context_tokens": 131072,
     "tensor_parallel": 1
   },

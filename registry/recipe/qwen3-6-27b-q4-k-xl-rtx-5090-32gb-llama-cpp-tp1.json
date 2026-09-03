@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmopjebwz0004ky04xsxdihvn"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmopjebwz0004ky04xsxdihvn"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "cuda",
+      "batch_size": 2048,
       "hardware_label": "RTX 5090",
       "notes": null,
       "observed_command": "llama-server `\n  -m \"Qwen3.6-27B-UD-Q4_K_XL.gguf\" `\n  --mmproj \"mmproj-F32.gguf\" `\n  --jinja `\n  --ctx-size 200192 `\n  -ngl 999 `\n  -t 8 `\n  -np 1 `\n  --kv-unified `\n  --kv-offload `\n  --no-mmap `\n  -fa on `\n  --cache-type-k q8_0 `\n  --cache-type-v q8_0 `\n  --temp 1.0 `\n  --top-k 20 `\n  --top-p 0.95 `\n  --min-p 0.0 `\n  --repeat-penalty 1.0 `\n  --presence-penalty 1.5 `\n  --cache-ram 24576 `\n  --ctx-checkpoints 72 `\n  --reasoning-budget 2048 `\n  --chat-template-kwargs '{\"\"\"enable_thinking\"\"\":true,\"\"\"preserve_thinking\"\"\":true}' `",
@@ -149,7 +178,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 2048,
+    "max_concurrency": 1,
     "max_context_tokens": 200192,
     "tensor_parallel": 1
   },

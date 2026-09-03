@@ -95,6 +95,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrzrd4tf001ipa013xpx4kid"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrzrd4tf001ipa013xpx4kid"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
     }
   },
   "hardware_count": 4,
@@ -125,6 +153,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": "xpu",
+      "batch_size": 1,
       "hardware_label": "Intel Arc Pro B70",
       "notes": "Verified strict graph-vs-graph A1-B1-B2-A2 persistent exact-attention metadata record candidate. The submitted 94.92003934159611 tok/s is the lower of two exact fresh candidate starts (other 95.06654837534518), +2.991% over approved record cmrzjb7i906x4o401egrnm05m. Metadata-on beat both adjacent metadata-off graph controls, 13/13 rows in each pair, while saving 0.911 and 1.648 ms per aggregate DFlash target cycle. All 52 requests were bitwise token-identical to canonical q1 and cached_tokens=0; long-next and rollover passed on every leg. First lazy graph capture remained inside every leg's first measured cold request. No cache, prior-history acceleration, response reuse, warm-up generation, retry, qualification timing, or aggregate replica throughput.",
       "observed_command": "experiments/laguna-s-2.1-xpu-b70/tools/run_laguna_m8_metadata_formal_crossover_leg.sh candidate B1 RUN_DIR",
@@ -155,8 +184,8 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
-    "max_concurrency": 1,
-    "max_context_tokens": 8192,
+    "max_concurrency": null,
+    "max_context_tokens": null,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [

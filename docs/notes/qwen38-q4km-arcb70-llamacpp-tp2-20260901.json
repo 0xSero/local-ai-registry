@@ -1,0 +1,164 @@
+{
+  "acceptance": {
+    "chat": true,
+    "health": true,
+    "natural_stop": true,
+    "runtime_identity": true,
+    "standalone_docker_launch": true,
+    "tools": true,
+    "vision": true
+  },
+  "captured_at": "2026-09-01T09:21:24Z",
+  "container": {
+    "compose_file": "/home/sero/qwen38-b70/docker-compose.yml",
+    "container_id": "492127af2f8d43c085aa5ea88790a9e022dc07ba4af235777266ad0d0bd72346",
+    "entrypoint": [
+      "/entrypoint.sh"
+    ],
+    "image_config_id": "sha256:28dc88a5aba40fb81e6e56b977b55ed9ad15f1e791de23461f9193366672e834",
+    "local_image_id": "sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+    "image_tags": [
+      "qwen38-b70:latest",
+      "ghcr.io/0xsero/qwen38-b70:2026-08-25"
+    ],
+    "oci_index_digest": "sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+    "oci_linux_amd64_manifest_digest": "sha256:415131b2703a99c6a5057ae1d35e9569ae5fecc32d2fe4da6ce41c0eb202269f",
+    "published_image": "ghcr.io/0xsero/qwen38-b70@sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9"
+  },
+  "engine": {
+    "build_fingerprint": "b10552-4302fb599",
+    "commit": "4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126",
+    "graph_mode": "disabled at compile time (-DGGML_SYCL_GRAPH=OFF)",
+    "name": "llama.cpp SYCL",
+    "patches": [
+      "tp2-full-stack.patch",
+      "q4k-increment.patch"
+    ]
+  },
+  "hardware": {
+    "backend": "Level-Zero",
+    "count": 2,
+    "devices": [
+      "Intel Graphics [0xe223] 20.2.0 [1.14.37020+3]",
+      "Intel Graphics [0xe223] 20.2.0 [1.14.37020+3]"
+    ],
+    "id": "intel-arc-pro-b70-32gb"
+  },
+  "launch": {
+    "entrypoint_asset": {
+      "path": "registry/asset/qwen38-b70-llamacpp-entrypoint.sh",
+      "sha256": "7e3af3242ee29801981b032211f5158d8143f94aead2e817c46fe84e3e2662e9",
+      "target": "/entrypoint.sh"
+    },
+    "context_tokens_total": 262144,
+    "draft_model": "/models/mtp-Qwen3.8-27B-Q4_0.gguf",
+    "draft_tokens_max": 5,
+    "environment": {
+      "BATCH": "8192",
+      "DRAFT_NGL": "0",
+      "DRAFT_THREADS": "16",
+      "ENABLE_MTP": "1",
+      "ENABLE_VISION": "1",
+      "GPU_COUNT": "2",
+      "PARALLEL": "4",
+      "SPEC_DRAFT_N_MAX": "5",
+      "THREADS": "16",
+      "UBATCH": "8192"
+    },
+    "model": "/models/Qwen3.8-27B-Q4_K_M.gguf",
+    "reasoning": "off",
+    "slot_count": 4,
+    "slot_context_tokens": 65536,
+    "tensor_split": "1,1",
+    "vision_projector": "/models/mmproj-Qwen3.8-27B-Q8_0.gguf",
+    "verified_standalone_docker": {
+      "devices": [
+        "/dev/dri"
+      ],
+      "image": "ghcr.io/0xsero/qwen38-b70@sha256:5f3f585ca62976993dd6aa998efb4680f74ce49d6c8499a77bd612241bafd4b9",
+      "mount_targets": [
+        "/entrypoint.sh",
+        "/dev/dri/by-path",
+        "/models"
+      ],
+      "ready": true,
+      "sidecars": [
+        "chat",
+        "tools",
+        "vision"
+      ]
+    }
+  },
+  "model": {
+    "capabilities": [
+      "completion",
+      "multimodal"
+    ],
+    "context_tokens_live": 65536,
+    "format": "GGUF Q4_K_M",
+    "id": "/models/Qwen3.8-27B-Q4_K_M.gguf",
+    "parameter_count": 26895998464,
+    "repository": "ggml-org/Qwen3.8-27B-GGUF",
+    "revision": "0669b98607d47046c7c2b3f801011d54a08cfccf",
+    "sha256": "31629f53165ab6a7dad8c9847dcfd1fdf55829dac1e6e748f4a68581b0033d34",
+    "training_context_tokens": 262144
+  },
+  "probes": {
+    "health": {
+      "status": "ok"
+    },
+    "models": {
+      "n_ctx": 65536,
+      "n_ctx_train": 262144,
+      "n_params": 26895998464,
+      "quantization": "Q4_K - Medium"
+    },
+    "startup": {
+      "graph": "GGML_SYCL_GRAPH disabled by compile flag",
+      "listen": "http://0.0.0.0:8010",
+      "model_loaded": true,
+      "multimodal_model_loaded": true,
+      "n_ctx_slot": 65536,
+      "n_slots": 4,
+      "sycl_devices": [
+        "BMG_G31_B70 device 0xE223",
+        "BMG_G31_B70 device 0xE223"
+      ]
+    }
+  },
+  "quality_sidecars": {
+    "chat": {
+      "completion_tokens": 4,
+      "expected": "126",
+      "finish_reason": "stop",
+      "natural_stop": true,
+      "observed": "<think>\n\n</think>\n\n126",
+      "prompt_tokens": 28
+    },
+    "tools": {
+      "arguments": {
+        "city": "Paris"
+      },
+      "finish_reason": "tool_calls",
+      "function": "get_weather",
+      "passed": true
+    },
+    "vision": {
+      "expected": "Red",
+      "finish_reason": "stop",
+      "observed": "Red",
+      "passed": true,
+      "prompt": "16x16 solid red PNG"
+    }
+  },
+  "sources": {
+    "engine_repository": "https://github.com/mndodd/llama.cpp/tree/4302fb59969a5d8cf9f8e5f55fdd4506d0ed2126",
+    "image": "https://github.com/0xSero/qwen38-b70/pkgs/container/qwen38-b70",
+    "recipe_repository": "https://github.com/0xSero/qwen38-b70",
+    "runtime_paths": [
+      "Dockerfile",
+      "docker-compose.yml",
+      "entrypoint.sh"
+    ]
+  }
+}

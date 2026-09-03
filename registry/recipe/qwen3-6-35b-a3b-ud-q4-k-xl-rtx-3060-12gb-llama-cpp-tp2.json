@@ -9,7 +9,7 @@
   "engine": {
     "graph_mode": null,
     "name": "llama.cpp",
-    "version": null
+    "version": "b10682"
   },
   "facts": {
     "capabilities.chat": {
@@ -82,6 +82,20 @@
       "reason": "runtime-detail-not-published",
       "state": "unknown"
     },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-01T01:34:02Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T01:34:02Z",
+            "kind": "leaderboard-run",
+            "url": "https://www.localmaxxing.com/en/runs/cmteqha6p0034n0016to5zgpe"
+          }
+        ]
+      },
+      "reason": "explicit-engine-version-in-live-run-evidence",
+      "state": "known"
+    },
     "serving.kv_cache_tokens": {
       "provenance": {
         "captured_at": "2026-08-30T09:10:02Z",
@@ -95,6 +109,34 @@
       },
       "reason": "kv-cache-capacity-not-published",
       "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmteqha6p0034n0016to5zgpe"
+          }
+        ]
+      },
+      "reason": "explicit-source-server-capacity",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "registry-derived",
+            "url": "https://www.localmaxxing.com/en/runs/cmteqha6p0034n0016to5zgpe"
+          }
+        ]
+      },
+      "reason": "explicit-source-context-limit",
+      "state": "known"
     }
   },
   "hardware_count": 2,
@@ -125,6 +167,7 @@
   "metadata": {
     "localmaxxing": {
       "backend": null,
+      "batch_size": 1,
       "hardware_label": "RTX 3060",
       "notes": "Dual RTX 3060 12GB, no NVLink. Chat decode tok/s with native MTP (spec-type draft-mtp, n-max 2), thinking off, 256-token code prompt. 88k ctx (90112). Main and draft KV q4_0. Not llama-bench without speculation. llama.cpp b10682.",
       "observed_command": "GGML_CUDA_ALLREDUCE=internal llama-server -m Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf -ngl 99 --split-mode tensor --tensor-split 1,1 -c 90112 -ctk q4_0 -ctv q4_0 --cache-type-k-draft q4_0 --cache-type-v-draft q4_0 -np 1 -fa on --spec-type draft-mtp --spec-draft-n-max 2",
