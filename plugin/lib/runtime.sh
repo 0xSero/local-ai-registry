@@ -90,10 +90,12 @@ accept() {
   (( toks < 8 || tps >= floor )) || { fail "decode ${tps} tok/s is below the ${floor} tok/s floor: the GPU is not being used (driver too old for this image?)"; return 1; }
   apis='["chat"]'
   op starting "$id" "messages acceptance" 0
-  reply=$(post messages "$(jq -nc --arg m "$served" '{model:$m,max_tokens:2048,messages:[{role:"user",content:"Reply with exactly: LOCAL_AI_READY"}]}')") \
+  # the shapes agents really send: a system prompt plus a prior turn (Messages), instructions plus a
+  # developer item after the user (Responses); a template that refuses a late system message fails here
+  reply=$(post messages "$(jq -nc --arg m "$served" '{model:$m,max_tokens:2048,system:"You are a terse assistant.",messages:[{role:"user",content:"hi"},{role:"assistant",content:"hello"},{role:"user",content:"Reply with exactly: LOCAL_AI_READY"}]}')") \
     && jq -e '[.content[]?|select(.type=="text")|.text]|join(" ")|contains("LOCAL_AI_READY")' >/dev/null <<<"$reply" && apis=$(jq -c '.+["messages"]' <<<"$apis")
   op starting "$id" "responses acceptance" 0
-  reply=$(post responses "$(jq -nc --arg m "$served" '{model:$m,input:"Reply with exactly: LOCAL_AI_READY"}')") \
+  reply=$(post responses "$(jq -nc --arg m "$served" '{model:$m,instructions:"You are a terse assistant.",input:[{type:"message",role:"user",content:"Reply with exactly: LOCAL_AI_READY"},{type:"message",role:"developer",content:"Reply with the exact token requested."}]}')") \
     && jq -e '[.output[]?|select(.type=="message")|.content[]?|.text]|join(" ")|contains("LOCAL_AI_READY")' >/dev/null <<<"$reply" && apis=$(jq -c '.+["responses"]' <<<"$apis")
   if [[ $(jq -r '.capabilities.tools//false' <<<"$r") == true ]]; then
     op starting "$id" "tool-call acceptance" 0
