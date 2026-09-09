@@ -28,6 +28,9 @@ model:
   chunk_size: 2048
   output_chunking: true
   max_batch_size: 2
+  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text
+  reasoning: true
+  start_in_reasoning: auto
 
 draft_model:
   draft_mode: disabled
