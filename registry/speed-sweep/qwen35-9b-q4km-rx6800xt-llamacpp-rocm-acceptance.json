@@ -1,0 +1,40 @@
+{
+  "accepted_at": "2026-09-10",
+  "id": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm-acceptance",
+  "measured_at": "2026-09-10",
+  "metrics": {
+    "concurrency": 1,
+    "decode_mode": "full GPU offload",
+    "inference_engine_version": "llama.cpp b10884 (434ddbbc0)",
+    "latest_point_at": "2026-09-10",
+    "max_context_tokens": 65536,
+    "peak_generation_tps": 63.43,
+    "peak_prompt_tps": 230.91,
+    "point_count": 1
+  },
+  "recipe_id": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 27,
+      "decode_tok_s": 63.43,
+      "decode_tok_s_per_stream": 63.43,
+      "output_tokens": 160,
+      "peak_vram_gb": 9.48,
+      "prefill_tok_s": 230.91,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": "b4f7334",
+    "paths": [
+      "lib/hardware.sh",
+      "lib/runtime.sh",
+      "lib/snapshot.sh"
+    ],
+    "repository": "https://github.com/0xSero/omarchy-local-ai"
+  }
+}
