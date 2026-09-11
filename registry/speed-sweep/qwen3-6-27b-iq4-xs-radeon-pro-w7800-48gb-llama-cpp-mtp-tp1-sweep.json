@@ -1,0 +1,71 @@
+{
+  "accepted_at": null,
+  "id": "qwen3-6-27b-iq4-xs-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-sweep",
+  "measured_at": "2026-09-05T17:13:37Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode32k_context_tokens": 32760,
+    "decode32k_tps": 59.26878764392961,
+    "decode8k_context_tokens": 8190,
+    "decode8k_tps": 66.59029194556776,
+    "decode_mode": "llama-server-completion-draft-mtp",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T17:13:37Z",
+    "max_context_tokens": 32888,
+    "max_prompt_tokens": 510,
+    "peak_generation_tps": 70.1225022820652,
+    "peak_prompt_tps": 252.47642336108518,
+    "point_count": 3
+  },
+  "recipe_id": "qwen3-6-27b-iq4-xs-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 510,
+      "decode_tok_s": 70.1225022820652,
+      "decode_tok_s_per_stream": 70.1225022820652,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 247.24179175710074,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32760,
+      "decode_tok_s": 59.26878764392961,
+      "decode_tok_s_per_stream": 59.26878764392961,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 227.46970361333297,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 8190,
+      "decode_tok_s": 66.59029194556776,
+      "decode_tok_s_per_stream": 66.59029194556776,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 252.47642336108518,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "Not llama-bench. llama-server --spec-type draft-mtp --spec-draft-n-max 3. /completion cache_prompt=false, ~510-token prompt, n_predict=128, 5 reps after warmup. Qwen3.6 uses unsloth *-MTP-GGUF (not the trunk GGUF). Weights unsloth/Qwen3.6-27B-MTP-GGUF/Qwen3.6-27B-IQ4_XS.gguf. Fastest 1× long-ctx: p8192 and p32768.",
+    "paths": [
+      "raw/mtp-llama-server/qwen36-27b-iq4-xs-mtp-single.json",
+      "raw/longctx-fast/qwen36-27b-iq4-xs-fast-p32768.json",
+      "raw/longctx-fast/qwen36-27b-iq4-xs-fast-p8192.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}

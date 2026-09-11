@@ -1,0 +1,41 @@
+{
+  "accepted_at": null,
+  "id": "qwen3-6-35b-a3b-iq4-xs-radeon-pro-w7800-48gb-llama-cpp-tp1-sweep",
+  "measured_at": "2026-09-05T00:01:47Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode_mode": "llama-bench-pp512-tg128",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T00:01:47Z",
+    "max_context_tokens": 640,
+    "max_prompt_tokens": 512,
+    "peak_generation_tps": 78.30461,
+    "peak_prompt_tps": 714.123432,
+    "point_count": 1
+  },
+  "recipe_id": "qwen3-6-35b-a3b-iq4-xs-radeon-pro-w7800-48gb-llama-cpp-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 512,
+      "decode_tok_s": 78.30461,
+      "decode_tok_s_per_stream": 78.30461,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 714.123432,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "HIP graphs on, smithy patch in binary unused. -ngl 99 -fa on -b 2048 -ub 512 f16 KV.",
+    "paths": [
+      "raw/stock-hip-c060ca9/qwen36-35b-a3b-iq4-xs-single.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed llama.cpp HIP run. Evidence for compatibility, not an executable launch contract.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b1323-95ef7fc"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "radeon-pro-w7800-48gb",
+  "id": "qwen3-8-27b-uncensored-q6-k-radeon-pro-w7800-48gb-llama-cpp-lemonade-tp2",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-06T18:35:46Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-06T18:35:46Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "source": "0xsero"
+  },
+  "metadata": {
+    "lab": {
+      "backend": "rocm",
+      "hardware_label": "Radeon PRO W7800 48GB",
+      "host": "par1-cs13",
+      "notes": "Bundled HIP 7.16 isolated from host ROCm 7.2. Same llama-bench flags as stock.",
+      "observed_command": "llama-bench -p 512 -n 128 -r 5 -ngl 99 -fa on -b 2048 -ub 512 -sm tensor -ts 0.5,0.5",
+      "raw_path": "raw/lemonade-b1323/qwen38-q6-lemonade-dual-tensor.json",
+      "series": "lemonade",
+      "tokenized": {
+        "arguments": [
+          "llama-bench",
+          "-p",
+          "512",
+          "-n",
+          "128",
+          "-r",
+          "5",
+          "-ngl",
+          "99",
+          "-fa",
+          "on",
+          "-b",
+          "2048",
+          "-ub",
+          "512",
+          "-sm",
+          "tensor",
+          "-ts",
+          "0.5,0.5"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "orcarouter-qwen3-8-27b-uncensored-gguf--q6-k",
+  "provenance": {
+    "captured_at": "2026-09-06T18:35:46Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-06T18:35:46Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 640,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-uncensored-q6-k-radeon-pro-w7800-48gb-llama-cpp-lemonade-tp2-sweep"
+  ],
+  "status": "candidate"
+}

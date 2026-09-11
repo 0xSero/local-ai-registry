@@ -1,0 +1,205 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Qwen3.8-27B UD-Q4_K_XL on one Radeon PRO W7800 48GB via Lemonade Server v11.9.0, llama.cpp ROCm nightly b1323, spec-type draft-mtp n-max 3, 8192 context.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b1323-95ef7fc"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "radeon-pro-w7800-48gb",
+  "id": "qwen3-8-27b-ud-q4-k-xl-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "launch": {
+    "accelerator_backend": "amd-rocm",
+    "arguments": [
+      "--host",
+      "0.0.0.0"
+    ],
+    "asset_ids": [
+      "lemonade-server-rocm-b1323-mtp-config"
+    ],
+    "container": {
+      "captured_at": "2026-09-06T22:59:19Z",
+      "compose_file": null,
+      "digest": "sha256:7c780707cd695392a8680f557c7c1d55521383a71b1c4c5a9d9e6a226a1bee91",
+      "image": "ghcr.io/lemonade-sdk/lemonade-server:v11.9.0@sha256:7c780707cd695392a8680f557c7c1d55521383a71b1c4c5a9d9e6a226a1bee91",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-06T22:59:19Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 13305,
+    "entrypoint": "/opt/lemonade/lemond",
+    "environment": {},
+    "host_port": 13305,
+    "image": "ghcr.io/lemonade-sdk/lemonade-server:v11.9.0@sha256:7c780707cd695392a8680f557c7c1d55521383a71b1c4c5a9d9e6a226a1bee91",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/opt/lemonade/.cache/huggingface"
+      },
+      {
+        "read_only": true,
+        "source": "asset/lemonade-server-rocm-b1323-mtp.cfg",
+        "target": "/opt/lemonade/.config/lemonade/config.json"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-06T22:59:19Z",
+      "harness": "local-ai validate",
+      "served_model_id": "Qwen3.8-27B-GGUF-UD-Q4_K_XL"
+    },
+    "lab": {
+      "backend": "rocm",
+      "hardware_label": "Radeon PRO W7800 48GB",
+      "host": "par1-cs13",
+      "notes": "Not llama-bench. llama-server --spec-type draft-mtp --spec-draft-n-max 3. /completion cache_prompt=false, ~510-token prompt, n_predict=128, 5 reps after warmup. Sidecar draft unsloth/Qwen3.8-27B-GGUF/MTP/mtp-Qwen3.8-27B-Q4_0.gguf. Fastest 1× long-ctx: p8192 and p32768.",
+      "observed_command": "llama-server --spec-type draft-mtp --spec-draft-n-max 3 -ngl 99 --flash-attn on -sm none",
+      "raw_path": "raw/mtp-llama-server/qwen38-27b-ud-q4-k-xl-mtp-single.json",
+      "series": "mtp",
+      "tokenized": {
+        "arguments": [
+          "llama-server",
+          "--spec-type",
+          "draft-mtp",
+          "--spec-draft-n-max",
+          "3",
+          "-ngl",
+          "99",
+          "--flash-attn",
+          "on",
+          "-sm",
+          "none"
+        ],
+        "fidelity": "faithful"
+      }
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-09-06T18:35:46Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-06T18:35:46Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-ud-q4-k-xl-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-sweep",
+    "qwen3-8-27b-ud-q4-k-xl-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-acceptance"
+  ],
+  "status": "validated"
+}

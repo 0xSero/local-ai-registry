@@ -145,7 +145,17 @@ def main() -> int:
     if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
         raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
 
-    served = http_json(f"{args.endpoint}/v1/models")["data"][0]["id"]
+    models = http_json(f"{args.endpoint}/v1/models")["data"]
+    if not models:
+        raise SystemExit("acceptance FAILED: /v1/models returned no models")
+    served = models[0]["id"]
+    try:
+        health = http_json(f"{args.endpoint}/v1/health")
+        loaded = health.get("model_loaded")
+        if isinstance(loaded, str) and loaded:
+            served = loaded
+    except Exception:
+        pass
     print(f"server is healthy; serving model id: {served}")
     apis = probe_dialects(args.endpoint, served, args.gateway)
     if apis is not None:

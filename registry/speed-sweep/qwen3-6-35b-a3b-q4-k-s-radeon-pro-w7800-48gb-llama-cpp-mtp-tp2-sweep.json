@@ -1,0 +1,41 @@
+{
+  "accepted_at": null,
+  "id": "qwen3-6-35b-a3b-q4-k-s-radeon-pro-w7800-48gb-llama-cpp-mtp-tp2-sweep",
+  "measured_at": "2026-09-05T18:24:29Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode_mode": "llama-server-completion-draft-mtp",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T18:24:29Z",
+    "max_context_tokens": 638,
+    "max_prompt_tokens": 510,
+    "peak_generation_tps": 117.66802466673455,
+    "peak_prompt_tps": 1226.5306954243736,
+    "point_count": 1
+  },
+  "recipe_id": "qwen3-6-35b-a3b-q4-k-s-radeon-pro-w7800-48gb-llama-cpp-mtp-tp2",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 510,
+      "decode_tok_s": 117.66802466673455,
+      "decode_tok_s_per_stream": 117.66802466673455,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 1226.5306954243736,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "Not llama-bench. llama-server --spec-type draft-mtp --spec-draft-n-max 3. /completion cache_prompt=false, ~510-token prompt, n_predict=128, 5 reps after warmup. Qwen3.6 uses unsloth *-MTP-GGUF (not the trunk GGUF). Weights unsloth/Qwen3.6-35B-A3B-MTP-GGUF/Qwen3.6-35B-A3B-UD-Q4_K_S.gguf.",
+    "paths": [
+      "raw/mtp-llama-server/qwen36-35b-a3b-q4-k-s-mtp-dual-tensor.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}

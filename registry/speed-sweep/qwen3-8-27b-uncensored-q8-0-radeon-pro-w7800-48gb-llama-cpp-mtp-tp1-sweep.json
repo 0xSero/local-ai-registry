@@ -1,0 +1,71 @@
+{
+  "accepted_at": null,
+  "id": "qwen3-8-27b-uncensored-q8-0-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-sweep",
+  "measured_at": "2026-09-05T21:06:59Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode32k_context_tokens": 32760,
+    "decode32k_tps": 50.34856813120746,
+    "decode8k_context_tokens": 8190,
+    "decode8k_tps": 55.275401521477924,
+    "decode_mode": "llama-server-completion-draft-mtp",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T21:06:59Z",
+    "max_context_tokens": 32888,
+    "max_prompt_tokens": 510,
+    "peak_generation_tps": 55.275401521477924,
+    "peak_prompt_tps": 203.37594196798761,
+    "point_count": 3
+  },
+  "recipe_id": "qwen3-8-27b-uncensored-q8-0-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 510,
+      "decode_tok_s": 49.04417703438415,
+      "decode_tok_s_per_stream": 49.04417703438415,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 200.99343196055747,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32760,
+      "decode_tok_s": 50.34856813120746,
+      "decode_tok_s_per_stream": 50.34856813120746,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 187.83167852191897,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 8190,
+      "decode_tok_s": 55.275401521477924,
+      "decode_tok_s_per_stream": 55.275401521477924,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 203.37594196798761,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "Not llama-bench. llama-server --spec-type draft-mtp --spec-draft-n-max 3. /completion cache_prompt=false, ~510-token prompt, n_predict=128, 5 reps after warmup. Sidecar draft unsloth/Qwen3.8-27B-GGUF/MTP/mtp-Qwen3.8-27B-Q4_0.gguf. Fastest 1× long-ctx: p8192 and p32768.",
+    "paths": [
+      "raw/mtp-llama-server/qwen38-q8-mtp-single.json",
+      "raw/longctx-fast/qwen38-q8-fast-p32768.json",
+      "raw/longctx-fast/qwen38-q8-fast-p8192.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}

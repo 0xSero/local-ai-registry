@@ -22,6 +22,7 @@ pipeline before committing.
 | 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
 | 1. Import | `fetch_hf_downloads.py` | public Hugging Face API | `model.downloads` (30-day + all-time counts; drives the models-page sort) |
 | 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |
+| 1. Import | `import_w7800_lab.py` | par1-cs13 2× W7800 48GB llama.cpp HIP package | candidate recipes + speed-sweeps (`launch.kind: reference`) |
 | 2. Tokenize | `tokenize_observed_command.py` | observed shell strings on records | `metadata.<source>.tokenized` (never the launch contract) |
 | 3. Enrich | `enrich_registry.py` | records | shared enrichment contract fields (facts, provenance) |
 | 3. Enrich | `enrich_localmaxxing_live.py` | paginated public LocalMaxxing leaderboard API | exact live fields on existing recipes + speed sweeps; never creates records |
