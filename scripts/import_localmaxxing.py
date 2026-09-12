@@ -107,17 +107,33 @@ def server_capacity(row):
     return next(iter(values)) if len(values) == 1 else None
 
 
-def server_context_limit(row):
+def server_context_limit(row, environment=None):
     command, _ = _concurrency_evidence(row)
+    command = re.sub(r"(?<!\S)--[\w-]+", lambda match: match[0].replace("_", "-"), command)
     direct_values = _explicit_positive_integers(
         command,
         ("--max-model-len", "--context-length", "--max-context-length"),
     )
     llama_values = _explicit_positive_integers(command, ("--ctx-size", "-c"))
     llama_parallel = _explicit_positive_integers(command, ("--parallel", "-np"))
+    if len(llama_values) > 1 or len(llama_parallel) > 1:
+        return None
+    if re.search(r"(?:^|\s)(?:--ctx-size|-c|--parallel|-np)(?:=|\s+)(?:0\b|-\d+)", command):
+        return None
     if len(llama_values) == 1:
+        environment = environment or {}
+        # Environment-driven slot counts need explicit serving metadata unless the CLI overrides them.
+        if "LLAMA_ARG_N_PARALLEL" in environment and not llama_parallel:
+            return None
+        kv_value = "0" if "LLAMA_ARG_NO_KV_UNIFIED" in environment else environment.get("LLAMA_ARG_KV_UNIFIED", "0")
+        if kv_value not in ("on", "enabled", "true", "1", "off", "disabled", "false", "0"):
+            return None
+        unified_kv = kv_value in ("on", "enabled", "true", "1")
+        kv_flags = re.findall(r"(?:^|\s)(--kv-unified|-kvu|--no-kv-unified|-no-kvu)(?=\s|$)", command)
+        if kv_flags:
+            unified_kv = kv_flags[-1] in ("--kv-unified", "-kvu")
         llama_context = next(iter(llama_values))
-        if len(llama_parallel) == 1:
+        if len(llama_parallel) == 1 and not unified_kv:
             parallel = next(iter(llama_parallel))
             if llama_context % parallel != 0:
                 return None
