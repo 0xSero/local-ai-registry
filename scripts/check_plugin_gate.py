@@ -65,7 +65,8 @@ def check_recipe(root, recipe, errors):
         return
     if load(root / "model" / f"{instance.get('model_id')}.json", errors) is None:
         return
-    if load(root / "hardware" / f"{recipe.get('hardware_id')}.json", errors) is None:
+    hardware = load(root / "hardware" / f"{recipe.get('hardware_id')}.json", errors)
+    if hardware is None:
         return
 
     kind = launch.get("kind") or "docker"
@@ -83,6 +84,15 @@ def check_recipe(root, recipe, errors):
         errors.append(f"{identifier}: plugin gate requires a pinned model revision")
     if not isinstance(launch.get("container_port"), int):
         errors.append(f"{identifier}: plugin gate requires a numeric container_port")
+    devices = launch.get("devices")
+    if devices not in (None, []):
+        backend = launch.get("accelerator_backend")
+        # Intel's existing declaration is narrowed to render nodes by the plugin.
+        allowed = (backend == "nvidia" and devices == ["/dev/nvidia-uvm"]) or (
+            backend == "intel-xpu" and devices == ["/dev/dri"]
+        )
+        if not allowed or hardware.get("accelerator_backend") != backend:
+            errors.append(f"{identifier}: plugin gate forbids host devices for this backend")
     for argument in launch.get("arguments") or []:
         if isinstance(argument, str) and FORBIDDEN_ARGUMENT.search(argument):
             errors.append(f"{identifier}: plugin gate forbids launch argument {argument!r}")
