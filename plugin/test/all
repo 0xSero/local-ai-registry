@@ -10,7 +10,7 @@ export OMARCHY_AI_USER_HOME="$TMP/home" OMARCHY_AI_STATE="$TMP/state" OMARCHY_AI
   OMARCHY_AI_MODEL_ROOT="$TMP/home/.cache/omarchy/local-ai/models" OMARCHY_AI_CACHE_ROOT="$TMP/home/.cache/omarchy/local-ai/cache" \
   OMARCHY_AI_HF_HOME="$TMP/home/.cache/huggingface" OMARCHY_AI_PORT=12434 OMARCHY_AI_POLL=0 OMARCHY_AI_TIMEOUT=5 \
   OMARCHY_AI_FOREGROUND=1 OMARCHY_AI_NO_HOST_HF=1 SHIM="$TMP/shim" \
-  PATH="$TMP/bin:/usr/bin:/bin"   # shims plus the base system only; the developer's own agents must not leak in
+  PATH="$TMP/bin:/usr/bin:/bin"   # known agents are shimmed below, including any installed system-wide
 mkdir -p "$TMP/bin" "$TMP/home" "$SHIM"
 ln -s "$(PATH="$PATH:/opt/homebrew/bin:/usr/local/bin" command -v jq)" "$TMP/bin/jq"
 n=0
@@ -42,6 +42,7 @@ case "$1" in
       [[ ${args[$i]} == --entrypoint && ${args[$((i+1))]} == python3 ]] && role=download
     done
     if [[ $role == download ]]; then # the weights downloader: write a fake file into the mounted dir
+      if [[ ${args[*]} == *'import huggingface_hub'* ]]; then [[ ${SHIM_HUB_MISSING:-0} != 1 ]]; exit $?; fi
       for ((i=0;i<${#args[@]};i++)); do [[ ${args[$i]} == --volume ]] && { src=${args[$((i+1))]%%:*}; mkdir -p "$src"; head -c 4096 /dev/zero >"$src/model.safetensors"; }; done
       [[ ${SHIM_DOWNLOAD_FAIL:-} == 1 ]] && exit 1; exit 0
     fi
@@ -87,10 +88,10 @@ case "$*" in
   serve*) [[ "$*" == *--https=8443* ]] || { echo "shim: serve without --https=8443: $*" >&2; exit 1; }; touch "$SHIM/serving" ;;
 esac
 EOF
-for a in pi claude codex; do printf '#!/usr/bin/env bash\necho "$0 $*"\n' >"$TMP/bin/$a"; done
+for a in pi omp opencode ori claude codex grok agy hermes copilot crush; do printf '#!/usr/bin/env bash\necho "$0 $*"\n' >"$TMP/bin/$a"; done
 printf '#!/usr/bin/env bash\necho "launch $*"\n' >"$TMP/bin/omarchy-launch-tui"
 printf '#!/usr/bin/env bash\necho pi\n' >"$TMP/bin/omarchy-default-agent"
-chmod +x "$TMP"/bin/*
+for f in "$TMP"/bin/*; do [[ -L $f ]] || chmod +x "$f"; done
 
 # ---------------------------------------------------------------- fixture recipes.json
 digest=$(printf 'a%.0s' {1..64}); rev=$(printf 'b%.0s' {1..40})
@@ -129,7 +130,7 @@ grep -q -- "--network-alias engine" "$SHIM/docker.log" || fail "engine on the pr
 grep -q -- "--volume $OMARCHY_AI_STATE/assets/cfg.yml:/app/config.yml:ro" "$SHIM/docker.log" || fail "asset mounted"; pass "config asset written from recipes.json and mounted read-only"
 [[ $(cat "$OMARCHY_AI_STATE/assets/cfg.yml") == "model_name: Test-Model" ]] || fail "asset content"; pass "asset content matches the vendored file"
 [[ $(snap '.apis|join(",")') == "chat,messages,responses" ]] || fail "all dialects accepted" "$(snap .apis)"; pass "acceptance probes chat, messages, and responses"
-[[ $(snap '.agents.launchable|join(",")') == "pi,claude,codex" ]] || fail "launchable agents" "$(snap .agents.launchable)"; pass "every installed agent is launchable when every dialect passed"
+[[ $(snap '.agents.launchable|join(",")') == "pi,omp,opencode,ori,claude,codex,grok,agy,hermes,copilot,crush" ]] || fail "launchable agents" "$(snap .agents.launchable)"; pass "every installed agent is launchable when every dialect passed"
 [[ -s $OMARCHY_AI_STATE/gateway.key ]] || fail "key generated"; pass "gateway key generated on first start"
 out=$("$CLI" open-agent claude); [[ $out == *ANTHROPIC_BASE_URL=http://127.0.0.1:12434* && $out == *ANTHROPIC_API_KEY=$(cat "$OMARCHY_AI_STATE/gateway.key")* ]] || fail "claude launch env" "$out"; pass "open-agent claude: endpoint and key in the environment, nothing on disk"
 out=$("$CLI" open-agent codex); [[ $out == *wire_api=responses* && $out == *model=Test-Model* ]] || fail "codex launch" "$out"; pass "open-agent codex: responses provider by flags"
@@ -157,7 +158,7 @@ SHIM_TOKENS=200 SHIM_SLOW=1 bash -c 'sleep 0' ; # (speed is wall-clock; the shim
 SHIM_TOKENS=4 "$CLI" load; [[ $(snap .state) == ready ]] || fail "short replies skip the floor"; pass "speed floor ignores replies under 8 tokens"
 
 # missing dialects hide agents
-SHIM_APIS=chat "$CLI" load; [[ $(snap '.agents.launchable|join(",")') == "pi" ]] || fail "launchable filtered" "$(snap .agents.launchable)"; pass "agents whose dialect failed acceptance are hidden"
+SHIM_APIS=chat "$CLI" load; [[ $(snap '.agents.launchable|join(",")') == "pi,omp,opencode,ori,grok,agy,hermes,copilot,crush" ]] || fail "launchable filtered" "$(snap .agents.launchable)"; pass "agents whose dialect failed acceptance are hidden"
 [[ $("$CLI" open-agent claude 2>&1 || true) == *"did not pass acceptance"* ]] || fail "refused agent"; pass "open-agent refuses an agent whose dialect failed"
 
 # unload
@@ -195,6 +196,15 @@ write_recipes "$(recipe good true asset)" rtx-3090-24gb; "$CLI" snapshot >/dev/n
 write_recipes "$(recipe hfcache false hf)"; "$CLI" load
 [[ $(snap .state) == ready ]] || fail "hf recipe" "$(snap .error)"; pass "hf-cache recipe: downloaded into the shared cache and started"
 grep -q -- "--volume $(cd "$OMARCHY_AI_HF_HOME" && pwd -P):/root/.cache/huggingface" "$SHIM/docker.log" || fail "hf mount"; pass "hf cache mounted at the recipe's target"
+"$CLI" unload
+
+# an engine image without the downloader needs host hf before any weights are fetched
+write_recipes "$(recipe nohub false dir)"; : >"$SHIM/docker.log"
+SHIM_HUB_MISSING=1 "$CLI" load
+[[ $(snap .error) == *"host hf is required"* ]] || fail "missing downloader requirement" "$(snap .error)"
+[[ ! -f $OMARCHY_AI_STATE/weights/nohub.json ]] || fail "failed preflight wrote a download marker"
+! grep -q -- 'snapshot_download' "$SHIM/docker.log" || fail "download started after failed preflight"
+pass "missing image downloader reports host hf requirement before download"
 "$CLI" unload
 
 # lock: a second load while busy is refused without touching the running op

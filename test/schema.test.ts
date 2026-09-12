@@ -1,4 +1,5 @@
 import assert from "node:assert/strict"
+import { execFileSync } from "node:child_process"
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import test from "node:test"
@@ -49,6 +50,33 @@ for (const [collection, schemaFile] of Object.entries(COLLECTION_SCHEMAS)) {
     assert.deepEqual(failures, [], `${failures.length} invalid ${collection} record(s):\n${failures.slice(0, 5).join("\n")}`)
   })
 }
+
+test("cloning a device-bearing recipe retains a valid draft contract", () => {
+  const cloned = JSON.parse(execFileSync("python3", ["-c", `
+import io, json, sys, tempfile
+from contextlib import redirect_stdout
+from pathlib import Path
+from unittest.mock import patch
+sys.path.insert(0, "scripts")
+import clone_candidate as clone
+original = clone.REG
+source = "lfm25-26b-qad-q4-0-rtx4060-laptop-llamacpp-tp1"
+with tempfile.TemporaryDirectory() as directory:
+    root = Path(directory)
+    (root / "recipe").mkdir()
+    with patch.object(clone, "REG", root), \\
+         patch.object(clone, "read", side_effect=lambda kind, identifier: json.loads((original / kind / (identifier + ".json")).read_text())), \\
+         patch.object(sys, "argv", ["clone_candidate.py", source, "rtx-4060-laptop-8gb", "--id", "schema-clone"]), \\
+         redirect_stdout(io.StringIO()):
+        clone.main()
+    print((root / "recipe/schema-clone.json").read_text())
+`], { cwd: join(ROOT, ".."), encoding: "utf8" }))
+  assert.deepEqual(cloned.draft_launch.devices, ["/dev/nvidia-uvm"])
+  assert.equal(cloned.status, "candidate")
+  const validate = ajv.getSchema(schemaId("recipe.schema.json"))
+  assert.ok(validate)
+  assert.ok(validate(cloned), formatErrors("cloned recipe", validate.errors))
+})
 
 test("every price record validates against price.schema.json", () => {
   const validate = ajv.getSchema(schemaId("price.schema.json"))

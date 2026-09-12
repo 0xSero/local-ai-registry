@@ -20,7 +20,9 @@ model for your card; later starts are seconds.
 
 Requirements: Docker with the NVIDIA container toolkit (or an Intel Arc Pro
 B70 with its render nodes), `jq`, `curl`, `flock`. Optional: `tailscale` for
-sharing, `hf` for faster downloads (the recipe's own image downloads otherwise).
+sharing. The Hugging Face CLI (`hf`) downloads weights when installed. Without
+it, the recipe image must include `huggingface_hub`; images without that package,
+including the RTX 4060 Laptop recipe's llama.cpp image, require host `hf`.
 
 ## Remove
 

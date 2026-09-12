@@ -30,6 +30,9 @@ engine_argv() { # engine_argv <recipe> -> NUL-separated docker argv
     --label "$LABEL=1" --label "$LABEL.recipe=$id" --label "$LABEL.registry=$(registry_commit)" --label "$LABEL.role=engine")
   if [[ $backend == nvidia ]]; then
     a+=(--gpus "device=$(jq -r .gpuIndex <<<"$r")")
+    if jq -e '.launch.devices == ["/dev/nvidia-uvm"]' >/dev/null <<<"$r"; then
+      a+=(--device /dev/nvidia-uvm)
+    fi
   else # Intel: render nodes only, resolved per device; no card* control nodes, no whole /dev/dri
     local -a nodes=()
     for v in "${OMARCHY_AI_DRI_PATH:-/dev/dri/by-path}"/*-render; do [[ -e $v ]] || continue; real=$(canon "$v"); nodes+=(--device "$real:$real"); done

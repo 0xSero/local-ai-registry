@@ -12,6 +12,7 @@ on that card loses the flag. Prints the resulting table; --dry-run only prints.
 import argparse
 import json
 import sys
+from datetime import datetime
 from pathlib import Path
 
 REG = Path(__file__).resolve().parent.parent / "registry"
@@ -40,7 +41,8 @@ def rank(recipe, models):
     engine = ((recipe.get("engine") or {}).get("name") or "").lower()
     ctx = (recipe.get("serving") or {}).get("max_context_tokens") or 0
     accepted = ((recipe.get("metadata") or {}).get("acceptance") or {}).get("accepted_at") or ""
-    return (tier, ENGINE_RANK.get(engine, 9), -ctx, accepted and -int(accepted.replace("-", "").replace(":", "").replace("T", "").replace("Z", "") or 0))
+    accepted_at = datetime.fromisoformat(accepted.replace("Z", "+00:00")).timestamp() if accepted else 0
+    return (tier, ENGINE_RANK.get(engine, 9), -ctx, -accepted_at)
 
 
 def main():

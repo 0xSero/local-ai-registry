@@ -121,6 +121,7 @@ def entry(recipe, instance, model, hardware, sweeps):
             "arguments": launch.get("arguments") or [],
             "environment": launch.get("environment") or {},
             "mounts": launch.get("mounts") or [],
+            "devices": launch.get("devices", []),
             "shm": launch.get("shm_size"),
             "ipc": launch.get("ipc"),
             "networkMode": launch.get("network_mode"),

@@ -1,0 +1,180 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Text-only acceptance on one RTX 4060 Laptop GPU. At launch: plugged in; platform profile: balanced. Prompt lengths and GPU memory are measured; reasoning, tools and vision were not validated.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10481 / 25ae3a9b331fffea50ff8d07a5cad34c33f1276f"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-4060-laptop-8gb",
+  "id": "lfm25-8b-a1b-q4-k-m-rtx4060-laptop-llamacpp-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--device",
+      "CUDA0",
+      "--model",
+      "/models/LFM2.5-8B-A1B-Q4_K_M.gguf",
+      "--alias",
+      "LFM2.5-8B-A1B-GGUF",
+      "--ctx-size",
+      "8192",
+      "--parallel",
+      "1",
+      "--n-gpu-layers",
+      "999",
+      "--fit",
+      "off",
+      "--flash-attn",
+      "on",
+      "--no-mmproj",
+      "--jinja",
+      "--metrics",
+      "--perf",
+      "--threads",
+      "8",
+      "--threads-batch",
+      "8",
+      "--batch-size",
+      "512",
+      "--ubatch-size",
+      "128",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--reasoning-budget",
+      "0",
+      "--verbosity",
+      "4"
+    ],
+    "container": {
+      "captured_at": "2026-09-11T20:58:02.717489Z",
+      "compose_file": null,
+      "digest": "sha256:87c812ce5a8955364c665229d0848e07a2cf38fbd387d83530bc4575a22ffaa1",
+      "image": "ghcr.io/ggml-org/llama.cpp@sha256:87c812ce5a8955364c665229d0848e07a2cf38fbd387d83530bc4575a22ffaa1",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-11T20:58:02.717489Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8080,
+    "devices": [
+      "/dev/nvidia-uvm"
+    ],
+    "entrypoint": "/app/llama-server",
+    "environment": {},
+    "host_port": 18080,
+    "image": "ghcr.io/ggml-org/llama.cpp@sha256:87c812ce5a8955364c665229d0848e07a2cf38fbd387d83530bc4575a22ffaa1",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/lfm8-q4",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "captured_at": "2026-09-11T20:14:11.617321Z",
+      "sources": [
+        {
+          "captured_at": "2026-09-11T20:14:11.617321Z",
+          "kind": "container-manifest",
+          "url": "https://github.com/ggml-org/llama.cpp/pkgs/container/llama.cpp"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-11T20:58:02.717489Z",
+      "harness": "accept_recipe.py with pinned llama.cpp, one warmup plus three sequential samples",
+      "served_model_id": "LFM2.5-8B-A1B-GGUF"
+    },
+    "artifact": {
+      "bytes": 5155564768,
+      "download_url": "https://huggingface.co/LiquidAI/LFM2.5-8B-A1B-GGUF/resolve/49c14831707011e64d70b2ebd8462ba08d608434/LFM2.5-8B-A1B-Q4_K_M.gguf",
+      "filename": "LFM2.5-8B-A1B-Q4_K_M.gguf",
+      "repository": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+      "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+      "sha256": "4923ec14f06b968b74d663e5949867d2d9c3bf13a20b8be1a9f9af39989b2bb0"
+    },
+    "benchmark": {
+      "download_activity": "no downloader pause recorded",
+      "evidence": "docs/benchmarks/rtx-4060-laptop-2026-09-12/lfm8-q4.json.gz",
+      "first_sample_vram_mib": 44.0,
+      "measured_samples_per_point": 3,
+      "memory_scope": "whole NVIDIA GPU; host RAM and swap metrics are global",
+      "telemetry_interval_ms": 200,
+      "warmups_per_point": 1
+    },
+    "container_device_requirement": {
+      "devices": [
+        "/dev/nvidia-uvm"
+      ],
+      "reason": "CUDA initialization failed with GPU selection alone on this host; explicit UVM device passthrough succeeded.",
+      "source": "https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"
+    },
+    "hardware_observation": {
+      "ac_online": "1",
+      "at": "2026-09-11T20:57:26.937569+00:00",
+      "cpu_model": "AMD Ryzen 9 8945HS w/ Radeon 780M Graphics",
+      "gpu_csv": "name, driver_version, compute_cap, memory.total [MiB], power.default_limit [W], power.max_limit [W]\nNVIDIA GeForce RTX 4060 Laptop GPU, 610.57.04, 8.9, 8188 MiB, 55.00 W, 90.00 W\n",
+      "kernel": "7.2.2-1-cachyos",
+      "os_release": "NAME=\"CachyOS Linux\"\nPRETTY_NAME=\"CachyOS\"\nID=cachyos\nID_LIKE=arch\nBUILD_ID=rolling\nANSI_COLOR=\"38;2;23;147;209\"\nHOME_URL=\"https://cachyos.org/\"\nDOCUMENTATION_URL=\"https://wiki.cachyos.org/\"\nSUPPORT_URL=\"https://discuss.cachyos.org/\"\nBUG_REPORT_URL=\"https://github.com/cachyos\"\nPRIVACY_POLICY_URL=\"https://terms.archlinux.org/docs/privacy-policy/\"\nLOGO=cachyos\n",
+      "platform_profile": "balanced",
+      "ram_total_bytes": 16007725056
+    },
+    "observed_offload": [
+      "0.03.878.113 I load_tensors: offloaded 25/25 layers to GPU",
+      "0.03.878.122 I load_tensors:   CPU_Mapped model buffer size =   205.08 MiB",
+      "0.03.878.123 I load_tensors:        CUDA0 model buffer size =  4908.88 MiB",
+      "0.04.500.875 I llama_kv_cache:      CUDA0 KV buffer size =    96.00 MiB"
+    ],
+    "offload_observation_source": "benchmark server log",
+    "workload_policy": {
+      "cache_prompt": false,
+      "configured_context_tokens": 8192,
+      "reasoning_budget": 0,
+      "reasoning_effort": "none",
+      "text_only": true
+    }
+  },
+  "model_instance_id": "liquidai-lfm2-5-8b-a1b-gguf--q4-k-m",
+  "provenance": {
+    "captured_at": "2026-09-11T20:14:11.617321Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-11T20:14:11.617321Z",
+        "kind": "local-configuration",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "jaytau",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 8192,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "lfm25-8b-a1b-q4-k-m-rtx4060-laptop-llamacpp-tp1-acceptance"
+  ],
+  "status": "validated"
+}
