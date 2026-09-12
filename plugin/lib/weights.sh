@@ -24,8 +24,8 @@ weights_present() { # weights_present <recipe> : marker matches repository+revis
 }
 dir_bytes() { [[ -d $1 ]] && du -skL "$1" 2>/dev/null | awk '{print $1*1024}' || printf 0; }
 
-# download_weights <recipe>: host `hf` when present, else the recipe's own image, which always carries
-# huggingface_hub because the engine loads from the Hub. Progress is reported through op().
+# download_weights <recipe>: host `hf` when present, else the recipe's image if it carries
+# huggingface_hub. Images without it require host `hf`. Progress is reported through op().
 download_weights() {
   local r=$1 id repo rev kind base exp bytes pct pid free img
   id=$(jq -r .id <<<"$r"); repo=$(jq -r .model.repository <<<"$r"); rev=$(jq -r .model.revision <<<"$r")
@@ -37,7 +37,6 @@ download_weights() {
   if (( exp > 0 && ${free:-0} > 0 && free < exp - bytes )); then
     oops "need $(( (exp-bytes+1073741823)/1073741824 )) GB free under $base"
   fi
-  op download "$id" "downloading weights" 0
   # a GGUF recipe serves one file out of a repo full of quants: fetch only that file (and any mmproj)
   local served pattern=""; served=$(jq -r .model.servedName <<<"$r")
   [[ $served == *.gguf ]] && pattern="${served##*/}"
@@ -46,6 +45,9 @@ download_weights() {
     if [[ $kind == dir ]]; then cmd=("$hf" download "$repo" --revision "$rev" --local-dir "$base" ${pattern:+--include "$pattern" --include "*mmproj*"})
     else cmd=(env HF_HOME="$base" "$hf" download "$repo" --revision "$rev" ${pattern:+--include "$pattern" --include "*mmproj*"}); fi
   else
+    run_child docker run --rm --network none --user "$(id -u):$(id -g)" --env HOME=/tmp \
+      --label "$LABEL.download=1" --entrypoint python3 "$img" -c 'import huggingface_hub' >>"$LOGFILE" 2>&1 \
+      || oops "host hf is required to download weights for $id: the image's Hugging Face downloader is unavailable (see $LOGFILE)"
     local py="from huggingface_hub import snapshot_download as d; d('$repo', revision='$rev'"
     [[ -n $pattern ]] && py+=", allow_patterns=['$pattern', '*mmproj*']"
     if [[ $kind == dir ]]; then py+=", local_dir='/weights')"; else py+=")"; fi
@@ -55,6 +57,7 @@ download_weights() {
          --volume "$base:$([[ $kind == dir ]] && echo /weights || echo /hf)"
          --entrypoint python3 "$img" -c "$py")
   fi
+  op download "$id" "downloading weights" 0
   log "download: ${cmd[*]}"
   spawn_child "${cmd[@]}" >>"$LOGFILE" 2>&1; pid=$!
   local prev=0 rate=0 eta=0 detail

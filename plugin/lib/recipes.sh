@@ -38,6 +38,9 @@ gate_reason() {
     elif ((.launch.ipc//"")=="host") then "requires host IPC"
     elif ((.launch.capAdd//[])|length)>0 then "requires extra kernel capabilities"
     elif ((.launch.securityOpt//[])|length)>0 then "requires a weakened security profile"
+    elif ((.launch.devices == null or .launch.devices == [] or
+      (.match.backend == "nvidia" and .launch.devices == ["/dev/nvidia-uvm"]) or
+      (.match.backend == "intel-xpu" and .launch.devices == ["/dev/dri"]))|not) then "requires unsupported host devices"
     elif ((.launch.containerPort|type)!="number") then "invalid container port"
     elif ([.launch.arguments[]?|select(test("enforce.eager|disable.?cuda.?graph";"i"))]|length)>0 then "disallowed launch argument"
     elif ([.launch|..|strings|select(test("\\$\\{(?!MODEL_ROOT\\}|CACHE_ROOT\\})"))]|length)>0 then "needs an unsupported placeholder"
