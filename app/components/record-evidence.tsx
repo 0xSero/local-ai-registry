@@ -6,6 +6,7 @@ type EvidenceRow = {
   concurrency: number | null
   context_tokens: number | null
   decode: number | null
+  totalDecode: number | null
   key: string
   prefill: number | null
   status: string
@@ -32,6 +33,7 @@ function evidenceFromSweep(id: string): EvidenceRow[] {
     concurrency: row.concurrency,
     context_tokens: row.context_tokens,
     decode: row.decode_tok_s_per_stream ?? row.decode_tok_s,
+    totalDecode: number(row.decode_tok_s_total),
     key: `${id}:${index}`,
     prefill: row.prefill_tok_s,
     status: row.status,
@@ -47,6 +49,7 @@ function evidenceFromRecord(record: Record<string, unknown>): EvidenceRow[] {
     concurrency: number(row.concurrency),
     context_tokens: number(row.context_tokens),
     decode: number(row.decode_tok_s_per_stream) ?? number(row.decode_tok_s),
+    totalDecode: number(row.decode_tok_s_total),
     key: `row:${index}`,
     prefill: number(row.prefill_tok_s),
     status: typeof row.status === "string" ? row.status : typeof row.root === "string" ? row.root : "",
@@ -84,6 +87,7 @@ export function RecordEvidence({ collection, record }: { collection: string; rec
   if (collection !== "recipes" && collection !== "speed-sweep") return null
   const rows = evidenceFromRecord(record)
   if (rows.length === 0) return null
+  const hasTotalDecode = rows.some((row) => row.totalDecode !== null)
   return (
     <section aria-label="Measured speed" className="record-evidence">
       <p className="eyebrow">Measured speed</p>
@@ -93,7 +97,8 @@ export function RecordEvidence({ collection, record }: { collection: string; rec
             <th>Concurrency</th>
             <th>Context</th>
             <th>Prefill</th>
-            <th>Decode</th>
+            <th>{hasTotalDecode ? "Decode per request tok/s" : "Decode tok/s"}</th>
+            {hasTotalDecode && <th>Total decode tok/s</th>}
             <th>TTFT ms</th>
             <th>Status</th>
             {collection === "recipes" && <th>Sweep</th>}
@@ -106,6 +111,7 @@ export function RecordEvidence({ collection, record }: { collection: string; rec
               <td>{row.context_tokens?.toLocaleString() ?? "—"}</td>
               <td>{formatRate(row.prefill)}</td>
               <td>{formatRate(row.decode)}</td>
+              {hasTotalDecode && <td>{formatRate(row.totalDecode)}</td>}
               <td>{formatRate(row.ttft)}</td>
               <td>{row.status || "—"}</td>
               {collection === "recipes" && (

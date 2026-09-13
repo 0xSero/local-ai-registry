@@ -1,0 +1,102 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "LIL run-glm52-v14-server: GLM-5.2-NVFP4, 8× RTX PRO 6000. Source defaults only; not locally accepted.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {},
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "lil-rtx6kpro-scripts-run-glm52-v14-server-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-13T15:56:24Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "upstream-reference-not-a-launch-contract",
+      "runtime": null,
+      "source": [
+        {
+          "commit": "3e6c0313ef1fd7242ff4ef645b60e19a71ababd6",
+          "kind": "upstream-recipe",
+          "paths": [
+            "scripts/run-glm52-v14-server"
+          ],
+          "repository": "https://github.com/local-inference-lab/rtx6kpro",
+          "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-v14-server"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-v14-server"
+  },
+  "metadata": {
+    "credits": [
+      {
+        "name": "Local Inference Lab",
+        "role": "Original runbooks, Docker profiles, integration and qualification",
+        "url": "https://github.com/local-inference-lab"
+      },
+      {
+        "name": "Martin Vit / voipmonitor and repository contributors",
+        "role": "Recipe and runtime sources; per-file authorship is preserved in upstream history",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/graphs/contributors"
+      },
+      {
+        "name": "Luke Alonso and B12X contributors",
+        "role": "Blackwell kernels and communication work, including Derek Yates, MadeBy561 and Brandon Music",
+        "url": "https://github.com/local-inference-lab/b12x/graphs/contributors"
+      },
+      {
+        "name": "lukealonso",
+        "role": "Upstream model or checkpoint publisher",
+        "url": "https://huggingface.co/lukealonso/GLM-5.2-NVFP4"
+      }
+    ],
+    "license_policy": "Source facts and links only; upstream retains all licenses.",
+    "notes": [],
+    "original_source_url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-v14-server",
+    "source_path": "scripts/run-glm52-v14-server",
+    "source_qualification": "source defaults; local path/draft dependencies must be resolved before serving",
+    "source_sha256": "af9f63335a96d73ff204ae0a3c88b1e52c4676d1e8dd39260e0253ee72b65334",
+    "source_snapshot": "sources/local-inference-lab/2026-09-13.json",
+    "upstream_defaults": {
+      "MAX_MODEL_LEN": "131072",
+      "MAX_NUM_SEQS": "64",
+      "TP": "8"
+    }
+  },
+  "model_instance_id": "lil-lukealonso-glm-5-2-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-13T15:56:24Z",
+    "sources": [
+      {
+        "commit": "3e6c0313ef1fd7242ff4ef645b60e19a71ababd6",
+        "kind": "upstream-recipe",
+        "paths": [
+          "scripts/run-glm52-v14-server"
+        ],
+        "repository": "https://github.com/local-inference-lab/rtx6kpro",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-v14-server"
+      }
+    ]
+  },
+  "recipe_source": "local-inference-lab",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

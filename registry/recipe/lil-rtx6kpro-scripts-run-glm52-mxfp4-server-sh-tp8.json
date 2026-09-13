@@ -1,0 +1,105 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "LIL run-glm52-mxfp4-server.sh: GLM-5.2-NVFP4, 8× RTX PRO 6000. Source defaults only; not locally accepted.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:eldritch-enlightenment-v5-vllmcd272c7-b12xe44cb77-cu132-20260707"
+  },
+  "facts": {},
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "lil-rtx6kpro-scripts-run-glm52-mxfp4-server-sh-tp8",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-13T15:56:24Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "upstream-reference-not-a-launch-contract",
+      "runtime": null,
+      "source": [
+        {
+          "commit": "3e6c0313ef1fd7242ff4ef645b60e19a71ababd6",
+          "kind": "upstream-recipe",
+          "paths": [
+            "scripts/run-glm52-mxfp4-server.sh"
+          ],
+          "repository": "https://github.com/local-inference-lab/rtx6kpro",
+          "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-mxfp4-server.sh"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-mxfp4-server.sh"
+  },
+  "metadata": {
+    "credits": [
+      {
+        "name": "Local Inference Lab",
+        "role": "Original runbooks, Docker profiles, integration and qualification",
+        "url": "https://github.com/local-inference-lab"
+      },
+      {
+        "name": "Martin Vit / voipmonitor and repository contributors",
+        "role": "Recipe and runtime sources; per-file authorship is preserved in upstream history",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/graphs/contributors"
+      },
+      {
+        "name": "Luke Alonso and B12X contributors",
+        "role": "Blackwell kernels and communication work, including Derek Yates, MadeBy561 and Brandon Music",
+        "url": "https://github.com/local-inference-lab/b12x/graphs/contributors"
+      },
+      {
+        "name": "lukealonso",
+        "role": "Upstream model or checkpoint publisher",
+        "url": "https://huggingface.co/lukealonso/GLM-5.2-NVFP4"
+      }
+    ],
+    "license_policy": "Source facts and links only; upstream retains all licenses.",
+    "notes": [
+      "Requires local FP8/MXFP4 hybrid assembly; linked NVFP4 checkpoint is a base component, not the complete artifact."
+    ],
+    "original_source_url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-mxfp4-server.sh",
+    "source_path": "scripts/run-glm52-mxfp4-server.sh",
+    "source_qualification": "source defaults; local path/draft dependencies must be resolved before serving",
+    "source_sha256": "5080a506d74c892b6962c313e3c47c51572d3108982c0fb39e57755b95cc2665",
+    "source_snapshot": "sources/local-inference-lab/2026-09-13.json",
+    "upstream_defaults": {
+      "MAX_MODEL_LEN": "262144",
+      "MAX_NUM_SEQS": "64",
+      "MODE": "baseline",
+      "TP": "8"
+    }
+  },
+  "model_instance_id": "lil-glm52-local-fp8-mxfp4-assembly",
+  "provenance": {
+    "captured_at": "2026-09-13T15:56:24Z",
+    "sources": [
+      {
+        "commit": "3e6c0313ef1fd7242ff4ef645b60e19a71ababd6",
+        "kind": "upstream-recipe",
+        "paths": [
+          "scripts/run-glm52-mxfp4-server.sh"
+        ],
+        "repository": "https://github.com/local-inference-lab/rtx6kpro",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/blob/3e6c0313ef1fd7242ff4ef645b60e19a71ababd6/scripts/run-glm52-mxfp4-server.sh"
+      }
+    ]
+  },
+  "recipe_source": "local-inference-lab",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
