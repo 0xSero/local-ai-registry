@@ -5,6 +5,7 @@ import { HardwareMarket } from "@/app/components/hardware-market"
 import { HuggingFaceCard } from "@/app/components/huggingface-card"
 import { LaunchCommand } from "@/app/components/launch-command"
 import { ModelScores } from "@/app/components/model-scores"
+import { RecordCredits } from "@/app/components/record-credits"
 import { RecordEvidence } from "@/app/components/record-evidence"
 import { RecordFacts } from "@/app/components/record-facts"
 import { RelatedRecords } from "@/app/components/related-records"
@@ -39,6 +40,7 @@ export function RecordBody({
       {description && <p className="record-lede">{description}</p>}
       <CopyActions items={copies} />
       <RecordFacts facts={facts} />
+      <RecordCredits record={record} />
       <HuggingFaceCard identity={huggingFaceIdentity(record)} />
       {config && (
         <>
