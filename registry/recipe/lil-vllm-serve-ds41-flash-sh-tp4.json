@@ -1,0 +1,104 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "LIL serve-ds41-flash.sh: DeepSeek-V4.1-Flash, 4× RTX PRO 6000. Source defaults only; not locally accepted.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "lil-vllm-serve-ds41-flash-sh-tp4",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-13T15:56:24Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "upstream-reference-not-a-launch-contract",
+      "runtime": null,
+      "source": [
+        {
+          "commit": "cac037ea8312c5cf069fd5efed5c16192faab37b",
+          "kind": "upstream-recipe",
+          "paths": [
+            "serve-ds41-flash.sh"
+          ],
+          "repository": "https://github.com/local-inference-lab/vllm",
+          "url": "https://github.com/local-inference-lab/vllm/blob/cac037ea8312c5cf069fd5efed5c16192faab37b/serve-ds41-flash.sh"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://github.com/local-inference-lab/vllm/blob/cac037ea8312c5cf069fd5efed5c16192faab37b/serve-ds41-flash.sh"
+  },
+  "metadata": {
+    "credits": [
+      {
+        "name": "Local Inference Lab",
+        "role": "Original runbooks, Docker profiles, integration and qualification",
+        "url": "https://github.com/local-inference-lab"
+      },
+      {
+        "name": "Martin Vit / voipmonitor and repository contributors",
+        "role": "Recipe and runtime sources; per-file authorship is preserved in upstream history",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/graphs/contributors"
+      },
+      {
+        "name": "Luke Alonso and B12X contributors",
+        "role": "Blackwell kernels and communication work, including Derek Yates, MadeBy561 and Brandon Music",
+        "url": "https://github.com/local-inference-lab/b12x/graphs/contributors"
+      },
+      {
+        "name": "deepseek-ai",
+        "role": "Upstream model or checkpoint publisher",
+        "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
+      }
+    ],
+    "license_policy": "Source facts and links only; upstream retains all licenses.",
+    "notes": [
+      "Resolve the source local model path against the catalog/checkpoint before launch; it is not a portable command."
+    ],
+    "original_source_url": "https://github.com/local-inference-lab/vllm/blob/cac037ea8312c5cf069fd5efed5c16192faab37b/serve-ds41-flash.sh",
+    "source_path": "serve-ds41-flash.sh",
+    "source_qualification": "source defaults; local path/draft dependencies must be resolved before serving",
+    "source_sha256": "a5157c7244d4da95ac390fe8c4edeffce42ea76c45b74a7356dce253e0146860",
+    "source_snapshot": "sources/local-inference-lab/2026-09-13.json",
+    "upstream_defaults": {
+      "MAX_MODEL_LEN": "auto",
+      "MAX_NUM_SEQS": "4",
+      "TP_SIZE": "4"
+    }
+  },
+  "model_instance_id": "lil-deepseek-ai-deepseek-v4-1-flash--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-13T15:56:24Z",
+    "sources": [
+      {
+        "commit": "cac037ea8312c5cf069fd5efed5c16192faab37b",
+        "kind": "upstream-recipe",
+        "paths": [
+          "serve-ds41-flash.sh"
+        ],
+        "repository": "https://github.com/local-inference-lab/vllm",
+        "url": "https://github.com/local-inference-lab/vllm/blob/cac037ea8312c5cf069fd5efed5c16192faab37b/serve-ds41-flash.sh"
+      }
+    ]
+  },
+  "recipe_source": "local-inference-lab",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "max_context_tokens": null,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
