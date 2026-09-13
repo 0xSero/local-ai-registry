@@ -32,3 +32,7 @@ The hard part of local inference is not downloading a model. A working setup is 
 - **Anything else** that speaks HTTP: `GET /api/v1/recommendations` returns the whole contract in one request.
 
 Source: [github.com/0xSero/local-ai-registry](https://github.com/0xSero/local-ai-registry). Browser: [local-ai-registry.vercel.app](https://local-ai-registry.vercel.app).
+
+## Local Inference Lab recipes
+
+The [Local Inference Lab coverage and credits](LOCAL_INFERENCE_LAB) page lists 230 source-pinned configurations, all nine catalog manifests and explicitly incomplete source dependencies. Imported recipes remain candidates. Our separately accepted GLM-5.3-Flash R35 TP4 engine links to the [public Docker package](https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000), including pinned downloads, native vision/video, 400k context, eight slots, old-image pruning and measured total/per-request decode tables.
