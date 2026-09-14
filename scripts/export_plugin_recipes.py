@@ -3,12 +3,16 @@
 
 One entry per hardware id: the single validated, recommended, single-GPU
 docker recipe for that card, joined flat with its model instance, model,
-hardware match data, and acceptance speed. The plugin never fetches the
-registry; it ships this file and re-gates every entry on load.
+hardware match data, and acceptance speed — plus every other validated
+docker recipe for that card that passes the plugin's gate, exported as
+`recipes` alternates (tensor parallelism becomes the card claim). The
+plugin never fetches the registry; it ships this file and re-gates every
+entry on load.
 
 Fails when a hardware id has more than one recommended recipe. Warns on
 stderr about hardware that has validated recipes but no recommended one,
-which is the curation queue.
+which is the curation queue, and about validated recipes left out of the
+alternates because the plugin's gate would refuse them.
 
     python3 scripts/export_plugin_recipes.py [--out recipes.json]
 """
@@ -51,10 +55,70 @@ def min_driver(image):
             return version
     return ""
 NORM = re.compile(r"nvidia|geforce|intel|amd|radeon|generation|workstation|edition|[0-9]+gb|[^a-z0-9]")
+DIGEST_PINNED = re.compile(r"@sha256:[0-9a-f]{64}$")
+REVISION_PINNED = re.compile(r"^[0-9a-f]{40,64}$")
+FORBIDDEN_ARGUMENT = re.compile(r"enforce.eager|disable.?cuda.?graph", re.IGNORECASE)
+PLACEHOLDER_OK = re.compile(r"^\$\{(MODEL_ROOT|CACHE_ROOT)\}$")
 
 
 def norm(name):
     return NORM.sub("", name.lower())
+
+
+def card_count(recipe):
+    # Tensor parallelism is the card claim: --tensor-parallel-size 2, --tp 2, -tp 2. A
+    # config-file recipe (TabbyAPI) carries it in its yaml, which no exporter can read,
+    # so those stay single-card here; plugin-side multi-card variants are merged into
+    # the vendored file by the plugin's own sync.
+    args = " ".join(str(a) for a in (recipe.get("launch") or {}).get("arguments") or [])
+    m = re.search(r"(?:--tensor-parallel-size|--tp-size|--tp|-tp)[= ](\d+)", args)
+    n = int(m.group(1)) if m else 1
+    return n if n > 1 else None
+
+
+def plugin_refusal(recipe, instance):
+    """Mirror the plugin's gate (lib/recipes.sh gate_reason): only recipes the plugin
+    would actually launch ship as alternates. Returns a refusal string or None."""
+    launch = recipe.get("launch") or {}
+    if not DIGEST_PINNED.search(launch.get("image") or ""):
+        return "image is not digest-pinned"
+    if not REVISION_PINNED.fullmatch((instance or {}).get("revision") or ""):
+        return "model revision is not pinned"
+    if (launch.get("network_mode") or "bridge") != "bridge":
+        return f"requires {launch.get('network_mode')} networking"
+    if (launch.get("ipc") or "") == "host":
+        return "requires host IPC"
+    if launch.get("cap_add"):
+        return "requires extra kernel capabilities"
+    if launch.get("security_opt"):
+        return "requires a weakened security profile"
+    if not isinstance(launch.get("container_port"), int):
+        return "invalid container port"
+    for argument in launch.get("arguments") or []:
+        if isinstance(argument, str) and FORBIDDEN_ARGUMENT.search(argument):
+            return "disallowed launch argument"
+    for placeholder in re.findall(r"\$\{[^}]*\}", json.dumps(launch)):
+        if not PLACEHOLDER_OK.fullmatch(placeholder):
+            return f"needs an unsupported placeholder {placeholder}"
+    for mount in launch.get("mounts") or []:
+        source = str((mount or {}).get("source") or "")
+        if source.startswith(("${MODEL_ROOT}/", "${CACHE_ROOT}/")):
+            if ".." in source:
+                return f"mounts unsafe host path {source}"
+            if source.startswith("${MODEL_ROOT}/") and not (mount or {}).get("read_only"):
+                return "model weights must be mounted read-only"
+        elif source == "~/.cache/huggingface" or source.startswith("~/.cache/huggingface/"):
+            if ".." in source:
+                return f"mounts unsafe host path {source}"
+        elif source == "/dev/dri/by-path":
+            pass
+        elif source.startswith("asset/"):
+            name = source[len("asset/"):]
+            if "/" in name or ".." in name or not (REG / "asset" / name).is_file():
+                return f"asset {name} is not shipped"
+        else:
+            return f"mounts unsafe host path {source}"
+    return None
 
 
 def load(collection):
@@ -164,6 +228,25 @@ def main():
             errors.append(f"{recipe['id']}: unresolved hardware, instance, or model")
             continue
         names = sorted({norm(hw["name"])} | {norm(a) for a in hw.get("aliases") or []})
+        alternates = []
+        for alt in by_hardware.get(hardware_id, []):
+            if alt["id"] == recipe["id"]:
+                continue
+            alt_instance = instances.get(alt["model_instance_id"])
+            alt_model = models.get((alt_instance or {}).get("model_id"))
+            if not (alt_instance and alt_model):
+                print(f"queue: {alt['id']}: unresolved instance or model", file=sys.stderr)
+                continue
+            refusal = plugin_refusal(alt, alt_instance)
+            if refusal:
+                print(f"skip: {alt['id']}: {refusal}", file=sys.stderr)
+                continue
+            exported_alt = entry(alt, alt_instance, alt_model, hw, sweeps)
+            cards = card_count(alt)
+            if cards:
+                exported_alt["cards"] = cards
+            alternates.append(exported_alt)
+        alternates.sort(key=lambda e: e["id"])
         out[hardware_id] = {
             "match": {
                 "backend": hw.get("accelerator_backend"),
@@ -172,6 +255,7 @@ def main():
                 "name": hw["name"],
             },
             "recipe": entry(recipe, instance, model, hw, sweeps),
+            **({"recipes": alternates} if alternates else {}),
         }
 
     for hardware_id in sorted(set(by_hardware) - set(eligible)):
@@ -184,11 +268,12 @@ def main():
     # config assets the recipes mount, shipped inline so the plugin needs no registry checkout
     assets = {}
     for exported in out.values():
-        for mount in exported["recipe"]["launch"]["mounts"]:
-            source = str(mount.get("source") or "")
-            if source.startswith("asset/"):
-                name = source[len("asset/"):]
-                assets[name] = (REG / "asset" / name).read_text()
+        for recipe_entry in [exported["recipe"]] + exported.get("recipes", []):
+            for mount in recipe_entry["launch"]["mounts"]:
+                source = str(mount.get("source") or "")
+                if source.startswith("asset/"):
+                    name = source[len("asset/"):]
+                    assets[name] = (REG / "asset" / name).read_text()
     document = {
         "schemaVersion": SCHEMA,
         "registryCommit": registry_commit(),
