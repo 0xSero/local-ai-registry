@@ -1,9 +1,11 @@
 {
   "assets": {
+    "gemma4-nvfp4-sglang-engine-patch.diff": "--- /tmp/gemma4_unified.py.orig\t2026-08-23 20:25:26.703455135 +0000\n+++ python/sglang/srt/models/gemma4_unified.py\t2026-08-23 20:35:46.352246434 +0000\n@@ -70,7 +70,12 @@\n\n     def __init__(self, config):\n         super().__init__()\n-        patch_dim = config.model_patch_size**2 * 3  # 48*48*3 = 6912\n+        model_patch_size = getattr(config, \"model_patch_size\", None)\n+        if model_patch_size is None:\n+            # NVFP4 republished configs carry patch_size*pooling_kernel_size\n+            # (16*3=48) instead of the flattened model_patch_size field.\n+            model_patch_size = config.patch_size * getattr(config, \"pooling_kernel_size\", 1)\n+        patch_dim = model_patch_size**2 * 3  # 48*48*3 = 6912\n         mm_embed_dim = config.mm_embed_dim\n\n         self.patch_ln1 = nn.LayerNorm(patch_dim)\n@@ -110,7 +115,11 @@\n\n     def __init__(self, multimodal_config, text_config):\n         super().__init__()\n-        self.multimodal_hidden_size = multimodal_config.output_proj_dims\n+        self.multimodal_hidden_size = getattr(\n+            multimodal_config,\n+            \"audio_embed_dim\",\n+            multimodal_config.output_proj_dims,\n+        )\n         self.text_hidden_size = text_config.hidden_size\n         self.embedding_pre_projection_norm = Gemma4RMSNorm(\n             self.multimodal_hidden_size,\n@@ -190,7 +199,8 @@\n         )\n\n         text_tie = getattr(text_config, \"tie_word_embeddings\", True)\n-        if self.pp_group.world_size == 1 and text_tie:\n+        self.lm_head_is_tied = self.pp_group.world_size == 1 and text_tie\n+        if self.lm_head_is_tied:\n             self.lm_head = self.language_model.embed_tokens\n         elif self.pp_group.is_last_rank:\n             self.lm_head = ParallelLMHead(\n",
     "gemma412bit-exl3-4bpw-128k-q6-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Gemma-4-12B-it-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q6\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
-    "qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
-    "qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
-    "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
+    "qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen3827b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
   },
   "gateway": {
     "image": "ghcr.io/0xsero/gateway@sha256:a4d529170473cb9e1c96012edf79ba6b06a0100aa7b3ccf584a25c03aa3e4478",
@@ -15,7 +17,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33771944172"
     }
   },
-  "generatedAt": "2026-09-03T15:21:13Z",
+  "generatedAt": "2026-09-14T17:57:03Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -222,7 +224,191 @@
         "weights": {
           "subdir": ""
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-mi300x-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--tp-size",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.94",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/venv/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang-rocm:v0.5.13.post1-rocm720-mi30x-20260623@sha256:a8320f425ebec3dd2f3330816b65bcef8bd3eadf634f39ebfb84db2ae282b084",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "ornith15-35b-a3b-bf16-mi300x-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "ornith-ai/Ornith-1.5-35B-A3B",
+              "--revision",
+              "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+              "--served-model-name",
+              "ornith-1.5-35b-a3b",
+              "--trust-remote-code",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "262144",
+              "--mem-fraction-static",
+              "0.90",
+              "--max-running-requests",
+              "4",
+              "--attention-backend",
+              "aiter",
+              "--mamba-ssm-dtype",
+              "bfloat16",
+              "--mamba-radix-cache-strategy",
+              "extra_buffer",
+              "--chunked-prefill-size",
+              "2048",
+              "--max-prefill-tokens",
+              "16384",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--reasoning-parser",
+              "qwen3",
+              "--tool-call-parser",
+              "qwen3_coder"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/venv/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi30x-20260823@sha256:8805fe3744f9b549b4e329b37134bce6ce4afd7ec749ea1249507bcbcea10096",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "",
+          "model": {
+            "id": "ornith-1-5-35b-a3b",
+            "name": "Ornith-1.5-35B-A3B",
+            "precision": "BF16",
+            "repository": "ornith-ai/Ornith-1.5-35B-A3B",
+            "revision": "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+            "servedName": "ornith-1.5-35b-a3b",
+            "sizeGb": 65.5
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-2000-ada-16gb": {
       "match": {
@@ -696,7 +882,79 @@
         "weights": {
           "subdir": ""
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "lfm25-8b-a1b-q4km-rtx3070ti-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "LiquidAI/LFM2.5-8B-A1B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "131072"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "lfm2-5-8b-a1b",
+            "name": "LFM2.5-8B-A1B",
+            "precision": "Q4_K_M",
+            "repository": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+            "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+            "servedName": "LFM2.5-8B-A1B-GGUF",
+            "sizeGb": 5.156
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 291
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:17:13Z",
+            "harness": "validate_rented.py on vast RTX 3070 Ti"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-3080-10gb": {
       "match": {
@@ -794,7 +1052,79 @@
         "weights": {
           "subdir": ""
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "lfm25-8b-a1b-q4km-rtx3080-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "LiquidAI/LFM2.5-8B-A1B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "131072"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "lfm2-5-8b-a1b",
+            "name": "LFM2.5-8B-A1B",
+            "precision": "Q4_K_M",
+            "repository": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+            "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+            "servedName": "LFM2.5-8B-A1B-GGUF",
+            "sizeGb": 5.156
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 344
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:16:22Z",
+            "harness": "validate_rented.py on vast RTX 3080"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-3080-ti-12gb": {
       "match": {
@@ -872,7 +1202,79 @@
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "qwen35-9b-q4km-rtx3080ti-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "unsloth/Qwen3.5-9B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "131072"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "Q4_K_M",
+            "repository": "unsloth/Qwen3.5-9B-GGUF",
+            "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+            "servedName": "Qwen3.5-9B-GGUF",
+            "sizeGb": 5.681
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 109
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:15:55Z",
+            "harness": "validate_rented.py on vast RTX 3080 Ti"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-3090-24gb": {
       "match": {
@@ -950,7 +1352,269 @@
         "weights": {
           "subdir": "Gemma-4-12B-it-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx3090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.90",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": true,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen36-gptq-int4-rtx3090-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+              "--revision",
+              "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+              "--served-model-name",
+              "Qwen3.6-35B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-6-35b-a3b",
+            "name": "Qwen3.6-35B-A3B",
+            "precision": "INT4 W4A16",
+            "repository": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+            "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+            "servedName": "Qwen3.6-35B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 216
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960
+          },
+          "speed": {
+            "tps": 30
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-3090-ti-24gb": {
       "match": {
@@ -1028,7 +1692,163 @@
         "weights": {
           "subdir": "Gemma-4-12B-it-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090ti-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960
+          },
+          "speed": {
+            "tps": 54
+          },
+          "validated": {
+            "acceptedAt": "2026-09-02T17:30:05Z",
+            "harness": "validate_rented.py on vast RTX 3090 Ti"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": null,
+            "tools": null,
+            "vision": false
+          },
+          "engine": "tabbyapi",
+          "id": "qwen3827b-exl3-4bpw-rtx3090ti-tabbyapi-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "main.py",
+              "--config",
+              "/app/config.yml"
+            ],
+            "capAdd": [],
+            "containerPort": 5000,
+            "entrypoint": "/opt/venv/bin/python3",
+            "environment": {
+              "NVIDIA_VISIBLE_DEVICES": "all"
+            },
+            "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-4bpw",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen3827b-exl3-4bpw-128k-q4-tabbyapi-config.yml",
+                "target": "/app/config.yml"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "535.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "4 bpw",
+            "repository": "turboderp/Qwen3.8-27B-exl3",
+            "revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+            "servedName": "Qwen3.8-27B-EXL3-4bpw",
+            "sizeGb": 15.73
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 46
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:23:03Z",
+            "harness": "validate_rented.py on vast RTX 3090 Ti (weights and config materialized in-container in place of the bind mounts)"
+          },
+          "weights": {
+            "subdir": "Qwen3.8-27B-EXL3-4bpw"
+          }
+        }
+      ]
     },
     "rtx-4000-ada-20gb": {
       "match": {
@@ -1106,7 +1926,101 @@
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx4000ada-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--served-model-name",
+              "lfm2.5-2.6b",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.90",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--cuda-graph-max-bs-prefill",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "lfm2.5-2.6b",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4060-8gb": {
       "match": {
@@ -1614,7 +2528,79 @@
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "qwen35-9b-q4km-rtx4070ti-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "unsloth/Qwen3.5-9B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "131072"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "Q4_K_M",
+            "repository": "unsloth/Qwen3.5-9B-GGUF",
+            "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+            "servedName": "Qwen3.5-9B-GGUF",
+            "sizeGb": 5.681
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 75
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:16:40Z",
+            "harness": "validate_rented.py on vast RTX 4070 Ti"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4070-ti-super-16gb": {
       "match": {
@@ -1770,7 +2756,79 @@
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "qwen35-9b-q4km-rtx4080-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "unsloth/Qwen3.5-9B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "262144"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "Q4_K_M",
+            "repository": "unsloth/Qwen3.5-9B-GGUF",
+            "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+            "servedName": "Qwen3.5-9B-GGUF",
+            "sizeGb": 5.681
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 262144
+          },
+          "speed": {
+            "tps": 106
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:16:42Z",
+            "harness": "validate_rented.py on vast RTX 4080"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4080-super-16gb": {
       "match": {
@@ -1848,7 +2906,79 @@
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "qwen35-9b-q4km-rtx4080super-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "unsloth/Qwen3.5-9B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "262144"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "Q4_K_M",
+            "repository": "unsloth/Qwen3.5-9B-GGUF",
+            "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+            "servedName": "Qwen3.5-9B-GGUF",
+            "sizeGb": 5.681
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 262144
+          },
+          "speed": {
+            "tps": 99
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:26:34Z",
+            "harness": "validate_rented.py on vast RTX 4080S"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4090-24gb": {
       "match": {
@@ -1926,7 +3056,251 @@
         "weights": {
           "subdir": "Gemma-4-12B-it-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx4090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.903",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx4090-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960
+          },
+          "speed": {
+            "tps": 57
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T10:36:16Z",
+            "harness": "validate_rented.py on vast RTX 4090"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": null,
+            "tools": null,
+            "vision": false
+          },
+          "engine": "tabbyapi",
+          "id": "qwen3827b-exl3-4bpw-rtx4090-tabbyapi-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "main.py",
+              "--config",
+              "/app/config.yml"
+            ],
+            "capAdd": [],
+            "containerPort": 5000,
+            "entrypoint": "/opt/venv/bin/python3",
+            "environment": {
+              "NVIDIA_VISIBLE_DEVICES": "all"
+            },
+            "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-4bpw",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen3827b-exl3-4bpw-128k-q4-tabbyapi-config.yml",
+                "target": "/app/config.yml"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "535.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "4 bpw",
+            "repository": "turboderp/Qwen3.8-27B-exl3",
+            "revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+            "servedName": "Qwen3.8-27B-EXL3-4bpw",
+            "sizeGb": 15.73
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 52
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:24:00Z",
+            "harness": "validate_rented.py on vast RTX 4090 (weights and config materialized in-container in place of the bind mounts)"
+          },
+          "weights": {
+            "subdir": "Qwen3.8-27B-EXL3-4bpw"
+          }
+        }
+      ]
     },
     "rtx-5060-8gb": {
       "match": {
@@ -2512,7 +3886,256 @@
         "weights": {
           "subdir": "Qwen3.8-27B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "gemma-4-12b-it-nvfp4-rtx5090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-lc",
+              "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.8827875 --attention-backend triton --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/bin/bash",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": true,
+                "source": "asset/gemma4-nvfp4-sglang-engine-patch.diff",
+                "target": "/tmp/gemma4-engine-patch.diff"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "gemma-4-12b-it",
+            "name": "Gemma-4-12B-it",
+            "precision": "NVFP4",
+            "repository": "unsloth/gemma-4-12b-it-NVFP4",
+            "revision": "b1f649734b34aa5575b03d186abd1b9be3d0d5c4",
+            "servedName": "unsloth/gemma-4-12b-it-NVFP4",
+            "sizeGb": 8.7
+          },
+          "serving": {
+            "concurrency": 1,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx5090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.874",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "ornith15-35b-a3b-nvfp4-rtx5090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+              "--revision",
+              "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+              "--tp",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.90",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3",
+              "--tool-call-parser",
+              "qwen3_coder",
+              "--kv-cache-dtype",
+              "fp8_e4m3",
+              "--attention-backend",
+              "flashinfer",
+              "--moe-runner-backend",
+              "flashinfer_cutlass"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "ornith-1-5-35b-a3b",
+            "name": "Ornith-1.5-35B-A3B",
+            "precision": "NVFP4",
+            "repository": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "revision": "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+            "servedName": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "sizeGb": 21.8
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-6000-ada-48gb": {
       "match": {
@@ -2746,7 +4369,97 @@
         "weights": {
           "subdir": "Gemma-4-12B-it-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtxpro4000-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.902",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-pro-4500-blackwell-32gb": {
       "match": {
@@ -2824,7 +4537,256 @@
         "weights": {
           "subdir": "Qwen3.8-27B-EXL3-4bpw"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "gemma-4-12b-it-nvfp4-rtxpro4500-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-lc",
+              "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.90 --max-running-requests 4 --cuda-graph-max-bs-decode 4 --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/bin/bash",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": true,
+                "source": "asset/gemma4-nvfp4-sglang-engine-patch.diff",
+                "target": "/tmp/gemma4-engine-patch.diff"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "gemma-4-12b-it",
+            "name": "Gemma-4-12B-it",
+            "precision": "NVFP4",
+            "repository": "unsloth/gemma-4-12b-it-NVFP4",
+            "revision": "b1f649734b34aa5575b03d186abd1b9be3d0d5c4",
+            "servedName": "unsloth/gemma-4-12b-it-NVFP4",
+            "sizeGb": 8.7
+          },
+          "serving": {
+            "concurrency": 1,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtxpro4500-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.874",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "ornith15-35b-a3b-nvfp4-rtxpro4500-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+              "--revision",
+              "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+              "--tp",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.90",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3",
+              "--tool-call-parser",
+              "qwen3_coder",
+              "--kv-cache-dtype",
+              "fp8_e4m3",
+              "--attention-backend",
+              "flashinfer",
+              "--moe-runner-backend",
+              "flashinfer_cutlass"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "ornith-1-5-35b-a3b",
+            "name": "Ornith-1.5-35B-A3B",
+            "precision": "NVFP4",
+            "repository": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "revision": "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+            "servedName": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "sizeGb": 21.8
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-pro-6000-blackwell-96gb": {
       "match": {
@@ -2924,9 +4886,260 @@
         "weights": {
           "subdir": ""
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-lc",
+              "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.94 --attention-backend triton --kv-cache-dtype fp8_e4m3 --max-running-requests 4 --cuda-graph-max-bs-decode 4 --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/bin/bash",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": true,
+                "source": "asset/gemma4-nvfp4-sglang-engine-patch.diff",
+                "target": "/tmp/gemma4-engine-patch.diff"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "gemma-4-12b-it",
+            "name": "Gemma-4-12B-it",
+            "precision": "NVFP4",
+            "repository": "unsloth/gemma-4-12b-it-NVFP4",
+            "revision": "b1f649734b34aa5575b03d186abd1b9be3d0d5c4",
+            "servedName": "unsloth/gemma-4-12b-it-NVFP4",
+            "sizeGb": 8.7
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtxpro6000-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--tp",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.94",
+              "--attention-backend",
+              "flashinfer",
+              "--kv-cache-dtype",
+              "fp8_e4m3",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "ornith15-35b-a3b-nvfp4-rtxpro6000-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+              "--revision",
+              "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+              "--tp",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.87",
+              "--attention-backend",
+              "flashinfer",
+              "--kv-cache-dtype",
+              "fp8_e4m3",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3",
+              "--tool-call-parser",
+              "qwen3_coder",
+              "--moe-runner-backend",
+              "flashinfer_cutlass"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "model": {
+            "id": "ornith-1-5-35b-a3b",
+            "name": "Ornith-1.5-35B-A3B",
+            "precision": "NVFP4",
+            "repository": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "revision": "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+            "servedName": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+            "sizeGb": 21.8
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     }
   },
-  "registryCommit": "7f320db60b4ba4159306ab9b716bd38d523c7780",
+  "registryCommit": "d4ef71d2224423c71d1f5116fa83032f9db6c3da",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
