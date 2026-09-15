@@ -4,7 +4,7 @@
 The plugin (basecamp/omarchy PR #8836) refuses to launch a recipe unless it
 passes a safety gate: the record chain must resolve, the image must be
 digest-pinned, the model revision must be pinned, and every mount source must
-be a portable path — a ${MODEL_ROOT}/${CACHE_ROOT} placeholder, a ~/.cache
+be a portable path — a ${MODEL_ROOT}/${CACHE_ROOT} placeholder, the ~/.cache/huggingface
 path, the /dev/dri/by-path device directory, or a repo-relative asset.
 Absolute host paths are blocked. This script mirrors that gate so a registry
 change that would silently block recipes in the plugin fails CI here instead.
@@ -39,7 +39,10 @@ def check_mount_source(identifier, source, root, errors):
         return
     if PLACEHOLDER_MOUNT.fullmatch(source):
         return
+    if source == "~/.cache/huggingface" or source.startswith("~/.cache/huggingface/"):
+        return
     if source.startswith("~/.cache/"):
+        errors.append(f"{identifier}: plugin mounts nothing under ~/.cache but the Hugging Face cache: {source}")
         return
     if source == "/dev/dri/by-path":
         return
