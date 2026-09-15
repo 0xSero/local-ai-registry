@@ -208,7 +208,7 @@ test("validated recipes for the Omarchy GPUs use Docker", () => {
   assert.ok(command)
   assert.match(command, /--device \/dev\/dri/)
   assert.match(command, /-v \/dev\/dri\/by-path:\/dev\/dri\/by-path:ro/)
-  assert.match(command, /-v ~\/\.cache\/inference-index\/models\/qwen38-b70:\/models/)
+  assert.match(command, /-v '\$\{MODEL_ROOT\}\/qwen38-b70:\/models:ro'/)
   assert.match(command, /--entrypoint \/entrypoint\.sh/)
 })
 
