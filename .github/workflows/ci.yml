@@ -45,6 +45,11 @@ jobs:
       - name: Omarchy plugin gate accepts every validated Docker recipe
         run: python3 scripts/check_plugin_gate.py
 
+      - name: plugin/recipes.json is current (the plugin fetches it from this branch)
+        run: |
+          python3 scripts/export_plugin_recipes.py --out plugin/recipes.json
+          git diff --exit-code plugin/recipes.json
+
       - name: index shards match the records they summarize
         run: |
           python3 scripts/curate_registry.py --index-only

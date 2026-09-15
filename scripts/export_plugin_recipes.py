@@ -166,6 +166,7 @@ def entry(recipe, instance, model, hardware, sweeps):
         "capabilities": recipe.get("capabilities") or {},
         "serving": {
             "ctxTokens": (recipe.get("serving") or {}).get("max_context_tokens") or 0,
+            "kvTokens": (recipe.get("serving") or {}).get("kv_cache_tokens") or 0,
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
