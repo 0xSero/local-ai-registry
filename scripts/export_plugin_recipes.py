@@ -125,11 +125,15 @@ def load(collection):
     return {p.stem: json.loads(p.read_text()) for p in (REG / collection).glob("*.json")}
 
 
-def registry_commit():
+def registry_stamp():
+    """(commit, ISO date) of the last commit that touched registry/, so regenerating on an unrelated
+    commit is a no-op and CI can require the committed export to be current."""
     try:
-        return subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        out = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%H %cI", "--", "registry"], capture_output=True, text=True, check=True).stdout.split()
+        when = dt.datetime.fromisoformat(out[1]).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return out[0], when
     except Exception:
-        return ""
+        return "", dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def speed_tps(sweeps, recipe):
@@ -166,6 +170,7 @@ def entry(recipe, instance, model, hardware, sweeps):
         "capabilities": recipe.get("capabilities") or {},
         "serving": {
             "ctxTokens": (recipe.get("serving") or {}).get("max_context_tokens") or 0,
+            "kvTokens": (recipe.get("serving") or {}).get("kv_cache_tokens") or 0,
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
@@ -274,10 +279,11 @@ def main():
                 if source.startswith("asset/"):
                     name = source[len("asset/"):]
                     assets[name] = (REG / "asset" / name).read_text()
+    stamp = registry_stamp()
     document = {
         "schemaVersion": SCHEMA,
-        "registryCommit": registry_commit(),
-        "generatedAt": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "registryCommit": stamp[0],
+        "generatedAt": stamp[1],
         "gateway": {"image": GATEWAY_IMAGE, "provenance": GATEWAY_PROVENANCE},
         "assets": assets,
         "hardware": out,
