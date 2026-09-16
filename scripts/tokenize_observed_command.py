@@ -280,6 +280,9 @@ def metadata_source_key(recipe: dict) -> str | None:
         return "mlxfast"
     if source == "localmaxxing":
         return "localmaxxing"
+    lab = (recipe.get("metadata") or {}).get("lab")
+    if isinstance(lab, dict) and isinstance(lab.get("observed_command"), str):
+        return "lab"
     return None
 
 

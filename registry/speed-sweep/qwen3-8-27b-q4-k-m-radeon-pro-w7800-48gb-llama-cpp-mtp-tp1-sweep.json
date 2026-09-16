@@ -1,0 +1,71 @@
+{
+  "accepted_at": null,
+  "id": "qwen3-8-27b-q4-k-m-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-sweep",
+  "measured_at": "2026-09-05T19:23:25Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode32k_context_tokens": 32760,
+    "decode32k_tps": 47.6730177174252,
+    "decode8k_context_tokens": 8190,
+    "decode8k_tps": 52.50358224360775,
+    "decode_mode": "llama-server-completion-draft-mtp",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T19:23:25Z",
+    "max_context_tokens": 32888,
+    "max_prompt_tokens": 510,
+    "peak_generation_tps": 55.720015623885594,
+    "peak_prompt_tps": 346.2290629457645,
+    "point_count": 3
+  },
+  "recipe_id": "qwen3-8-27b-q4-k-m-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 510,
+      "decode_tok_s": 55.720015623885594,
+      "decode_tok_s_per_stream": 55.720015623885594,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 340.37798094803617,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32760,
+      "decode_tok_s": 47.6730177174252,
+      "decode_tok_s_per_stream": 47.6730177174252,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 300.25537484770143,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 8190,
+      "decode_tok_s": 52.50358224360775,
+      "decode_tok_s_per_stream": 52.50358224360775,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 346.2290629457645,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "Sidecar draft unsloth/Qwen3.8-27B-GGUF/MTP/mtp-Qwen3.8-27B-Q4_0.gguf. Fastest 1× long-ctx: p8192 and p32768.",
+    "paths": [
+      "raw/mtp-llama-server/qwen38-27b-ud-q4-k-m-mtp-single.json",
+      "raw/longctx-fast/qwen38-27b-ud-q4-k-m-fast-p32768.json",
+      "raw/longctx-fast/qwen38-27b-ud-q4-k-m-fast-p8192.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}
