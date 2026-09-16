@@ -1552,6 +1552,182 @@
             "tools": false,
             "vision": false
           },
+          "cards": 2,
+          "engine": "vllm",
+          "id": "qwen36-gptq-int4-rtx3090-vllm-tp2",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+              "--revision",
+              "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+              "--served-model-name",
+              "Qwen3.6-35B",
+              "--tensor-parallel-size",
+              "2",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "8",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-6-35b-a3b",
+            "name": "Qwen3.6-35B-A3B",
+            "precision": "INT4 W4A16",
+            "repository": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+            "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+            "servedName": "Qwen3.6-35B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 460
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "cards": 4,
+          "engine": "vllm",
+          "id": "qwen36-gptq-int4-rtx3090-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+              "--revision",
+              "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+              "--served-model-name",
+              "Qwen3.6-35B",
+              "--tensor-parallel-size",
+              "4",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "16",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.94",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-6-35b-a3b",
+            "name": "Qwen3.6-35B-A3B",
+            "precision": "INT4 W4A16",
+            "repository": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+            "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+            "servedName": "Qwen3.6-35B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 506
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
           "engine": "vllm",
           "id": "qwen38-awq-int4-rtx3090-vllm-tp1",
           "image": {
@@ -1623,6 +1799,182 @@
           },
           "speed": {
             "tps": 30
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "cards": 2,
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp2",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "2",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "8",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 111
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "cards": 4,
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "4",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "16",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.94",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 214
           },
           "validated": {
             "acceptedAt": null,
@@ -5005,6 +5357,103 @@
           },
           "speed": {
             "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "engine": "vllm",
+          "id": "glm53-flash-lil-r35-rtxpro6000-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "/model",
+              "--mm-processor-device",
+              "cpu",
+              "--limit-mm-per-prompt",
+              "{\"image\":64,\"video\":1}"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "CACHE_MODE": "vram",
+              "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 40 48 64",
+              "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+              "DCP": "1",
+              "DFLASH_DEPTH": "7",
+              "DFLASH_MODEL": "/draft",
+              "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+              "GPU_MEMORY_UTILIZATION": "0.93",
+              "HF_HUB_OFFLINE": "1",
+              "KV_CACHE_QUANT": "fp8_ds_mla",
+              "MAX_CUDAGRAPH_CAPTURE_SIZE": "64",
+              "MAX_MODEL_LEN": "400000",
+              "MAX_NUM_BATCHED_TOKENS": "4096",
+              "MAX_NUM_SEQS": "8",
+              "MODEL": "/model",
+              "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+              "PORT": "8000",
+              "PREFILL_COMPUTE_SHARE": "0.4",
+              "PREFILL_SCHEDULE_INTERVAL": "1",
+              "SERVED_MODEL_NAME": "glm-5.3-flash",
+              "SPECULATOR": "dflash2",
+              "TP": "4"
+            },
+            "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/target",
+                "target": "/model"
+              },
+              {
+                "provision": {
+                  "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
+                  "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+                  "size_gb": 1.284743923
+                },
+                "read_only": true,
+                "source": "${MODEL_ROOT}/draft",
+                "target": "/draft"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "",
+          "model": {
+            "id": "glm-5-3-flash",
+            "name": "GLM-5.3-Flash",
+            "precision": "NVFP4 experts / BF16 sensitive target weights",
+            "repository": "local-inference-lab/GLM-5.3-Flash-NVFP4",
+            "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+            "servedName": "glm-5.3-flash",
+            "sizeGb": 199.387195646
+          },
+          "serving": {
+            "concurrency": 8,
+            "ctxTokens": 400000,
+            "kvTokens": 4055230
+          },
+          "speed": {
+            "tps": 769
           },
           "validated": {
             "acceptedAt": null,
