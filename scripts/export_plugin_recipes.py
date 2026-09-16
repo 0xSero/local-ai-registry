@@ -6,8 +6,8 @@ docker recipe for that card, joined flat with its model instance, model,
 hardware match data, and acceptance speed — plus every other validated
 docker recipe for that card that passes the plugin's gate, exported as
 `recipes` alternates (tensor parallelism becomes the card claim). The
-plugin never fetches the registry; it ships this file and re-gates every
-entry on load.
+plugin vendors this file and can refresh the published copy. It re-gates
+every entry on load.
 
 Fails when a hardware id has more than one recommended recipe. Warns on
 stderr about hardware that has validated recipes but no recommended one,
@@ -66,10 +66,9 @@ def norm(name):
 
 
 def card_count(recipe):
-    # Tensor parallelism is the card claim: --tensor-parallel-size 2, --tp 2, -tp 2. A
-    # config-file recipe (TabbyAPI) carries it in its yaml, which no exporter can read,
-    # so those stay single-card here; plugin-side multi-card variants are merged into
-    # the vendored file by the plugin's own sync.
+    # The registry owns the claim, including engines configured by environment or YAML.
+    if recipe.get("hardware_count"):
+        return recipe["hardware_count"] if recipe["hardware_count"] > 1 else None
     args = " ".join(str(a) for a in (recipe.get("launch") or {}).get("arguments") or [])
     m = re.search(r"(?:--tensor-parallel-size|--tp-size|--tp|-tp)[= ](\d+)", args)
     n = int(m.group(1)) if m else 1
@@ -166,6 +165,7 @@ def entry(recipe, instance, model, hardware, sweeps):
         "capabilities": recipe.get("capabilities") or {},
         "serving": {
             "ctxTokens": (recipe.get("serving") or {}).get("max_context_tokens") or 0,
+            "kvTokens": (recipe.get("serving") or {}).get("kv_cache_tokens") or 0,
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
@@ -208,10 +208,10 @@ def main():
     by_hardware = {}
     for recipe in recipes.values():
         launch = recipe.get("launch") or {}
-        if recipe.get("status") != "validated" or launch.get("kind") != "docker" or recipe.get("hardware_count", 1) != 1:
+        if recipe.get("status") != "validated" or launch.get("kind") != "docker":
             continue
         by_hardware.setdefault(recipe["hardware_id"], []).append(recipe)
-        if recipe.get("recommended"):
+        if recipe.get("recommended") and recipe.get("hardware_count", 1) == 1:
             eligible.setdefault(recipe["hardware_id"], []).append(recipe)
 
     errors = []

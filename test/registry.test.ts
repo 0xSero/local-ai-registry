@@ -208,8 +208,11 @@ test("validated recipes for the Omarchy GPUs use Docker", () => {
   assert.ok(command)
   assert.match(command, /--device \/dev\/dri/)
   assert.match(command, /-v \/dev\/dri\/by-path:\/dev\/dri\/by-path:ro/)
-  assert.match(command, /-v ~\/\.cache\/inference-index\/models\/qwen38-b70:\/models/)
+  assert.ok(command.includes("${MODEL_ROOT}/qwen38-b70:/models:ro"))
   assert.match(command, /--entrypoint \/entrypoint\.sh/)
+  assert.match(command, /CTX_SIZE_OVERRIDE=262144/)
+  assert.match(command, /PARALLEL=1/)
+  assert.match(command, /ENABLE_VISION=1/)
 })
 
 test("repository link results expose the authoritative body identity", () => {
