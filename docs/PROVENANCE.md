@@ -33,6 +33,10 @@ It was treated as an import candidate, not as final truth. This pass corrected t
 
 The local.ai Postgres source is accessed only by the external ETL workflow. No database URL or credential is stored here. The importer accepts the compact, checksummed publication directory and never opens a database connection itself.
 
+## W7800 48GB lab import (par1-cs13)
+
+Observed lemonade/llama.cpp HIP evidence from host `par1-cs13` (2× AMD Radeon PRO W7800 48GB, ROCm 7.2) was imported on 2026-09-06. Source tree: `LocalMaxxing/registry-data/w7800-local-ai-registry/`. Dual rows are `hardware_count: 2` tensor-split (`-sm tensor -ts 0.5,0.5`). Qwen3.6 MTP weights are `unsloth/Qwen3.6-*-MTP-GGUF`. Lemonade is treated as the preferred llama.cpp stack: when a validated lemonade serving or MTP docker recipe exists for a quant and TP, stock HIP and unaccepted lemonade llama-bench rows for that pair are dropped. Qwen3-Coder has no validated row yet, so only its lemonade llama-bench candidates remain (`candidate` / `launch.kind: reference`). Validated image: `ghcr.io/lemonade-sdk/lemonade-server:v11.9.0@sha256:7c780707cd695392a8680f557c7c1d55521383a71b1c4c5a9d9e6a226a1bee91`.
+
 ## LocalMaxxing refresh
 
 The public API was refreshed on 2026-08-26 at 19:33 EDT through its documented paginated endpoints. The local response contained 5,747 leaderboard rows across 98 hardware groups and 615 used Hugging Face model IDs; the model endpoint contained 793 records.
