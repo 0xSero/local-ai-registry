@@ -63,6 +63,7 @@ export type Recipe = {
     chat: boolean | null
     reasoning: boolean | null
     tools: boolean | null
+    video?: boolean | null
     vision: boolean | null
   }
   metadata: {}
@@ -465,6 +466,7 @@ export interface IndexRecipeRow {
     chat: boolean | null
     reasoning: boolean | null
     tools: boolean | null
+    video?: boolean | null
     vision: boolean | null
   }
 }
