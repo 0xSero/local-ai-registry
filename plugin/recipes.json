@@ -17,7 +17,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33771944172"
     }
   },
-  "generatedAt": "2026-09-14T17:57:03Z",
+  "generatedAt": "2026-09-16T11:49:56Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -106,7 +106,8 @@
         },
         "serving": {
           "concurrency": 1,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 33
@@ -118,7 +119,84 @@
         "weights": {
           "subdir": ""
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": true,
+            "video": false,
+            "vision": true
+          },
+          "cards": 2,
+          "engine": "llama-cpp",
+          "id": "qwen38-q4km-arcb70-llamacpp-tp2",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/qwen38-b70-attested@sha256:6ce7771eaa155e31916ac3144bd3aa34bed6584b9a43052a8f6b583b9c8f5db1 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [],
+            "capAdd": [],
+            "containerPort": 8010,
+            "entrypoint": "/entrypoint.sh",
+            "environment": {
+              "BATCH": "8192",
+              "CTX_SIZE_OVERRIDE": "262144",
+              "ENABLE_MTP": "0",
+              "ENABLE_VISION": "1",
+              "GPU_COUNT": "2",
+              "MODELS_DIR": "/models",
+              "PARALLEL": "1",
+              "THREADS": "16",
+              "UBATCH": "8192"
+            },
+            "image": "ghcr.io/0xsero/qwen38-b70-attested@sha256:6ce7771eaa155e31916ac3144bd3aa34bed6584b9a43052a8f6b583b9c8f5db1",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "/dev/dri/by-path",
+                "target": "/dev/dri/by-path"
+              },
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen38-b70",
+                "target": "/models"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "Q4_K_M",
+            "repository": "ggml-org/Qwen3.8-27B-GGUF",
+            "revision": "0669b98607d47046c7c2b3f801011d54a08cfccf",
+            "servedName": "/models/Qwen3.8-27B-Q4_K_M.gguf",
+            "sizeGb": 19
+          },
+          "serving": {
+            "concurrency": 1,
+            "ctxTokens": 262144,
+            "kvTokens": 262144
+          },
+          "speed": {
+            "tps": 51
+          },
+          "validated": {
+            "acceptedAt": "2026-09-16T11:45:13Z",
+            "harness": "omarchy-tp2-256k-20260916"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "mi300x-192gb": {
       "match": {
@@ -212,7 +290,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 1015433
         },
         "speed": {
           "tps": 0
@@ -299,7 +378,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 5078485
           },
           "speed": {
             "tps": 0
@@ -395,7 +475,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 2226502
           },
           "speed": {
             "tps": 0
@@ -498,7 +579,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 286188
         },
         "speed": {
           "tps": 0
@@ -576,7 +658,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 48
@@ -674,7 +757,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 64
@@ -772,7 +856,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 67
@@ -870,7 +955,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 85
@@ -941,7 +1027,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 291
@@ -1040,7 +1127,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 94
@@ -1111,7 +1199,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 344
@@ -1190,7 +1279,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 89
@@ -1261,7 +1351,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 109
@@ -1340,7 +1431,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 65
@@ -1429,7 +1521,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 528003
           },
           "speed": {
             "tps": 0
@@ -1515,10 +1608,187 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 216
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "cards": 2,
+          "engine": "vllm",
+          "id": "qwen36-gptq-int4-rtx3090-vllm-tp2",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+              "--revision",
+              "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+              "--served-model-name",
+              "Qwen3.6-35B",
+              "--tensor-parallel-size",
+              "2",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "8",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-6-35b-a3b",
+            "name": "Qwen3.6-35B-A3B",
+            "precision": "INT4 W4A16",
+            "repository": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+            "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+            "servedName": "Qwen3.6-35B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 460
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "cards": 4,
+          "engine": "vllm",
+          "id": "qwen36-gptq-int4-rtx3090-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+              "--revision",
+              "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+              "--served-model-name",
+              "Qwen3.6-35B",
+              "--tensor-parallel-size",
+              "4",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "16",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.94",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-6-35b-a3b",
+            "name": "Qwen3.6-35B-A3B",
+            "precision": "INT4 W4A16",
+            "repository": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+            "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+            "servedName": "Qwen3.6-35B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 506
           },
           "validated": {
             "acceptedAt": null,
@@ -1601,10 +1871,186 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 40960
+            "ctxTokens": 40960,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 30
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "video": true,
+            "vision": true
+          },
+          "cards": 2,
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp2",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "2",
+              "--max-model-len",
+              "262144",
+              "--max-num-seqs",
+              "1",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.80",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {},
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 1,
+            "ctxTokens": 262144,
+            "kvTokens": 456835
+          },
+          "speed": {
+            "tps": 111
+          },
+          "validated": {
+            "acceptedAt": "2026-09-16T11:45:13Z",
+            "harness": "omarchy-tp2-256k-20260916"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "cards": 4,
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "4",
+              "--max-model-len",
+              "131072",
+              "--max-num-seqs",
+              "16",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.94",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "570.0",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 214
           },
           "validated": {
             "acceptedAt": null,
@@ -1680,7 +2126,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 70
@@ -1767,7 +2214,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 40960
+            "ctxTokens": 40960,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 54
@@ -1835,7 +2283,8 @@
           },
           "serving": {
             "concurrency": 2,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 131072
           },
           "speed": {
             "tps": 46
@@ -1914,7 +2363,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 60
@@ -2007,7 +2457,8 @@
           },
           "serving": {
             "concurrency": 2,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 406972
           },
           "speed": {
             "tps": 0
@@ -2106,7 +2557,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 42
@@ -2184,7 +2636,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 56
@@ -2282,7 +2735,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 47
@@ -2360,7 +2814,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 83
@@ -2438,7 +2893,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 82
@@ -2516,7 +2972,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 81
@@ -2587,7 +3044,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 75
@@ -2666,7 +3124,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 106
@@ -2744,7 +3203,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 96
@@ -2815,7 +3275,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 262144
+            "ctxTokens": 262144,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 106
@@ -2894,7 +3355,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 100
@@ -2965,7 +3427,8 @@
           },
           "serving": {
             "concurrency": 0,
-            "ctxTokens": 262144
+            "ctxTokens": 262144,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 99
@@ -3044,7 +3507,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 83
@@ -3133,7 +3597,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 524534
           },
           "speed": {
             "tps": 0
@@ -3219,7 +3684,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 40960
+            "ctxTokens": 40960,
+            "kvTokens": 0
           },
           "speed": {
             "tps": 57
@@ -3287,7 +3753,8 @@
           },
           "serving": {
             "concurrency": 2,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 131072
           },
           "speed": {
             "tps": 52
@@ -3386,7 +3853,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 60
@@ -3464,7 +3932,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 69
@@ -3562,7 +4031,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 0
         },
         "speed": {
           "tps": 63
@@ -3640,7 +4110,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 91
@@ -3718,7 +4189,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 55
@@ -3796,7 +4268,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 124
@@ -3874,7 +4347,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 73
@@ -3942,7 +4416,8 @@
           },
           "serving": {
             "concurrency": 1,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 133368
           },
           "speed": {
             "tps": 0
@@ -4030,7 +4505,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 731831
           },
           "speed": {
             "tps": 0
@@ -4122,7 +4598,8 @@
           },
           "serving": {
             "concurrency": 2,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 381008
           },
           "speed": {
             "tps": 0
@@ -4201,7 +4678,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 49
@@ -4279,7 +4757,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 36
@@ -4357,7 +4836,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 131072
         },
         "speed": {
           "tps": 58
@@ -4446,7 +4926,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 524997
           },
           "speed": {
             "tps": 0
@@ -4525,7 +5006,8 @@
         },
         "serving": {
           "concurrency": 2,
-          "ctxTokens": 262144
+          "ctxTokens": 262144,
+          "kvTokens": 262144
         },
         "speed": {
           "tps": 45
@@ -4593,7 +5075,8 @@
           },
           "serving": {
             "concurrency": 1,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 139590
           },
           "speed": {
             "tps": 0
@@ -4681,7 +5164,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 741122
           },
           "speed": {
             "tps": 0
@@ -4773,7 +5257,8 @@
           },
           "serving": {
             "concurrency": 2,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 397514
           },
           "speed": {
             "tps": 0
@@ -4874,7 +5359,8 @@
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072
+          "ctxTokens": 131072,
+          "kvTokens": 1068811
         },
         "speed": {
           "tps": 0
@@ -4942,10 +5428,109 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 607450
           },
           "speed": {
             "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "cards": 4,
+          "engine": "vllm",
+          "id": "glm53-flash-lil-r35-rtxpro6000-vllm-tp4",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "/model",
+              "--mm-processor-device",
+              "cpu",
+              "--limit-mm-per-prompt",
+              "{\"image\":64,\"video\":1}"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "entrypoint": null,
+            "environment": {
+              "CACHE_MODE": "vram",
+              "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 40 48 64",
+              "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+              "DCP": "1",
+              "DFLASH_DEPTH": "7",
+              "DFLASH_MODEL": "/draft",
+              "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+              "GPU_MEMORY_UTILIZATION": "0.93",
+              "HF_HUB_OFFLINE": "1",
+              "KV_CACHE_QUANT": "fp8_ds_mla",
+              "MAX_CUDAGRAPH_CAPTURE_SIZE": "64",
+              "MAX_MODEL_LEN": "400000",
+              "MAX_NUM_BATCHED_TOKENS": "4096",
+              "MAX_NUM_SEQS": "8",
+              "MODEL": "/model",
+              "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+              "PORT": "8000",
+              "PREFILL_COMPUTE_SHARE": "0.4",
+              "PREFILL_SCHEDULE_INTERVAL": "1",
+              "SERVED_MODEL_NAME": "glm-5.3-flash",
+              "SPECULATOR": "dflash2",
+              "TP": "4"
+            },
+            "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+            "ipc": null,
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/target",
+                "target": "/model"
+              },
+              {
+                "provision": {
+                  "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
+                  "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+                  "size_gb": 1.284743923
+                },
+                "read_only": true,
+                "source": "${MODEL_ROOT}/draft",
+                "target": "/draft"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "",
+          "model": {
+            "id": "glm-5-3-flash",
+            "name": "GLM-5.3-Flash",
+            "precision": "NVFP4 experts / BF16 sensitive target weights",
+            "repository": "local-inference-lab/GLM-5.3-Flash-NVFP4",
+            "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+            "servedName": "glm-5.3-flash",
+            "sizeGb": 199.387195646
+          },
+          "serving": {
+            "concurrency": 8,
+            "ctxTokens": 400000,
+            "kvTokens": 4055230
+          },
+          "speed": {
+            "tps": 769
           },
           "validated": {
             "acceptedAt": null,
@@ -5032,7 +5617,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 5724099
           },
           "speed": {
             "tps": 0
@@ -5124,7 +5710,8 @@
           },
           "serving": {
             "concurrency": 4,
-            "ctxTokens": 131072
+            "ctxTokens": 131072,
+            "kvTokens": 3377159
           },
           "speed": {
             "tps": 0
@@ -5140,6 +5727,6 @@
       ]
     }
   },
-  "registryCommit": "d4ef71d2224423c71d1f5116fa83032f9db6c3da",
+  "registryCommit": "448bec8b4377a5c698c5de637039cb8a2b133617",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
