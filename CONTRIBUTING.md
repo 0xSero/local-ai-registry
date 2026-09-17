@@ -25,7 +25,7 @@ Create `registry/hardware/<chip>-<memory>.json` from `registry/schema/hardware.s
 
 1. Copy the closest existing recipe or run `scripts/clone_candidate.py`.
 2. Set `hardware_id`, `hardware_count`, `model_instance_id`, `engine`, `serving.max_context_tokens`, `capabilities`.
-3. Write the `launch`: `kind: docker`, digest-pinned `image` with `provenance`, argv `arguments`, `environment`, `mounts`, both ports, `accelerator_backend`, `network_mode: bridge`. No shell strings.
+3. Write the `launch`. Docker: `kind: docker`, digest-pinned `image` with `provenance`, argv `arguments`, `environment`, `mounts`, both ports, `accelerator_backend`, `network_mode: bridge`. Host/FLM on AMD NPU: `kind: host`, engine `flm`, no image, `container_port`, `accelerator_backend: amd-npu`, `network_mode: bridge`. No shell strings.
 4. Leave `status` out or set `candidate`. **You cannot set `validated`.** It is derived.
 5. `make index && make check`.
 

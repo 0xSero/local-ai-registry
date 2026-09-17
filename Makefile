@@ -43,7 +43,7 @@ types-check:
 validate:
 	python3 scripts/validate_registry.py
 
-## Omarchy local-ai plugin gate over every validated Docker recipe.
+## Omarchy local-ai plugin gate over every validated docker or host/flm recipe.
 plugin-gate:
 	python3 scripts/check_plugin_gate.py
 

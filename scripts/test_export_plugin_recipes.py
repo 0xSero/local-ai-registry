@@ -38,10 +38,20 @@ class PluginExportTests(unittest.TestCase):
     def test_no_compatible_validated_alternative_is_dropped(self):
         instances = exporter.load('model-instance')
         for r in exporter.load('recipe').values():
-            if (r.get('status') == 'validated' and r['launch'].get('kind') == 'docker'
+            if (exporter.plugin_exportable(r)
                     and r['hardware_id'] in self.document['hardware']
                     and exporter.plugin_refusal(r, instances.get(r['model_instance_id'])) is None):
                 self.assertIn(r['id'], self.recipes)
+
+    def test_flm_host_recipe_exports(self):
+        hw = self.document['hardware']['xdna2-krackan-16gb']
+        recipe = hw['recipe']
+        self.assertEqual(hw['match']['backend'], 'amd-npu')
+        self.assertEqual(recipe['engine'], 'flm')
+        self.assertEqual(recipe['launch']['kind'], 'host')
+        self.assertEqual(recipe['launch']['image'], '')
+        self.assertEqual(recipe['model']['tag'], 'qwen3.5:9b')
+        self.assertEqual(recipe['model']['servedName'], 'qwen3.5:9b')
 
 
 if __name__ == '__main__':

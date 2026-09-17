@@ -9,10 +9,10 @@ registry, so anyone can rerun this and get the same answer:
 
 Criteria (each returns a reason string when it fails):
 
-  1. launch.kind is executable: docker, compose, or script. Never reference.
+  1. launch.kind is executable: docker, compose, script, or host (FastFlowLM). Never reference.
   2. the model instance pins a full revision (a commit hash, not a branch).
   3. the launch pins its artifact: docker/compose image by @sha256 digest,
-     script by a 40-hex commit in its path.
+     script by a 40-hex commit in its path, host/flm by that same model revision.
   4. at least one attached speed sweep is real acceptance evidence: either an
      `acceptance-run` recorded by accept_recipe.py / validate_rented.py, or a
      campaign sweep whose source repository is under EVIDENCE_ORG (our own campaign
@@ -22,8 +22,9 @@ Criteria (each returns a reason string when it fails):
   6. a docker launch is materializable: entrypoint or arguments, host and
      container ports, accelerator backend, and a stated serving.max_context_tokens.
 
-`recommended` additionally requires validated, hardware_count == 1, docker, bridge
-networking, and no host IPC (the plugin gate refuses anything else).
+`recommended` additionally requires validated, hardware_count == 1, bridge
+networking, no host IPC, and either docker or a host/flm launch (the plugin
+gate refuses anything else).
 
     python3 scripts/trust.py            # report every recipe whose stored status disagrees
     python3 scripts/trust.py --apply    # rewrite status to the derived value
@@ -64,7 +65,7 @@ def failures(recipe, instance, sweeps):
     kind = launch.get("kind")
     reasons = []
 
-    if kind not in ("docker", "compose", "script"):
+    if kind not in ("docker", "compose", "script", "host"):
         reasons.append(f"launch kind {kind!r} is not executable")
 
     revision = (instance or {}).get("revision") or ""
@@ -75,6 +76,17 @@ def failures(recipe, instance, sweeps):
         reasons.append("image is not digest-pinned")
     if kind == "script" and not COMMIT_PIN.search(str((launch.get("script") or {}).get("file") or "")):
         reasons.append("script launch has no commit pin")
+    if kind == "host":
+        if (recipe.get("engine") or {}).get("name") != "flm":
+            reasons.append("host launch must use the flm engine")
+        if launch.get("image"):
+            reasons.append("host launch must not pin a docker image")
+        if not isinstance(launch.get("container_port"), int):
+            reasons.append("host launch missing container_port")
+        if launch.get("accelerator_backend") != "amd-npu":
+            reasons.append("host launch missing amd-npu accelerator_backend")
+        if (recipe.get("serving") or {}).get("max_context_tokens") is None:
+            reasons.append("serving.max_context_tokens not stated")
 
     if not any(is_acceptance_evidence(s) for s in sweeps):
         reasons.append("no acceptance-run sweep and no campaign sweep with a replayable repository + commit")
@@ -105,8 +117,13 @@ def recommendable(recipe):
     """Why a recipe cannot carry `recommended`, or None."""
     if recipe.get("status") != "validated":
         return "not validated"
-    if (recipe.get("launch") or {}).get("kind") != "docker":
-        return "not a docker launch"
+    kind = (recipe.get("launch") or {}).get("kind")
+    engine = ((recipe.get("engine") or {}).get("name") or "")
+    if kind == "host":
+        if engine != "flm":
+            return "host launch must use the flm engine"
+    elif kind != "docker":
+        return "not a docker or host/flm launch"
     if recipe.get("hardware_count", 1) != 1:
         return "not single-GPU"
     launch = recipe.get("launch") or {}

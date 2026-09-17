@@ -31,7 +31,7 @@ Underscores in a field name become hyphens in the directory: `model_instance_id`
 
 ## The recipe launch
 
-`launch.kind` is `docker`, `compose`, `script`, or `reference`. Only the first three are executable. A docker launch states `image` (digest-pinned when validated), `entrypoint` or `arguments`, `environment`, `mounts`, `host_port`, `container_port`, `accelerator_backend`, `network_mode`, and `provenance` for the image. `reference` launches keep an observed command in `metadata` and are never run.
+`launch.kind` is `docker`, `compose`, `script`, `host`, or `reference`. Docker, compose, script, and host/flm are executable. A docker launch states `image` (digest-pinned when validated), `entrypoint` or `arguments`, `environment`, `mounts`, `host_port`, `container_port`, `accelerator_backend`, `network_mode`, and `provenance` for the image. A host launch is FastFlowLM on AMD NPU: engine `flm`, no docker image, `container_port`, `accelerator_backend: amd-npu`, and a FLM model tag on the instance `served_name`. `reference` launches keep an observed command in `metadata` and are never run.
 
 ## Trust: the two statuses
 
@@ -41,10 +41,10 @@ Underscores in a field name become hyphens in the directory: `model_instance_id`
 
 1. `launch.kind` is executable.
 2. The model instance `revision` is a full commit hash.
-3. The image is `@sha256`-pinned (docker/compose) or the script path contains a 40-hex commit.
+3. The artifact is pinned: docker/compose image by `@sha256`, script path by a 40-hex commit, or host/flm by the model instance revision.
 4. At least one attached speed sweep is acceptance evidence: `source.kind == "acceptance-run"`, or a commit-pinned campaign sweep from a repository under `github.com/0xSero/`.
 5. The launch never disables CUDA graphs or forces eager mode.
-6. A docker launch is materializable: entrypoint or arguments, both ports, backend, and `serving.max_context_tokens`.
+6. A docker launch is materializable: entrypoint or arguments, both ports, backend, and `serving.max_context_tokens`. A host/flm launch states `container_port`, `accelerator_backend: amd-npu`, and `serving.max_context_tokens`.
 
 **`candidate`** is everything else. Candidates stay visible with the reason they are not validated.
 
@@ -52,7 +52,7 @@ The definition lives in one file, `scripts/trust.py`. `validate_registry.py` imp
 
 ## Recommendations: the consumer contract
 
-`registry/index/recommendations.json` maps each hardware id to exactly one recipe. An entry must be validated, single-GPU, docker, bridge networking, no host IPC. `scripts/recommend.py` picks it (model tier by VRAM, then engine rank, then largest context, then newest acceptance); the validator refuses more than one per hardware. Served at `GET /api/v1/recommendations`.
+`registry/index/recommendations.json` maps each hardware id to exactly one recipe. An entry must be validated, single-accelerator, docker or host/flm, bridge networking, no host IPC. `scripts/recommend.py` picks it (model tier by VRAM, then engine rank, then largest context, then newest acceptance); the validator refuses more than one per hardware. Served at `GET /api/v1/recommendations`.
 
 ## Indexes
 
