@@ -8,16 +8,16 @@
     "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
   },
   "gateway": {
-    "image": "ghcr.io/0xsero/gateway@sha256:42794efd7edd5205c485095156d0f09dc71be1040f1bcc9a3356024991100950",
+    "image": "ghcr.io/0xsero/gateway@sha256:6b3f953f12cd32b0e2351515999c6c3312d4732692473607565e8296fd35226a",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/gateway@sha256:42794efd7edd5205c485095156d0f09dc71be1040f1bcc9a3356024991100950 -o 0xSero",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/gateway@sha256:6b3f953f12cd32b0e2351515999c6c3312d4732692473607565e8296fd35226a -o 0xSero",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/gateway/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
-      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35154518479"
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-16T21:55:14Z",
+  "generatedAt": "2026-09-17T00:03:37Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -5727,6 +5727,6 @@
       ]
     }
   },
-  "registryCommit": "316d0f929de4e96fb044a46a18354b602737f50e",
+  "registryCommit": "b864949a913602ad8d1e7e8f974c138ebdd35c0c",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
