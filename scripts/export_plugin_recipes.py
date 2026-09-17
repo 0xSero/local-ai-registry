@@ -29,12 +29,12 @@ ROOT = Path(__file__).resolve().parent.parent
 REG = ROOT / "registry"
 SCHEMA = "omarchy-local-ai/recipes/1"
 # The gateway every launch pairs with the engine. Built and attested by github.com/0xSero/local-ai-images.
-GATEWAY_IMAGE = "ghcr.io/0xsero/gateway@sha256:42794efd7edd5205c485095156d0f09dc71be1040f1bcc9a3356024991100950"
+GATEWAY_IMAGE = "ghcr.io/0xsero/gateway@sha256:6b3f953f12cd32b0e2351515999c6c3312d4732692473607565e8296fd35226a"
 GATEWAY_PROVENANCE = {
     "kind": "self-built-attested",
     "source": "https://github.com/0xSero/local-ai-images",
     "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/gateway/Dockerfile",
-    "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35154518479",
+    "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977",
     "attestation": f"gh attestation verify oci://{GATEWAY_IMAGE} -o 0xSero",
 }
 # Minimum NVIDIA driver per image family, from each image's CUDA version (NVIDIA_REQUIRE_CUDA):
