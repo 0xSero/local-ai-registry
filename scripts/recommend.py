@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Keep exactly one recommended recipe per hardware id.
 
-Among validated, single-GPU docker recipes on each card, prefer the engine
+Among validated, single-card docker or host/flm recipes on each accelerator, prefer the engine
 order below (EXL3 on TabbyAPI or SGLang ahead of llama.cpp, per the V1 plan),
 then the largest context, then the most recent acceptance. Every other recipe
 on that card loses the flag. Prints the resulting table; --dry-run only prints.
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 REG = Path(__file__).resolve().parent.parent / "registry"
-ENGINE_RANK = {"tabbyapi": 0, "sglang": 1, "vllm": 2, "llama.cpp": 3, "llama-cpp": 3}
+ENGINE_RANK = {"tabbyapi": 0, "sglang": 1, "vllm": 2, "llama.cpp": 3, "llama-cpp": 3, "flm": 4}
 # V1 tier map: the card's VRAM picks the model; a card falls back down the tiers when its own tier has no validated recipe
 TIERS = [
     (32, ["qwen3-8-27b", "qwen3-6-35b-a3b"]),
@@ -53,7 +53,10 @@ def main():
     for path in sorted((REG / "recipe").glob("*.json")):
         recipe = json.loads(path.read_text())
         launch = recipe.get("launch") or {}
-        if recipe.get("status") != "validated" or launch.get("kind") != "docker" or recipe.get("hardware_count", 1) != 1:
+        kind = launch.get("kind")
+        engine = ((recipe.get("engine") or {}).get("name") or "")
+        plugin_ok = kind == "docker" or (kind == "host" and engine == "flm")
+        if recipe.get("status") != "validated" or not plugin_ok or recipe.get("hardware_count", 1) != 1:
             continue
         if (launch.get("network_mode") or "bridge") != "bridge" or launch.get("ipc") == "host":
             continue  # the plugin gate refuses these; never recommend them
