@@ -52,6 +52,13 @@ class PluginExportTests(unittest.TestCase):
         self.assertEqual(recipe['launch']['image'], '')
         self.assertEqual(recipe['model']['tag'], 'qwen3.5:9b')
         self.assertEqual(recipe['model']['servedName'], 'qwen3.5:9b')
+        self.assertEqual(recipe['minEngine'], '1.0.4')
+
+    def test_docker_recipes_carry_no_min_engine(self):
+        for rid, r in self.recipes.items():
+            if r['launch']['kind'] != 'host':
+                with self.subTest(recipe=rid):
+                    self.assertEqual(r['minEngine'], '')
 
 
 if __name__ == '__main__':

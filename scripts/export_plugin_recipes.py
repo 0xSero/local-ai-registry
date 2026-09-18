@@ -199,6 +199,8 @@ def entry(recipe, instance, model, hardware, sweeps):
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
         "minDriver": min_driver(launch.get("image") or "") if hardware.get("accelerator_backend") == "nvidia" else "",
+        # no digest pins a host engine: the version it was validated on is the floor the plugin enforces
+        "minEngine": (recipe.get("engine") or {}).get("version") or "" if launch.get("kind") == "host" else "",
         "weights": {
             # where the plugin puts the download under a ${MODEL_ROOT} mount; TabbyAPI loads <mount>/<model_name>
             "subdir": (recipe.get("metadata") or {}).get("weights_subdir") or "",
