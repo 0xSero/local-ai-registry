@@ -1,0 +1,79 @@
+{
+  "backend": "vllm",
+  "dtype": null,
+  "enable_auto_tool_choice": true,
+  "env_vars": {
+    "BLOCK_SIZE": "256",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "DCP_SIZE": "1",
+    "DSPARK_ADAPTIVE_VERIFICATION": "1",
+    "ENGRAM_TABLE_MEMORY": "disk",
+    "GPU_MEMORY_UTILIZATION": "0.95",
+    "HF_HUB_OFFLINE": "1",
+    "HOST": "0.0.0.0",
+    "MAX_CUDAGRAPH_CAPTURE_SIZE": "128",
+    "MAX_MODEL_LEN": "524288",
+    "MAX_NUM_BATCHED_TOKENS": "4096",
+    "MAX_NUM_SEQS": "16",
+    "MAX_PARALLEL_PREFILLS": "1",
+    "MODEL_PATH": "/models",
+    "OMP_NUM_THREADS": "8",
+    "PORT": "8000",
+    "PREFILL_COMPUTE_SHARE": "0.4",
+    "SERVED_MODEL_NAME": "deepseek-v4.1-flash",
+    "SWA_BLOCK_SIZE": "128",
+    "TP_SIZE": "4",
+    "TRANSFORMERS_OFFLINE": "1",
+    "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+  },
+  "extra_args": {
+    "description": "Local Inference Lab vLLM jovian-judgement r38 (image digest f41ca8bb, local tag only switches the entrypoint to serve-ds41-jovian.sh). TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 adaptive, Engram tables read from disk, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Converted in place from the SGLang recipe on 2026-09-18 after GPU OOM crashes in the SGLang low-ratio indexer; SGLang version saved as studio-recipe-SGLANG-before-vllm-r38-20260918.json.",
+    "docker_security_opt": [
+      "seccomp=/home/ser/deepseek-v41-work/vllm-r38/seccomp-default-plus-io_uring.json"
+    ],
+    "docker_ulimit": [
+      "memlock=-1",
+      "stack=67108864"
+    ],
+    "launch_command": "--served-model-name deepseek-v4.1-flash",
+    "mounts": [
+      "/home/ser/.cache/ds41-jovian-r38:/cache:rw"
+    ],
+    "source_repository": "https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000",
+    "tags": [
+      "deepseek-v4.1",
+      "512k",
+      "vision",
+      "dspark",
+      "vllm",
+      "b12x",
+      "jovian-judgement-r38",
+      "sm120"
+    ]
+  },
+  "gpu_memory_utilization": 0.95,
+  "host": "0.0.0.0",
+  "id": "deepseek-v4.1-flash",
+  "kv_cache_dtype": "fp8",
+  "max_model_len": 524288,
+  "max_num_seqs": 16,
+  "max_thinking_tokens": null,
+  "model_path": "/mnt/llm_models/DeepSeek-V4.1-Flash",
+  "name": "Deepseek-v4.1-Flash",
+  "pipeline_parallel_size": 1,
+  "port": 8000,
+  "python_path": null,
+  "quantization": null,
+  "reasoning_parser": "deepseek_v41",
+  "runtime": {
+    "kind": "docker",
+    "label": "Local Inference Lab vLLM jovian-judgement r38 (sha256:f41ca8bb), DS4.1 entrypoint",
+    "ref": "local/ds41-jovian:r38-f41ca8bb"
+  },
+  "served_model_name": "deepseek-v4.1-flash",
+  "tensor_parallel_size": 4,
+  "thinking_mode": "conservative",
+  "tool_call_parser": "deepseek_v41",
+  "trust_remote_code": false,
+  "vision": true
+}
