@@ -1,0 +1,178 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Locally accepted LIL R35 engine: TP4, 400k input-plus-output context, 8 scheduler slots, native vision/video and DFlash2 K7. Published Docker package adds authentication and old-image pruning. Warm structured-number speeds below are not prose or agent throughput; R35 is slower than the repaired SGLang baseline.",
+  "engine": {
+    "graph_mode": "FULL_AND_PIECEWISE; capture sizes 1 2 4 8 16 32 40 48 64",
+    "name": "vllm",
+    "version": "0.26.1rc0+glm53.r35.vllmde982a50"
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-lil-r35-rtxpro6000-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "/model",
+      "--mm-processor-device",
+      "cpu",
+      "--limit-mm-per-prompt",
+      "{\"image\":64,\"video\":1}"
+    ],
+    "container": {
+      "captured_at": "2026-09-13T15:56:24Z",
+      "compose_file": null,
+      "digest": "sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+      "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+      "reason": "runtime-digest-from-live-R35-container",
+      "runtime": "docker",
+      "source": [
+        {
+          "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
+          "kind": "local-acceptance",
+          "repository": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
+          "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/README.md"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CACHE_MODE": "vram",
+      "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 40 48 64",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "DCP": "1",
+      "DFLASH_DEPTH": "7",
+      "DFLASH_MODEL": "/draft",
+      "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+      "GPU_MEMORY_UTILIZATION": "0.93",
+      "HF_HUB_OFFLINE": "1",
+      "KV_CACHE_QUANT": "fp8_ds_mla",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "64",
+      "MAX_MODEL_LEN": "400000",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "8",
+      "MODEL": "/model",
+      "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "PORT": "8000",
+      "PREFILL_COMPUTE_SHARE": "0.4",
+      "PREFILL_SCHEDULE_INTERVAL": "1",
+      "SERVED_MODEL_NAME": "glm-5.3-flash",
+      "SPECULATOR": "dflash2",
+      "TP": "4"
+    },
+    "host_port": 8000,
+    "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/target",
+        "target": "/model"
+      },
+      {
+        "provision": {
+          "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
+          "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+          "size_gb": 1.284743923
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/draft",
+        "target": "/draft"
+      }
+    ],
+    "network_mode": "bridge",
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "completion": true,
+      "long_c8_input_tokens_per_request": 379951,
+      "long_context_retrieval_tokens": 398064,
+      "strict_json": true,
+      "tools": true,
+      "video": true,
+      "vision": true
+    },
+    "benchmark_workload": "Warm structured-number continuation, temperature 1, top_p 0.95, reasoning disabled only for benchmarking; exact token IDs counted in common 30s/60s windows. No isolated pure prefill result.",
+    "credits": [
+      {
+        "name": "Local Inference Lab",
+        "role": "Original runbooks, Docker profiles, integration and qualification",
+        "url": "https://github.com/local-inference-lab"
+      },
+      {
+        "name": "Martin Vit / voipmonitor and repository contributors",
+        "role": "Recipe and runtime sources; per-file authorship is preserved in upstream history",
+        "url": "https://github.com/local-inference-lab/rtx6kpro/graphs/contributors"
+      },
+      {
+        "name": "Luke Alonso and B12X contributors",
+        "role": "Blackwell kernels and communication work, including Derek Yates, MadeBy561 and Brandon Music",
+        "url": "https://github.com/local-inference-lab/b12x/graphs/contributors"
+      },
+      {
+        "name": "Z.ai",
+        "role": "Original GLM-5.3-Flash model",
+        "url": "https://huggingface.co/zai-org/GLM-5.3-Flash"
+      },
+      {
+        "name": "0xSero",
+        "role": "Docker packaging, image-history policy and separately measured local acceptance",
+        "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000"
+      },
+      {
+        "name": "R35 contributors and dependencies",
+        "role": "Full upstream attribution and license boundaries",
+        "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/CREDITS.md"
+      }
+    ],
+    "deployment_notes": "Download target and draft with the pinned package script before raw engine launch. Bind raw engine only on a trusted private network; prefer authenticated Compose package. No GPU power changes.",
+    "docker_compose": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/compose.yaml",
+    "docker_package": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
+    "draft": {
+      "precision": "MXFP8 draft only",
+      "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
+      "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50"
+    },
+    "history_policy": "Standalone Compose proxy or Local Studio controller prunes older images to 8 while protecting the latest user message and subsequent tool results. Raw engine Docker launch alone does not provide this proxy policy or API authentication.",
+    "limits": "400k is a configured per-request ceiling, not 400k measured at all concurrencies. Accepted C8 held 379,951 input tokens each; profile allocated 4,055,230 total KV tokens. No 24/7/365 guarantee; 64px mixed-history vision counterexample published.",
+    "regressions_vs_repaired_sglang": {
+      "379947_tokens_c1_percent": -12.4,
+      "971_tokens_c1_percent": -5.9,
+      "971_tokens_c8_percent": -55.2
+    },
+    "validation_scope": "Existing Local Studio engine validated; standalone Docker gateway validated against it. Complete Compose orchestration configuration-checked, not cold-started over the occupied production GPUs."
+  },
+  "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
+  "provenance": {
+    "captured_at": "2026-09-13T15:56:24Z",
+    "sources": [
+      {
+        "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
+        "kind": "local-acceptance",
+        "repository": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
+        "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/README.md"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "decode_context_parallel": 1,
+    "kv_cache_dtype": "fp8_ds_mla",
+    "kv_cache_tokens": 4055230,
+    "max_concurrency": 8,
+    "max_context_tokens": 400000,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep"
+  ],
+  "status": "validated"
+}

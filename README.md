@@ -179,3 +179,7 @@ Data provenance and recovery decisions are in [`docs/PROVENANCE.md`](docs/PROVEN
 ## License
 
 MIT
+
+## Local Inference Lab sources
+
+The [LIL coverage and credits ledger](docs/LOCAL_INFERENCE_LAB.md) catalogs 230 concrete source configurations and all nine catalog manifests. Imported upstream recipes are reference-only candidates with visible attribution. The separately accepted [GLM-5.3-Flash R35 TP4 recipe](registry/recipe/glm53-flash-lil-r35-rtxpro6000-vllm-tp4.json) links the [public Docker package](https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000), measured total/per-request decode speeds and its validation limits.

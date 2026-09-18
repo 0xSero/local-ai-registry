@@ -38,10 +38,15 @@ jobs:
         run: python3 scripts/format_registry.py --check
 
       - name: Referential integrity and trust boundary
-        run: python3 scripts/validate_registry.py
+        run: |
+          python3 scripts/validate_registry.py
+          python3 scripts/check_lil_import.py
 
       - name: Omarchy plugin gate accepts every validated Docker recipe
         run: python3 scripts/check_plugin_gate.py
+
+      - name: Plugin export preserves multi-GPU recipes and context
+        run: python3 scripts/test_export_plugin_recipes.py
 
       - name: index shards match the records they summarize
         run: |
