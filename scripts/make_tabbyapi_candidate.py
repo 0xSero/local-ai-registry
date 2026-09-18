@@ -90,19 +90,30 @@ def ensure_instance(repo, branch, model_id, served_name):
 
 
 def ensure_asset(asset_id, model_name, ctx, cache_mode, purpose, vision=False, reasoning=False,
-                 tool_format=None, draft_mode="disabled", max_batch_size=2):
+                 tool_format=None, draft_mode="disabled", max_batch_size=2,
+                 start_in_reasoning="auto", vision_offload=False, autosplit_reserve=None,
+                 cache_headroom=1024):
+    # ExLlamaV3 refuses a request whose prompt plus output needs more pages than
+    # the cache holds, and it counts in whole 256-token pages. With
+    # cache_size == max_seq_len a request that fills the window asks for one page
+    # more than exists ("Job requires 1025 pages (only 1024 available)"), so the
+    # cache is sized above the window instead of exactly at it.
+    cache_size = ctx + cache_headroom
     extra = []
     if vision:
         extra.append("  vision: true")
+        if vision_offload:
+            extra.append("  vision_offload: true")
     if reasoning:
         extra.append("  reasoning: true")
-        extra.append("  start_in_reasoning: auto")
+        extra.append(f"  start_in_reasoning: {start_in_reasoning}")
         extra.append("  reasoning_start_token: \" thinking\"")
         extra.append("  reasoning_end_token: \"</think>\"")
         extra.append("  template_vars_default:")
         extra.append("    enable_thinking: true")
     if tool_format:
         extra.append(f"  tool_format: {tool_format}")
+    reserve = f"  autosplit_reserve: [{autosplit_reserve}]\n" if autosplit_reserve else "  autosplit_reserve: [192]\n"
     yml = f"""network:
   host: 0.0.0.0
   port: 5000
@@ -125,12 +136,11 @@ model:
   model_name: {model_name}
   backend: exllamav3
   max_seq_len: {ctx}
-  cache_size: {ctx}
+  cache_size: {cache_size}
   cache_mode: {cache_mode}
   tensor_parallel: false
   gpu_split_auto: true
-  autosplit_reserve: [192]
-  chunk_size: 2048
+{reserve}  chunk_size: 2048
   output_chunking: true
   max_batch_size: {max_batch_size}
 {chr(10).join(extra) + chr(10) if extra else ""}
@@ -170,6 +180,13 @@ def main():
     parser.add_argument("--tool-format", help="TabbyAPI tool_format, e.g. qwen3_coder")
     parser.add_argument("--draft-mode", default="disabled", choices=("disabled", "model", "mtp", "ngram"))
     parser.add_argument("--max-batch-size", type=int, default=2)
+    parser.add_argument("--start-in-reasoning", default="auto", choices=("auto", "always", "never"),
+                        help="always for Qwen3.8: its template opens  thinking before generation")
+    parser.add_argument("--vision-offload", action="store_true",
+                        help="keep vision weights in pinned host RAM when the tower does not fit")
+    parser.add_argument("--autosplit-reserve", type=int, help="MB reserved per GPU during autosplit")
+    parser.add_argument("--cache-headroom", type=int, default=1024,
+                        help="extra KV tokens so a window-filling request still has pages")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     if not re.search(r"@sha256:[0-9a-f]{64}$", args.image):
@@ -191,7 +208,9 @@ def main():
     ensure_asset(asset_id, served, args.ctx, args.cache,
                  f"TabbyAPI server configuration for {served} at {args.ctx} tokens with {args.cache} cache; bridge networking; mounted at /app/config.yml.",
                  vision=args.vision, reasoning=args.reasoning, tool_format=args.tool_format,
-                 draft_mode=args.draft_mode, max_batch_size=args.max_batch_size)
+                 draft_mode=args.draft_mode, max_batch_size=args.max_batch_size,
+                 start_in_reasoning=args.start_in_reasoning, vision_offload=args.vision_offload,
+                 autosplit_reserve=args.autosplit_reserve, cache_headroom=args.cache_headroom)
     recipe_id = args.id or f"{model_slug}-exl3-{bpw_slug}-{hardware_slug(args.hardware)}-tabbyapi-tp1"
     path = REG / "recipe" / f"{recipe_id}.json"
     if path.exists() and not args.force:
