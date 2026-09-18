@@ -20,17 +20,18 @@ model:
   model_name: Qwen3.8-27B-EXL3-SC4bpw-H5
   backend: exllamav3
   max_seq_len: 262144
-  cache_size: 262144
+  cache_size: 263168
   cache_mode: Q4
   tensor_parallel: false
   gpu_split_auto: true
-  autosplit_reserve: [192]
+  autosplit_reserve: [512]
   chunk_size: 2048
   output_chunking: true
   max_batch_size: 2
   vision: true
+  vision_offload: true
   reasoning: true
-  start_in_reasoning: auto
+  start_in_reasoning: always
   reasoning_start_token: " thinking"
   reasoning_end_token: "</think>"
   template_vars_default:
