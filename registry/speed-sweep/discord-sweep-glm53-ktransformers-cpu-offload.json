@@ -1,0 +1,113 @@
+{
+  "accepted_at": null,
+  "facts": {
+    "source": {
+      "note": "Benchmark table published in the poster's repository; TTFT in milliseconds here, seconds in the source.",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "upstream-repository",
+            "publisher": "CallumDS",
+            "url": "https://github.com/CallumDS/GLM-5.3-Flash-FP8-SGLang-CPU-Offloading-1"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "id": "discord-sweep-glm53-ktransformers-cpu-offload",
+  "measured_at": "2026-08-27T00:00:00Z",
+  "metrics": {
+    "concurrency": 1,
+    "inference_engine_version": "sglang PR#36507 + ktransformers main",
+    "max_context_tokens": 900000
+  },
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "upstream-repository",
+        "publisher": "CallumDS",
+        "url": "https://github.com/CallumDS/GLM-5.3-Flash-FP8-SGLang-CPU-Offloading-1"
+      }
+    ]
+  },
+  "recipe_id": "discord-glm-5-3-flash-fp8-rtx-pro-5000-72gb-sglang-kt-offload-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 8229,
+      "decode_tok_s": 11.68,
+      "label": "8Kmpt, 128 generated tokens, streamed",
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 306.9,
+      "samples": null,
+      "status": "reported",
+      "total_seconds": 37.77,
+      "ttft_ms_p50": 26810.0
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32801,
+      "decode_tok_s": 11.68,
+      "label": "32Kmpt, 128 generated tokens, streamed",
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 551.9,
+      "samples": null,
+      "status": "reported",
+      "total_seconds": 70.39,
+      "ttft_ms_p50": 59430.0
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 64022,
+      "decode_tok_s": 12.49,
+      "label": "64Kmpt, 128 generated tokens, streamed",
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 539.8,
+      "samples": null,
+      "status": "reported",
+      "total_seconds": 128.9,
+      "ttft_ms_p50": 118650.0
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 127995,
+      "decode_tok_s": 12.46,
+      "label": "128Kmpt, 128 generated tokens, streamed",
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 510.8,
+      "samples": null,
+      "status": "reported",
+      "total_seconds": 260.83,
+      "ttft_ms_p50": 250550.0
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 255950,
+      "decode_tok_s": 13.11,
+      "label": "256Kmpt, 128 generated tokens, streamed",
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 468.0,
+      "samples": null,
+      "status": "reported",
+      "total_seconds": 556.5,
+      "ttft_ms_p50": 546740.0
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "kind": "upstream-repository",
+    "publisher": "CallumDS",
+    "url": "https://github.com/CallumDS/GLM-5.3-Flash-FP8-SGLang-CPU-Offloading-1"
+  }
+}
