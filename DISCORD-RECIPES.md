@@ -191,7 +191,10 @@ and the `#kimi-k2x`, `#minimax-*`, `#xiaomi-mimo` threads whose compose files ar
   Every record is `candidate` for exactly that reason; `scripts/trust.py` agrees.
 - Numbers are the posters' own, on their own rigs, with their own clocks; row labels keep their wording and the message link.
   They were not re-measured, and the memory arithmetic behind them was not recomputed per rig.
-- Flags were kept verbatim from the messages; they were not diffed against each pinned engine version's `--help`,
-  because most of these images carry forks (`B12X_*`, `VLLM_EXL3_*`) whose flag sets are not in any public tree yet.
+- Per-flag verification against the pinned engine version was NOT performed. We tried matching launch flags against
+  the engines' public sources and the check is not sound: vLLM defines its OpenAI-server flags across several files, and
+  SGLang generates them from a dataclass, so absence from one file proves nothing. Most of these images also carry forks
+  (`B12X_*`, `VLLM_EXL3_*`, DSpark/DFlash options) whose flag sets are not public. Flags are therefore kept verbatim with
+  the message as their source and nothing more is claimed about them.
 - The nine VIP/moderation channels were unreachable (403) and are not represented.
 
