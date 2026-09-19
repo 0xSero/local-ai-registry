@@ -37,25 +37,6 @@
         ]
       },
       "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "flags matched against the engine's own argument definitions on main; not-found ones are fork-only options",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "upstream-source",
-            "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/server_args.py"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "upstream-source",
-            "url": "https://raw.githubusercontent.com/sgl-project/sglang/main/python/sglang/srt/managers/scheduler.py"
-          }
-        ]
-      },
-      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -309,7 +290,13 @@
     "model_resolution": "prose-repository-mentioned",
     "notes": [
       "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
-    ]
+    ],
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    }
   },
   "model_instance_id": "0xsero-glm-5-2-nvfp4-reap-469b--nvfp4-reap",
   "provenance": {
