@@ -206,7 +206,6 @@ They are the Contributor & VIP category plus `moderation`. If recipes were poste
 | `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp8-896987` | lukealonso-glm-5-nvfp4--nvfp4 | rtx-pro-6000-blackwell-96gb 8 | sglang |  | [msg](https://discord.com/channels/1466898002793857221/1480577372909605004/1480577378290896987) |
 | `discord-serve-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-873357` | lukealonso-mimo-v2-5-nvfp4--nvfp4 | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1498377952981946548/1505012495444873357) |
 | `discord-serve-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-409898` | lukealonso-minimax-m2-7-nvfp4--nvfp4 | rtx-pro-6000-blackwell-96gb 2 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898) |
-| `discord-serve-madeby561-glm-5-2-nvfp4-reap-504b-term-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-897155` | madeby561-glm-5-2-nvfp4-reap-504b-term--nvfp4 | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1476749439065653353/1518089408320897155) |
 | `discord-serve-minimaxai-minimax-m2-7-ud-iq4-xs-dgx-spark-gb10-128gb-tp4-065991` | minimaxai-minimax-m2-7--ud-iq4-xs | dgx-spark-gb10-128gb 4 | sglang |  | [msg](https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991) |
 | `discord-serve-minimaxai-minimax-m2-7-ud-iq4-xs-rtx-pro-6000-blackwell-96gb-tp0-713085` | minimaxai-minimax-m2-7--ud-iq4-xs | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1484016763124453456/1502422610531713085) |
 | `discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwell-96gb-tp0-519569` | moonshotai-kimi-k2-5--int4 | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1471459991734059050/1476916698035519569) |
@@ -219,7 +218,6 @@ They are the Contributor & VIP category plus `moderation`. If recipes were poste
 | `discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp8-889919` | nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4 | rtx-pro-6000-blackwell-96gb 8 | sglang | 262144 | [msg](https://discord.com/channels/1466898002793857221/1471459991734059050/1480288802864889919) |
 | `discord-serve-nvidia-qwen3-6-27b-nvfp4-nvfp4-dgx-spark-gb10-128gb-tp0-059560` | nvidia-qwen3-6-27b-nvfp4--nvfp4 | dgx-spark-gb10-128gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1525278827822059560) |
 | `discord-serve-qwen-qwen3-5-27b-q4-k-xl-rtx-5090-32gb-tp2-110757` | qwen-qwen3-5-27b--q4-k-xl | rtx-5090-32gb 2 | vllm | 262144 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1487236820487110757) |
-| `discord-serve-qwen-qwen3-5-35b-a3b-q4-k-xl-b200-180gb-tp0-551686` | qwen-qwen3-5-35b-a3b--q4-k-xl | b200-180gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686) |
 | `discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwell-96gb-tp0-955571` | qwen-qwen3-6-27b-fp8--fp8--33492 | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1498365802942955571) |
 | `discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwell-96gb-tp1-300718` | qwen-qwen3-6-27b-fp8--fp8--33492 | rtx-pro-6000-blackwell-96gb 1 | vllm | 262144 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718) |
 | `discord-serve-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp0-329432` | qwen-qwen3-6-27b--fp8 | rtx-pro-6000-blackwell-96gb 1 | vllm |  | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432) |
@@ -251,7 +249,7 @@ Records the registry already had that this pass added Discord evidence or notes 
 
 ## Numbers reported in Discord
 
-`55` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
+`56` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
 poster, and the poster's own wording for the row it measures. They are not acceptance evidence (`accepted_at` is null), so the
 recipes they hang off stay `candidate`.
 
@@ -267,10 +265,10 @@ recipes they hang off stay `candidate`.
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-641376` | 2 |
 | `glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4` | 2 |
 | `discord-reported-ds41-flash-r37-rtxpro6000-ws-tp4` | 1 |
+| `discord-nvidia-glm-5-2-nvfp4-nvfp4-dgx-spark-gb10-128gb-tp1-531335` | 1 |
 | `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-489643` | 1 |
 | `discord-reported-ds41-flash-r36-rtxpro6000-ws-tp4` | 1 |
 | `qwen3-8-27b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1` | 1 |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-132362` | 1 |
 
 ## Prod checks (run on this machine, no GPUs touched)
 
@@ -325,6 +323,47 @@ Those messages are all in the dump; the highest-value clusters to encode next ar
 Gilded Gnosis / Infernal Invocation families (ds4-flash and glm53 channels), the Qwen3.5/3.6 launch zoo in `#qwen-other`,
 and the `#kimi-k2x`, `#minimax-*`, `#xiaomi-mimo` threads whose compose files are on disk.
 
+## What is left, measured
+
+`accounting.py` walks the dump and reports (a) the skip census summed over every extraction pass and (b) how many
+launch-shaped messages are still without a record, split by which facts the post itself supplies.
+
+| launch-shaped messages with... | count | what it means |
+|---|---|---|
+| repo=False,hw=False,image=False | 1393 | prose that mentions a flag, benchmark output, or a fragment: no checkpoint, no rig, no image in the post |
+| repo=False,hw=False,image=True | 262 | an image tag but neither checkpoint nor rig |
+| repo=False,hw=True,image=False | 157 | a rig but no checkpoint and no image |
+| repo=False,hw=True,image=True | 74 | rig and image, checkpoint still only on the poster's disk |
+| repo=True,hw=False,image=True | 45 | checkpoint and image, rig never stated by that author |
+| repo=True,hw=False,image=False | 43 | checkpoint only |
+| repo=True,hw=True,image=False | 4 | checkpoint and rig, no image (and no fenced command to quote) |
+| repo=True,hw=True,image=True | 1 | complete, and already represented |
+
+Residual total: **1979** launch-shaped messages. Represented by a record: **188**.
+
+Skip census summed over the passes (a message can appear under several reasons):
+
+| reason | count |
+|---|---|
+| no-numbers | 237588 |
+| no-repo | 3670 |
+| author-named-several-rigs | 1716 |
+| no-hardware | 1303 |
+| several-rigs-in-window | 1086 |
+| no-model-repository | 463 |
+| no-image | 221 |
+| no-hardware-stated | 83 |
+| duplicate | 76 |
+| ambiguous | 26 |
+
+## Precision handling
+
+Two records were removed after review because their source message is client code or a benchmark monitor rather
+than a launch, and three earlier ones that merely asked for a command were removed the same way. A stricter
+automated gate (require a whole command in one fence) was tested and rejected: it also discards real posts whose
+command is split across lines or shown as a compose fragment, so the branch keeps the message as the audit trail
+for every record instead.
+
 ## Counts
 
 | thing | count |
@@ -333,9 +372,9 @@ and the `#kimi-k2x`, `#minimax-*`, `#xiaomi-mimo` threads whose compose files ar
 | channels in guild / read | 111 / 88 |
 | threads enumerated / scraped | 471 / 508 |
 | text attachments downloaded | 931 |
-| recipes added (this branch) | 191 |
+| recipes added (this branch) | 189 |
 | of which executable launches | 122 |
-| speed sweeps added | 55 |
+| speed sweeps added | 56 |
 | existing records extended | 2 |
 
 ## What is not verified
