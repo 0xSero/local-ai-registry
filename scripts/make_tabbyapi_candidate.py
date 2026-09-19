@@ -26,8 +26,11 @@ from pathlib import Path
 
 REG = Path(__file__).resolve().parent.parent / "registry"
 NOW = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-TABBY_IMAGE = "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1"
-TABBY_ENGINE = {"graph_mode": "piecewise", "name": "tabbyapi", "version": "0.0.1+e632af41"}
+TABBY_IMAGE = "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef"
+# The cu13 image built 2026-09-13 bundles tabbyAPI 53da7919 and ExLlamaV3
+# v1.5.0+cu132.torch2.11.0 (its pyproject `cu13` extra), verified from the OCI
+# config and the upstream pyproject on 2026-09-18.
+TABBY_ENGINE = {"graph_mode": "piecewise", "name": "tabbyapi", "version": "0.0.1+53da7919"}
 SOURCE = {"kind": "normalized-recipe", "url": "https://github.com/0xSero/local-ai-registry", "captured_at": NOW}
 
 
@@ -49,8 +52,16 @@ def ensure_instance(repo, branch, model_id, served_name):
     revision = info["sha"]
     size_gb = round(sum(s.get("size") or 0 for s in info["siblings"]) / 1073741824, 2)
     bpw = re.search(r"(\d+(?:\.\d+)?)bpw", branch)
-    precision = f"{float(bpw.group(1)):g} bpw" if bpw else branch
-    instance_id = f"{slug(repo)}--{slug(precision)}"
+    if re.fullmatch(r"[0-9.]+bpw", branch):
+        precision = f"{float(bpw.group(1)):g} bpw" if bpw else branch
+        instance_id = f"{slug(repo)}--{slug(precision)}"
+    else:
+        # Self-calibrated branches (SC_4.00bpw_H5) and their quantized-vision
+        # twins (SC_4.00bpw_H5_V6) are distinct artifacts from the plain branch
+        # at the same bpw, with their own revision and byte count. Keeping the
+        # branch in the identity stops a recipe pinning the wrong one.
+        precision = branch.replace("_", " ")
+        instance_id = f"{slug(repo)}--{slug(branch)}"
     path = REG / "model-instance" / f"{instance_id}.json"
     api = f"https://huggingface.co/api/models/{repo}"
     record = {
@@ -78,7 +89,31 @@ def ensure_instance(repo, branch, model_id, served_name):
     return record
 
 
-def ensure_asset(asset_id, model_name, ctx, cache_mode, purpose):
+def ensure_asset(asset_id, model_name, ctx, cache_mode, purpose, vision=False, reasoning=False,
+                 tool_format=None, draft_mode="disabled", max_batch_size=2,
+                 start_in_reasoning="auto", vision_offload=False, autosplit_reserve=None,
+                 cache_headroom=1024, chunk_size=2048):
+    # ExLlamaV3 refuses a request whose prompt plus output needs more pages than
+    # the cache holds, and it counts in whole 256-token pages. With
+    # cache_size == max_seq_len a request that fills the window asks for one page
+    # more than exists ("Job requires 1025 pages (only 1024 available)"), so the
+    # cache is sized above the window instead of exactly at it.
+    cache_size = ctx + cache_headroom
+    extra = []
+    if vision:
+        extra.append("  vision: true")
+        if vision_offload:
+            extra.append("  vision_offload: true")
+    if reasoning:
+        extra.append("  reasoning: true")
+        extra.append(f"  start_in_reasoning: {start_in_reasoning}")
+        extra.append("  reasoning_start_token: \" thinking\"")
+        extra.append("  reasoning_end_token: \"</think>\"")
+        extra.append("  template_vars_default:")
+        extra.append("    enable_thinking: true")
+    if tool_format:
+        extra.append(f"  tool_format: {tool_format}")
+    reserve = f"  autosplit_reserve: [{autosplit_reserve}]\n" if autosplit_reserve else "  autosplit_reserve: [192]\n"
     yml = f"""network:
   host: 0.0.0.0
   port: 5000
@@ -101,17 +136,16 @@ model:
   model_name: {model_name}
   backend: exllamav3
   max_seq_len: {ctx}
-  cache_size: {ctx}
+  cache_size: {cache_size}
   cache_mode: {cache_mode}
   tensor_parallel: false
   gpu_split_auto: true
-  autosplit_reserve: [192]
-  chunk_size: 2048
+{reserve}  chunk_size: {chunk_size}
   output_chunking: true
-  max_batch_size: 2
-
+  max_batch_size: {max_batch_size}
+{chr(10).join(extra) + chr(10) if extra else ""}
 draft_model:
-  draft_mode: disabled
+  draft_mode: {draft_mode}
 
 sampling:
   override_preset:
@@ -141,6 +175,20 @@ def main():
     parser.add_argument("--id")
     parser.add_argument("--image", default=TABBY_IMAGE, help="digest-pinned image; default is the upstream TabbyAPI image")
     parser.add_argument("--image-provenance", help="JSON: {kind, source, dockerfile, workflow, attestation} for a self-built image")
+    parser.add_argument("--vision", action="store_true", help="claim and enable the vision tower")
+    parser.add_argument("--reasoning", action="store_true", help="enable the reasoning parser and default thinking")
+    parser.add_argument("--tool-format", help="TabbyAPI tool_format, e.g. qwen3_coder")
+    parser.add_argument("--draft-mode", default="disabled", choices=("disabled", "model", "mtp", "ngram"))
+    parser.add_argument("--max-batch-size", type=int, default=2)
+    parser.add_argument("--start-in-reasoning", default="auto", choices=("auto", "always", "never"),
+                        help="always for Qwen3.8: its template opens  thinking before generation")
+    parser.add_argument("--vision-offload", action="store_true",
+                        help="keep vision weights in pinned host RAM when the tower does not fit")
+    parser.add_argument("--autosplit-reserve", type=int, help="MB reserved per GPU during autosplit")
+    parser.add_argument("--chunk-size", type=int, default=2048,
+                        help="prefill chunk size; lower it when a tight card OOMs on prefill activations")
+    parser.add_argument("--cache-headroom", type=int, default=1024,
+                        help="extra KV tokens so a window-filling request still has pages")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     if not re.search(r"@sha256:[0-9a-f]{64}$", args.image):
@@ -152,14 +200,20 @@ def main():
     if not (REG / "hardware" / f"{args.hardware}.json").exists():
         raise SystemExit(f"no hardware record {args.hardware}")
     bpw = re.search(r"(\d+(?:\.\d+)?)bpw", args.branch)
-    bpw_slug = f"{float(bpw.group(1)):g}bpw" if bpw else slug(args.branch)
+    bbq = re.fullmatch(r"[0-9.]+bpw", args.branch)
+    bpw_slug = f"{float(bpw.group(1)):g}bpw" if (bpw and bbq) else slug(args.branch)
     served = args.served_name or f"{args.repo.split('/')[-1].replace('-exl3', '')}-EXL3-{bpw_slug}"
     instance = ensure_instance(args.repo, args.branch, args.model, served)
     model_slug = slug(args.repo.split("/")[-1].replace("-exl3", "")).replace("-", "")
     ctx_slug = f"{args.ctx // 1024}k"
     asset_id = f"{model_slug}-exl3-{bpw_slug}-{ctx_slug}-{args.cache.lower()}-tabbyapi-config"
     ensure_asset(asset_id, served, args.ctx, args.cache,
-                 f"TabbyAPI server configuration for {served} at {args.ctx} tokens with {args.cache} cache; bridge networking; mounted at /app/config.yml.")
+                 f"TabbyAPI server configuration for {served} at {args.ctx} tokens with {args.cache} cache; bridge networking; mounted at /app/config.yml.",
+                 vision=args.vision, reasoning=args.reasoning, tool_format=args.tool_format,
+                 draft_mode=args.draft_mode, max_batch_size=args.max_batch_size,
+                 start_in_reasoning=args.start_in_reasoning, vision_offload=args.vision_offload,
+                 autosplit_reserve=args.autosplit_reserve, cache_headroom=args.cache_headroom,
+                 chunk_size=args.chunk_size)
     recipe_id = args.id or f"{model_slug}-exl3-{bpw_slug}-{hardware_slug(args.hardware)}-tabbyapi-tp1"
     path = REG / "recipe" / f"{recipe_id}.json"
     if path.exists() and not args.force:
@@ -169,7 +223,8 @@ def main():
         "schema_version": "local-ai-registry/v1", "id": recipe_id, "recipe_source": "0xsero", "status": "candidate",
         "model_instance_id": instance["id"], "hardware_id": args.hardware, "hardware_count": 1,
         "engine": TABBY_ENGINE,
-        "capabilities": {"chat": True, "reasoning": None, "tools": None, "vision": False},
+        "capabilities": {"chat": True, "reasoning": True if args.reasoning else None,
+                        "tools": True if args.tool_format else None, "vision": bool(args.vision)},
         "serving": {"kv_cache_tokens": args.ctx, "max_concurrency": 2, "max_context_tokens": args.ctx, "tensor_parallel": 1},
         "launch": {"kind": "reference", "container": {"state": "none", "runtime": None, "image": None, "digest": None, "compose_file": None,
                                                        "reason": "draft-pending-acceptance", "captured_at": NOW, "source": [SOURCE]}},
@@ -180,7 +235,8 @@ def main():
             "mounts": [{"read_only": True, "source": weights_dir, "target": "/workspace/models"},
                        {"read_only": True, "source": f"asset/{asset_id}.yml", "target": "/app/config.yml"}],
             "host_port": 5000, "container_port": 5000, "shm_size": "8g",
-            "synthesized": {"template": "tabbyapi-exl3-bridge-v1", "generated_at": NOW, "image_provenance": "gemma-4-12b-it-exl3-4bpw-rtx3090-tabbyapi-tp1"},
+            "synthesized": {"template": "tabbyapi-exl3-bridge-v1", "generated_at": NOW,
+                            "image_provenance": f"upstream:{args.image.split('@')[0]}"},
         },
         "speed_sweep_ids": [],
         "metadata": {"weights_subdir": served, **({"image_provenance": provenance} if provenance else {})},
