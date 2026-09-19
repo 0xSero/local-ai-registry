@@ -55,6 +55,7 @@ They are the Contributor & VIP category plus `moderation`. If recipes were poste
 | `discord-ds41-flash-1m-context-dspark-docker-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be | 1048576 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550426993453965384) |
 | `discord-ds41-flash-jovian-judgement-beta-docker-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856) |
 | `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | localinferencelab/vllm:jovian-judgement-community-20 | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1548872593522565164) |
+| `discord-glm-5-3-flash-fp8-rtx-pro-5000-72gb-sglang-kt-offload-tp1` | zai-org-glm-5-3-flash-fp8--unpinned | rtx-pro-5000-blackwell-72gb 1 | sglang PR #36507 (0b9c38484) with ktransformers main | 900000 | [msg](https://discord.com/channels/1466898002793857221/1542346271141134487/1542346271141134487) |
 | `discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0` | lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:jovian-judgement-vllm08e1c7d-b12xd0 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1545881440439246879) |
 | `discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0-950730` | lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730) |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | localinferencelab/vllm:jovian-judgement-community-20 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368) |
@@ -103,7 +104,7 @@ Records the registry already had that this pass added Discord evidence or notes 
 
 ## Numbers reported in Discord
 
-`48` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
+`56` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
 poster, and the poster's own wording for the row it measures. They are not acceptance evidence (`accepted_at` is null), so the
 recipes they hang off stay `candidate`.
 
@@ -113,16 +114,16 @@ recipes they hang off stay `candidate`.
 | `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-ws-tp4` | 5 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0` | 4 |
 | `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-207424` | 3 |
+| `discord-lil-willfalco-glm-5-2-exl3-tr3-3-36bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 3 |
 | `lfm25-26b-bf16-rtxpro4500-sglang-tp1` | 3 |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-250178` | 2 |
+| `discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 2 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-641376` | 2 |
 | `glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4` | 2 |
 | `discord-reported-ds41-flash-r37-rtxpro6000-ws-tp4` | 1 |
 | `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-489643` | 1 |
 | `discord-reported-ds41-flash-r36-rtxpro6000-ws-tp4` | 1 |
+| `qwen3-8-27b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1` | 1 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-132362` | 1 |
-| `glm52-exl3-rtxpro6000-vllm-tp4` | 1 |
-| `discord-ds41-flash-jovian-judgement-beta-docker-rtxpro6000-ws-tp4` | 1 |
 
 ## Prod checks (run on this machine, no GPUs touched)
 
@@ -180,9 +181,9 @@ and the `#kimi-k2x`, `#minimax-*`, `#xiaomi-mimo` threads whose compose files ar
 | channels in guild / read | 111 / 88 |
 | threads enumerated / scraped | 471 / 508 |
 | text attachments downloaded | 931 |
-| recipes added (this branch) | 55 |
+| recipes added (this branch) | 56 |
 | of which executable launches | 47 |
-| speed sweeps added | 48 |
+| speed sweeps added | 56 |
 | existing records extended | 2 |
 
 ## What is not verified
