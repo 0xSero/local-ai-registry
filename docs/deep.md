@@ -27,6 +27,7 @@ A `launch` is data that is executable in effect, so the rules are strict:
 - No shell strings. `arguments` is an argv array; `steps` is a list of argv arrays. A `&&` chain is an error.
 - `reference` launches must not carry contract fields (`image`, `arguments`, ports). Their observed command may appear tokenized under `metadata.<source>.tokenized` with `fidelity: faithful | lossy`; lossy tokenizations never publish argv.
 - Validated docker launches pin `image` by digest, name `accelerator_backend`, both ports, and mounts with `source` and `target`. `local/` images are unpullable and refused.
+- Validated host launches are FastFlowLM on AMD NPU: engine `flm`, no docker image, `container_port`, `accelerator_backend: amd-npu`. The FLM tag is the model instance `served_name`.
 - Forbidden anywhere in a validated launch: `--enforce-eager`, `disable-cuda-graph`, `disable-prefill-cuda-graph`.
 - Recommended launches additionally use bridge networking and no host IPC. Clients refuse host networking, extra capabilities, weakened seccomp, and mounts outside their owned roots; the registry does not carry those.
 - `draft_launch` is allowed only on candidates and must already be digest-pinned. It is the promotion pipeline's staging area (`synthesize_launches.py`).

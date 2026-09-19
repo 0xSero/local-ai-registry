@@ -3,7 +3,7 @@
 # All Python scripts are stdlib-only (Python >= 3.10). Node is needed for
 # tests, typecheck, and the site. `make check` is what CI runs.
 
-.PHONY: check format index types validate plugin-gate test typecheck build py-tests trust
+.PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check test typecheck build py-tests trust
 
 ## The full verification suite — identical to CI.
 check: format-check validate plugin-gate test typecheck types-check index-check
@@ -43,9 +43,16 @@ types-check:
 validate:
 	python3 scripts/validate_registry.py
 
-## Omarchy local-ai plugin gate over every validated Docker recipe.
+## Omarchy local-ai plugin gate over every validated docker or host/flm recipe.
 plugin-gate:
 	python3 scripts/check_plugin_gate.py
+
+## The recipe file the Omarchy plugin vendors and fetches (plugin/recipes.json); CI requires it current.
+plugin-recipes:
+	python3 scripts/export_plugin_recipes.py --out plugin/recipes.json
+
+plugin-recipes-check: plugin-recipes
+	git diff --exit-code plugin/recipes.json
 
 ## Node test suite (includes ajv validation of every record).
 test:

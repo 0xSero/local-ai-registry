@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Emit the recipe file the Omarchy plugin vendors.
 
-One entry per hardware id: the single validated, recommended, single-GPU
-docker recipe for that card, joined flat with its model instance, model,
+One entry per hardware id: the single validated, recommended, single-card
+docker or host/flm recipe for that accelerator, joined flat with its model instance, model,
 hardware match data, and acceptance speed — plus every other validated
-docker recipe for that card that passes the plugin's gate, exported as
+exportable recipe for that card that passes the plugin's gate, exported as
 `recipes` alternates (tensor parallelism becomes the card claim). The
 plugin vendors this file and can refresh the published copy. It re-gates
 every entry on load.
@@ -57,6 +57,7 @@ def min_driver(image):
 NORM = re.compile(r"nvidia|geforce|intel|amd|radeon|generation|workstation|edition|[0-9]+gb|[^a-z0-9]")
 DIGEST_PINNED = re.compile(r"@sha256:[0-9a-f]{64}$")
 REVISION_PINNED = re.compile(r"^[0-9a-f]{40,64}$")
+FLM_TAG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]*$")
 FORBIDDEN_ARGUMENT = re.compile(r"enforce.eager|disable.?cuda.?graph", re.IGNORECASE)
 PLACEHOLDER_OK = re.compile(r"^\$\{(MODEL_ROOT|CACHE_ROOT)\}$")
 
@@ -75,11 +76,31 @@ def card_count(recipe):
     return n if n > 1 else None
 
 
+def plugin_exportable(recipe):
+    launch = recipe.get("launch") or {}
+    kind = launch.get("kind")
+    engine = (recipe.get("engine") or {}).get("name")
+    if recipe.get("status") != "validated":
+        return False
+    if kind == "docker":
+        return True
+    return kind == "host" and engine == "flm"
+
+
 def plugin_refusal(recipe, instance):
     """Mirror the plugin's gate (lib/recipes.sh gate_reason): only recipes the plugin
     would actually launch ship as alternates. Returns a refusal string or None."""
     launch = recipe.get("launch") or {}
-    if not DIGEST_PINNED.search(launch.get("image") or ""):
+    kind = launch.get("kind") or "docker"
+    if kind == "host":
+        if (recipe.get("engine") or {}).get("name") != "flm":
+            return "host recipes must use the flm engine"
+        tag = (instance or {}).get("served_name") or ""
+        if not FLM_TAG.fullmatch(tag):
+            return "invalid flm model tag"
+        if launch.get("image"):
+            return "host recipes must not pin a docker image"
+    elif not DIGEST_PINNED.search(launch.get("image") or ""):
         return "image is not digest-pinned"
     if not REVISION_PINNED.fullmatch((instance or {}).get("revision") or ""):
         return "model revision is not pinned"
@@ -124,11 +145,15 @@ def load(collection):
     return {p.stem: json.loads(p.read_text()) for p in (REG / collection).glob("*.json")}
 
 
-def registry_commit():
+def registry_stamp():
+    """(commit, ISO date) of the last commit that touched registry/, so regenerating on an unrelated
+    commit is a no-op and CI can require the committed export to be current."""
     try:
-        return subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        out = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%H %cI", "--", "registry"], capture_output=True, text=True, check=True).stdout.split()
+        when = dt.datetime.fromisoformat(out[1]).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return out[0], when
     except Exception:
-        return ""
+        return "", dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def speed_tps(sweeps, recipe):
@@ -144,24 +169,38 @@ def served_name(recipe, instance):
     arguments = (recipe.get("launch") or {}).get("arguments") or []
     if "--served-model-name" in arguments:
         return arguments[arguments.index("--served-model-name") + 1]
+    # llama.cpp reports the exact absolute path passed through -m as the model id.
+    # Preserve it so the plugin's readiness gate verifies the server it actually launched.
+    if "-m" in arguments:
+        model_path = arguments[arguments.index("-m") + 1]
+        if isinstance(model_path, str) and model_path.startswith("/"):
+            return model_path
     return instance.get("served_name") or instance.get("repository")
+
+
+def flm_tag(recipe, instance):
+    return (recipe.get("metadata") or {}).get("flm_tag") or instance.get("served_name") or ""
 
 
 def entry(recipe, instance, model, hardware, sweeps):
     launch = recipe["launch"]
     weights = instance.get("weights") or {}
+    engine = (recipe.get("engine") or {}).get("name")
+    model_block = {
+        "id": model["id"],
+        "name": model.get("name") or model["id"],
+        "repository": instance.get("repository"),
+        "revision": instance.get("revision"),
+        "servedName": served_name(recipe, instance),
+        "precision": weights.get("precision") or "?",
+        "sizeGb": weights.get("size_gb") or 0,
+    }
+    if engine == "flm":
+        model_block["tag"] = flm_tag(recipe, instance)
     return {
         "id": recipe["id"],
-        "model": {
-            "id": model["id"],
-            "name": model.get("name") or model["id"],
-            "repository": instance.get("repository"),
-            "revision": instance.get("revision"),
-            "servedName": served_name(recipe, instance),
-            "precision": weights.get("precision") or "?",
-            "sizeGb": weights.get("size_gb") or 0,
-        },
-        "engine": (recipe.get("engine") or {}).get("name"),
+        "model": model_block,
+        "engine": engine,
         "capabilities": recipe.get("capabilities") or {},
         "serving": {
             "ctxTokens": (recipe.get("serving") or {}).get("max_context_tokens") or 0,
@@ -169,7 +208,9 @@ def entry(recipe, instance, model, hardware, sweeps):
             "concurrency": (recipe.get("serving") or {}).get("max_concurrency") or 0,
         },
         "speed": {"tps": speed_tps(sweeps, recipe)},
-        "minDriver": min_driver(launch["image"]) if hardware.get("accelerator_backend") == "nvidia" else "",
+        "minDriver": min_driver(launch.get("image") or "") if hardware.get("accelerator_backend") == "nvidia" else "",
+        # no digest pins a host engine: the version it was validated on is the floor the plugin enforces
+        "minEngine": (recipe.get("engine") or {}).get("version") or "" if launch.get("kind") == "host" else "",
         "weights": {
             # where the plugin puts the download under a ${MODEL_ROOT} mount; TabbyAPI loads <mount>/<model_name>
             "subdir": (recipe.get("metadata") or {}).get("weights_subdir") or "",
@@ -179,7 +220,8 @@ def entry(recipe, instance, model, hardware, sweeps):
             "attestation": (launch.get("provenance") or {}).get("attestation"),
         },
         "launch": {
-            "image": launch["image"],
+            "kind": launch.get("kind") or "docker",
+            "image": launch.get("image") or "",
             "containerPort": launch.get("container_port"),
             "entrypoint": launch.get("entrypoint"),
             "arguments": launch.get("arguments") or [],
@@ -207,11 +249,10 @@ def main():
     eligible = {}
     by_hardware = {}
     for recipe in recipes.values():
-        launch = recipe.get("launch") or {}
-        if recipe.get("status") != "validated" or launch.get("kind") != "docker":
+        if not plugin_exportable(recipe):
             continue
-        by_hardware.setdefault(recipe["hardware_id"], []).append(recipe)
-        if recipe.get("recommended") and recipe.get("hardware_count", 1) == 1:
+        by_hardware.setdefault(recipe["hardware_id"], []).append(recipe)   # alternates may span several cards (`cards`)
+        if recipe.get("recommended") and recipe.get("hardware_count", 1) == 1:   # the recommendation is always a single-card recipe
             eligible.setdefault(recipe["hardware_id"], []).append(recipe)
 
     errors = []
@@ -274,10 +315,11 @@ def main():
                 if source.startswith("asset/"):
                     name = source[len("asset/"):]
                     assets[name] = (REG / "asset" / name).read_text()
+    stamp = registry_stamp()
     document = {
         "schemaVersion": SCHEMA,
-        "registryCommit": registry_commit(),
-        "generatedAt": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "registryCommit": stamp[0],
+        "generatedAt": stamp[1],
         "gateway": {"image": GATEWAY_IMAGE, "provenance": GATEWAY_PROVENANCE},
         "assets": assets,
         "hardware": out,
