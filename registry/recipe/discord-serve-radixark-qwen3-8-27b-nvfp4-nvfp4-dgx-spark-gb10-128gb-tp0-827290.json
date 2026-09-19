@@ -1,0 +1,100 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by the.only.zero",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "the.only.zero",
+            "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539702755755827290"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "the.only.zero",
+            "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539737069289476179"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-radixark-qwen3-8-27b-nvfp4-nvfp4-dgx-spark-gb10-128gb-tp0-827290",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "the.only.zero",
+          "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539702755755827290"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539702755755827290"
+  },
+  "metadata": {
+    "discord": {
+      "author": "the.only.zero",
+      "channel_id": "1534947474555539486",
+      "message_id": "1539702755755827290",
+      "posted_at": "2026-08-19T18:29:03.266000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539702755755827290"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": "``` python3 llm_decode_bench.py --port 30000 --model RadixArk/Qwen3.8-27B-NVFP4 --concurrency 1 --contexts 0 --skip-prefill --duration 30 --temperature 0 --coding-peak --coding-peak-temperature 0 ``` sustained decode (pad prompt, 30s): 117.7 tok/s (accept 2.05) coding peak (Sieve of Eratosthenes, 5 runs): median 243 tok/s (mean 248, max 304)",
+    "rig_resolution": {
+      "from_message": "1539737069289476179",
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "radixark-qwen3-8-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "the.only.zero",
+        "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539702755755827290"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "the.only.zero",
+        "url": "https://discord.com/channels/1466898002793857221/1534947474555539486/1539737069289476179"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

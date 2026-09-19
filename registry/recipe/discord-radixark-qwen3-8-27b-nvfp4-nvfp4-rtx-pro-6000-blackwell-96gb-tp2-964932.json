@@ -9,9 +9,23 @@
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": null
+    "version": "lmsysorg/sglang:qwen38-27b"
   },
   "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -20,7 +34,7 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
             "publisher": "r0kh0rd",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
           },
           {
             "captured_at": "2026-09-19T05:35:00Z",
@@ -40,7 +54,7 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
             "publisher": "r0kh0rd",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
           }
         ]
       },
@@ -54,7 +68,7 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
             "publisher": "r0kh0rd",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
           }
         ]
       },
@@ -68,47 +82,102 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
             "publisher": "r0kh0rd",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
           }
         ]
       },
       "state": "known"
     }
   },
-  "hardware_count": 1,
+  "hardware_count": 2,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
-  "id": "discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwell-96gb-tp1-300718",
+  "id": "discord-radixark-qwen3-8-27b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-964932",
   "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "RadixArk/Qwen3.8-27B-NVFP4",
+      "--tp",
+      "2",
+      "--disable-custom-all-reduce",
+      "--enable-symm-mem",
+      "--mem-fraction-static",
+      "0.75",
+      "--attention-backend",
+      "flashinfer",
+      "--chunked-prefill-size",
+      "2048",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--mamba-full-memory-ratio",
+      "0.81",
+      "--context-length",
+      "262144",
+      "--max-running-requests",
+      "32",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--speculative-algorithm",
+      "EAGLE",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "2",
+      "--speculative-num-draft-tokens",
+      "6",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "```"
+    ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
       "digest": null,
-      "image": null,
-      "reason": "observed-command-in-a-discord-message",
-      "runtime": null,
+      "image": "lmsysorg/sglang:qwen38-27b",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
           "publisher": "r0kh0rd",
-          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
         }
       ],
-      "state": "none"
+      "state": "mutable"
     },
-    "kind": "reference",
-    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+    "container_port": 8000,
+    "environment": {
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_MIN_NCHANNELS": "8",
+      "NCCL_P2P_LEVEL": "SYS",
+      "NCCL_PROTO": "LL"
+    },
+    "host_port": 8000,
+    "image": "lmsysorg/sglang:qwen38-27b",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "r0kh0rd",
+      "source": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
+    }
   },
   "metadata": {
     "discord": {
       "author": "r0kh0rd",
-      "channel_id": "1473975364727476224",
-      "message_id": "1497343885167300718",
-      "posted_at": "2026-04-24T21:10:01.528000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+      "channel_id": "1528331644933767190",
+      "message_id": "1539724342965964932",
+      "posted_at": "2026-08-19T19:54:50.058000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
     },
     "model_resolution": "explicit",
-    "observed_command": "Hey all. I see lots of experiments here trying to get the best possible token generation throughput, but has anyone tried running Qwen3.6-27B for a few hours with OpenCode specifically? I have been fighting all kinds of tool call parsing issues. Here's the latest vLLM command I am using: ``` vllm serve -O3 --model Qwen/Qwen3.6-27B-FP8 --served-model-name qwen3.6-27b-fp8 --tensor-parallel-size 1 --gpu-memory-utilization 0.90 --max-model-len 262144 --max-num-seqs 128 --max-num-batched-tokens 32758 --max-cudagraph-capture-size 256 --block-size 32 --enable-auto-tool-choice --reasoning-parser qwen3 --tool-call-parser qwen3_coder --chat-template /chat-templates/qwen3.5-enhanced.jinja --enable-prefix-caching --async-scheduling --attention-backend flashinfer --load-format instanttensor --default-chat-template-kwargs.preserve_thinking true --override-generation-config.temperature 0.6 --override-generation-config.top_p 0.95 --override-generation-config.top_k 20 --override-generation-config.min_p 0.0 --override-generation-config.repetition_penalty 1.0 --override-generation-config.min_new_tokens 4 --speculative-config.method mtp --speculative-config.num_speculative_tokens 3 --speculative-config.rejection_sample_method probabilistic ``` (Will add more details, don't have Nitro, can't post longer messages).",
+    "observed_command": null,
     "rig_resolution": {
       "from_message": "1542918605145116842",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
@@ -116,7 +185,7 @@
       "scope": "author"
     }
   },
-  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8--33492",
+  "model_instance_id": "radixark-qwen3-8-27b-nvfp4--nvfp4",
   "provenance": {
     "captured_at": "2026-09-19T05:35:00Z",
     "sources": [
@@ -124,7 +193,7 @@
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
         "publisher": "r0kh0rd",
-        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539724342965964932"
       },
       {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -137,9 +206,9 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "max_concurrency": 128,
+    "max_concurrency": 32,
     "max_context_tokens": 262144,
-    "tensor_parallel": 1
+    "tensor_parallel": 2
   },
   "speed_sweep_ids": [],
   "status": "candidate"

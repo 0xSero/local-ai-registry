@@ -5,11 +5,11 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving launch posted in the Local Inference Lab Discord by .benchmade",
+  "description": "Serving launch posted in the Local Inference Lab Discord by mountains1605",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": "repne/vllm:v1"
+    "version": "repne/vllm"
   },
   "facts": {
     "launch.image": {
@@ -19,8 +19,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
           }
         ]
       },
@@ -33,14 +33,14 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
           },
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502786042938392609"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1476745385904177244/1497461916531036261"
           }
         ]
       },
@@ -53,8 +53,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
           }
         ]
       },
@@ -67,8 +67,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
           }
         ]
       },
@@ -81,8 +81,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": ".benchmade",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+            "publisher": "mountains1605",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
           }
         ]
       },
@@ -91,28 +91,29 @@
   },
   "hardware_count": 1,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
-  "id": "discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-484575",
+  "id": "discord-z-lab-qwen3-6-27b-dflash-q4-0-rtx-pro-6000-blackwell-96gb-tp1-948414",
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
       "-O3",
       "--model",
-      "Qwen/Qwen3.6-27B",
+      "/model",
       "--served-model-name",
       "Qwen3.6-27B",
+      "--port",
+      "1234",
       "--tensor-parallel-size",
       "1",
       "--gpu-memory-utilization",
-      "0.88",
+      "0.80",
       "--max-model-len",
-      "15000",
+      "262144",
       "--max-num-seqs",
       "128",
       "--max-num-batched-tokens",
       "32768",
       "--max-cudagraph-capture-size",
       "256",
-      "--language-model-only",
       "--enable-auto-tool-choice",
       "--reasoning-parser",
       "qwen3",
@@ -124,82 +125,79 @@
       "--speculative-config.model",
       "z-lab/Qwen3.6-27B-DFlash",
       "--speculative-config.num_speculative_tokens",
-      "6",
-      "--speculative-config.use_local_argmax_reduction",
-      "true",
+      "8",
+      "--speculative-config.draft_sample_method",
+      "greedy",
       "--speculative-config.attention_backend",
       "flashinfer",
       "--attention-backend",
       "flashinfer",
-      "--default-chat-template-kwargs.preserve_thinking",
-      "true",
-      "```"
+      "--default-chat-template-kwargs.enable_thinking",
+      "true"
     ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
-      "digest": null,
-      "image": "repne/vllm:v1",
-      "reason": "only-a-mutable-tag-was-posted",
+      "digest": "sha256:2aa1fabfeb10d700e90e8d240247c8c383b6792fa126cecc0a6b72e2e1cf1f93",
+      "image": "repne/vllm@sha256:2aa1fabfeb10d700e90e8d240247c8c383b6792fa126cecc0a6b72e2e1cf1f93",
+      "reason": "image-pinned-in-message",
       "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
-          "publisher": ".benchmade",
-          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          "publisher": "mountains1605",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
         }
       ],
-      "state": "mutable"
+      "state": "digest-pinned"
     },
     "container_port": 8000,
     "environment": {
-      "HUGGING_FACE_HUB_TOKEN": "XXXXXXX",
-      "OMP_NUM_THREADS": "8",
-      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
-      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+      "HUGGING_FACE_HUB_TOKEN": "mytoken",
+      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0"
     },
     "host_port": 8000,
-    "image": "repne/vllm:v1",
+    "image": "repne/vllm@sha256:2aa1fabfeb10d700e90e8d240247c8c383b6792fa126cecc0a6b72e2e1cf1f93",
     "kind": "docker",
     "provenance": {
       "kind": "discord-message",
-      "publisher": ".benchmade",
-      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+      "publisher": "mountains1605",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
     }
   },
   "metadata": {
     "discord": {
-      "author": ".benchmade",
+      "author": "mountains1605",
       "channel_id": "1473975364727476224",
-      "message_id": "1502796035909484575",
-      "posted_at": "2026-05-09T22:14:55.561000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+      "message_id": "1511523879598948414",
+      "posted_at": "2026-06-03T00:16:15.652000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
     },
-    "model_resolution": "explicit",
+    "model_resolution": "prose-repository-mentioned",
     "observed_command": null,
     "rig_resolution": {
-      "from_message": "1502786042938392609",
+      "from_message": "1497461916531036261",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
       "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
       "scope": "author"
     }
   },
-  "model_instance_id": "qwen-qwen3-6-27b--fp8",
+  "model_instance_id": "z-lab-qwen3-6-27b-dflash--q4-0",
   "provenance": {
     "captured_at": "2026-09-19T05:35:00Z",
     "sources": [
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": ".benchmade",
-        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+        "publisher": "mountains1605",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511523879598948414"
       },
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": ".benchmade",
-        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502786042938392609"
+        "publisher": "mountains1605",
+        "url": "https://discord.com/channels/1466898002793857221/1476745385904177244/1497461916531036261"
       }
     ]
   },
@@ -207,7 +205,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "max_concurrency": 128,
-    "max_context_tokens": 15000,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [],

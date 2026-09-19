@@ -1,0 +1,146 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by squeakysquak.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "squeakysquak.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "squeakysquak.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481587403725602958"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "squeakysquak.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "squeakysquak.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "squeakysquak.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-lukealonso-qwen3-5-397b-a17b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp4-066418",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "squeakysquak.",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+  },
+  "metadata": {
+    "discord": {
+      "author": "squeakysquak.",
+      "channel_id": "1473975364727476224",
+      "message_id": "1483906216987066418",
+      "posted_at": "2026-03-18T19:13:31.774000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": "``` ⏺ Presets 39, 40, 41. I already have them from earlier MCP calls. Here are the three equivalent vllm serve commands: 1. bench-a17b-luke-nvfp4-no-mtp (Preset 39: No MTP) VLLM_NVFP4_GEMM_BACKEND=cutlass vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity 2. bench-a17b-luke-nvfp4-kvfp8 (Preset 40: KV FP8) VLLM_NVFP4_GEMM_BACKEND=cutlass vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity --kv-cache-dtype fp8_e4m3 3. bench-a17b-luke-nvfp4-kvfp8-mtp2 (Preset 41: KV FP8 + MTP=2) vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity --kv-cache-dtype fp8_e4m3 --speculative-config.method qwen3_next_mtp --speculative-config.num_speculative_tokens 2 Common env var: VLLM",
+    "rig_resolution": {
+      "from_message": "1481587403725602958",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "lil-lukealonso-qwen3-5-397b-a17b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "squeakysquak.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1483906216987066418"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "squeakysquak.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481587403725602958"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
