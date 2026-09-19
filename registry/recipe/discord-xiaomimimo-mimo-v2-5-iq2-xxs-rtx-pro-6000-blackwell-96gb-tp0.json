@@ -1,0 +1,154 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: docker-compose.portable.yaml posted by kcramp",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "kcramp858/mimo-m2.5-stable:2026-05-12"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1504005602458734602-docker-compose.portable.yaml"
+            ],
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1504005602458734602-docker-compose.portable.yaml"
+            ],
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-lc",
+      ">-"
+    ],
+    "compose": {
+      "file": "1504005602458734602-docker-compose.portable.yaml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1504005602458734602-docker-compose.portable.yaml",
+      "digest": null,
+      "image": "kcramp858/mimo-m2.5-stable:2026-05-12",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1504005602458734602-docker-compose.portable.yaml"
+          ],
+          "publisher": "kcramp",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_AUTOTUNE_CACHE_DIR": "/cache/b12x_autotune",
+      "B12X_ENABLE_DYNAMIC_DOWN_SCALE": "1",
+      "CUDA_VISIBLE_DEVICES": "${MIMO_GPU_IDS:-0,1,2,3}",
+      "CUTE_DSL_ARCH": "sm_120a\"        # change to sm_90a (Hopper) etc. for other GPUs",
+      "CUTE_DSL_AUTOTUNE_CACHE_DIR": "/cache/cute_dsl_autotune",
+      "NCCL_ALLOC_P2P_NET_LL_BUFFERS": "1",
+      "NCCL_CUMEM_HOST_ENABLE": "0",
+      "NCCL_DEBUG": "WARN",
+      "NCCL_GRAPH_FILE": "/etc/nccl_graph_opt.xml\"  # baked into image",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_MIN_NCHANNELS": "8",
+      "NCCL_P2P_LEVEL": "SYS",
+      "OMP_NUM_THREADS": "8",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SGLANG_ENABLE_HEALTH_ENDPOINT_GENERATION": "false",
+      "SGLANG_ENABLE_JIT_DEEPGEMM": "0",
+      "SGLANG_ENABLE_SPEC_V2": "1",
+      "SGLANG_ENABLE_TP_MEMORY_INBALANCE_CHECK": "false",
+      "SGLANG_PCIE_AUTOTUNE": "1",
+      "SGLANG_PREVENT_THOUGHT_LOOPS": "1",
+      "SGLANG_SET_CPU_AFFINITY": "1",
+      "SGLANG_SKIP_SGL_KERNEL_VERSION_CHECK": "1",
+      "TORCHINDUCTOR_CACHE_DIR": "/cache/torchinductor",
+      "TRITON_CACHE_DIR": "/cache/triton"
+    },
+    "host_port": 8000,
+    "image": "kcramp858/mimo-m2.5-stable:2026-05-12",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "kcramp",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "docker-compose.portable.yaml",
+      "author": "kcramp",
+      "channel_id": "1498377952981946548",
+      "message_id": "1504005602458734602",
+      "posted_at": "2026-05-13T06:21:18.699000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ]
+  },
+  "model_instance_id": "xiaomimimo-mimo-v2-5--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1504005602458734602-docker-compose.portable.yaml"
+        ],
+        "publisher": "kcramp",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1504005602458734602-docker-compose.portable.yaml"
+        ],
+        "publisher": "kcramp",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

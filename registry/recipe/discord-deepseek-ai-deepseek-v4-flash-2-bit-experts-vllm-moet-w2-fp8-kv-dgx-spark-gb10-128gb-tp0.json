@@ -1,0 +1,122 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: message.txt posted by mratsim",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "${IMAGE:-voipmonitor/vllm:eldritch-enlightenment-v45c1582-b12xf3686b5-pc1441b5-cu132-20260704}"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1524362454979837994-message.txt"
+            ],
+            "publisher": "mratsim",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1524362454979837994-message.txt"
+            ],
+            "publisher": "mratsim",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-dgx-spark-gb10-128gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "${IMAGE:-voipmonitor/vllm:eldritch-enlightenment-v45c1582-b12xf3686b5-pc1441b5-cu132-20260704}",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1524362454979837994-message.txt"
+          ],
+          "publisher": "mratsim",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "${IMAGE:-voipmonitor/vllm:eldritch-enlightenment-v45c1582-b12xf3686b5-pc1441b5-cu132-20260704}",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "mratsim",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "message.txt",
+      "author": "mratsim",
+      "channel_id": "1481304034198421515",
+      "message_id": "1524362454979837994",
+      "posted_at": "2026-07-08T10:32:10.552000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ]
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1524362454979837994-message.txt"
+        ],
+        "publisher": "mratsim",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1524362454979837994-message.txt"
+        ],
+        "publisher": "mratsim",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1524362454979837994"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

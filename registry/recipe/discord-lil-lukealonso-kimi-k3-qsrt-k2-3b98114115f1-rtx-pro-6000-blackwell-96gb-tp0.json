@@ -1,0 +1,130 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: message.txt posted by jackzampolin",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "amygdala/vllm:kimi-k3-dcp8-flashinfer-fa2-nograph-20260813"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1537921009833869342-message.txt"
+            ],
+            "publisher": "jackzampolin",
+            "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1537921009833869342-message.txt"
+            ],
+            "publisher": "jackzampolin",
+            "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-lukealonso-kimi-k3-qsrt-k2-3b98114115f1-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "|"
+    ],
+    "compose": {
+      "file": "1537921009833869342-message.txt"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1537921009833869342-message.txt",
+      "digest": null,
+      "image": "amygdala/vllm:kimi-k3-dcp8-flashinfer-fa2-nograph-20260813",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1537921009833869342-message.txt"
+          ],
+          "publisher": "jackzampolin",
+          "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "${CUDA_VISIBLE_DEVICES:?set per host}"
+    },
+    "host_port": 8000,
+    "image": "amygdala/vllm:kimi-k3-dcp8-flashinfer-fa2-nograph-20260813",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "jackzampolin",
+      "source": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "message.txt",
+      "author": "jackzampolin",
+      "channel_id": "1528141816459689984",
+      "message_id": "1537921009833869342",
+      "posted_at": "2026-08-14T20:29:01.935000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ]
+  },
+  "model_instance_id": "lil-lukealonso-kimi-k3-qsrt-k2--3b98114115f1",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1537921009833869342-message.txt"
+        ],
+        "publisher": "jackzampolin",
+        "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1537921009833869342-message.txt"
+        ],
+        "publisher": "jackzampolin",
+        "url": "https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
