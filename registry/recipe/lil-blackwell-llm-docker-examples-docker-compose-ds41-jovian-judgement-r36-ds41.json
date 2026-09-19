@@ -120,6 +120,27 @@
       "reason": "upstream-explicit-default",
       "state": "known"
     },
+    "metadata.discord_observations": {
+      "note": "observed in the Local Inference Lab Discord",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kumioko",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550187172886351963"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kumioko",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550186664662540408"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-13T15:56:24Z",
@@ -225,8 +246,18 @@
         "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
       }
     ],
+    "discord_observations": {
+      "messages": [
+        "1550187172886351963",
+        "1550186664662540408"
+      ],
+      "numbers_sweep": "discord-ds41-r36-rtxpro6000-tp4-sweep"
+    },
     "license_policy": "Source facts and links only; upstream code and model licenses remain with their authors.",
-    "notes": [],
+    "notes": [
+      "Discord 2026-09-17 (kumioko): `docker compose -f docker-compose-ds41-jovian-judgement-r36.yml up` failed on this host with `failed to fulfil mount request: open /usr/lib/x86_64-linux-gnu/libnvidia-egl-wayland2.so.1.0.1: no such file or directory` (reproduced with `docker run --rm --gpus all nvidia/cuda:13.3.1-devel-ubuntu24.04 nvidia-smi`), i.e. a host driver / NVIDIA container toolkit mismatch, not a compose defect.",
+      "Discord 2026-09-17 (kumioko): compose defaults work; anything else (e.g. LMCache) requires the image with env vars, and `runtime/profiles/ds41-flash.yaml` keys are not read by the launch scripts."
+    ],
     "original_source_url": "https://github.com/local-inference-lab/blackwell-llm-docker/blob/51ed664774e9838360899a9678e4e54c19d45137/examples/docker-compose-ds41-jovian-judgement-r36.yml",
     "source_path": "examples/docker-compose-ds41-jovian-judgement-r36.yml",
     "source_qualification": "upstream reference; see pinned source qualification",
@@ -263,6 +294,8 @@
     "max_context_tokens": 131072,
     "tensor_parallel": 4
   },
-  "speed_sweep_ids": [],
+  "speed_sweep_ids": [
+    "discord-ds41-r36-rtxpro6000-tp4-sweep"
+  ],
   "status": "candidate"
 }

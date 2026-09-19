@@ -1,0 +1,83 @@
+{
+  "accepted_at": null,
+  "facts": {
+    "source": {
+      "note": "R37 -> R38 comparison on 4x RTX PRO 6000 Workstation at stock clocks; Sieve min/max 357.3-413.0 tok/s over five runs.",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548872593522565164"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "id": "discord-ds41-r38-rtxpro6000-tp4-sweep",
+  "measured_at": "2026-09-14T01:46:42.957Z",
+  "metrics": {
+    "concurrency": 1,
+    "inference_engine_version": "localinferencelab/vllm:jovian-judgement-community-20260914-r38",
+    "max_context_tokens": 32768
+  },
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "RTX6kPRO Bot",
+        "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548872593522565164"
+      }
+    ]
+  },
+  "recipe_id": "discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-ws-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 32768,
+      "decode_tok_s": 259.3,
+      "kv_pool_tokens": 4570000,
+      "label": "R38, stock clocks, DSpark K7/adaptive, RAM ngrams",
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 21035,
+      "previous_release": {
+        "decode_tok_s": 226.4,
+        "kv_pool_tokens": 1550000,
+        "prefill_tok_s": 20950
+      },
+      "samples": 2,
+      "sieve_tok_s": 375.6,
+      "status": "reported",
+      "ttft_ms_p50": null,
+      "verifier_steps_per_s": 101.2
+    },
+    {
+      "concurrency": 8,
+      "context_tokens": 32768,
+      "decode_tok_s": 810.6,
+      "label": "C8 aggregate decode on the same run",
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "previous_release": {
+        "decode_tok_s": 592.6
+      },
+      "samples": 2,
+      "status": "reported",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "kind": "discord-report",
+    "publisher": "RTX6kPRO Bot",
+    "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548872593522565164"
+  }
+}

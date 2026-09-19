@@ -120,6 +120,27 @@
       "reason": "upstream-explicit-default",
       "state": "known"
     },
+    "metadata.discord_observations": {
+      "note": "observed in the Local Inference Lab Discord",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548698823625277564"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "neolithic5452_v2",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1549644208795684897"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-13T15:56:24Z",
@@ -225,8 +246,18 @@
         "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash"
       }
     ],
+    "discord_observations": {
+      "messages": [
+        "1548698823625277564",
+        "1549644208795684897"
+      ],
+      "numbers_sweep": "discord-ds41-r37-rtxpro6000-tp4-sweep"
+    },
     "license_policy": "Source facts and links only; upstream code and model licenses remain with their authors.",
-    "notes": [],
+    "notes": [
+      "Discord 2026-09-13 (RTX6kPRO Bot): R37 keeps target and DSpark decode graphs on and optional 4096-token prefill graphs off; reasoning mapping low=50, high=75, max=100.",
+      "Discord 2026-09-16 (neolithic5452_v2): same image family launched with MODEL_PATH=/model, SERVED_MODEL_NAME=GLM-5.3, MAX_MODEL_LEN=540672, NUM_SPECULATIVE_TOKENS=7, ENGRAM_TABLE_MEMORY=ram, TP_SIZE=4, VLLM_USE_BREAKABLE_CUDAGRAPH=1 on GPUs 0,2,4,5."
+    ],
     "original_source_url": "https://github.com/local-inference-lab/blackwell-llm-docker/blob/51ed664774e9838360899a9678e4e54c19d45137/examples/docker-compose-ds41-jovian-judgement-r37.yml",
     "source_path": "examples/docker-compose-ds41-jovian-judgement-r37.yml",
     "source_qualification": "upstream reference; see pinned source qualification",
@@ -263,6 +294,8 @@
     "max_context_tokens": 131072,
     "tensor_parallel": 4
   },
-  "speed_sweep_ids": [],
+  "speed_sweep_ids": [
+    "discord-ds41-r37-rtxpro6000-tp4-sweep"
+  ],
   "status": "candidate"
 }
