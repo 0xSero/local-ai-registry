@@ -1,5 +1,8 @@
 import assert from "node:assert/strict"
-import { readFileSync } from "node:fs"
+import { execFileSync } from "node:child_process"
+import { mkdtempSync, readFileSync, rmSync } from "node:fs"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
 import test from "node:test"
 
 import { configurationFromRecipe, flagRows } from "../app/components/configuration-card"
@@ -722,6 +725,29 @@ test("observed LocalMaxxing and Postgres recipes stay reference-only candidates"
   }
   assert.equal(getEntityDetail("recipes", "gemma-4-26b-a4b-it-4bit-apple-m5-max-128gb-omlx-tp1"), undefined)
   assert.ok(lmx.total >= 0)
+})
+
+test("RX 6800 XT has a launchable ROCm recipe", () => {
+  const result = queryCompatibility({ hardware_id: "rx-6800-xt-16gb", status: "validated" }, { limit: 10, offset: 0 })
+  assert.equal(result.total, 1)
+  assert.equal(result.data[0].recipe.id, "qwen35-9b-q4km-rx6800xt-llamacpp-rocm")
+  assert.equal(result.data[0].recipe.launch.accelerator_backend, "amd-rocm")
+  assert.equal(result.data[0].recipe.launch.kind, "docker")
+})
+
+test("plugin export preserves a llama.cpp model path as its served name", () => {
+  const dir = mkdtempSync(join(tmpdir(), "local-ai-registry-test-"))
+  const out = join(dir, "recipes.json")
+  try {
+    execFileSync("python3", ["scripts/export_plugin_recipes.py", "--out", out], { cwd: process.cwd() })
+    const exported = JSON.parse(readFileSync(out, "utf8"))
+    assert.equal(
+      exported.hardware["rx-6800-xt-16gb"].recipe.model.servedName,
+      "/models/Qwen3.5-9B-Q4_K_M.gguf",
+    )
+  } finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
 })
 
 test("empty observed flags are omitted from the flag table rather than labeled set", () => {
