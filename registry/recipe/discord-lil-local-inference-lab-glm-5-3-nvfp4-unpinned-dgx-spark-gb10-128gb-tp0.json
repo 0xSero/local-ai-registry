@@ -1,0 +1,137 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: compose.decode-opt.yaml posted by joninco",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "joninco/vllm:glm53-nvfp4-decode-opt-20260904-r34"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1545488541877014691-compose.decode-opt.yaml"
+            ],
+            "publisher": "joninco",
+            "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1545488541877014691-compose.decode-opt.yaml"
+            ],
+            "publisher": "joninco",
+            "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-lil-local-inference-lab-glm-5-3-nvfp4-unpinned-dgx-spark-gb10-128gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "compose": {
+      "file": "1545488541877014691-compose.decode-opt.yaml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1545488541877014691-compose.decode-opt.yaml",
+      "digest": null,
+      "image": "joninco/vllm:glm53-nvfp4-decode-opt-20260904-r34",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1545488541877014691-compose.decode-opt.yaml"
+          ],
+          "publisher": "joninco",
+          "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_PCIE_TP8_OWNER_REDUCE": "${B12X_PCIE_TP8_OWNER_REDUCE:-0}",
+      "DCP": "${DCP:-1}",
+      "F8_DMA": "${F8_DMA:-i8_ring}",
+      "GPU_MEMORY_UTILIZATION": "${GPU_MEMORY_UTILIZATION:-0.975}",
+      "MAX_MODEL_LEN": "${MAX_MODEL_LEN:-524288}",
+      "MODEL": "${MODEL:-/data/models/local-inference-lab/GLM-5.3-NVFP4}",
+      "MODEL_FAMILY": "${MODEL_FAMILY:-glm52}",
+      "MOE_MODE": "${MOE_MODE:-a16}",
+      "MTP": "${MTP:-3}",
+      "SERVED_MODEL_NAME": "${SERVED_MODEL_NAME:-GLM-5.3-NVFP4}",
+      "TP": "${TP:-8}",
+      "volumes": ""
+    },
+    "host_port": 8000,
+    "image": "joninco/vllm:glm53-nvfp4-decode-opt-20260904-r34",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "joninco",
+      "source": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "compose.decode-opt.yaml",
+      "author": "joninco",
+      "channel_id": "1542910591730192434",
+      "message_id": "1545488541877014691",
+      "posted_at": "2026-09-04T17:39:42.172000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+    },
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ]
+  },
+  "model_instance_id": "lil-local-inference-lab-glm-5-3-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1545488541877014691-compose.decode-opt.yaml"
+        ],
+        "publisher": "joninco",
+        "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1545488541877014691-compose.decode-opt.yaml"
+        ],
+        "publisher": "joninco",
+        "url": "https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

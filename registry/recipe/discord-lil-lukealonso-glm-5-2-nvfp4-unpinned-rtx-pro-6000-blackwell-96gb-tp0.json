@@ -1,0 +1,146 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: docker-compose-v20-fi.yaml posted by joninco",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:gilded-gnosis-v20-vllm2167295-si6a92bcc-fi801d57a-cu132-20260721"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1529479030112522370-docker-compose-v20-fi.yaml"
+            ],
+            "publisher": "joninco",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1529479030112522370-docker-compose-v20-fi.yaml"
+            ],
+            "publisher": "joninco",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--attention-backend",
+      "FLASHINFER_MLA_SPARSE_SM120",
+      "--attention-config.sparse_mla_force_mqa=True"
+    ],
+    "compose": {
+      "file": "1529479030112522370-docker-compose-v20-fi.yaml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1529479030112522370-docker-compose-v20-fi.yaml",
+      "digest": null,
+      "image": "voipmonitor/vllm:gilded-gnosis-v20-vllm2167295-si6a92bcc-fi801d57a-cu132-20260721",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1529479030112522370-docker-compose-v20-fi.yaml"
+          ],
+          "publisher": "joninco",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "DCP": "${DCP:-1}",
+      "F8_DMA": "${F8_DMA:-ring}",
+      "GPUS": "${GPUS:-0,1,2,3,4,5,6,7}",
+      "GPU_MEMORY_UTILIZATION": "${GPU_MEMORY_UTILIZATION:-0.92}",
+      "MAX_BATCHED_TOKENS": "${MAX_BATCHED_TOKENS:-8192}",
+      "MAX_MODEL_LEN": "${MAX_MODEL_LEN:-524288}",
+      "MAX_NUM_SEQS": "${MAX_NUM_SEQS:-32}",
+      "MODEL": "${MODEL:-/root/models/lukealonso/GLM-5.2-NVFP4}",
+      "MODEL_FAMILY": "${MODEL_FAMILY:-glm52}",
+      "MOE_MODE": "${MOE_MODE:-a16}",
+      "MTP": "${MTP:-3}",
+      "ONLINE_QUANT": "${ONLINE_QUANT:-mxfp8}",
+      "PORT": "${PORT:-8000}",
+      "QUANTIZATION": "${QUANTIZATION:-modelopt_fp4}",
+      "QUANTIZATION_CONFIG_JSON": "${QUANTIZATION_CONFIG_JSON-{\"linear\":{\"weight\":\"mxfp8\"}}}",
+      "TP": "${TP:-8}",
+      "volumes": ""
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:gilded-gnosis-v20-vllm2167295-si6a92bcc-fi801d57a-cu132-20260721",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "joninco",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "docker-compose-v20-fi.yaml",
+      "author": "joninco",
+      "channel_id": "1471527895439638528",
+      "message_id": "1529479030112522370",
+      "posted_at": "2026-07-22T13:23:37.125000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+    },
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ]
+  },
+  "model_instance_id": "lil-lukealonso-glm-5-2-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1529479030112522370-docker-compose-v20-fi.yaml"
+        ],
+        "publisher": "joninco",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1529479030112522370-docker-compose-v20-fi.yaml"
+        ],
+        "publisher": "joninco",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
