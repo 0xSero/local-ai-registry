@@ -1,0 +1,174 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Native-precision DeepSeek-V4.1-Flash on four RTX PRO 6000 Blackwell cards with 125 GiB of host RAM, using Local Inference Lab vLLM jovian-judgement r38 unchanged: TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 with adaptive verification, vision, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Engram tables are read from disk with io_uring, so the host does not need the ~189 GiB that RAM mode pins; the container needs unlimited memlock and a seccomp profile that allows io_uring (Docker default plus three syscalls, shipped with the evidence). Boot reports a 7,636,766-token KV pool (14.57x at 524k). A cold 500,000-token prefill and eight concurrent cold 150,000-token prompts completed with flat GPU memory. Replaces the SGLang recipe on the same host, which hit CUDA OOM in the low-ratio indexer on cold prefills past about 290k tokens. Host GPUs are capped at 275 W without a P2P driver override, so decode is below Local Inference Lab's published r38 figures.",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": "vLLM 0.26.1rc0+glm53.r38.vllm66c29357 (Local Inference Lab jovian-judgement community r38); B12X attention/MoE/linear; torch 2.13.0"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-18T22:15:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-18T22:15:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/README.md"
+          }
+        ]
+      },
+      "reason": "engine-boot-log-gpu-kv-cache-size",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-18T22:15:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/env.list"
+          }
+        ]
+      },
+      "reason": "launch-environment-max-model-len",
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--served-model-name",
+      "deepseek-v4.1-flash"
+    ],
+    "container": {
+      "captured_at": "2026-09-18T22:15:00Z",
+      "compose_file": null,
+      "digest": "sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+      "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-18T22:15:00Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "entrypoint": "/usr/local/bin/serve-ds41-jovian.sh",
+    "environment": {
+      "BLOCK_SIZE": "256",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "DCP_SIZE": "1",
+      "DSPARK_ADAPTIVE_VERIFICATION": "1",
+      "ENGRAM_TABLE_MEMORY": "disk",
+      "GPU_MEMORY_UTILIZATION": "0.95",
+      "HF_HUB_OFFLINE": "1",
+      "HOST": "0.0.0.0",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "128",
+      "MAX_MODEL_LEN": "524288",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "16",
+      "MAX_PARALLEL_PREFILLS": "1",
+      "MODEL_PATH": "/models",
+      "OMP_NUM_THREADS": "8",
+      "PORT": "8000",
+      "PREFILL_COMPUTE_SHARE": "0.4",
+      "SERVED_MODEL_NAME": "deepseek-v4.1-flash",
+      "SWA_BLOCK_SIZE": "128",
+      "TP_SIZE": "4",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+    },
+    "host_port": 8000,
+    "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/DeepSeek-V4.1-Flash",
+        "target": "/models"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/ds41-jovian-r38",
+        "target": "/cache"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "kind": "upstream-published",
+      "publisher": "docker.io/localinferencelab",
+      "source": "https://github.com/local-inference-lab/blackwell-llm-docker"
+    },
+    "security_opt": [
+      "seccomp=seccomp-default-plus-io_uring.json"
+    ],
+    "shm_size": "32g",
+    "ulimits": [
+      "memlock=-1",
+      "stack=67108864"
+    ]
+  },
+  "metadata": {},
+  "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
+  "provenance": {
+    "captured_at": "2026-09-18T22:15:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "kind": "submitter",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/controller-recipe.json"
+      },
+      {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "kind": "submitter",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/env.list"
+      },
+      {
+        "captured_at": "2026-09-18T22:15:00Z",
+        "kind": "submitter",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/README.md"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 7636766,
+    "max_concurrency": 16,
+    "max_context_tokens": 524288,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-sweep"
+  ],
+  "status": "validated"
+}
