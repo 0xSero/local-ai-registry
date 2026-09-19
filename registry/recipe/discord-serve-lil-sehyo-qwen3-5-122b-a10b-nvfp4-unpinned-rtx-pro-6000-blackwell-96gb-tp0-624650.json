@@ -67,6 +67,12 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "I haven't run into issues with Sehyo's nvfp4 quant. my vllm command on it: `COMMAND=\"Sehyo/Qwen3.5-122B-A10B-NVFP4 --served-model-name Qwen3.5-122B-A10B --tensor-parallel-size 1 --enable-auto-tool-choice --tool-call-parser qwen3_coder --max-model-len auto --host 0.0.0.0 --port 8000 --reasoning-parser qwen3 --speculative-config '{\\\"method\\\":\\\"qwen3_next_mtp\\\",\\\"num_speculative_tokens\\\":3}' --mm-encoder-tp-mode data --mm-processor-cache-type shm --kv-cache-dtype fp8\"`",
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
     "rig_resolution": {
       "from_message": "1482224015727661147",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

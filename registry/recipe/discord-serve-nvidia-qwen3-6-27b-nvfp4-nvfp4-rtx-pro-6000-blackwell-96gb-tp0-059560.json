@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/nvidia/Qwen3.6-27B-NVFP4/revision/0893e1606ff3d5f97a441f405d5fc541a6bdf404?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -67,6 +81,19 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "Yeah, I tried stock vllm and the ds4_v8.md image (0.11.2.dev279+eldritch.enlightenment.2226f26.b12x15cd38c.fi25dd814.cu132.20260629). I'm using that to run DS4F TP2 (without docker), with about a ~10% loss from the wiki numbers, because of the 300W PL and PCIe4x16, which is why I was expecting to be a little slower than your numbers. I realized I hadn't looked at the model discussions on HF (https://huggingface.co/nvidia/Qwen3.6-27B-NVFP4/discussions). Looks like lots of the same issue, and other people reporting it is the same speed as FP8. The only people reporting higher tps numbers don't share... VLLM_USE_B12X_FP8_GEMM=1 and --block-size 64 gets it to start, but it crashes with File \"/opt/sglang/ds4-v8/lib/python3.12/site-packages/b12x/attention/paged/planner.py\", line 889, in create_paged_plan (EngineCore pid=96475) ERROR 07-10 23:12:01 [core.py:1231] raise ValueError( (EngineCore pid=96475) ERROR 07-10 23:12:01 [core.py:1231] ValueError: paged plan page_table width=4100 exceeds workspace capacity 4096",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "0893e1606ff3d5f97a441f405d5fc541a6bdf404",
+      "source": "https://huggingface.co/api/models/nvidia/Qwen3.6-27B-NVFP4/revision/0893e1606ff3d5f97a441f405d5fc541a6bdf404?blobs=true",
+      "weight_files": 3,
+      "weights_gb": 21.9
+    },
     "rig_resolution": {
       "from_message": "1502014390776631316",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

@@ -38,6 +38,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_context_tokens": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -109,6 +123,19 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "``` IMAGE=\"${IMAGE:-dsv4-flash:latest}\" CACHE_ROOT=\"${HOME}/.cache/luci-official\" mkdir -p \"${CACHE_ROOT}/vllm\" \"${CACHE_ROOT}/deep_gemm_jit\" \"${CACHE_ROOT}/tilelang\" \"${CACHE_ROOT}/tilelang/tmp\" \"${CACHE_ROOT}/triton\" \"${CACHE_ROOT}/torchinductor\" \"${CACHE_ROOT}/torch_extensions\" \"${CACHE_ROOT}/flashinfer\" \"${CACHE_ROOT}/huggingface\" SERVE_ARGS=( serve /model --served-model-name deepseek-v4-flash --trust-remote-code --host 0.0.0.0 --port 8000 --compilation-config '{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\",\"custom_ops\":[\"all\"]}' --kv-cache-dtype fp8 --block-size 256 --tensor-parallel-size 4 # TUNE: set to your GPU count --gpu-memory-utilization 0.9 # TUNE --max-model-len 307200 # TUNE: context length (KV cache pressure) --enable-prefix-caching --tokenizer-mode deepseek_v4 --tool-call-parser deepseek_v4 --enable-auto-tool-choice --reasoning-parser deepseek_v4 --reasoning-config.reasoning_start_str \"<think>\" --reasoning-config.reasoning_end_str \"</think>\" --default-chat-template-kwargs.thinking true --default-chat-template-kwargs.reasoning_effort high --enable-flashinfer-autotune --speculative-config.method mtp --speculative-config.num_speculative_tokens 2 # TUNE ) if [ \"$#\" -gt 0 ]; then SERVE_ARGS=(\"$@\") fi docker run --rm --gpus all --ipc=host --shm-size=32g --ulimit memlock=-1 --ulimit stack=67108864 --network host --volume ~/certificates:/root/certificates --volume \"${CACHE_ROOT}\":/cache --volume \"${CACHE_ROOT}/huggingface\":/root/.cache/huggingface --volume /home/ioplex/model",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 384,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true",
+      "weight_files": 46,
+      "weights_gb": 159.6
+    },
     "rig_resolution": {
       "from_message": "1514262701474578583",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

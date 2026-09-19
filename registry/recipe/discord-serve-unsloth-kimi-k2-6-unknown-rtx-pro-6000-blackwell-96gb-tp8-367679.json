@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/unsloth/Kimi-K2.6/revision/24b0bcd2d71879b663152a9746e34be6a1661dc1?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -95,6 +109,19 @@
     },
     "model_resolution": "explicit",
     "observed_command": "On 8x RTX6k ```sh export NCCL_P2P_LEVEL=SYS export NCCL_IB_DISABLE=1 export NCCL_MIN_NCHANNELS=8 export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export SGLANG_ENABLE_JIT_DEEPGEMM=0 export SGLANG_ENABLE_DEEP_GEMM=0 export SGLANG_SET_CPU_AFFINITY=1 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export NCCL_PROTO=LL export NCCL_BUFFSIZE=16777216 export SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server --model-path unsloth/Kimi-K2.6 --served-model-name Kimi-K2.6 --tensor-parallel-size 8 --trust-remote-code --attention-backend flashinfer --kv-cache-dtype bf16 --reasoning-parser kimi_k2 --tool-call-parser kimi_k2 --chunked-prefill-size 8192 --mem-fraction-static 0.90 --cuda-graph-max-bs 8 --max-running-requests 8 --enable-metrics --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 16}' --host 0.0.0.0 --port 8081 --sleep-on-idle --schedule-conservativeness 0.7 --speculative-algorithm EAGLE3 --speculative-draft-model-path lightseekorg/kimi-k2.6-eagle3 --speculative-num-steps 3 --speculative-num-draft-tokens 4 --speculative-eagle-topk 1 --disable-custom-all-reduce --enable-mixed-chunk ```",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 768,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "24b0bcd2d71879b663152a9746e34be6a1661dc1",
+      "source": "https://huggingface.co/api/models/unsloth/Kimi-K2.6/revision/24b0bcd2d71879b663152a9746e34be6a1661dc1?blobs=true",
+      "weight_files": 64,
+      "weights_gb": 595.2
+    },
     "rig_resolution": {
       "from_message": "1498384553914532012",
       "gap_days": 5.2,

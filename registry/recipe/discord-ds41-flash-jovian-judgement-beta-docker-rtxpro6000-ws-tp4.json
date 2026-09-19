@@ -101,14 +101,14 @@
       "state": "known"
     },
     "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true"
           }
         ]
       },
@@ -301,19 +301,6 @@
     ],
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
       "hardware_vram_gb": 384,
       "memory_fit": {
         "fits": false,

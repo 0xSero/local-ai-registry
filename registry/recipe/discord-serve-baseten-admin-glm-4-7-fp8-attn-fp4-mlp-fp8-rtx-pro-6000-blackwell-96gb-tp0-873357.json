@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/baseten-admin/glm-4.7-fp8-attn-fp4-mlp/revision/8886a8ca81228f223d5eb66e6318e2f7b3c8bdcc?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -67,6 +81,19 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "SGLANG_TORCH_PROFILER_DIR=\"./\" SGLANG_PROFILE_RECORD_SHAPES=true SGLANG_PROFILE_WITH_STACK=true python3 -m sglang.bench_one_batch_server --model baseten-admin/glm-4.7-fp8-attn-fp4-mlp --base-url http://localhost:30000 --batch-size 4 --input-len 2048 --output-len 1024 --profile --profile-steps 10 --show-report --profile-by-stage Run this command after launching server with disable cuda graph",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "8886a8ca81228f223d5eb66e6318e2f7b3c8bdcc",
+      "source": "https://huggingface.co/api/models/baseten-admin/glm-4.7-fp8-attn-fp4-mlp/revision/8886a8ca81228f223d5eb66e6318e2f7b3c8bdcc?blobs=true",
+      "weight_files": 42,
+      "weights_gb": 211.9
+    },
     "rig_resolution": {
       "from_message": "1504843912022331462",
       "gap_days": 0.47,
