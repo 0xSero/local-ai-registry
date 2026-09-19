@@ -32,6 +32,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B/revision/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -102,7 +116,20 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": "python -m sglang.launch_server --model/models/Qwen3.8-27B-NVFP4-554ebba --served-model-name qwen3.8-27b --tp 1 --mem-fraction-static 0.85 --max-running-requests 8 --kv-cache-dtype fp8_e4m3 --chunked-prefill-size 2048 --max-prefill-tokens 16384 --attention-backend flashinfer --sampling-backend flashinfer --reasoning-parser qwen3 --tool-call-parser qwen3_coder --speculative-algorithm DSPARK --speculative-draft-model-path /home/jeffrey-watts/models/Qwen3.8-27B-DSpark-85ef153 --speculative-num-steps 1 --speculative-eagle-topk 1 --speculative-num-draft-tokens 8 --speculative-attention-mode prefill --host 0.0.0.0 --port 8000"
+    "observed_command": "python -m sglang.launch_server --model/models/Qwen3.8-27B-NVFP4-554ebba --served-model-name qwen3.8-27b --tp 1 --mem-fraction-static 0.85 --max-running-requests 8 --kv-cache-dtype fp8_e4m3 --chunked-prefill-size 2048 --max-prefill-tokens 16384 --attention-backend flashinfer --sampling-backend flashinfer --reasoning-parser qwen3 --tool-call-parser qwen3_coder --speculative-algorithm DSPARK --speculative-draft-model-path /home/jeffrey-watts/models/Qwen3.8-27B-DSpark-85ef153 --speculative-num-steps 1 --speculative-eagle-topk 1 --speculative-num-draft-tokens 8 --speculative-attention-mode prefill --host 0.0.0.0 --port 8000",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 128,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "source": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B/revision/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0?blobs=true",
+      "weight_files": 18,
+      "weights_gb": 55.6
+    }
   },
   "model_instance_id": "qwen-qwen3-8-27b--nvfp4",
   "provenance": {

@@ -109,6 +109,12 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "``` ⏺ Presets 39, 40, 41. I already have them from earlier MCP calls. Here are the three equivalent vllm serve commands: 1. bench-a17b-luke-nvfp4-no-mtp (Preset 39: No MTP) VLLM_NVFP4_GEMM_BACKEND=cutlass vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity 2. bench-a17b-luke-nvfp4-kvfp8 (Preset 40: KV FP8) VLLM_NVFP4_GEMM_BACKEND=cutlass vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity --kv-cache-dtype fp8_e4m3 3. bench-a17b-luke-nvfp4-kvfp8-mtp2 (Preset 41: KV FP8 + MTP=2) vllm serve lukealonso/Qwen3.5-397B-A17B-NVFP4 --trust-remote-code --disable-custom-all-reduce --tensor-parallel-size 4 --gpu-memory-utilization 0.88 --max-model-len 262144 --max-num-seqs 64 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-prefix-caching --performance-mode interactivity --kv-cache-dtype fp8_e4m3 --speculative-config.method qwen3_next_mtp --speculative-config.num_speculative_tokens 2 Common env var: VLLM",
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
     "rig_resolution": {
       "from_message": "1481587403725602958",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

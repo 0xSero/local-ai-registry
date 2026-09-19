@@ -32,6 +32,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7/revision/d494266a4affc0d2995ba1fa35c8481cbd84294b?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.tensor_parallel": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -84,6 +98,19 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "```python -m sglang.launch_server --model-path MiniMaxAI/MiniMax-M2.7 --tp-size 4 --tool-call-parser minimax-m2 --reasoning-parser minimax-append-think --host 0.0.0.0 --trust-remote-code --port 8000 --mem-fraction-static 0.85```",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 512,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "d494266a4affc0d2995ba1fa35c8481cbd84294b",
+      "source": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7/revision/d494266a4affc0d2995ba1fa35c8481cbd84294b?blobs=true",
+      "weight_files": 125,
+      "weights_gb": 230.1
+    },
     "rig_resolution": {
       "from_message": "1498124047144325130",
       "hardware_id": "dgx-spark-gb10-128gb",

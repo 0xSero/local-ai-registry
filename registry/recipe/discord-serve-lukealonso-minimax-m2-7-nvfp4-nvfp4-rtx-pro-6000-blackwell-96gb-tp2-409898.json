@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -81,6 +95,19 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "set -euo pipefail export CUDA_HOME=/usr/local/cuda-13.2 export PATH=/usr/local/cuda-13.2/bin:$PATH export PYTORCH_ALLOC_CONF=expandable_segments:True,max_split_size_mb:512 export NCCL_IB_DISABLE=1 export NCCL_NET_GDR_LEVEL=5 export NCCL_ALGO=Ring export VLLM_ALLREDUCE_USE_SYMM_MEM=0 export VLLM_ATTENTION_BACKEND=FLASH_ATTN export VLLM_TORCH_COMPILE_LEVEL=plus export VLLM_SLEEP_WHEN_IDLE=1 export SAFETENSORS_FAST_GPU=1 export CUDA_VISIBLE_DEVICES=0,1 MODEL=\"lukealonso/MiniMax-M2.7-NVFP4\" MODELNAME=\"MiniMax-M2.7\" GPU_UTIL=0.97 SAMPLER_OVERRIDE=\"{\\\"temperature\\\": 1, \\\"top_p\\\": 0.95, \\\"top_k\\\": 40, \\\"repetition_penalty\\\": 1.1, \\\"frequency_penalty\\\": 0.40}\" MAX_MODEL_LEN=\"${MAX_MODEL_LEN:-191000}\" MAX_NUM_SEQS=\"${MAX_NUM_SEQS:-64}\" MAX_NUM_BATCHED_TOKENS=\"${MAX_NUM_BATCHED_TOKENS:-65536}\" ENABLE_CHUNKED_PREFILL=\"${ENABLE_CHUNKED_PREFILL:-1}\" KV_CACHE_DTYPE=\"${KV_CACHE_DTYPE:-fp8}\" vllm serve \"${MODEL}\" --served-model-name \"${MODELNAME}\" --trust-remote-code --gpu-memory-utilization ${GPU_UTIL} --tensor-parallel-size 2 --disable-custom-all-reduce --enable-auto-tool-choice --tool-call-parser minimax_m2 --reasoning-parser minimax_m2 --host 0.0.0.0 --port 8013 --kv-cache-dtype \"${KV_CACHE_DTYPE}\" --enable-chunked-prefill --enable-prefix-caching --max-model-len \"${MAX_MODEL_LEN}\" --max-num-seqs \"${MAX_NUM_SEQS}\" --max-num-batched-tokens \"${MAX_NUM_BATCHED_TOKENS}\" --override-generation-config \"${SAMPLER_OVERRIDE}\"",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 192,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "db821d7a3ce29ee96d80a1cae88d878d8586b54e",
+      "source": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true",
+      "weight_files": 44,
+      "weights_gb": 134.5
+    },
     "rig_resolution": {
       "from_message": "1507667324474359818",
       "gap_days": 0.0,

@@ -98,6 +98,12 @@
       "Rig resolved from the author's own nearby message in the same thread."
     ],
     "observed_command": "`python -m sglang.launch_server --model-path /mnt/raid0/models/Qwen3.5-397B-A17B-NVFP4 --tp-size 4 --host 0.0.0.0 --port 8000 --trust-remote-code --mem-fraction-static 0.85 --quantization modelopt_fp4 --attention-backend triton --moe-runner-backend flashinfer_cutlass --fp4-gemm-backend flashinfer_cudnn --context-length 262144 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --speculative-algorithm NEXTN --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4` gets me",
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
     "rig_resolution": {
       "from_message": "1476020478324904090",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

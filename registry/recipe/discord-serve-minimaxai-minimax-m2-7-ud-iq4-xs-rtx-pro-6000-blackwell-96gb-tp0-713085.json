@@ -37,6 +37,20 @@
         ]
       },
       "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7/revision/d494266a4affc0d2995ba1fa35c8481cbd84294b?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -81,6 +95,19 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "good catch. here's that script. scripts/startup-v8.sh: ``` set -euo pipefail FB=\"/opt/sglang/python/sglang/srt/layers/attention/flashinfer_backend.py\" if grep -q 'class DecodeMetadata:' \"$FB\" && ! grep -q 'use_ragged' <(sed -n '/class DecodeMetadata:/,/class /p' \"$FB\" | head -5); then python3 -c \" p='$FB' import pathlib as P c=P.Path(p).read_text() c=c.replace( 'class DecodeMetadata:\\n decode_wrappers: List[BatchDecodeWithPagedKVCacheWrapper]', 'class DecodeMetadata:\\n decode_wrappers: List[BatchDecodeWithPagedKVCacheWrapper]\\n use_ragged: bool = False', 1, ) P.Path(p).write_text(c) print('[startup] Patched DecodeMetadata.use_ragged') \" fi exec python3 -m sglang.launch_server \"$@\" ```",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "d494266a4affc0d2995ba1fa35c8481cbd84294b",
+      "source": "https://huggingface.co/api/models/MiniMaxAI/MiniMax-M2.7/revision/d494266a4affc0d2995ba1fa35c8481cbd84294b?blobs=true",
+      "weight_files": 125,
+      "weights_gb": 230.1
+    },
     "rig_resolution": {
       "from_message": "1502417779263934565",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

@@ -81,6 +81,12 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "```bash set -euo pipefail export HF_TOKEN=$(cat /run/secrets/hf_token) export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export VLLM_NVFP4_GEMM_BACKEND=flashinfer-cutlass export VLLM_USE_FLASHINFER_MOE_FP4=1 export VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 export OMP_NUM_THREADS=8 export VLLM_ALLOW_LONG_MAX_MODEL_LEN=1 export VLLM_FLASHINFER_MOE_BACKEND=latency export NCCL_P2P_LEVEL=PHB MODEL=\"lukealonso/MiniMax-M2.5-NVFP4\" MODEL_NAME=\"MiniMax-M2.5\" MAX_NUM_SEQS=256 CONTEXT_LENGTH=196608 GPU_UTIL=0.87 exec vllm serve \"${MODEL}\" --served-model-name \"${MODEL_NAME}\" --host 0.0.0.0 --port 8000 --tensor-parallel-size 2 --max-model-len \"${CONTEXT_LENGTH}\" --enable-auto-tool-choice --tool-call-parser minimax_m2 --reasoning-parser minimax_m2 --override-generation-config '{\"temperature\":0.7,\"top_p\":0.9,\"repetition_penalty\":1.15}' --trust-remote-code --dtype auto --quantization modelopt_fp4 --kv-cache-dtype fp8_e4m3 --attention-backend FLASHINFER --disable-custom-all-reduce --gpu-memory-utilization \"${GPU_UTIL}\" --enable-prefix-caching --enable-chunked-prefill --async-scheduling --max-num-seqs \"${MAX_NUM_SEQS}\" ```",
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
     "rig_resolution": {
       "from_message": "1482224015727661147",
       "gap_days": 3.58,

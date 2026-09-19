@@ -95,6 +95,12 @@
     },
     "model_resolution": "explicit",
     "observed_command": "```export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export HF_HOME=/data/huggingface/hub export HF_HUB_CACHE=/data/huggingface/hub python3 -m sglang.launch_server --model lukealonso/MiniMax-M2.5-REAP-139B-A10B-NVFP4 --served-model-name MiniMax-M2.5-NVFP4 --reasoning-parser minimax --tool-call-parser minimax-m2 --trust-remote-code --tp 1 --mem-fraction-static 0.95 --max-running-requests 32 --quantization modelopt_fp4 --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --kv-cache-dtype bf16 --host 0.0.0.0 --port 8000```",
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
     "rig_resolution": {
       "from_message": "1474540329402105906",
       "gap_days": 2.28,

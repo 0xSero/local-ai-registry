@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/brandonmusic/GLM-5.3-Flash-tr3-4bpw/revision/61e26e1484e16d7a603f77040cda9b43cc4a31d6?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -67,6 +81,19 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "<@1348333876723847210> <@228112065548648449> I've found a way to increase vllm's cache hit rate for `brandonmusic/GLM-5.3-Flash-tr3-4bpw` to 95% and drop ttft to mostly < 1s (w/o it was 2-10s every time). (Only tried w/ single sessions, trying interleaving sessions too) (w/ legend's vllm fork) a) changed `--decode-context-parallel-size` from 2 -> 1 b) add `--prefix-match-unit` 64 c) had `--prefill-schedule-interval` from 8 to 4, haven't tried in 8 (default value). can you try it and let me know?",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 32,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "61e26e1484e16d7a603f77040cda9b43cc4a31d6",
+      "source": "https://huggingface.co/api/models/brandonmusic/GLM-5.3-Flash-tr3-4bpw/revision/61e26e1484e16d7a603f77040cda9b43cc4a31d6?blobs=true",
+      "weight_files": 120,
+      "weights_gb": 175.6
+    },
     "rig_resolution": {
       "from_message": "1548676958324391947",
       "gap_days": 3.8,

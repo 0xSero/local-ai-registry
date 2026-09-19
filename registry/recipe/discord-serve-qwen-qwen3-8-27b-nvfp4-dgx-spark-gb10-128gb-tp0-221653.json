@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B/revision/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -95,6 +109,19 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "This is about as good as i have found for FP8 ``` export CUTE_DSL_ARCH=sm_120a # arch string for FP4 kernel JIT export MAX_JOBS=8 # cap JIT fan-out; see warning below VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 vllm serve shisa-ai/Qwen3.8-27B-FP8-BLOCK --override-generation-config '{\"temperature\":0.6,\"top_p\":0.95, \"top_k\": 20, \"min_p\": 0}' --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":5}' --default-chat-template-kwargs '{\"preserve_thinking\": true}' --chat-template qwen3.8-chat-template.jinja --max-num-batched-tokens 32768 --attention-backend flash_attn --kv-cache-dtype bfloat16 --max-num-seqs 212 --max-cudagraph-capture-size 64 --max-model-len 262144 --enable-auto-tool-choice --tool-call-parser qwen3_xml --port 11434 --reasoning-parser qwen3 --served-model-name qwen/qwen3.8-27B --gpu-memory-utilization 0.90 ```",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 128,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "source": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B/revision/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0?blobs=true",
+      "weight_files": 18,
+      "weights_gb": 55.6
+    },
     "rig_resolution": {
       "from_message": "1538962062426902689",
       "gap_days": 0.17,
