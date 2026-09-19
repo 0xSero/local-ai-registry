@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the export is stamped with the last commit that touched registry/
 
       - uses: actions/setup-node@v4
         with:
@@ -47,6 +49,10 @@ jobs:
 
       - name: Plugin export preserves multi-GPU recipes and context
         run: python3 scripts/test_export_plugin_recipes.py
+      - name: plugin/recipes.json is current (the plugin fetches it from this branch)
+        run: |
+          python3 scripts/export_plugin_recipes.py --out plugin/recipes.json
+          git diff --exit-code plugin/recipes.json
 
       - name: index shards match the records they summarize
         run: |

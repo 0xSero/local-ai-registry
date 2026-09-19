@@ -237,6 +237,20 @@
       "max_context_tokens": 131072,
       "model_instance_id": "radixark-qwen3-8-27b-nvfp4--nvfp4",
       "recipe_id": "qwen38-27b-nvfp4-rtxpro6000-sglang-tp1"
+    },
+    "rx-6800-xt-16gb": {
+      "engine": "llama.cpp",
+      "image": "ghcr.io/ggml-org/llama.cpp@sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+      "max_context_tokens": 65536,
+      "model_instance_id": "unsloth-qwen3-5-9b-gguf-qwen3-5-9b-q4-k-m-gguf--q4-k-m",
+      "recipe_id": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm"
+    },
+    "xdna2-krackan-16gb": {
+      "engine": "flm",
+      "image": null,
+      "max_context_tokens": 32768,
+      "model_instance_id": "fastflowlm-qwen3-5-9b-npu2--q4nx",
+      "recipe_id": "qwen35-9b-npu2-xdna2-krackan-16gb-flm-tp1"
     }
   },
   "rule": "One recommended recipe per hardware id. Every entry is status=validated, single-GPU, docker, digest-pinned, revision-pinned, with acceptance evidence. Clients ship this file and re-gate every entry before launch.",

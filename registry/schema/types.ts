@@ -54,7 +54,7 @@ export type Recipe = {
     [k: string]: unknown
   }
   launch: {
-    kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
+    kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native" | "host"
     container?: Container
     [k: string]: unknown
   }
@@ -134,7 +134,7 @@ export interface Hardware {
   name: string
   family?: string | null
   kind: "discrete" | "integrated" | "unified"
-  accelerator_backend: "nvidia" | "amd-rocm" | "intel-xpu" | "metal"
+  accelerator_backend: "nvidia" | "amd-rocm" | "amd-npu" | "intel-xpu" | "metal"
   memory: {
     vram_gb: number
     vram_type: string | null
@@ -460,7 +460,7 @@ export interface IndexRecipeRow {
   engine: string
   status: "candidate" | "validated"
   recipe_source: string
-  launch_kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native"
+  launch_kind: "reference" | "docker" | "docker-compose" | "controller" | "script" | "native" | "host"
   has_evidence: boolean
   capabilities: {
     chat: boolean | null

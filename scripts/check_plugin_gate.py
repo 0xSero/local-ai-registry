@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Run the Omarchy local-ai plugin's recipe gate against every validated Docker recipe.
+"""Run the Omarchy local-ai plugin's recipe gate against every validated recipe it can launch.
 
 The plugin (basecamp/omarchy PR #8836) refuses to launch a recipe unless it
-passes a safety gate: the record chain must resolve, the image must be
-digest-pinned, the model revision must be pinned, and every mount source must
-be a portable path — a ${MODEL_ROOT}/${CACHE_ROOT} placeholder, a ~/.cache
-path, the /dev/dri/by-path device directory, or a repo-relative asset.
-Absolute host paths are blocked. This script mirrors that gate so a registry
-change that would silently block recipes in the plugin fails CI here instead.
+passes a safety gate: the record chain must resolve, docker images must be
+digest-pinned, host/flm recipes must not pin an image, the model revision must
+be pinned, and every mount source must be a portable path — a
+${MODEL_ROOT}/${CACHE_ROOT} placeholder, the ~/.cache/huggingface path, the
+/dev/dri/by-path device directory, or a repo-relative asset. Absolute host paths
+are blocked. This script mirrors that gate so a registry change that would
+silently block recipes in the plugin fails CI here instead.
 """
 
 import argparse
@@ -18,6 +19,7 @@ from pathlib import Path
 
 DIGEST_PINNED = re.compile(r"@sha256:[0-9a-f]{64}$")
 REVISION_PINNED = re.compile(r"^[0-9a-f]{40,64}$")
+FLM_TAG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]*$")
 FORBIDDEN_ARGUMENT = re.compile(r"enforce.eager|disable.?cuda.?graph", re.IGNORECASE)
 PLACEHOLDER_MOUNT = re.compile(r"^\$\{(MODEL_ROOT|CACHE_ROOT)\}/[^\0]+$")
 
@@ -39,7 +41,10 @@ def check_mount_source(identifier, source, root, errors):
         return
     if PLACEHOLDER_MOUNT.fullmatch(source):
         return
+    if source == "~/.cache/huggingface" or source.startswith("~/.cache/huggingface/"):
+        return
     if source.startswith("~/.cache/"):
+        errors.append(f"{identifier}: plugin mounts nothing under ~/.cache but the Hugging Face cache: {source}")
         return
     if source == "/dev/dri/by-path":
         return
@@ -63,7 +68,16 @@ def check_recipe(root, recipe, errors):
     if load(root / "hardware" / f"{recipe.get('hardware_id')}.json", errors) is None:
         return
 
-    if not DIGEST_PINNED.search(launch.get("image") or ""):
+    kind = launch.get("kind") or "docker"
+    if kind == "host":
+        if (recipe.get("engine") or {}).get("name") != "flm":
+            errors.append(f"{identifier}: plugin gate requires the flm engine for host recipes")
+        if launch.get("image"):
+            errors.append(f"{identifier}: plugin gate forbids a docker image on host recipes")
+        tag = instance.get("served_name") or ""
+        if not FLM_TAG.fullmatch(tag):
+            errors.append(f"{identifier}: plugin gate requires a valid flm model tag")
+    elif not DIGEST_PINNED.search(launch.get("image") or ""):
         errors.append(f"{identifier}: plugin gate requires a digest-pinned image")
     if not REVISION_PINNED.fullmatch(instance.get("revision") or ""):
         errors.append(f"{identifier}: plugin gate requires a pinned model revision")
@@ -88,7 +102,9 @@ def main():
         recipe = load(path, errors)
         if not recipe or recipe.get("status") != "validated":
             continue
-        if (recipe.get("launch") or {}).get("kind") != "docker":
+        kind = (recipe.get("launch") or {}).get("kind")
+        engine = (recipe.get("engine") or {}).get("name")
+        if kind != "docker" and not (kind == "host" and engine == "flm"):
             continue
         checked += 1
         check_recipe(root, recipe, errors)
@@ -96,7 +112,7 @@ def main():
     if errors:
         print("\n".join(errors), file=sys.stderr)
         raise SystemExit(1)
-    print(f"plugin gate clean: {checked} validated docker recipes")
+    print(f"plugin gate clean: {checked} validated docker/host recipes")
 
 
 if __name__ == "__main__":

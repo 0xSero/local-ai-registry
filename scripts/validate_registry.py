@@ -374,6 +374,17 @@ def validate(root):
                 for mount in launch.get("mounts", []):
                     if not isinstance(mount, dict) or not mount.get("source") or not mount.get("target"):
                         errors.append(f"{recipe['id']}: validated docker launch has a malformed mount")
+            if kind == "host":
+                if (recipe.get("engine") or {}).get("name") != "flm":
+                    errors.append(f"{recipe['id']}: validated host launch must use the flm engine")
+                if launch.get("image"):
+                    errors.append(f"{recipe['id']}: validated host launch must not pin a docker image")
+                if not isinstance(launch.get("container_port"), int):
+                    errors.append(f"{recipe['id']}: validated host launch missing container_port")
+                if launch.get("accelerator_backend") != "amd-npu":
+                    errors.append(f"{recipe['id']}: validated host launch missing amd-npu accelerator_backend")
+                if (recipe.get("serving") or {}).get("max_context_tokens") is None:
+                    errors.append(f"{recipe['id']}: validated recipe must state serving.max_context_tokens")
             if kind == "reference":
                 errors.append(f"{recipe['id']}: validated recipe cannot use a reference launch")
             instance = data["model-instance"].get(recipe.get("model_instance_id"), {})
