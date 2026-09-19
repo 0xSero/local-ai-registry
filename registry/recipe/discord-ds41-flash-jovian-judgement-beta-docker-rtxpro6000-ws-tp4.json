@@ -100,6 +100,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.gpu_memory_utilization": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -284,7 +298,20 @@
       "Prod check: `ghcr.io/local-inference-lab/vllm:jovian-judgement-beta` HEAD on ghcr.io returned 404 anonymously (2026-09-19), and `localinferencelab/vllm:jovian-judgement-beta` was not on Docker Hub; r36/r37/r38 are published on Docker Hub under localinferencelab/vllm.",
       "Requires a host driver with CUDA 13.4 and NVIDIA Container Toolkit.",
       "RAM Engram needs ~189 GiB of host memory for tables alone; ENGRAM_TABLE_MEMORY=disk switches to SSD reads."
-    ]
+    ],
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 384,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
+      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true",
+      "weight_files": 48,
+      "weights_gb": 510.3
+    }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
   "provenance": {

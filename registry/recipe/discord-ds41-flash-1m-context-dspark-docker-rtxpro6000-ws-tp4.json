@@ -70,6 +70,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -236,7 +250,20 @@
       "Observed failure on this launch: `ValueError: No module named 'triton_kernels.matmul_ogs'` at startup; the reporter says vLLM continued to load and serve normally afterwards, and a second member confirmed the same message.",
       "Reported throughput while running: Avg prompt throughput 29843.2 tokens/s, Avg generation throughput 315.5 tok/s at 16 running requests (single log line, reporter calls it a possible fluke).",
       "Bench harness used in the same channel: llm_decode_bench.py with --concurrency 1,2,4,8,16, contexts 0/8192/32768/65536, prefill-contexts 8k,32k,64k,128k, --max-tokens 2048, --duration 30, --coding-peak."
-    ]
+    ],
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 384,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
+      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true",
+      "weight_files": 48,
+      "weights_gb": 510.3
+    }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
   "provenance": {

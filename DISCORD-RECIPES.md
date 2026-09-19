@@ -38,41 +38,54 @@ They are the Contributor & VIP category plus `moderation`. If recipes were poste
 
 | record | model | hardware | engine | context | source |
 |---|---|---|---|---|---|
-| `discord-deepseek-ai-deepseek-v4-1-flash-fp8-rtx-pro-6000-blackwell-96gb-tp0-339856` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 1 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be |  | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856) |
+| `discord-0xsero-glm-5-2-nvfp4-reap-469b-nvfp4-reap-rtx-pro-6000-blackwell-96gb-tp0` | 0xsero-glm-5-2-nvfp4-reap-469b--nvfp4-reap | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:glm52-v11-darkdevotion-vllma86f74e- |  | [msg](https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027) |
+| `discord-brandonmusic-glm-5-3-flash-tr3-4bpw-exl3-4bpw-rtx-pro-6000-blackwell-96gb-tp0` | brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw | rtx-pro-6000-blackwell-96gb 1 | ghcr.io/tpurtell/glm-5.3-flash-exl3-4bpw-2x-rtx |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048) |
+| `discord-cyankiwi-qwen3-6-27b-awq-int4-awq-dgx-spark-gb10-128gb-tp2` | cyankiwi-qwen3-6-27b-awq-int4--awq | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllm7e3bee1-si623 | 102400 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1530407673776967781) |
+| `discord-deepseek-ai-deepseek-v4-1-flash-fp8-rtx-pro-6000-blackwell-96gb-tp0-339856` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be |  | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856) |
 | `discord-deepseek-ai-deepseek-v4-flash-0731-fp8-e4m3-dgx-spark-gb10-128gb-tp0` | deepseek-ai-deepseek-v4-flash-0731--fp8-e4m3 | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllm0bc48c5-sieec |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1533021653934669945) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-019956` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:infernal-invocation-vllma7f04eb-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537546027073019956) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-148804` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | docker.io/voipmonitor/vllm:infernal-invocation-vllm3 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537061281285148804) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-250178` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllmfa13d33-b12x0 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1536002555669250178) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-267250` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:infernal-invocation-vllmf0fa1ce-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-364885` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:jovian-judgement-vllm28bc825-b12x8a |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1545345760227364885) |
-| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-489643` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:infernal-invocation-vllm7ed814e-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-019956` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:infernal-invocation-vllma7f04eb-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537546027073019956) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-148804` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | docker.io/voipmonitor/vllm:infernal-invocation-vllm3 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537061281285148804) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-250178` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:gilded-gnosis-v20-vllmfa13d33-b12x0 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1536002555669250178) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-267250` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:infernal-invocation-vllmf0fa1ce-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-364885` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:jovian-judgement-vllm28bc825-b12x8a |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1545345760227364885) |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-489643` | deepseek-ai-deepseek-v4-flash-0731--iq2-xxs | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:infernal-invocation-vllm7ed814e-b12 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643) |
 | `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-dgx-spark-gb10-128gb-tp0` | deepseek-ai-deepseek-v4-flash-dspark--fp8 | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:fathomless-firmament-v16-vllm8f86f4 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1526634100171997214) |
-| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-dgx-spark-gb10-128gb-tp0-418546` | deepseek-ai-deepseek-v4-flash-dspark--fp8 | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:gilded-gnosis-v18-vllm264bce1-b12xb |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1528164614989418546) |
-| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-6000-blackwell-96gb-tp0-266914` | deepseek-ai-deepseek-v4-flash-dspark--fp8 | rtx-pro-6000-blackwell-96gb 1 | vllm/ds4flash:dspark0713 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1526155667000266914) |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-dgx-spark-gb10-128gb-tp0-418546` | deepseek-ai-deepseek-v4-flash-dspark--fp8 | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:gilded-gnosis-v18-vllm264bce1-b12xb |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1528164614989418546) |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-6000-blackwell-96gb-tp0-266914` | deepseek-ai-deepseek-v4-flash-dspark--fp8 | rtx-pro-6000-blackwell-96gb 2 | vllm/ds4flash:dspark0713 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1526155667000266914) |
 | `discord-ds41-flash-1m-context-dspark-docker-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be | 1048576 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550426993453965384) |
 | `discord-ds41-flash-jovian-judgement-beta-docker-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | ghcr.io/local-inference-lab/vllm:jovian-judgement-be | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856) |
 | `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-ws-tp4` | deepseek-ai-deepseek-v4-1-flash--fp8 | rtx-pro-6000-blackwell-96gb 4 | localinferencelab/vllm:jovian-judgement-community-20 | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1548872593522565164) |
 | `discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0` | lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:jovian-judgement-vllm08e1c7d-b12xd0 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1545881440439246879) |
-| `discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0-950730` | lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730) |
+| `discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0-950730` | lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned | dgx-spark-gb10-128gb 2 | voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15 |  | [msg](https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730) |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | localinferencelab/vllm:jovian-judgement-community-20 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-001558` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260906 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546103275752001558) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-132362` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260901 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1544320517132132362) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-305792` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260908 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546850663391305792) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-325016` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260908 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546930555340325016) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-545832` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260902 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832) |
-| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-641376` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:jovian-judgement-community-20260903 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1545156576195641376) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-001558` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260906 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546103275752001558) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-132362` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260901 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1544320517132132362) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-305792` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260908 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546850663391305792) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-325016` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260908 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1546930555340325016) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-545832` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260902 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832) |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-641376` | lil-glm53-flash-nvfp4--46aaae8a8203 | rtx-pro-6000-blackwell-96gb 4 | voipmonitor/vllm:jovian-judgement-community-20260903 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1545156576195641376) |
 | `discord-lil-local-inference-lab-glm-5-3-nvfp4-unpinned-dgx-spark-gb10-128gb-tp0` | lil-local-inference-lab-glm-5-3-nvfp4--unpinned | dgx-spark-gb10-128gb 1 | joninco/vllm:glm53-nvfp4-decode-opt-20260904-r34 |  | [msg](https://discord.com/channels/1466898002793857221/1542910591730192434/1545488541877014691) |
 | `discord-lil-lukealonso-glm-5-1-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp8-376496` | lil-lukealonso-glm-5-1-nvfp4--unpinned | rtx-pro-6000-blackwell-96gb 8 | voipmonitor/sglang:cu130 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496) |
 | `discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-dgx-spark-gb10-128gb-tp0` | lil-lukealonso-glm-5-2-nvfp4--unpinned | dgx-spark-gb10-128gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllmfa13d33-b12x0 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1536381897301819485) |
 | `discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | lil-lukealonso-glm-5-2-nvfp4--unpinned | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllm2167295-si6a9 |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370) |
+| `discord-lil-lukealonso-kimi-k3-qsrt-k2-3b98114115f1-rtx-pro-6000-blackwell-96gb-tp0` | lil-lukealonso-kimi-k3-qsrt-k2--3b98114115f1 | rtx-pro-6000-blackwell-96gb 1 | amygdala/vllm:kimi-k3-dcp8-flashinfer-fa2-nograph-20 |  | [msg](https://discord.com/channels/1466898002793857221/1528141816459689984/1537921009833869342) |
+| `discord-lil-lukealonso-qwen3-5-397b-a17b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp4-884352` | lil-lukealonso-qwen3-5-397b-a17b-nvfp4--unpinned | rtx-pro-6000-blackwell-96gb 4 | orthozany/vllm-qwen35-mtp:latest | 262144 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352) |
 | `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-blackwell-96gb-tp8-164274` | lil-moonshotai-kimi-k2-6--b5aabbfb2022 | rtx-pro-6000-blackwell-96gb 8 | orthozany/k26-0424-clean:v12 | 262144 | [msg](https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274) |
 | `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-blackwell-96gb-tp8-624138` | lil-moonshotai-kimi-k2-6--b5aabbfb2022 | rtx-pro-6000-blackwell-96gb 8 | luke-sglang:blackwell |  | [msg](https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138) |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-blackwell-96gb-tp8-790824` | lil-moonshotai-kimi-k2-6--b5aabbfb2022 | rtx-pro-6000-blackwell-96gb 8 | voipmonitor/vllm:kimi-v5-cu132-89da7631 | 262144 | [msg](https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824) |
+| `discord-lil-sehyo-qwen3-5-122b-a10b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp1-504294` | lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned | rtx-pro-6000-blackwell-96gb 1 | vllm/vllm-openai:v0.17.1-cu130 | 262144 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294) |
+| `discord-lil-sehyo-qwen3-5-122b-a10b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp2-039610` | lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned | rtx-pro-6000-blackwell-96gb 2 | vllm/vllm-openai:cu130-nightly | 186560 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610) |
 | `discord-lil-willfalco-glm-5-2-exl3-tr3-3-36bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | lil-willfalco-glm-5-2-exl3-tr3-3-36bpw--unpinned | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:gilded-gnosis-v20-vllm4d006a4-b12xc |  | [msg](https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110) |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-pro-6000-blackwell-96gb-tp0` | madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid--nvfp4 | rtx-pro-6000-blackwell-96gb 1 | voipmonitor/vllm:fathomless-firmament-v17-vllm6ccc3e |  | [msg](https://discord.com/channels/1466898002793857221/1523800435490820239/1527117187632992377) |
 | `discord-nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4-nvfp4-mixed-rtx-pro-6000-blackwell-96gb-tp4-6133` | nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4--nvfp4-mixed | rtx-pro-6000-blackwell-96gb 4 | vllm/vllm-openai:cu130-nightly | 131072 | [msg](https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388) |
 | `discord-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-5090-32gb-tp1-960761` | nvidia-qwen3-6-35b-a3b-nvfp4--nvfp4 | rtx-5090-32gb 1 | repne/vllm:nvfp4-moe-n433m | 250000 | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761) |
 | `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-207424` | qwen-qwen3-6-27b--fp8 | rtx-pro-6000-blackwell-96gb 2 | repne/vllm:latest | 262144 | [msg](https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424) |
+| `discord-qwen-qwen3-8-flash-next-ud-iq3-xxs-rtx-pro-6000-blackwell-96gb-tp2` | qwen-qwen3-8-flash-next--ud-iq3-xxs | rtx-pro-6000-blackwell-96gb 1 | vllm/vllm-openai:qwen38-flash-next | 262144 | [msg](https://discord.com/channels/1466898002793857221/1528331644933767190/1542211769131606047) |
+| `discord-radixark-qwen3-8-flash-next-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0` | radixark-qwen3-8-flash-next-nvfp4--nvfp4 | rtx-pro-6000-blackwell-96gb 1 | sglang-qwen38fn-sm120-turbo:r22 |  | [msg](https://discord.com/channels/1466898002793857221/1528331644933767190/1546121824885280829) |
 | `discord-reported-ds41-flash-r36-rtxpro6000-ws-tp4` | lil-deepseek-ai-deepseek-v4-1-flash--unpinned | rtx-pro-6000-blackwell-96gb 4 | localinferencelab/vllm:jovian-judgement-community-20 | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1548464464641134753) |
 | `discord-reported-ds41-flash-r37-rtxpro6000-ws-tp4` | lil-deepseek-ai-deepseek-v4-1-flash--unpinned | rtx-pro-6000-blackwell-96gb 4 | localinferencelab/vllm:jovian-judgement-community-20 | 131072 | [msg](https://discord.com/channels/1466898002793857221/1547563567379906651/1548698823625277564) |
+| `discord-sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-mtp-nvfp4-rtx-5090-32gb-tp0` | sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-mtp--nvfp4 | rtx-5090-32gb 1 | vllm/vllm-openai:cu129-nightly |  | [msg](https://discord.com/channels/1466898002793857221/1473975364727476224/1534988203235475626) |
+| `discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-96gb-tp0` | xiaomimimo-mimo-v2-5--iq2-xxs | rtx-pro-6000-blackwell-96gb 1 | kcramp858/mimo-m2.5-stable:2026-05-12 |  | [msg](https://discord.com/channels/1466898002793857221/1498377952981946548/1504005602458734602) |
 
 ## Extended in place
 
@@ -116,6 +129,52 @@ recipes they hang off stay `candidate`.
 - **Failed**: `lmsysorg/sglang@sha256:c4ca6511` is the base Lavd pinned, but JCartu's measured builds were local derived image IDs
   (`sha256:0bf6fb28`, `sha256:5730155e`), which are not pullable. His numbers therefore hang off a reference record.
 
+### Weight fit against the stated hardware
+
+For every record: the size of the weight files at the pinned revision (Hugging Face API, `?blobs=true`) against
+`hardware_count x VRAM`. `over` means the weights alone exceed aggregate VRAM, so the launch necessarily relies on the
+host-RAM or NVMe offload it configures (Engram tables, expert offload); `fits` means they fit with room for the KV pool.
+
+| record | weights GB | card VRAM GB | verdict |
+|---|---|---|---|
+| `discord-brandonmusic-glm-5-3-flash-tr3-4bpw-exl3-4bpw-rtx-pr` | 175.6 | 96 | over |
+| `discord-cyankiwi-qwen3-6-27b-awq-int4-awq-dgx-spark-gb10-128` | 20.4 | 128 | fits |
+| `discord-deepseek-ai-deepseek-v4-1-flash-fp8-rtx-pro-6000-bla` | 510.3 | 384 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-fp8-e4m3-dgx-spar` | 166.9 | 128 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-dgx-spark-g` | 166.9 | 128 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-dgx-spark-g` | 166.9 | 256 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-600` | 166.9 | 192 | fits |
+| `discord-ds41-flash-1m-context-dspark-docker-rtxpro6000-ws-tp` | 510.3 | 384 | over |
+| `discord-ds41-flash-jovian-judgement-beta-docker-rtxpro6000-w` | 510.3 | 384 | over |
+| `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-w` | 510.3 | 384 | over |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 96 | over |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-lukealonso-kimi-k3-qsrt-k2-3b98114115f1-rtx-pro-` | 757.5 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-p` | 366.0 | 96 | over |
+| `discord-nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4-nvfp4` | 352.3 | 384 | fits |
+| `discord-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-5090-32gb-tp1` | 23.4 | 32 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1` | 55.6 | 192 | fits |
+| `discord-qwen-qwen3-8-flash-next-ud-iq3-xxs-rtx-pro-6000-blac` | 360.0 | 96 | over |
+| `discord-radixark-qwen3-8-flash-next-nvfp4-nvfp4-rtx-pro-6000` | 135.2 | 96 | over |
+| `discord-sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-m` | 20.6 | 32 | fits |
+| `discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-` | 315.7 | 96 | over |
+
+`22` records fit in VRAM outright; `13` need offload by construction.
+
 ### Launch failures members reported (kept as notes on the records)
 
 - R36 compose on a host with mismatched NVIDIA userspace: `failed to fulfil mount request:  libnvidia-egl-wayland2.so.1.0.1` (kumioko, 2026-09-17).
@@ -146,8 +205,8 @@ and the `#kimi-k2x`, `#minimax-*`, `#xiaomi-mimo` threads whose compose files ar
 | channels in guild / read | 111 / 88 |
 | threads enumerated / scraped | 471 / 508 |
 | text attachments downloaded | 931 |
-| recipes added (this branch) | 35 |
-| of which executable launches | 33 |
+| recipes added (this branch) | 48 |
+| of which executable launches | 46 |
 | speed sweeps added | 48 |
 | existing records extended | 2 |
 

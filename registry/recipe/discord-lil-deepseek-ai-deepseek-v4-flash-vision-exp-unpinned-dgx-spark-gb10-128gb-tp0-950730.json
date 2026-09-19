@@ -27,7 +27,7 @@
       "state": "known"
     }
   },
-  "hardware_count": 1,
+  "hardware_count": 2,
   "hardware_id": "dgx-spark-gb10-128gb",
   "id": "discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0-950730",
   "launch": {
@@ -99,7 +99,13 @@
     "notes": [
       "Checkpoint resolved by unique basename match against the registry.",
       "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
-    ]
+    ],
+    "prod_checks": {
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    }
   },
   "model_instance_id": "lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned",
   "provenance": {

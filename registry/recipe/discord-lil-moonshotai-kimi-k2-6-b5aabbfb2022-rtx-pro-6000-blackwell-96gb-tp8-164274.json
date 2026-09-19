@@ -26,6 +26,20 @@
       },
       "state": "known"
     },
+    "metadata.prod_checks": {
+      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -235,7 +249,20 @@
     "notes": [
       "Checkpoint resolved by unique basename match against the registry.",
       "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
-    ]
+    ],
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "hardware_vram_gb": 768,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "b5aabbfb20227ed42becbf5541dbffd213942c58",
+      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true",
+      "weight_files": 64,
+      "weights_gb": 595.2
+    }
   },
   "model_instance_id": "lil-moonshotai-kimi-k2-6--b5aabbfb2022",
   "provenance": {
