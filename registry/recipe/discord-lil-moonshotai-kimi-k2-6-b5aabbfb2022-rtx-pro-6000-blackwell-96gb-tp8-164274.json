@@ -1,9 +1,9 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": true,
-    "tools": true,
-    "vision": true
+    "reasoning": null,
+    "tools": null,
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
   "engine": {
@@ -12,51 +12,6 @@
     "version": "orthozany/k26-0424-clean:v12"
   },
   "facts": {
-    "capabilities.reasoning": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.tools": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "moonshotai",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -85,95 +40,6 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.attention_backend": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.chunked_prefill": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.decode_context_parallel": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.gpu_memory_utilization": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.kv_cache_dtype": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -189,51 +55,6 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.max_num_batched_tokens": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.prefix_caching": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.speculative": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -428,33 +249,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 768,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "b5aabbfb20227ed42becbf5541dbffd213942c58",
-      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true",
-      "weight_files": 64,
-      "weights_gb": 595.2
-    }
+    "observed_command": null
   },
   "model_instance_id": "lil-moonshotai-kimi-k2-6--b5aabbfb2022",
   "provenance": {
@@ -471,19 +266,8 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "attention_backend": "TRITON_MLA",
-    "chunked_prefill": true,
-    "decode_context_parallel": 8,
-    "gpu_memory_utilization": 0.97,
-    "kv_cache_dtype": "fp8",
     "max_concurrency": 128,
     "max_context_tokens": 262144,
-    "max_num_batched_tokens": 8192,
-    "prefix_caching": true,
-    "speculative": {
-      "method": "eagle3",
-      "tokens": 3
-    },
     "tensor_parallel": 8
   },
   "speed_sweep_ids": [],

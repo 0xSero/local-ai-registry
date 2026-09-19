@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by greenkeeper9807",
   "engine": {
@@ -12,35 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "google",
-            "url": "https://huggingface.co/api/models/google/gemma-4-31B-it"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -96,32 +67,6 @@
     },
     "model_resolution": "explicit",
     "observed_command": "from the gemma 4 cookbook, why is it that 31b dense would require 2 gpu? even on h200 with 141gb? ```gemma-4-31B-it (1x MI300X, TP=1) Server Launch Command: sglang serve --model-path google/gemma-4-31B-it Note: The 31B dense model fits on a single MI300X (192 GB VRAM) at TP=1, unlike H200 (141 GB) which requires TP=2.```",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
-      "source": "https://huggingface.co/api/models/google/gemma-4-31B-it/revision/842da3794eaa0b77d5f08bae87a17459d91ff475?blobs=true",
-      "weight_files": 2,
-      "weights_gb": 62.5
-    },
     "rig_resolution": {
       "from_message": "1489328802256523394",
       "gap_days": 0.0,

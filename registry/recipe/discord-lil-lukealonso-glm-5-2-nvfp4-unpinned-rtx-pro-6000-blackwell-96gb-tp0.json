@@ -37,47 +37,6 @@
         ]
       },
       "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.attention_backend": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-attachment",
-            "paths": [
-              "1529479030112522370-docker-compose-v20-fi.yaml"
-            ],
-            "publisher": "joninco",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "paths": [
-              "1529479030112522370-docker-compose-v20-fi.yaml"
-            ],
-            "publisher": "joninco",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1529479030112522370"
-          }
-        ]
-      },
-      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -154,26 +113,7 @@
     "model_resolution": "explicit",
     "notes": [
       "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
-    ],
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    }
+    ]
   },
   "model_instance_id": "lil-lukealonso-glm-5-2-nvfp4--unpinned",
   "provenance": {
@@ -201,9 +141,10 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {
-    "attention_backend": "FLASHINFER_MLA_SPARSE_SM120"
-  },
-  "speed_sweep_ids": [],
+  "serving": {},
+  "speed_sweep_ids": [
+    "discord-sweep-1517078525243297872",
+    "discord-sweep-1526704173297565766"
+  ],
   "status": "candidate"
 }

@@ -37,20 +37,6 @@
         ]
       },
       "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -95,25 +81,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "https://discord.com/channels/1466898002793857221/1532052969896284161/1533559077249224754 <@292747031745658880> heres what my clanker says after i let it investigate the running pod/container and recursively skim through the helper scripts wrt the draft method. for 3.25, r20 so default its greedy (and triton instead of b12x?) for starters it also shows in the startup log: ```'num_speculative_tokens': 3, 'moe_backend': 'triton', 'draft_sample_method': 'greedy'}``` ```Confirmed: it's greedy. The live vllm serve cmdline (PID 43851) literally contains: --speculative-config {\"model\":\"/root/models/GLM-5.2-EXL3-TR3-3.25bpw\",\"method\":\"mtp\",\"num_speculative_tokens\":3,\"moe_backend\":\"triton\",\"draft_sample_method\":\"greedy\"} Why it's greedy and not probabilistic: serve-glm52-v16.sh:40 has its own default of probabilistic (MTP_DRAFT_SAMPLE_METHOD=\"${MTP_DRAFT_SAMPLE_METHOD:-probabilistic}\"). But the dispatcher serve-gilded-gnosis.sh:35 exports MTP_DRAFT_SAMPLE_METHOD=greedy before v19→v16 run. The pod env does not set MTP_DRAFT_SAMPLE_METHOD, so the exported greedy is already in the environment; v16's :-probabilistic fallback never fires. So the dispatcher override is what flips it to greedy. If you launched serve-glm52-v16.sh directly (bypassing serve-gilded-gnosis.sh) without setting that env var, you'd indeed get probabilistic.``` truth be told I dont see any improvements changing to probablistic/b12x, if anything the greedy/triton is fastest",
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1536063941958967316",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by brandonmusic.",
   "engine": {
@@ -12,35 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "stepfun-ai",
-            "url": "https://huggingface.co/api/models/stepfun-ai/Step-3.7-Flash-NVFP4"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -96,32 +67,6 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "Not sure there is a community consensus here on that just beacause it’s not been used that much (not pins, threads, file or links in that regard). The nvfp4 for it suggests python3 -m vllm.entrypoints.openai.api_server --host 0.0.0.0 --port ${PORT} --model stepfun-ai/Step-3.7-Flash-NVFP4 --served-model-name step3p7 --tensor-parallel-size 4 --gpu-memory-utilization 0.9 --enable-expert-parallel --trust-remote-code --quantization modelopt --kv-cache-dtype fp8 --max-model-len 8192 --reasoning-parser step3p5 --enable-auto-tool-choice --tool-call-parser step3p5 --async-scheduling Basically, download b12x, and point your agent at it, to come up with one so you can build your own image. The local inference lab models sub folder, has a lot of configs to which you can point your agent at it. Looks like it has global attn and sliding window attention, so you want to make sure, teh agent understands that, then run llm decode bench, and you can see if it optimizes any prefill and decoder post here if you get any good results!",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "4275532ffd9a9496ff36b7a2dc4a9db1048da438",
-      "source": "https://huggingface.co/api/models/stepfun-ai/Step-3.7-Flash-NVFP4/revision/4275532ffd9a9496ff36b7a2dc4a9db1048da438?blobs=true",
-      "weight_files": 14,
-      "weights_gb": 129.2
-    },
     "rig_resolution": {
       "from_message": "1524589752295358474",
       "gap_days": 1.49,

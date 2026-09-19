@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": true,
-    "tools": true,
+    "reasoning": null,
+    "tools": null,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by chisleu8359",
@@ -12,48 +12,6 @@
     "version": "vllm/vllm-openai:qwen3_5-cu130"
   },
   "facts": {
-    "capabilities.reasoning": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476028912109621351"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.tools": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476028912109621351"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,62 +27,6 @@
       "state": "known"
     },
     "metadata.model_resolution": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476028912109621351"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.kv_cache_dtype": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476028912109621351"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "chisleu8359",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.prefix_caching": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -230,32 +132,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 720,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "12b28061efd8145b11226e4fab2528ee4f39ef09",
-      "source": "https://huggingface.co/api/models/nvidia/Qwen3.5-397B-A17B-NVFP4/revision/12b28061efd8145b11226e4fab2528ee4f39ef09?blobs=true",
-      "weight_files": 11,
-      "weights_gb": 251.2
-    },
     "rig_resolution": {
       "from_message": "1476029023028252807",
       "hardware_id": "b200-180gb",
@@ -283,8 +159,6 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_dtype": "auto",
-    "prefix_caching": true,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [],

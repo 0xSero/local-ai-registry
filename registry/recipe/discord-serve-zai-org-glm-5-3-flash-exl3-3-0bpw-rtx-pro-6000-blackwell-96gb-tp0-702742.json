@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by misterfix",
   "engine": {
@@ -12,21 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "zai-org",
-            "url": "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.model_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -48,20 +33,6 @@
             "kind": "discord-report",
             "publisher": "misterfix",
             "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1542185704535363654"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -110,32 +81,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "<@292747031745658880> Could you add a quick patch to v20+ for an API key to be passed? I have to patch every time. 🙂 ``` --- /usr/local/bin/serve-glm52-v16.sh 2026-07-25 18:35:24.000000000 +0000 +++ /usr/local/bin/serve-glm52-v16-patched.sh 2026-07-25 21:46:16.437053966 +0000 @@ -358,6 +358,11 @@ dcp_args+=(--dcp-comm-backend \"${DCP_BACKEND}\" --dcp-kv-cache-interleave-size 1) fi +api_key_args=() +if [[ -n \"${VLLM_API_KEY:-}\" ]]; then + api_key_args=(--api-key \"${VLLM_API_KEY}\") +fi + hf_overrides=\"$(printf '{\"use_index_cache\":true,\"index_topk_pattern\":\"%s\"}' \"${GLM52_INDEX_TOPK_PATTERN}\")\" cmd=(vllm serve \"${MODEL}\" @@ -392,6 +397,7 @@ --enable-force-include-usage --enable-request-id-headers --hf-overrides \"${hf_overrides}\" + \"${api_key_args[@]}\" \"${spec_arg[@]}\") ```",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "03eb5366286afd40d2221b1d9c63a6dd1ba4832e",
-      "source": "https://huggingface.co/api/models/zai-org/GLM-5.3-Flash/revision/03eb5366286afd40d2221b1d9c63a6dd1ba4832e?blobs=true",
-      "weight_files": 62,
-      "weights_gb": 328.3
-    },
     "rig_resolution": {
       "from_message": "1527122383364952144",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

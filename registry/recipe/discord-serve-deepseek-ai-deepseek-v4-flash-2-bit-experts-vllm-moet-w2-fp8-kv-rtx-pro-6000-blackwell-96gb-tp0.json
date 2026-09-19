@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -81,32 +67,6 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "V9 with B12X A16 and ``` /bin/bash -lc 'unset NCCL_GRAPH_FILE NCCL_GRAPH_DUMP_FILE VLLM_B12X_MLA_EXTEND_MAX_CHUNKS; exec vllm serve /mnt/data/llm-data/models/deepseek-ai/DeepSeek-V4-Flash --served-model-name ${MODEL_ID} --host 0.0.0.0 --port ${PORT} --trust-remote-code --kv-cache-dtype fp8 --block-size 256 --load-format auto --tensor-parallel-size 2 --decode-context-parallel-size 1 --gpu-memory-utilization 0.96 --max-model-len 524288 --max-num-seqs 8 --max-num-batched-tokens 4096 --max-cudagraph-capture-size 256 --compilation-config \"{\\\"cudagraph_mode\\\":\\\"FULL_AND_PIECEWISE\\\",\\\"custom_ops\\\":[\\\"all\\\"]}\" --async-scheduling --no-scheduler-reserve-full-isl --enable-chunked-prefill --enable-prefix-caching --enable-flashinfer-autotune --tokenizer-mode deepseek_v4 --tool-call-parser deepseek_v4 --reasoning-parser deepseek_v4 --enable-auto-tool-choice --default-chat-template-kwargs.thinking=true --default-chat-template-kwargs.reasoning_effort=high --speculative-config \"{\\\"method\\\":\\\"mtp\\\",\\\"num_speculative_tokens\\\":2,\\\"draft_sample_method\\\":\\\"probabilistic\\\", \\\"moe_backend\\\": \\\"b12x\\\"}\" --attention-backend B12X_MLA_SPARSE --moe-backend b12x --linear-backend b12x' ``` I think `--gpu-memory-utilization 0.96 --max-model-len 524288 --max-num-seqs 8 --max-num-batched-tokens 4096` is a key",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
-      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true",
-      "weight_files": 46,
-      "weights_gb": 159.6
-    },
     "rig_resolution": {
       "from_message": "1526155667000266914",
       "gap_days": 1.74,

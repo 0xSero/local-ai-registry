@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": true,
-    "tools": true,
+    "reasoning": null,
+    "tools": null,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by sedulousdc",
@@ -12,36 +12,6 @@
     "version": "lmsysorg/sglang:latest"
   },
   "facts": {
-    "capabilities.reasoning": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "sedulousdc",
-            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.tools": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "sedulousdc",
-            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -57,35 +27,6 @@
       "state": "known"
     },
     "metadata.model_resolution": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "sedulousdc",
-            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.kv_cache_dtype": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -192,33 +133,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 192,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "db821d7a3ce29ee96d80a1cae88d878d8586b54e",
-      "source": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true",
-      "weight_files": 44,
-      "weights_gb": 134.5
-    }
+    "observed_command": null
   },
   "model_instance_id": "lukealonso-minimax-m2-7-nvfp4--nvfp4",
   "provenance": {
@@ -235,7 +150,6 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_dtype": "fp8_e4m3",
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

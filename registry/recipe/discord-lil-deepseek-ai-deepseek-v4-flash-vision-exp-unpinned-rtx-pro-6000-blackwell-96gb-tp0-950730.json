@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by unat.",
   "engine": {
@@ -12,21 +12,6 @@
     "version": "voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15b6813-fi803c466-cu133-torch213-20260907-r9"
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "deepseek-ai",
-            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash-Vision-Exp"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -41,84 +26,7 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546533356601086123"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.gpu_memory_utilization": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546533356601086123"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.max_num_batched_tokens": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
-          },
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "unat.",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546533356601086123"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.speculative": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -209,25 +117,6 @@
     },
     "model_resolution": "explicit",
     "observed_command": null,
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1546533356601086123",
       "gap_days": 1.08,
@@ -257,13 +146,7 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {
-    "gpu_memory_utilization": 0.965,
-    "max_num_batched_tokens": 4096,
-    "speculative": {
-      "tokens": 3
-    }
-  },
+  "serving": {},
   "speed_sweep_ids": [],
   "status": "candidate"
 }

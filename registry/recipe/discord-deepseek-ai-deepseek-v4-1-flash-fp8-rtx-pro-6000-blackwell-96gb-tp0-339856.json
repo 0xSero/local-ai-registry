@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by RTX6kPRO Bot",
   "engine": {
@@ -12,21 +12,6 @@
     "version": "ghcr.io/local-inference-lab/vllm:jovian-judgement-beta"
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "deepseek-ai",
-            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -42,65 +27,6 @@
       "state": "known"
     },
     "metadata.model_resolution": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.gpu_memory_utilization": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.max_num_batched_tokens": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.speculative": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -268,33 +194,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 384,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
-      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash/revision/dba1be0a40aa45a94ad051997016db3960a90277?blobs=true",
-      "weight_files": 48,
-      "weights_gb": 510.3
-    }
+    "observed_command": null
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
   "provenance": {
@@ -310,14 +210,7 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {
-    "gpu_memory_utilization": 0.95,
-    "max_num_batched_tokens": 4096,
-    "speculative": {
-      "method": "dspark",
-      "tokens": 7
-    }
-  },
+  "serving": {},
   "speed_sweep_ids": [],
   "status": "candidate"
 }

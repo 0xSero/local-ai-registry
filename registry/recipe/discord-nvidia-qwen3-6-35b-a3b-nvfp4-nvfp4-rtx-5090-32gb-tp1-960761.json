@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": true,
-    "tools": true,
+    "reasoning": null,
+    "tools": null,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by repne_00603_12051",
@@ -12,36 +12,6 @@
     "version": "repne/vllm:nvfp4-moe-n433m"
   },
   "facts": {
-    "capabilities.reasoning": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.tools": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -70,50 +40,6 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.attention_backend": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.gpu_memory_utilization": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -129,51 +55,6 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.max_num_batched_tokens": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.moe_backend": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1512441417710960761"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.prefix_caching": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -370,33 +251,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 32,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "491c2f1ea524c639598bf8fa787a93fed5a6fbce",
-      "source": "https://huggingface.co/api/models/nvidia/Qwen3.6-35B-A3B-NVFP4/revision/491c2f1ea524c639598bf8fa787a93fed5a6fbce?blobs=true",
-      "weight_files": 3,
-      "weights_gb": 23.4
-    }
+    "observed_command": null
   },
   "model_instance_id": "nvidia-qwen3-6-35b-a3b-nvfp4--nvfp4",
   "provenance": {
@@ -413,13 +268,8 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "attention_backend": "flashinfer",
-    "gpu_memory_utilization": 0.3,
     "max_concurrency": 8,
     "max_context_tokens": 250000,
-    "max_num_batched_tokens": 2048,
-    "moe_backend": "flashinfer_b12x```",
-    "prefix_caching": true,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [],

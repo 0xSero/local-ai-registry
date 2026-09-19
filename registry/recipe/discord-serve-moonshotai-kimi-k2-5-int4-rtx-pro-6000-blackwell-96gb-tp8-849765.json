@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
   "engine": {
@@ -12,35 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "moonshotai",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.5"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -113,32 +84,6 @@
       "Rig resolved from the author's own nearby message in the same thread."
     ],
     "observed_command": "<@1046140468959911967> do this test for comparision on your system: https://www.voipmonitor.org/test.py.txt : for i in $(seq 1 100); do python3 test.py 5000 -c 40000 & done ``` 1) VLLM_LOG_STATS_INTERVAL=1 NCCL_P2P_LEVEL=SYS VLLM_TEST_FORCE_FP8_MARLIN=1 VLLM_MARLIN_USE_ATOMIC_ADD=1 VLLM_MARLIN_INPUT_DTYPE=fp8 vllm serve moonshotai/Kimi-K2.5 --served-model-name Kimi-K2.5 --trust-remote-code --host 0.0.0.0 --port 5000 --tensor-parallel-size 8 --pipeline-parallel-size 1 --enable-chunked-prefill --enable-prefix-caching --load-format fastsafetensors --tool-call-parser kimi_k2 --enable-auto-tool-choice --reasoning-parser kimi_k2 --async-scheduling --gpu-memory-utilization 0.93 --max-num-batched-tokens 4096 --mm-processor-cache-gb 0 --mm-encoder-tp-mode weights --language-model-only --attention-backend TRITON_MLA --kv-cache-dtype fp8 --decode-context-parallel-size 8 2) NCCL_P2P_DISABLE=1 NCCL_MIN_NCHANNELS=32 NCCL_MAX_NCHANNELS=64 NCCL_BUFFSIZE=8388608 CUDA_DEVICE_MAX_CONNECTIONS=64 VLLM_LOG_STATS_INTERVAL=1 VLLM_TEST_FORCE_FP8_MARLIN=1 VLLM_MARLIN_USE_ATOMIC_ADD=1 VLLM_MARLIN_INPUT_DTYPE=fp8 vllm serve moonshotai/Kimi-K2.5 --served-model-name Kimi-K2.5 --trust-remote-code --host 0.0.0.0 --port 5000 --tensor-parallel-size 8 --pipeline-parallel-size 1 --enable-chunked-prefill --enable-prefix-caching --load-format fastsafetensors --tool-call-parser kimi_k2 --enable-auto-tool-choice --reasoning-parser kimi_k2 --async-scheduling --gpu-memory-utilization 0.93 --max-num-batched-tokens 409",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 768,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "4d01dfe0332d63057c186e0b262165819efb6611",
-      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.5/revision/4d01dfe0332d63057c186e0b262165819efb6611?blobs=true",
-      "weight_files": 64,
-      "weights_gb": 595.2
-    },
     "rig_resolution": {
       "from_message": "1475694628048207934",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

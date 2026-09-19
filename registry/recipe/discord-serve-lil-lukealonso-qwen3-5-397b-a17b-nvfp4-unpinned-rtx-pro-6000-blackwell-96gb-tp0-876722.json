@@ -31,20 +31,6 @@
         ]
       },
       "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
     }
   },
   "hardware_count": 1,
@@ -84,25 +70,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "<@221167603064897547> this is my baseline benchmarks - VLLM_LOG_STATS_INTERVAL=1 NCCL_P2P_LEVEL=SYS SAFETENSORS_FAST_GPU=1 python3 -m vllm.entrypoints.openai.api_server --model lukealonso/Qwen3.5-397B-A17B-NVFP4 --host 0.0.0.0 --port 5199 --served-model-name Qwen3_5-397B-A17B-NVFP4 --trust-remote-code --tensor-parallel-size 4 --gpu-memory-utilization 0.9 --max-num-batched-tokens 8192 --max-num-seqs 128 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --mm-encoder-tp-mode data --mm-processor-cache-type shm --enable-prefix-caching --enable-chunked-prefill --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":2}'",
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1495066514896715826",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

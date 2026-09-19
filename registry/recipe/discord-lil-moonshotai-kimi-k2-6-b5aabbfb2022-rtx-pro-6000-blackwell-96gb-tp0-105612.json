@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
   "engine": {
@@ -12,21 +12,6 @@
     "version": "k26-0424-clean:v12"
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "moonshotai",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -62,20 +47,6 @@
             "kind": "discord-report",
             "publisher": "orangezed",
             "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1505873583338164274"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -134,32 +105,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "b5aabbfb20227ed42becbf5541dbffd213942c58",
-      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true",
-      "weight_files": 64,
-      "weights_gb": 595.2
-    },
     "rig_resolution": {
       "from_message": "1527605920010469547",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

@@ -39,65 +39,6 @@
         ]
       },
       "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.gpu_memory_utilization": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1546850663391305792"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.max_num_batched_tokens": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1546850663391305792"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.speculative": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "RTX6kPRO Bot",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1546850663391305792"
-          }
-        ]
-      },
-      "state": "known"
     }
   },
   "hardware_count": 4,
@@ -220,33 +161,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": null,
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 384,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
-      "source": "https://huggingface.co/api/models/local-inference-lab/GLM-5.3-Flash-NVFP4/revision/46aaae8a82032f77100f2f03e9cc11b391df3b4d?blobs=true",
-      "weight_files": 47,
-      "weights_gb": 199.4
-    }
+    "observed_command": null
   },
   "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
   "provenance": {
@@ -262,13 +177,7 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {
-    "gpu_memory_utilization": 0.93,
-    "max_num_batched_tokens": 4096,
-    "speculative": {
-      "method": "dflash2"
-    }
-  },
+  "serving": {},
   "speed_sweep_ids": [],
   "status": "candidate"
 }

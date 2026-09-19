@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -126,25 +112,6 @@
       "Rig resolved from the author's own nearby message in the same thread."
     ],
     "observed_command": "```export NCCL_P2P_LEVEL=SYS export NCCL_IB_DISABLE=1 export NCCL_MIN_NCHANNELS=8 export VLLM_WORKER_MULTIPROC_METHOD=spawn export VLLM_MARLIN_USE_ATOMIC_ADD=1 export disable_custom_all_reduce=True export VLLM_USE_FLASHINFER_MOE_FP16=1 export VLLM_USE_FLASHINFER_SAMPLER=0 export OMP_NUM_THREADS=8 export VLLM_SLEEP_WHEN_IDLE=1 export CUDA_DEVICE_ORDER=PCI_BUS_ID export CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve ~/models/lukealonso/Qwen3.5-397B-A17B-NVFP4/ --served-model-name Qwen3.5-397B-A17B-NVFP4 --max-num-seqs 128 --max-model-len 262144 --gpu-memory-utilization 0.9 --tensor-parallel-size 4 --max-num-batched-tokens 8192 --enable-expert-parallel --disable-custom-all-reduce --tool-call-parser qwen3_coder --reasoning-parser qwen3 --enable-auto-tool-choice --trust-remote-code --host 0.0.0.0 --port 8000 --mm-encoder-tp-mode data --mm-processor-cache-type shm --speculative-config '{\"method\": \"qwen3_next_mtp\", \"num_speculative_tokens\": 2}' --enable-prefix-caching --enable-chunked-prefill```",
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1483211599690072126",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

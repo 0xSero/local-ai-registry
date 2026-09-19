@@ -32,20 +32,6 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -126,32 +112,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "``` exec env SGL_DISABLE_TP_MEMORY_INBALANCE_CHECK=True NCCL_P2P_LEVEL=4 PYTORCH_ALLOC_CONF=expandable_segments:True,max_split_size_mb:512 USE_TRITON_W8A8_FP8_KERNEL=1 SGL_ENABLE_JIT_DEEPGEMM=0 python -m sglang.launch_server --model /mnt/zai-org/GLM-4.7-FP8/ --chat-template /mnt/zai-org/GLM-4.7-FP8/chat_template.jinja --tp 4 --dp 2 --host 0.0.0.0 --port 4999 --mem-fraction-static 0.95 --sleep-on-idle --max-running-requests 48 --trust-remote-code --context-length 200000 --enable-metrics --attention-backend flashinfer --tool-call-parser glm47 --reasoning-parser glm45 --served-model-name glm-4.7-fp8 --chunked-prefill-size 8192 --enable-mixed-chunk --cuda-graph-max-bs 8 --kv-cache-dtype fp8_e4m3 --fp8-gemm-backend triton --disable-shared-experts-fusion --schedule-conservativeness 0.3 --enable-cache-report --speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4 --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 16}' --enable-hierarchical-cache --hicache-ratio 5 --enable-flashinfer-allreduce-fusion ~```",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 384,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "7b3b5f81eee81be12a6f8da2710eac4bafb0166a",
-      "source": "https://huggingface.co/api/models/zai-org/GLM-4.7-FP8/revision/7b3b5f81eee81be12a6f8da2710eac4bafb0166a?blobs=true",
-      "weight_files": 93,
-      "weights_gb": 362.1
-    },
     "rig_resolution": {
       "from_message": "1490460727398371368",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

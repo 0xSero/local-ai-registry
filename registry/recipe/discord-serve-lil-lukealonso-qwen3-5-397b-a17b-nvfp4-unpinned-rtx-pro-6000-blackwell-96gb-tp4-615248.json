@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -109,25 +95,6 @@
     },
     "model_resolution": "explicit",
     "observed_command": "Looks like this is crashing for me: ```python [2026-04-01 12:54:06 TP3] Scheduler hit an exception: Traceback (most recent call last): File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/managers/scheduler.py\", line 3564, in run_scheduler_process scheduler = Scheduler( ... File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 493, in find_crossover_size custom_us, nccl_us = self._bench_graph_latency( File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 462, in _bench_graph_latency custom_runs = sorted([run_custom() for _ in range(3)]) File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 426, in run_custom handle, off = self._ops.get_graph_buffer_ipc_meta(self._ptr) RuntimeError: invalid argument /root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/pcie_allreduce/pcie_allreduce.cu:321 ``` With this config: ```c SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server --model lukealonso/Qwen3.5-397B-A17B-NVFP4 --served-model-name Qwen3.5 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --tensor-parallel-size 4 --quantization modelopt_fp4 --kv-cache-dtype fp8_e4m3 --trust-remote-code --cuda-graph-max-bs 16 --max-running-requests 4 --chunked-prefill-size 2048 --speculative-algo NEXTN --speculative-num-steps 2 --speculative-eagle-topk 1 --speculative-",
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1485661434699583651",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by inkplay_1962",
   "engine": {
@@ -12,35 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "Qwen",
-            "url": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -96,32 +67,6 @@
     },
     "model_resolution": "explicit",
     "observed_command": "sudo docker exec -it qwen-bench vllm bench serve --model Qwen/Qwen3.6-27B-FP8 --served-model-name Qwen3.6-27B --dataset-name random --input-len 8192 --output-len 512 --num-prompts 4 --request-rate inf",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "e89b16ebf1988b3d6befa7de50abc2d76f26eb09",
-      "source": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8/revision/e89b16ebf1988b3d6befa7de50abc2d76f26eb09?blobs=true",
-      "weight_files": 66,
-      "weights_gb": 30.9
-    },
     "rig_resolution": {
       "from_message": "1498365282497069098",
       "gap_days": 0.0,

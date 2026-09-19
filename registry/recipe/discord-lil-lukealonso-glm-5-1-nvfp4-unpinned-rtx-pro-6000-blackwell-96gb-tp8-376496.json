@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": true,
-    "tools": true,
+    "reasoning": null,
+    "tools": null,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
@@ -12,36 +12,6 @@
     "version": "voipmonitor/sglang:cu130"
   },
   "facts": {
-    "capabilities.reasoning": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "capabilities.tools": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -56,96 +26,7 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.attention_backend": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.cuda_graph_max_batch": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.kv_cache_dtype": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "serving.max_concurrency": {
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.mem_fraction_static": {
-      "note": "read from the launch the poster published",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-report",
-            "publisher": "orangezed",
-            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "serving.speculative": {
-      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -313,26 +194,7 @@
     "notes": [
       "Checkpoint resolved by unique basename match against the registry.",
       "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
-    ],
-    "prod_checks": {
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    }
+    ]
   },
   "model_instance_id": "lil-lukealonso-glm-5-1-nvfp4--unpinned",
   "provenance": {
@@ -349,15 +211,7 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "attention_backend": "flashinfer",
-    "cuda_graph_max_batch": 32,
-    "kv_cache_dtype": "bf16",
     "max_concurrency": 64,
-    "mem_fraction_static": 0.85,
-    "speculative": {
-      "method": "nextn",
-      "tokens": 3
-    },
     "tensor_parallel": 8
   },
   "speed_sweep_ids": [],

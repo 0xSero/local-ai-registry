@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": true
+    "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by __jdj__",
   "engine": {
@@ -12,21 +12,6 @@
     "version": null
   },
   "facts": {
-    "capabilities.vision": {
-      "note": "Hugging Face pipeline tag: image-text-to-text",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "publisher": "Qwen",
-            "url": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.model_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -48,20 +33,6 @@
             "kind": "discord-report",
             "publisher": "__jdj__",
             "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540728907408343090"
-          }
-        ]
-      },
-      "state": "known"
-    },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -152,32 +123,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "76 tps avg generation throughput with ```vllm serve Qwen3.8-27B-FP8 --served-model-name test --host 127.0.0.1 --port 8080 --tensor-parallel-size 1 --max-model-len 262144 --gpu-memory-utilization 0.92 --kv-cache-dtype fp8 --max-num-seqs 4 --language-model-only --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --performance-mode interactivity --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}'```",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
-      "source": "https://huggingface.co/api/models/Qwen/Qwen3.8-27B/revision/1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0?blobs=true",
-      "weight_files": 18,
-      "weights_gb": 55.6
-    },
     "rig_resolution": {
       "from_message": "1542195748043755622",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

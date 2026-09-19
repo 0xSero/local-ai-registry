@@ -38,20 +38,6 @@
       },
       "state": "known"
     },
-    "metadata.prod_checks": {
-      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "registry-enrichment",
-            "url": "https://github.com/0xSero/local-ai-registry"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -137,32 +123,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export SGLANG_ENABLE_SPEC_V2=1 TARGET_MODEL=~/models/MiMo-V2.5 python -m sglang.launch_server --model-path \"$TARGET_MODEL\" --served-model-name mimo-v2.5 --tp-size 4 --max-running-requests 16 --attention-backend triton --reasoning-parser mimo --tool-call-parser mimo --context-length 262144 --mem-fraction-static 0.85 --swa-full-tokens-ratio 0.1 --chunked-prefill-size 16384 --page-size 1 --cuda-graph-max-bs 16 --quantization fp8 --speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4 --mm-process-config '{\"image\": {\"image_max_pixels\": 1048576, \"image_min_pixels\": 8192}}' --mm-attention-backend triton_attn --host 0.0.0.0 --port 8000 --trust-remote-code",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "consistency": {
-        "checked": [
-          "context",
-          "tensor_parallel",
-          "concurrency",
-          "container-state",
-          "hardware_count",
-          "pinned-repository"
-        ],
-        "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": [],
-        "notes": []
-      },
-      "hardware_vram_gb": 384,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "63651580ca774f8504f676040460aed3e1244ac1",
-      "source": "https://huggingface.co/api/models/XiaomiMiMo/MiMo-V2.5/revision/63651580ca774f8504f676040460aed3e1244ac1?blobs=true",
-      "weight_files": 18,
-      "weights_gb": 315.7
-    },
     "rig_resolution": {
       "from_message": "1507024764466761758",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
