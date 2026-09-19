@@ -1,0 +1,201 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by RTX6kPRO Bot",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "ghcr.io/local-inference-lab/vllm:jovian-judgement-beta"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-deepseek-ai-deepseek-v4-1-flash-fp8-rtx-pro-6000-blackwell-96gb-tp0-339856",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "docker",
+      "logs",
+      "-f",
+      "ds41-jj-beta",
+      "```",
+      "Requires",
+      "a",
+      "host",
+      "driver",
+      "supporting",
+      "CUDA",
+      "13.4",
+      "and",
+      "NVIDIA",
+      "Container",
+      "Toolkit.",
+      "RAM",
+      "Engram",
+      "needs",
+      "about",
+      "**189",
+      "GiB",
+      "for",
+      "its",
+      "tables",
+      "alone**,",
+      "plus",
+      "loading/server",
+      "memory;",
+      "512GB",
+      "host",
+      "RAM",
+      "is",
+      "a",
+      "comfortable",
+      "starting",
+      "point.",
+      "For",
+      "local",
+      "SSD-backed",
+      "tables,",
+      "replace",
+      "`ENGRAM_TABLE_MEMORY=ram`",
+      "with",
+      "`disk`",
+      "(not",
+      "the",
+      "configuration",
+      "timed",
+      "above).",
+      "API:",
+      "`http://YOUR_HOST:8000/v1`,",
+      "model",
+      "`DeepSeek-V4.1-Flash`.",
+      "Change",
+      "GPU",
+      "IDs/port",
+      "as",
+      "needed.",
+      "The",
+      "HF",
+      "volume",
+      "keeps",
+      "downloaded",
+      "weights;",
+      "`/cache`",
+      "keeps",
+      "compilation",
+      "caches.",
+      "First",
+      "download/compilation",
+      "can",
+      "take",
+      "time.",
+      "Target",
+      "sampling",
+      "defaults",
+      "to",
+      "temperature",
+      "1,",
+      "top-p",
+      ".95;",
+      "reasoning",
+      "defaults",
+      "to",
+      "high.",
+      "Model",
+      "guide:",
+      "<https://github.com/local-inference-lab/rtx6kpro/blob/master/models/deepseek-v4.1-flash.md>"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "ghcr.io/local-inference-lab/vllm:jovian-judgement-beta",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "RTX6kPRO Bot",
+          "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "DCP": "1",
+      "DSPARK_TOKENS": "7",
+      "ENGRAM_TABLE_MEMORY": "ram",
+      "GPU_MEMORY_UTILIZATION": "0.95",
+      "HARDWARE_PROFILE": "rtx-pro-6000-pcie",
+      "JIT_MONITOR_MODE": "warn",
+      "MAX_MODEL_LEN": "131072",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "32",
+      "MODEL": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "PORT": "8000",
+      "PROFILE": "ds41-flash",
+      "SPECULATOR": "dspark",
+      "TP": "4",
+      "VLLM_PCIE_TWOSHOT_ALLREDUCE_MAX_SIZE": "off",
+      "VLLM_USE_BREAKABLE_CUDAGRAPH": "0"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/local-inference-lab/vllm:jovian-judgement-beta",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "RTX6kPRO Bot",
+      "source": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "RTX6kPRO Bot",
+      "channel_id": "1547563567379906651",
+      "message_id": "1550242308459339856",
+      "posted_at": "2026-09-17T20:29:28.446000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "RTX6kPRO Bot",
+        "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1550242308459339856"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

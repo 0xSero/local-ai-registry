@@ -1,0 +1,137 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by unat.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:infernal-invocation-vllm7ed814e-b12x5d648d9-fi1ac6942-cu133-torch213-20260813-r7"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "unat.",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-489643",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "```",
+      "btw,",
+      "what",
+      "is",
+      "consensus",
+      "on",
+      "OMP_NUM_TREADS?",
+      "Do",
+      "I",
+      "need",
+      "to",
+      "change",
+      "it",
+      "to",
+      "1,",
+      "remove",
+      "at",
+      "all",
+      "or",
+      "use",
+      "maybe",
+      "64?"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:infernal-invocation-vllm7ed814e-b12x5d648d9-fi1ac6942-cu133-torch213-20260813-r7",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "unat.",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "BACKEND": "b12x-a8",
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "DSPARK_TOKENS": "5",
+      "GPU_MEMORY_UTILIZATION": "0.975",
+      "HOST": "0.0.0.0",
+      "KV_OFFLOADING_SIZE": "40",
+      "LOAD_FORMAT": "instanttensor",
+      "MAX_MODEL_LEN": "524288",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "4",
+      "MODE": "dspark",
+      "MODEL_PATH": "/mnt/data/llm-data/models/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "NATIVE_L2_GB": "200",
+      "NATIVE_L2_PATH": "/cache/native-kv/",
+      "OMP_NUM_THREADS": "2",
+      "PORT": "${PORT}",
+      "PREFIX_CACHE": "1",
+      "SERVED_MODEL_NAME": "${MODEL_ID}",
+      "TP_SIZE": "2"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:infernal-invocation-vllm7ed814e-b12x5d648d9-fi1ac6942-cu133-torch213-20260813-r7",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "unat.",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "unat.",
+      "channel_id": "1481304034198421515",
+      "message_id": "1537436882336489643",
+      "posted_at": "2026-08-13T12:25:16.945000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "unat.",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1537436882336489643"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

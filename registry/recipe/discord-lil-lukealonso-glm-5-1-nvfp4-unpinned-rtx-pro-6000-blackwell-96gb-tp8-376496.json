@@ -1,0 +1,218 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-lukealonso-glm-5-1-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp8-376496",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/path/to/lukealonso/GLM-5.1-NVFP4",
+      "--served-model-name",
+      "GLM-5.1",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--tp",
+      "8",
+      "--trust-remote-code",
+      "--quantization",
+      "modelopt_fp4",
+      "--kv-cache-dtype",
+      "bf16",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--attention-backend",
+      "flashinfer",
+      "--moe-runner-backend",
+      "b12x",
+      "--disable-shared-experts-fusion",
+      "--mem-fraction-static",
+      "0.85",
+      "--max-running-requests",
+      "64",
+      "--cuda-graph-max-bs",
+      "32",
+      "--speculative-algorithm",
+      "NEXTN",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "5000",
+      "Results",
+      "(8x",
+      "RTX",
+      "PRO",
+      "6000",
+      "Blackwell",
+      "96GB,",
+      "driver",
+      "595):",
+      "┌─────────────────┬───────┐",
+      "│",
+      "Metric",
+      "│",
+      "tok/s",
+      "│",
+      "├─────────────────┼───────┤",
+      "│",
+      "Short",
+      "TG",
+      "│",
+      "95-99",
+      "│",
+      "├─────────────────┼───────┤",
+      "│",
+      "32K",
+      "TG",
+      "│",
+      "74",
+      "│",
+      "├─────────────────┼───────┤",
+      "│",
+      "128K",
+      "TG",
+      "│",
+      "73",
+      "│",
+      "├─────────────────┼───────┤",
+      "│",
+      "Concurrent",
+      "c=32",
+      "│",
+      "751",
+      "│",
+      "├─────────────────┼───────┤",
+      "│",
+      "Concurrent",
+      "c=64",
+      "│",
+      "1058",
+      "│",
+      "└─────────────────┴───────┘",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "orangezed",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "orangezed",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "orangezed",
+      "channel_id": "1471527895439638528",
+      "message_id": "1491801217423376496",
+      "posted_at": "2026-04-09T14:05:26.560000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "lil-lukealonso-glm-5-1-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "orangezed",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -1,0 +1,177 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by cold.twistah_56901",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:cu130-nightly"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4-nvfp4-mixed-rtx-pro-6000-blackwell-96gb-tp4-6133",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4",
+      "--served-model-name",
+      "nemotron-ultra",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--tensor-parallel-size",
+      "4",
+      "--enable-expert-parallel",
+      "--kv-cache-dtype",
+      "fp8",
+      "--trust-remote-code",
+      "--gpu-memory-utilization",
+      "0.96",
+      "--enable-chunked-prefill",
+      "--max-num-batched-tokens",
+      "2048",
+      "--max-num-seqs",
+      "1",
+      "--max-model-len",
+      "131072",
+      "--moe-backend",
+      "marlin",
+      "--mamba-ssm-cache-dtype",
+      "float32",
+      "--quantization",
+      "modelopt_fp4",
+      "--speculative_config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":2,\"moe_backend\":\"triton\"}",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:cu130-nightly",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "cold.twistah_56901",
+          "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 30000,
+    "environment": {
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+    },
+    "host_port": 30000,
+    "image": "vllm/vllm-openai:cu130-nightly",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "cold.twistah_56901",
+      "source": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "cold.twistah_56901",
+      "channel_id": "1494478683258490892",
+      "message_id": "1512317209282613388",
+      "posted_at": "2026-06-05T04:48:40.188000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4--nvfp4-mixed",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cold.twistah_56901",
+        "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 1,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

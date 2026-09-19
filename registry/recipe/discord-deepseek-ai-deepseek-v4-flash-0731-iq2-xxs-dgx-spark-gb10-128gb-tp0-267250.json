@@ -1,0 +1,125 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by unat.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:infernal-invocation-vllmf0fa1ce-b12x75787c7-fi1ac6942-cu133-torch213-20260818-r18"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "unat.",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-dgx-spark-gb10-128gb-tp0-267250",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "```",
+      "it's",
+      "part",
+      "of",
+      "my",
+      "llama-swap",
+      "config,",
+      "hope",
+      "it",
+      "helps"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:infernal-invocation-vllmf0fa1ce-b12x75787c7-fi1ac6942-cu133-torch213-20260818-r18",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "unat.",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "BACKEND": "b12x-a8",
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "DSPARK_TOKENS": "5",
+      "GPU_MEMORY_UTILIZATION": "0.975",
+      "HOST": "0.0.0.0",
+      "KV_OFFLOADING_SIZE": "20",
+      "LOAD_FORMAT": "instanttensor",
+      "MAX_MODEL_LEN": "1048576",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "4",
+      "MODE": "dspark",
+      "MODEL_PATH": "/mnt/data/llm-data/models/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "NATIVE_L2_GB": "200",
+      "NATIVE_L2_PATH": "/cache/native-kv/8000",
+      "OMP_NUM_THREADS": "1",
+      "PORT": "${PORT}",
+      "PREFIX_CACHE": "1",
+      "SERVED_MODEL_NAME": "${MODEL_ID}",
+      "TP_SIZE": "2"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:infernal-invocation-vllmf0fa1ce-b12x75787c7-fi1ac6942-cu133-torch213-20260818-r18",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "unat.",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "unat.",
+      "channel_id": "1481304034198421515",
+      "message_id": "1539582368745267250",
+      "posted_at": "2026-08-19T10:30:40.766000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "unat.",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1539582368745267250"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

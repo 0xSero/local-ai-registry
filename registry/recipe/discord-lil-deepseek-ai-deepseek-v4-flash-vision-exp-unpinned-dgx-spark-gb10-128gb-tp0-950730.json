@@ -1,0 +1,120 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by unat.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15b6813-fi803c466-cu133-torch213-20260907-r9"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "unat.",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-lil-deepseek-ai-deepseek-v4-flash-vision-exp-unpinned-dgx-spark-gb10-128gb-tp0-950730",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "/usr/local/bin/serve-ds4-flash.sh",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15b6813-fi803c466-cu133-torch213-20260907-r9",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "unat.",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "BACKEND": "b12x-a8-dglin",
+      "CUDA_VISIBLE_DEVICES": "1,0",
+      "DSPARK_TOKENS": "3",
+      "GPU_MEMORY_UTILIZATION": "0.965",
+      "HOST": "0.0.0.0",
+      "INSTANTTENSOR_BACKEND": "URING,AIO",
+      "LMCACHE_L1_GB": "20",
+      "LMCACHE_L2_GB": "200",
+      "LMCACHE_L2_PATH": "/cache/lmcache/5006",
+      "LMCACHE_LOG_LEVEL": "WARNING",
+      "LMCACHE_MODE": "ram",
+      "LOAD_FORMAT": "instanttensor",
+      "MAX_MODEL_LEN": "1048576",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "4",
+      "MODE": "dspark",
+      "MODEL_PATH": "/mnt/data/llm-data/models/deepseek-ai/DeepSeek-V4-Flash-Vision-Exp",
+      "OMP_NUM_THREADS": "2",
+      "PORT": "${PORT}",
+      "PREFIX_CACHE": "1",
+      "SERVED_MODEL_NAME": "${MODEL_ID}",
+      "TP_SIZE": "2"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15b6813-fi803c466-cu133-torch213-20260907-r9",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "unat.",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "unat.",
+      "channel_id": "1481304034198421515",
+      "message_id": "1546923987441950730",
+      "posted_at": "2026-09-08T16:43:39.064000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
+    },
+    "notes": [
+      "Recovered from the launch text in the message; numbers the poster reported stay on the message.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "lil-deepseek-ai-deepseek-v4-flash-vision-exp--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "unat.",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1546923987441950730"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
