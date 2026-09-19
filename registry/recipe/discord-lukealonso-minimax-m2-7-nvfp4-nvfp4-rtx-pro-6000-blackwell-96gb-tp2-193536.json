@@ -1,0 +1,173 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by am.will",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "am.will",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "am.will",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "am.will",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493088422875889876"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "am.will",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-193536",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "lukealonso/MiniMax-M2.7-NVFP4",
+      "--served-model-name",
+      "MiniMax-M2.7",
+      "--reasoning-parser",
+      "minimax",
+      "--tool-call-parser",
+      "minimax-m2",
+      "--tp",
+      "2",
+      "--enable-torch-compile",
+      "--trust-remote-code",
+      "--quantization",
+      "modelopt_fp4",
+      "--kv-cache-dtype",
+      "bf16",
+      "--moe-runner-backend",
+      "b12x",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--attention-backend",
+      "flashinfer",
+      "--enable-pcie-oneshot-allreduce",
+      "--mem-fraction-static",
+      "0.85",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "5000"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "am.will",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "am.will",
+      "source": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "am.will",
+      "channel_id": "1484016763124453456",
+      "message_id": "1493080777968193536",
+      "posted_at": "2026-04-13T02:49:57.567000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1493088422875889876",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "lukealonso-minimax-m2-7-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "am.will",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493080777968193536"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "am.will",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493088422875889876"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

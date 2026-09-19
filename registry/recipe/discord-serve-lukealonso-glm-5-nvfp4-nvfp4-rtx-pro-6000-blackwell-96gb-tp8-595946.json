@@ -1,0 +1,134 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lukealonso-glm-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp8-595946",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1471527895439638528",
+      "message_id": "1473514811353595946",
+      "posted_at": "2026-02-18T03:01:47.608000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": "<@394912327109050378> this is my compiled sglang latest git (transformers 5.2) - how the hell you do not have this problem? What is your exact git commit version please? What else I might have different? ``` File \"/sgl-workspace/sglang/python/sglang/srt/utils/offloader.py\", line 36, in wrap_modules return list(all_modules_generator) ^^^^^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/utils/common.py\", line 650, in <genexpr> layer_fn(idx=idx, prefix=add_prefix(idx, prefix)) File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 2547, in <lambda> lambda idx, prefix: DeepseekV2DecoderLayer( ^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 2259, in __init__ self.self_attn = DeepseekV2AttentionMLA( ^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 1159, in __init__ self.indexer = Indexer( ^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/layers/attention/nsa/nsa_indexer.py\", line 174, in __init__ self.sm_count = deep_gemm.get_num_sms() ^^^^^^^^^^^^^^^^^^^^^ AttributeError: 'ImportError' object has no attribute 'get_num_sms' python3 -m sglang.launch_server --model-path lukealonso/GLM-5-NVFP4 --tp 8 --trust-remote-code --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --kv-cache-dtype bf16 --tool-call-parser glm47 --reasoning-parser glm45 --quantization modelopt_fp4 --disable-custom-all-reduce --enable-flashinfer-allre",
+    "rig_resolution": {
+      "from_message": "1473136363330343012",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "lukealonso-glm-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473514811353595946"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

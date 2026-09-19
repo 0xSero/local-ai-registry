@@ -1,0 +1,134 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by kcramp",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476020478324904090"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "kcramp",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-lukealonso-qwen3-5-397b-a17b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp4-937593",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "kcramp",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+  },
+  "metadata": {
+    "discord": {
+      "author": "kcramp",
+      "channel_id": "1473975364727476224",
+      "message_id": "1476022660033937593",
+      "posted_at": "2026-02-25T01:07:05.327000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+    },
+    "model_resolution": "unique-basename",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": "`python -m sglang.launch_server --model-path /mnt/raid0/models/Qwen3.5-397B-A17B-NVFP4 --tp-size 4 --host 0.0.0.0 --port 8000 --trust-remote-code --mem-fraction-static 0.85 --quantization modelopt_fp4 --attention-backend triton --moe-runner-backend flashinfer_cutlass --fp4-gemm-backend flashinfer_cudnn --context-length 262144 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --speculative-algorithm NEXTN --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4` gets me",
+    "rig_resolution": {
+      "from_message": "1476020478324904090",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "lil-lukealonso-qwen3-5-397b-a17b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "kcramp",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476022660033937593"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "kcramp",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476020478324904090"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

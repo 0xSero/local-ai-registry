@@ -1,0 +1,134 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477106959584071722"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "b200-180gb",
+  "id": "discord-serve-lukealonso-glm-5-nvfp4-nvfp4-b200-180gb-tp8-050617",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1471527895439638528",
+      "message_id": "1477326363475050617",
+      "posted_at": "2026-02-28T15:27:32.449000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": "NCCL_GRAPH_FILE=/mnt/nccl_graph_opt.xml NCCL_P2P_LEVEL=SYS NCCL_IB_DISABLE=1 NCCL_P2P_LEVEL=SYS NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 NCCL_MIN_NCHANNELS=8 OMP_NUM_THREADS=8 SAFETENSORS_FAST_GPU=1 python3 -m sglang.launch_server --model-path lukealonso/GLM-5-NVFP4 --tp 8 --trust-remote-code --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --kv-cache-dtype bf16 --tool-call-parser glm47 --reasoning-parser glm45 --quantization modelopt_fp4 --disable-custom-all-reduce --enable-flashinfer-allreduce-fusion --mem-fraction-static 0.9 --cuda-graph-max-bs 8 --host 0.0.0.0 --port 5000 --served-model-name glm-5 --max-running-requests 8 --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 8}'",
+    "rig_resolution": {
+      "from_message": "1477106959584071722",
+      "hardware_id": "b200-180gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "lukealonso-glm-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477326363475050617"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1477106959584071722"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
