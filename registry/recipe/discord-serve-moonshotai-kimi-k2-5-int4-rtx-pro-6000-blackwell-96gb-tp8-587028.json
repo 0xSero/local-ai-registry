@@ -1,0 +1,101 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving command posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.observed_command": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwell-96gb-tp8-587028",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-message",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1475421638668587028",
+      "message_id": "1475421638668587028",
+      "posted_at": "2026-02-23T09:18:50.667000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Reference record: the posted command has no container image, so it is not a launch contract."
+    ],
+    "observed_command": "Credit to <@1046140468959911967> who created PRs which makes vllm FP8 possible with the native INT4 quant You can test it either by building/compiling own venv (its +3-5 tokens faster on my system) or you can try docker (see bottom post) wget https://www.voipmonitor.org/build_vllm_venv.sh.txt -O build_vllm_venv.sh chmod +x build_vllm_venv.sh ./build_vllm_venv.sh /root/venvtest source /root/venvtest/activate.sh What it does: 1. Creates a Python 3.12 virtual environment using uv 2. Installs PyTorch 2.10.0+cu130 with triton 3.6.0 3. Clones vllm at commit ab33d2a6, then cherry-picks two PRs: - PR #34597: FP8 KV cache support for Triton MLA decode attention - PR #34795: FP8 KV cache with Decode Context Parallel (DCP) for MLA 4. Builds vllm from source with ENABLE_SM120=1 5. Builds flash_attn 2.8.3 from source (sm120 only) 6. Builds FlashMLA 1.0.0 for sm120 workstation GPUs (with CUTLASS TMEM patch for non-datacenter cards) 7. Creates an activate.sh script that sets all required env vars (NCCL, VLLM, etc.) p.s.: MAX_JOBS=$(nproc) - if this is too much use ./build_vllm_venv.sh /root/vllmvenv 64 (limits MAX_JOBS to 64) Hardware: 2xCPU AMD EPYC 9575F 64-Core K15PG-D24 Series, 60SB0D94-SB0A01 DDR5: 6400Mhz xGMI link - 3x 8x RTX 6000 PRO, each connected directly to the CPU root port x16 link two group of 4GPU communicates through xgmi NCCL has bug and cannot autodotect correctly xgmi link (16G default instead of 48G) as a result the NCCL will not use low latency protocol for smaller mes"
+  },
+  "model_instance_id": "moonshotai-kimi-k2-5--int4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-message",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1475421638668587028/1475421638668587028"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -1,0 +1,131 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving command posted in the Local Inference Lab Discord by kyozel",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.observed_command": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kyozel",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kyozel",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kyozel",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-message",
+            "publisher": "kyozel",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "discord-serve-unsloth-qwen3-8-27b-nvfp4-nvfp4-rtx-5090-32gb-tp1-063777",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-message",
+          "publisher": "kyozel",
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+  },
+  "metadata": {
+    "discord": {
+      "author": "kyozel",
+      "channel_id": "1528331644933767190",
+      "message_id": "1537865289902063777",
+      "posted_at": "2026-08-14T16:47:37.268000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Reference record: the posted command has no container image, so it is not a launch contract."
+    ],
+    "observed_command": "im on a 5090 using unsloths nvfp4 ``` vllm serve unsloth/Qwen3.8-27B-NVFP4/ --served-model-name qwen3.8-27b --host 0.0.0.0 --port 8082 --safetensors-load-strategy=prefetch --tensor-parallel-size 1 --attention-backend flashinfer --performance-mode interactivity --kv-cache-dtype fp8_e4m3 --gpu-memory-utilization 0.90 --max-model-len 50688 --max-num-seqs 2 --max-num-batched-tokens 4096 --max-cudagraph-capture-size 8 --enable-chunked-prefill --enable-prefix-caching --no-disable-hybrid-kv-cache-manager --reasoning-parser qwen3 --default-chat-template-kwargs '{\"enable_thinking\": true}' --enable-auto-tool-choice --tool-call-parser qwen3_coder --mm-encoder-tp-mode data --quantization compressed-tensors --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3,\"attention_backend\":\"flashinfer\"}' --trust-remote-code```"
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-message",
+        "publisher": "kyozel",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1537865289902063777"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 2,
+    "max_context_tokens": 50688,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
