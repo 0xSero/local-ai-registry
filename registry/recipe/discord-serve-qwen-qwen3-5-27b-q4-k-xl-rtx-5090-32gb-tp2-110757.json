@@ -27,14 +27,14 @@
       "state": "known"
     },
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/Qwen/Qwen3.5-27B/revision/fc05daec18b0a78c049392ed2e771dde82bdf654?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -122,6 +122,18 @@
     "observed_command": "CLI (for 2x 5090) ```NCCL_P2P_LEVEL=SYS NCCL_IB_DISABLE=1 NCCL_NET_GDR_LEVEL=SYS NCCL_MIN_NCHANNELS=4 NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 VLLM_ENABLE_FLA_PACKED_RECURRENT_DECODE=1 VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 VLLM_WORKER_MULTIPROC_METHOD=spawn VLLM_ALLREDUCE_USE_SYMM_MEM=0 ENABLE_SM120=1 vllm serve Qwen/Qwen3.5-27B-FP8 --served-model-name Qwen3.5-27B --tensor-parallel-size 2 --gpu-memory-utilization 0.94 --max-model-len 262144 --max-num-seqs 32 --max-num-batched-tokens 8192 --block-size 32 --language-model-only -O3 --enable-auto-tool-choice --reasoning-parser qwen3 --tool-call-parser qwen3_coder --attention-backend TRITON_ATTN --enable-prefix-caching --speculative-config.method mtp --speculative-config.num_speculative_tokens 2 --speculative-config.rejection_sample_method probabilistic --load-format instanttensor```",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 64,
       "memory_fit": {
         "fits": true,

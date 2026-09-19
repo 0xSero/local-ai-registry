@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -96,6 +110,18 @@
     "model_resolution": "unique-basename",
     "observed_command": "``` mini-max() { source ~/qwen-env/bin/activate python -m sglang.launch_server --model-path /models/MiniMax-M2.5 --tp-size 4 --tool-call-parser minimax-m2 --reasoning-parser minimax-append-think --host 0.0.0.0 --trust-remote-code --port 8000 --mem-fraction-static 0.85 --cuda-graph-max-bs 32 --max-running-requests 32 --enable-torch-compile --torch-compile-max-bs 4 ```",
     "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "memory_fit": {
         "reason": "instance has no pinned revision",
         "state": "unknown"

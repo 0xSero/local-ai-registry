@@ -13,14 +13,14 @@
   },
   "facts": {
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/z-lab/Qwen3.6-27B-DFlash/revision/0919688658996800f86b895034249700e9481106?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -97,6 +97,18 @@
     "observed_command": "``` echo \"Select speculative decoding method:\" echo \"1) MTP (Qwen3 multi-token prediction)\" echo \"2) ngram_gpu (prompt lookup)\" echo \"3) dflash (z-lab/Qwen3.6-27B-DFlash)\" echo \"N) None\" read -rp \"Enter choice [2]: \" SPEC_CHOICE SPEC_CHOICE=${SPEC_CHOICE:-2} case \"${SPEC_CHOICE,,}\" in 1) read -rp \"Enter speculative decoding token count [5]: \" SPEC_TOKENS SPEC_TOKENS=${SPEC_TOKENS:-5} SPECULATIVE_CONFIG=\"{\\\"method\\\":\\\"qwen3_next_mtp\\\",\\\"num_speculative_tokens\\\":$SPEC_TOKENS}\" ;; 2) SPECULATIVE_CONFIG='{\"method\":\"ngram_gpu\",\"num_speculative_tokens\":20,\"prompt_lookup_min\":2,\"prompt_lookup_max\":20}' ;; 3) read -rp \"Enter speculative decoding token count [8]: \" SPEC_TOKENS SPEC_TOKENS=${SPEC_TOKENS:-8} SPECULATIVE_CONFIG=\"{\\\"method\\\":\\\"dflash\\\",\\\"model\\\":\\\"z-lab/Qwen3.6-27B-DFlash\\\",\\\"num_speculative_tokens\\\":$SPEC_TOKENS}\" ;; n) SPECULATIVE_CONFIG=\"\" ;; *) echo \"Invalid speculative decoding selection: $SPEC_CHOICE\" exit 1 ;; esac VLLM_CMD=( vllm serve \"$MODEL_NAME\" --served-model-name qwen36 --max-model-len 262144 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --trust-remote-code --max_num_seqs 4 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.5 --kv-cache-dtype fp8 --calculate-kv-scales --host 192.168.68.150 --port 5010 ) if [ -n \"$SPECULATIVE_CONFIG\" ]; then VLLM_CMD+=(--speculative-config \"$SPECULATIVE_CONFIG\") fi ``` Just added the dflash; haven't tested yet but codex pulled from my w",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 96,
       "memory_fit": {
         "fits": true,

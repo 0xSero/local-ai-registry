@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -68,6 +82,18 @@
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "I haven't run into issues with Sehyo's nvfp4 quant. my vllm command on it: `COMMAND=\"Sehyo/Qwen3.5-122B-A10B-NVFP4 --served-model-name Qwen3.5-122B-A10B --tensor-parallel-size 1 --enable-auto-tool-choice --tool-call-parser qwen3_coder --max-model-len auto --host 0.0.0.0 --port 8000 --reasoning-parser qwen3 --speculative-config '{\\\"method\\\":\\\"qwen3_next_mtp\\\",\\\"num_speculative_tokens\\\":3}' --mm-encoder-tp-mode data --mm-processor-cache-type shm --kv-cache-dtype fp8\"`",
     "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "memory_fit": {
         "reason": "instance has no pinned revision",
         "state": "unknown"
@@ -75,11 +101,9 @@
     },
     "rig_resolution": {
       "from_message": "1482224015727661147",
-      "gap_days": 0.16,
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
-      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
-      "scope": "author-time-window",
-      "window_days": 7
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
     }
   },
   "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",

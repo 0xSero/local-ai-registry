@@ -1,0 +1,263 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by repne_00603_12051",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "repne/vllm:dsv4-v0"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508090183369887745"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "repne_00603_12051",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5080-16gb",
+  "id": "discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-rtx-5080-16gb-tp2-331035",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-O3",
+      "--model",
+      "deepseek-ai/DeepSeek-V4-Flash",
+      "--served-model-name",
+      "DeepSeek-V4-Flash",
+      "--tensor-parallel-size",
+      "2",
+      "--gpu-memory-utilization",
+      "0.939",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "64",
+      "--block-size",
+      "256",
+      "--kv-cache-dtype",
+      "fp8_ds_mla",
+      "--max-num-batched-tokens",
+      "8192",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--tool-call-parser",
+      "deepseek_v4",
+      "--reasoning-parser",
+      "deepseek_v4",
+      "--enable-auto-tool-choice",
+      "--enable-prefix-caching",
+      "--default-chat-template-kwargs.thinking",
+      "true",
+      "--default-chat-template-kwargs.reasoning_effort",
+      "high",
+      "--speculative-config.method",
+      "mtp",
+      "--speculative-config.num_speculative_tokens",
+      "3",
+      "--speculative-config.attention_backend",
+      "flashinfer",
+      "--speculative-config.draft_sample_method",
+      "greedy",
+      "--speculative-config.attention_backend",
+      "flashinfer",
+      "--attention-backend",
+      "flashinfer",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "repne/vllm:dsv4-v0",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "repne_00603_12051",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "NCCL_MIN_NCHANNELS": "8",
+      "NCCL_NET_GDR_LEVEL": "SYS",
+      "NCCL_P2P_LEVEL": "SYS",
+      "OMP_NUM_THREADS": "8",
+      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
+      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "host_port": 8000,
+    "image": "repne/vllm:dsv4-v0",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "repne_00603_12051",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "repne_00603_12051",
+      "channel_id": "1481304034198421515",
+      "message_id": "1506712614309331035",
+      "posted_at": "2026-05-20T17:38:00.618000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
+      "hardware_vram_gb": 32,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "60d8d70770c6776ff598c94bb586a859a38244f1",
+      "source": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true",
+      "weight_files": 46,
+      "weights_gb": 159.6
+    },
+    "rig_resolution": {
+      "from_message": "1508090183369887745",
+      "hardware_id": "rtx-5080-16gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "repne_00603_12051",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "repne_00603_12051",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508090183369887745"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

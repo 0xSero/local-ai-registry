@@ -13,14 +13,14 @@
   },
   "facts": {
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/unsloth/Qwen3.8-27B-NVFP4/revision/57926baca9a82b4d6906b43f2750d55315f5b10f?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -83,6 +83,18 @@
     "observed_command": "``` Concurrency: 16 ============ Serving Benchmark Result ============ Successful requests: 20 Failed requests: 0 Maximum request concurrency: 16 Request rate configured (RPS): 50.00 Benchmark duration (s): 8.10 Total input tokens: 20480 Total generated tokens: 2560 Request throughput (req/s): 2.47 Output token throughput (tok/s): 316.15 Peak output token throughput (tok/s): 304.00 Peak concurrent requests: 18.00 Total token throughput (tok/s): 2845.38 ---------------Time to First Token---------------- Mean TTFT (ms): 1514.38 Median TTFT (ms): 1829.63 P99 TTFT (ms): 2009.87 -----Time per Output Token (excl. 1st token)------ Mean TPOT (ms): 28.45 Median TPOT (ms): 28.58 P99 TPOT (ms): 43.98 ---------------Inter-token Latency---------------- Mean ITL (ms): 56.14 Median ITL (ms): 54.04 P99 ITL (ms): 158.02 ---------------Speculative Decoding--------------- Acceptance rate (%): 49.42 Acceptance length: 1.99 Drafts: 1287 Draft tokens: 2574 Accepted tokens: 1272 Per-position acceptance (%): Position 0: 55.79 Position 1: 43.05 ================================================== ```",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 96,
       "memory_fit": {
         "fits": true,

@@ -12,6 +12,20 @@
     "version": null
   },
   "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -66,11 +80,20 @@
       "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479147690104193035"
     },
     "model_resolution": "prose-repository-mentioned",
-    "notes": [
-      "Rig resolved from the author's own nearby message in the same thread."
-    ],
     "observed_command": "Just running `vllm serve Sehyo/Qwen3.5-122B-A10B-NVFP4 --dtype auto --enable-auto-tool-choice --tool-call-parser qwen3_coder ` is a bit slower than llama cpp",
     "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "memory_fit": {
         "reason": "instance has no pinned revision",
         "state": "unknown"
@@ -78,9 +101,11 @@
     },
     "rig_resolution": {
       "from_message": "1479139985029599364",
+      "gap_days": 0.02,
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
-      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
-      "window": 30
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
     }
   },
   "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",

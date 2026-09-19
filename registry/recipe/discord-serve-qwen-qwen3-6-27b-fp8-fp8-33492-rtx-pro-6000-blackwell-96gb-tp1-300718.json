@@ -13,14 +13,14 @@
   },
   "facts": {
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8/revision/e89b16ebf1988b3d6befa7de50abc2d76f26eb09?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -125,6 +125,18 @@
     "observed_command": "Hey all. I see lots of experiments here trying to get the best possible token generation throughput, but has anyone tried running Qwen3.6-27B for a few hours with OpenCode specifically? I have been fighting all kinds of tool call parsing issues. Here's the latest vLLM command I am using: ``` vllm serve -O3 --model Qwen/Qwen3.6-27B-FP8 --served-model-name qwen3.6-27b-fp8 --tensor-parallel-size 1 --gpu-memory-utilization 0.90 --max-model-len 262144 --max-num-seqs 128 --max-num-batched-tokens 32758 --max-cudagraph-capture-size 256 --block-size 32 --enable-auto-tool-choice --reasoning-parser qwen3 --tool-call-parser qwen3_coder --chat-template /chat-templates/qwen3.5-enhanced.jinja --enable-prefix-caching --async-scheduling --attention-backend flashinfer --load-format instanttensor --default-chat-template-kwargs.preserve_thinking true --override-generation-config.temperature 0.6 --override-generation-config.top_p 0.95 --override-generation-config.top_k 20 --override-generation-config.min_p 0.0 --override-generation-config.repetition_penalty 1.0 --override-generation-config.min_new_tokens 4 --speculative-config.method mtp --speculative-config.num_speculative_tokens 3 --speculative-config.rejection_sample_method probabilistic ``` (Will add more details, don't have Nitro, can't post longer messages).",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 96,
       "memory_fit": {
         "fits": true,

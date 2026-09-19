@@ -5,11 +5,11 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving launch posted in the Local Inference Lab Discord by repne_00603_12051",
+  "description": "Serving launch posted in the Local Inference Lab Discord by _johnb",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": "repne/vllm:dsv4-v0"
+    "version": "voipmonitor/dsv4-flash:lucifer-mxfp4-cutlass-20260603"
   },
   "facts": {
     "launch.image": {
@@ -19,22 +19,22 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
           }
         ]
       },
       "state": "known"
     },
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash/revision/60d8d70770c6776ff598c94bb586a859a38244f1?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -47,14 +47,14 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
           },
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1504487085489524956"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1495072431000387748"
           }
         ]
       },
@@ -67,8 +67,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
           }
         ]
       },
@@ -81,8 +81,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
           }
         ]
       },
@@ -95,8 +95,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+            "publisher": "_johnb",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
           }
         ]
       },
@@ -109,98 +109,114 @@
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "-O3",
-      "--model",
       "deepseek-ai/DeepSeek-V4-Flash",
       "--served-model-name",
-      "DeepSeek-V4-Flash",
+      "vllm",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--kv-cache-dtype",
+      "fp8",
+      "--block-size",
+      "256",
+      "--load-format",
+      "auto",
       "--tensor-parallel-size",
       "2",
       "--gpu-memory-utilization",
-      "0.939",
-      "--max-model-len",
-      "262144",
+      "0.95",
       "--max-num-seqs",
       "64",
-      "--block-size",
-      "256",
-      "--kv-cache-dtype",
-      "fp8_ds_mla",
+      "--max-model-len",
+      "256000",
+      "--max-cudagraph-capture-size",
+      "192",
+      "--async-scheduling",
+      "--no-scheduler-reserve-full-isl",
       "--max-num-batched-tokens",
       "8192",
+      "--attention-backend",
+      "SPARSE_MLA_SM120",
+      "--enable-chunked-prefill",
+      "--enable-prefix-caching",
+      "--enable-flashinfer-autotune",
+      "--kernel-config.moe_backend",
+      "flashinfer_cutlass",
       "--tokenizer-mode",
       "deepseek_v4",
       "--tool-call-parser",
       "deepseek_v4",
+      "--enable-auto-tool-choice",
       "--reasoning-parser",
       "deepseek_v4",
-      "--enable-auto-tool-choice",
-      "--enable-prefix-caching",
-      "--default-chat-template-kwargs.thinking",
-      "true",
-      "--default-chat-template-kwargs.reasoning_effort",
-      "high",
+      "--max-cudagraph-capture-size",
+      "192",
       "--speculative-config.method",
       "mtp",
       "--speculative-config.num_speculative_tokens",
-      "3",
-      "--speculative-config.attention_backend",
-      "flashinfer",
-      "--speculative-config.draft_sample_method",
-      "greedy",
-      "--speculative-config.attention_backend",
-      "flashinfer",
-      "--attention-backend",
-      "flashinfer",
+      "2",
+      "--disable-custom-all-reduce",
       "```"
     ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
       "digest": null,
-      "image": "repne/vllm:dsv4-v0",
+      "image": "voipmonitor/dsv4-flash:lucifer-mxfp4-cutlass-20260603",
       "reason": "only-a-mutable-tag-was-posted",
       "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
-          "publisher": "repne_00603_12051",
-          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+          "publisher": "_johnb",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
         }
       ],
       "state": "mutable"
     },
     "container_port": 8000,
     "environment": {
-      "NCCL_MIN_NCHANNELS": "8",
-      "NCCL_NET_GDR_LEVEL": "SYS",
+      "CUDA_VISIBLE_DEVICES": "0,1",
+      "NCCL_IB_DISABLE": "1",
       "NCCL_P2P_LEVEL": "SYS",
-      "OMP_NUM_THREADS": "8",
-      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
-      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+      "NCCL_PROTO": "LL,LL128,Simple"
     },
     "host_port": 8000,
-    "image": "repne/vllm:dsv4-v0",
+    "image": "voipmonitor/dsv4-flash:lucifer-mxfp4-cutlass-20260603",
     "kind": "docker",
     "provenance": {
       "kind": "discord-message",
-      "publisher": "repne_00603_12051",
-      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+      "publisher": "_johnb",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
     }
   },
   "metadata": {
     "discord": {
-      "author": "repne_00603_12051",
+      "author": "_johnb",
       "channel_id": "1481304034198421515",
-      "message_id": "1506712614309331035",
-      "posted_at": "2026-05-20T17:38:00.618000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+      "message_id": "1511828195895410708",
+      "posted_at": "2026-06-03T20:25:30.311000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
     },
-    "model_resolution": "explicit",
+    "model_resolution": "prose-repository-mentioned",
     "observed_command": null,
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 192,
       "memory_fit": {
         "fits": true,
@@ -213,12 +229,10 @@
       "weights_gb": 159.6
     },
     "rig_resolution": {
-      "from_message": "1504487085489524956",
-      "gap_days": 6.14,
+      "from_message": "1495072431000387748",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
-      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
-      "scope": "author-time-window",
-      "window_days": 7
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
     }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
@@ -228,14 +242,14 @@
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "repne_00603_12051",
-        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506712614309331035"
+        "publisher": "_johnb",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1511828195895410708"
       },
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "repne_00603_12051",
-        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1504487085489524956"
+        "publisher": "_johnb",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1495072431000387748"
       }
     ]
   },
@@ -243,7 +257,7 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "max_concurrency": 64,
-    "max_context_tokens": 262144,
+    "max_context_tokens": 256000,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

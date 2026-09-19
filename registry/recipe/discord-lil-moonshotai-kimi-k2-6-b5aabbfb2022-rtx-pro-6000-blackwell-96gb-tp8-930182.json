@@ -1,0 +1,261 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by jtazz",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:cu130-mtp-tuned-v3-20260423"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1518217282688389120"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jtazz",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-blackwell-96gb-tp8-930182",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-",
+      "moonshotai/Kimi-K2.6",
+      "-",
+      "--served-model-name=kimi-k2.6",
+      "-",
+      "--trust-remote-code",
+      "-",
+      "--host=0.0.0.0",
+      "-",
+      "--port=8000",
+      "-",
+      "--tensor-parallel-size=8",
+      "-",
+      "--pipeline-parallel-size=1",
+      "-",
+      "--enable-chunked-prefill",
+      "-",
+      "--enable-prefix-caching",
+      "-",
+      "--load-format=fastsafetensors",
+      "-",
+      "--async-scheduling",
+      "-",
+      "--gpu-memory-utilization=0.90",
+      "-",
+      "--max-num-batched-tokens=8192",
+      "-",
+      "--max-num-seqs=128",
+      "-",
+      "--max-model-len=256000",
+      "-",
+      "--mm-processor-cache-gb=0",
+      "-",
+      "--mm-encoder-tp-mode=weights",
+      "-",
+      "--attention-backend=TRITON_MLA",
+      "-",
+      "--kv-cache-dtype=fp8",
+      "-",
+      "--tool-call-parser=kimi_k2",
+      "-",
+      "--enable-auto-tool-choice",
+      "-",
+      "--reasoning-parser=kimi_k2",
+      "-",
+      "--decode-context-parallel-size=4",
+      "-",
+      "--speculative-config",
+      "-",
+      "{\"model\":\"lightseekorg/kimi-k2.5-eagle3-mla\",\"method\":\"eagle3\",\"num_speculative_tokens\":3,\"draft_attention_backend\":\"TRITON_MLA\",\"draft_kv_cache_dtype\":\"fp8\",\"rejection_sample_method\":\"probabilistic\"}",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:cu130-mtp-tuned-v3-20260423",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "jtazz",
+          "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:cu130-mtp-tuned-v3-20260423",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "jtazz",
+      "source": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "jtazz",
+      "channel_id": "1495805489013985280",
+      "message_id": "1496979314019930182",
+      "posted_at": "2026-04-23T21:01:20.993000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
+      "hardware_vram_gb": 768,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "b5aabbfb20227ed42becbf5541dbffd213942c58",
+      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true",
+      "weight_files": 64,
+      "weights_gb": 595.2
+    },
+    "rig_resolution": {
+      "from_message": "1518217282688389120",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "lil-moonshotai-kimi-k2-6--b5aabbfb2022",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "jtazz",
+        "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496979314019930182"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "jtazz",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1518217282688389120"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 128,
+    "max_context_tokens": 256000,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

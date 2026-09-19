@@ -13,14 +13,14 @@
   },
   "facts": {
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -114,6 +114,18 @@
     "observed_command": "``` dcp 8, fp8, 3.6M context: VLLM_TEST_FORCE_FP8_MARLIN=1 VLLM_MARLIN_USE_ATOMIC_ADD=1 VLLM_MARLIN_INPUT_DTYPE=fp8 VLLM_ENABLE_PCIE_ALLREDUCE=1 VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 NCCL_P2P_LEVEL=SYS VLLM_LOG_STATS_INTERVAL=1 NCCL_GRAPH_FILE=/mnt/nccl_graph_opt.xml /opt/venv/bin/vllm serve moonshotai/Kimi-K2.6 --served-model-name Kimi-K2.6 --trust-remote-code --host 0.0.0.0 --port 5000 --tensor-parallel-size 8 --pipeline-parallel-size 1 --max-model-len 220000 --enable-chunked-prefill --enable-prefix-caching --load-format fastsafetensors --tool-call-parser kimi_k2 --enable-auto-tool-choice --reasoning-parser kimi_k2 --async-scheduling --gpu-memory-utilization 0.94 --max-num-batched-tokens 4096 --mm-processor-cache-gb 0 --mm-encoder-tp-mode weights --language-model-only --attention-backend TRITON_MLA --kv-cache-dtype fp8 --max-model-len 150000 --decode-context-parallel-size 8 Prefill Speed (C=1, baseline TTFT=0.035s subtracted) ┏━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━┓ ┃ Context ┃ Tokens ┃ TTFT (s) ┃ Prefill (s) ┃ Prefill tok/s ┃ N ┃ ┡━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━┩ │ 8k │ 5,313 │ 0.76 │ 0.72 │ 7,331 │ 14 │ │ 16k │ 10,481 │ 1.47 │ 1.44 │ 7,290 │ 7 │ │ 32k │ 20,823 │ 3.23 │ 3.19 │ 6,519 │ 4 │ │ 64k │ 41,506 │ 7.21 │ 7.18 │ 5,784 │ 2 │ │ 128k │ 82,846 │ 17.71 │ 17.67 │ 4,688 │ 2 │ └─────────┴────────┴──────────┴─────────────┴───────────────┴────┘ Aggregate Throughput (tok/s) ┏━━━━━━━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┳━━━━",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 256,
       "memory_fit": {
         "fits": false,

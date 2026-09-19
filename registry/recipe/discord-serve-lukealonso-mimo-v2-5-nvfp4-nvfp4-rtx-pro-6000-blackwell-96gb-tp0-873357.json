@@ -39,14 +39,14 @@
       "state": "known"
     },
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/lukealonso/MiMo-V2.5-NVFP4/revision/efadb57636ca42844aa96079b323863fad83a847?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -97,6 +97,18 @@
     "observed_command": "SGLANG_TORCH_PROFILER_DIR=\"./\" SGLANG_PROFILE_RECORD_SHAPES=true SGLANG_PROFILE_WITH_STACK=true python3 -m sglang.bench_one_batch_server --model baseten-admin/glm-4.7-fp8-attn-fp4-mlp --base-url http://localhost:30000 --batch-size 4 --input-len 2048 --output-len 1024 --profile --profile-steps 10 --show-report --profile-by-stage Run this command after launching server with disable cuda graph",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 96,
       "memory_fit": {
         "fits": false,

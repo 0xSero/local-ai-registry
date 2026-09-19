@@ -13,14 +13,14 @@
   },
   "facts": {
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/lukealonso/GLM-5-NVFP4/revision/6944a23f9ffb9668ac970901526c6cc72c34f4e2?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -86,6 +86,18 @@
     "observed_command": "For example, lukealonso/GLM-5-NVFP4 is an NVFP4-quantized version of GLM-5 which does not include MTP weights. On main, if you serve this model with MTP, it will load garbage from uninitialized memory (torch.empty()) into the MTP layers and lead to acceptance rates of zero. PR: (Worker_TP1_EP1 pid=1474351) ERROR 02-27 16:21:24 [multiproc_executor.py:796] ValueError: MTP speculative decoding layer 78 weights missing from checkpoint. The checkpoint may have been quantized without including the MTP layers. Use a checkpoint that includes MTP layer weights, or disable speculative decoding. vllm serve lukealonso/GLM-5-NVFP4 -tp 4 -ep --speculative-config '{\"method\": \"mtp\", \"num_speculative_tokens\": 1}' --kv-cache-dtype fp8_ds_mla",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 180,
       "memory_fit": {
         "fits": false,

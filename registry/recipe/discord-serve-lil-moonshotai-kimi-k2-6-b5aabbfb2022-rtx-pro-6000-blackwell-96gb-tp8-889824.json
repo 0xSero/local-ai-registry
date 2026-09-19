@@ -39,14 +39,14 @@
       "state": "known"
     },
     "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true"
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -139,6 +139,18 @@
     "observed_command": "```3) The bind-mounted run-k26-0424.sh produces the EXACT vllm serve cmdline: vllm serve /model --served-model-name=Kimi-K2.6 --trust-remote-code --host=0.0.0.0 --port=5000 --tensor-parallel-size=8 --pipeline-parallel-size=1 --decode-context-parallel-size=8 --enable-chunked-prefill --enable-prefix-caching --load-format=fastsafetensors --async-scheduling --gpu-memory-utilization=0.97 --max-num-batched-tokens=8192 --max-num-seqs=128 --max-model-len=262144 --mm-processor-cache-gb=0 --mm-encoder-tp-mode=weights --attention-backend=TRITON_MLA --kv-cache-dtype=fp8 --tool-call-parser=kimi_k2 --enable-auto-tool-choice --reasoning-parser=kimi_k2 --speculative-config={\"model\":\"festr2/kimi-k2.6-eagle3-mla-fp8\",\"method\":\"eagle3\",\"num_speculative_tokens\":3,\"draft_attention_backend\":\"TRITON_MLA\",\"draft_kv_cache_dtype\":\"fp8\",\"rejection_sample_method\":\"probabilistic\"} (produces same cmdline as the image-baked /opt/run-k26.sh given the same env vars) 4) BRINGUP: docker compose .. up -d; wait until curl http://localhost:8402/v1/models returns 200 (~3-4 min model load + cudagraph capture) 5) WARMUP: 1 pass at the same cell (discarded): python3 llm_decode_bench.py --port 8402 --model Kimi-K2.6 --concurrency 1 --contexts 0 --duration 30 --skip-prefill --kv-budget 2464640 --dcp-size 8 --display-mode plain --no-hw-monitor 6) MAIN: 8 sequential identical invocations, each writes its own JSON: for i in 1..8: python3 llm_decode_bench.py --port 8402 --model Kimi-K2.6 --concurrency 1 --contexts 0 --dura",
     "prod_checks": {
       "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
       "hardware_vram_gb": 768,
       "memory_fit": {
         "fits": true,

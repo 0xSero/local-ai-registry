@@ -1,0 +1,224 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by acronjob",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:v0.17.0-cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479139985029599364"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-sehyo-qwen3-5-27b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp1-069215",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "$MODEL",
+      "--served-model-name",
+      "$SERVED_NAME",
+      "--tensor-parallel-size",
+      "1",
+      "--dtype",
+      "auto",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--reasoning-parser",
+      "qwen3",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-num-batched-tokens",
+      "8192",
+      "--override-generation-config",
+      "{\"repetition_penalty\": 1.0, \"min_p\": 0.0, \"temperature\": 0.60, \"top_p\": 0.95, \"presence_penalty\": 0.0, \"top_k\": 20}",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "11455",
+      "```",
+      "Returns",
+      "```",
+      "---",
+      "stats",
+      "---",
+      "Total",
+      "wall",
+      "time:",
+      "19.11s",
+      "Time",
+      "to",
+      "first",
+      "token:",
+      "16.34s",
+      "Estimated",
+      "output",
+      "tokens:",
+      "180",
+      "Estimated",
+      "generation",
+      "speed:",
+      "65.10",
+      "tok/s",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:v0.17.0-cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "acronjob",
+          "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 11455,
+    "environment": {
+      "VLLM_FLASH_ATTN_VERSION": "2"
+    },
+    "host_port": 11455,
+    "image": "vllm/vllm-openai:v0.17.0-cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "acronjob",
+      "source": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "acronjob",
+      "channel_id": "1466898004219789502",
+      "message_id": "1479693581903069215",
+      "posted_at": "2026-03-07T04:14:01.303000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
+    "rig_resolution": {
+      "from_message": "1479139985029599364",
+      "gap_days": 1.53,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lil-sehyo-qwen3-5-27b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "acronjob",
+        "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479693581903069215"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "acronjob",
+        "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1479139985029599364"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

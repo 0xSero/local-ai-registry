@@ -1,0 +1,239 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by rabbitowl",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:nightly-aarch64"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1545529687055269889"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rabbitowl",
+            "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "b200-180gb",
+  "id": "discord-nvidia-glm-5-2-nvfp4-nvfp4-b200-180gb-tp1-531335",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "nvidia/GLM-5.2-NVFP4",
+      "--served-model-name",
+      "GLM-5.2",
+      "--tensor-parallel-size",
+      "1",
+      "--cpu-offload-gb",
+      "240",
+      "--cpu-offload-params",
+      "experts",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-model-len",
+      "150000",
+      "--max-num-seqs",
+      "12",
+      "--trust-remote-code",
+      "--gpu-memory-utilization",
+      "0.9835",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":3}"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:nightly-aarch64",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "rabbitowl",
+          "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_MODALITY": "ATS",
+      "HF_HOME": "/workspace/.cache/huggingface",
+      "HF_HUB_OFFLINE": "1",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_CACHE_ROOT": "/cache",
+      "VLLM_NVFP4_GEMM_BACKEND": "flashinfer-trtllm",
+      "VLLM_WEIGHT_OFFLOADING_DISABLE_PIN_MEMORY": "1"
+    },
+    "host_port": 8000,
+    "image": "vllm/vllm-openai:nightly-aarch64",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "rabbitowl",
+      "source": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "rabbitowl",
+      "channel_id": "1516097906967576706",
+      "message_id": "1539034681595531335",
+      "posted_at": "2026-08-17T22:14:21.974000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": []
+      },
+      "hardware_vram_gb": 180,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "aec724e8c7b8ee9db3b48c01c320f63f9cdaf8aa",
+      "source": "https://huggingface.co/api/models/nvidia/GLM-5.2-NVFP4/revision/aec724e8c7b8ee9db3b48c01c320f63f9cdaf8aa?blobs=true",
+      "weight_files": 47,
+      "weights_gb": 464.8
+    },
+    "rig_resolution": {
+      "from_message": "1545529687055269889",
+      "hardware_id": "b200-180gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "nvidia-glm-5-2-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rabbitowl",
+        "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1539034681595531335"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rabbitowl",
+        "url": "https://discord.com/channels/1466898002793857221/1516097906967576706/1545529687055269889"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 12,
+    "max_context_tokens": 150000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
