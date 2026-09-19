@@ -1,0 +1,174 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by darkstar000",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:nightly"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1474515495137841294"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-011083",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-",
+      "--model",
+      "-",
+      "/models/Qwen3.5-397B-A17B-NVFP4/nvidia/Qwen3.5-397B-A17B-NVFP4",
+      "-",
+      "--served-model-name",
+      "-",
+      "qwen3-5-nvfp4",
+      "-",
+      "--host",
+      "-",
+      "0.0.0.0",
+      "-",
+      "--port",
+      "-",
+      "8000",
+      "-",
+      "--tensor-parallel-size",
+      "-",
+      "4",
+      "-",
+      "--max-model-len",
+      "-",
+      "200000",
+      "-",
+      "--kv-cache-dtype",
+      "-",
+      "auto",
+      "-",
+      "--tool-call-parser",
+      "-",
+      "qwen3_coder",
+      "-",
+      "--reasoning-parser",
+      "-",
+      "qwen3",
+      "-",
+      "--enable-auto-tool-choice",
+      "-",
+      "--trust-remote-code",
+      "env:",
+      "-",
+      "name:",
+      "CUDA_VISIBLE_DEVICES",
+      "value:",
+      "\"0,1,2,3",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:nightly",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "darkstar000",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai:nightly",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "darkstar000",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "darkstar000",
+      "channel_id": "1473975364727476224",
+      "message_id": "1476024281787011083",
+      "posted_at": "2026-02-25T01:13:31.983000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1474515495137841294",
+      "gap_days": 4.16,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "darkstar000",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "darkstar000",
+        "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1474515495137841294"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

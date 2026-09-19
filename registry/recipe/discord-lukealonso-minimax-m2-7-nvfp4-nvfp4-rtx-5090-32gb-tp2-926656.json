@@ -1,0 +1,210 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by mtone1",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mtone1",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mtone1",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mtone1",
+            "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1492850619084574790"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mtone1",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mtone1",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-5090-32gb-tp2-926656",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "lukealonso/MiniMax-M2.7-NVFP4",
+      "--served-model-name",
+      "MiniMax-M2.7",
+      "--enable-torch-compile",
+      "--reasoning-parser",
+      "minimax",
+      "--tool-call-parser",
+      "minimax-m2",
+      "--trust-remote-code",
+      "--tp",
+      "2",
+      "--mem-fraction-static",
+      "0.95",
+      "--max-running-requests",
+      "8",
+      "--quantization",
+      "modelopt_fp4",
+      "--attention-backend",
+      "flashinfer",
+      "--moe-runner-backend",
+      "b12x",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--kv-cache-dtype",
+      "bf16",
+      "--page-size",
+      "64",
+      "--enable-pcie-oneshot-allreduce",
+      "--disable-piecewise-cuda-graph",
+      "--chunked-prefill-size",
+      "16384",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "mtone1",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_CACHE_PATH": "/root/.cache/sglang-generated/nv",
+      "HF_HOME": "/root/.cache/huggingface",
+      "HOME": "/root",
+      "HUGGINGFACE_HUB_CACHE": "/root/.cache/huggingface/hub",
+      "OMP_NUM_THREADS": "8",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SGLANG_CACHE_DIR": "/root/.cache/sglang-generated/sglang",
+      "SGLANG_DG_CACHE_DIR": "/root/.cache/sglang-generated/deep_gemm",
+      "SGLANG_ENABLE_SPEC_V2": "True",
+      "TORCHINDUCTOR_CACHE_DIR": "/root/.cache/sglang-generated/torchinductor",
+      "TORCH_EXTENSIONS_DIR": "/root/.cache/sglang-generated/torch_extensions",
+      "TRANSFORMERS_CACHE": "/root/.cache/huggingface/hub",
+      "TRITON_CACHE_DIR": "/root/.cache/sglang-generated/triton",
+      "XDG_CACHE_HOME": "/root/.cache/sglang-generated"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "mtone1",
+      "source": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "mtone1",
+      "channel_id": "1484016763124453456",
+      "message_id": "1493337042132926656",
+      "posted_at": "2026-04-13T19:48:15.705000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+    },
+    "model_resolution": "explicit",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1492850619084574790",
+      "gap_days": 1.34,
+      "hardware_id": "rtx-5090-32gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lukealonso-minimax-m2-7-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "mtone1",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1493337042132926656"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "mtone1",
+        "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1492850619084574790"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

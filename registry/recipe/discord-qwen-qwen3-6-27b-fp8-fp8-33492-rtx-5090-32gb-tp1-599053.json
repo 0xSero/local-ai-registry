@@ -1,0 +1,238 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by djradracer",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "repne/vllm:v12.1"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1511606540816355509"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "djradracer",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-5090-32gb",
+  "id": "discord-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-5090-32gb-tp1-599053",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-p",
+      "8100:8100",
+      "-v",
+      "~/.cache/huggingface:/root/.cache/huggingface",
+      "-v",
+      "~/.cache/vllm:/root/.cache/vllm",
+      "-v",
+      "~/.cache/flashinfer:/root/.cache/flashinfer",
+      "-v",
+      "~/.triton/cache:/root/.triton/cache",
+      "-v",
+      "~/models/Qwen/Qwen3.6-27B-FP8:/root/.cache/Qwen/Qwen3.6-27B-FP8:ro",
+      "-v",
+      "~/models/z-lab/Qwen3.6-27B-DFlash:/root/.cache/z-lab/Qwen3.6-27B-DFlash:ro",
+      "--env",
+      "OMP_NUM_THREADS=8",
+      "--env",
+      "VLLM_ALLREDUCE_USE_SYMM_MEM=0",
+      "--runtime",
+      "nvidia",
+      "--gpus",
+      "all",
+      "--ipc",
+      "host",
+      "--shm-size",
+      "32g",
+      "--ulimit",
+      "memlock=-1",
+      "--ulimit",
+      "stack=67108864",
+      "repne/vllm:v12.1",
+      "--model",
+      "/root/.cache/Qwen/Qwen3.6-27B-FP8",
+      "--served-model-name",
+      "Qwen3.6",
+      "--gpu-memory-utilization",
+      "0.72",
+      "--max-model-len",
+      "262144",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8100",
+      "--tensor-parallel-size",
+      "1",
+      "--attention-backend",
+      "flashinfer",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3",
+      "--max-num-seqs",
+      "32",
+      "--max-num-batched-tokens",
+      "32758",
+      "--language-model-only",
+      "--enable-auto-tool-choice",
+      "--enable-prefix-caching",
+      "--speculative-config",
+      "{\"method\": \"dflash\", \"num_speculative_tokens\": 8, \"model\": \"/root/.cache/z-lab/Qwen3.6-27B-DFlash\", \"use_local_argmax_reduction\": true, \"attention_backend\": \"FLASHINFER\", \"draft_sample_method\": \"greedy\"}",
+      "--default-chat-template-kwargs",
+      "{\"preserve_thinking\":true}",
+      "--override-generation-config",
+      "{\"temperature\": 0.6, \"top_p\": 0.95, \"top_k\": 20, \"min_p\": 0.0}",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "repne/vllm:v12.1",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "djradracer",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "repne/vllm:v12.1",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "djradracer",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "djradracer",
+      "channel_id": "1473975364727476224",
+      "message_id": "1508958413986599053",
+      "posted_at": "2026-05-26T22:22:00.986000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+    },
+    "model_resolution": "explicit",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1511606540816355509",
+      "gap_days": 7.31,
+      "hardware_id": "rtx-5090-32gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8--33492",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "djradracer",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1508958413986599053"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "djradracer",
+        "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1511606540816355509"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 32,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

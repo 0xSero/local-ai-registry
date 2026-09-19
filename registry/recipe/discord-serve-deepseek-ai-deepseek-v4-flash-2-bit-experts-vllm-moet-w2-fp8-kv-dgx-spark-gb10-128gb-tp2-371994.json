@@ -1,0 +1,133 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by lukealonso",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508235927107928116"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-dgx-spark-gb10-128gb-tp2-371994",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "lukealonso",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+  },
+  "metadata": {
+    "discord": {
+      "author": "lukealonso",
+      "channel_id": "1481304034198421515",
+      "message_id": "1508129664357371994",
+      "posted_at": "2026-05-24T15:28:51.677000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+    },
+    "model_resolution": "explicit",
+    "observed_command": "```#!/bin/bash set -euo pipefail export CUTE_DSL_ARCH=sm_120a export SGLANG_ENABLE_JIT_DEEPGEMM=0 export SGLANG_OPT_USE_TILELANG_MHC_PRE=0 export SGLANG_OPT_USE_TILELANG_MHC_POST=0 export SGLANG_OPT_FP8_WO_A_GEMM=1 export SGLANG_DEFAULT_THINKING=1 export SGLANG_DSV4_REASONING_EFFORT=high python -m sglang.launch_server --model-path deepseek-ai/DeepSeek-V4-Flash --served-model-name DeepSeek-V4-Flash --trust-remote-code --tensor-parallel-size 2 --attention-backend dsv4 --moe-runner-backend b12x --fp8-gemm-backend b12x --fp4-gemm-backend b12x --moe-a2a-backend none --reasoning-parser deepseek-v4 --chunked-prefill-size 4096 --mem-fraction-static 0.9 --ep-size 1 --enable-pcie-oneshot-allreduce --max-running-requests 4 --cuda-graph-max-bs 4 --host 0.0.0.0 --port 8000 --speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4 \"$@\" ```",
+    "rig_resolution": {
+      "from_message": "1508235927107928116",
+      "gap_days": 0.29,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lukealonso",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508129664357371994"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lukealonso",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1508235927107928116"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

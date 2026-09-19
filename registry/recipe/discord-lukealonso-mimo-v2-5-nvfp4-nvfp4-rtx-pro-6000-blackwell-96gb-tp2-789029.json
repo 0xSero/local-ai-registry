@@ -1,0 +1,224 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by pavelf283",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "lukealonso/sglang-cuda13-b12x:noloop"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1506251928630202428"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "pavelf283",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-789029",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/models/MiMo-V2.5-NVFP4",
+      "--served-model-name",
+      "MiMo-V2.5",
+      "--tp-size",
+      "2",
+      "--page-size",
+      "64",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mem-fraction-static",
+      "0.95",
+      "--swa-full-tokens-ratio",
+      "0.3",
+      "--chunked-prefill-size",
+      "2048",
+      "--enable-pcie-oneshot-allreduce",
+      "--enable-multi-layer-eagle",
+      "--reasoning-parser",
+      "mimo",
+      "--tool-call-parser",
+      "mimo",
+      "--context-length",
+      "131072",
+      "--cuda-graph-max-bs",
+      "4",
+      "--max-running-requests",
+      "4",
+      "--speculative-algorithm",
+      "EAGLE",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "4",
+      "--moe-runner-backend",
+      "b12x",
+      "--attention-backend",
+      "b12x",
+      "--mm-attention-backend",
+      "b12x",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--fp8-gemm-backend",
+      "flashinfer_cutlass",
+      "--preferred-sampling-params='{\"presence_penalty\":1.2,\"frequency_penalty\":0.1,\"repetition_penalty\":1.20}'```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "lukealonso/sglang-cuda13-b12x:noloop",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "pavelf283",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "lukealonso/sglang-cuda13-b12x:noloop",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "pavelf283",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "pavelf283",
+      "channel_id": "1498377952981946548",
+      "message_id": "1503657281617789029",
+      "posted_at": "2026-05-12T07:17:12.539000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+    },
+    "model_resolution": "unique-basename",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1506251928630202428",
+      "gap_days": 7.16,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "pavelf283",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503657281617789029"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "pavelf283",
+        "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1506251928630202428"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

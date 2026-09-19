@@ -1,0 +1,151 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by afruitshopowner",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "afruitshopowner",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "afruitshopowner",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "afruitshopowner",
+            "url": "https://discord.com/channels/1466898002793857221/1496257522280173769/1501552084317765775"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-nvidia-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-576768",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--cuda-graph-max-bs",
+      "64",
+      "-",
+      "--enable-pcie-oneshot-allreduce",
+      "-",
+      "B12X_MOE_FORCE_A16=1",
+      "-",
+      "Torch",
+      "compile:",
+      "enabled",
+      "-",
+      "Metrics:",
+      "enabled",
+      "-",
+      "Cache",
+      "report:",
+      "enabled",
+      "if",
+      "supported",
+      "-",
+      "Piecewise",
+      "CUDA",
+      "graph:",
+      "disabled"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "afruitshopowner",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "afruitshopowner",
+      "source": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "afruitshopowner",
+      "channel_id": "1484016763124453456",
+      "message_id": "1502034687340576768",
+      "posted_at": "2026-05-07T19:49:35.917000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1501552084317765775",
+      "gap_days": 1.33,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "nvidia-minimax-m2-7-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "afruitshopowner",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502034687340576768"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "afruitshopowner",
+        "url": "https://discord.com/channels/1466898002793857221/1496257522280173769/1501552084317765775"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

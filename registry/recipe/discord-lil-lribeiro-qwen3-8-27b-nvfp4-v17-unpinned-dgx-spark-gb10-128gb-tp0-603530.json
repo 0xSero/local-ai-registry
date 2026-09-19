@@ -1,0 +1,190 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by _madar_",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:v0.27.1-cu129"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_madar_",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_madar_",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_madar_",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539775513420374146"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_madar_",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_madar_",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-lil-lribeiro-qwen3-8-27b-nvfp4-v17-unpinned-dgx-spark-gb10-128gb-tp0-603530",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "lribeiro/Qwen3.8-27B-nvfp4-v17",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--served-model-name",
+      "qwen3.8-27b",
+      "--max-model-len",
+      "262144",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--kv-cache-dtype",
+      "fp8",
+      "--max-num-seqs",
+      "8",
+      "--max-num-batched-tokens",
+      "8192",
+      "--enable-chunked-prefill",
+      "--mm-encoder-tp-mode",
+      "data",
+      "--reasoning-parser",
+      "qwen3",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":3}",
+      "[Edited",
+      "to",
+      "correct",
+      "vllm",
+      "image]"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:v0.27.1-cu129",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "_madar_",
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai:v0.27.1-cu129",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "_madar_",
+      "source": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "_madar_",
+      "channel_id": "1528331644933767190",
+      "message_id": "1538964880986603530",
+      "posted_at": "2026-08-17T17:37:00.212000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1539775513420374146",
+      "gap_days": 2.24,
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lil-lribeiro-qwen3-8-27b-nvfp4-v17--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "_madar_",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538964880986603530"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "_madar_",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539775513420374146"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "max_context_tokens": 262144
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -12,7 +12,7 @@
     "version": null
   },
   "facts": {
-    "metadata.model_resolution": {
+    "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -26,7 +26,7 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
             "publisher": "vilsol",
-            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1503407018487316541"
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1498384553914532012"
           }
         ]
       },
@@ -94,14 +94,14 @@
       "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1496498909634367679"
     },
     "model_resolution": "explicit",
-    "notes": [
-      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
-    ],
     "observed_command": "On 8x RTX6k ```sh export NCCL_P2P_LEVEL=SYS export NCCL_IB_DISABLE=1 export NCCL_MIN_NCHANNELS=8 export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export SGLANG_ENABLE_JIT_DEEPGEMM=0 export SGLANG_ENABLE_DEEP_GEMM=0 export SGLANG_SET_CPU_AFFINITY=1 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export NCCL_PROTO=LL export NCCL_BUFFSIZE=16777216 export SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server --model-path unsloth/Kimi-K2.6 --served-model-name Kimi-K2.6 --tensor-parallel-size 8 --trust-remote-code --attention-backend flashinfer --kv-cache-dtype bf16 --reasoning-parser kimi_k2 --tool-call-parser kimi_k2 --chunked-prefill-size 8192 --mem-fraction-static 0.90 --cuda-graph-max-bs 8 --max-running-requests 8 --enable-metrics --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 16}' --host 0.0.0.0 --port 8081 --sleep-on-idle --schedule-conservativeness 0.7 --speculative-algorithm EAGLE3 --speculative-draft-model-path lightseekorg/kimi-k2.6-eagle3 --speculative-num-steps 3 --speculative-num-draft-tokens 4 --speculative-eagle-topk 1 --disable-custom-all-reduce --enable-mixed-chunk ```",
     "rig_resolution": {
-      "from_message": "1503407018487316541",
+      "from_message": "1498384553914532012",
+      "gap_days": 5.2,
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
-      "note": "the launch does not state hardware; the same author's other message in this thread does"
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
     }
   },
   "model_instance_id": "unsloth-kimi-k2-6-unknown",
@@ -118,7 +118,7 @@
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
         "publisher": "vilsol",
-        "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1503407018487316541"
+        "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1498384553914532012"
       }
     ]
   },

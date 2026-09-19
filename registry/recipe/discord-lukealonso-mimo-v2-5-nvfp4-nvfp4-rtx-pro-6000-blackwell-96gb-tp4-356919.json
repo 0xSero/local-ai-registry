@@ -1,0 +1,206 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by acronjob",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "docker.io/lukealonso/sglang-cuda13-b12x:noloop"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1499464628059766885"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "acronjob",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp4-356919",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "lukealonso/MiMo-V2.5-NVFP4",
+      "--served-model-name",
+      "mimo-v2.5",
+      "--tp-size",
+      "4",
+      "--page-size",
+      "64",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mem-fraction-static",
+      "0.85",
+      "--swa-full-tokens-ratio",
+      "0.3",
+      "--chunked-prefill-size",
+      "8192",
+      "--fp8-gemm-backend",
+      "flashinfer_cutlass",
+      "--preferred-sampling-params",
+      "{\"entropy_penalty\":2.0,\"entropy_penalty_min_len\":16,\"entropy_penalty_max_len\":512,\"entropy_penalty_window\":8192,\"entropy_penalty_max_penalty\":512.0,\"logit_bias\": {\"52592\":-1000000000.0,\"33763\":-1000000000.0}}",
+      "--enable-pcie-oneshot-allreduce",
+      "--enable-multi-layer-eagle",
+      "--reasoning-parser",
+      "mimo",
+      "--tool-call-parser",
+      "mimo",
+      "--max-running-requests",
+      "8",
+      "--moe-runner-backend",
+      "b12x",
+      "--attention-backend",
+      "b12x",
+      "--mm-attention-backend",
+      "b12x",
+      "--sleep-on-idle",
+      "--fp4-gemm-backend",
+      "b12x",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "docker.io/lukealonso/sglang-cuda13-b12x:noloop",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "acronjob",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_ENABLE_DYNAMIC_DOWN_SCALE": "1",
+      "CUTE_DSL_ARCH": "\"sm_120a\"",
+      "OMP_NUM_THREADS": "16",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SGLANG_PREVENT_THOUGHT_LOOPS": "1"
+    },
+    "host_port": 8000,
+    "image": "docker.io/lukealonso/sglang-cuda13-b12x:noloop",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "acronjob",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "acronjob",
+      "channel_id": "1498377952981946548",
+      "message_id": "1501389893866356919",
+      "posted_at": "2026-05-06T01:07:25.173000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+    },
+    "model_resolution": "explicit",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1499464628059766885",
+      "gap_days": 5.31,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "acronjob",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501389893866356919"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "acronjob",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1499464628059766885"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

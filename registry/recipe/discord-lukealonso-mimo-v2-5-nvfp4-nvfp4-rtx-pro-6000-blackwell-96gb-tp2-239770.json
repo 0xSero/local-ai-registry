@@ -1,0 +1,229 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by xrazx",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:mimo-v25-pro-tp8-b12x3917cb2-latest"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "xrazx",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "xrazx",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "xrazx",
+            "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1503897808892203019"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "xrazx",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "xrazx",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-239770",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "lukealonso/MiMo-V2.5-NVFP4",
+      "--served-model-name",
+      "mimo-v25-nvfp4-sglang",
+      "--tensor-parallel-size",
+      "2",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--enable-metrics",
+      "--disable-custom-all-reduce",
+      "--enable-cache-report",
+      "--sleep-on-idle",
+      "--page-size",
+      "64",
+      "--quantization",
+      "modelopt_fp4",
+      "--mem-fraction-static",
+      "0.92",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--swa-full-tokens-ratio",
+      "0.3",
+      "--chunked-prefill-size",
+      "4096",
+      "--cuda-graph-max-bs",
+      "4",
+      "--max-running-requests",
+      "4",
+      "--mm-process-config",
+      "{\"image\":{\"max_pixels\":262144},\"video\":{\"fps\":4,\"max_pixels\":262144,\"total_max_pixels\":16777216,\"max_frames\":384}}",
+      "--limit-mm-data-per-request",
+      "{\"image\":4,\"video\":1,\"audio\":1}",
+      "--enable-multi-layer-eagle",
+      "--speculative-algorithm",
+      "EAGLE",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "2",
+      "--moe-runner-backend",
+      "b12x",
+      "--attention-backend",
+      "b12x",
+      "--mm-attention-backend",
+      "b12x",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--fp8-gemm-backend",
+      "flashinfer_cutlass",
+      "--reasoning-parser",
+      "mimo",
+      "--tool-call-parser",
+      "mimo",
+      "--preferred-sampling-params",
+      "{\"temperature\":1.0,\"top_p\":0.95,\"repetition_penalty\":1.05}",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:mimo-v25-pro-tp8-b12x3917cb2-latest",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "xrazx",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HF_HOME": "/models/huggingface",
+      "NCCL_CUMEM_HOST_ENABLE": "0",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_DISABLE": "1",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SGLANG_ENABLE_TP_MEMORY_INBALANCE_CHECK": "false",
+      "SGLANG_PREVENT_THOUGHT_LOOPS": "1",
+      "XDG_CACHE_HOME": "/root/.cache"
+    },
+    "host_port": 10002,
+    "image": "voipmonitor/sglang:mimo-v25-pro-tp8-b12x3917cb2-latest",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "xrazx",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "xrazx",
+      "channel_id": "1498377952981946548",
+      "message_id": "1503933602663239770",
+      "posted_at": "2026-05-13T01:35:12.610000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+    },
+    "model_resolution": "explicit",
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1503897808892203019",
+      "gap_days": 0.1,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "xrazx",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1503933602663239770"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "xrazx",
+        "url": "https://discord.com/channels/1466898002793857221/1474436297878933699/1503897808892203019"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

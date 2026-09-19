@@ -1,0 +1,102 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by ixtrix.new",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1475342197812494467"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "b200-180gb",
+  "id": "discord-serve-qwen-qwen3-5-35b-a3b-q4-k-xl-b200-180gb-tp0-551686",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "ixtrix.new",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686"
+  },
+  "metadata": {
+    "discord": {
+      "author": "ixtrix.new",
+      "channel_id": "1473975364727476224",
+      "message_id": "1476647077357551686",
+      "posted_at": "2026-02-26T18:28:18.018000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": "no, video input requires this flag for vLLM ``` response = client.chat.completions.create( model=\"Qwen/Qwen3.5-35B-A3B\", messages=messages, max_tokens=81920, temperature=1.0, top_p=0.95, presence_penalty=1.5, extra_body={ \"top_k\": 20, \"mm_processor_kwargs\": {\"fps\": 2, \"do_sample_frames\": True}, }, ) print(\"Chat response:\", chat_response) ```",
+    "rig_resolution": {
+      "from_message": "1475342197812494467",
+      "gap_days": 3.6,
+      "hardware_id": "b200-180gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "qwen-qwen3-5-35b-a3b--q4-k-xl",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ixtrix.new",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476647077357551686"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ixtrix.new",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1475342197812494467"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
