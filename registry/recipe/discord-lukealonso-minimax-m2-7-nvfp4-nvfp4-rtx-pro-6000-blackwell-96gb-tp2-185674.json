@@ -1,0 +1,143 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by sedulousdc",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "lmsysorg/sglang:latest"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "sedulousdc",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "sedulousdc",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-185674",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path",
+      "/models/MiniMax-M2.7-NVFP4",
+      "--tp",
+      "2",
+      "--trust-remote-code",
+      "--quantization",
+      "modelopt_fp4",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--moe-runner-backend",
+      "b12x",
+      "--fp4-gemm-backend",
+      "b12x",
+      "--tool-call-parser",
+      "minimax-m2",
+      "--reasoning-parser",
+      "minimax-append-think",
+      "--enable-pcie-oneshot-allreduce",
+      "--enable-torch-compile",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "Model",
+      "weights:",
+      "lukealonso/MiniMax-M2.7-NVFP4",
+      "from",
+      "HuggingFace",
+      "(131GB,",
+      "25",
+      "shards)"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "lmsysorg/sglang:latest",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "sedulousdc",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 30000,
+    "environment": {},
+    "host_port": 30000,
+    "image": "lmsysorg/sglang:latest",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "sedulousdc",
+      "source": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "sedulousdc",
+      "channel_id": "1484016763124453456",
+      "message_id": "1494191967507185674",
+      "posted_at": "2026-04-16T04:25:25.798000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+    },
+    "model_resolution": "unique-basename",
+    "notes": [
+      "Checkpoint resolved by unique basename match against the registry.",
+      "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
+    ]
+  },
+  "model_instance_id": "lukealonso-minimax-m2-7-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "sedulousdc",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
