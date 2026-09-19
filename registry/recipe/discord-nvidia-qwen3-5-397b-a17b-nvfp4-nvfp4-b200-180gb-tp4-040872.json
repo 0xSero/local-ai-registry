@@ -1,0 +1,175 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by chisleu8359",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:cu130-nightly"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "b200-180gb",
+  "id": "discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-b200-180gb-tp4-040872",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "nvidia/Qwen3.5-397B-A17B-NVFP4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "5000",
+      "--trust-remote-code",
+      "--tensor-parallel-size",
+      "4",
+      "--gpu-memory-utilization",
+      "0.80",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--reasoning-parser",
+      "qwen3",
+      "--enable-prefix-caching",
+      "--served-model-name",
+      "model",
+      "```",
+      "My",
+      "command",
+      "is",
+      "pretty",
+      "straightforward"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:cu130-nightly",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "chisleu8359",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 5000,
+    "environment": {
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "4",
+      "NVIDIA_VISIBLE_DEVICES": "0,1,2,3",
+      "OMP_NUM_THREADS": "8",
+      "SAFETENSORS_FAST_GPU": "1",
+      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "host_port": 5000,
+    "image": "vllm/vllm-openai:cu130-nightly",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "chisleu8359",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "chisleu8359",
+      "channel_id": "1473975364727476224",
+      "message_id": "1477716462130040872",
+      "posted_at": "2026-03-01T17:17:39.216000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1476029023028252807",
+      "hardware_id": "b200-180gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "chisleu8359",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1477716462130040872"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "chisleu8359",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476029023028252807"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
