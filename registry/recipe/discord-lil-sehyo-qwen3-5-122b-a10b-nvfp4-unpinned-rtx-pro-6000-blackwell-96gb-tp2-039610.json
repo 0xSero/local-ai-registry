@@ -5,11 +5,11 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving launch posted in the Local Inference Lab Discord by repne_00603_12051",
+  "description": "Serving launch posted in the Local Inference Lab Discord by chafey.",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": "repne/vllm:latest"
+    "version": "vllm/vllm-openai:cu130-nightly"
   },
   "facts": {
     "launch.image": {
@@ -19,8 +19,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
           }
         ]
       },
@@ -33,8 +33,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
           }
         ]
       },
@@ -47,8 +47,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
           }
         ]
       },
@@ -61,8 +61,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
           }
         ]
       },
@@ -71,113 +71,113 @@
   },
   "hardware_count": 2,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
-  "id": "discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-207424",
+  "id": "discord-lil-sehyo-qwen3-5-122b-a10b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp2-039610",
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "-O3",
-      "--model",
-      "Qwen/Qwen3.6-27B",
-      "--served-model-name",
-      "Qwen3.6-27B",
+      "Sehyo/Qwen3.5-122B-A10B-NVFP4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
       "--tensor-parallel-size",
-      "1",
-      "--gpu-memory-utilization",
-      "0.85",
+      "2",
+      "--dtype",
+      "auto",
+      "--trust-remote-code",
       "--max-model-len",
-      "262144",
+      "186560",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
       "--max-num-seqs",
-      "128",
+      "6",
       "--max-num-batched-tokens",
-      "32758",
-      "--max-cudagraph-capture-size",
-      "256",
-      "--language-model-only",
+      "8192",
+      "--enable-prefix-caching",
       "--enable-auto-tool-choice",
-      "--reasoning-parser",
-      "qwen3",
       "--tool-call-parser",
       "qwen3_coder",
-      "--enable-prefix-caching",
-      "--speculative-config.method",
-      "mtp",
-      "--speculative-config.num_speculative_tokens",
-      "3",
-      "--speculative-config.draft_sample_method",
-      "gumbel",
-      "--attention-backend",
-      "flashinfer",
-      "--load-format",
-      "instanttensor",
-      "--default-chat-template-kwargs.preserve_thinking",
-      "true",
-      "```"
+      "--reasoning-parser",
+      "qwen3",
+      "--mm-encoder-tp-mode",
+      "data",
+      "--mm-processor-cache-type",
+      "shm",
+      "--override-generation-config",
+      "{\"repetition_penalty\": 1.0, \"temperature\": 1.0, \"top_p\": 0.95, \"presence_penalty\": 1.5, \"top_k\": 20}",
+      "--speculative-config",
+      "{\"method\": \"mtp\", \"num_speculative_tokens\": 2}",
+      "--served-model-name",
+      "Qwen35",
+      "``"
     ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
       "digest": null,
-      "image": "repne/vllm:latest",
+      "image": "vllm/vllm-openai:cu130-nightly",
       "reason": "only-a-mutable-tag-was-posted",
       "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
-          "publisher": "repne_00603_12051",
-          "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+          "publisher": "chafey.",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
         }
       ],
       "state": "mutable"
     },
     "container_port": 8000,
     "environment": {
-      "OMP_NUM_THREADS": "8",
-      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
-      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "1",
-      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+      "OMP_NUM_THREADS": "1",
+      "TORCH_CUDA_ARCH_LIST": "\"12.0\"",
+      "VLLM_MARLIN_USE_ATOMIC_ADD": "1",
+      "VLLM_USE_DEEP_GEMM": "1"
     },
     "host_port": 8000,
-    "image": "repne/vllm:latest",
+    "image": "vllm/vllm-openai:cu130-nightly",
     "kind": "docker",
     "provenance": {
       "kind": "discord-message",
-      "publisher": "repne_00603_12051",
-      "source": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+      "publisher": "chafey.",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
     }
   },
   "metadata": {
     "discord": {
-      "author": "repne_00603_12051",
-      "channel_id": "1498094855442927698",
-      "message_id": "1498094859167207424",
-      "posted_at": "2026-04-26T22:54:07.682000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+      "author": "chafey.",
+      "channel_id": "1473975364727476224",
+      "message_id": "1490084838815039610",
+      "posted_at": "2026-04-04T20:25:10.011000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
     },
-    "model_resolution": "explicit",
+    "model_resolution": "prose-repository-mentioned",
     "notes": [
       "Checkpoint resolved by unique basename match against the registry.",
       "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
     ]
   },
-  "model_instance_id": "qwen-qwen3-6-27b--fp8",
+  "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",
   "provenance": {
     "captured_at": "2026-09-19T05:35:00Z",
     "sources": [
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "repne_00603_12051",
-        "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+        "publisher": "chafey.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
       }
     ]
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "max_concurrency": 128,
-    "max_context_tokens": 262144,
-    "tensor_parallel": 1
+    "max_concurrency": 6,
+    "max_context_tokens": 186560,
+    "tensor_parallel": 2
   },
   "speed_sweep_ids": [],
   "status": "candidate"

@@ -5,11 +5,11 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving launch posted in the Local Inference Lab Discord by repne_00603_12051",
+  "description": "Serving launch posted in the Local Inference Lab Discord by enlux_96548",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": "repne/vllm:latest"
+    "version": "voipmonitor/vllm:kimi-v5-cu132-89da7631"
   },
   "facts": {
     "launch.image": {
@@ -19,8 +19,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "enlux_96548",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
           }
         ]
       },
@@ -33,8 +33,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "enlux_96548",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
           }
         ]
       },
@@ -47,8 +47,8 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "enlux_96548",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
           }
         ]
       },
@@ -61,114 +61,115 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "repne_00603_12051",
-            "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+            "publisher": "enlux_96548",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
           }
         ]
       },
       "state": "known"
     }
   },
-  "hardware_count": 2,
+  "hardware_count": 8,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
-  "id": "discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-207424",
+  "id": "discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-blackwell-96gb-tp8-790824",
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "-O3",
-      "--model",
-      "Qwen/Qwen3.6-27B",
+      "moonshotai/Kimi-K2.6",
+      "--revision",
+      "b5aabbfb20227ed42becbf5541dbffd213942c58",
       "--served-model-name",
-      "Qwen3.6-27B",
+      "Kimi-K2.6",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
       "--tensor-parallel-size",
+      "8",
+      "--pipeline-parallel-size",
       "1",
+      "--decode-context-parallel-size",
+      "1",
+      "--enable-chunked-prefill",
+      "--enable-prefix-caching",
+      "--load-format",
+      "fastsafetensors",
+      "--async-scheduling",
       "--gpu-memory-utilization",
-      "0.85",
+      "0.94",
       "--max-model-len",
       "262144",
+      "--max-num-batched-tokens",
+      "8192",
       "--max-num-seqs",
       "128",
-      "--max-num-batched-tokens",
-      "32758",
-      "--max-cudagraph-capture-size",
-      "256",
-      "--language-model-only",
-      "--enable-auto-tool-choice",
-      "--reasoning-parser",
-      "qwen3",
-      "--tool-call-parser",
-      "qwen3_coder",
-      "--enable-prefix-caching",
-      "--speculative-config.method",
-      "mtp",
-      "--speculative-config.num_speculative_tokens",
-      "3",
-      "--speculative-config.draft_sample_method",
-      "gumbel",
       "--attention-backend",
-      "flashinfer",
-      "--load-format",
-      "instanttensor",
-      "--default-chat-template-kwargs.preserve_thinking",
-      "true",
+      "TRITON_MLA",
+      "--kv-cache-dtype",
+      "fp8",
+      "--enable-flashinfer-autotune",
+      "--max-cudagraph-capture-size",
+      "512",
+      "--calculate-kv-scales",
+      "--reasoning-parser",
+      "kimi_k2",
+      "--tool-call-parser",
+      "kimi_k2",
+      "--enable-auto-tool-choice",
       "```"
     ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
       "digest": null,
-      "image": "repne/vllm:latest",
+      "image": "voipmonitor/vllm:kimi-v5-cu132-89da7631",
       "reason": "only-a-mutable-tag-was-posted",
       "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
-          "publisher": "repne_00603_12051",
-          "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+          "publisher": "enlux_96548",
+          "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
         }
       ],
       "state": "mutable"
     },
     "container_port": 8000,
-    "environment": {
-      "OMP_NUM_THREADS": "8",
-      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
-      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "1",
-      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
-    },
+    "environment": {},
     "host_port": 8000,
-    "image": "repne/vllm:latest",
+    "image": "voipmonitor/vllm:kimi-v5-cu132-89da7631",
     "kind": "docker",
     "provenance": {
       "kind": "discord-message",
-      "publisher": "repne_00603_12051",
-      "source": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+      "publisher": "enlux_96548",
+      "source": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
     }
   },
   "metadata": {
     "discord": {
-      "author": "repne_00603_12051",
-      "channel_id": "1498094855442927698",
-      "message_id": "1498094859167207424",
-      "posted_at": "2026-04-26T22:54:07.682000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+      "author": "enlux_96548",
+      "channel_id": "1495805489013985280",
+      "message_id": "1508846127900790824",
+      "posted_at": "2026-05-26T14:55:49.897000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
     },
-    "model_resolution": "explicit",
+    "model_resolution": "prose-repository-mentioned",
     "notes": [
       "Checkpoint resolved by unique basename match against the registry.",
       "hardware_count is the count the poster wrote, or the stated tensor-parallel size when the rig size was not written down."
     ]
   },
-  "model_instance_id": "qwen-qwen3-6-27b--fp8",
+  "model_instance_id": "lil-moonshotai-kimi-k2-6--b5aabbfb2022",
   "provenance": {
     "captured_at": "2026-09-19T05:35:00Z",
     "sources": [
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "repne_00603_12051",
-        "url": "https://discord.com/channels/1466898002793857221/1498094855442927698/1498094859167207424"
+        "publisher": "enlux_96548",
+        "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1508846127900790824"
       }
     ]
   },
@@ -177,7 +178,7 @@
   "serving": {
     "max_concurrency": 128,
     "max_context_tokens": 262144,
-    "tensor_parallel": 1
+    "tensor_parallel": 8
   },
   "speed_sweep_ids": [],
   "status": "candidate"
