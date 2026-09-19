@@ -92,7 +92,7 @@ def ensure_instance(repo, branch, model_id, served_name):
 def ensure_asset(asset_id, model_name, ctx, cache_mode, purpose, vision=False, reasoning=False,
                  tool_format=None, draft_mode="disabled", max_batch_size=2,
                  start_in_reasoning="auto", vision_offload=False, autosplit_reserve=None,
-                 cache_headroom=1024):
+                 cache_headroom=1024, chunk_size=2048):
     # ExLlamaV3 refuses a request whose prompt plus output needs more pages than
     # the cache holds, and it counts in whole 256-token pages. With
     # cache_size == max_seq_len a request that fills the window asks for one page
@@ -140,7 +140,7 @@ model:
   cache_mode: {cache_mode}
   tensor_parallel: false
   gpu_split_auto: true
-{reserve}  chunk_size: 2048
+{reserve}  chunk_size: {chunk_size}
   output_chunking: true
   max_batch_size: {max_batch_size}
 {chr(10).join(extra) + chr(10) if extra else ""}
@@ -185,6 +185,8 @@ def main():
     parser.add_argument("--vision-offload", action="store_true",
                         help="keep vision weights in pinned host RAM when the tower does not fit")
     parser.add_argument("--autosplit-reserve", type=int, help="MB reserved per GPU during autosplit")
+    parser.add_argument("--chunk-size", type=int, default=2048,
+                        help="prefill chunk size; lower it when a tight card OOMs on prefill activations")
     parser.add_argument("--cache-headroom", type=int, default=1024,
                         help="extra KV tokens so a window-filling request still has pages")
     parser.add_argument("--force", action="store_true")
@@ -210,7 +212,8 @@ def main():
                  vision=args.vision, reasoning=args.reasoning, tool_format=args.tool_format,
                  draft_mode=args.draft_mode, max_batch_size=args.max_batch_size,
                  start_in_reasoning=args.start_in_reasoning, vision_offload=args.vision_offload,
-                 autosplit_reserve=args.autosplit_reserve, cache_headroom=args.cache_headroom)
+                 autosplit_reserve=args.autosplit_reserve, cache_headroom=args.cache_headroom,
+                 chunk_size=args.chunk_size)
     recipe_id = args.id or f"{model_slug}-exl3-{bpw_slug}-{hardware_slug(args.hardware)}-tabbyapi-tp1"
     path = REG / "recipe" / f"{recipe_id}.json"
     if path.exists() and not args.force:
