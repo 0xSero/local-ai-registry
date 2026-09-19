@@ -17,7 +17,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-17T00:03:37Z",
+  "generatedAt": "2026-09-19T08:12:56Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -5725,8 +5725,94 @@
           }
         }
       ]
+    },
+    "rx-6800-xt-16gb": {
+      "match": {
+        "backend": "amd-rocm",
+        "name": "AMD Radeon RX 6800 XT",
+        "names": [
+          "rx6800xt"
+        ],
+        "vramGb": 16
+      },
+      "recipe": {
+        "capabilities": {
+          "chat": true,
+          "reasoning": true,
+          "tools": false,
+          "vision": false
+        },
+        "engine": "llama.cpp",
+        "id": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm",
+        "image": {
+          "attestation": null,
+          "provenance": "upstream-published"
+        },
+        "launch": {
+          "arguments": [
+            "-m",
+            "/models/Qwen3.5-9B-Q4_K_M.gguf",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080",
+            "--ctx-size",
+            "65536",
+            "--n-gpu-layers",
+            "999",
+            "--flash-attn",
+            "auto",
+            "--jinja",
+            "--reasoning-format",
+            "deepseek",
+            "--parallel",
+            "1"
+          ],
+          "capAdd": [],
+          "containerPort": 8080,
+          "entrypoint": null,
+          "environment": {},
+          "image": "ghcr.io/ggml-org/llama.cpp@sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+          "ipc": null,
+          "mounts": [
+            {
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-5-9b-q4-k-m",
+              "target": "/models"
+            }
+          ],
+          "networkMode": "bridge",
+          "securityOpt": [],
+          "shm": "8g"
+        },
+        "minDriver": "",
+        "model": {
+          "id": "qwen3-5-9b-base",
+          "name": "Qwen3.5-9B-Base",
+          "precision": "Q4_K_M",
+          "repository": "unsloth/Qwen3.5-9B-GGUF",
+          "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+          "servedName": "/models/Qwen3.5-9B-Q4_K_M.gguf",
+          "sizeGb": 5.681
+        },
+        "serving": {
+          "concurrency": 1,
+          "ctxTokens": 65536,
+          "kvTokens": 65536
+        },
+        "speed": {
+          "tps": 66
+        },
+        "validated": {
+          "acceptedAt": "2026-09-10T18:03:03Z",
+          "harness": "AMD Radeon RX 6800 XT gfx1030 local ROCm"
+        },
+        "weights": {
+          "subdir": ""
+        }
+      }
     }
   },
-  "registryCommit": "b864949a913602ad8d1e7e8f974c138ebdd35c0c",
+  "registryCommit": "70aaae6f374bb757411950ca8ef6d2df70b79793",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
