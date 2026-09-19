@@ -144,6 +144,12 @@ def served_name(recipe, instance):
     arguments = (recipe.get("launch") or {}).get("arguments") or []
     if "--served-model-name" in arguments:
         return arguments[arguments.index("--served-model-name") + 1]
+    # llama.cpp reports the exact absolute path passed through -m as the model id.
+    # Preserve it so the plugin's readiness gate verifies the server it actually launched.
+    if "-m" in arguments:
+        model_path = arguments[arguments.index("-m") + 1]
+        if isinstance(model_path, str) and model_path.startswith("/"):
+            return model_path
     return instance.get("served_name") or instance.get("repository")
 
 
