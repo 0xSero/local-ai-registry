@@ -124,11 +124,15 @@ def load(collection):
     return {p.stem: json.loads(p.read_text()) for p in (REG / collection).glob("*.json")}
 
 
-def registry_commit():
+def registry_stamp():
+    """(commit, ISO date) of the last commit that touched registry/, so regenerating on an unrelated
+    commit is a no-op and CI can require the committed export to be current."""
     try:
-        return subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
+        out = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%H %cI", "--", "registry"], capture_output=True, text=True, check=True).stdout.split()
+        when = dt.datetime.fromisoformat(out[1]).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return out[0], when
     except Exception:
-        return ""
+        return "", dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def speed_tps(sweeps, recipe):
@@ -144,6 +148,12 @@ def served_name(recipe, instance):
     arguments = (recipe.get("launch") or {}).get("arguments") or []
     if "--served-model-name" in arguments:
         return arguments[arguments.index("--served-model-name") + 1]
+    # llama.cpp reports the exact absolute path passed through -m as the model id.
+    # Preserve it so the plugin's readiness gate verifies the server it actually launched.
+    if "-m" in arguments:
+        model_path = arguments[arguments.index("-m") + 1]
+        if isinstance(model_path, str) and model_path.startswith("/"):
+            return model_path
     return instance.get("served_name") or instance.get("repository")
 
 
@@ -210,8 +220,8 @@ def main():
         launch = recipe.get("launch") or {}
         if recipe.get("status") != "validated" or launch.get("kind") != "docker":
             continue
-        by_hardware.setdefault(recipe["hardware_id"], []).append(recipe)
-        if recipe.get("recommended") and recipe.get("hardware_count", 1) == 1:
+        by_hardware.setdefault(recipe["hardware_id"], []).append(recipe)   # alternates may span several cards (`cards`)
+        if recipe.get("recommended") and recipe.get("hardware_count", 1) == 1:   # the recommendation is always a single-card recipe
             eligible.setdefault(recipe["hardware_id"], []).append(recipe)
 
     errors = []
@@ -274,10 +284,11 @@ def main():
                 if source.startswith("asset/"):
                     name = source[len("asset/"):]
                     assets[name] = (REG / "asset" / name).read_text()
+    stamp = registry_stamp()
     document = {
         "schemaVersion": SCHEMA,
-        "registryCommit": registry_commit(),
-        "generatedAt": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "registryCommit": stamp[0],
+        "generatedAt": stamp[1],
         "gateway": {"image": GATEWAY_IMAGE, "provenance": GATEWAY_PROVENANCE},
         "assets": assets,
         "hardware": out,
