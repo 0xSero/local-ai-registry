@@ -91,6 +91,7 @@ export type Recipe = {
     ipc?: string
     shm_size?: string
     accelerator_backend: string
+    devices?: string[] | null
     synthesized: {
       template: string
       generated_at: string

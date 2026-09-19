@@ -279,15 +279,28 @@ preflight() {
 
 launch_args() {
   # Build the docker argv for a VALIDATED docker recipe into the global array LAUNCH.
-  local recipe=$1 launch status kind
+  local recipe=$1 launch status kind backend
   status=$(jq -r '.status' <<<"$recipe")
   kind=$(jq -r '.launch.kind' <<<"$recipe")
   if [[ $status != validated || $kind != docker ]]; then
     fail "only validated docker recipes materialize to a launch command; this recipe is ${status}/${kind}. Candidates are evidence, not launch contracts."
   fi
   launch=$(jq -c '.launch' <<<"$recipe")
+  if ! jq -e '
+    .devices == null or .devices == [] or
+    (.accelerator_backend == "nvidia" and .devices == ["/dev/nvidia-uvm"]) or
+    (.accelerator_backend == "intel-xpu" and .devices == ["/dev/dri"])
+  ' >/dev/null <<<"$launch"; then
+    fail "unsupported host devices for accelerator backend"
+  fi
   LAUNCH=(docker run --rm)
-  if [[ $(jq -r '.accelerator_backend // empty' <<<"$launch") == nvidia ]]; then LAUNCH+=(--gpus all); fi
+  backend=$(jq -r '.accelerator_backend // empty' <<<"$launch")
+  if [[ $backend == nvidia ]]; then
+    LAUNCH+=(--gpus all)
+    if jq -e '.devices == ["/dev/nvidia-uvm"]' >/dev/null <<<"$launch"; then
+      LAUNCH+=(--device /dev/nvidia-uvm)
+    fi
+  fi
   local value
   value=$(jq -r '.ipc // empty' <<<"$launch")
   if [[ -n $value ]]; then LAUNCH+=(--ipc "$value"); fi
@@ -307,6 +320,10 @@ launch_args() {
   while IFS=$'\t' read -r source target ro; do
     [[ -n $source ]] || continue
     source=${source/#\~/$HOME}
+    case $source in
+      '${MODEL_ROOT}/'*) source="${MODEL_ROOT:?set MODEL_ROOT to your model directory}/${source#*/}" ;;
+      '${CACHE_ROOT}/'*) source="${CACHE_ROOT:?set CACHE_ROOT to your cache directory}/${source#*/}" ;;
+    esac
     if [[ $source == asset/* ]]; then
       if [[ -f $ROOT/$source ]]; then
         source="$ROOT/$source"
