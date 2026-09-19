@@ -1,9 +1,9 @@
 {
   "capabilities": {
-    "chat": null,
+    "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "DeepSeek-V4.1-Flash R37 numbers reported by the RTX6kPRO bot for the Jovian Judgement community R37 image",
   "engine": {
@@ -12,6 +12,36 @@
     "version": "localinferencelab/vllm:jovian-judgement-community-20260913-r37"
   },
   "facts": {
+    "capabilities.chat": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "deepseek-ai",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "deepseek-ai",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4.1-Flash"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.url": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -86,7 +116,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "memory_fit": {
         "reason": "instance has no pinned revision",

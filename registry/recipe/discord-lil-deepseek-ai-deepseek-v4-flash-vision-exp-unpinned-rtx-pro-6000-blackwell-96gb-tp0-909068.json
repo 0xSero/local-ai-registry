@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by unat.",
   "engine": {
@@ -12,6 +12,21 @@
     "version": "voipmonitor/vllm:jovian-judgement-vllmf66599d-b12x15b6813-fi803c466-cu133-torch213-20260907-r9"
   },
   "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "deepseek-ai",
+            "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash-Vision-Exp"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -208,7 +223,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "memory_fit": {
         "reason": "instance has no pinned revision",

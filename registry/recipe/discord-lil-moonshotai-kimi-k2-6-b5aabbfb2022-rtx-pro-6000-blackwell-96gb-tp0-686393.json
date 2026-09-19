@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
   "engine": {
@@ -12,6 +12,21 @@
     "version": "voipmonitor/vllm:cu130-mtp-tuned-20260423"
   },
   "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "moonshotai",
+            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -148,7 +163,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "hardware_vram_gb": 96,
       "memory_fit": {

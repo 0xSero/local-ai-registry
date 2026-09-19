@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by brandonmusic.",
   "engine": {
@@ -12,6 +12,21 @@
     "version": null
   },
   "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "stepfun-ai",
+            "url": "https://huggingface.co/api/models/stepfun-ai/Step-3.7-Flash-NVFP4"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "metadata.prod_checks": {
       "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
       "provenance": {
@@ -93,7 +108,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "hardware_vram_gb": 96,
       "memory_fit": {

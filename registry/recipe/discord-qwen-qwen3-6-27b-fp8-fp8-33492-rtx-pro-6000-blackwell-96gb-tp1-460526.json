@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by inkplay_1962",
   "engine": {
@@ -12,6 +12,21 @@
     "version": "vllm/vllm-openai:cu130-nightly"
   },
   "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "Qwen",
+            "url": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -335,7 +350,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "hardware_vram_gb": 96,
       "memory_fit": {

@@ -274,6 +274,10 @@ utilisation, block size, prefix caching, context-parallel settings, vision limit
 (a record claims `tools` or `reasoning` only when its own launch names the corresponding parser). Every filled field carries a
 fact whose note says it was read from the launch the poster published. 90 records gained fields in the last run.
 
+Capabilities come from evidence too: `chat` and `vision` from the checkpoint's Hugging Face pipeline tag
+(`enrich_capabilities.py`; `image-text-to-text` is what makes a record vision-capable), `tools` and `reasoning` only when the
+launch itself names a tool-call or reasoning parser. Current counts: chat 185, vision 65, reasoning 70, tools 67 of 185 records.
+
 ## Prod checks (run on this machine, no GPUs touched)
 
 - Hugging Face revisions resolve: `deepseek-ai/DeepSeek-V4.1-Flash` revision `dba1be0a` is the repository HEAD (`/api/models/.../revision/`  200).

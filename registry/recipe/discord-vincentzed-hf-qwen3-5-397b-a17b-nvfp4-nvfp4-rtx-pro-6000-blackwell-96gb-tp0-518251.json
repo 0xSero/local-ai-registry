@@ -3,7 +3,7 @@
     "chat": true,
     "reasoning": null,
     "tools": null,
-    "vision": null
+    "vision": true
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by lavd_48722",
   "engine": {
@@ -12,6 +12,21 @@
     "version": "vllm/vllm-openai:cu130-nightly-afd089f231d714e7fd06b51e3bc7df7fe004c7f9"
   },
   "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "vincentzed-hf",
+            "url": "https://huggingface.co/api/models/vincentzed-hf/Qwen3.5-397B-A17B-NVFP4"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -117,7 +132,8 @@
           "pinned-repository"
         ],
         "checked_at": "2026-09-19T05:35:00Z",
-        "mismatches": []
+        "mismatches": [],
+        "notes": []
       },
       "hardware_vram_gb": 384,
       "memory_fit": {
