@@ -1,0 +1,228 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/llm-pytorch-blackwell:nightly"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-festr2-glm-5-nvfp4-mtp-unpinned-rtx-pro-6000-blackwell-96gb-tp8-974526",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path=/model",
+      "-",
+      "--served-model-name=glm-5",
+      "-",
+      "--reasoning-parser=glm45",
+      "-",
+      "--tool-call-parser=glm47",
+      "-",
+      "--tp=8",
+      "-",
+      "--host=0.0.0.0",
+      "-",
+      "--port=5000",
+      "-",
+      "--trust-remote-code",
+      "-",
+      "--quantization=modelopt_fp4",
+      "-",
+      "--kv-cache-dtype=bf16",
+      "-",
+      "--fp4-gemm-backend=flashinfer_cudnn",
+      "-",
+      "--attention-backend=flashinfer",
+      "-",
+      "--moe-runner-backend=cutlass",
+      "-",
+      "--disable-custom-all-reduce",
+      "-",
+      "--disable-overlap-schedule",
+      "-",
+      "--mem-fraction-static=0.85",
+      "-",
+      "--max-running-requests=64",
+      "-",
+      "--cuda-graph-max-bs=32",
+      "-",
+      "--page-size=64",
+      "-",
+      "--speculative-algorithm=NEXTN",
+      "-",
+      "--speculative-num-steps=3",
+      "-",
+      "--speculative-eagle-topk=1",
+      "-",
+      "--speculative-num-draft-tokens=4",
+      "-",
+      "--enable-metrics",
+      "ipc:",
+      "host",
+      "shm_size:",
+      "32g",
+      "ulimits:",
+      "memlock:",
+      "-1",
+      "stack:",
+      "67108864",
+      "restart:",
+      "no",
+      "deploy:",
+      "resources:",
+      "reservations:",
+      "devices:",
+      "-",
+      "driver:",
+      "nvidia",
+      "device_ids:",
+      "[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\"]",
+      "capabilities:",
+      "[gpu]",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/llm-pytorch-blackwell:nightly",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "orangezed",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/llm-pytorch-blackwell:nightly",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "orangezed",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "orangezed",
+      "channel_id": "1471527895439638528",
+      "message_id": "1482687780822974526",
+      "posted_at": "2026-03-15T10:31:53.955000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1491801217423376496",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "lil-festr2-glm-5-nvfp4-mtp--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "orangezed",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1482687780822974526"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "orangezed",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1491801217423376496"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -1,0 +1,118 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by _grumpy_monkey",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_grumpy_monkey",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_grumpy_monkey",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1494788935526781011"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "_grumpy_monkey",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-z-lab-qwen3-6-27b-dflash-q4-0-rtx-pro-6000-blackwell-96gb-tp0-410794",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "_grumpy_monkey",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+  },
+  "metadata": {
+    "discord": {
+      "author": "_grumpy_monkey",
+      "channel_id": "1473975364727476224",
+      "message_id": "1497285389168410794",
+      "posted_at": "2026-04-24T17:17:34.995000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "``` echo \"Select speculative decoding method:\" echo \"1) MTP (Qwen3 multi-token prediction)\" echo \"2) ngram_gpu (prompt lookup)\" echo \"3) dflash (z-lab/Qwen3.6-27B-DFlash)\" echo \"N) None\" read -rp \"Enter choice [2]: \" SPEC_CHOICE SPEC_CHOICE=${SPEC_CHOICE:-2} case \"${SPEC_CHOICE,,}\" in 1) read -rp \"Enter speculative decoding token count [5]: \" SPEC_TOKENS SPEC_TOKENS=${SPEC_TOKENS:-5} SPECULATIVE_CONFIG=\"{\\\"method\\\":\\\"qwen3_next_mtp\\\",\\\"num_speculative_tokens\\\":$SPEC_TOKENS}\" ;; 2) SPECULATIVE_CONFIG='{\"method\":\"ngram_gpu\",\"num_speculative_tokens\":20,\"prompt_lookup_min\":2,\"prompt_lookup_max\":20}' ;; 3) read -rp \"Enter speculative decoding token count [8]: \" SPEC_TOKENS SPEC_TOKENS=${SPEC_TOKENS:-8} SPECULATIVE_CONFIG=\"{\\\"method\\\":\\\"dflash\\\",\\\"model\\\":\\\"z-lab/Qwen3.6-27B-DFlash\\\",\\\"num_speculative_tokens\\\":$SPEC_TOKENS}\" ;; n) SPECULATIVE_CONFIG=\"\" ;; *) echo \"Invalid speculative decoding selection: $SPEC_CHOICE\" exit 1 ;; esac VLLM_CMD=( vllm serve \"$MODEL_NAME\" --served-model-name qwen36 --max-model-len 262144 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --trust-remote-code --max_num_seqs 4 --max-num-batched-tokens 8192 --gpu-memory-utilization 0.5 --kv-cache-dtype fp8 --calculate-kv-scales --host 192.168.68.150 --port 5010 ) if [ -n \"$SPECULATIVE_CONFIG\" ]; then VLLM_CMD+=(--speculative-config \"$SPECULATIVE_CONFIG\") fi ``` Just added the dflash; haven't tested yet but codex pulled from my w",
+    "rig_resolution": {
+      "from_message": "1494788935526781011",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "z-lab-qwen3-6-27b-dflash--q4-0",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "_grumpy_monkey",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497285389168410794"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "_grumpy_monkey",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1494788935526781011"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_context_tokens": 262144
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -1,0 +1,220 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "lukealonso/sglang-cuda13-b12x:noloop"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501944629283651705"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-3090-24gb-tp4-589793",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model-path=/model",
+      "--served-model-name=mimo-v2.5",
+      "--tp-size=4",
+      "--dp-size=2",
+      "--quantization=modelopt_fp4",
+      "--kv-cache-dtype=fp8_e4m3",
+      "--host=0.0.0.0",
+      "--port=8000",
+      "--page-size=64",
+      "--mem-fraction-static=0.74",
+      "--swa-full-tokens-ratio=0.3",
+      "--chunked-prefill-size=4096",
+      "--cuda-graph-max-bs=8",
+      "--max-running-requests=8",
+      "--enable-multi-layer-eagle",
+      "--speculative-algorithm=EAGLE",
+      "--speculative-num-steps=3",
+      "--speculative-eagle-topk=1",
+      "--speculative-num-draft-tokens=4",
+      "--moe-runner-backend=b12x",
+      "--attention-backend=b12x",
+      "--mm-attention-backend=b12x",
+      "--fp4-gemm-backend=b12x",
+      "--fp8-gemm-backend=flashinfer_cutlass",
+      "--reasoning-parser=mimo",
+      "--tool-call-parser=mimo",
+      "--preferred-sampling-params='{\"presence_penalty\":1.2,\"frequency_penalty\":0.1,\"repetition_penalty\":1.20}'",
+      "--enable-metrics",
+      "```",
+      "Note:",
+      "NO",
+      "`--enable-pcie-oneshot-allreduce`",
+      "(incompatible",
+      "with",
+      "`expandable_segments`",
+      "env",
+      "var,",
+      "which",
+      "we",
+      "keep",
+      "for",
+      "vision",
+      "encoder",
+      "activation",
+      "headroom).",
+      "NO",
+      "hicache",
+      "(b12x",
+      "KV",
+      "layout",
+      "breaks",
+      "it)."
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "lukealonso/sglang-cuda13-b12x:noloop",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "orangezed",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_ENABLE_DYNAMIC_DOWN_SCALE": "1",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "NCCL_ALLOC_P2P_NET_LL_BUFFERS": "1",
+      "NCCL_CUMEM_HOST_ENABLE": "0",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_MIN_NCHANNELS": "8",
+      "NCCL_P2P_LEVEL": "SYS",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SGLANG_PREVENT_THOUGHT_LOOPS": "1"
+    },
+    "host_port": 8005,
+    "image": "lukealonso/sglang-cuda13-b12x:noloop",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "orangezed",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "orangezed",
+      "channel_id": "1498377952981946548",
+      "message_id": "1501496163193589793",
+      "posted_at": "2026-05-06T08:09:41.755000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1501944629283651705",
+      "hardware_id": "rtx-3090-24gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "lukealonso-mimo-v2-5-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "orangezed",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501496163193589793"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "orangezed",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501944629283651705"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

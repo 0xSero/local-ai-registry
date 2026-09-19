@@ -1,0 +1,118 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by ixtrix.new",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1498124047144325130"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-minimaxai-minimax-m2-7-ud-iq4-xs-dgx-spark-gb10-128gb-tp4-065991",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "ixtrix.new",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+  },
+  "metadata": {
+    "discord": {
+      "author": "ixtrix.new",
+      "channel_id": "1484016763124453456",
+      "message_id": "1492692284138065991",
+      "posted_at": "2026-04-12T01:06:13.420000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "```python -m sglang.launch_server --model-path MiniMaxAI/MiniMax-M2.7 --tp-size 4 --tool-call-parser minimax-m2 --reasoning-parser minimax-append-think --host 0.0.0.0 --trust-remote-code --port 8000 --mem-fraction-static 0.85```",
+    "rig_resolution": {
+      "from_message": "1498124047144325130",
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "minimaxai-minimax-m2-7--ud-iq4-xs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ixtrix.new",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1492692284138065991"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ixtrix.new",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1498124047144325130"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

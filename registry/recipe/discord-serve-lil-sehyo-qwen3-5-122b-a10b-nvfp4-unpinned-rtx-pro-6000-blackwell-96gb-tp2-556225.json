@@ -1,0 +1,118 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by chafey.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1491277937532469331"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-sehyo-qwen3-5-122b-a10b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp2-556225",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "chafey.",
+          "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+  },
+  "metadata": {
+    "discord": {
+      "author": "chafey.",
+      "channel_id": "1476263308242714718",
+      "message_id": "1490498233829556225",
+      "posted_at": "2026-04-05T23:47:51.063000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "``` vllm serve Sehyo/Qwen3.5-122B-A10B-NVFP4 --host 0.0.0.0 --port 8000 --tensor-parallel-size 2 --language-model-only --served-model-name Qwen35 ```",
+    "rig_resolution": {
+      "from_message": "1491277937532469331",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "chafey.",
+        "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1490498233829556225"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "chafey.",
+        "url": "https://discord.com/channels/1466898002793857221/1476263308242714718/1491277937532469331"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

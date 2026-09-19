@@ -1,0 +1,133 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by jw_mushroom_man",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jw_mushroom_man",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jw_mushroom_man",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539532844815097857"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jw_mushroom_man",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "jw_mushroom_man",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-qwen-qwen3-8-27b-nvfp4-dgx-spark-gb10-128gb-tp1-669919",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "jw_mushroom_man",
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+  },
+  "metadata": {
+    "checkpoint_resolution": {
+      "from_message": "1539532844815097857",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "Qwen/Qwen3.8-27B"
+    },
+    "discord": {
+      "author": "jw_mushroom_man",
+      "channel_id": "1528331644933767190",
+      "message_id": "1539278197856669919",
+      "posted_at": "2026-08-18T14:22:00.775000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+    },
+    "model_resolution": "author-thread-checkpoint",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "python -m sglang.launch_server --model/models/Qwen3.8-27B-NVFP4-554ebba --served-model-name qwen3.8-27b --tp 1 --mem-fraction-static 0.85 --max-running-requests 8 --kv-cache-dtype fp8_e4m3 --chunked-prefill-size 2048 --max-prefill-tokens 16384 --attention-backend flashinfer --sampling-backend flashinfer --reasoning-parser qwen3 --tool-call-parser qwen3_coder --speculative-algorithm DSPARK --speculative-draft-model-path /home/jeffrey-watts/models/Qwen3.8-27B-DSpark-85ef153 --speculative-num-steps 1 --speculative-eagle-topk 1 --speculative-num-draft-tokens 8 --speculative-attention-mode prefill --host 0.0.0.0 --port 8000"
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "jw_mushroom_man",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539278197856669919"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "jw_mushroom_man",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539532844815097857"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 8,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

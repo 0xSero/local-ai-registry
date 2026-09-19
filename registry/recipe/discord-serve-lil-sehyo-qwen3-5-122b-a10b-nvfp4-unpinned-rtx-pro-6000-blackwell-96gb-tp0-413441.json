@@ -1,0 +1,118 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by ctx.overflow",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-sehyo-qwen3-5-122b-a10b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0-413441",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "ctx.overflow",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+  },
+  "metadata": {
+    "checkpoint_resolution": {
+      "from_message": "1482131191338504294",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "Sehyo/Qwen3.5-122B-A10B-NVFP4"
+    },
+    "discord": {
+      "author": "ctx.overflow",
+      "channel_id": "1473975364727476224",
+      "message_id": "1484088438180413441",
+      "posted_at": "2026-03-19T07:17:36.692000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+    },
+    "model_resolution": "author-thread-checkpoint",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "<@1149206585760030730> <@967394959655338004> Until now I only run the business benchmark of mmlu-pro and did not finish it entirely. Nevertheless some interim results for your curiosity: mmlu-pro business score (by @Lavd - thx) on Qwen3.5-27B orig (quant unknown): 65/789 wrong (91.8% accuracy) mmlu-pro business scrore on Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4: 114/661 wrong (still running not finished) Progress 661/789 Acc 85.3% Wrong 114 Elapsed 26465s Tokens 5,033,451 ∑tok/s 38282 So the distilled version doesnt really look like a model I want to use - tbh. -------- some more details on the run -------- vllm serve Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4 --gpu-memory-utilization 0.9 --attention-backend flashinfer --enable-prefix-caching --kv-cache-dtype auto --max-model-len 60000 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --served-model-name default --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":1}' & python evaluate_from_apiX.py --url \"http://vllm-v0.17.1-at-pro6k:8000/v1\" -m \"default\" -n 8 -o \"eval_results/\" --retry 2 --max_tokens 50000 --retry_wrong 2"
+  },
+  "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ctx.overflow",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1484088438180413441"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "ctx.overflow",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_context_tokens": 60000
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

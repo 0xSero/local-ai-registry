@@ -1,0 +1,165 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by cstechdev",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1507024764466761758"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501903571715752098"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-96gb-tp4-167074",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "cstechdev",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+  },
+  "metadata": {
+    "checkpoint_resolution": {
+      "from_message": "1501903571715752098",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "XiaomiMiMo/MiMo-V2.5"
+    },
+    "discord": {
+      "author": "cstechdev",
+      "channel_id": "1498377952981946548",
+      "message_id": "1500984732048167074",
+      "posted_at": "2026-05-04T22:17:27.068000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+    },
+    "model_resolution": "author-thread-checkpoint",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export SGLANG_ENABLE_SPEC_V2=1 TARGET_MODEL=~/models/MiMo-V2.5 python -m sglang.launch_server --model-path \"$TARGET_MODEL\" --served-model-name mimo-v2.5 --tp-size 4 --max-running-requests 16 --attention-backend triton --reasoning-parser mimo --tool-call-parser mimo --context-length 262144 --mem-fraction-static 0.85 --swa-full-tokens-ratio 0.1 --chunked-prefill-size 16384 --page-size 1 --cuda-graph-max-bs 16 --quantization fp8 --speculative-algorithm EAGLE --speculative-num-steps 3 --speculative-eagle-topk 1 --speculative-num-draft-tokens 4 --mm-process-config '{\"image\": {\"image_max_pixels\": 1048576, \"image_min_pixels\": 8192}}' --mm-attention-backend triton_attn --host 0.0.0.0 --port 8000 --trust-remote-code",
+    "rig_resolution": {
+      "from_message": "1507024764466761758",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "xiaomimimo-mimo-v2-5--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1500984732048167074"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1507024764466761758"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501903571715752098"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 16,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

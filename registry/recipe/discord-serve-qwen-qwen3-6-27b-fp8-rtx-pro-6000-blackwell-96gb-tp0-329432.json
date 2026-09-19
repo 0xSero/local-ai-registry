@@ -1,0 +1,102 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by lightenup.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lightenup.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lightenup.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1521535496872792244"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp0-329432",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "lightenup.",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432"
+  },
+  "metadata": {
+    "discord": {
+      "author": "lightenup.",
+      "channel_id": "1473975364727476224",
+      "message_id": "1536816174447329432",
+      "posted_at": "2026-08-11T19:18:48.652000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "uhm - also not an expert, but aren't Qwen/Qwen3.6-27B the unquantized bf16 weights, not fp8? about max-model-len) don't you need something like that in vllm if you go beyond native context length (262144)? > VLLM_ALLOW_LONG_MAX_MODEL_LEN=1 vllm serve ... --hf-overrides '{\"text_config\": {\"rope_parameters\": {\"mrope_interleaved\": true, \"mrope_section\": [11, 11, 10], \"rope_type\": \"yarn\", \"rope_theta\": 10000000, \"partial_rotary_factor\": 0.25, \"factor\": 4.0, \"original_max_position_embeddings\": 262144}}}' --max-model-len 1010000",
+    "rig_resolution": {
+      "from_message": "1521535496872792244",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--fp8",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lightenup.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1536816174447329432"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lightenup.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1521535496872792244"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

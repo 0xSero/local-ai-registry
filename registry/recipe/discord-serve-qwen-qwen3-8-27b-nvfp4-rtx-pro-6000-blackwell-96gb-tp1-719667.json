@@ -1,0 +1,165 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by __jdj__",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1542195748043755622"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540728907408343090"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "__jdj__",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-qwen-qwen3-8-27b-nvfp4-rtx-pro-6000-blackwell-96gb-tp1-719667",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "__jdj__",
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+  },
+  "metadata": {
+    "checkpoint_resolution": {
+      "from_message": "1540728907408343090",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "Qwen/Qwen3.8-27B"
+    },
+    "discord": {
+      "author": "__jdj__",
+      "channel_id": "1528331644933767190",
+      "message_id": "1540080546036719667",
+      "posted_at": "2026-08-20T19:30:15.488000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+    },
+    "model_resolution": "author-thread-checkpoint",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "76 tps avg generation throughput with ```vllm serve Qwen3.8-27B-FP8 --served-model-name test --host 127.0.0.1 --port 8080 --tensor-parallel-size 1 --max-model-len 262144 --gpu-memory-utilization 0.92 --kv-cache-dtype fp8 --max-num-seqs 4 --language-model-only --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --enable-prefix-caching --enable-chunked-prefill --performance-mode interactivity --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}'```",
+    "rig_resolution": {
+      "from_message": "1542195748043755622",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "__jdj__",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540080546036719667"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "__jdj__",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1542195748043755622"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "__jdj__",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1540728907408343090"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

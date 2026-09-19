@@ -1,0 +1,162 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by cstechdev",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "cstechdev/vllm:eldritch-enlightenment-mimo25-dflash-mxfp4-v1-cu132-20260705"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1507024764466761758"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cstechdev",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501903571715752098"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-96gb-tp0-747923",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "/bin/sh",
+      "-lc",
+      "exec vllm serve /model  --served-model-name mimo-v2.5  --trust-remote-code  --host 0.0.0.0  --port 8000  --kv-cache-dtype auto  --block-size 64  --tensor-parallel-size 4  --gpu-memory-utilization 0.90  --max-num-seqs 64  --max-num-batched-tokens 16384  --max-model-len 500000  --max-cudagraph-capture-size 128  --attention-backend TRITON_ATTN  --kernel-config.moe_backend flashinfer_cutlass  --kernel-config.linear_backend b12x  --reasoning-parser mimo  --tool-call-parser mimo  --enable-auto-tool-choice  --compilation-config \"{\\\"cudagraph_mode\\\":\\\"FULL_AND_PIECEWISE\\\",\\\"custom_ops\\\":[\\\"all\\\"]}\"  --async-scheduling  --no-scheduler-reserve-full-isl  --enable-chunked-prefill  --enable-prefix-caching  --speculative-config \"{\\\"model\\\":\\\"/model/dflash\\\",\\\"method\\\":\\\"dflash\\\",\\\"num_speculative_tokens\\\":7}\""
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "cstechdev/vllm:eldritch-enlightenment-mimo25-dflash-mxfp4-v1-cu132-20260705",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "cstechdev",
+          "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "SYS",
+      "NCCL_PROTO": "LL,LL128,Simple",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SAFETENSORS_FAST_GPU": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
+      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "1",
+      "VLLM_PCIE_ALLREDUCE_BACKEND": "b12x",
+      "VLLM_PCIE_ONESHOT_ALLREDUCE_MAX_SIZE": "64KB",
+      "VLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8_CUTLASS": "1",
+      "VLLM_USE_V2_MODEL_RUNNER": "1"
+    },
+    "host_port": 8000,
+    "image": "cstechdev/vllm:eldritch-enlightenment-mimo25-dflash-mxfp4-v1-cu132-20260705",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "cstechdev",
+      "source": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+    }
+  },
+  "metadata": {
+    "checkpoint_resolution": {
+      "from_message": "1501903571715752098",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "XiaomiMiMo/MiMo-V2.5"
+    },
+    "discord": {
+      "author": "cstechdev",
+      "channel_id": "1498377952981946548",
+      "message_id": "1523184672643747923",
+      "posted_at": "2026-07-05T04:32:05.361000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+    },
+    "model_resolution": "author-thread-checkpoint",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1507024764466761758",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "xiaomimimo-mimo-v2-5--iq2-xxs",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1523184672643747923"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1507024764466761758"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cstechdev",
+        "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501903571715752098"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

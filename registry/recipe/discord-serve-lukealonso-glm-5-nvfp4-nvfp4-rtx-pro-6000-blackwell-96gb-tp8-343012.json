@@ -5,20 +5,20 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving command posted in the Local Inference Lab Discord by festr.",
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
   "engine": {
     "graph_mode": null,
     "name": "sglang",
     "version": null
   },
   "facts": {
-    "metadata.observed_command": {
+    "metadata.model_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-message",
+            "kind": "discord-report",
             "publisher": "festr.",
             "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
           }
@@ -32,7 +32,7 @@
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-message",
+            "kind": "discord-report",
             "publisher": "festr.",
             "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
           }
@@ -46,7 +46,7 @@
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "discord-message",
+            "kind": "discord-report",
             "publisher": "festr.",
             "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
           }
@@ -69,7 +69,7 @@
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
-          "kind": "discord-message",
+          "kind": "discord-report",
           "publisher": "festr.",
           "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
         }
@@ -87,9 +87,9 @@
       "posted_at": "2026-02-17T01:57:58.568000+00:00",
       "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
     },
-    "model_resolution": "prose-repository-mentioned",
+    "model_resolution": "explicit",
     "notes": [
-      "Reference record: the posted command has no container image, so it is not a launch contract."
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "https://huggingface.co/lukealonso/GLM-5-NVFP4 Even in NVFP4, this is a huge model and it requires 440GB of VRAM just for the weights, and easily 100GB more for activations and the K/V cache. I've tested it with 8x RTX 6000 Pro and get ~50 tokens/sec. 4x RTX 6000 Pro may be possible with CPU offloading, but I haven't tried it. If you experience NCCL hangs with P2P, make sure you have iommu=pt (and amd_iommu=pt on AMD platforms) in your kernel command line. ```export NCCL_IB_DISABLE=1 export NCCL_P2P_LEVEL=PHB export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export NCCL_MIN_NCHANNELS=8 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 python3 -m sglang.launch_server --model lukealonso/GLM-5-NVFP4 --served-model-name glm-5 --reasoning-parser glm45 --tool-call-parser glm47 --trust-remote-code --tp 8 --mem-fraction-static 0.95 --max-running-requests 8 --kv-cache-dtype fp8_e4m3 --quantization modelopt_fp4 --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --disable-custom-all-reduce --enable-flashinfer-allreduce-fusion --host 0.0.0.0 --port 5000 --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 16}' ```"
   },
@@ -99,7 +99,7 @@
     "sources": [
       {
         "captured_at": "2026-09-19T05:35:00Z",
-        "kind": "discord-message",
+        "kind": "discord-report",
         "publisher": "festr.",
         "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1473136363330343012"
       }

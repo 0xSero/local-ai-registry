@@ -1,0 +1,133 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by lukealonso",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1474540329402105906"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lukealonso",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-lil-lukealonso-minimax-m2-5-reap-139b-a10b-nvfp4-unpinned-dgx-spark-gb10-128gb-tp1-956090",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "lukealonso",
+          "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+  },
+  "metadata": {
+    "discord": {
+      "author": "lukealonso",
+      "channel_id": "1471906523960574269",
+      "message_id": "1475367156328956090",
+      "posted_at": "2026-02-23T05:42:21.065000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "```export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export HF_HOME=/data/huggingface/hub export HF_HUB_CACHE=/data/huggingface/hub python3 -m sglang.launch_server --model lukealonso/MiniMax-M2.5-REAP-139B-A10B-NVFP4 --served-model-name MiniMax-M2.5-NVFP4 --reasoning-parser minimax --tool-call-parser minimax-m2 --trust-remote-code --tp 1 --mem-fraction-static 0.95 --max-running-requests 32 --quantization modelopt_fp4 --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --kv-cache-dtype bf16 --host 0.0.0.0 --port 8000```",
+    "rig_resolution": {
+      "from_message": "1474540329402105906",
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "lil-lukealonso-minimax-m2-5-reap-139b-a10b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lukealonso",
+        "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1475367156328956090"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lukealonso",
+        "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1474540329402105906"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 32,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

@@ -5,11 +5,11 @@
     "tools": null,
     "vision": null
   },
-  "description": "Serving launch posted in the Local Inference Lab Discord by le.somelier",
+  "description": "Serving launch posted in the Local Inference Lab Discord by chisleu8359",
   "engine": {
     "graph_mode": null,
     "name": "vllm",
-    "version": "voipmonitor/vllm:eldritch-final-vbfaa36b-b12x284a2ea-kimi-specdcp-cu132-20260627"
+    "version": "command"
   },
   "facts": {
     "launch.image": {
@@ -19,113 +19,67 @@
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "le.somelier",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
           }
         ]
       },
       "state": "known"
     },
-    "metadata.rig_resolution": {
+    "metadata.model_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "le.somelier",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
           },
           {
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "discord-report",
-            "publisher": "le.somelier",
-            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521031809259929700"
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1525040766571778108"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chisleu8359",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506692385529266467"
           }
         ]
       },
       "state": "known"
     }
   },
-  "hardware_count": 2,
+  "hardware_count": 1,
   "hardware_id": "rtx-pro-6000-blackwell-96gb",
   "id": "discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moet-w2-fp8-kv-rtx-pro-6000-blackwell-96gb-tp0",
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
-      "-v",
-      "$HOME/.cache/vllm-ds4-v6",
-      ":/cache",
-      "-e",
-      "HF_HUB_OFFLINE=1",
-      "-e",
-      "TRANSFORMERS_OFFLINE=1",
-      "-e",
-      "CUDA_VISIBLE_DEVICES=0,1",
-      "-e",
-      "CUTE_DSL_ARCH=sm_120a",
-      "-e",
-      "NCCL_IB_DISABLE=1",
-      "-e",
-      "NCCL_P2P_LEVEL=SYS",
-      "-e",
-      "NCCL_PROTO=LL,LL128,Simple",
-      "-e",
-      "PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True",
-      "-e",
-      "VLLM_USE_AOT_COMPILE=1",
-      "-e",
-      "VLLM_USE_MEGA_AOT_ARTIFACT=1",
-      "-e",
-      "VLLM_USE_BREAKABLE_CUDAGRAPH=0",
-      "-e",
-      "VLLM_USE_V2_MODEL_RUNNER=1",
-      "-e",
-      "VLLM_USE_FLASHINFER_SAMPLER=1",
-      "-e",
-      "VLLM_USE_B12X_WO_PROJECTION=1",
-      "-e",
-      "VLLM_USE_B12X_MHC=1",
-      "-e",
-      "VLLM_USE_B12X_FP8_GEMM=1",
-      "-e",
-      "VLLM_USE_B12X_MOE=1",
-      "-e",
-      "VLLM_USE_B12X_SPARSE_INDEXER=1",
-      "-e",
-      "VLLM_ENABLE_PCIE_ALLREDUCE=1",
-      "-e",
-      "VLLM_PCIE_ALLREDUCE_BACKEND=b12x",
-      "-e",
-      "B12X_MLA_SM120_UNIFIED=1",
-      "-e",
-      "B12X_MHC_MAX_TOKENS=16384",
-      "-e",
-      "B12X_DENSE_SPLITK_TURBO=1",
-      "-e",
-      "B12X_W4A16_TC_DECODE=1",
-      "voipmonitor/vllm:eldritch-final-vbfaa36b-b12x284a2ea-kimi-specdcp-cu132-20260627",
-      "/bin/bash",
-      "-lc",
-      "unset NCCL_GRAPH_FILE NCCL_GRAPH_DUMP_FILE VLLM_B12X_MLA_EXTEND_MAX_CHUNKS; exec vllm serve deepseek-ai/DeepSeek-V4-Flash --served-model-name DeepSeek-V4-Flash --host 0.0.0.0 --port 8000 --trust-remote-code --kv-cache-dtype fp8 --block-size 256 --load-format auto --tensor-parallel-size 2 --gpu-memory-utilization 0.90 --max-model-len 262144 --max-num-seqs 128 --max-num-batched-tokens 4096 --max-cudagraph-capture-size 256 --compilation-config \"{\\\"cudagraph_mode\\\":\\\"FULL_AND_PIECEWISE\\\",\\\"custom_ops\\\":[\\\"all\\\"]}\" --async-scheduling --no-scheduler-reserve-full-isl --enable-chunked-prefill --enable-prefix-caching --enable-flashinfer-autotune --tokenizer-mode deepseek_v4 --tool-call-parser deepseek_v4 --reasoning-parser deepseek_v4 --enable-auto-tool-choice --default-chat-template-kwargs.thinking=true --default-chat-template-kwargs.reasoning_effort=high --attention-backend B12X_MLA_SPARSE --moe-backend b12x --linear-backend b12x",
-      "```",
-      "Was",
+      "and",
+      "I'll",
+      "pin",
+      "it",
+      "to",
       "the",
-      "command"
+      "channel?"
     ],
     "container": {
       "captured_at": "2026-09-19T05:35:00Z",
       "compose_file": null,
       "digest": null,
-      "image": "voipmonitor/vllm:eldritch-final-vbfaa36b-b12x284a2ea-kimi-specdcp-cu132-20260627",
+      "image": "command",
       "reason": "only-a-mutable-tag-was-posted",
       "runtime": "docker",
       "source": [
         {
           "captured_at": "2026-09-19T05:35:00Z",
           "kind": "discord-report",
-          "publisher": "le.somelier",
-          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+          "publisher": "chisleu8359",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
         }
       ],
       "state": "mutable"
@@ -133,32 +87,36 @@
     "container_port": 8000,
     "environment": {},
     "host_port": 8000,
-    "image": "voipmonitor/vllm:eldritch-final-vbfaa36b-b12x284a2ea-kimi-specdcp-cu132-20260627",
+    "image": "command",
     "kind": "docker",
     "provenance": {
       "kind": "discord-message",
-      "publisher": "le.somelier",
-      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+      "publisher": "chisleu8359",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
     }
   },
   "metadata": {
-    "discord": {
-      "author": "le.somelier",
-      "channel_id": "1481304034198421515",
-      "message_id": "1521034278941495429",
-      "posted_at": "2026-06-29T06:07:11.550000+00:00",
-      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+    "checkpoint_resolution": {
+      "from_message": "1506692385529266467",
+      "note": "the launch does not name the checkpoint; the same author names exactly one repository in this thread",
+      "repository": "deepseek-ai/DeepSeek-V4-Flash"
     },
-    "model_resolution": "prose-repository-mentioned",
+    "discord": {
+      "author": "chisleu8359",
+      "channel_id": "1481304034198421515",
+      "message_id": "1507017563215888474",
+      "posted_at": "2026-05-21T13:49:46.103000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
+    },
+    "model_resolution": "author-thread-checkpoint",
     "notes": [
-      "Rig resolved from the author's own nearby message in the same thread."
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": null,
     "rig_resolution": {
-      "from_message": "1521031809259929700",
+      "from_message": "1525040766571778108",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",
-      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
-      "window": 30
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
     }
   },
   "model_instance_id": "deepseek-ai-deepseek-v4-flash--2-bit-experts-vllm-moet-w2-fp8-kv",
@@ -168,14 +126,20 @@
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "le.somelier",
-        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521034278941495429"
+        "publisher": "chisleu8359",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1507017563215888474"
       },
       {
         "captured_at": "2026-09-19T05:35:00Z",
         "kind": "discord-report",
-        "publisher": "le.somelier",
-        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1521031809259929700"
+        "publisher": "chisleu8359",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1525040766571778108"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "chisleu8359",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1506692385529266467"
       }
     ]
   },

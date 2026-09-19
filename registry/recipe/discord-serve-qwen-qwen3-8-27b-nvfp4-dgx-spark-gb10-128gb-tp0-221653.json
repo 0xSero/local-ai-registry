@@ -1,0 +1,133 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by tokenring_ai",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "tokenring_ai",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "tokenring_ai",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538962062426902689"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "tokenring_ai",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "tokenring_ai",
+            "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "discord-serve-qwen-qwen3-8-27b-nvfp4-dgx-spark-gb10-128gb-tp0-221653",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "tokenring_ai",
+          "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+  },
+  "metadata": {
+    "discord": {
+      "author": "tokenring_ai",
+      "channel_id": "1528331644933767190",
+      "message_id": "1539024022577221653",
+      "posted_at": "2026-08-17T21:32:00.666000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": "This is about as good as i have found for FP8 ``` export CUTE_DSL_ARCH=sm_120a # arch string for FP4 kernel JIT export MAX_JOBS=8 # cap JIT fan-out; see warning below VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 vllm serve shisa-ai/Qwen3.8-27B-FP8-BLOCK --override-generation-config '{\"temperature\":0.6,\"top_p\":0.95, \"top_k\": 20, \"min_p\": 0}' --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":5}' --default-chat-template-kwargs '{\"preserve_thinking\": true}' --chat-template qwen3.8-chat-template.jinja --max-num-batched-tokens 32768 --attention-backend flash_attn --kv-cache-dtype bfloat16 --max-num-seqs 212 --max-cudagraph-capture-size 64 --max-model-len 262144 --enable-auto-tool-choice --tool-call-parser qwen3_xml --port 11434 --reasoning-parser qwen3 --served-model-name qwen/qwen3.8-27B --gpu-memory-utilization 0.90 ```",
+    "rig_resolution": {
+      "from_message": "1538962062426902689",
+      "hardware_id": "dgx-spark-gb10-128gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-8-27b--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "tokenring_ai",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1539024022577221653"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "tokenring_ai",
+        "url": "https://discord.com/channels/1466898002793857221/1528331644933767190/1538962062426902689"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 212,
+    "max_context_tokens": 262144
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

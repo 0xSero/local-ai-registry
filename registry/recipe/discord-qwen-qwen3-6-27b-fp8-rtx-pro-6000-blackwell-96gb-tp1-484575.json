@@ -1,0 +1,217 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by .benchmade",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "repne/vllm:v1"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502786042938392609"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": ".benchmade",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-484575",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-O3",
+      "--model",
+      "Qwen/Qwen3.6-27B",
+      "--served-model-name",
+      "Qwen3.6-27B",
+      "--tensor-parallel-size",
+      "1",
+      "--gpu-memory-utilization",
+      "0.88",
+      "--max-model-len",
+      "15000",
+      "--max-num-seqs",
+      "128",
+      "--max-num-batched-tokens",
+      "32768",
+      "--max-cudagraph-capture-size",
+      "256",
+      "--language-model-only",
+      "--enable-auto-tool-choice",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--enable-prefix-caching",
+      "--speculative-config.method",
+      "dflash",
+      "--speculative-config.model",
+      "z-lab/Qwen3.6-27B-DFlash",
+      "--speculative-config.num_speculative_tokens",
+      "6",
+      "--speculative-config.use_local_argmax_reduction",
+      "true",
+      "--speculative-config.attention_backend",
+      "flashinfer",
+      "--attention-backend",
+      "flashinfer",
+      "--default-chat-template-kwargs.preserve_thinking",
+      "true",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "repne/vllm:v1",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": ".benchmade",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "HUGGING_FACE_HUB_TOKEN": "XXXXXXX",
+      "OMP_NUM_THREADS": "8",
+      "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
+      "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+    },
+    "host_port": 8000,
+    "image": "repne/vllm:v1",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": ".benchmade",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": ".benchmade",
+      "channel_id": "1473975364727476224",
+      "message_id": "1502796035909484575",
+      "posted_at": "2026-05-09T22:14:55.561000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1502786042938392609",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b--fp8",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": ".benchmade",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502796035909484575"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": ".benchmade",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1502786042938392609"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 128,
+    "max_context_tokens": 15000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

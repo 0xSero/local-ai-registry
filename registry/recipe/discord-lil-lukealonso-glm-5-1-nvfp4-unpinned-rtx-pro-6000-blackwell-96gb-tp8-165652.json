@@ -1,0 +1,223 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by rajamourgou",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1520001546945953862"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 8,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-lukealonso-glm-5-1-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp8-165652",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--host",
+      "0.0.0.0",
+      "--model-path",
+      "lukealonso/GLM-5.1-NVFP4",
+      "--port",
+      "8050",
+      "--served-model-name",
+      "glm5.1",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--tensor-parallel-size",
+      "8",
+      "--quantization",
+      "modelopt_fp4",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--trust-remote-code",
+      "--disable-shared-experts-fusion",
+      "--page-size",
+      "64",
+      "--attention-backend",
+      "nsa",
+      "--moe-runner-backend",
+      "cutlass",
+      "--fp4-gemm-backend",
+      "cutlass",
+      "--cuda-graph-max-bs",
+      "4",
+      "--enable-pcie-oneshot-allreduce",
+      "--speculative-algorithm",
+      "EAGLE",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-num-draft-tokens",
+      "4",
+      "--speculative-eagle-topk",
+      "1",
+      "--chunked-prefill-size",
+      "8192",
+      "--max-running-requests",
+      "4",
+      "--mem-fraction-static",
+      "0.84",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 16}",
+      "--json-model-override-args",
+      "{\"index_topk_pattern\": \"FFSFSSSFSSFFFSSSFFFSFSSSSSSFFSFFSFFSSFFFFFFSFFFFFSFFSSSSSSFSFFFSFSSSFSFFSFFSSS\"}",
+      "--preferred-sampling-params",
+      "{\"temperature\": 1.0, \"top_p\": 0.95}",
+      "--enable-metrics",
+      "```"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "rajamourgou",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUTE_DSL_ARCH": "sm_120a",
+      "NCCL_ALLOC_P2P_NET_LL_BUFFERS": "1",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_MIN_NCHANNELS": "8",
+      "NCCL_P2P_LEVEL": "SYS",
+      "OMP_NUM_THREADS": "16",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SGLANG_ENABLE_DEEP_GEMM": "0",
+      "SGLANG_ENABLE_JIT_DEEPGEMM": "0",
+      "SGLANG_ENABLE_SPEC_V2": "True",
+      "SGLANG_SKIP_SGL_KERNEL_VERSION_CHECK": "1"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "rajamourgou",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "rajamourgou",
+      "channel_id": "1471527895439638528",
+      "message_id": "1509871840196165652",
+      "posted_at": "2026-05-29T10:51:38.765000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "rig_resolution": {
+      "from_message": "1520001546945953862",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author's other message in this thread does"
+    }
+  },
+  "model_instance_id": "lil-lukealonso-glm-5-1-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rajamourgou",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1509871840196165652"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rajamourgou",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1520001546945953862"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "tensor_parallel": 8
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
