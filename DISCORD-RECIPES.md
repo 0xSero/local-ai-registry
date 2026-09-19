@@ -247,7 +247,7 @@ Records the registry already had that this pass added Discord evidence or notes 
 
 ## Numbers reported in Discord
 
-`58` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
+`72` speed sweeps carry numbers posted in the server. Each one names the recipe it belongs to, the Discord message, the
 poster, and the poster's own wording for the row it measures. They are not acceptance evidence (`accepted_at` is null), so the
 recipes they hang off stay `candidate`.
 
@@ -257,16 +257,16 @@ recipes they hang off stay `candidate`.
 | `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-ws-tp4` | 5 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0` | 4 |
 | `discord-willfalco-glm-5-2-exl3-tr3-3-25bpw-exl3-rtx-pro-6000-blackwell-96gb-tp0-390140` | 4 |
+| `discord-lil-willfalco-glm-5-2-exl3-tr3-3-36bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 4 |
+| `discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 4 |
 | `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1-207424` | 3 |
-| `discord-lil-willfalco-glm-5-2-exl3-tr3-3-36bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 3 |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-6000-blackwell-96gb-tp0-418546` | 3 |
 | `lfm25-26b-bf16-rtxpro4500-sglang-tp1` | 3 |
-| `discord-lil-lukealonso-glm-5-2-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp0` | 2 |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6000-blackwell-96gb-tp0-267250` | 2 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-641376` | 2 |
 | `glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4` | 2 |
 | `discord-serve-lil-willfalco-glm-5-2-exl3-tr3-3-42bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0-645067` | 2 |
-| `discord-reported-ds41-flash-r37-rtxpro6000-ws-tp4` | 1 |
-| `discord-reported-ds41-flash-r36-rtxpro6000-ws-tp4` | 1 |
-| `qwen3-8-27b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1` | 1 |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-471084` | 1 |
 
 ## Serving settings and capabilities, read from the posts themselves
 
@@ -300,11 +300,143 @@ host-RAM or NVMe offload it configures (Engram tables, expert offload); `fits` m
 
 | record | weights GB | card VRAM GB | verdict |
 |---|---|---|---|
+| `discord-brandonmusic-glm-5-3-flash-tr3-4bpw-exl3-4bpw-rtx-pr` | 175.6 | 96 | over |
+| `discord-cyankiwi-qwen3-6-27b-awq-int4-awq-rtx-5070-ti-16gb-t` | 20.4 | 32 | fits |
+| `discord-deepseek-ai-deepseek-v4-1-flash-fp8-rtx-pro-6000-bla` | 510.3 | 384 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-0731-iq2-xxs-rtx-pro-6` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moe` | 159.6 | 32 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moe` | 159.6 | 32 | over |
+| `discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moe` | 159.6 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-2-bit-experts-vllm-moe` | 159.6 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-600` | 166.9 | 192 | fits |
+| `discord-deepseek-ai-deepseek-v4-flash-dspark-fp8-rtx-pro-600` | 166.9 | 192 | fits |
 | `discord-ds41-flash-1m-context-dspark-docker-rtxpro6000-ws-tp` | 510.3 | 384 | over |
 | `discord-ds41-flash-jovian-judgement-beta-docker-rtxpro6000-w` | 510.3 | 384 | over |
 | `discord-ds41-flash-jovian-judgement-r38-compose-rtxpro6000-w` | 510.3 | 384 | over |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 96 | over |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blac` | 199.4 | 384 | fits |
+| `discord-lil-lukealonso-kimi-k3-qsrt-k2-3b98114115f1-rtx-pro-` | 757.5 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 96 | over |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-6000-b` | 595.2 | 768 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-5090-32gb-tp4-3` | 183.5 | 128 | over |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-5090-32gb-tp4-4` | 183.5 | 128 | over |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 96 | over |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 384 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 192 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 192 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 192 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 384 | fits |
+| `discord-lukealonso-mimo-v2-5-nvfp4-nvfp4-rtx-pro-6000-blackw` | 183.5 | 384 | fits |
+| `discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-5090-32gb-tp` | 134.5 | 64 | over |
+| `discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-bla` | 134.5 | 192 | fits |
+| `discord-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-bla` | 134.5 | 192 | fits |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-p` | 366.0 | 96 | over |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-p` | 366.0 | 96 | over |
+| `discord-madeby561-glm-5-2-mxfp8-nvfp4-nf3-hybrid-nvfp4-rtx-p` | 366.0 | 96 | over |
+| `discord-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwell-96g` | 595.2 | 768 | fits |
+| `discord-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwell-96g` | 595.2 | 768 | fits |
+| `discord-nvidia-glm-5-2-nvfp4-nvfp4-b200-180gb-tp1-531335` | 464.8 | 180 | over |
+| `discord-nvidia-glm-5-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb` | 480.8 | 768 | fits |
+| `discord-nvidia-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwe` | 139.9 | 96 | over |
+| `discord-nvidia-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwe` | 139.9 | 192 | fits |
+| `discord-nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4-nvfp4` | 352.3 | 384 | fits |
+| `discord-nvidia-nvidia-nemotron-3-ultra-550b-a55b-nvfp4-nvfp4` | 352.3 | 384 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-b200-180gb-tp4-` | 251.2 | 720 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-b200-180gb-tp4-` | 251.2 | 720 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-b200-180gb-tp4-` | 251.2 | 720 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 96 | over |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 96 | over |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 96 | over |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 96 | over |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 384 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 384 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 384 | fits |
+| `discord-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-bl` | 251.2 | 384 | fits |
+| `discord-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-5090-32gb-tp1` | 23.4 | 32 | fits |
+| `discord-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-5090-32gb-tp1` | 23.4 | 32 | fits |
+| `discord-ormandj-glm-5-3-flash-w4a16-nvfp4-k32-experts-fp8-wo` | 178.0 | 96 | over |
+| `discord-qwen-qwen3-5-27b-q4-k-xl-rtx-5090-32gb-tp0-541476` | 55.6 | 32 | over |
+| `discord-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-5090-32gb-tp1-599` | 30.9 | 32 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwel` | 30.9 | 96 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwel` | 30.9 | 96 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-rtx-5090-32gb-tp0-503166` | 55.6 | 32 | over |
+| `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1` | 55.6 | 192 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1` | 55.6 | 96 | fits |
+| `discord-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96gb-tp1` | 55.6 | 96 | fits |
+| `discord-radixark-qwen3-8-27b-nvfp4-nvfp4-rtx-pro-6000-blackw` | 21.9 | 192 | fits |
+| `discord-radixark-qwen3-8-flash-next-nvfp4-nvfp4-rtx-pro-6000` | 135.2 | 96 | over |
+| `discord-sakamakismile-huihui-qwen3-6-27b-abliterated-nvfp4-m` | 20.6 | 16 | over |
+| `discord-serve-baseten-admin-glm-4-7-fp8-attn-fp4-mlp-fp8-rtx` | 211.9 | 96 | over |
+| `discord-serve-deepseek-ai-deepseek-v4-flash-2-bit-experts-vl` | 159.6 | 96 | over |
+| `discord-serve-deepseek-ai-deepseek-v4-flash-2-bit-experts-vl` | 159.6 | 192 | fits |
+| `discord-serve-deepseek-ai-deepseek-v4-flash-2-bit-experts-vl` | 159.6 | 384 | fits |
+| `discord-serve-google-gemma-4-31b-it-q4-k-m-rtx-pro-6000-blac` | 62.5 | 96 | fits |
+| `discord-serve-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-5090` | 595.2 | 256 | over |
+| `discord-serve-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-` | 595.2 | 96 | over |
+| `discord-serve-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-` | 595.2 | 768 | fits |
+| `discord-serve-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-` | 595.2 | 768 | fits |
+| `discord-serve-lil-moonshotai-kimi-k2-6-b5aabbfb2022-rtx-pro-` | 595.2 | 768 | fits |
+| `discord-serve-local-step-3-7-flash-nvfp4-nvfp4-rtx-pro-6000-` | 129.2 | 96 | over |
+| `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-b200-180gb-tp0-67` | 440.9 | 180 | over |
+| `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-b200-180gb-tp8-05` | 440.9 | 1440 | fits |
+| `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-rtx-pro-6000-blac` | 440.9 | 768 | fits |
+| `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-rtx-pro-6000-blac` | 440.9 | 768 | fits |
+| `discord-serve-lukealonso-glm-5-nvfp4-nvfp4-rtx-pro-6000-blac` | 440.9 | 768 | fits |
+| `discord-serve-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-60` | 134.5 | 192 | fits |
+| `discord-serve-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-60` | 134.5 | 192 | fits |
+| `discord-serve-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-60` | 134.5 | 384 | fits |
+| `discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwe` | 595.2 | 96 | over |
+| `discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwe` | 595.2 | 768 | fits |
+| `discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwe` | 595.2 | 768 | fits |
+| `discord-serve-moonshotai-kimi-k2-5-int4-rtx-pro-6000-blackwe` | 595.2 | 768 | fits |
+| `discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-dgx-spark` | 251.2 | 512 | fits |
+| `discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6` | 251.2 | 96 | over |
+| `discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6` | 251.2 | 384 | fits |
+| `discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6` | 251.2 | 768 | fits |
+| `discord-serve-nvidia-qwen3-6-27b-nvfp4-nvfp4-rtx-pro-6000-bl` | 21.9 | 96 | fits |
+| `discord-serve-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-pro-600` | 23.4 | 96 | fits |
+| `discord-serve-qwen-qwen3-5-27b-q4-k-xl-rtx-5090-32gb-tp2-110` | 55.6 | 64 | fits |
+| `discord-serve-qwen-qwen3-5-35b-a3b-q4-k-xl-b200-180gb-tp0-55` | 71.9 | 180 | fits |
+| `discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-bl` | 30.9 | 96 | fits |
+| `discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-bl` | 30.9 | 96 | fits |
+| `discord-serve-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96` | 55.6 | 96 | fits |
+| `discord-serve-qwen-qwen3-6-27b-fp8-rtx-pro-6000-blackwell-96` | 55.6 | 192 | fits |
+| `discord-serve-qwen-qwen3-8-27b-nvfp4-rtx-pro-6000-blackwell-` | 55.6 | 96 | fits |
+| `discord-serve-qwen-qwen3-8-27b-nvfp4-rtx-pro-6000-blackwell-` | 55.6 | 96 | fits |
+| `discord-serve-unsloth-kimi-k2-6-unknown-rtx-pro-6000-blackwe` | 595.2 | 768 | fits |
+| `discord-serve-unsloth-qwen3-8-27b-nvfp4-nvfp4-rtx-5090-32gb-` | 23.4 | 32 | fits |
+| `discord-serve-unsloth-qwen3-8-27b-nvfp4-nvfp4-rtx-pro-6000-b` | 23.4 | 96 | fits |
+| `discord-serve-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blac` | 315.7 | 384 | fits |
+| `discord-serve-z-lab-qwen3-6-27b-dflash-q4-0-rtx-pro-6000-bla` | 3.5 | 96 | fits |
+| `discord-serve-zai-org-glm-4-7-fp8-fp8-rtx-pro-6000-blackwell` | 362.1 | 384 | fits |
+| `discord-serve-zai-org-glm-5-3-flash-exl3-3-0bpw-rtx-pro-6000` | 328.3 | 96 | over |
+| `discord-vincentzed-hf-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-` | 240.2 | 384 | fits |
+| `discord-willfalco-glm-5-2-exl3-tr3-3-25bpw-exl3-rtx-pro-6000` | 339.1 | 96 | over |
+| `discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-` | 315.7 | 96 | over |
+| `discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-` | 315.7 | 384 | fits |
+| `discord-xiaomimimo-mimo-v2-5-iq2-xxs-rtx-pro-6000-blackwell-` | 315.7 | 384 | fits |
+| `discord-z-lab-qwen3-6-27b-dflash-q4-0-rtx-pro-6000-blackwell` | 3.5 | 96 | fits |
+| `discord-zai-org-glm-4-7-fp8-fp8-b200-180gb-tp4-723166` | 362.1 | 720 | fits |
 
-`0` records fit in VRAM outright; `3` need offload by construction.
+`92` records fit in VRAM outright; `43` need offload by construction.
 
 ### Launch failures members reported (kept as notes on the records)
 
@@ -384,7 +516,7 @@ for every record instead.
 | text attachments downloaded | 931 |
 | recipes added (this branch) | 187 |
 | of which executable launches | 120 |
-| speed sweeps added | 58 |
+| speed sweeps added | 72 |
 | existing records extended | 2 |
 
 ## What is not verified
