@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by napuh",
@@ -12,6 +12,48 @@
     "version": "lukealonso/sglang-cuda13-b12x:latest"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501228227601895454"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1513555936726356249"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501228227601895454"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1513555936726356249"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -41,6 +83,69 @@
       "state": "known"
     },
     "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501228227601895454"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1513555936726356249"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.attention_backend": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501228227601895454"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1513555936726356249"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1498377952981946548/1501228227601895454"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "napuh",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1513555936726356249"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.speculative": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -277,7 +382,13 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {},
+  "serving": {
+    "attention_backend": "-",
+    "kv_cache_dtype": "-",
+    "speculative": {
+      "method": "-"
+    }
+  },
   "speed_sweep_ids": [],
   "status": "candidate"
 }

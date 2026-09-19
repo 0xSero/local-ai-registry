@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by mayhem4markets",
@@ -12,6 +12,36 @@
     "version": "llm-sglang-blackwell:cu130"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,6 +84,81 @@
       },
       "state": "known"
     },
+    "serving.attention_backend": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.chunked_prefill_size": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.cuda_graph_max_batch": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +174,36 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_prefill_tokens": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "mayhem4markets",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1502417779263934565"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.mem_fraction_static": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -286,8 +421,15 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "attention_backend": "flashinfer",
+    "chunked_prefill_size": 16384,
+    "cuda_graph_max_batch": 8,
+    "dtype": "auto",
+    "kv_cache_dtype": "bfloat16",
     "max_concurrency": 8,
     "max_context_tokens": 196608,
+    "max_prefill_tokens": 16384,
+    "mem_fraction_static": 0.93,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

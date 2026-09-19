@@ -1,7 +1,7 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
+    "reasoning": true,
     "tools": null,
     "vision": null
   },
@@ -12,6 +12,27 @@
     "version": "lmsysorg/sglang:dev-cu13"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1477801308944863353"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1488832906364194957"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -60,6 +81,27 @@
       },
       "state": "known"
     },
+    "serving.attention_backend": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1477801308944863353"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1488832906364194957"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +111,27 @@
             "kind": "discord-report",
             "publisher": "festr.",
             "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1477801308944863353"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.mem_fraction_static": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1477801308944863353"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471906523960574269/1488832906364194957"
           }
         ]
       },
@@ -209,7 +272,9 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "attention_backend": "flashinfer",
     "max_concurrency": 16,
+    "mem_fraction_static": 0.93,
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by darkstar000",
@@ -12,6 +12,48 @@
     "version": "vllm/vllm-openai:nightly"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1474515495137841294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1474515495137841294"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -41,6 +83,27 @@
       "state": "known"
     },
     "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1476024281787011083"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "darkstar000",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1474515495137841294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -207,7 +270,9 @@
   },
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
-  "serving": {},
+  "serving": {
+    "kv_cache_dtype": "-"
+  },
   "speed_sweep_ids": [],
   "status": "candidate"
 }

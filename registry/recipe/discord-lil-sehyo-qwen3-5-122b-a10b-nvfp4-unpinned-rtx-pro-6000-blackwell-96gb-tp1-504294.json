@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by ctx.overflow",
@@ -12,6 +12,36 @@
     "version": "vllm/vllm-openai:v0.17.1-cu130"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,6 +84,66 @@
       },
       "state": "known"
     },
+    "serving.attention_backend": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.chunked_prefill_size": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +159,36 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.mem_fraction_static": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ctx.overflow",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482131191338504294"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.prefix_caching": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -274,8 +394,14 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "attention_backend": "flashinfer",
+    "chunked_prefill_size": 4096,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "fp8",
     "max_concurrency": 2,
     "max_context_tokens": 262144,
+    "mem_fraction_static": 0.9,
+    "prefix_caching": true,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [],

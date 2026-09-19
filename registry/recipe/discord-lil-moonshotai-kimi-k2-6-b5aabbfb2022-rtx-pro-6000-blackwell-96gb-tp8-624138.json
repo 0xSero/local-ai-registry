@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by orangezed",
@@ -12,6 +12,36 @@
     "version": "luke-sglang:blackwell"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,7 +84,82 @@
       },
       "state": "known"
     },
+    "serving.attention_backend": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.chunked_prefill_size": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.cuda_graph_max_batch": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.mem_fraction_static": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "orangezed",
+            "url": "https://discord.com/channels/1466898002793857221/1495805489013985280/1499410301672624138"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.speculative": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -230,7 +335,14 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "attention_backend": "flashinfer",
+    "chunked_prefill_size": 8192,
+    "cuda_graph_max_batch": 8,
     "max_concurrency": 8,
+    "mem_fraction_static": 0.9,
+    "speculative": {
+      "method": "eagle3"
+    },
     "tensor_parallel": 8
   },
   "speed_sweep_ids": [],

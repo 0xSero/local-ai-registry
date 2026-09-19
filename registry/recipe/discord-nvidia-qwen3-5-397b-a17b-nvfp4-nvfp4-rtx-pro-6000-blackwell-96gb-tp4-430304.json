@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
@@ -12,6 +12,48 @@
     "version": "docker.io/verdictai/vllm-blackwell-k64:latest"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482481490422927561"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482481490422927561"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -60,6 +102,27 @@
       },
       "state": "known"
     },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482481490422927561"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +132,48 @@
             "kind": "discord-report",
             "publisher": "festr.",
             "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_num_batched_tokens": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482481490422927561"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.prefix_caching": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482489242197430304"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482481490422927561"
           }
         ]
       },
@@ -263,7 +368,10 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "gpu_memory_utilization": 0.9,
     "max_concurrency": 128,
+    "max_num_batched_tokens": 8192,
+    "prefix_caching": true,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [],

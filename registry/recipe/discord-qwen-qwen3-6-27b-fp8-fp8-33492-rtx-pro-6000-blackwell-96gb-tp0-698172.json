@@ -1,7 +1,7 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
+    "reasoning": true,
     "tools": null,
     "vision": null
   },
@@ -12,6 +12,27 @@
     "version": "vllm/vllm-openai:latest"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500464321866629161"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -60,6 +81,48 @@
       },
       "state": "known"
     },
+    "serving.chunked_prefill": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500464321866629161"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500464321866629161"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +132,48 @@
             "kind": "discord-report",
             "publisher": "yeeeehawnes",
             "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_num_batched_tokens": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500464321866629161"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.prefix_caching": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500469786436698172"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "yeeeehawnes",
+            "url": "https://discord.com/channels/1466898002793857221/1500236293324669130/1500464321866629161"
           }
         ]
       },
@@ -216,7 +321,11 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "max_concurrency": 1016
+    "chunked_prefill": true,
+    "gpu_memory_utilization": 0.9,
+    "max_concurrency": 1016,
+    "max_num_batched_tokens": 32768,
+    "prefix_caching": true
   },
   "speed_sweep_ids": [],
   "status": "candidate"

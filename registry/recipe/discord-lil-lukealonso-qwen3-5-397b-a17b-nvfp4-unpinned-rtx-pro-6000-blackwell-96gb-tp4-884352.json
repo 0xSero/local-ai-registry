@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by ixtrix.new",
@@ -12,6 +12,36 @@
     "version": "orthozany/vllm-qwen35-mtp:latest"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,6 +84,21 @@
       },
       "state": "known"
     },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +114,36 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.prefix_caching": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "ixtrix.new",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481991865153884352"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.speculative": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -251,8 +326,14 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "gpu_memory_utilization": 0.85,
     "max_concurrency": 32,
     "max_context_tokens": 262144,
+    "prefix_caching": true,
+    "speculative": {
+      "method": "mtp",
+      "tokens": 2
+    },
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [],

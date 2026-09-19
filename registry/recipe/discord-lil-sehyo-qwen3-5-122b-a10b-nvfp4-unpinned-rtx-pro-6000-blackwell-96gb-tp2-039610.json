@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by chafey.",
@@ -12,6 +12,36 @@
     "version": "vllm/vllm-openai:cu130-nightly"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,6 +84,51 @@
       },
       "state": "known"
     },
+    "serving.dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +144,51 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_num_batched_tokens": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.prefix_caching": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "chafey.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1490084838815039610"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.speculative": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -221,8 +341,17 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "fp8_e4m3",
     "max_concurrency": 6,
     "max_context_tokens": 186560,
+    "max_num_batched_tokens": 8192,
+    "prefix_caching": true,
+    "speculative": {
+      "method": "mtp",
+      "tokens": 2
+    },
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

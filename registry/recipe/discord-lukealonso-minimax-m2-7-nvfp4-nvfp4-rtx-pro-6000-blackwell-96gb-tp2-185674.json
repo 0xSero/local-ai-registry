@@ -1,8 +1,8 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
+    "reasoning": true,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by sedulousdc",
@@ -12,6 +12,36 @@
     "version": "lmsysorg/sglang:latest"
   },
   "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "sedulousdc",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "sedulousdc",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -49,6 +79,21 @@
             "captured_at": "2026-09-19T05:35:00Z",
             "kind": "registry-enrichment",
             "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "sedulousdc",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1494191967507185674"
           }
         ]
       },
@@ -189,6 +234,7 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "kv_cache_dtype": "fp8_e4m3",
     "tensor_parallel": 2
   },
   "speed_sweep_ids": [],

@@ -2,7 +2,7 @@
   "capabilities": {
     "chat": true,
     "reasoning": null,
-    "tools": null,
+    "tools": true,
     "vision": null
   },
   "description": "Serving launch posted in the Local Inference Lab Discord by cold.twistah_56901",
@@ -12,6 +12,21 @@
     "version": "vllm/vllm-openai:cu130-nightly"
   },
   "facts": {
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "launch.image": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -54,6 +69,51 @@
       },
       "state": "known"
     },
+    "serving.chunked_prefill": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.gpu_memory_utilization": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.kv_cache_dtype": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
     "serving.max_concurrency": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -69,6 +129,36 @@
       "state": "known"
     },
     "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_num_batched_tokens": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cold.twistah_56901",
+            "url": "https://discord.com/channels/1466898002793857221/1494478683258490892/1512317209282613388"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.moe_backend": {
+      "note": "read from the launch the poster published",
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
         "sources": [
@@ -222,8 +312,13 @@
   "recipe_source": "discord",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "chunked_prefill": true,
+    "gpu_memory_utilization": 0.96,
+    "kv_cache_dtype": "fp8",
     "max_concurrency": 1,
     "max_context_tokens": 131072,
+    "max_num_batched_tokens": 2048,
+    "moe_backend": "marlin",
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [],

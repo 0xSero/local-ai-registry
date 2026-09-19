@@ -266,6 +266,14 @@ recipes they hang off stay `candidate`.
 | `qwen3-8-27b-bf16-rtx-pro-6000-blackwell-96gb-vllm-tp1` | 1 |
 | `discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-132362` | 1 |
 
+## Serving settings and capabilities, read from the posts themselves
+
+`enrich_serving.py` fills each record's `serving` and `capabilities` from its own launch arguments and environment:
+KV cache dtype, batched tokens, chunked prefill, speculative method and depth, attention and MoE backends, GPU memory
+utilisation, block size, prefix caching, context-parallel settings, vision limits, and the tool-call and reasoning parsers
+(a record claims `tools` or `reasoning` only when its own launch names the corresponding parser). Every filled field carries a
+fact whose note says it was read from the launch the poster published. 90 records gained fields in the last run.
+
 ## Prod checks (run on this machine, no GPUs touched)
 
 - Hugging Face revisions resolve: `deepseek-ai/DeepSeek-V4.1-Flash` revision `dba1be0a` is the repository HEAD (`/api/models/.../revision/`  200).
