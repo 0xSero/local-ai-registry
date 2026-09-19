@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -95,19 +81,6 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "My launch commands: export CUDA_DEVICE_ORDER=PCI_BUS_ID export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 export NCCL_GRAPH_FILE=/etc/nccl_graph_opt.xml export NCCL_IB_DISABLE=1 export NCCL_P2P_LEVEL=SYS export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export NCCL_MIN_NCHANNELS=8 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export VLLM_LOG_STATS_INTERVAL=1 export VLLM_VIDEO_LOADER_BACKEND=opencv_tempfile export VLLM_TEST_FORCE_FP8_MARLIN=1 export VLLM_MARLIN_USE_ATOMIC_ADD=1 export VLLM_MARLIN_INPUT_DTYPE=fp8 vllm serve ~/data/moonshotai/Kimi-K2.6 --host 0.0.0.0 --port 5678 --served-model-name kimi --trust-remote-code --tensor-parallel-size 8 --pipeline-parallel-size 1 --mm-encoder-tp-mode data --enable-chunked-prefill --enable-prefix-caching --tool-call-parser kimi_k2 --reasoning-parser kimi_k2 --enable-auto-tool-choice --default-chat-template-kwargs '{\"thinking\": true}' --async-scheduling --gpu-memory-utilization 0.93 --max-num-batched-tokens 4096 --attention-backend TRITON_MLA --kv-cache-dtype fp8_e4m3 --decode-context-parallel-size 8 --load-format fastsafetensors --language-model-only After launch: GPU KV cache size: 3,562,240 tokens Test using the following command: evalscope perf --url \"http://127.0.0.1:5678/v1/chat/completions\" --parallel 30 --model kimi --number 600 --api openai --dataset longalpaca --read-timeout 600 --connect-timeout 600 --log-every-n-query 30 Logs during testing: Avg prompt throughput: 0.0 tokens/s,",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "hardware_vram_gb": 768,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "b5aabbfb20227ed42becbf5541dbffd213942c58",
-      "source": "https://huggingface.co/api/models/moonshotai/Kimi-K2.6/revision/b5aabbfb20227ed42becbf5541dbffd213942c58?blobs=true",
-      "weight_files": 64,
-      "weights_gb": 595.2
-    },
     "rig_resolution": {
       "from_message": "1517384153669308536",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

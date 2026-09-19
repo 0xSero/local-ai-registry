@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/nvidia/Qwen3.5-397B-A17B-NVFP4/revision/12b28061efd8145b11226e4fab2528ee4f39ef09?blobs=true"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -84,19 +70,6 @@
       "Rig resolved from the author's own nearby message in the same thread."
     ],
     "observed_command": "<@967394959655338004> try this ``` VLLM_LOG_STATS_INTERVAL=1 NCCL_P2P_LEVEL=SYS SAFETENSORS_FAST_GPU=1 python3 -m vllm.entrypoints.openai.api_server --model nvidia/Qwen3.5-397B-A17B-NVFP4 --host 0.0.0.0 --port 5199 --served-model-name Qwen3_5-397B-A17B-NVFP4 --trust-remote-code --tensor-parallel-size 4 --gpu-memory-utilization 0.9 --max-num-batched-tokens 32768 --max-num-seqs 1024 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --mm-encoder-tp-mode data --mm-processor-cache-type shm --speculative-config '{\"method\":\"qwen3_next_mtp\",\"num_speculative_tokens\":2}' --enable-prefix-caching --enable-chunked-prefill```",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "hardware_vram_gb": 96,
-      "memory_fit": {
-        "fits": false,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "12b28061efd8145b11226e4fab2528ee4f39ef09",
-      "source": "https://huggingface.co/api/models/nvidia/Qwen3.5-397B-A17B-NVFP4/revision/12b28061efd8145b11226e4fab2528ee4f39ef09?blobs=true",
-      "weight_files": 11,
-      "weights_gb": 251.2
-    },
     "rig_resolution": {
       "from_message": "1481999034808799292",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

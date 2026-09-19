@@ -88,13 +88,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": "<@1149206585760030730> <@967394959655338004> Until now I only run the business benchmark of mmlu-pro and did not finish it entirely. Nevertheless some interim results for your curiosity: mmlu-pro business score (by @Lavd - thx) on Qwen3.5-27B orig (quant unknown): 65/789 wrong (91.8% accuracy) mmlu-pro business scrore on Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4: 114/661 wrong (still running not finished) Progress 661/789 Acc 85.3% Wrong 114 Elapsed 26465s Tokens 5,033,451 ∑tok/s 38282 So the distilled version doesnt really look like a model I want to use - tbh. -------- some more details on the run -------- vllm serve Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4 --gpu-memory-utilization 0.9 --attention-backend flashinfer --enable-prefix-caching --kv-cache-dtype auto --max-model-len 60000 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --served-model-name default --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":1}' & python evaluate_from_apiX.py --url \"http://vllm-v0.17.1-at-pro6k:8000/v1\" -m \"default\" -n 8 -o \"eval_results/\" --retry 2 --max_tokens 50000 --retry_wrong 2",
-    "prod_checks": {
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    }
+    "observed_command": "<@1149206585760030730> <@967394959655338004> Until now I only run the business benchmark of mmlu-pro and did not finish it entirely. Nevertheless some interim results for your curiosity: mmlu-pro business score (by @Lavd - thx) on Qwen3.5-27B orig (quant unknown): 65/789 wrong (91.8% accuracy) mmlu-pro business scrore on Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4: 114/661 wrong (still running not finished) Progress 661/789 Acc 85.3% Wrong 114 Elapsed 26465s Tokens 5,033,451 ∑tok/s 38282 So the distilled version doesnt really look like a model I want to use - tbh. -------- some more details on the run -------- vllm serve Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-NVFP4 --gpu-memory-utilization 0.9 --attention-backend flashinfer --enable-prefix-caching --kv-cache-dtype auto --max-model-len 60000 --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder --served-model-name default --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":1}' & python evaluate_from_apiX.py --url \"http://vllm-v0.17.1-at-pro6k:8000/v1\" -m \"default\" -n 8 -o \"eval_results/\" --retry 2 --max_tokens 50000 --retry_wrong 2"
   },
   "model_instance_id": "lil-sehyo-qwen3-5-122b-a10b-nvfp4--unpinned",
   "provenance": {

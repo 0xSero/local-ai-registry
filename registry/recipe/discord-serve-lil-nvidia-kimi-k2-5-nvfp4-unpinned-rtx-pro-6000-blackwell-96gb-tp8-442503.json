@@ -84,12 +84,6 @@
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
     "observed_command": "NCCL_P2P_LEVEL=4 python -m sglang.launch_server --model-path nvidia/Kimi-K2.5-NVFP4 --tensor-parallel-size 8 --trust-remote-code --reasoning-parser kimi_k2 --tool-call-parser kimi_k2 --moe-runner-backend triton --quantization modelopt_fp4 --model-loader-extra-config '{\"enable_multithread_load\": true,\"num_threads\": 119}' --mem-fraction-static 0.93 --trust-remote-code --cuda-graph-max-bs 8",
-    "prod_checks": {
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1481687096929423421",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

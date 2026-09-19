@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -123,19 +109,6 @@
     },
     "model_resolution": "prose-repository-mentioned",
     "observed_command": "<@394912327109050378> I have installed your quant - thank you for that! rapid response! I have the following problem: when the model copies data from tool output, sometimes it does little mistakes (1 out of 50). In one of my tests it had to copy 100 email addresses. In 5 of them it did the following errors at the email addresses: 1. `ashad@...` became `cashad@...` 2. `cerig@...` became `ccerig@...` 3. `carlos@...` became `ccarlos@...` 4. `jens@...` became `jjens@...` 5. `paterson@...` became `person@...` I run it with `vllm-0.19.0` like this: ``` export VLLM_USE_FLASHINFER_MOE_FP4=1 export VLLM_FLASHINFER_MOE_BACKEND=throughput export VLLM_WORKER_MULTIPROC_METHOD=spawn export NVIDIA_TF32_OVERRIDE=1 export VLLM_FLOAT32_MATMUL_PRECISION=high export NCCL_ALGO=Ring export NCCL_PROTO=Simple export NCCL_MIN_NCHANNELS=8 export NCCL_MAX_NCHANNELS=16 export NCCL_BUFFSIZE=16777216 export NCCL_P2P_DISABLE=0 export NCCL_IB_DISABLE=1 export NCCL_NVLS_ENABLE=0 export NCCL_SHM_DISABLE=0 export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,max_split_size_mb:512 export VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 SAMPLER_OVERRIDE='{\"temperature\": 1, \"top_p\": 0.95, \"top_k\": 40, \"repetition_penalty\": 1.1, \"frequency_penalty\": 0.40}' exec vllm serve lukealonso/MiniMax-M2.7-NVFP4 --host 0.0.0.0 --port 8357 --served-model-name minimax-m2.7 --trust-remote-code --gpu-memory-utilization 0.9419 --tensor-parallel-size 2 --pipeline-parallel-size 1 --max-model-len 196608 --max-num-seqs 16 --max-num-batc",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "hardware_vram_gb": 192,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "db821d7a3ce29ee96d80a1cae88d878d8586b54e",
-      "source": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true",
-      "weight_files": 44,
-      "weights_gb": 134.5
-    },
     "rig_resolution": {
       "from_message": "1543650733616930956",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

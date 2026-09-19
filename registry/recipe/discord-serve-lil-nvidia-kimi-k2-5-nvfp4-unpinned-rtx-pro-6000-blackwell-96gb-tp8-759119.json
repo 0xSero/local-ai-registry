@@ -95,12 +95,6 @@
     },
     "model_resolution": "explicit",
     "observed_command": "```bash NCCL_P2P_LEVEL=4 python -m sglang.launch_server --model-path nvidia/Kimi-K2.5-NVFP4 --tensor-parallel-size 8 --trust-remote-code --reasoning-parser kimi_k2 --tool-call-parser kimi_k2 --moe-runner-backend triton --quantization modelopt_fp4 --model-loader-extra-config '{\"enable_multithread_load\": true,\"num_threads\": 119}' --mem-fraction-static 0.93 --cuda-graph-max-bs 8 ``` Result: **53 tok/s**, ~450K KV cache with FP8. ```bash python3 -m sglang.launch_server --model moonshotai/Kimi-K2.5 --served-model-name Kimi-K2.5 --tp 8 --ep 8 --enable-torch-compile --trust-remote-code --kv-cache-dtype fp8_e4m3 --reasoning-parser kimi_k2 --tool-call-parser kimi_k2 --model-loader-extra-config='{\"enable_multithread_load\": \"true\",\"num_threads\": 32}' --chunked-prefill-size 32768 --mem-fraction-static 0.9 --host 0.0.0.0 --port 8000 --max-running-requests 8 ``` **Requires:** luke's custom allreduce: <https://github.com/lukealonso/sglang/commits/custom_ar/> Result: **~101 tok/s** single batch. Overclocked GDDR7 helped break 100.",
-    "prod_checks": {
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    },
     "rig_resolution": {
       "from_message": "1480579334476529725",
       "gap_days": 0.0,

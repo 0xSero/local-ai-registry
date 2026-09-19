@@ -12,20 +12,6 @@
     "version": null
   },
   "facts": {
-    "metadata.prod_checks": {
-      "note": "weight bytes at the pinned revision versus hardware_count x VRAM",
-      "provenance": {
-        "captured_at": "2026-09-19T05:35:00Z",
-        "sources": [
-          {
-            "captured_at": "2026-09-19T05:35:00Z",
-            "kind": "huggingface-api",
-            "url": "https://huggingface.co/api/models/lukealonso/GLM-5-NVFP4/revision/6944a23f9ffb9668ac970901526c6cc72c34f4e2?blobs=true"
-          }
-        ]
-      },
-      "state": "known"
-    },
     "metadata.rig_resolution": {
       "provenance": {
         "captured_at": "2026-09-19T05:35:00Z",
@@ -112,19 +98,6 @@
       "Rig resolved from the author's own nearby message in the same thread."
     ],
     "observed_command": "<@394912327109050378> this is my compiled sglang latest git (transformers 5.2) - how the hell you do not have this problem? What is your exact git commit version please? What else I might have different? ``` File \"/sgl-workspace/sglang/python/sglang/srt/utils/offloader.py\", line 36, in wrap_modules return list(all_modules_generator) ^^^^^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/utils/common.py\", line 650, in <genexpr> layer_fn(idx=idx, prefix=add_prefix(idx, prefix)) File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 2547, in <lambda> lambda idx, prefix: DeepseekV2DecoderLayer( ^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 2259, in __init__ self.self_attn = DeepseekV2AttentionMLA( ^^^^^^^^^^^^^^^^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/models/deepseek_v2.py\", line 1159, in __init__ self.indexer = Indexer( ^^^^^^^^ File \"/sgl-workspace/sglang/python/sglang/srt/layers/attention/nsa/nsa_indexer.py\", line 174, in __init__ self.sm_count = deep_gemm.get_num_sms() ^^^^^^^^^^^^^^^^^^^^^ AttributeError: 'ImportError' object has no attribute 'get_num_sms' python3 -m sglang.launch_server --model-path lukealonso/GLM-5-NVFP4 --tp 8 --trust-remote-code --attention-backend flashinfer --moe-runner-backend flashinfer_cutlass --kv-cache-dtype bf16 --tool-call-parser glm47 --reasoning-parser glm45 --quantization modelopt_fp4 --disable-custom-all-reduce --enable-flashinfer-allre",
-    "prod_checks": {
-      "checked_at": "2026-09-19T05:35:00Z",
-      "hardware_vram_gb": 768,
-      "memory_fit": {
-        "fits": true,
-        "reason": null,
-        "state": "known"
-      },
-      "revision": "6944a23f9ffb9668ac970901526c6cc72c34f4e2",
-      "source": "https://huggingface.co/api/models/lukealonso/GLM-5-NVFP4/revision/6944a23f9ffb9668ac970901526c6cc72c34f4e2?blobs=true",
-      "weight_files": 83,
-      "weights_gb": 440.9
-    },
     "rig_resolution": {
       "from_message": "1473136363330343012",
       "hardware_id": "rtx-pro-6000-blackwell-96gb",

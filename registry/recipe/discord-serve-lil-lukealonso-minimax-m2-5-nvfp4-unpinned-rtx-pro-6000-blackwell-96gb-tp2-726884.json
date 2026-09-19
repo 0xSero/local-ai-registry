@@ -105,13 +105,7 @@
     "notes": [
       "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
     ],
-    "observed_command": "Anything I can do to improve this m2.5 nvfp4 on two RTX 6000 Pros? ``` export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export TORCH_FLOAT32_MATMUL_PRECISION=highest export CUDA_HOME=\"/opt/cuda\" export CUDA_VISIBLE_DEVICES=0,1 export NCCL_IB_DISABLE=1 export NCCL_P2P_LEVEL=PHB export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export NCCL_MIN_NCHANNELS=8 export VLLM_ALLOW_LONG_MAX_MODEL_LEN=1 export VLLM_SLEEP_WHEN_IDLE=1 export VLLM_FLASHINFER_MOE_BACKEND=throughput export VLLM_NO_USAGE_STATS=1 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export VLLM_USE_DEEP_GEMM=1 export VLLM_NVFP4_GEMM_BACKEND=cutlass export VLLM_USE_FLASHINFER_MOE_FP4=0 uv run vllm serve \"lukealonso/MiniMax-M2.5-NVFP4\" --served-model-name chat --enable-auto-tool-choice --tool-call-parser minimax_m2 --reasoning-parser minimax_m2_append_think --tensor-parallel-size 2 --gpu-memory-utilization 0.9 --max-model-len 196608 --stream-interval 1 --kv-cache-dtype fp8_e4m3 --quantization modelopt_fp4 --dtype auto --trust-remote-code --enable-chunked-prefill --disable-custom-all-reduce --block-size 16 --max-num-seqs 64 --enable-prefix-caching --max-num-batched-tokens 131072 --host 0.0.0.0 --port 8080 ```",
-    "prod_checks": {
-      "memory_fit": {
-        "reason": "instance has no pinned revision",
-        "state": "unknown"
-      }
-    }
+    "observed_command": "Anything I can do to improve this m2.5 nvfp4 on two RTX 6000 Pros? ``` export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True export TORCH_FLOAT32_MATMUL_PRECISION=highest export CUDA_HOME=\"/opt/cuda\" export CUDA_VISIBLE_DEVICES=0,1 export NCCL_IB_DISABLE=1 export NCCL_P2P_LEVEL=PHB export NCCL_ALLOC_P2P_NET_LL_BUFFERS=1 export NCCL_MIN_NCHANNELS=8 export VLLM_ALLOW_LONG_MAX_MODEL_LEN=1 export VLLM_SLEEP_WHEN_IDLE=1 export VLLM_FLASHINFER_MOE_BACKEND=throughput export VLLM_NO_USAGE_STATS=1 export OMP_NUM_THREADS=8 export SAFETENSORS_FAST_GPU=1 export VLLM_USE_DEEP_GEMM=1 export VLLM_NVFP4_GEMM_BACKEND=cutlass export VLLM_USE_FLASHINFER_MOE_FP4=0 uv run vllm serve \"lukealonso/MiniMax-M2.5-NVFP4\" --served-model-name chat --enable-auto-tool-choice --tool-call-parser minimax_m2 --reasoning-parser minimax_m2_append_think --tensor-parallel-size 2 --gpu-memory-utilization 0.9 --max-model-len 196608 --stream-interval 1 --kv-cache-dtype fp8_e4m3 --quantization modelopt_fp4 --dtype auto --trust-remote-code --enable-chunked-prefill --disable-custom-all-reduce --block-size 16 --max-num-seqs 64 --enable-prefix-caching --max-num-batched-tokens 131072 --host 0.0.0.0 --port 8080 ```"
   },
   "model_instance_id": "lil-lukealonso-minimax-m2-5-nvfp4--unpinned",
   "provenance": {
