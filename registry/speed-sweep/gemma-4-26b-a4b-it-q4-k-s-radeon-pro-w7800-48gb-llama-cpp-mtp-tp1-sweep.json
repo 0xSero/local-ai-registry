@@ -1,0 +1,71 @@
+{
+  "accepted_at": null,
+  "id": "gemma-4-26b-a4b-it-q4-k-s-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1-sweep",
+  "measured_at": "2026-09-05T21:50:43Z",
+  "metrics": {
+    "concurrency": 1,
+    "decode32k_context_tokens": 32761,
+    "decode32k_tps": 122.52436837973782,
+    "decode8k_context_tokens": 8191,
+    "decode8k_tps": 148.30861719660766,
+    "decode_mode": "llama-server-completion-draft-mtp",
+    "inference_engine_version": "c060ca9",
+    "latest_point_at": "2026-09-05T21:50:43Z",
+    "max_context_tokens": 32889,
+    "max_prompt_tokens": 511,
+    "peak_generation_tps": 148.30861719660766,
+    "peak_prompt_tps": 1190.617019636922,
+    "point_count": 3
+  },
+  "recipe_id": "gemma-4-26b-a4b-it-q4-k-s-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 511,
+      "decode_tok_s": 120.25007219463774,
+      "decode_tok_s_per_stream": 120.25007219463774,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 1026.3416480612577,
+      "samples": 5,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32761,
+      "decode_tok_s": 122.52436837973782,
+      "decode_tok_s_per_stream": 122.52436837973782,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 1035.328982666101,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 8191,
+      "decode_tok_s": 148.30861719660766,
+      "decode_tok_s_per_stream": 148.30861719660766,
+      "output_tokens": 128,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 1190.617019636922,
+      "samples": 3,
+      "status": "observed",
+      "ttft_ms_p50": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "lab-measurement",
+    "notes": "Sidecar draft unsloth/gemma-4-26B-A4B-it-GGUF/MTP/mtp-gemma-4-26B-A4B-it-Q8_0.gguf. Fastest 1× long-ctx: p8192 and p32768.",
+    "paths": [
+      "raw/mtp-llama-server/gemma4-26b-a4b-q4-k-s-mtp-single.json",
+      "raw/longctx-fast/gemma4-26b-a4b-q4-k-s-fast-p32768.json",
+      "raw/longctx-fast/gemma4-26b-a4b-q4-k-s-fast-p8192.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry"
+  }
+}
