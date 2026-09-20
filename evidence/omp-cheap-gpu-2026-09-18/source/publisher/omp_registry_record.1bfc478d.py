@@ -514,9 +514,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--arguments",
-        nargs="*",
-        help="launch arguments for a config-file engine's image; empty when the "
-             "image's entrypoint carries the whole command",
+        help="JSON list of launch arguments for a config-file engine's image; "
+             "empty when the image's entrypoint carries the whole command",
     )
     parser.add_argument("--attempt", type=int, default=1)
     args = parser.parse_args(argv)
@@ -706,7 +705,11 @@ def main(argv: list[str] | None = None) -> int:
                 "own launch command is the only served-command evidence"
             )
         launch["entrypoint"] = args.entrypoint
-        launch["arguments"] = list(args.arguments or [])
+        launch["arguments"] = (
+            json.loads(args.arguments) if args.arguments else []
+        )
+        if not isinstance(launch["arguments"], list):
+            raise SystemExit("--arguments must be a JSON list")
         launch["asset_ids"] = [asset_id]
         # The config the run served is mounted over the image's baked copy at the
         # path the driver wrote it to; the weights stay baked in the image, so
