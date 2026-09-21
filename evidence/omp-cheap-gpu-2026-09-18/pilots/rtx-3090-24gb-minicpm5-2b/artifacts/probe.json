@@ -1,0 +1,71 @@
+{
+  "captured_at": "2026-09-20T15:15:03Z",
+  "engine": null,
+  "engine_stderr": "Warning: Permanently added '[[REDACTED-ROUTABLE-POD-IP]]:40081' (ED25519) to the list of known hosts.\nbash: line 1: /opt/venv/bin/python3: No such file or directory",
+  "failed_probes": [],
+  "gpu": "NVIDIA GeForce RTX 3090, GPU-3b63e045-e705-0090-14f9-93121b646122, 580.159.03, 24576 MiB, 8.6, 350.00 W",
+  "gpu_stderr": "Warning: Permanently added '[[REDACTED-ROUTABLE-POD-IP]]:40081' (ED25519) to the list of known hosts.",
+  "host": {
+    "cpus": 256,
+    "disk_free_gb": 158.9,
+    "disk_total_gb": 161.1,
+    "ram_gb": 1082.0
+  },
+  "host_stderr": "Warning: Permanently added '[[REDACTED-ROUTABLE-POD-IP]]:40081' (ED25519) to the list of known hosts.",
+  "plan": {
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false
+    },
+    "context_len": 131072,
+    "context_tokens": 131072,
+    "engine": "sglang",
+    "engine_reserved_positions": 2,
+    "expected_template_sha": "cc945752db555d60949b16989df4ccfeb52a313d6b4b5c5229dd786e2e9fcf1c",
+    "hardware_id": "rtx-3090-24gb-minicpm5-2b",
+    "log_path": "/opt/logs/serve.log",
+    "model_repo": "openbmb/MiniCPM5-2B-GPTQ",
+    "model_revision": "48d57c14fba6b1f86109e1a54fafb0848c163f04",
+    "pairing_id": "cheap-rtx-3090-24gb-minicpm5-2b",
+    "pkill_pattern": "sglang.launch_server",
+    "port": 30000,
+    "python": "/opt/sglang/bin/python3",
+    "remote_model_dir": "/opt/models/MiniCPM5-2B-GPTQ",
+    "serve_argv": [
+      "/opt/sglang/bin/python3",
+      "-m",
+      "sglang.launch_server",
+      "--enable-cache-report",
+      "--model-path",
+      "/opt/models/MiniCPM5-2B-GPTQ",
+      "--served-model-name",
+      "MiniCPM5-2B-GPTQ",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "131072",
+      "--mem-fraction-static",
+      "0.85",
+      "--tool-call-parser",
+      "minicpm5",
+      "--reasoning-parser",
+      "qwen3"
+    ],
+    "served_name": "MiniCPM5-2B-GPTQ",
+    "slug": "rtx-3090-24gb-minicpm5-2b",
+    "sweep_concurrencies": [
+      1,
+      2,
+      4
+    ],
+    "sweep_contexts": [
+      32768,
+      131072
+    ],
+    "sweep_timeout": 7200
+  }
+}

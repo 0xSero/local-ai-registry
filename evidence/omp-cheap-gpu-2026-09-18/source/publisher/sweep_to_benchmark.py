@@ -80,14 +80,7 @@ def _require_exact_length(run: Mapping[str, Any], protocol: Mapping[str, Any] | 
             raise ConversionError(f"run {run.get('id')} used a non-exact vLLM range ratio")
     else:
         sampling = (protocol or {}).get("length_sampling")
-        # Three exact-length constructions are admissible: SGLang's
-        # --tokenize-prompt with a 1.0 range ratio, vLLM's token-id array, and
-        # the TabbyAPI client, which encodes the exact token string through the
-        # server's own tokenizer, truncates the ids to the target and re-encodes
-        # the decoded text to verify the length before any measured request.
-        if sampling not in (
-            "exact", "exact-token-id-array", "exact-token-string-via-token-encode",
-        ):
+        if sampling not in ("exact", "exact-token-id-array"):
             raise ConversionError(
                 f"run {run.get('id')} is not from an exact-length protocol "
                 f"(length_sampling={sampling!r})"
@@ -371,33 +364,18 @@ def row_from_records(run: Mapping[str, Any], records: list[Mapping[str, Any]]) -
         if value is not None
     ]
     request_count = run["request_count"]
-    def _record_cached(record: Mapping[str, Any]) -> int | None:
-        """Per-request cached prompt tokens from either client's raw shape.
-
-        The bench client nests them in `cache_report.total_cached_tokens`; the
-        TabbyAPI client writes a per-request `cached_tokens` array. A wave whose
-        engine reported no cache detail stays None (never assumed zero).
-        """
-        report = record.get("cache_report") or {}
-        if isinstance(report.get("total_cached_tokens"), int):
-            return report["total_cached_tokens"]
-        values = [value for value in (record.get("cached_tokens") or []) if value is not None]
-        if values and all(isinstance(value, int) for value in values):
-            return sum(values)
-        return None
-    cached = [_record_cached(record) for record in records]
+    cached = [
+        (record.get("cache_report") or {}).get("total_cached_tokens")
+        for record in records
+    ]
     cached_prompt = None
     hit_rate = None
     if all(isinstance(value, int) for value in cached):
         cached_prompt = round(sum(cached) / (len(records) * request_count))
         hit_rate = min(1.0, max(0.0, cached_prompt / run["prompt_tokens"]))
-    # A cell whose requests reused a cached prefix did NOT prefill the prompt:
-    # its TTFT is a cache hit, so prompt_tokens/TTFT is a cache-read rate, not a
-    # prefill rate. Such a cell must never publish a prefill claim.
-    cache_reuse_observed = bool(cached_prompt)
     prefill = None
     ttft_means = [record["mean_ttft_ms"] for record in records if record.get("mean_ttft_ms")]
-    if concurrency == 1 and ttft_means and not cache_reuse_observed:
+    if concurrency == 1 and ttft_means:
         prefill = mean(run["prompt_tokens"] / (value / 1000.0) for value in ttft_means)
     e2e, client_decode = _per_request_rates(records)
     per_wave_aggregate = [
@@ -470,16 +448,6 @@ def row_from_records(run: Mapping[str, Any], records: list[Mapping[str, Any]]) -
             else "insufficient repetition under §3.5 (needs >=3 waves; this cell has %d)" % len(records)
         ),
         "null_reasons": {
-            "prefill_tok_s": (
-                None if prefill is not None
-                else (
-                    "the cell observed a reused cached prefix, so prompt tokens "
-                    "divided by TTFT is a cache-read rate, not prefill; a "
-                    "genuinely cold cell reports the rate instead"
-                    if cache_reuse_observed
-                    else "prefill is reported at concurrency 1 only"
-                )
-            ),
             "decode_tok_s_per_stream": (
                 None if per_stream is not None
                 else "output length 1 or engine reported no TPOT; per-token decode rate undefined"
@@ -553,24 +521,12 @@ def convert(sweep_dir: Path) -> dict:
         runs_by_key[key] = run
     rows = []
     diagnostics = []
-    skipped: list[dict[str, Any]] = []
     for key in sorted(grouped):
         records = grouped[key]
         if len(records) < 2 or len(hashes[key]) < 2:
-            # A point whose grid was cut off by the driver's wall deadline keeps
-            # whatever samples finished; it is NOT eligible for a row (a single
-            # sample has no dispersion and cannot witness cold/warm distinctness),
-            # and it must not abort the conversion of the points that are
-            # eligible. Record the skip and its reason instead of a row.
-            skipped.append({
-                "context_tokens": key[0], "concurrency": key[1], "scenario": key[2],
-                "samples": len(records), "distinct_artifact_hashes": len(hashes[key]),
-                "reason": (
-                    "fewer than two samples with distinct raw-artifact hashes; "
-                    "the point is not eligible for a benchmark row"
-                ),
-            })
-            continue
+            raise ConversionError(
+                f"point {key} lacks two unique hashed samples and cannot be converted"
+            )
         rich = row_from_records(runs_by_key[key], records)
         # Project to the declared benchmark.schema contract; retain the full
         # enrichment in diagnostics (same order as rows, self-identified by point).
@@ -633,9 +589,6 @@ def convert(sweep_dir: Path) -> dict:
         # Enrichment observations projected out of the schema-declared rows above,
         # preserved per row (documented scope: candidate-envelope diagnostics only).
         "diagnostics": diagnostics,
-        # Points the driver's wall deadline cut short. They carry no row and no
-        # number: only the reason they are not eligible.
-        "skipped_points": skipped,
     }
 
 
