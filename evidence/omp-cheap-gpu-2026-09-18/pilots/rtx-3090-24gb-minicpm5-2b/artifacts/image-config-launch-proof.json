@@ -1,0 +1,35 @@
+{
+  "captured_at": "2026-09-20T18:05:59.057042+00:00",
+  "image": "ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb@sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+  "platform": "linux/amd64",
+  "method": "skopeo inspect --override-os linux --override-arch amd64 --config; config inspection only, no layer pull",
+  "entrypoint": [
+    "/opt/deploy-preflight.sh"
+  ],
+  "cmd": [
+    "/opt/sglang/bin/python3",
+    "-m",
+    "sglang.launch_server",
+    "--enable-cache-report",
+    "--model-path",
+    "/opt/models/MiniCPM5-2B-GPTQ",
+    "--served-model-name",
+    "MiniCPM5-2B-GPTQ",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--context-length",
+    "131072",
+    "--mem-fraction-static",
+    "0.85",
+    "--tool-call-parser",
+    "minicpm5",
+    "--reasoning-parser",
+    "qwen3"
+  ],
+  "observed_argv_source": "serve-argv.json",
+  "observed_argv_sha256": "ce49be2112c8a84d55cb0b57d078878cd07b3841dbcbefa0bea869d3bb45207a",
+  "cmd_matches_observed_argv": true,
+  "scope": "Exact argument-list equality with observed server launch. Does not inspect entrypoint script contents or prove CMD forwarding."
+}
