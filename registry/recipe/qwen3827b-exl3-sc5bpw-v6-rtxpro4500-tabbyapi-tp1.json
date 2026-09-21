@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6 on one rtx-pro-4500-blackwell-32gb with TabbyAPI, ExLlamaV3, MTP drafting, reasoning and vision at the model's full 262144-token window, and measured C1/C2/C4 acceptance at 32768, 131072 and 262144 prompt tokens",
+  "description": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6 on one rtx-pro-4500-blackwell-32gb via tabbyapi, reasoning, tools, vision at the model's 262144-token window, measured C1/C2/C4 at 32768, 131072 prompt tokens",
   "engine": {
     "graph_mode": "piecewise",
     "name": "tabbyapi",
@@ -14,12 +14,12 @@
   "facts": {
     "capabilities.chat": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -28,12 +28,12 @@
     },
     "capabilities.reasoning": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -42,12 +42,12 @@
     },
     "capabilities.tools": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -56,12 +56,12 @@
     },
     "capabilities.vision": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -70,40 +70,40 @@
     },
     "engine.version": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "host-probe",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "TabbyAPI 0.0.1 at commit 53da7919, the revision the pinned image builds; the exllamav3 version banner on the card prints 1.5.0",
+      "reason": "no engine version was captured in engine.json for this run",
       "state": "unknown"
     },
     "launch.image": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
-      "reason": "upstream release image pulled by digest on the rented card",
+      "reason": "container image pinned by digest in the candidate launch",
       "state": "known"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-09-19T10:10:57Z",
+        "captured_at": "2026-09-21T03:28:32Z",
         "sources": [
           {
-            "captured_at": "2026-09-19T10:10:57Z",
+            "captured_at": "2026-09-21T03:28:32Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/inference-index"
+            "url": "https://github.com/0xSero/local-ai-registry"
           }
         ]
       },
@@ -122,20 +122,20 @@
       "/app/config.yml"
     ],
     "asset_ids": [
-      "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config"
+      "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-deploy-tabbyapi-config"
     ],
     "container": {
-      "captured_at": "2026-09-19T10:10:57Z",
+      "captured_at": "2026-09-21T03:28:32Z",
       "compose_file": null,
-      "digest": "sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
-      "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+      "digest": "sha256:91fab9aa0e0c5c08fd4b00b820ba010aa3a0ab4bbc6431f611555bf5930ed2b7",
+      "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-5bpw-v6-rtx-pro-4500-blackwell-32gb@sha256:91fab9aa0e0c5c08fd4b00b820ba010aa3a0ab4bbc6431f611555bf5930ed2b7",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-19T10:10:57Z",
-          "kind": "upstream-release",
-          "url": "https://github.com/theroyallab/tabbyAPI"
+          "captured_at": "2026-09-21T03:28:32Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-tabbyapi-qwen38-5bpw-v6-rtx-pro-4500-blackwell-32gb"
         }
       ],
       "state": "digest-pinned"
@@ -146,28 +146,23 @@
       "NVIDIA_VISIBLE_DEVICES": "all"
     },
     "host_port": 5000,
-    "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+    "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-5bpw-v6-rtx-pro-4500-blackwell-32gb@sha256:91fab9aa0e0c5c08fd4b00b820ba010aa3a0ab4bbc6431f611555bf5930ed2b7",
     "kind": "docker",
     "mounts": [
       {
         "read_only": true,
-        "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc5bpw-h6-v6",
-        "target": "/workspace/models"
-      },
-      {
-        "read_only": true,
-        "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml",
+        "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-deploy-tabbyapi-config.yml",
         "target": "/app/config.yml"
       }
     ],
     "provenance": {
-      "captured_at": "2026-09-19T10:10:57Z",
-      "kind": "upstream-release",
+      "captured_at": "2026-09-21T03:28:32Z",
+      "kind": "container-image",
       "sources": [
         {
-          "captured_at": "2026-09-19T10:10:57Z",
-          "kind": "oci-config",
-          "url": "https://github.com/theroyallab/tabbyAPI/blob/53da7919d4e45c63f4acbcbbc00cbe0f60a1ce65/docker/Dockerfile.cu13"
+          "captured_at": "2026-09-21T03:28:32Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-tabbyapi-qwen38-5bpw-v6-rtx-pro-4500-blackwell-32gb"
         }
       ]
     },
@@ -175,11 +170,13 @@
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-19T05:17:23Z",
+      "accepted_at": "2026-09-20T23:14:34Z",
+      "captured": true,
       "failed_probes": [],
-      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + tabby_sweep.py",
+      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py",
       "served_model_id": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
     },
+    "interruption": null,
     "measurements": {
       "configuration": {
         "api_completion_budget_tokens": 512,
@@ -196,24 +193,20 @@
           262144
         ]
       },
-      "mtp_acceptance": {
-        "acceptance_rate": 0.8476,
-        "accepted_prediction_tokens": 16606,
-        "measured_streams": 42,
-        "rejected_prediction_tokens": 2986
-      },
-      "peak_vram_gb": 27.74,
+      "mtp_acceptance": null,
+      "peak_generation_tps_source": "client end-to-end tok/s per stream (dispatch->last token), NOT engine decode-only",
+      "peak_vram_gb": 27.71,
       "sweep_arms": [
         {
-          "accepted": 18,
+          "accepted": 31,
           "concurrencies": [
             1,
             2,
             4
           ],
-          "created_at": "2026-09-19T08:06:43+00:00",
+          "created_at": "2026-09-20T23:23:49+00:00",
           "directory": "sweep",
-          "samples_per_concurrency": 2,
+          "samples_per_concurrency": 3,
           "total_contexts": [
             32768,
             131072,
@@ -222,11 +215,22 @@
         }
       ],
       "sweep_rows": {
-        "accepted": 18,
-        "attempted": 18
+        "accepted": 31,
+        "attempted": 54,
+        "candidate": 0,
+        "complete": false,
+        "expected": 54,
+        "infra_invalid": 0,
+        "measurement_invalid": 0,
+        "not_run": 23
       },
-      "weights_bytes": 19584070793
+      "weights_bytes": null
     },
+    "origin": {
+      "campaign_path": "campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-5bpw",
+      "private_repository": "https://github.com/0xSero/inference-index"
+    },
+    "protocol_complete": false,
     "weights_subdir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
   },
   "model_instance_id": "turboderp-qwen3-8-27b-exl3--sc-5-00bpw-h6-v6",
@@ -243,8 +247,9 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "concurrency_observed": null,
     "kv_cache_tokens": 263168,
-    "max_concurrency": 4,
+    "max_concurrency": null,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
