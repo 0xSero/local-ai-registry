@@ -1,0 +1,138 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "video": true,
+    "vision": true
+  },
+  "description": "MiaAI-Lab Qwen3.8-Flash-Next-Dual-DGX-Sparks on two GB10 Sparks: vLLM TP2 with expert parallelism and MTP=3 speculative decoding, fp8 KV, bf16 mamba SSM state, 262,144 native context (YaRN x4 reaches ~1M but costs draft acceptance). Reduced-vocabulary MTP drafting is the largest single decode lever: the drafter carries its own BF16 lm_head over the full 248,320-token vocabulary, and slicing it shrinks the per-step read. Measured single-stream decode is strongly workload-dependent because speculative acceptance is: 39.9 tok/s on prose (35.2% accept), 57.3 on code (67.7%), 68.5 on structured counting (87.1%), at a flat ~52 ms step time across all of them. Vision and video inputs both verified end to end.",
+  "engine": {
+    "graph_mode": "full+piecewise CUDA graphs; encoder cudagraph off",
+    "name": "vllm",
+    "version": "0.1.dev20073+g8e685d198 (vllm/vllm-openai:qwen38-flash-next)"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-21T00:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T00:20:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-21T00:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T00:20:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks"
+          }
+        ]
+      },
+      "reason": "engine-boot-log-gpu-kv-cache-size",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-21T00:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T00:20:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks"
+          }
+        ]
+      },
+      "reason": "engine-boot-log-max-model-len",
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen3-8-flash-next-nvfp4-dgxspark-vllm-tp2-dual",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container": {
+      "captured_at": "2026-09-21T00:20:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "script-launch-applies-python-overlays-into-a-tagged-image",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-21T00:20:00Z",
+          "kind": "submitter",
+          "url": "https://github.com/MiaAI-Lab"
+        }
+      ],
+      "state": "none"
+    },
+    "container_port": 8888,
+    "environment": {
+      "ENABLE_EXPERT_PARALLEL": "true",
+      "GPU_MEMORY_UTILIZATION": "0.835",
+      "IMAGE": "vllm/vllm-openai:qwen38-flash-next",
+      "KV_CACHE_DTYPE": "fp8",
+      "MAMBA_SSM_CACHE_DTYPE": "bfloat16",
+      "MAX_MODEL_LEN": "262144",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "8",
+      "MM_ENCODER_TP_MODE": "data",
+      "MODEL_ID": "nvidia/Qwen3.8-Flash-Next-NVFP4",
+      "MTP_DRAFT_VOCAB": "files/draft_vocab_en_code_47k.txt",
+      "MTP_NUM_SPECULATIVE_TOKENS": "3",
+      "PORT": "8888",
+      "SERVED_MODEL_NAME": "qwen3.8-next-flash",
+      "TENSOR_PARALLEL_SIZE": "2",
+      "YARN_ENABLE": "false"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "env_template": "sources/dgx-spark/2026-09-21/qwen3-8-flash-next-nvfp4-dgxspark-vllm-tp2-dual/upstream/miaai-lab/d2f54b78c0d2f9d74ac61aa56200e3c40fac3f22/.env.sample",
+      "file": "sources/dgx-spark/2026-09-21/qwen3-8-flash-next-nvfp4-dgxspark-vllm-tp2-dual/upstream/miaai-lab/d2f54b78c0d2f9d74ac61aa56200e3c40fac3f22/start.sh",
+      "steps": [
+        "./download.sh (or start.sh) fetches the 132.7 GB NVFP4 checkpoint onto the head",
+        "start.sh rsyncs the worker copy over ConnectX, or NFS_SHARE=true exports it",
+        "step 4e patches nvidia/mtp.py for reduced-vocabulary MTP drafting and bind-mounts it",
+        "head and worker containers launch with vLLM TP2 + expert parallel + MTP3"
+      ],
+      "upstream": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks"
+    },
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "nvidia-qwen3-8-flash-next-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-21T00:20:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-21T00:20:00Z",
+        "kind": "upstream-recipe",
+        "url": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 4270457,
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
