@@ -1,42 +1,36 @@
 {
   "files": [
     {
+      "bytes": 23056,
+      "path": "runtime/omp_tabby_client.py",
+      "role": "FROZEN runtime client that ran this grid",
+      "sha256": "7f82c1a5e4f23affa4f7e03993f727570c96c52f29dad96be9ad455ff8d49071"
+    },
+    {
+      "bytes": 16433,
+      "path": "runtime/omp_measure_core.py",
+      "role": "frozen measurement core (shared by the TabbyAPI client)",
+      "sha256": "12bd885c9e4d6f14ee84ea2037bd3da31812d6a7b50e3ff2c898203b3cb945ed"
+    },
+    {
       "bytes": 12585,
-      "path": "source/runtime/omp_accept.py",
-      "role": "frozen acceptance harness (88fa0e69)",
+      "path": "runtime/omp_accept.py",
+      "role": "frozen acceptance harness",
       "sha256": "88fa0e699b9ba4161979fafdd187070d5255ed5aa2a1ecb3f6f5d6fdd184e8e9"
     },
     {
-      "bytes": 22655,
-      "path": "source/runtime/omp_bench_client.py",
-      "role": "FROZEN runtime client (1ac76b88)",
-      "sha256": "1ac76b883811e5792a8867440beb286fc1df638a33935f12e699e69e8dc9ee44"
+      "bytes": 47682,
+      "path": "publisher/omp_registry_record.1bfc478d.py",
+      "role": "FINAL publisher used for the metrics render (1bfc478d)",
+      "sha256": "1bfc478d5125c1d1b6aaea1efd8624891c53200e8923b34475df7149bfdff7be"
     },
     {
-      "bytes": 30936,
-      "path": "source/runtime/omp_longcontext.py",
-      "role": "frozen long-context client (e557bcfe)",
-      "sha256": "e557bcfe719121de33f14db132f27c0847a2f6d249477a0de6f7bfa0954394a0"
-    },
-    {
-      "bytes": 40594,
-      "path": "source/publisher/omp_registry_record.6e5b93cc.py",
-      "role": "frozen publisher at run time (6e5b93cc)",
-      "sha256": "6e5b93cc0a4855c0a4f1b3c8bb361b6600b1883f3a86913be5f387605d91325e"
-    },
-    {
-      "bytes": 45583,
-      "path": "source/publisher/omp_registry_record.9903ca0e.py",
-      "role": "FINAL publisher used for metrics render (9903ca0e: partial contract + per-cell + cold-only peak_prompt_tps + generic metadata retention + e2e basis label)",
-      "sha256": "9903ca0e4d13699f0b2534bc13637f3e31d80f7c321dad20dad8ca8de638499f"
-    },
-    {
-      "bytes": 30734,
-      "path": "source/publisher/sweep_to_benchmark.py",
-      "role": "FINAL normalizer (b4bf8588)",
-      "sha256": "b4bf85881d2e9fe0a9a75b95c9ff8e23635f750b9bde57a20b3d0b2577eeea6c"
+      "bytes": 33558,
+      "path": "publisher/sweep_to_benchmark.py",
+      "role": "FINAL normalizer (tabby raw shape + cache-aware prefill + skipped points)",
+      "sha256": "adb9a15cccd8d1f627345627ba60d38c9ffb91d821082a5f454ebe1c9f2d8be3"
     }
   ],
-  "note": "reproducibility source of record; FINAL: recorder 9903ca0e + normalizer b4bf8588; frozen 6e5b93cc retained for run-time provenance",
-  "role": "reproducibility source (outside the pilot bundle; shared campaign source of record)"
+  "note": "exact runtime and publisher source of the protocol-v2 priority-row run; the frozen recorder is the file actually invoked to render the metrics",
+  "role": "reproducibility source (outside this row's bundle; shared campaign source of record)"
 }
