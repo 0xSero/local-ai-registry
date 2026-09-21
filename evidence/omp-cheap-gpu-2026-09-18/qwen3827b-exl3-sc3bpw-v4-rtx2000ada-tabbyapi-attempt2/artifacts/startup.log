@@ -1,0 +1,35 @@
+21:50:17.201 INFO:     Using config file /app/config.yml
+21:50:17.214 INFO:     Configured backend: cudaMallocAsync
+21:50:19.244 WARNING:  No sampler override preset is configured
+                       (sampling.override_preset), so sampling parameters have
+                       no fallback values. Requests that omit them run
+                       untruncated: temperature 1.0, top_k 0, top_p 1.0, min_p
+                       0. Set override_preset to safe_defaults unless this is
+                       intentional.
+21:50:19.247 INFO:     exllamav3 version: 1.5.0
+21:50:20.088 INFO:     Keeping vision model weights in system RAM
+                       (vision_offload).
+21:50:20.089 INFO:     Using main model MTP component for drafting
+21:50:20.089 INFO:     Disabling GPU split because one GPU is in use.
+21:50:20.090 INFO:     Context: max_seq_len 131,072 tokens (configured),
+                       cache_size 132,096 tokens
+21:50:20.117 INFO:     Using tool format: qwen3_coder
+21:50:20.117 INFO:     Using template "chat_template" for chat completions.
+21:50:24.606 INFO:     Loading model /opt/models/Qwen3.8-27B-EXL3-SC3bpw-H4-V4
+                       (manual GPU split)
+Loading vision modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 30/30 0:00:00
+Loading draft modules  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 3/3   0:00:00
+Loading model modules  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 67/67 0:00:00
+21:50:58.170 INFO:     Model loaded in 38.1 s
+
+21:50:58.171 WARNING:  Disabling authentication makes your instance vulnerable.
+                       Set the `disable_auth` flag to False in config.yml if you
+                       want to share this instance with others.
+21:50:58.172 WARNING:  With authentication disabled and `allowed_origins` left
+                       at ["*"], any website open in a browser on this machine
+                       can send requests to this instance and read the
+                       responses, including admin endpoints. Set
+                       `network.allowed_origins` to your own frontends (or [])
+                       unless you use a browser-based frontend that needs it.
+21:50:58.173 INFO:     Serving OAI API on http://0.0.0.0:5000 (docs at
+                       http://0.0.0.0:5000/redoc)
