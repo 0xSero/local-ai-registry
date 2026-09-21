@@ -1,0 +1,19 @@
+0.00.134.395 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.134.966 W srv  llama_server: -----------------
+0.00.134.971 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.134.972 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.134.972 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.134.972 W srv  llama_server: -----------------
+0.00.136.411 I srv    load_model: loading model '/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-PTQ1_0.gguf'
+0.03.368.273 I cmn          init: llama threadpool init, n_threads = 24
+0.03.610.542 W load_hparams: Qwen-VL models require at minimum 1024 image tokens to function correctly on grounding tasks
+0.03.610.549 W load_hparams: if you encounter problems with accuracy, try adding --image-min-tokens 1024
+0.03.610.550 W load_hparams: more info: https://github.com/ggml-org/llama.cpp/issues/16842
+
+0.03.853.694 I srv    load_model: loaded multimodal model, '/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf'
+0.03.955.032 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 131072, kv_unified = 'true'
+0.03.961.450 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+0.03.961.493 I srv  llama_server: model loaded
+0.03.961.498 I srv  llama_server: listening on http://0.0.0.0:8080
+0.03.961.499 W srv  llama_server: NOTICE: server default port will be changed to :9931 in a future release
+0.03.961.500 W srv  llama_server:         ref: https://github.com/ggml-org/llama.cpp/pull/26508
