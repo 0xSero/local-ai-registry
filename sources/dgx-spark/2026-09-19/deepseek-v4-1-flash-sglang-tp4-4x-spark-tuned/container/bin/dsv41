@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+# dsv41 — lifecycle operator for DeepSeek-V4.1-Flash on four DGX Sparks (TP4/EP2, SGLang + DSpark).
+#
+# Verbs:
+#   doctor     fleet reachability, GPU presence, RoCE, free memory, checkpoint report
+#   weights    use an existing checkpoint if complete, otherwise download the pinned revision
+#   engine     pull the base image and build the tuned overlay on every node
+#   engram     pack the per-rank Engram shards
+#   publish    make the head checkpoint visible to the workers
+#   serve      launch workers then head, wait for health
+#   smoke      one text request and one vision request against the live API
+#   status     containers and API on every node
+#   logs [n]   tail the head engine log
+#   stop       tear the fleet down
+#   up         doctor -> weights -> engine -> engram -> publish -> serve -> smoke
+#   down       alias for stop
+#
+# Every verb is idempotent: re-running `up` on a healthy fleet re-verifies and returns.
+set -euo pipefail
+
+RECIPE_ROOT="${RECIPE_ROOT:-/opt/recipe}"
+UP="$RECIPE_ROOT/upstream"
+SITE_ENV="${SITE_ENV:-/etc/dsv41/site.env}"
+FLEET_KEY="${FLEET_KEY:-/run/secrets/fleet_key}"
+
+G=$'\033[0;32m'; Y=$'\033[1;33m'; R=$'\033[0;31m'; N=$'\033[0m'
+info() { echo "${G}[+]${N} $*"; }
+warn() { echo "${Y}[!]${N} $*" >&2; }
+die()  { echo "${R}[x]${N} $*" >&2; exit 1; }
+
+# `help` must work with nothing mounted, so answer it before any preflight.
+case "${1:-help}" in
+  help|-h|--help) sed -n '2,18p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+  version) cat "${RECIPE_ROOT:-/opt/recipe}/UPSTREAM_SHA"; exit 0 ;;
+esac
+
+# ── preflight ────────────────────────────────────────────────────────────────
+[ -S /var/run/docker.sock ] || die "no /var/run/docker.sock. This image drives the host Docker daemon; run it with -v /var/run/docker.sock:/var/run/docker.sock"
+docker info >/dev/null 2>&1 || die "cannot talk to the Docker daemon through the mounted socket"
+
+if [ -f "$SITE_ENV" ]; then
+  ENV_FILE="$SITE_ENV"
+elif [ -f /etc/dsv41/.env.tp4 ]; then
+  ENV_FILE=/etc/dsv41/.env.tp4
+else
+  die "no site config. Mount your filled-in copy of $RECIPE_ROOT/site.env.example at $SITE_ENV"
+fi
+# shellcheck disable=SC1090
+set -a; . "$ENV_FILE"; set +a
+
+: "${MODEL_DIR:?MODEL_DIR must be set in the site config}"
+: "${HF_REPO:=deepseek-ai/DeepSeek-V4.1-Flash}"
+: "${HF_REVISION:=fb2764a5cf321eaa5070ca8f9e892818f477c16d}"
+: "${EXPECTED_SHARDS:=48}"
+: "${HEAD_API:=http://127.0.0.1:8888}"
+
+# The recipe passes host paths straight into the serving containers, so this image must see them at
+# the identical path or those bind mounts resolve to nothing.
+[ -d "$MODEL_DIR" ] || warn "MODEL_DIR $MODEL_DIR is not visible in this container. Mount it at the SAME path as on the host, or 'weights' will download into a container-local directory that the engine cannot see."
+
+if [ -f "$FLEET_KEY" ]; then
+  install -d -m 700 /root/.ssh
+  install -m 600 "$FLEET_KEY" /root/.ssh/id_ed25519
+  export SSH_IDENTITY=/root/.ssh/id_ed25519
+else
+  warn "no fleet key at $FLEET_KEY; only single-node verbs will work"
+fi
+
+# The upstream launcher resolves everything relative to its own directory.
+export ENV_FILE
+cd "$UP"
+RUN() { info "recipe: $*"; ./start.sh "$@"; }
+
+have_checkpoint() {
+  local n
+  [ -f "$MODEL_DIR/config.json" ] || return 1
+  n=$(find "$MODEL_DIR" -maxdepth 1 -name 'model-*-of-*.safetensors' 2>/dev/null | wc -l | tr -d ' ')
+  [ "${n:-0}" -ge "$EXPECTED_SHARDS" ]
+}
+
+api_healthy() { curl -sf -m 5 "$HEAD_API/health" >/dev/null 2>&1; }
+
+cmd_weights() {
+  if have_checkpoint; then
+    info "checkpoint already complete in $MODEL_DIR ($EXPECTED_SHARDS+ shards) — not downloading"
+    return 0
+  fi
+  if [ -e "$MODEL_DIR" ] && [ -n "$(ls -A "$MODEL_DIR" 2>/dev/null)" ]; then
+    warn "$MODEL_DIR exists but is incomplete; hf will resume into it"
+  fi
+  [ -n "${HF_TOKEN:-}" ] || warn "HF_TOKEN unset; this only works if the repo is ungated for you"
+  info "downloading $HF_REPO @$HF_REVISION into $MODEL_DIR (about 476 GiB)"
+  mkdir -p "$MODEL_DIR"
+  hf download "$HF_REPO" --revision "$HF_REVISION" --local-dir "$MODEL_DIR"
+  have_checkpoint || die "download finished but $MODEL_DIR still has fewer than $EXPECTED_SHARDS shards"
+  info "checkpoint complete"
+}
+
+cmd_up() {
+  RUN doctor
+  cmd_weights
+  RUN pull
+  RUN build
+  STATE_DIR="${STATE_DIR:-$UP/state-tp4}" "$RECIPE_ROOT/bin/stage-adaptive"
+  RUN pack
+  RUN share
+  if api_healthy; then
+    info "API already healthy; skipping serve"
+  else
+    RUN serve
+  fi
+  cmd_smoke
+  info "fleet up. API on $HEAD_API"
+}
+
+cmd_smoke() {
+  api_healthy || die "API not healthy on $HEAD_API"
+  info "smoke: text"
+  curl -sf -m 120 "$HEAD_API/v1/chat/completions" \
+    -H 'Content-Type: application/json' \
+    -d '{"model":"'"${SERVED_MODEL_NAME:-deepseek-v4.1-flash}"'","messages":[{"role":"user","content":"Reply with the single word: ready"}],"stream":false}' \
+    | jq -r '.choices[0].message.content' || die "text smoke failed"
+  if [ -x "$RECIPE_ROOT/bin/vision_smoke.py" ]; then
+    info "smoke: vision"
+    python3 "$RECIPE_ROOT/bin/vision_smoke.py" "$HEAD_API" "${SERVED_MODEL_NAME:-deepseek-v4.1-flash}" \
+      || die "vision smoke failed"
+  fi
+  info "smoke passed"
+}
+
+case "${1:-help}" in
+  doctor)  RUN doctor ;;
+  weights) cmd_weights ;;
+  engine)  RUN pull; RUN build; STATE_DIR="${STATE_DIR:-$UP/state-tp4}" "$RECIPE_ROOT/bin/stage-adaptive" ;;
+  engram)  RUN pack ;;
+  publish) RUN share ;;
+  serve)   RUN serve ;;
+  status)  RUN status ;;
+  logs)    shift; RUN logs "$@" ;;
+  smoke)   cmd_smoke ;;
+  stop|down) RUN stop ;;
+  up)      cmd_up ;;
+  shell)   exec /bin/bash ;;
+  *) die "unknown verb '$1'. Try: help" ;;
+esac

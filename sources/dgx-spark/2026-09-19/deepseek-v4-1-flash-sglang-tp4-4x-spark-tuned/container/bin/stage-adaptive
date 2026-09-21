@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# Stage the adaptive compact ragged-verify patch on every node.
+#
+# The tuned profile runs a six-file patch over the engine's SGLang tree. Upstream applies it by
+# bind-mounting the patched files into the serving container (EXTRA_DOCKER_ARGS), which means the
+# files must exist at the same path on all four nodes. This script derives them reproducibly:
+# it copies the six originals out of the engine image, applies the pinned patch, and distributes
+# the result. It is idempotent.
+#
+# It deliberately does NOT bake the patch into the image. Baking it in would be cleaner, but the
+# published measurements were taken with the bind-mount form and a rebuilt image is a different
+# artifact that would have to be re-measured before it could carry those numbers.
+set -euo pipefail
+
+RECIPE_ROOT="${RECIPE_ROOT:-/opt/recipe}"
+PATCH="$RECIPE_ROOT/adaptive-verify/adaptive-verify.patch"
+SPS="$RECIPE_ROOT/adaptive-verify/dspark_sps.json"
+STAGE="${ADAPTIVE_DIR:-/var/tmp/dsv41-adaptive}"
+SGL=/sgl-workspace/sglang/python/sglang/srt
+
+G=$'\033[0;32m'; N=$'\033[0m'
+info() { echo "${G}[+]${N} $*"; }
+die()  { echo "[x] $*" >&2; exit 1; }
+
+: "${IMAGE:?IMAGE must be set}"
+[ -f "$PATCH" ] || die "missing $PATCH"
+
+FILES=(
+  "layers/attention/dsv4/dsv41_sparse.py"
+  "layers/engram.py"
+  "model_executor/runner/decode_cuda_graph_runner.py"
+  "models/deepseek_v4_dspark.py"
+  "speculative/dspark_components/dspark_planner.py"
+  "speculative/ragged_verify.py"
+)
+
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+info "extracting ${#FILES[@]} originals from $IMAGE"
+cid=$(docker create "$IMAGE")
+trap 'docker rm -f "$cid" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
+for f in "${FILES[@]}"; do
+  mkdir -p "$work/orig/$(dirname "$f")"
+  docker cp "$cid:$SGL/$f" "$work/orig/$f" \
+    || die "engine image has no $SGL/$f — wrong image or upstream layout changed"
+done
+docker rm -f "$cid" >/dev/null
+
+cp -a "$work/orig" "$work/patched"
+info "applying $(basename "$PATCH")"
+( cd "$work" && patch -p1 --forward --directory=patched --strip=1 < "$PATCH" >/dev/null ) \
+  || ( cd "$work/patched" && patch -p1 --forward < "$PATCH" >/dev/null ) \
+  || die "adaptive-verify.patch did not apply cleanly against this image"
+
+for f in "${FILES[@]}"; do
+  cmp -s "$work/orig/$f" "$work/patched/$f" && die "patch left $f unchanged — refusing to stage a no-op"
+done
+info "patch applied, all ${#FILES[@]} files changed"
+
+install_local() {
+  mkdir -p "$STAGE"
+  ( cd "$work/patched" && tar cf - . ) | ( cd "$STAGE" && tar xf - )
+  info "staged on $(hostname) at $STAGE"
+}
+install_local
+
+if [ -n "${WORKER_HOSTS:-}" ] && [ -f "${SSH_IDENTITY:-}" ]; then
+  read -r -a HOSTS <<< "$WORKER_HOSTS"
+  read -r -a USERS <<< "${WORKER_USERS:-}"
+  for i in "${!HOSTS[@]}"; do
+    h="${HOSTS[$i]}"; u="${USERS[$i]:-${WORKER_USER:-root}}"
+    info "staging on $u@$h"
+    ssh -i "$SSH_IDENTITY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+        "$u@$h" "mkdir -p $STAGE" </dev/null
+    ( cd "$work/patched" && tar cf - . ) \
+      | ssh -i "$SSH_IDENTITY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+            "$u@$h" "tar xf - -C $STAGE"
+  done
+fi
+
+# The profiled SPS cost table travels with the patch.
+if [ -f "$SPS" ] && [ -n "${STATE_DIR:-}" ]; then
+  mkdir -p "$STATE_DIR"
+  cp -f "$SPS" "$STATE_DIR/dspark_sps.json"
+  info "installed SPS cost table into $STATE_DIR"
+fi
+
+info "adaptive-verify staged. EXTRA_DOCKER_ARGS must bind-mount these into the engine container."
