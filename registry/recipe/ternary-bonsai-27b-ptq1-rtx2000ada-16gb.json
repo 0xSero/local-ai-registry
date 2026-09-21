@@ -1,0 +1,271 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Ternary-Bonsai-2-27B-PTQ1_0 on one rtx-2000-ada-16gb-ternary-bonsai via llama.cpp, reasoning, tools, vision at the model's 131072-token window; no accepted measurement yet (candidate)",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py chat probe returned the pinned answer",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py reasoning probe: a separate reasoning_content phase with the answer still in content",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py tools probe: a forced call with valid arguments and a round-tripped tool result",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py vision probe: solid red and blue PNGs named correctly",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "host-probe",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no engine version was captured in engine.json for this run",
+      "state": "unknown"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "container image pinned by digest in the candidate launch",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-21T19:00:31Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-21T19:00:31Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "the window the loaded server was configured with and served on; the sweep covers shorter prompts and records every attempted row",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-2000-ada-16gb",
+  "id": "ternary-bonsai-27b-ptq1-rtx2000ada-16gb",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--model",
+      "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+      "--mmproj",
+      "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf",
+      "--alias",
+      "Ternary-Bonsai-2-27B-PTQ1_0",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--ctx-size",
+      "131072",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--n-gpu-layers",
+      "99",
+      "--jinja"
+    ],
+    "asset_ids": [],
+    "container": {
+      "captured_at": "2026-09-21T19:00:31Z",
+      "compose_file": null,
+      "digest": "sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+      "image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-21T19:00:31Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8080,
+    "entrypoint": "/opt/llama/llama-server",
+    "host_port": 8080,
+    "image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+    "kind": "docker",
+    "provenance": {
+      "captured_at": "2026-09-21T19:00:31Z",
+      "kind": "container-image",
+      "sources": [
+        {
+          "captured_at": "2026-09-21T19:00:31Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-21T15:47:54Z",
+      "captured": true,
+      "failed_probes": [],
+      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py",
+      "served_model_id": "Ternary-Bonsai-2-27B-PTQ1_0"
+    },
+    "campaign": {
+      "campaign": "omp-cheap-gpu-2026-09-18",
+      "cloud_type": "SECURE",
+      "deploy_image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+      "minimum_cuda_version": "12.8",
+      "plan": "campaigns/omp-cheap-gpu-2026-09-18/plans/ternary-bonsai-27b-ptq1-rtx2000ada-16gb.json",
+      "pod_id": "z81wx6b9rk49is",
+      "pod_name": "inference-index-rtx-2000-ada-16gb-ternary-bonsai-c20251e02d",
+      "slug": "rtx-2000-ada-16gb-ternary-bonsai"
+    },
+    "interruption": null,
+    "measurements": {
+      "configuration": {
+        "api_completion_budget_tokens": 512,
+        "cache_size_tokens": null,
+        "context_tokens": 131072,
+        "sweep_concurrencies": [
+          1,
+          2,
+          4
+        ],
+        "sweep_contexts": [
+          32768,
+          131072
+        ]
+      },
+      "mtp_acceptance": null,
+      "peak_generation_tps_source": "client end-to-end tok/s per stream (dispatch->last token), NOT engine decode-only",
+      "peak_vram_gb": 9.91,
+      "sweep_arms": [
+        {
+          "accepted": 0,
+          "concurrencies": [
+            1,
+            2,
+            4
+          ],
+          "created_at": null,
+          "directory": "sweep",
+          "samples_per_concurrency": 3,
+          "total_contexts": [
+            32768,
+            131072
+          ]
+        }
+      ],
+      "sweep_rows": {
+        "accepted": 0,
+        "attempted": 12,
+        "candidate": 12,
+        "complete": false,
+        "expected": 0,
+        "infra_invalid": 0,
+        "measurement_invalid": 0,
+        "not_run": 0
+      },
+      "weights_bytes": 6575895904
+    },
+    "origin": {
+      "campaign_path": "campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-2000-ada-16gb-ternary-bonsai",
+      "private_repository": "https://github.com/0xSero/inference-index"
+    },
+    "protocol_complete": false,
+    "weights_subdir": "Ternary-Bonsai-2-27B-PTQ1_0"
+  },
+  "model_instance_id": "prism-ml-ternary-bonsai-2-27b-gguf--ptq1-0",
+  "provenance": {
+    "captured_at": "2026-09-21T18:45:55Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-21T18:45:55Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "concurrency_observed": null,
+    "kv_cache_tokens": 131072,
+    "max_concurrency": null,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "ternary-bonsai-27b-ptq1-rtx2000ada-16gb-campaign"
+  ],
+  "status": "validated"
+}
