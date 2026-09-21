@@ -1,0 +1,140 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by cyysky",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cyysky",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511015211816194230"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "cyysky",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1549061799146561637"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-nvidia-qwen3-6-35b-a3b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-194230",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "cyysky",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511015211816194230"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511015211816194230"
+  },
+  "metadata": {
+    "discord": {
+      "author": "cyysky",
+      "channel_id": "1473975364727476224",
+      "message_id": "1511015211816194230",
+      "posted_at": "2026-06-01T14:34:59.802000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511015211816194230"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": "hf download nvidia/Qwen3.6-35B-A3B-NVFP4 --local-dir Qwen3.6-35B-A3B-NVFP4 sudo docker compose -f qwen3.6-35b-nvfp4.yml logs -f sudo docker compose -f qwen3.6-35b-nvfp4.yml up -d Available KV cache memory: 48.05 GiB Add 3 padding layers, may waste at most 10.00% KV cache memory GPU KV cache size: 3,802,908 tokens Maximum concurrency for 262,144 tokens per request: 14.51x",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "491c2f1ea524c639598bf8fa787a93fed5a6fbce",
+      "source": "https://huggingface.co/api/models/nvidia/Qwen3.6-35B-A3B-NVFP4/revision/491c2f1ea524c639598bf8fa787a93fed5a6fbce?blobs=true",
+      "weight_files": 3,
+      "weights_gb": 23.4
+    },
+    "rig_resolution": {
+      "from_message": "1549061799146561637",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-6-35b-a3b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cyysky",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1511015211816194230"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "cyysky",
+        "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1549061799146561637"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

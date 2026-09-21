@@ -1,0 +1,78 @@
+{
+  "accepted_at": null,
+  "facts": {
+    "source": {
+      "note": "Reported in the Local Inference Lab Discord; row labels keep the poster's wording.",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548464464641134753"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "id": "discord-sweep-r36-numbers",
+  "measured_at": null,
+  "metrics": {
+    "concurrency": 1,
+    "inference_engine_version": "localinferencelab/vllm:jovian-judgement-community-20260912-r36",
+    "max_context_tokens": 32768
+  },
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "RTX6kPRO Bot",
+        "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548464464641134753"
+      }
+    ]
+  },
+  "recipe_id": "discord-reported-ds41-flash-r36-rtxpro6000-ws-tp4",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 32768,
+      "decode_tok_s": 260.8,
+      "label": "RAM ngram tables, C1 3-run median",
+      "ngram_store": "ram",
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 14279,
+      "samples": 3,
+      "sieve_tok_s": 391.7,
+      "status": "reported",
+      "ttft_ms_p50": null,
+      "verifier_steps_per_s": 97.35
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 32768,
+      "decode_tok_s": 244.3,
+      "label": "SSD ngram tables",
+      "ngram_store": "ssd",
+      "output_tokens": null,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 14062,
+      "samples": 3,
+      "sieve_tok_s": 361.4,
+      "status": "reported",
+      "ttft_ms_p50": null,
+      "verifier_steps_per_s": 90.43
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "kind": "discord-report",
+    "publisher": "RTX6kPRO Bot",
+    "url": "https://discord.com/channels/1466898002793857221/1547563567379906651/1548464464641134753"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:cu130-b12x-full"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490825182783344840"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-festr2-glm-5-nvfp4-mtp-unpinned-rtx-pro-6000-blackwell-96gb-tp0-592838",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:cu130-b12x-full",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:cu130-b12x-full",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "festr.",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1471527895439638528",
+      "message_id": "1490740681218592838",
+      "posted_at": "2026-04-06T15:51:15.025000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": null,
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": [
+          "repository resolved by prose-repository-mentioned; it is named in the source message, not in the launch line"
+        ]
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
+    "rig_resolution": {
+      "from_message": "1490825182783344840",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "lil-festr2-glm-5-nvfp4-mtp--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490740681218592838"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1490825182783344840"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
