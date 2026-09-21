@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Qwen3.8-Flash-Next-EXL3-205bpw-H4 on one rtx-pro-4500-blackwell-32gb via tabbyapi, reasoning, tools, vision at the model's 262144-token window, measured C1/C2/C4 at 32768 and 262144 prompt tokens",
+  "description": "Qwen3.8-Flash-Next-EXL3-205bpw-H4 on one rtx-pro-4500-blackwell-32gb with TabbyAPI, ExLlamaV3, MTP drafting, reasoning and vision at the model's full 262144-token window, and measured C1/C2/C4 acceptance at 32768 and 262144 prompt tokens",
   "engine": {
     "graph_mode": "piecewise",
     "name": "tabbyapi",
@@ -14,12 +14,12 @@
   "facts": {
     "capabilities.chat": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
@@ -28,12 +28,12 @@
     },
     "capabilities.reasoning": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
@@ -42,12 +42,12 @@
     },
     "capabilities.tools": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
@@ -56,12 +56,12 @@
     },
     "capabilities.vision": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
@@ -70,40 +70,40 @@
     },
     "engine.version": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T20:20:00Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T20:20:00Z",
             "kind": "host-probe",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
-      "reason": "no engine version was captured in engine.json for this run",
-      "state": "unknown"
+      "reason": "TabbyAPI 0.0.1 at commit 53da7919, the revision the pinned image builds; the exllamav3 version banner on the card prints 1.5.0",
+      "state": "known"
     },
     "launch.image": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
-      "reason": "container image pinned by digest in the candidate launch",
+      "reason": "upstream release image pulled by digest on the rented card",
       "state": "known"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-09-21T14:10:16Z",
+        "captured_at": "2026-09-19T21:02:50Z",
         "sources": [
           {
-            "captured_at": "2026-09-21T14:10:16Z",
+            "captured_at": "2026-09-19T21:02:50Z",
             "kind": "campaign-run",
-            "url": "https://github.com/0xSero/local-ai-registry"
+            "url": "https://github.com/0xSero/inference-index"
           }
         ]
       },
@@ -122,20 +122,20 @@
       "/app/config.yml"
     ],
     "asset_ids": [
-      "qwen38flashnext-exl3-sc-2-05bpw-h4-256k-q4-deploy-tabbyapi-config"
+      "qwen38flashnext-exl3-2-05bpw-h4-ng4-256k-q4-tabbyapi-config"
     ],
     "container": {
-      "captured_at": "2026-09-21T14:10:16Z",
+      "captured_at": "2026-09-19T21:02:50Z",
       "compose_file": null,
-      "digest": "sha256:77aa2ea174062313a7d36bcb45ecc81b11932d88166e59f105ac24f771521e79",
-      "image": "ghcr.io/0xsero/deploy-tabbyapi-flashnext-205-rtx-pro-4500-blackwell-32gb@sha256:77aa2ea174062313a7d36bcb45ecc81b11932d88166e59f105ac24f771521e79",
+      "digest": "sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+      "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-21T14:10:16Z",
-          "kind": "oci-image",
-          "url": "https://ghcr.io/0xsero/deploy-tabbyapi-flashnext-205-rtx-pro-4500-blackwell-32gb"
+          "captured_at": "2026-09-19T21:02:50Z",
+          "kind": "upstream-release",
+          "url": "https://github.com/theroyallab/tabbyAPI"
         }
       ],
       "state": "digest-pinned"
@@ -143,27 +143,31 @@
     "container_port": 5000,
     "entrypoint": "/opt/venv/bin/python3",
     "environment": {
-      "NVIDIA_VISIBLE_DEVICES": "all",
-      "PATH": "/opt/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      "NVIDIA_VISIBLE_DEVICES": "all"
     },
     "host_port": 5000,
-    "image": "ghcr.io/0xsero/deploy-tabbyapi-flashnext-205-rtx-pro-4500-blackwell-32gb@sha256:77aa2ea174062313a7d36bcb45ecc81b11932d88166e59f105ac24f771521e79",
+    "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
     "kind": "docker",
     "mounts": [
       {
         "read_only": true,
-        "source": "asset/qwen38flashnext-exl3-sc-2-05bpw-h4-256k-q4-deploy-tabbyapi-config.yml",
+        "source": "${MODEL_ROOT}/qwen3-8-flash-next-exl3-205bpw-h4",
+        "target": "/workspace/models"
+      },
+      {
+        "read_only": true,
+        "source": "asset/qwen38flashnext-exl3-2-05bpw-h4-ng4-256k-q4-tabbyapi-config.yml",
         "target": "/app/config.yml"
       }
     ],
     "provenance": {
-      "captured_at": "2026-09-21T14:10:16Z",
-      "kind": "container-image",
+      "captured_at": "2026-09-19T21:02:50Z",
+      "kind": "upstream-release",
       "sources": [
         {
-          "captured_at": "2026-09-21T14:10:16Z",
-          "kind": "oci-image",
-          "url": "https://ghcr.io/0xsero/deploy-tabbyapi-flashnext-205-rtx-pro-4500-blackwell-32gb"
+          "captured_at": "2026-09-19T21:02:50Z",
+          "kind": "oci-config",
+          "url": "https://github.com/theroyallab/tabbyAPI/blob/53da7919d4e45c63f4acbcbbc00cbe0f60a1ce65/docker/Dockerfile.cu13"
         }
       ]
     },
@@ -171,13 +175,11 @@
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-21T10:27:54Z",
-      "captured": true,
+      "accepted_at": "2026-09-19T20:09:27Z",
       "failed_probes": [],
-      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py",
+      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + tabby_sweep.py",
       "served_model_id": "Qwen3.8-Flash-Next-EXL3-205bpw-H4"
     },
-    "interruption": null,
     "measurements": {
       "configuration": {
         "api_completion_budget_tokens": 512,
@@ -193,20 +195,24 @@
           262144
         ]
       },
-      "mtp_acceptance": null,
-      "peak_generation_tps_source": "client end-to-end tok/s per stream (dispatch->last token), NOT engine decode-only",
-      "peak_vram_gb": 26.1,
+      "mtp_acceptance": {
+        "acceptance_rate": null,
+        "accepted_prediction_tokens": 0,
+        "measured_streams": 28,
+        "rejected_prediction_tokens": 0
+      },
+      "peak_vram_gb": 31.28,
       "sweep_arms": [
         {
-          "accepted": 22,
+          "accepted": 12,
           "concurrencies": [
             1,
             2,
             4
           ],
-          "created_at": "2026-09-21T10:32:42+00:00",
+          "created_at": "2026-09-19T20:12:11+00:00",
           "directory": "sweep",
-          "samples_per_concurrency": 3,
+          "samples_per_concurrency": 2,
           "total_contexts": [
             32768,
             262144
@@ -214,22 +220,11 @@
         }
       ],
       "sweep_rows": {
-        "accepted": 22,
-        "attempted": 36,
-        "candidate": 4,
-        "complete": false,
-        "expected": 36,
-        "infra_invalid": 0,
-        "measurement_invalid": 0,
-        "not_run": 10
+        "accepted": 12,
+        "attempted": 12
       },
-      "weights_bytes": null
+      "weights_bytes": 62814531597
     },
-    "origin": {
-      "campaign_path": "campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-flashnext-exl3",
-      "private_repository": "https://github.com/0xSero/inference-index"
-    },
-    "protocol_complete": false,
     "weights_subdir": "Qwen3.8-Flash-Next-EXL3-205bpw-H4"
   },
   "model_instance_id": "turboderp-qwen3-8-flash-next-exl3--2-05bpw-h4-ng4",
@@ -246,12 +241,8 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "concurrency_observed": [
-      1,
-      2
-    ],
     "kv_cache_tokens": 262656,
-    "max_concurrency": null,
+    "max_concurrency": 4,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },

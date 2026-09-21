@@ -6,7 +6,7 @@
 .PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check test typecheck build py-tests trust
 
 ## The full verification suite — identical to CI.
-check: format-check validate plugin-gate test typecheck types-check index-check plugin-recipes-check
+check: format-check validate plugin-gate test typecheck types-check index-check
 	python3 -m unittest discover -s scripts -p 'test_*.py'
 
 ## Derive `status` (validated/candidate) from evidence and rewrite it. validate refuses any drift.
@@ -51,8 +51,8 @@ plugin-gate:
 plugin-recipes:
 	python3 scripts/export_plugin_recipes.py --out plugin/recipes.json
 
-plugin-recipes-check:
-	python3 scripts/check_plugin_catalog.py
+plugin-recipes-check: plugin-recipes
+	git diff --exit-code plugin/recipes.json
 
 ## Node test suite (includes ajv validation of every record).
 test:

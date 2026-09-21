@@ -1,0 +1,174 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Native DeepSeek-V4.1-Flash (MXFP4 experts, FP8 dense) across four DGX Sparks with SGLang TP4/EP2 over RoCE, tuned from knapcio's TP4 profile @a544a0f1 (canary-roce image, b12x RoCEnante all-reduce on both rails, Engram prefetch) plus adaptive DSpark verify (compact ragged verify, SPS cost table, 6-file patch in the evidence): DSpark block 5, vision, 1,048,576 context, 6,000,000-token KV pool, 48 requests, 4096-token prefill chunks, --prefill-decode-interval 4, no server-side output cap (DSV41_MAX_NEW_TOKENS=0). sparkDash protocol at one request: 109.5 tok/s code, 121.2 structured, 59.0 prose. Local Inference Lab protocol: 49.2 tok/s at one request, 350.8 aggregate at 48; cold prefill about 3.4k tok/s from 8k to 128k; a cold 420k prompt completes (2.1k tok/s) and a 15.7-minute mixed stress ran with zero failures. KV pool is 6M rather than 8M so a deep cold prefill keeps >= 4.5 GB MemAvailable per node. Two of the four test Sparks ran driver 580.159.03 at ~2190 MHz vs ~2520 MHz on the others.",
+  "engine": {
+    "graph_mode": "decode CUDA graphs (batch 1-48, ragged verify tiers); prefill eager",
+    "name": "sglang",
+    "version": "SGLang dsv4.1 branch f80c91a4b (knapcio Dockerfile.canary-roce @a544a0f1: lmsysorg/sglang:dev-dsv41 base + b12x RoCEnante all-reduce) + 6-file adaptive-verify patch (sglang#39257 capture slots, #31016 planner gamma, compact ragged Engram/indexer maps); torch 2.13.0+cu130"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T20:00:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T20:00:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/3e47fa9d4ecfe76f1b8da335543a50e09c56f16e/sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/boot-lines.txt"
+          }
+        ]
+      },
+      "reason": "engine-boot-log-max-total-num-tokens",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T20:00:00Z",
+            "kind": "submitter",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/3e47fa9d4ecfe76f1b8da335543a50e09c56f16e/sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/boot-lines.txt"
+          }
+        ]
+      },
+      "reason": "engine-boot-log-context-len",
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "deepseek-v4-1-flash-native-dgxspark-sglang-tp4-tuned",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container": {
+      "captured_at": "2026-09-19T20:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "non-container-launch-kind",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T20:00:00Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "none"
+    },
+    "container_port": 8888,
+    "environment": {
+      "CHUNKED_PREFILL_SIZE": "4096",
+      "CONTEXT_LENGTH": "1048576",
+      "DSPARK_BLOCK_SIZE": "5",
+      "DSV41_CACHE_GIB": "4",
+      "DSV41_IO_THREADS": "96",
+      "DSV41_LOOP_ABORT": "1",
+      "DSV41_MAX_NEW_TOKENS": "0",
+      "DSV41_PREFILL_EMPTY_CACHE_TOKENS": "8192",
+      "EP_SIZE": "2",
+      "EXTRA_CONTAINER_ENV": "DSV41_INDEXER_CHUNKED=1 SGLANG_DSPARK_FOLDED_SAMPLING=2 SGLANG_ROCE_ALLREDUCE=1 SGLANG_ROCE_MAX_SIZE=2097152 B12X_ROCE_HCA=rocep1s0f1,roceP2p1s0f1 B12X_ROCE_CACHE_DIR=/state/b12x-roce B12X_COMPILE_CACHE_DIR=/state/b12x-compile SPARK_PREFILL_TP_SPLIT=1 SPARK_PREFILL_TP_MIN_CONTEXT=32768 SPARK_PREFILL_TP_MIN_ROWS=1024 SGLANG_RUST_BUILD_MODE=never DSV41_ENGRAM_PREFETCH=1 SGLANG_RAGGED_VERIFY_MODE=compact",
+      "EXTRA_SGLANG_ARGS": "--fp8-gemm-backend flashinfer_cutlass --watchdog-timeout 1800 --min-free-slots-delay 1 --enable-deepseek-v4-fp4-indexer --enable-cache-report --sleep-on-idle --prefill-decode-interval 4",
+      "HEAD_MEM_FRACTION_STATIC": "0.80",
+      "IMAGE": "dsv41-4x-spark:canary-roce",
+      "MAX_RUNNING_REQUESTS": "48",
+      "MAX_TOTAL_TOKENS": "6000000",
+      "MEM_FRACTION_STATIC": "0.80",
+      "NCCL_MAX_NCHANNELS": "8",
+      "NCCL_PROTO": "^LL128",
+      "NFS_SHARE": "0",
+      "NNODES": "4",
+      "OFFLOAD_MODE": "nvme",
+      "PORT": "8888",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:False",
+      "SGLANG_RAGGED_VERIFY_MODE": "compact",
+      "TP_SIZE": "4"
+    },
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "container_runner": {
+        "context": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/container",
+        "description": "Operator image that drives the whole lifecycle on the head node: doctor, weights (reuses a complete checkpoint, otherwise downloads the pinned revision), engine (pull + build + stage adaptive-verify on all four nodes), engram, publish, serve, smoke. Pins upstream at a544a0f1 and applies the local patches at build time. Contains no credentials; the fleet ssh key is mounted at run time. Not a serving container: it needs the host Docker socket, so it is not modelled as launch.kind=docker.",
+        "dockerfile": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/container/Dockerfile",
+        "entrypoint_verb": "up",
+        "env_template": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/container/site.env.example",
+        "readme": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/container/README.md"
+      },
+      "env_template": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/upstream/knapcio/a544a0f1d00fc46d595e8a52766fec0dbefee5f8/.env.tp4.example",
+      "file": "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/upstream/knapcio/a544a0f1d00fc46d595e8a52766fec0dbefee5f8/start.sh",
+      "local_patches": [
+        "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/start.sh.local-patch.diff",
+        "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/env.tp4.diff",
+        "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/adaptive-verify/adaptive-verify.patch",
+        "sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/container/patches/stop-per-node-users.patch"
+      ],
+      "steps": [
+        "or: build sources/.../container and run it with the host Docker socket — `dsv41 up` performs every step below in order, idempotently",
+        "./start.sh build (Dockerfile.canary-roce)",
+        "./start.sh pack",
+        "stage adaptive-verify files on every node and pass them as EXTRA_DOCKER_ARGS bind mounts",
+        "copy adaptive-verify/dspark_sps.json to state/dspark_sps.json",
+        "./start.sh serve"
+      ],
+      "upstream": "https://github.com/knapcio/DeepSeek-V4.1-Flash-4x-DGX-Spark-TP4/tree/a544a0f1d00fc46d595e8a52766fec0dbefee5f8"
+    },
+    "shm_size": "32g"
+  },
+  "metadata": {},
+  "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
+  "provenance": {
+    "captured_at": "2026-09-19T20:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "kind": "submitter",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/3e47fa9d4ecfe76f1b8da335543a50e09c56f16e/sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/README.md"
+      },
+      {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "kind": "submitter",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/3e47fa9d4ecfe76f1b8da335543a50e09c56f16e/sources/dgx-spark/2026-09-19/deepseek-v4-1-flash-sglang-tp4-4x-spark-tuned/env.tp4"
+      },
+      {
+        "captured_at": "2026-09-19T20:00:00Z",
+        "kind": "upstream-recipe",
+        "url": "https://github.com/knapcio/DeepSeek-V4.1-Flash-4x-DGX-Spark-TP4/tree/a544a0f1d00fc46d595e8a52766fec0dbefee5f8"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 5999872,
+    "max_concurrency": 48,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-1-flash-native-dgxspark-sglang-tp4-tuned-sweep"
+  ],
+  "status": "validated"
+}
