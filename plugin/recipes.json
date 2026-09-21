@@ -8,7 +8,7 @@
     "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-deploy-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /opt/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC3bpw-H4-V4\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 132096\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 1024\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC4bpw-H5\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 263168\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
-    "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC5bpw-H6-V6\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 263168\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 4\n  vision: true\n  vision_offload: false\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-deploy-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /opt/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC5bpw-H6-V6\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 263168\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 4\n  vision: true\n  vision_offload: false\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen38flashnext-exl3-2-05bpw-h4-ng4-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-Flash-Next-EXL3-205bpw-H4\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262656\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n  # The 26.24 GB n-gram table is indexed by short n-grams and never needs to\n  # be on the card, so it lives in host RAM. 51B of routed-expert weights are\n  # then split off the card so what stays resident fits a 24 GB board, and the\n  # split is chosen from the measured free memory rather than guessed.\n  ngram_ram: true\n  cpu_moe_split_experts: 128\n  draft_model:\n    draft_mode: mtp\n"
   },
   "gateway": {
@@ -21,7 +21,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-20T23:12:04Z",
+  "generatedAt": "2026-09-21T18:21:12Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -6340,7 +6340,7 @@
           "id": "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1",
           "image": {
             "attestation": null,
-            "provenance": "upstream-release"
+            "provenance": "container-image"
           },
           "launch": {
             "arguments": [
@@ -6355,18 +6355,13 @@
             "environment": {
               "NVIDIA_VISIBLE_DEVICES": "all"
             },
-            "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+            "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-5bpw-v6-rtx-pro-4500-blackwell-32gb@sha256:91fab9aa0e0c5c08fd4b00b820ba010aa3a0ab4bbc6431f611555bf5930ed2b7",
             "ipc": null,
             "kind": "docker",
             "mounts": [
               {
                 "read_only": true,
-                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc5bpw-h6-v6",
-                "target": "/workspace/models"
-              },
-              {
-                "read_only": true,
-                "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml",
+                "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-deploy-tabbyapi-config.yml",
                 "target": "/app/config.yml"
               }
             ],
@@ -6374,7 +6369,7 @@
             "securityOpt": [],
             "shm": "8g"
           },
-          "minDriver": "535.0",
+          "minDriver": "",
           "minEngine": "",
           "model": {
             "id": "qwen3-8-27b",
@@ -6386,16 +6381,16 @@
             "sizeGb": 18.24
           },
           "serving": {
-            "concurrency": 4,
+            "concurrency": 0,
             "ctxTokens": 262144,
             "kvTokens": 263168
           },
           "speed": {
-            "tps": 95
+            "tps": 100
           },
           "validated": {
-            "acceptedAt": "2026-09-19T05:17:23Z",
-            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + tabby_sweep.py"
+            "acceptedAt": "2026-09-20T23:14:34Z",
+            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py"
           },
           "weights": {
             "subdir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
@@ -7100,6 +7095,6 @@
       }
     }
   },
-  "registryCommit": "1384ef486c26958a9f768be1fca092474c7c67e2",
+  "registryCommit": "2811363d990b1027c951b0ef94b11b5adfcf960e",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
