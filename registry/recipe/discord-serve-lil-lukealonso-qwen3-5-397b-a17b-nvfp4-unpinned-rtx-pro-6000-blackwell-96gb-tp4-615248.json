@@ -1,0 +1,164 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by vilsol",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "vilsol",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "vilsol",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1485661434699583651"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "vilsol",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "vilsol",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-lukealonso-qwen3-5-397b-a17b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp4-615248",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "vilsol",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+  },
+  "metadata": {
+    "discord": {
+      "author": "vilsol",
+      "channel_id": "1473975364727476224",
+      "message_id": "1488886652884615248",
+      "posted_at": "2026-04-01T13:04:00.224000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+    },
+    "model_resolution": "explicit",
+    "observed_command": "Looks like this is crashing for me: ```python [2026-04-01 12:54:06 TP3] Scheduler hit an exception: Traceback (most recent call last): File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/managers/scheduler.py\", line 3564, in run_scheduler_process scheduler = Scheduler( ... File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 493, in find_crossover_size custom_us, nccl_us = self._bench_graph_latency( File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 462, in _bench_graph_latency custom_runs = sorted([run_custom() for _ in range(3)]) File \"/root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/custom_all_reduce.py\", line 426, in run_custom handle, off = self._ops.get_graph_buffer_ipc_meta(self._ptr) RuntimeError: invalid argument /root/sglang-voipmonitor/sglang/python/sglang/srt/distributed/device_communicators/pcie_allreduce/pcie_allreduce.cu:321 ``` With this config: ```c SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server --model lukealonso/Qwen3.5-397B-A17B-NVFP4 --served-model-name Qwen3.5 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --tensor-parallel-size 4 --quantization modelopt_fp4 --kv-cache-dtype fp8_e4m3 --trust-remote-code --cuda-graph-max-bs 16 --max-running-requests 4 --chunked-prefill-size 2048 --speculative-algo NEXTN --speculative-num-steps 2 --speculative-eagle-topk 1 --speculative-",
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
+    "rig_resolution": {
+      "from_message": "1485661434699583651",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; this author stated exactly one rig anywhere in the server",
+      "scope": "author"
+    }
+  },
+  "model_instance_id": "lil-lukealonso-qwen3-5-397b-a17b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "vilsol",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488886652884615248"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "vilsol",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1485661434699583651"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 4,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

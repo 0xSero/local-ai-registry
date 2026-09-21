@@ -1,0 +1,166 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": null
+  },
+  "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1488545860890661004"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lil-lukealonso-qwen3-5-397b-a17b-nvfp4-unpinned-rtx-pro-6000-blackwell-96gb-tp4-921636",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1473975364727476224",
+      "message_id": "1488130116658921636",
+      "posted_at": "2026-03-30T10:57:47.932000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+    },
+    "model_resolution": "explicit",
+    "observed_command": "I'm testing with this: ```NCCL_P2P_LEVEL=SYS SGLANG_ENABLE_SPEC_V2=True python3 -m sglang.launch_server --model lukealonso/Qwen3.5-397B-A17B-NVFP4 --served-model-name Qwen3.5 --reasoning-parser qwen3 --tool-call-parser qwen3_coder --tensor-parallel-size 4 --quantization modelopt_fp4 --kv-cache-dtype fp8_e4m3 --trust-remote-code --cuda-graph-max-bs 64 --max-running-requests 64 --chunked-prefill-size 4096 --speculative-algo NEXTN --speculative-num-steps 5 --speculative-eagle-topk 1 --speculative-num-draft-tokens 6 --mamba-scheduler-strategy extra_buffer --mem-fraction-static 0.93 --host 0.0.0.0 --port 5000 --disable-custom-all-reduce --enable-metrics --schedule-conservativeness 0.1 --chunked-prefill-size 16364 --attention-backend flashinfer --fp4-gemm-backend b12x --moe-runner-backend b12x ```",
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    },
+    "rig_resolution": {
+      "from_message": "1488545860890661004",
+      "gap_days": 1.15,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lil-lukealonso-qwen3-5-397b-a17b-nvfp4--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1488130116658921636"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1466898004219789502/1488545860890661004"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 64,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

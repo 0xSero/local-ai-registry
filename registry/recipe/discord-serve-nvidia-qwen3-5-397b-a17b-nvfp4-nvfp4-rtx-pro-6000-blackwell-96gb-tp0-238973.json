@@ -1,0 +1,143 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by festr.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482012371475238973"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "festr.",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481999034808799292"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-238973",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "festr.",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482012371475238973"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482012371475238973"
+  },
+  "metadata": {
+    "discord": {
+      "author": "festr.",
+      "channel_id": "1473975364727476224",
+      "message_id": "1482012371475238973",
+      "posted_at": "2026-03-13T13:48:03.818000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482012371475238973"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Rig resolved from the author's own nearby message in the same thread."
+    ],
+    "observed_command": "<@967394959655338004> try this ``` VLLM_LOG_STATS_INTERVAL=1 NCCL_P2P_LEVEL=SYS SAFETENSORS_FAST_GPU=1 python3 -m vllm.entrypoints.openai.api_server --model nvidia/Qwen3.5-397B-A17B-NVFP4 --host 0.0.0.0 --port 5199 --served-model-name Qwen3_5-397B-A17B-NVFP4 --trust-remote-code --tensor-parallel-size 4 --gpu-memory-utilization 0.9 --max-num-batched-tokens 32768 --max-num-seqs 1024 --enable-auto-tool-choice --tool-call-parser qwen3_coder --reasoning-parser qwen3 --mm-encoder-tp-mode data --mm-processor-cache-type shm --speculative-config '{\"method\":\"qwen3_next_mtp\",\"num_speculative_tokens\":2}' --enable-prefix-caching --enable-chunked-prefill```",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "12b28061efd8145b11226e4fab2528ee4f39ef09",
+      "source": "https://huggingface.co/api/models/nvidia/Qwen3.5-397B-A17B-NVFP4/revision/12b28061efd8145b11226e4fab2528ee4f39ef09?blobs=true",
+      "weight_files": 11,
+      "weights_gb": 251.2
+    },
+    "rig_resolution": {
+      "from_message": "1481999034808799292",
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; the same author stated this rig nearby in the same thread",
+      "window": 30
+    }
+  },
+  "model_instance_id": "nvidia-qwen3-5-397b-a17b-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1482012371475238973"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "festr.",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1481999034808799292"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

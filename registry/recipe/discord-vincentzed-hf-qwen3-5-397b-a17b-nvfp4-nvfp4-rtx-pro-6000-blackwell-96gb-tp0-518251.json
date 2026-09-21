@@ -1,0 +1,181 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": true
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by lavd_48722",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "vllm/vllm-openai:cu130-nightly-afd089f231d714e7fd06b51e3bc7df7fe004c7f9"
+  },
+  "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "vincentzed-hf",
+            "url": "https://huggingface.co/api/models/vincentzed-hf/Qwen3.5-397B-A17B-NVFP4"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lavd_48722",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lavd_48722",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "lavd_48722",
+            "url": "https://discord.com/channels/1466898002793857221/1483218429698899968/1483222536702529680"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-vincentzed-hf-qwen3-5-397b-a17b-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-518251",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "vllm/vllm-openai:cu130-nightly-afd089f231d714e7fd06b51e3bc7df7fe004c7f9",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "lavd_48722",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "vllm/vllm-openai:cu130-nightly-afd089f231d714e7fd06b51e3bc7df7fe004c7f9",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "lavd_48722",
+      "source": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "lavd_48722",
+      "channel_id": "1473975364727476224",
+      "message_id": "1480652737753518251",
+      "posted_at": "2026-03-09T19:45:21.878000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 384,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "ec6031dc866045e7ff2d74e9612f27a6c7d73be4",
+      "source": "https://huggingface.co/api/models/vincentzed-hf/Qwen3.5-397B-A17B-NVFP4/revision/ec6031dc866045e7ff2d74e9612f27a6c7d73be4?blobs=true",
+      "weight_files": 5,
+      "weights_gb": 240.2
+    },
+    "rig_resolution": {
+      "from_message": "1483222536702529680",
+      "gap_days": 7.09,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "vincentzed-hf-qwen3-5-397b-a17b-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lavd_48722",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1480652737753518251"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "lavd_48722",
+        "url": "https://discord.com/channels/1466898002793857221/1483218429698899968/1483222536702529680"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
