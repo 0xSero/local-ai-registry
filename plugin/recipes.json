@@ -22,7 +22,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-21T18:28:42Z",
+  "generatedAt": "2026-09-21T18:34:39Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -2216,7 +2216,7 @@
           "id": "qwen3827b-exl3-sc4bpw-rtx3090-tabbyapi-tp1",
           "image": {
             "attestation": null,
-            "provenance": "container-image"
+            "provenance": "upstream-release"
           },
           "launch": {
             "arguments": [
@@ -2231,13 +2231,18 @@
             "environment": {
               "NVIDIA_VISIBLE_DEVICES": "all"
             },
-            "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-4bpw-rtx-3090-24gb@sha256:0ff5ffcd610577767aa72d9f0bae4ab9c3add5a37de92680bd1382002f282dc8",
+            "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
             "ipc": null,
             "kind": "docker",
             "mounts": [
               {
                 "read_only": true,
-                "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-deploy-tabbyapi-config.yml",
+                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
                 "target": "/app/config.yml"
               }
             ],
@@ -2245,7 +2250,7 @@
             "securityOpt": [],
             "shm": "8g"
           },
-          "minDriver": "",
+          "minDriver": "535.0",
           "minEngine": "",
           "model": {
             "id": "qwen3-8-27b",
@@ -2257,16 +2262,16 @@
             "sizeGb": 15.59
           },
           "serving": {
-            "concurrency": 0,
+            "concurrency": 2,
             "ctxTokens": 262144,
             "kvTokens": 263168
           },
           "speed": {
-            "tps": 47
+            "tps": 41
           },
           "validated": {
-            "acceptedAt": "2026-09-21T03:28:59Z",
-            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py"
+            "acceptedAt": "2026-09-18T21:49:18Z",
+            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + tabby_sweep.py"
           },
           "weights": {
             "subdir": "Qwen3.8-27B-EXL3-SC4bpw-H5"
@@ -4559,7 +4564,7 @@
           "id": "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1",
           "image": {
             "attestation": null,
-            "provenance": "upstream-release"
+            "provenance": "container-image"
           },
           "launch": {
             "arguments": [
@@ -4574,18 +4579,13 @@
             "environment": {
               "NVIDIA_VISIBLE_DEVICES": "all"
             },
-            "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+            "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-4bpw-rtx-4090-24gb@sha256:80f9e2befda50e4bb1c0ae6797a39f1cf285b54f2a519458095167bb0562bd65",
             "ipc": null,
             "kind": "docker",
             "mounts": [
               {
                 "read_only": true,
-                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
-                "target": "/workspace/models"
-              },
-              {
-                "read_only": true,
-                "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
+                "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-deploy-tabbyapi-config.yml",
                 "target": "/app/config.yml"
               }
             ],
@@ -4593,7 +4593,7 @@
             "securityOpt": [],
             "shm": "8g"
           },
-          "minDriver": "535.0",
+          "minDriver": "",
           "minEngine": "",
           "model": {
             "id": "qwen3-8-27b",
@@ -4605,16 +4605,16 @@
             "sizeGb": 15.59
           },
           "serving": {
-            "concurrency": 1,
+            "concurrency": 0,
             "ctxTokens": 262144,
             "kvTokens": 263168
           },
           "speed": {
-            "tps": 89
+            "tps": 106
           },
           "validated": {
-            "acceptedAt": "2026-09-19T12:19:04Z",
-            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + tabby_sweep.py"
+            "acceptedAt": "2026-09-21T07:02:45Z",
+            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py"
           },
           "weights": {
             "subdir": "Qwen3.8-27B-EXL3-SC4bpw-H5"
@@ -7091,6 +7091,6 @@
       }
     }
   },
-  "registryCommit": "738b992928097c2ea97bb0b109e570009f63b07c",
+  "registryCommit": "bac6736902aa7a58658e101ccb3785d3863ac726",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
