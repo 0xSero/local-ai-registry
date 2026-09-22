@@ -24,8 +24,11 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CATALOG = ROOT / "plugin" / "recipes.json"
-EXPORTER = ROOT / "scripts" / "export_plugin_recipes.py"
+# Two catalogs, two exporters: schema 1 is what plugin 5.x fetches, schema 2 what 6.x vendors.
+CATALOGS = {
+    "1": (ROOT / "plugin" / "recipes.json", ROOT / "scripts" / "export_plugin_recipes.py"),
+    "2": (ROOT / "plugin" / "v2" / "recipes.json", ROOT / "scripts" / "export_plugin_v2.py"),
+}
 # Derived from the commit that last touched registry/, so a squash or rebase rewrites
 # it. Compared nowhere: the values identify the build, not the exported content.
 PROVENANCE = ("registryCommit", "generatedAt")
@@ -65,6 +68,8 @@ def compare(committed: dict, fresh: dict) -> list[str]:
 
 
 def main() -> int:
+    schema = sys.argv[1] if len(sys.argv) > 1 else "1"
+    CATALOG, EXPORTER = CATALOGS[schema]
     if not CATALOG.exists():
         print(f"error: {CATALOG} does not exist", file=sys.stderr)
         return 1
@@ -83,14 +88,14 @@ def main() -> int:
 
     reasons = compare(committed, fresh)
     if not reasons:
-        print(f"plugin/recipes.json is current: "
+        print(f"{CATALOG.relative_to(ROOT)} is current: "
               f"{len(committed.get('hardware') or {})} hardware ids "
               f"(provenance stamp excluded: {', '.join(PROVENANCE)})")
         return 0
-    print("plugin/recipes.json is stale against the records.", file=sys.stderr)
+    print(f"{CATALOG.relative_to(ROOT)} is stale against the records.", file=sys.stderr)
     for reason in reasons:
         print(f"  {reason}", file=sys.stderr)
-    print("  run: python3 scripts/export_plugin_recipes.py --out plugin/recipes.json",
+    print(f"  run: python3 {EXPORTER.relative_to(ROOT)} --out {CATALOG.relative_to(ROOT)}",
           file=sys.stderr)
     return 1
 

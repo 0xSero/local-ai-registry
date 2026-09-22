@@ -44,13 +44,25 @@ jobs:
           python3 scripts/validate_registry.py
           python3 scripts/check_lil_import.py
 
+      - name: Price-history visual is current
+        run: |
+          python3 scripts/build_price_history_data.py
+          python3 scripts/gen_price_history_visual.py
+          git diff --exit-code docs/visuals/gpu-price-history.html
+
       - name: Omarchy plugin gate accepts every validated Docker recipe
         run: python3 scripts/check_plugin_gate.py
 
       - name: Plugin export preserves multi-GPU recipes and context
         run: python3 scripts/test_export_plugin_recipes.py
-      - name: plugin/recipes.json is current (the plugin fetches it from this branch)
-        run: python3 scripts/check_plugin_catalog.py
+      - name: plugin/recipes.json is current (plugin 5.x fetches it from this branch)
+        run: python3 scripts/check_plugin_catalog.py 1
+
+      - name: Schema-2 export expresses only what a launch consumes
+        run: python3 scripts/test_export_plugin_v2.py
+
+      - name: plugin/v2/recipes.json is current (plugin 6.x vendors it)
+        run: python3 scripts/check_plugin_catalog.py 2
 
       - name: index shards match the records they summarize
         run: |

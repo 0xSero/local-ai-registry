@@ -113,6 +113,47 @@ def hardware_record(identifier, vendor, name, backend, kind, memory, source, **e
     }
 
 
+# Fields curate_registry derives authoritatively from the curated tables.
+IDENTITY_FIELDS = (
+    "schema_version",
+    "id",
+    "vendor",
+    "name",
+    "family",
+    "kind",
+    "accelerator_backend",
+    "aliases",
+    "products",
+)
+
+
+def write_hardware(directory, identifier, derived):
+    """Write a derived hardware record without dropping evidence it does not derive.
+
+    curate_registry owns the normalized identity fields above. Sources, commercial
+    summaries, facts, captured_at, compute, accelerator, product_names and the
+    memory figures come from evidence and enrichment this script has no source for,
+    so an existing value is kept and only missing fields are filled - a record that
+    says "GDDR6 ECC" is more precise than the table's "GDDR6".
+    """
+    path = directory / f"{identifier}.json"
+    if not path.is_file():
+        write(path, derived)
+        return
+    record = json.loads(path.read_text())
+    for key in IDENTITY_FIELDS:
+        if key in derived:
+            record[key] = derived[key]
+    for key, value in derived.items():
+        record.setdefault(key, value)
+    derived_memory = derived.get("memory")
+    memory = record.get("memory")
+    if isinstance(derived_memory, dict) and isinstance(memory, dict):
+        for key, value in derived_memory.items():
+            memory.setdefault(key, value)
+    write(path, record)
+
+
 def curate_hardware(root):
     directory = root / "hardware"
     for path in sorted(directory.glob("*.json")):
@@ -136,25 +177,25 @@ def curate_hardware(root):
             normalized["sources"] = record["sources"]
         else:
             normalized["sources"] = [{"kind": "registry", "url": "https://github.com/0xSero/local-ai-registry"}]
-        write(path, normalized)
+        write_hardware(directory, record["id"], normalized)
     for chip, (capacities, bandwidth, products) in APPLE.items():
         for capacity in capacities:
             identifier = f"apple-{chip}-{capacity}gb"
-            write(directory / f"{identifier}.json", hardware_record(
+            write_hardware(directory, identifier, hardware_record(
                 identifier, "apple", f"{title_chip(chip)} {capacity}GB", "metal", "unified",
                 {"vram_gb": capacity, "cpu_memory_gb": capacity, "vram_type": "unified", "bandwidth_gb_per_s": bandwidth},
                 APPLE_SOURCE, family=chip, aliases=[f"{chip.replace('-', ' ')} {capacity}gb"], products=products,
             ))
 
     for identifier, (name, capacity, memory_type) in NVIDIA.items():
-        write(directory / f"{identifier}.json", hardware_record(
+        write_hardware(directory, identifier, hardware_record(
             identifier, "nvidia", name, "nvidia", "discrete",
             {"vram_gb": capacity, "cpu_memory_gb": None, "vram_type": memory_type, "bandwidth_gb_per_s": None},
             NVIDIA_SOURCE, family=re.sub(r"-\d+gb$", "", identifier), aliases=[name.lower().replace("geforce ", "")],
         ))
 
     for identifier, (name, capacity, memory_type, kind, source) in AMD.items():
-        write(directory / f"{identifier}.json", hardware_record(
+        write_hardware(directory, identifier, hardware_record(
             identifier, "amd", name, "amd-rocm", kind,
             {"vram_gb": capacity, "cpu_memory_gb": capacity if kind == "integrated" else None, "vram_type": memory_type, "bandwidth_gb_per_s": None},
             source, family=re.sub(r"-\d+gb$", "", identifier), aliases=[name.lower()],
@@ -165,7 +206,7 @@ def curate_hardware(root):
         "apple-pro-64gb": ("Apple Pro 64GB, generation unspecified", "pro"),
     }
     for identifier, (name, family) in generic.items():
-        write(directory / f"{identifier}.json", hardware_record(
+        write_hardware(directory, identifier, hardware_record(
             identifier, "apple", name, "metal", "unified",
             {"vram_gb": int(re.search(r"(\d+)gb", identifier).group(1)), "cpu_memory_gb": int(re.search(r"(\d+)gb", identifier).group(1)), "vram_type": "unified", "bandwidth_gb_per_s": None},
             "https://www.localmaxxing.com/en/api-docs", family=family,
@@ -194,7 +235,10 @@ def sanitize_candidates(root):
             recipe["launch"]["container"] = existing_container
         for key in REFERENCE_LAUNCH_FORBIDDEN:
             recipe["launch"].pop(key, None)
-        recipe["capabilities"] = {key: None for key in ("chat", "reasoning", "tools", "vision")}
+        capabilities = dict(recipe.get("capabilities") or {})
+        for key in ("chat", "reasoning", "tools", "vision"):
+            capabilities.setdefault(key, None)
+        recipe["capabilities"] = capabilities
         recipe["schema_version"] = SCHEMA
         write(path, recipe)
 
