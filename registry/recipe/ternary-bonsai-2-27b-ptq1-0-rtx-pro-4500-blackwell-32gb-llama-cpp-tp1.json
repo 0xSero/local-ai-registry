@@ -1,0 +1,246 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "llama.cpp serving the ternary PTQ1_0 quant of Ternary-Bonsai-2-27B with its Q8_0 mmproj on a 32 GB RTX PRO 4500 Blackwell at a 131072-token window, with chat, reasoning, tools and vision all verified on the card. This is the brief's 8 GB GGUF row: the 8 GB pool is community-only and its hosts never published public SSH or /dev/nvidia0, so the row runs on the cheapest card that allocates. Weights are 6.58 GB, so the card is idle rather than tight, and the measurement shows where the cost really is.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10683 (d8f26eec7)"
+  },
+  "facts": {
+    "audit.invalid_cells": {
+      "note": "131072 tokens with concurrency 2 and 4 returned HTTP 500 from the server; recorded as invalid rather than dropped.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "server-500-at-long-context",
+      "state": "known"
+    },
+    "audit.speed": {
+      "as_of": "2026-09-22",
+      "note": "Protocol-v2 sweep, four measured cells, three samples each, decode from the server-reported per-request rate. 32768: 36.5 / 12.4 / 4.6 tok/s at concurrency 1 / 2 / 4 (prefill 909 / 578 / 492 tok/s, TTFT 35.6 / 85.8 / 145.1 s). 131072: 14.1 tok/s at concurrency 1 (prefill 630 tok/s, TTFT 207.3 s). The 131072 concurrency 2 and 4 cells were cut by the server returning HTTP 500, which is the KV ceiling under concurrent long-context waves rather than a client fault. Decode falls steeply with concurrency here, unlike the EXL3 rows on this same class of card: llama.cpp with a ternary MoE is not batched the way ExLlamaV3 is.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "measured-protocol-v2",
+      "state": "known",
+      "unit": "tokens/second"
+    },
+    "capabilities.chat": {
+      "note": "Acceptance chat probe returned the expected completion from the ternary GGUF on this card.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "note": "Acceptance reasoning probe returned a separate reasoning phase plus the correct final answer; --jinja applies the model chat template.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "Acceptance tool probe returned a parsed call whose arguments round-tripped into a final answer.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "note": "Acceptance vision probe answered two differently coloured images differently, each naming its own colour, so the Q8_0 mmproj works on this card.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "as_of": "2026-09-22",
+      "note": "Served and accepted at 131072 tokens with a Q4 KV cache on a 32 GB card; 6.58 GB of ternary weights leave most of the card for KV.",
+      "provenance": {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T15:05:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "served-at-this-window",
+      "state": "known",
+      "unit": "tokens"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "ternary-bonsai-2-27b-ptq1-0-rtx-pro-4500-blackwell-32gb-llama-cpp-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "/opt/llama/llama-server",
+      "--model",
+      "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+      "--mmproj",
+      "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf",
+      "--alias",
+      "Ternary-Bonsai-2-27B-PTQ1_0",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8080",
+      "--ctx-size",
+      "131072",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--n-gpu-layers",
+      "99",
+      "--jinja"
+    ],
+    "container": {
+      "captured_at": "2026-09-22T15:05:00Z",
+      "compose_file": null,
+      "digest": "sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+      "image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T15:05:00Z",
+          "kind": "campaign-artifact",
+          "repository": "0xSero/inference-index",
+          "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/startup.log"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8080,
+    "entrypoint": "/opt/llama/llama-server",
+    "environment": {},
+    "host_port": 8080,
+    "image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T15:05:00Z",
+      "harness": "inference-index omp_run.py accept",
+      "served_model_id": "Ternary-Bonsai-2-27B-PTQ1_0"
+    },
+    "campaign": "omp-cheap-gpu-2026-09-18",
+    "lab": {
+      "backend": "cuda",
+      "hardware_label": "NVIDIA RTX PRO 4500 Blackwell",
+      "host": "RunPod SECURE, 32623 MiB, driver 580.126.20",
+      "notes": "Protocol-v2 sweep, 4 of 6 planned cells measured; the two 131072 concurrency cells returned HTTP 500. The ternary MoE is cheap in weights (6.58 GB) and expensive in decode, and llama.cpp scales it poorly with concurrency: 36.5 -> 12.4 -> 4.6 tok/s from c1 to c4 at 32768, and 14.1 tok/s at 131072 c1 with a 207 s TTFT.",
+      "sweep_tok_s": {
+        "131072/c1": {
+          "decode": 14.143,
+          "prefill": 630.126
+        },
+        "32768/c1": {
+          "decode": 36.512,
+          "prefill": 909.232
+        },
+        "32768/c2": {
+          "decode": 12.41,
+          "prefill": 577.602
+        },
+        "32768/c4": {
+          "decode": 4.62,
+          "prefill": 491.833
+        }
+      }
+    },
+    "row": "Ternary-Bonsai-2-27B PTQ1_0, briefed 8 GB tier"
+  },
+  "model_instance_id": "prism-ml-ternary-bonsai-2-27b-gguf--ptq1-0",
+  "provenance": {
+    "captured_at": "2026-09-22T15:05:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "kind": "campaign-acceptance",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/acceptance.json"
+      },
+      {
+        "captured_at": "2026-09-22T15:05:00Z",
+        "kind": "campaign-sweep",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ternary-bonsai/sweep/manifest.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
