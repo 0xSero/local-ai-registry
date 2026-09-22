@@ -6,40 +6,6 @@
     "vision": true
   },
   "description": "Candidate (MTP campaign 2026-09-22): moved from the upstream tabbyapi:cu13 image to the attested tabbyapi-exl3 (ExLlamaV3 1.5.1, digest 0f83e619); MTP drafting was already on. Pending acceptance on the card.",
-  "draft_launch": {
-    "accelerator_backend": "nvidia",
-    "arguments": [
-      "main.py",
-      "--config",
-      "/app/config.yml"
-    ],
-    "container_port": 5000,
-    "entrypoint": "/opt/venv/bin/python3",
-    "environment": {
-      "NVIDIA_VISIBLE_DEVICES": "all"
-    },
-    "host_port": 5000,
-    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
-    "kind": "docker",
-    "mounts": [
-      {
-        "read_only": true,
-        "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
-        "target": "/workspace/models"
-      },
-      {
-        "read_only": true,
-        "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
-        "target": "/app/config.yml"
-      }
-    ],
-    "shm_size": "8g",
-    "synthesized": {
-      "generated_at": "2026-09-22T17:44:53Z",
-      "image_provenance": "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1",
-      "template": "mtp-campaign-v1"
-    }
-  },
   "engine": {
     "graph_mode": "piecewise",
     "name": "tabbyapi",
@@ -121,31 +87,70 @@
   "hardware_id": "rtx-4090-24gb",
   "id": "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1",
   "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "main.py",
+      "--config",
+      "/app/config.yml"
+    ],
+    "asset_ids": [
+      "qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config"
+    ],
     "container": {
-      "captured_at": "2026-09-22T17:44:53Z",
+      "captured_at": "2026-09-22T21:43:05.081645Z",
       "compose_file": null,
-      "digest": null,
-      "image": null,
-      "reason": "draft-pending-acceptance",
-      "runtime": null,
+      "digest": "sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+      "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-22T17:44:53Z",
-          "kind": "normalized-recipe",
+          "captured_at": "2026-09-22T21:43:05.081645Z",
+          "kind": "acceptance-run",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
       ],
-      "state": "none"
+      "state": "digest-pinned"
     },
-    "kind": "reference"
-  },
-  "metadata": {
-    "image_provenance": {
+    "container_port": 5000,
+    "entrypoint": "/opt/venv/bin/python3",
+    "environment": {
+      "NVIDIA_VISIBLE_DEVICES": "all"
+    },
+    "host_port": 5000,
+    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
+        "target": "/workspace/models"
+      },
+      {
+        "read_only": true,
+        "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
+        "target": "/app/config.yml"
+      }
+    ],
+    "provenance": {
       "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/825ff04535dfb9633ab08e1ac97b60fc5895fb76/tabbyapi-exl3/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35754016842"
+    },
+    "shm_size": "8g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T21:43:05.081645Z",
+      "apis": [
+        "chat",
+        "messages",
+        "responses"
+      ],
+      "harness": "validate_rented.py on vast RTX 4090 (weights and config materialized in-container in place of the bind mounts)",
+      "served_model_id": "Qwen3.8-27B-EXL3-SC4bpw-H5"
     },
     "mtp_campaign": {
       "change": "moved from the upstream tabbyapi:cu13 image to the attested tabbyapi-exl3 (ExLlamaV3 1.5.1, digest 0f83e619); MTP drafting was already on",
@@ -274,6 +279,7 @@
     ]
   },
   "recipe_source": "0xsero",
+  "recommended": true,
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": 263168,
@@ -281,6 +287,8 @@
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
-  "speed_sweep_ids": [],
-  "status": "candidate"
+  "speed_sweep_ids": [
+    "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1-acceptance"
+  ],
+  "status": "validated"
 }
