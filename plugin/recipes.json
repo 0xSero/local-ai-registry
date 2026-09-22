@@ -18,7 +18,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T22:07:00Z",
+  "generatedAt": "2026-09-22T22:15:42Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -4483,7 +4483,81 @@
         "weights": {
           "subdir": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": null,
+            "tools": null,
+            "vision": false
+          },
+          "engine": "tabbyapi",
+          "id": "qwen359b-exl3-4bpw-rtx5070ti-tabbyapi-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "main.py",
+              "--config",
+              "/app/config.yml"
+            ],
+            "capAdd": [],
+            "containerPort": 5000,
+            "devices": [],
+            "entrypoint": "/opt/venv/bin/python3",
+            "environment": {
+              "NVIDIA_VISIBLE_DEVICES": "all"
+            },
+            "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-6hb-4bpw",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml",
+                "target": "/app/config.yml"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "535.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "4 bpw, 6-bit head (6hb)",
+            "repository": "TheMelonGod/Qwen3.5-9B-exl3",
+            "revision": "e98453aa143a24fab9eb14b718daed02e2fa6eef",
+            "servedName": "Qwen3.5-9B-EXL3-6hb-4bpw",
+            "sizeGb": 6.83
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 262144,
+            "kvTokens": 262144
+          },
+          "speed": {
+            "tps": 171
+          },
+          "validated": {
+            "acceptedAt": "2026-09-22T22:24:30.043981Z",
+            "harness": "validate_rented.py on vast RTX 5070 Ti (weights and config materialized in-container in place of the bind mounts)"
+          },
+          "weights": {
+            "subdir": "Qwen3.5-9B-EXL3-6hb-4bpw"
+          }
+        }
+      ]
     },
     "rtx-5080-16gb": {
       "match": {
@@ -6291,6 +6365,6 @@
       }
     }
   },
-  "registryCommit": "4553483cadebbdc8fabe219da07fe4631499ff2c",
+  "registryCommit": "a840e7005b6425e4ee32f5bb890053632287f449",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
