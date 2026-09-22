@@ -15,7 +15,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T21:01:35Z",
+  "generatedAt": "2026-09-22T21:06:07Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -3694,6 +3694,88 @@
         }
       }
     },
+    "rtx-5060-ti-16gb": {
+      "match": {
+        "backend": "nvidia",
+        "name": "GeForce RTX 5060 Ti",
+        "names": [
+          "rtx5060ti"
+        ],
+        "vramGb": 16
+      },
+      "recipe": {
+        "capabilities": {
+          "chat": true,
+          "reasoning": true,
+          "tools": true,
+          "vision": true
+        },
+        "engine": "tabbyapi",
+        "id": "qwen3827b-exl3-sc3bpw-v4-rtx5060ti-tabbyapi-tp1",
+        "image": {
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+          "provenance": "self-built-attested"
+        },
+        "launch": {
+          "arguments": [
+            "main.py",
+            "--config",
+            "/app/config.yml"
+          ],
+          "capAdd": [],
+          "containerPort": 5000,
+          "devices": [],
+          "entrypoint": "/opt/venv/bin/python3",
+          "environment": {
+            "NVIDIA_VISIBLE_DEVICES": "all"
+          },
+          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+          "ipc": null,
+          "kind": "docker",
+          "mounts": [
+            {
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc3bpw-h4-v4",
+              "target": "/workspace/models"
+            },
+            {
+              "read_only": true,
+              "source": "asset/qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config.yml",
+              "target": "/app/config.yml"
+            }
+          ],
+          "networkMode": null,
+          "securityOpt": [],
+          "shm": "8g"
+        },
+        "minDriver": "535.0",
+        "minEngine": "",
+        "model": {
+          "id": "qwen3-8-27b",
+          "name": "Qwen3.8-27B",
+          "precision": "SC 3.00bpw H4 V4",
+          "repository": "turboderp/Qwen3.8-27B-exl3",
+          "revision": "004a887127d8304ca2d5475d3a3c41f1761fdd27",
+          "servedName": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4",
+          "sizeGb": 12.12
+        },
+        "serving": {
+          "concurrency": 2,
+          "ctxTokens": 131072,
+          "kvTokens": 132096
+        },
+        "speed": {
+          "tps": 39
+        },
+        "validated": {
+          "acceptedAt": "2026-09-22T21:07:35.580629Z",
+          "harness": "validate_rented.py on vast RTX 5060 Ti (weights and config materialized in-container in place of the bind mounts)"
+        },
+        "weights": {
+          "subdir": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4"
+        }
+      }
+    },
     "rtx-5060-ti-8gb": {
       "match": {
         "backend": "nvidia",
@@ -5284,6 +5366,6 @@
       }
     }
   },
-  "registryCommit": "5106fd040bf5bd5a0c1a4e7cbf392f6873698693",
+  "registryCommit": "fb0b57a2cfbf59447752b953263ffc3f5105d8ca",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
