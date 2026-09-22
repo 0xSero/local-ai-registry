@@ -18,7 +18,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T21:48:48Z",
+  "generatedAt": "2026-09-22T21:54:54Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -4579,93 +4579,73 @@
       "recipe": {
         "capabilities": {
           "chat": true,
-          "reasoning": false,
-          "tools": false,
-          "vision": false
+          "reasoning": true,
+          "tools": true,
+          "vision": true
         },
-        "engine": "sglang",
-        "id": "lfm25-26b-bf16-rtx5090-sglang-tp1",
+        "engine": "tabbyapi",
+        "id": "qwen3827b-exl3-sc5bpw-v6-rtx5090-tabbyapi-tp1",
         "image": {
-          "attestation": null,
-          "provenance": "upstream-published"
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+          "provenance": "self-built-attested"
         },
         "launch": {
           "arguments": [
-            "-m",
-            "sglang.launch_server",
-            "--model-path",
-            "LiquidAI/LFM2.5-2.6B",
-            "--revision",
-            "a334ee78cd38458bb71eda24109ac42dcec1309d",
-            "--host",
-            "0.0.0.0",
-            "--port",
-            "30000",
-            "--tp",
-            "1",
-            "--context-length",
-            "131072",
-            "--mem-fraction-static",
-            "0.874",
-            "--attention-backend",
-            "flashinfer",
-            "--max-running-requests",
-            "4",
-            "--cuda-graph-max-bs-decode",
-            "4",
-            "--enable-cache-report",
-            "--trust-remote-code",
-            "--reasoning-parser",
-            "qwen3-thinking",
-            "--tool-call-parser",
-            "lfm2"
+            "main.py",
+            "--config",
+            "/app/config.yml"
           ],
           "capAdd": [],
-          "containerPort": 30000,
+          "containerPort": 5000,
           "devices": [],
-          "entrypoint": "/opt/sglang/bin/python",
+          "entrypoint": "/opt/venv/bin/python3",
           "environment": {
-            "HF_HOME": "/root/.cache/huggingface"
+            "NVIDIA_VISIBLE_DEVICES": "all"
           },
-          "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
           "ipc": null,
           "kind": "docker",
           "mounts": [
             {
-              "read_only": false,
-              "source": "~/.cache/huggingface",
-              "target": "/root/.cache/huggingface"
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc5bpw-h6-v6",
+              "target": "/workspace/models"
+            },
+            {
+              "read_only": true,
+              "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml",
+              "target": "/app/config.yml"
             }
           ],
-          "networkMode": "bridge",
+          "networkMode": null,
           "securityOpt": [],
-          "shm": "16g"
+          "shm": "8g"
         },
-        "minDriver": "575.0",
+        "minDriver": "535.0",
         "minEngine": "",
         "model": {
-          "id": "lfm2-5-2-6b",
-          "name": "LFM2.5-2.6B",
-          "precision": "BF16",
-          "repository": "LiquidAI/LFM2.5-2.6B",
-          "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
-          "servedName": "LiquidAI/LFM2.5-2.6B",
-          "sizeGb": 5.024
+          "id": "qwen3-8-27b",
+          "name": "Qwen3.8-27B",
+          "precision": "SC 5.00bpw H6 V6",
+          "repository": "turboderp/Qwen3.8-27B-exl3",
+          "revision": "f33f26d929e2b20ef21361145d582f5239e3831f",
+          "servedName": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6",
+          "sizeGb": 18.24
         },
         "serving": {
           "concurrency": 4,
-          "ctxTokens": 131072,
-          "kvTokens": 731831
+          "ctxTokens": 262144,
+          "kvTokens": 263168
         },
         "speed": {
-          "tps": 0
+          "tps": 117
         },
         "validated": {
-          "acceptedAt": null,
-          "harness": null
+          "acceptedAt": "2026-09-22T21:59:17.662613Z",
+          "harness": "validate_rented.py on vast RTX 5090 (weights and config materialized in-container in place of the bind mounts)"
         },
         "weights": {
-          "subdir": ""
+          "subdir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
         }
       },
       "recipes": [
@@ -4728,6 +4708,98 @@
             "concurrency": 1,
             "ctxTokens": 131072,
             "kvTokens": 133368
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx5090-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.874",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "devices": [],
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "minEngine": "",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 731831
           },
           "speed": {
             "tps": 0
@@ -6035,6 +6107,6 @@
       }
     }
   },
-  "registryCommit": "40a4390a5a0fb1080622f73e83ff4ec73c5a86fe",
+  "registryCommit": "4ea57df31d4fe3ecdd3a8b6ad46357e25387361f",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
