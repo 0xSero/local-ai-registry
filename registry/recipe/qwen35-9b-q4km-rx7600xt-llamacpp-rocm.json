@@ -6,7 +6,16 @@
     "vision": null
   },
   "description": "Candidate RX 7600 XT (gfx1102) llama.cpp ROCm launch for Qwen3.5-9B Q4_K_M, cloned from the RX 6800 XT contract with HSA_OVERRIDE_GFX_VERSION=11.0.0. Evidence is not copied. Pending registry acceptance on the target card.",
-  "draft_launch": {
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b10884 (434ddbbc0)"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rx-7600-xt-16gb",
+  "id": "qwen35-9b-q4km-rx7600xt-llamacpp-rocm",
+  "launch": {
     "accelerator_backend": "amd-rocm",
     "arguments": [
       "-m",
@@ -27,6 +36,22 @@
       "--parallel",
       "1"
     ],
+    "container": {
+      "captured_at": "2026-09-22T13:29:16.589211Z",
+      "compose_file": null,
+      "digest": "sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+      "image": "ghcr.io/ggml-org/llama.cpp@sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T13:29:16.589211Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
     "container_port": 8080,
     "entrypoint": null,
     "environment": {
@@ -42,42 +67,14 @@
         "target": "/models"
       }
     ],
-    "shm_size": "8g",
-    "synthesized": {
-      "generated_at": "2026-09-22T13:19:00Z",
-      "image_provenance": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm",
-      "template": "clone-candidate-v1"
-    }
-  },
-  "engine": {
-    "graph_mode": null,
-    "name": "llama.cpp",
-    "version": "b10884 (434ddbbc0)"
-  },
-  "facts": {},
-  "hardware_count": 1,
-  "hardware_id": "rx-7600-xt-16gb",
-  "id": "qwen35-9b-q4km-rx7600xt-llamacpp-rocm",
-  "launch": {
-    "container": {
-      "captured_at": "2026-09-22T13:19:00Z",
-      "compose_file": null,
-      "digest": null,
-      "image": null,
-      "reason": "draft-pending-acceptance",
-      "runtime": null,
-      "source": [
-        {
-          "captured_at": "2026-09-22T13:19:00Z",
-          "kind": "normalized-recipe",
-          "url": "https://github.com/0xSero/local-ai-registry"
-        }
-      ],
-      "state": "none"
-    },
-    "kind": "reference"
+    "shm_size": "8g"
   },
   "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T13:29:16.589211Z",
+      "harness": "AMD Radeon RX 7600 XT gfx1102 local ROCm",
+      "served_model_id": "/models/Qwen3.5-9B-Q4_K_M.gguf"
+    },
     "derived_from": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm"
   },
   "model_instance_id": "unsloth-qwen3-5-9b-gguf-qwen3-5-9b-q4-k-m-gguf--q4-k-m",
@@ -92,6 +89,7 @@
     ]
   },
   "recipe_source": "0xsero",
+  "recommended": true,
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_tokens": null,
@@ -99,6 +97,8 @@
     "max_context_tokens": 65536,
     "tensor_parallel": 1
   },
-  "speed_sweep_ids": [],
-  "status": "candidate"
+  "speed_sweep_ids": [
+    "qwen35-9b-q4km-rx7600xt-llamacpp-rocm-acceptance"
+  ],
+  "status": "validated"
 }
