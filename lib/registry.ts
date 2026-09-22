@@ -394,7 +394,7 @@ function assetManifests(recipe: Recipe): AssetManifest[] {
 export function dockerCommand(recipe: Recipe): string | null {
   const launch = recipe.launch as Record<string, unknown>
   if (recipe.status !== "validated" || launch.kind !== "docker") return null
-  const quote = (part: string) => (/[\s"'$;|&<>()]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
+  const quote = (part: string) => (part === "" || /[\s"'`$;|&<>()\\*?\[\]#{}]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
   const manifests = assetManifests(recipe)
   const byFile = new Map(manifests.map((manifest) => [manifest.file, manifest]))
 

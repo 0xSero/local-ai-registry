@@ -96,6 +96,20 @@ test("synthesized draft entrypoints preserve executable and argv boundaries", ()
   }
 })
 
+test("Docker commands preserve literal argument values through the shell", () => {
+  const recipe = JSON.parse(
+    readFileSync("registry/recipe/qwen38-q4km-arcb70-llamacpp-tp2.json", "utf8"),
+  ) as Parameters<typeof dockerCommand>[0]
+  const arguments_ = ["", "*", "test/?.ts", "[abc]", "#comment", "`true`", "back\\slash", "two words", "it's literal"]
+  recipe.launch = { ...recipe.launch, arguments: arguments_, mounts: [], asset_ids: [] }
+  const command = dockerCommand(recipe)
+  assert.ok(command)
+  // Capture argv using a shell function; no Docker process or model is started.
+  const output = execFileSync("/bin/sh", ["-c", `docker() { printf '%s\\0' "$@"; }\n${command}`])
+  const actual = output.toString().split("\0").slice(0, -1)
+  assert.deepEqual(actual.slice(-arguments_.length), arguments_)
+})
+
 test("GLM-5.3 selective EXL3 distinguishes measured TP4 and PP3 from blocked TP3 and TP2", () => {
   const fourGpu = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-tp4")
   const threeGpuPp = getEntityDetail("recipes", "glm53-flash-exl3-q4-rtxpro6000-sglang-pp3")
