@@ -55,8 +55,14 @@ jobs:
 
       - name: Plugin export preserves multi-GPU recipes and context
         run: python3 scripts/test_export_plugin_recipes.py
-      - name: plugin/recipes.json is current (the plugin fetches it from this branch)
-        run: python3 scripts/check_plugin_catalog.py
+      - name: plugin/recipes.json is current (plugin 5.x fetches it from this branch)
+        run: python3 scripts/check_plugin_catalog.py 1
+
+      - name: Schema-2 export expresses only what a launch consumes
+        run: python3 scripts/test_export_plugin_v2.py
+
+      - name: plugin/v2/recipes.json is current (plugin 6.x vendors it)
+        run: python3 scripts/check_plugin_catalog.py 2
 
       - name: index shards match the records they summarize
         run: |
