@@ -3,11 +3,26 @@
 # All Python scripts are stdlib-only (Python >= 3.10). Node is needed for
 # tests, typecheck, and the site. `make check` is what CI runs.
 
-.PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check test typecheck build py-tests trust
+.PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check test typecheck build py-tests trust price-visual price-visual-check weekly-prices
 
 ## The full verification suite — identical to CI.
-check: format-check validate plugin-gate test typecheck types-check index-check
+check: format-check validate plugin-gate test typecheck types-check index-check price-visual-check
 	python3 -m unittest discover -s scripts -p 'test_*.py'
+
+## Rebuild the price-history visual from the registry records. The payload is a
+## pure function of registry/price/, so this needs no scrape dump and no network.
+price-visual:
+	python3 scripts/build_price_history_data.py
+	python3 scripts/gen_price_history_visual.py
+
+price-visual-check: price-visual
+	git diff --exit-code docs/visuals/gpu-price-history.html
+
+## Weekly price accumulation: scrape both sources, verify, import, enrich, index,
+## validate, then rebuild the visual. Needs Playwright and a US egress for the
+## Micro Center scrape; see scripts/README.md.
+weekly-prices:
+	bash scripts/weekly_prices.sh
 
 ## Derive `status` (validated/candidate) from evidence and rewrite it. validate refuses any drift.
 trust:

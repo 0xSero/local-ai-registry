@@ -152,6 +152,36 @@ python3 scripts/curate_registry.py --index-only
 python3 scripts/validate_registry.py
 ```
 
+To refresh Micro Center GPU prices, scrape the category through a US egress and map it onto the registry contract. microcenter.com rejects non-US IPs and challenges a datacenter IP with Cloudflare, so `scrape_microcenter_prices.py` opens a SOCKS tunnel to a US host and drives a headed consumer browser through it, then fetches every listing page from inside that cleared session. `fetch_microcenter_prices.py` only maps the scrape onto the registry, keeps prior observations for the same product, and leaves GPUs the hardware collection does not describe unimported and reported:
+
+```bash
+python3 scripts/scrape_microcenter_prices.py --stores all --out out
+python3 scripts/verify_microcenter_scrape.py out/latest.json
+python3 scripts/fetch_microcenter_prices.py out/latest.json
+python3 scripts/import_market_snapshot.py cache/microcenter-prices.json
+python3 scripts/enrich_hardware_prices.py
+python3 scripts/curate_registry.py --index-only
+python3 scripts/validate_registry.py
+```
+
+`enrich_hardware_prices.py` runs after the index rebuild because a full `curate_registry.py` rewrites hardware records from its source tables and would drop the commercial summaries it derives.
+
+Geizhals publishes the only year-deep GPU price history this registry can reach: its per-product "Preisentwicklung" series runs from product launch, daily, in EUR. That series comes from a public JSON endpoint behind a Cloudflare challenge, so `scrape_geizhals_history.py` clears the challenge once in a headed browser and reuses that session for every call; `fetch_geizhals_history.py` maps each daily point onto the registry product for its GPU SKU, keeps the observations already recorded for that product and region, and reports products the hardware collection does not describe instead of inventing them:
+
+```bash
+python3 scripts/scrape_geizhals_history.py --match 5090 --days 9999 --pages 2 --limit 40
+python3 scripts/fetch_geizhals_history.py out/geizhals-history-*.json
+python3 scripts/import_market_snapshot.py cache/geizhals-history.json
+python3 scripts/curate_registry.py --index-only
+python3 scripts/validate_registry.py
+```
+
+A Geizhals point is the lowest offer it tracked that day, so it becomes one `new`, in-stock DE observation with no quantity, and days with no tracked offer are absent rather than zero-priced. Every observation keeps its own timestamp, so re-importing the same dump adds nothing, a listing that holds its price still records a new point on a later run, and no prior observation is dropped.
+
+Both sources accumulate on a weekly schedule, which is the only way a Micro Center series can exist at all: `make weekly-prices` runs the whole chain — scrape, verify, map, import, enrich, rebuild the index, validate — and then rebuilds the visual.
+
+The visual is [`docs/visuals/gpu-price-history.html`](docs/visuals/gpu-price-history.html), published with the docs site. Every number on it is recomputed from `registry/price/` alone: `make price-visual` rebuilds the payload and the page, and `make price-visual-check` regenerates it and requires no diff, so the page cannot drift from the records.
+
 Benchmark scores are reported measurements from public leaderboards. They never attach to recipes or affect launch validation; a leaderboard row proves what was reported for a model variant, not that a local run reproduces it.
 
 The validator checks IDs, references, counts, status boundaries, pinned validated artifacts, positive evidence values, and the CUDA-graph policy. `curate_registry.py` is deterministic and rebuilds the compact index after data changes.
