@@ -53,15 +53,32 @@ def known_fact(reason: str, observation: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--registry", type=Path, default=Path("registry"))
-    parser.add_argument("--max-age-days", type=int, default=7)
-    args = parser.parse_args()
+def fact_captured_at(record: dict[str, Any], key: str) -> dt.datetime | None:
+    fact = (record.get("facts") or {}).get(key)
+    if not isinstance(fact, dict):
+        return None
+    return parse_time((fact.get("provenance") or {}).get("captured_at"))
 
+
+def refresh_needed(
+    current: Any, recorded_at: dt.datetime | None, observed_at: dt.datetime | None
+) -> bool:
+    """Refresh a current value when it is unset or the fresh observation is newer.
+
+    Only refreshing when the value is null would freeze the first observation ever
+    seen as the current price, so a newer in-stock observation replaces it while
+    older evidence never does.
+    """
+    if current is None or recorded_at is None:
+        return True
+    return observed_at is not None and observed_at > recorded_at
+
+
+def enrich(registry: Path, max_age_days: int) -> tuple[int, ...]:
+    """Roll fresh exact US observations into hardware commercial summaries."""
     now = dt.datetime.now(dt.timezone.utc)
     candidates: dict[str, list[dict[str, Any]]] = {}
-    for price_path in sorted((args.registry / "price").glob("*/us.json")):
+    for price_path in sorted((registry / "price").glob("*/us.json")):
         price = load(price_path)
         hardware_refs = [
             item for item in (price.get("hardware") or []) if isinstance(item, dict)
@@ -73,7 +90,7 @@ def main() -> int:
             hardware_id = hardware_ref.get("id")
             if not isinstance(hardware_id, str):
                 continue
-            hardware_path = args.registry / "hardware" / f"{hardware_id}.json"
+            hardware_path = registry / "hardware" / f"{hardware_id}.json"
             if hardware_path.exists():
                 hardware_records.append((hardware_id, load(hardware_path)))
 
@@ -99,7 +116,7 @@ def main() -> int:
                 or not isinstance(observation.get("url"), str)
                 or not observation["url"].startswith("https://")
                 or observed_at is None
-                or now - observed_at > dt.timedelta(days=args.max_age_days)
+                or now - observed_at > dt.timedelta(days=max_age_days)
             ):
                 continue
 
@@ -122,7 +139,7 @@ def main() -> int:
 
     files_updated = street_prices = system_prices = stocks = availability = price_rows = 0
     for hardware_id, observations in sorted(candidates.items()):
-        hardware_path = args.registry / "hardware" / f"{hardware_id}.json"
+        hardware_path = registry / "hardware" / f"{hardware_id}.json"
         if not hardware_path.exists():
             continue
         record = load(hardware_path)
@@ -130,10 +147,15 @@ def main() -> int:
         if not isinstance(commercial, dict):
             continue
         observation = min(observations, key=lambda item: item["amount"])
+        observed_at = parse_time(observation["observed_at"])
         changed = False
         facts = record.setdefault("facts", {})
 
-        if "current_street_price" in commercial and commercial["current_street_price"] is None:
+        if "current_street_price" in commercial and refresh_needed(
+            commercial["current_street_price"],
+            fact_captured_at(record, "commercial.current_street_price"),
+            observed_at,
+        ):
             commercial["current_street_price"] = {
                 "amount": observation["amount"],
                 "currency": observation["currency"],
@@ -143,7 +165,11 @@ def main() -> int:
             )
             street_prices += 1
             changed = True
-        if "current_system_price" in commercial and commercial["current_system_price"] is None:
+        if "current_system_price" in commercial and refresh_needed(
+            commercial["current_system_price"],
+            fact_captured_at(record, "commercial.current_system_price"),
+            observed_at,
+        ):
             commercial["current_system_price"] = {
                 "amount": observation["amount"],
                 "currency": observation["currency"],
@@ -207,6 +233,29 @@ def main() -> int:
             save(hardware_path, record)
             files_updated += 1
 
+    return (
+        files_updated,
+        street_prices,
+        system_prices,
+        stocks,
+        availability,
+        price_rows,
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--registry", type=Path, default=Path("registry"))
+    parser.add_argument("--max-age-days", type=int, default=7)
+    args = parser.parse_args()
+    (
+        files_updated,
+        street_prices,
+        system_prices,
+        stocks,
+        availability,
+        price_rows,
+    ) = enrich(args.registry, args.max_age_days)
     print(
         f"hardware files updated: {files_updated}; current street prices: {street_prices}; "
         f"current system prices: {system_prices}; stock states: {stocks}; "
