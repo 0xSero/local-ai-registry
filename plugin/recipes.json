@@ -14,7 +14,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T20:31:50Z",
+  "generatedAt": "2026-09-22T20:42:01Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -3028,78 +3028,152 @@
       },
       "recipe": {
         "capabilities": {
-          "chat": null,
-          "reasoning": null,
-          "tools": null,
-          "vision": null
+          "chat": true,
+          "reasoning": true,
+          "tools": true,
+          "vision": true
         },
-        "engine": "llama.cpp",
-        "id": "qwen35-9b-q4km-rtx4080-llamacpp-tp1",
+        "engine": "tabbyapi",
+        "id": "qwen3827b-exl3-sc3bpw-v4-rtx4080-tabbyapi-tp1",
         "image": {
-          "attestation": null,
-          "provenance": "upstream"
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+          "provenance": "self-built-attested"
         },
         "launch": {
           "arguments": [
-            "-hf",
-            "unsloth/Qwen3.5-9B-GGUF",
-            "--n-gpu-layers",
-            "999",
-            "--host",
-            "0.0.0.0",
-            "--port",
-            "8080",
-            "-c",
-            "262144"
+            "main.py",
+            "--config",
+            "/app/config.yml"
           ],
           "capAdd": [],
-          "containerPort": 8080,
+          "containerPort": 5000,
           "devices": [],
-          "entrypoint": "/app/llama-server",
+          "entrypoint": "/opt/venv/bin/python3",
           "environment": {
-            "LLAMA_CACHE": "/root/.cache/huggingface"
+            "NVIDIA_VISIBLE_DEVICES": "all"
           },
-          "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
           "ipc": null,
           "kind": "docker",
           "mounts": [
             {
-              "read_only": false,
-              "source": "~/.cache/huggingface",
-              "target": "/root/.cache/huggingface"
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc3bpw-h4-v4",
+              "target": "/workspace/models"
+            },
+            {
+              "read_only": true,
+              "source": "asset/qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config.yml",
+              "target": "/app/config.yml"
             }
           ],
           "networkMode": null,
           "securityOpt": [],
-          "shm": "16g"
+          "shm": "8g"
         },
-        "minDriver": "570.0",
+        "minDriver": "535.0",
         "minEngine": "",
         "model": {
-          "id": "qwen3-5-9b",
-          "name": "Qwen3.5-9B",
-          "precision": "Q4_K_M",
-          "repository": "unsloth/Qwen3.5-9B-GGUF",
-          "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
-          "servedName": "Qwen3.5-9B-GGUF",
-          "sizeGb": 5.681
+          "id": "qwen3-8-27b",
+          "name": "Qwen3.8-27B",
+          "precision": "SC 3.00bpw H4 V4",
+          "repository": "turboderp/Qwen3.8-27B-exl3",
+          "revision": "004a887127d8304ca2d5475d3a3c41f1761fdd27",
+          "servedName": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4",
+          "sizeGb": 12.12
         },
         "serving": {
-          "concurrency": 0,
-          "ctxTokens": 262144,
-          "kvTokens": 0
+          "concurrency": 2,
+          "ctxTokens": 131072,
+          "kvTokens": 132096
         },
         "speed": {
-          "tps": 106
+          "tps": 56
         },
         "validated": {
-          "acceptedAt": "2026-09-03T11:16:42Z",
-          "harness": "validate_rented.py on vast RTX 4080"
+          "acceptedAt": "2026-09-22T20:49:17.607455Z",
+          "harness": "validate_rented.py on vast RTX 4080 (weights and config materialized in-container in place of the bind mounts)"
         },
         "weights": {
-          "subdir": ""
+          "subdir": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": null,
+            "reasoning": null,
+            "tools": null,
+            "vision": null
+          },
+          "engine": "llama.cpp",
+          "id": "qwen35-9b-q4km-rtx4080-llamacpp-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "-hf",
+              "unsloth/Qwen3.5-9B-GGUF",
+              "--n-gpu-layers",
+              "999",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8080",
+              "-c",
+              "262144"
+            ],
+            "capAdd": [],
+            "containerPort": 8080,
+            "devices": [],
+            "entrypoint": "/app/llama-server",
+            "environment": {
+              "LLAMA_CACHE": "/root/.cache/huggingface"
+            },
+            "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-5-9b",
+            "name": "Qwen3.5-9B",
+            "precision": "Q4_K_M",
+            "repository": "unsloth/Qwen3.5-9B-GGUF",
+            "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+            "servedName": "Qwen3.5-9B-GGUF",
+            "sizeGb": 5.681
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 262144,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 106
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T11:16:42Z",
+            "harness": "validate_rented.py on vast RTX 4080"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4080-super-16gb": {
       "match": {
@@ -4963,6 +5037,6 @@
       }
     }
   },
-  "registryCommit": "1456f4cbdd405c84a299f62a24d554974571eac5",
+  "registryCommit": "d4b94644fade54f989fefc6603f076a86e665bd1",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
