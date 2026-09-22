@@ -263,6 +263,7 @@ class Vast:
             raise SystemExit("vastai CLI not found: `uv tool install vastai` and put the key in ~/.config/vastai/vast_api_key")
         self.min_inet = args.vast_min_inet
         self.min_cuda = args.vast_min_cuda
+        self.max_price = args.vast_max_price
 
     @staticmethod
     def cli(*argv, timeout=120):
@@ -308,6 +309,7 @@ class Vast:
         # the attested tabbyapi-exl3). Older drivers cannot init the image (12.4 hosts fail llama.cpp too).
         query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={lo} "  # the <= side is applied below: the server reads it in MB
                  f"inet_down>={self.min_inet} disk_space>={spec.disk + 5} reliability>0.9 cuda_max_good>={self.min_cuda} "
+                 f"dph_total<={self.max_price} "  # the campaign ceiling; a card with no offer under it is reported, never rented above it
                  f"geolocation notin [CN]")  # hosts that cannot reach Hugging Face never finish the weights download
         offers = self.cli("search", "offers", query, "-o", "dph_total")
         offers = [o for o in offers if o.get("id") not in exclude and o.get("machine_id") not in exclude
@@ -511,6 +513,7 @@ def main():
     parser.add_argument("--gpu", help="provider GPU name; default from the recipe's hardware_id")
     parser.add_argument("--cloud", default="COMMUNITY", choices=["COMMUNITY", "SECURE"], help="runpod only")
     parser.add_argument("--vast-min-inet", type=int, default=500, help="vast only: minimum host downlink in Mbps")
+    parser.add_argument("--vast-max-price", type=float, default=1.0, help="vast only: maximum offer price in $/h (dph_total)")
     parser.add_argument("--vast-min-cuda", type=float, default=12.9,
                         help="vast only: minimum host CUDA (cuda_max_good); pass the image's NVIDIA_REQUIRE_CUDA floor, e.g. 13.2 for tabbyapi cu13")
     parser.add_argument("--disk", type=int, default=50, help="container disk in GB (image + weights)")
