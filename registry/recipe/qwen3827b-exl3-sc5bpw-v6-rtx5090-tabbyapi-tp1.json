@@ -1,11 +1,11 @@
 {
   "capabilities": {
     "chat": true,
-    "reasoning": null,
-    "tools": null,
-    "vision": false
+    "reasoning": true,
+    "tools": true,
+    "vision": true
   },
-  "description": "Candidate (MTP campaign 2026-09-22): attested tabbyapi-exl3 rebuilt on ExLlamaV3 1.5.1 (digest 0f83e619) and MTP drafting enabled in the config asset. Pending acceptance on the card.",
+  "description": "Candidate (MTP campaign 2026-09-22): Qwen3.8-27B-EXL3-SC5bpw-H6-V6 on one rtx-5090-32gb via TabbyAPI/ExLlamaV3 (attested tabbyapi-exl3, ExLlamaV3 1.5.1) with MTP drafting, vision and reasoning at 262144 tokens, Q4 cache; derived from qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1. Pending acceptance on the card.",
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
@@ -24,20 +24,20 @@
     "mounts": [
       {
         "read_only": true,
-        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-4bpw",
+        "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc5bpw-h6-v6",
         "target": "/workspace/models"
       },
       {
         "read_only": true,
-        "source": "asset/qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml",
+        "source": "asset/qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml",
         "target": "/app/config.yml"
       }
     ],
     "shm_size": "8g",
     "synthesized": {
       "generated_at": "2026-09-22T17:44:53Z",
-      "image_provenance": "qwen359b-exl3-4bpw-rtx2000ada-tabbyapi-tp1",
-      "template": "mtp-campaign-v1"
+      "image_provenance": "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1",
+      "template": "clone-candidate-v1"
     }
   },
   "engine": {
@@ -47,8 +47,8 @@
   },
   "facts": {},
   "hardware_count": 1,
-  "hardware_id": "rtx-2000-ada-16gb",
-  "id": "qwen359b-exl3-4bpw-rtx2000ada-tabbyapi-tp1",
+  "hardware_id": "rtx-5090-32gb",
+  "id": "qwen3827b-exl3-sc5bpw-v6-rtx5090-tabbyapi-tp1",
   "launch": {
     "container": {
       "captured_at": "2026-09-22T17:44:53Z",
@@ -69,6 +69,7 @@
     "kind": "reference"
   },
   "metadata": {
+    "derived_from": "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1",
     "image_provenance": {
       "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/825ff04535dfb9633ab08e1ac97b60fc5895fb76/tabbyapi-exl3/Dockerfile",
@@ -77,17 +78,17 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35754016842"
     },
     "mtp_campaign": {
-      "change": "attested tabbyapi-exl3 rebuilt on ExLlamaV3 1.5.1 (digest 0f83e619) and MTP drafting enabled in the config asset",
+      "change": "new candidate cloned from qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1",
       "changed_at": "2026-09-22T17:44:53Z"
     },
-    "weights_subdir": "Qwen3.5-9B-EXL3-4bpw"
+    "weights_subdir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
   },
-  "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
+  "model_instance_id": "turboderp-qwen3-8-27b-exl3--sc-5-00bpw-h6-v6",
   "provenance": {
-    "captured_at": "2026-09-02T22:33:55Z",
+    "captured_at": "2026-09-22T17:44:53Z",
     "sources": [
       {
-        "captured_at": "2026-09-02T22:33:55Z",
+        "captured_at": "2026-09-22T17:44:53Z",
         "kind": "normalized-recipe",
         "url": "https://github.com/0xSero/local-ai-registry"
       }
@@ -96,8 +97,8 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": 262144,
-    "max_concurrency": 2,
+    "kv_cache_tokens": 263168,
+    "max_concurrency": 4,
     "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
