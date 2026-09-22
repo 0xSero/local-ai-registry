@@ -18,7 +18,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T21:59:27Z",
+  "generatedAt": "2026-09-22T22:07:00Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -5675,7 +5675,7 @@
           "vision": false
         },
         "engine": "sglang",
-        "id": "lfm25-26b-bf16-rtxpro6000-sglang-tp1",
+        "id": "qwen38-27b-nvfp4-rtxpro6000-sglang-tp1",
         "image": {
           "attestation": null,
           "provenance": "upstream-published"
@@ -5685,11 +5685,19 @@
             "-m",
             "sglang.launch_server",
             "--model-path",
-            "LiquidAI/LFM2.5-2.6B",
+            "RadixArk/Qwen3.8-27B-NVFP4",
             "--revision",
-            "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "319f741cce68d7914884900c138a1fbb70a42f30",
             "--tp",
             "1",
+            "--speculative-algo",
+            "NEXTN",
+            "--speculative-num-steps",
+            "3",
+            "--speculative-eagle-topk",
+            "1",
+            "--speculative-num-draft-tokens",
+            "4",
             "--host",
             "0.0.0.0",
             "--port",
@@ -5697,7 +5705,7 @@
             "--context-length",
             "131072",
             "--mem-fraction-static",
-            "0.94",
+            "0.87",
             "--attention-backend",
             "flashinfer",
             "--kv-cache-dtype",
@@ -5709,9 +5717,9 @@
             "--enable-cache-report",
             "--trust-remote-code",
             "--reasoning-parser",
-            "qwen3-thinking",
+            "qwen3",
             "--tool-call-parser",
-            "lfm2"
+            "qwen3_coder"
           ],
           "capAdd": [],
           "containerPort": 30000,
@@ -5730,32 +5738,32 @@
               "target": "/root/.cache/huggingface"
             }
           ],
-          "networkMode": "bridge",
+          "networkMode": null,
           "securityOpt": [],
           "shm": "16g"
         },
         "minDriver": "575.0",
         "minEngine": "",
         "model": {
-          "id": "lfm2-5-2-6b",
-          "name": "LFM2.5-2.6B",
-          "precision": "BF16",
-          "repository": "LiquidAI/LFM2.5-2.6B",
-          "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
-          "servedName": "LiquidAI/LFM2.5-2.6B",
-          "sizeGb": 5.024
+          "id": "qwen3-8-27b",
+          "name": "Qwen3.8-27B",
+          "precision": "NVFP4",
+          "repository": "RadixArk/Qwen3.8-27B-NVFP4",
+          "revision": "319f741cce68d7914884900c138a1fbb70a42f30",
+          "servedName": "qwen3.8-27b",
+          "sizeGb": 20.4
         },
         "serving": {
           "concurrency": 4,
           "ctxTokens": 131072,
-          "kvTokens": 5724099
+          "kvTokens": 1068811
         },
         "speed": {
-          "tps": 0
+          "tps": 88
         },
         "validated": {
-          "acceptedAt": null,
-          "harness": null
+          "acceptedAt": "2026-09-22T22:15:32.331360Z",
+          "harness": "validate_rented.py on vast RTX PRO 6000 WS"
         },
         "weights": {
           "subdir": ""
@@ -5925,6 +5933,100 @@
           },
           "speed": {
             "tps": 769
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtxpro6000-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--tp",
+              "1",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.94",
+              "--attention-backend",
+              "flashinfer",
+              "--kv-cache-dtype",
+              "fp8_e4m3",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "devices": [],
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "minEngine": "",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "LiquidAI/LFM2.5-2.6B",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 131072,
+            "kvTokens": 5724099
+          },
+          "speed": {
+            "tps": 0
           },
           "validated": {
             "acceptedAt": null,
@@ -6189,6 +6291,6 @@
       }
     }
   },
-  "registryCommit": "f3fe1dbb91938892044b54c09633278964034e15",
+  "registryCommit": "4553483cadebbdc8fabe219da07fe4631499ff2c",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
