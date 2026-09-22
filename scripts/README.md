@@ -1,9 +1,10 @@
 # Registry scripts
 
-All scripts are **Python standard library only** (Python ≥ 3.10) — there is no
-dependency manifest because there are no dependencies. Run them from the
-repository root; each resolves `registry/` relative to the current directory
-(or takes a root as its first positional argument).
+Every script is **Python standard library only** (Python ≥ 3.10) — there is no
+dependency manifest because there are no dependencies — except the two scrapers
+that drive a browser (see the contract notes). Run scripts from the repository
+root; each resolves `registry/` relative to the current directory (or takes a root
+as its first positional argument).
 
 `make check` runs the same verification suite as CI.
 
@@ -15,6 +16,9 @@ pipeline before committing.
 
 | Step | Script | Reads | Writes |
 |---|---|---|---|
+| 0. Scrape | `scrape_microcenter_prices.py` | microcenter.com category pages (US egress) | `out/latest.json`, `out/run-<utc>.json`, `out/latest.csv` |
+| 0. Scrape | `scrape_geizhals_history.py` | geizhals.de `price_history` API | `out/geizhals-history-<utc>.json` |
+| 0. Scrape | `verify_microcenter_scrape.py` | a Micro Center scrape run | nothing — coverage, duplicate SKU and missing-price checks |
 | 1. Import | `import_localmaxxing.py` | LocalMaxxing snapshot | candidate recipes, instances (`launch.kind: reference`) |
 | 1. Import | `import_postgres_publication.py` | local.ai Postgres publication (see docs/PROVENANCE.md) | candidate recipes + speed-sweep |
 | 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
@@ -32,13 +36,26 @@ pipeline before committing.
 | 5. Format | `format_registry.py` | every `registry/**/*.json` | canonical form: 2-space indent, sorted keys (schemas keep hand order), raw UTF-8, trailing newline |
 | 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |
 | 6. Verify | `npm test` | records + schemas | nothing — ajv validates every record against `registry/schema/*.schema.json` |
+| 7. Visual | `build_price_history_data.py` | `registry/price/` | `cache/price-history-data.json` (every number the page shows) |
+| 7. Visual | `gen_price_history_visual.py` | that payload | `docs/visuals/gpu-price-history.html` |
 
 Standalone tool: `benchmark_openai_chat.py` measures prefill/decode of a
 running OpenAI-compatible endpoint (no hidden token caps) to produce
 speed-sweep evidence.
 
+Driver: `weekly_prices.sh` runs the whole price chain — scrape, verify, map,
+import, enrich, rebuild the index, validate, rebuild the visual. Committing the
+registry is left to review, not automated.
+
 ## Contract notes
 
+- **Two scrapers are not standard library only.** `scrape_microcenter_prices.py`
+  and `scrape_geizhals_history.py` drive a real browser through Playwright,
+  because both sites sit behind a Cloudflare challenge that a plain HTTP client
+  cannot clear. The Micro Center scrape additionally needs a US egress: the site
+  rejects non-US IPs outright and challenges a datacenter IP, so the scraper raises
+  its own SOCKS tunnel to a US host. They write only to the gitignored `out/`;
+  everything downstream of them is standard library only.
 - **Shape rules live in the JSON Schemas** (`registry/schema/`), enforced by
   ajv in `npm test`. `validate_registry.py` covers only what schemas cannot
   express. Change the schema first, then run `npm run gen:types` — `types.ts`

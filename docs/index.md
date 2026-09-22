@@ -23,6 +23,8 @@ The hard part of local inference is not downloading a model. A working setup is 
 
 ## See it
 
+[Price history](visuals/gpu-price-history): the GPU market behind the registry — five years of Geizhals DE candles, every tracked class, the Micro Center chain point, and where each series ends. Every number on it is regenerated from `registry/price/` by `make price-visual`.
+
 [Two-minute demo](https://github.com/0xSero/local-ai-registry/raw/main/plugin/media/demo.mp4): one click on the Omarchy bar loads the recommended recipe on an Arc Pro B70, then eight coding agents each take one step of the same fix on that local model.
 
 ## Where it is used

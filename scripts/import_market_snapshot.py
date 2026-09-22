@@ -292,8 +292,20 @@ def normalize(snapshot, hardware_ids):
         accepted = []
         rejected = 0
         seen = set()
-        for listing in sorted(listings, key=lambda row: (row["price"], row["retailer"], row["url"])):
-            key = (listing["retailer"], listing["url"], listing["condition"], listing["price"])
+        # The key carries the observation timestamp: a listing that keeps the same
+        # price is still a new observation on a later run, and collapsing those
+        # would erase the series instead of recording it.
+        for listing in sorted(
+            listings,
+            key=lambda row: (row["fetchedAt"], row["price"], row["retailer"], row["url"]),
+        ):
+            key = (
+                listing["retailer"],
+                listing["url"],
+                listing["condition"],
+                listing["price"],
+                listing["fetchedAt"],
+            )
             floor = medians.get(listing["condition"])
             if key in seen or (floor is not None and listing["price"] < floor * 0.3):
                 rejected += 1
@@ -372,8 +384,10 @@ def write_records(price_root, records, replace):
     for record in existing.values():
         product_root = price_root / record["product"]["id"]
         product_root.mkdir(parents=True, exist_ok=True)
+        # sort_keys matches format_registry.py, so an import leaves the tree
+        # canonical instead of needing a formatting pass afterwards.
         (product_root / f"{record['region']['code'].lower()}.json").write_text(
-            json.dumps(record, indent=2, ensure_ascii=False) + "\n"
+            json.dumps(record, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
         )
     return existing, removed_records, removed_observations
 
