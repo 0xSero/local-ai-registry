@@ -47,9 +47,14 @@ class RecommendationRankTests(unittest.TestCase):
         seeing = recipe(older, engine="tabbyapi", context=131072, vision=True)
         blind = recipe(newer, engine="tabbyapi", context=262144, vision=False)
         self.assertLess(rank(seeing, MODELS), rank(blind, MODELS))
-        self.assertLess(rank(recipe(older, engine="tabbyapi"), MODELS), rank(recipe(newer, engine="sglang", vision=True), MODELS))
+        self.assertLess(rank(recipe(older, engine="sglang"), MODELS), rank(recipe(newer, engine="tabbyapi", vision=True), MODELS))
         self.assertLess(rank(recipe(older), MODELS), rank(recipe(newer, model="fallback", vision=True), MODELS))
         self.assertEqual(rank(recipe(older), MODELS), rank(recipe(older, vision=None), MODELS))
+
+    def test_exl3_weights_precede_engine(self):
+        older, newer = "2026-09-10T00:00:00Z", "2026-09-11T00:00:00Z"
+        exl3 = dict(recipe(older, engine="tabbyapi"), model_instance_id="turboderp-qwen3-8-27b-exl3--4-bpw")
+        self.assertLess(rank(exl3, MODELS), rank(recipe(newer, engine="sglang"), MODELS))
 
     def test_tier_map_by_vram(self):
         self.assertEqual(tier_models(96), ["qwen3-8-27b", "qwen3-5-9b", "lfm2-5-2-6b"])

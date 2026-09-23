@@ -3,7 +3,7 @@
 # All Python scripts are stdlib-only (Python >= 3.10). Node is needed for
 # tests, typecheck, and the site. `make check` is what CI runs.
 
-.PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check test typecheck build py-tests trust price-visual price-visual-check weekly-prices
+.PHONY: check format index types validate plugin-gate plugin-recipes plugin-recipes-check supported test typecheck build py-tests trust price-visual price-visual-check weekly-prices
 
 ## The full verification suite — identical to CI.
 check: format-check validate plugin-gate test typecheck types-check index-check price-visual-check
@@ -68,6 +68,10 @@ plugin-recipes:
 
 plugin-recipes-check: plugin-recipes
 	git diff --exit-code plugin/recipes.json
+
+## supported/: one page per GPU the plugin catalog runs a model on; CI requires it current.
+supported:
+	python3 scripts/gen_supported.py
 
 ## Node test suite (includes ajv validation of every record).
 test:

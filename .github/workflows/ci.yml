@@ -64,6 +64,9 @@ jobs:
       - name: plugin/v2/recipes.json is current (plugin 6.x vendors it)
         run: python3 scripts/check_plugin_catalog.py 2
 
+      - name: supported/ matches the plugin catalog
+        run: python3 scripts/gen_supported.py --check
+
       - name: index shards match the records they summarize
         run: |
           python3 scripts/curate_registry.py --index-only

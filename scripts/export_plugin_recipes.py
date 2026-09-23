@@ -175,7 +175,9 @@ def served_name(recipe, instance):
         model_path = arguments[arguments.index("-m") + 1]
         if isinstance(model_path, str) and model_path.startswith("/"):
             return model_path
-    return instance.get("served_name") or instance.get("repository")
+    # An engine with its own naming (exl3xpu serves a fixed id): what the acceptance run saw /v1/models report.
+    measured = ((recipe.get("metadata") or {}).get("acceptance") or {}).get("served_model_id")
+    return measured or instance.get("served_name") or instance.get("repository")
 
 
 def flm_tag(recipe, instance):

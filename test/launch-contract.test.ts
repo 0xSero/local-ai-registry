@@ -53,7 +53,8 @@ test("every validated docker recipe passes the Omarchy launch gate", () => {
     for (const mount of launch.mounts ?? []) {
       const src = String(mount.source ?? "")
       assert.ok(!src.includes(".."), `${row.id}: mount traverses upward: ${src}`)
-      const isWeightsTarget = ["/model", "/models", "/workspace/models"].includes(mount.target)
+      const subdir = recipe.metadata?.weights_subdir
+      const isWeightsTarget = ["/model", "/models", "/workspace/models"].includes(mount.target) || (subdir && mount.target === `/models/${subdir}`)
       if (isWeightsTarget && !sawPrimary) {
         sawPrimary = true // provisioned from the model instance
       } else if (mount.read_only && src.startsWith("${MODEL_ROOT}/")) {
