@@ -26,7 +26,7 @@ Each one was tested on that exact card before it was listed; a card that is not 
 | [GeForce RTX 4070 Ti SUPER 16 GB](nvidia/rtx-4070-ti-super-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 63 tok/s |
 | [GeForce RTX 4080 16 GB](nvidia/rtx-4080-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 57 tok/s |
 | [GeForce RTX 4080 SUPER 16 GB](nvidia/rtx-4080-super-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 77 tok/s |
-| [GeForce RTX 4090 24 GB](nvidia/rtx-4090-24gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 256K | 86 tok/s |
+| [GeForce RTX 4090 24 GB](nvidia/rtx-4090-24gb.md) | Qwen3.8-27B | SGLang | 200K | 135 tok/s |
 | [GeForce RTX 5060 8 GB](nvidia/rtx-5060-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 5060 Ti 16 GB](nvidia/rtx-5060-ti-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 39 tok/s |
 | [GeForce RTX 5060 Ti 8 GB](nvidia/rtx-5060-ti-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
