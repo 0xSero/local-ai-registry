@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Qwen3.6-35B-A3B EXL3 3.00 bpw (head 5 bits) in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one RTX 3090: 256 routed experts on a grouped EXL3 expert kernel, fp8 KV cache, NEXTN MTP speculative decoding (3 steps, 4 draft tokens), vision, qwen3 reasoning and qwen3_coder tool parsers, shared-experts fusion off, 65536-token window (KV pool 102k tokens next to a desktop). Measured on the omarchy box with the desktop resident on the GPU (about 19 GiB usable): prose 221 / code 310 tok/s per stream at C1 with no prompt, prose 188 / code 265 at a 32k prompt (cold prefill 4.0k tok/s, TTFT 8.2 s), C2 aggregate 355 (prose) / 496 (code); coherence ladder OK to 63k tokens; 10-minute C2 soak at 32k passed. The 262144 window (2.5 GiB of fp8 KV) needs a bare card and is pending.",
+  "description": "Qwen3.6-35B-A3B EXL3 3.00 bpw in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one bare RTX 3090 24 GB: full 262,144-token window with fp8 KV (pool 406k tokens), NEXTN MTP speculative decoding (3 steps, 4 draft tokens) with a 32k hot-token draft head, vision, qwen3 reasoning and qwen3_coder tool parsers. Per-stream decode at C1: prose 252 / code 352 tok/s (thinking on up to 367), two streams 389 tok/s aggregate on prose; at a 32k prompt prose 214 / code 295 with 4.5k tok/s cold prefill. Coherence ladder OK to a 258k-token prompt (TTFT 172 s); 10-minute C2 soak at 32k passed. AWQ-INT4 of this model (25 GB) does not fit a 24 GB card.",
   "engine": {
     "graph_mode": "full decode CUDA graphs; prefill graphs off",
     "name": "sglang",
@@ -33,25 +33,24 @@
       "--served-model-name",
       "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
       "--context-length",
-      "65536",
+      "262144",
       "--mem-fraction-static",
-      "0.92",
+      "0.85",
       "--kv-cache-dtype",
       "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
       "--max-running-requests",
       "2",
       "--max-mamba-cache-size",
       "10",
-      "--mamba-ssm-dtype",
-      "bfloat16",
       "--cuda-graph-max-bs-decode",
       "2",
       "--disable-prefill-cuda-graph",
       "--chunked-prefill-size",
-      "1024",
-      "--max-prefill-tokens",
       "2048",
-      "--disable-shared-experts-fusion",
+      "--max-prefill-tokens",
+      "4096",
       "--reasoning-parser",
       "qwen3",
       "--tool-call-parser",
@@ -64,21 +63,22 @@
       "1",
       "--speculative-num-draft-tokens",
       "4",
-      "--log-level",
-      "info"
+      "--speculative-token-map",
+      "/opt/sglang-exl3/tokenmaps/qwen36_hot32k_v2.pt",
+      "--disable-shared-experts-fusion"
     ],
     "container": {
-      "captured_at": "2026-09-23T06:39:13Z",
+      "captured_at": "2026-09-23T10:40:28Z",
       "compose_file": null,
-      "digest": "sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
-      "image": "ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
+      "digest": "sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-23T06:39:13Z",
+          "captured_at": "2026-09-23T10:40:28Z",
           "kind": "release-image-workflow",
-          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
         }
       ],
       "state": "digest-pinned"
@@ -92,7 +92,7 @@
       "SGLANG_EXL3_MODEL_PATH": "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
     },
     "host_port": 30000,
-    "image": "ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
+    "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
     "ipc": null,
     "kind": "docker",
     "mounts": [
@@ -104,61 +104,67 @@
     ],
     "network_mode": "bridge",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3 -o 0xSero",
-      "captured_at": "2026-09-23T06:39:13Z",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8 -o 0xSero",
+      "captured_at": "2026-09-23T10:40:28Z",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/sglang-exl3/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
       "sources": [
         {
-          "captured_at": "2026-09-23T06:39:13Z",
+          "captured_at": "2026-09-23T10:40:28Z",
           "kind": "release-image-workflow",
-          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
         }
       ],
-      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
     },
     "shm_size": "16g"
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-23T06:39:13Z",
+      "accepted_at": "2026-09-23T10:40:28Z",
       "coherence_ladder": [
         {
           "level": 1024,
           "ok": true,
-          "prompt_tokens": 961,
-          "ttft_ms": 200.8
+          "prompt_tokens": 940,
+          "ttft_ms": 177.4
         },
         {
           "level": 4096,
           "ok": true,
-          "prompt_tokens": 3997,
-          "ttft_ms": 798.8
+          "prompt_tokens": 4026,
+          "ttft_ms": 733.3
         },
         {
           "level": 8192,
           "ok": true,
-          "prompt_tokens": 8127,
-          "ttft_ms": 1556.5
+          "prompt_tokens": 8067,
+          "ttft_ms": 1343.3
         },
         {
           "level": 16384,
           "ok": true,
-          "prompt_tokens": 16352,
-          "ttft_ms": 3407.2
+          "prompt_tokens": 16354,
+          "ttft_ms": 2954.1
         },
         {
           "level": 32768,
           "ok": true,
-          "prompt_tokens": 32712,
-          "ttft_ms": 7979.6
+          "prompt_tokens": 32672,
+          "ttft_ms": 6912.7
         },
         {
           "level": 131072,
           "ok": true,
-          "prompt_tokens": 63297,
-          "ttft_ms": 19816.2
+          "prompt_tokens": 131059,
+          "ttft_ms": 53540.6
+        },
+        {
+          "level": 258048,
+          "ok": true,
+          "prompt_tokens": 257971,
+          "ttft_ms": 172093.3
         }
       ],
       "failed_probes": [],
@@ -169,16 +175,16 @@
     "quantization": {
       "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
       "format": "exl3",
-      "kernel": "sglang-exl3 grouped EXL3 expert kernel for sm_86 (K=3 routed experts, parity PASS vs exllamav3 mgemm); dense K=5 layers and the K=5 lm_head on exllamav3_ext"
+      "kernel": "sglang-exl3: grouped EXL3 expert kernel (K=3 routed experts) and Marlin-template dense kernels (K=5), decoded weights bit-identical to exllamav3; K=5 lm_head on exllamav3_ext; MTP draft on a 32k hot-token bf16 head"
     },
     "weights_subdir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
   },
   "model_instance_id": "yeasah-qwen3-6-35b-a3b-exl3--3-00bpw-h5",
   "provenance": {
-    "captured_at": "2026-09-23T06:39:13Z",
+    "captured_at": "2026-09-23T10:40:28Z",
     "sources": [
       {
-        "captured_at": "2026-09-23T06:39:13Z",
+        "captured_at": "2026-09-23T10:40:28Z",
         "kind": "normalized-recipe",
         "url": "https://github.com/0xSero/local-ai-registry"
       }
@@ -189,9 +195,9 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_dtype": "fp8_e4m3",
-    "kv_cache_tokens": 102494,
-    "max_concurrency": 2,
-    "max_context_tokens": 65536,
+    "kv_cache_tokens": 406145,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [

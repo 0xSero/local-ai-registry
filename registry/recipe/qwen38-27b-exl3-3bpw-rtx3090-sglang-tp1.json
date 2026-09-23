@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Qwen3.8-27B EXL3 3.0 bpw in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one RTX 3090: fp8 KV cache, NEXTN MTP speculative decoding (3 steps, 4 draft tokens), vision, qwen3 reasoning and qwen3_coder tool parsers, 65536-token window (KV pool 44k tokens next to a desktop). Measured on the omarchy box with the desktop resident on the GPU (about 19 GiB usable): prose 89 / code 135 tok/s per stream at C1 with no prompt, prose 78 / code 112 at a 32k prompt (cold prefill 915 tok/s), 10-minute C2 soak at 32k passed; coherence ladder OK to 61k tokens. AWQ-INT4 in the same engine on a bare 3090 (prior validated recipe, no draft): 45 tok/s. The 262144 window and a same-day AWQ comparison need a bare card and are pending.",
+  "description": "Qwen3.8-27B EXL3 3.0 bpw in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one bare RTX 3090 24 GB: full 262,144-token window with fp8 KV (pool 272k tokens; the 2.4 GB bf16 token embedding lives in pinned host memory, SGLANG_EXL3_EMBED_HOST=1), NEXTN MTP speculative decoding (3 steps, 4 draft tokens) with a 32k hot-token draft head, vision, qwen3 reasoning and qwen3_coder tool parsers. Per-stream decode at C1: prose 98 / code 147 tok/s (thinking on 145), at a 32k prompt prose 83 / code 118 with 905 tok/s cold prefill. Coherence ladder OK to a 258k-token prompt (TTFT 543 s); 10-minute soak at 32k passed. AWQ-INT4 in the same engine on a bare 3090 (prior validated recipe, no draft): 45 tok/s. 4.0 bpw does not reach 262k on 24 GB.",
   "engine": {
     "graph_mode": "full decode CUDA graphs; prefill graphs off",
     "name": "sglang",
@@ -33,24 +33,24 @@
       "--served-model-name",
       "Qwen3.8-27B-EXL3-3.0bpw",
       "--context-length",
-      "40960",
+      "262144",
       "--mem-fraction-static",
-      "0.90",
+      "0.88",
       "--kv-cache-dtype",
       "fp8_e4m3",
-      "--max-running-requests",
-      "2",
-      "--max-mamba-cache-size",
-      "10",
       "--mamba-ssm-dtype",
       "bfloat16",
+      "--max-running-requests",
+      "1",
+      "--max-mamba-cache-size",
+      "5",
       "--cuda-graph-max-bs-decode",
-      "2",
+      "1",
       "--disable-prefill-cuda-graph",
       "--chunked-prefill-size",
       "1024",
       "--max-prefill-tokens",
-      "2048",
+      "1024",
       "--reasoning-parser",
       "qwen3",
       "--tool-call-parser",
@@ -63,21 +63,21 @@
       "1",
       "--speculative-num-draft-tokens",
       "4",
-      "--log-level",
-      "info"
+      "--speculative-token-map",
+      "/opt/sglang-exl3/tokenmaps/qwen38_hot32k_v2.pt"
     ],
     "container": {
-      "captured_at": "2026-09-23T06:39:13Z",
+      "captured_at": "2026-09-23T10:41:00Z",
       "compose_file": null,
-      "digest": "sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
-      "image": "ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
+      "digest": "sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-23T06:39:13Z",
+          "captured_at": "2026-09-23T10:41:00Z",
           "kind": "release-image-workflow",
-          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
         }
       ],
       "state": "digest-pinned"
@@ -87,11 +87,12 @@
     "environment": {
       "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "HF_HUB_OFFLINE": "1",
+      "SGLANG_EXL3_EMBED_HOST": "1",
       "SGLANG_EXL3_KERNEL": "auto",
       "SGLANG_EXL3_MODEL_PATH": "/models/Qwen3.8-27B-EXL3-3.0bpw"
     },
     "host_port": 30000,
-    "image": "ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3",
+    "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
     "ipc": null,
     "kind": "docker",
     "mounts": [
@@ -103,45 +104,87 @@
     ],
     "network_mode": "bridge",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:f4c6633387fa514e33b0ab6ba6d7ae101367561efce8c3e68a51406be21cb7e3 -o 0xSero",
-      "captured_at": "2026-09-23T06:39:13Z",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8 -o 0xSero",
+      "captured_at": "2026-09-23T10:41:00Z",
       "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/sglang-exl3/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
       "sources": [
         {
-          "captured_at": "2026-09-23T06:39:13Z",
+          "captured_at": "2026-09-23T10:41:00Z",
           "kind": "release-image-workflow",
-          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
         }
       ],
-      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35822290641"
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
     },
     "shm_size": "16g"
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-23T06:39:13Z",
-      "coherence_ladder": null,
+      "accepted_at": "2026-09-23T10:41:00Z",
+      "coherence_ladder": [
+        {
+          "level": 1024,
+          "ok": true,
+          "prompt_tokens": 959,
+          "ttft_ms": 965.5
+        },
+        {
+          "level": 4096,
+          "ok": true,
+          "prompt_tokens": 4077,
+          "ttft_ms": 4141.4
+        },
+        {
+          "level": 8192,
+          "ok": true,
+          "prompt_tokens": 8125,
+          "ttft_ms": 7943.5
+        },
+        {
+          "level": 16384,
+          "ok": true,
+          "prompt_tokens": 16334,
+          "ttft_ms": 16548.8
+        },
+        {
+          "level": 32768,
+          "ok": true,
+          "prompt_tokens": 32736,
+          "ttft_ms": 35646.6
+        },
+        {
+          "level": 131072,
+          "ok": true,
+          "prompt_tokens": 130960,
+          "ttft_ms": 201216.9
+        },
+        {
+          "level": 258048,
+          "ok": true,
+          "prompt_tokens": 257997,
+          "ttft_ms": 542603.5
+        }
+      ],
       "failed_probes": [],
       "harness": "rtx-3090/bench/harness.py correctness + ladder + panel (+ soak)",
       "model_id_matches": true,
       "served_model_id": "Qwen3.8-27B-EXL3-3.0bpw"
     },
-    "context_note": "KV pool 44094 fp8 tokens next to a ~5 GB desktop; --context-length reduced from the measured 65536 to 40960 so one full-context request always fits (admission limit only; same memory layout). C2 was measured at 32k prompts but the second stream queues behind the first there; C2 is clean at short prompts.",
     "quantization": {
       "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
       "format": "exl3",
-      "kernel": "sglang-exl3 Marlin-template EXL3 kernels (K=3, decoded weights bit-identical to exllamav3 reconstruct), 2 blocks per SM; K=6 lm_head on exllamav3_ext"
+      "kernel": "sglang-exl3 Marlin-template EXL3 kernels (K=3, decoded weights bit-identical to exllamav3 reconstruct), 2 blocks per SM; K=6 lm_head on exllamav3_ext; MTP draft on a 32k hot-token bf16 head; token embedding in pinned host memory"
     },
     "weights_subdir": "Qwen3.8-27B-EXL3-3.0bpw"
   },
   "model_instance_id": "turboderp-qwen3-8-27b-exl3--3-bpw",
   "provenance": {
-    "captured_at": "2026-09-23T06:39:13Z",
+    "captured_at": "2026-09-23T10:41:00Z",
     "sources": [
       {
-        "captured_at": "2026-09-23T06:39:13Z",
+        "captured_at": "2026-09-23T10:41:00Z",
         "kind": "normalized-recipe",
         "url": "https://github.com/0xSero/local-ai-registry"
       }
@@ -152,9 +195,9 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "kv_cache_dtype": "fp8_e4m3",
-    "kv_cache_tokens": 44094,
+    "kv_cache_tokens": 272369,
     "max_concurrency": 1,
-    "max_context_tokens": 40960,
+    "max_context_tokens": 262144,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
