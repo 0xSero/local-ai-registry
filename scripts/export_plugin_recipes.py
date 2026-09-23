@@ -29,7 +29,9 @@ ROOT = Path(__file__).resolve().parent.parent
 REG = ROOT / "registry"
 SCHEMA = "omarchy-local-ai/recipes/1"
 # The gateway every launch pairs with the engine. Built and attested by github.com/0xSero/local-ai-images.
-GATEWAY_IMAGE = "ghcr.io/0xsero/gateway@sha256:6b3f953f12cd32b0e2351515999c6c3312d4732692473607565e8296fd35226a"
+# Writes one usage line per answered request and asks streamed chats for their usage (0xSero/local-ai-images, gateway-usage;
+# attested: gh attestation verify oci://ghcr.io/0xsero/gateway@sha256:791c3f87... -o 0xSero).
+GATEWAY_IMAGE = "ghcr.io/0xsero/gateway@sha256:791c3f87e5a78dbe701267364edf66362ba81b68f7ec5beeab847d34b4bbab9b"
 GATEWAY_PROVENANCE = {
     "kind": "self-built-attested",
     "source": "https://github.com/0xSero/local-ai-images",
