@@ -20,7 +20,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T23:12:46Z",
+  "generatedAt": "2026-09-22T23:19:07Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -1925,6 +1925,96 @@
         {
           "capabilities": {
             "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "devices": [],
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 30
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
             "reasoning": true,
             "tools": true,
             "video": true,
@@ -2257,6 +2347,96 @@
           },
           "weights": {
             "subdir": "Gemma-4-12B-it-EXL3-4bpw"
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx3090ti-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "devices": [],
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 54
+          },
+          "validated": {
+            "acceptedAt": "2026-09-02T17:30:05Z",
+            "harness": "validate_rented.py on vast RTX 3090 Ti"
+          },
+          "weights": {
+            "subdir": ""
           }
         },
         {
@@ -4256,6 +4436,96 @@
           "validated": {
             "acceptedAt": null,
             "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "vllm",
+          "id": "qwen38-awq-int4-rtx4090-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream"
+          },
+          "launch": {
+            "arguments": [
+              "--model",
+              "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+              "--revision",
+              "63768c10df38c0395e12ef49edac1bd539eaeeea",
+              "--served-model-name",
+              "Qwen3.8-27B",
+              "--tensor-parallel-size",
+              "1",
+              "--max-model-len",
+              "40960",
+              "--max-num-seqs",
+              "2",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.97",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "devices": [],
+            "entrypoint": null,
+            "environment": {
+              "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+            },
+            "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              },
+              {
+                "read_only": false,
+                "source": "${CACHE_ROOT}/vllm",
+                "target": "/root/.cache/vllm"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "570.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "INT4 W4A16",
+            "repository": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+            "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+            "servedName": "Qwen3.8-27B",
+            "sizeGb": 20
+          },
+          "serving": {
+            "concurrency": 4,
+            "ctxTokens": 40960,
+            "kvTokens": 0
+          },
+          "speed": {
+            "tps": 57
+          },
+          "validated": {
+            "acceptedAt": "2026-09-03T10:36:16Z",
+            "harness": "validate_rented.py on vast RTX 4090"
           },
           "weights": {
             "subdir": ""
@@ -6875,6 +7145,6 @@
       }
     }
   },
-  "registryCommit": "0e407eeae31fcd212fef2ce5e31c17dbf64a8c98",
+  "registryCommit": "dcc208b3d9ff4bd38685ad166a656c5b69d81527",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
