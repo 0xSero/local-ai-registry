@@ -1619,9 +1619,9 @@
             "--served-model-name",
             "turboderp-Qwen3.8-27B-exl3-3.00bpw",
             "--context-length",
-            "262144",
+            "204800",
             "--mem-fraction-static",
-            "0.88",
+            "0.80",
             "--kv-cache-dtype",
             "fp8_e4m3",
             "--mamba-ssm-dtype",
@@ -1632,7 +1632,6 @@
             "5",
             "--cuda-graph-max-bs-decode",
             "1",
-            "--disable-prefill-cuda-graph",
             "--chunked-prefill-size",
             "1024",
             "--max-prefill-tokens",
@@ -1690,7 +1689,7 @@
         },
         "serving": {
           "concurrency": 1,
-          "ctxTokens": 262144,
+          "ctxTokens": 204800,
           "kvTokens": 272369
         },
         "speed": {
@@ -1867,121 +1866,6 @@
           },
           "weights": {
             "subdir": ""
-          }
-        },
-        {
-          "capabilities": {
-            "chat": true,
-            "reasoning": true,
-            "tools": true,
-            "vision": true
-          },
-          "engine": "sglang",
-          "id": "qwen36-35b-a3b-exl3-3bpw-rtx3090-sglang-tp1",
-          "image": {
-            "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8 -o 0xSero",
-            "provenance": "self-built-attested"
-          },
-          "launch": {
-            "arguments": [
-              "python3",
-              "-m",
-              "sglang.launch_server",
-              "--model-path",
-              "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
-              "--quantization",
-              "exl3",
-              "--trust-remote-code",
-              "--host",
-              "0.0.0.0",
-              "--port",
-              "30000",
-              "--served-model-name",
-              "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
-              "--context-length",
-              "262144",
-              "--mem-fraction-static",
-              "0.85",
-              "--kv-cache-dtype",
-              "fp8_e4m3",
-              "--mamba-ssm-dtype",
-              "bfloat16",
-              "--max-running-requests",
-              "2",
-              "--max-mamba-cache-size",
-              "10",
-              "--cuda-graph-max-bs-decode",
-              "2",
-              "--disable-prefill-cuda-graph",
-              "--chunked-prefill-size",
-              "2048",
-              "--max-prefill-tokens",
-              "4096",
-              "--reasoning-parser",
-              "qwen3",
-              "--tool-call-parser",
-              "qwen3_coder",
-              "--speculative-algorithm",
-              "NEXTN",
-              "--speculative-num-steps",
-              "3",
-              "--speculative-eagle-topk",
-              "1",
-              "--speculative-num-draft-tokens",
-              "4",
-              "--speculative-token-map",
-              "/opt/sglang-exl3/tokenmaps/qwen36_hot32k_v2.pt",
-              "--disable-shared-experts-fusion"
-            ],
-            "capAdd": [],
-            "containerPort": 30000,
-            "devices": [],
-            "entrypoint": "/opt/entrypoint.sh",
-            "environment": {
-              "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
-              "HF_HUB_OFFLINE": "1",
-              "SGLANG_EXL3_KERNEL": "auto",
-              "SGLANG_EXL3_MODEL_PATH": "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
-            },
-            "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
-            "ipc": null,
-            "kind": "docker",
-            "mounts": [
-              {
-                "read_only": true,
-                "source": "${MODEL_ROOT}/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
-                "target": "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
-              }
-            ],
-            "networkMode": "bridge",
-            "securityOpt": [],
-            "shm": "16g"
-          },
-          "minDriver": "",
-          "minEngine": "",
-          "model": {
-            "id": "qwen3-6-35b-a3b",
-            "name": "Qwen3.6-35B-A3B",
-            "precision": "3.00 bpw, head 5 bits",
-            "repository": "yeasah/Qwen3.6-35B-A3B-exl3",
-            "revision": "73da68ef827084d72c59936b4c2088c6580f4e2b",
-            "servedName": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
-            "sizeGb": 15.92
-          },
-          "serving": {
-            "concurrency": 1,
-            "ctxTokens": 262144,
-            "kvTokens": 406145
-          },
-          "speed": {
-            "tps": 367
-          },
-          "validated": {
-            "acceptedAt": "2026-09-23T10:40:28Z",
-            "harness": "rtx-3090/bench/harness.py correctness + ladder + panel (+ soak)"
-          },
-          "weights": {
-            "subdir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
           }
         },
         {

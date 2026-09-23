@@ -33,9 +33,9 @@
       "--served-model-name",
       "turboderp-Qwen3.8-27B-exl3-3.00bpw",
       "--context-length",
-      "262144",
+      "204800",
       "--mem-fraction-static",
-      "0.88",
+      "0.80",
       "--kv-cache-dtype",
       "fp8_e4m3",
       "--mamba-ssm-dtype",
@@ -46,7 +46,6 @@
       "5",
       "--cuda-graph-max-bs-decode",
       "1",
-      "--disable-prefill-cuda-graph",
       "--chunked-prefill-size",
       "1024",
       "--max-prefill-tokens",
@@ -172,6 +171,12 @@
       "model_id_matches": true,
       "served_model_id": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
     },
+    "graphs_check": {
+      "change": "prefill CUDA graphs on (was --disable-prefill-cuda-graph); context 262144 -> 204800 and --mem-fraction-static 0.88 -> 0.80 so the prefill graph capture fits (1.37 GB); KV pool 212823 tokens",
+      "checked_at": "2026-09-23",
+      "host": "omarchy test box, bare RTX 3090 (nvidia:1)",
+      "result": "ready with every CUDA graph captured; 202-244 token answers at 93-137 tok/s; a 41,457-token and a 151,957-token prompt both answered correctly (47 s and 201 s); engine restarts 0; all 8 coding agents answered before the change"
+    },
     "image_boot": {
       "checked_at": "2026-09-23T13:09:34Z",
       "host": "omarchy test box, bare RTX 3090 (nvidia:1)",
@@ -214,7 +219,7 @@
     "kv_cache_dtype": "fp8_e4m3",
     "kv_cache_tokens": 272369,
     "max_concurrency": 1,
-    "max_context_tokens": 262144,
+    "max_context_tokens": 204800,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
