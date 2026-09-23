@@ -180,7 +180,7 @@ A Geizhals point is the lowest offer it tracked that day, so it becomes one `new
 
 Both sources accumulate on a weekly schedule, which is the only way a Micro Center series can exist at all: `make weekly-prices` runs the whole chain — scrape, verify, map, import, enrich, rebuild the index, validate — and then rebuilds the visual.
 
-The visual is [`docs/visuals/gpu-price-history.html`](docs/visuals/gpu-price-history.html), published with the docs site. Every number on it is recomputed from `registry/price/` alone: `make price-visual` rebuilds the payload and the page, and `make price-visual-check` regenerates it and requires no diff, so the page cannot drift from the records.
+The visual is [`public/gpu-price-history.html`](public/gpu-price-history.html), served by the site at `/gpu-price-history.html`. Every number on it is recomputed from `registry/price/` alone: `make price-visual` rebuilds the payload and the page, and `make price-visual-check` regenerates it and requires no diff, so the page cannot drift from the records.
 
 Benchmark scores are reported measurements from public leaderboards. They never attach to recipes or affect launch validation; a leaderboard row proves what was reported for a model variant, not that a local run reproduces it.
 
