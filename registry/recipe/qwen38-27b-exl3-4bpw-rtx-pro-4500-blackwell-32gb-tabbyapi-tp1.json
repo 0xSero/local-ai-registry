@@ -1,0 +1,218 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "TabbyAPI serving the 4.00bpw H5 EXL3 quant of Qwen3.8-27B on a 32 GB RTX PRO 4500 Blackwell at the full 262144-token window, with chat, reasoning, tools and vision all verified on the card and MTP live at 99% draft acceptance. This is the brief's priority-#1 model at the 4-bit rung, and the 32 GB card is the first to produce a valid measurement at the full window for this quant: the byte-identical 24 GB Blackwell run recorded all six of its 262144 cells as infra-invalid. Decode runs 1.5-2x the 24 GB card at short context and about 1.45x at 131072.",
+  "engine": {
+    "graph_mode": null,
+    "name": "TabbyAPI (ExLlamaV3)",
+    "version": "1.5.0"
+  },
+  "facts": {
+    "audit.coverage": {
+      "note": "19 of 54 planned cells completed; the sweep driver's SSH channel failed (rc=255) after the 131072 concurrency-1 cold cell and the driver pulled the partial artifacts. The 262144 cells and the remaining concurrency/warm cells were not reached, and the manifest records them as planned rather than failed.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "partial-sweep-driver-ssh-failure",
+      "state": "known"
+    },
+    "audit.speed": {
+      "as_of": "2026-09-22",
+      "note": "Protocol-v2 sweep, 19 of 54 planned cells measured before the driver's SSH channel failed (rc=255) and the partial artifacts were retained. Decode is the server-reported per-request rate. 32768: 116.8 / 117.2 tok/s at concurrency 1 (cold/warm), 86.5 / 89.6 at 2, 54.8 / 78.5 at 4; 131072: 83.3 tok/s at concurrency 1. The 24 GB Blackwell measured the identical quant at the identical window at 59.4-76.9 tok/s at 32768 and 57.4 at 131072, so the extra 8 GB buys roughly 1.5-2x at short context and about 1.45x at 131072. MTP was live throughout (draft acceptance 99% at 32k and 131k).",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "measured-protocol-v2",
+      "state": "known",
+      "unit": "tokens/second"
+    },
+    "capabilities.chat": {
+      "note": "Acceptance chat probe returned the expected completion from the 4.00bpw EXL3 weights on this card.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "note": "Acceptance reasoning probe returned a separate reasoning phase plus the correct final answer.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "Acceptance tool probe returned a parsed call whose arguments round-tripped into a final answer.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "note": "Acceptance vision probe answered two differently coloured images differently, each naming its own colour.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "as_of": "2026-09-22",
+      "note": "Served and accepted at 262144 tokens on a 32 GB card. The 24 GB Blackwell was run with the byte-identical config and quant at the same window and produced 6 of 6 infra-invalid 262144 cells, so this is the first valid measurement at the full window for this quant.",
+      "provenance": {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T13:20:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "served-at-this-window",
+      "state": "known",
+      "unit": "tokens"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "qwen38-27b-exl3-4bpw-rtx-pro-4500-blackwell-32gb-tabbyapi-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": null,
+    "container": {
+      "captured_at": "2026-09-22T13:20:00Z",
+      "compose_file": null,
+      "digest": "sha256:0ff5ffcd610577767aa72d9f0bae4ab9c3add5a37de92680bd1382002f282dc8",
+      "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-4bpw-rtx-3090-24gb@sha256:0ff5ffcd610577767aa72d9f0bae4ab9c3add5a37de92680bd1382002f282dc8",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T13:20:00Z",
+          "kind": "campaign-artifact",
+          "repository": "0xSero/inference-index",
+          "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/config.yml"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 5000,
+    "entrypoint": "/opt/deploy-preflight.sh",
+    "environment": {},
+    "host_port": 5000,
+    "image": "ghcr.io/0xsero/deploy-tabbyapi-qwen38-4bpw-rtx-3090-24gb@sha256:0ff5ffcd610577767aa72d9f0bae4ab9c3add5a37de92680bd1382002f282dc8",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T13:20:00Z",
+      "harness": "inference-index omp_run.py accept",
+      "served_model_id": "Qwen3.8-27B-EXL3-SC4bpw-H5"
+    },
+    "campaign": "omp-cheap-gpu-2026-09-18",
+    "lab": {
+      "backend": "cuda",
+      "hardware_label": "NVIDIA RTX PRO 4500 Blackwell",
+      "host": "RunPod SECURE, 32623 MiB, driver 580.159.04",
+      "notes": "Protocol-v2 sweep, 19 of 54 planned cells; the driver's SSH channel failed with rc=255 after the 131072 concurrency-1 cold cell and the partial artifacts were retained. MTP draft acceptance was 99% throughout. Cache mode Q4, chunk 2048, max_batch_size 2 (identical to the 24 GB row).",
+      "sweep_tok_s": {
+        "131072/c1/cold": 83.25,
+        "32768/c1/cold": 116.782,
+        "32768/c1/warm": 117.22,
+        "32768/c2/cold": 86.52,
+        "32768/c2/warm": 89.558,
+        "32768/c4/cold": 54.795,
+        "32768/c4/warm": 78.468
+      }
+    },
+    "row": "Qwen3.8-27B EXL3 4.00bpw H5, briefed 4-bit rung"
+  },
+  "model_instance_id": "turboderp-qwen3-8-27b-exl3--sc-4-00bpw-h5",
+  "provenance": {
+    "captured_at": "2026-09-22T13:20:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "kind": "campaign-acceptance",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/acceptance.json"
+      },
+      {
+        "captured_at": "2026-09-22T13:20:00Z",
+        "kind": "campaign-sweep",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38exl3-4bpw-attempt2/sweep/manifest.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 263168,
+    "max_concurrency": null,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-exl3-4bpw-rtx-pro-4500-blackwell-32gb-tabbyapi-tp1-sweep"
+  ],
+  "status": "validated"
+}
