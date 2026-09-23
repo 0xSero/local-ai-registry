@@ -1,6 +1,6 @@
 # Local AI Registry
 
-Docs: [overview](https://0xsero.github.io/local-ai-registry/) · [system and schema](https://0xsero.github.io/local-ai-registry/system) · [deep breakdown](https://0xsero.github.io/local-ai-registry/deep) · [contributing](CONTRIBUTING.md)
+To add or validate records, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 A hardware-aware registry of local model artifacts, launch recipes, measured speed sweeps, and public quality leaderboards. The standalone registry is data first: clients can read it from disk, serve it as static JSON, or resolve it over any static HTTP host.
 
@@ -204,7 +204,7 @@ The default `choose` command uses `gum` when available and a numbered terminal m
 
 `registry/` is the normalized contract and the schema for new imports. Measured local inference evidence lives in `speed-sweep/`. Public quality leaderboards such as Terminal-Bench 2.1 live in `benchmark/` and never attach to recipes.
 
-Data provenance and recovery decisions are in [`docs/PROVENANCE.md`](docs/PROVENANCE.md). The behavior-only product prompt for a registry browser is in [`docs/UI_BEHAVIOR_PROMPT.md`](docs/UI_BEHAVIOR_PROMPT.md).
+Every number carries its own `provenance` source (URL and `captured_at`) inside the record that holds it.
 
 ## License
 
@@ -212,4 +212,4 @@ MIT
 
 ## Local Inference Lab sources
 
-The [LIL coverage and credits ledger](docs/LOCAL_INFERENCE_LAB.md) catalogs 230 concrete source configurations and all nine catalog manifests. Imported upstream recipes are reference-only candidates with visible attribution. The separately accepted [GLM-5.3-Flash R35 TP4 recipe](registry/recipe/glm53-flash-lil-r35-rtxpro6000-vllm-tp4.json) links the [public Docker package](https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000), measured total/per-request decode speeds and its validation limits.
+The pinned inventory [`sources/local-inference-lab/2026-09-13.json`](sources/local-inference-lab/2026-09-13.json) catalogs 230 concrete source configurations and all nine catalog manifests; `scripts/check_lil_import.py` (run in CI) checks the imported recipes against it. Imported upstream recipes are reference-only candidates with visible attribution. The separately accepted [GLM-5.3-Flash R35 TP4 recipe](registry/recipe/glm53-flash-lil-r35-rtxpro6000-vllm-tp4.json) links the [public Docker package](https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000), measured total/per-request decode speeds and its validation limits.

@@ -20,7 +20,7 @@ pipeline before committing.
 | 0. Scrape | `scrape_geizhals_history.py` | geizhals.de `price_history` API | `out/geizhals-history-<utc>.json` |
 | 0. Scrape | `verify_microcenter_scrape.py` | a Micro Center scrape run | nothing — coverage, duplicate SKU and missing-price checks |
 | 1. Import | `import_localmaxxing.py` | LocalMaxxing snapshot | candidate recipes, instances (`launch.kind: reference`) |
-| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication (see docs/PROVENANCE.md) | candidate recipes + speed-sweep |
+| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication | candidate recipes + speed-sweep |
 | 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
 | 1. Import | `import_market_snapshot.py` | local-ai-scanner-cli snapshot | `registry/price/` |
 | 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
