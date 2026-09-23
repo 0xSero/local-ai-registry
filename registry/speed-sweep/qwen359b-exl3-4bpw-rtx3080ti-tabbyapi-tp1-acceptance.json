@@ -1,28 +1,136 @@
 {
-  "accepted_at": "2026-09-02T22:59:35Z",
+  "accepted_at": "2026-09-22T21:11:04.621199Z",
   "id": "qwen359b-exl3-4bpw-rtx3080ti-tabbyapi-tp1-acceptance",
-  "measured_at": "2026-09-02T22:59:35Z",
+  "measured_at": "2026-09-22T21:10:04.904641Z",
   "metrics": {
     "concurrency": 1,
-    "latest_point_at": "2026-09-02T22:59:35Z",
-    "max_context_tokens": 131072,
-    "peak_generation_tps": 89.4,
+    "latest_point_at": "2026-09-22T21:10:04.904641Z",
+    "max_context_tokens": 266,
+    "peak_generation_tps": 128.4,
     "peak_prompt_tps": null,
-    "point_count": 3
+    "point_count": 1
   },
   "recipe_id": "qwen359b-exl3-4bpw-rtx3080ti-tabbyapi-tp1",
   "rows": [
     {
       "concurrency": 1,
-      "context_tokens": 131072,
-      "decode_tok_s": 89.4,
-      "decode_tok_s_per_stream": 89.4,
-      "output_tokens": 1966,
+      "context_tokens": 266,
+      "decode_method": "client_post_first_token_estimate",
+      "decode_tok_s": 128.4,
+      "decode_tok_s_per_stream": 128.4,
+      "measurements": [
+        {
+          "client_decode_ms": 12409.918209072202,
+          "client_decode_tok_s": 138.5182376740674,
+          "decode_method": "client_post_first_token_estimate",
+          "decode_tok_s": 138.5182376740674,
+          "elapsed_ms": 18114.573208149523,
+          "finish_reason": "stop",
+          "prompt_tokens": 266,
+          "response_model_ids": [
+            "Qwen3.5-9B-EXL3-6hb-4bpw"
+          ],
+          "server_decode_tok_s": null,
+          "server_prefill_tok_s": null,
+          "started_at": "2026-09-22T21:10:04.904641Z",
+          "timings": {},
+          "tokens": 1720,
+          "ttft_ms": 5704.487208044156,
+          "usage": {
+            "completion_time": 12.43,
+            "completion_tokens": 1720,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 1124,
+              "rejected_prediction_tokens": 1260
+            },
+            "completion_tokens_per_sec": 138.39,
+            "prompt_time": 5.32,
+            "prompt_tokens": 266,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_tokens_per_sec": 50.0,
+            "total_time": 17.75,
+            "total_tokens": 1986
+          }
+        },
+        {
+          "client_decode_ms": 21139.895499916747,
+          "client_decode_tok_s": 127.05833858121854,
+          "decode_method": "client_post_first_token_estimate",
+          "decode_tok_s": 127.05833858121854,
+          "elapsed_ms": 21662.758458172902,
+          "finish_reason": "stop",
+          "prompt_tokens": 266,
+          "response_model_ids": [
+            "Qwen3.5-9B-EXL3-6hb-4bpw"
+          ],
+          "server_decode_tok_s": null,
+          "server_prefill_tok_s": null,
+          "started_at": "2026-09-22T21:10:23.021528Z",
+          "timings": {},
+          "tokens": 2687,
+          "ttft_ms": 522.6877911482006,
+          "usage": {
+            "completion_time": 21.26,
+            "completion_tokens": 2687,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 1690,
+              "rejected_prediction_tokens": 2298
+            },
+            "completion_tokens_per_sec": 126.4,
+            "prompt_time": 0.03,
+            "prompt_tokens": 266,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "prompt_tokens_per_sec": 333.33,
+            "total_time": 21.3,
+            "total_tokens": 2953
+          }
+        },
+        {
+          "client_decode_ms": 19522.11287501268,
+          "client_decode_tok_s": 128.41847683448412,
+          "decode_method": "client_post_first_token_estimate",
+          "decode_tok_s": 128.41847683448412,
+          "elapsed_ms": 19935.725916875526,
+          "finish_reason": "stop",
+          "prompt_tokens": 266,
+          "response_model_ids": [
+            "Qwen3.5-9B-EXL3-6hb-4bpw"
+          ],
+          "server_decode_tok_s": null,
+          "server_prefill_tok_s": null,
+          "started_at": "2026-09-22T21:10:44.684030Z",
+          "timings": {},
+          "tokens": 2508,
+          "ttft_ms": 413.38258306495845,
+          "usage": {
+            "completion_time": 19.57,
+            "completion_tokens": 2508,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 1585,
+              "rejected_prediction_tokens": 2107
+            },
+            "completion_tokens_per_sec": 128.12,
+            "prompt_time": 0.02,
+            "prompt_tokens": 266,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "prompt_tokens_per_sec": 500.0,
+            "total_time": 19.61,
+            "total_tokens": 2774
+          }
+        }
+      ],
+      "output_tokens": 2508,
       "peak_vram_gb": null,
       "prefill_tok_s": null,
       "samples": 3,
       "status": "accepted",
-      "ttft_ms_p50": 352.8
+      "ttft_ms_p50": 522.7
     }
   ],
   "schema_version": "local-ai-registry/v1",

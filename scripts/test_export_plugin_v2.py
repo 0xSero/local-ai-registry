@@ -56,9 +56,9 @@ class PluginExportV2Tests(unittest.TestCase):
         self.assertEqual(r['weights'][0]['mountPath'], '/root/.cache/huggingface')
 
     def test_dir_layout_with_subdir_and_asset(self):
-        r = self.recipes['qwen3827b-exl3-sc4bpw-rtx3090-tabbyapi-tp1']
+        r = self.recipes['gemma412b-exl3-4bpw-rtx3090-tabbyapi-tp1']
         self.assertEqual(r['weights'][0]['layout'], 'dir')
-        self.assertEqual(r['weights'][0]['dir'], 'Qwen3.8-27B-EXL3-SC4bpw-H5')
+        self.assertEqual(r['weights'][0]['dir'], 'Gemma-4-12B-it-EXL3-4bpw')
         self.assertEqual(r['weights'][0]['mountPath'], '/workspace/models')
         self.assertEqual(r['asset']['mountPath'], '/app/config.yml')
         self.assertIn('model_dir', r['asset']['text'])
