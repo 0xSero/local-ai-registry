@@ -1,9 +1,9 @@
 {
   "capabilities": {
-    "chat": null,
-    "reasoning": null,
-    "tools": null,
-    "vision": null
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
   },
   "description": "Qwen3.6-35B-A3B EXL3 3.00 bpw (head 5 bits) in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one RTX 3090: 256 routed experts on a grouped EXL3 expert kernel, fp8 KV cache, NEXTN MTP speculative decoding (3 steps, 4 draft tokens), vision, qwen3 reasoning and qwen3_coder tool parsers, shared-experts fusion off, 65536-token window (KV pool 102k tokens next to a desktop). Measured on the omarchy box with the desktop resident on the GPU (about 19 GiB usable): prose 221 / code 310 tok/s per stream at C1 with no prompt, prose 188 / code 265 at a 32k prompt (cold prefill 4.0k tok/s, TTFT 8.2 s), C2 aggregate 355 (prose) / 496 (code); coherence ladder OK to 63k tokens; 10-minute C2 soak at 32k passed. The 262144 window (2.5 GiB of fp8 KV) needs a bare card and is pending.",
   "engine": {
@@ -163,8 +163,8 @@
       ],
       "failed_probes": [],
       "harness": "rtx-3090/bench/harness.py correctness + ladder + panel (+ soak)",
-      "model_id_matches": null,
-      "served_model_id": null
+      "model_id_matches": true,
+      "served_model_id": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
     },
     "quantization": {
       "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",

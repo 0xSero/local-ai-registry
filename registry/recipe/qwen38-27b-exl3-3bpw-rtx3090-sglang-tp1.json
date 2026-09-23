@@ -1,9 +1,9 @@
 {
   "capabilities": {
-    "chat": null,
-    "reasoning": null,
-    "tools": null,
-    "vision": null
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
   },
   "description": "Qwen3.8-27B EXL3 3.0 bpw in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one RTX 3090: fp8 KV cache, NEXTN MTP speculative decoding (3 steps, 4 draft tokens), vision, qwen3 reasoning and qwen3_coder tool parsers, 65536-token window (KV pool 44k tokens next to a desktop). Measured on the omarchy box with the desktop resident on the GPU (about 19 GiB usable): prose 89 / code 135 tok/s per stream at C1 with no prompt, prose 78 / code 112 at a 32k prompt (cold prefill 915 tok/s), 10-minute C2 soak at 32k passed; coherence ladder OK to 61k tokens. AWQ-INT4 in the same engine on a bare 3090 (prior validated recipe, no draft): 45 tok/s. The 262144 window and a same-day AWQ comparison need a bare card and are pending.",
   "engine": {
@@ -33,7 +33,7 @@
       "--served-model-name",
       "Qwen3.8-27B-EXL3-3.0bpw",
       "--context-length",
-      "65536",
+      "40960",
       "--mem-fraction-static",
       "0.90",
       "--kv-cache-dtype",
@@ -125,9 +125,10 @@
       "coherence_ladder": null,
       "failed_probes": [],
       "harness": "rtx-3090/bench/harness.py correctness + ladder + panel (+ soak)",
-      "model_id_matches": null,
-      "served_model_id": null
+      "model_id_matches": true,
+      "served_model_id": "Qwen3.8-27B-EXL3-3.0bpw"
     },
+    "context_note": "KV pool 44094 fp8 tokens next to a ~5 GB desktop; --context-length reduced from the measured 65536 to 40960 so one full-context request always fits (admission limit only; same memory layout). C2 was measured at 32k prompts but the second stream queues behind the first there; C2 is clean at short prompts.",
     "quantization": {
       "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
       "format": "exl3",
@@ -152,8 +153,8 @@
   "serving": {
     "kv_cache_dtype": "fp8_e4m3",
     "kv_cache_tokens": 44094,
-    "max_concurrency": 2,
-    "max_context_tokens": 65536,
+    "max_concurrency": 1,
+    "max_context_tokens": 40960,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
