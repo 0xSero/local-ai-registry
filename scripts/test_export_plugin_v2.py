@@ -55,6 +55,14 @@ class PluginExportV2Tests(unittest.TestCase):
         self.assertEqual([w['layout'] for w in r['weights']], ['hub'])
         self.assertEqual(r['weights'][0]['mountPath'], '/root/.cache/huggingface')
 
+    def test_mount_named_after_its_subdir_mounts_the_parent(self):
+        v1 = exporter.v1
+        recipes, instances, models, hardware = (v1.load(c) for c in ("recipe", "model-instance", "model", "hardware"))
+        r = recipes['qwen38-27b-exl3-3bpw-rtx3090-sglang-tp1']
+        i = instances[r['model_instance_id']]
+        w = exporter.entry(r, i, models[i['model_id']], hardware[r['hardware_id']])['weights'][0]
+        self.assertEqual((w['mountPath'], w['dir']), ('/models', 'turboderp-Qwen3.8-27B-exl3-3.00bpw'))
+
     def test_dir_layout_with_subdir_and_asset(self):
         r = self.recipes['gemma412b-exl3-4bpw-rtx3090-tabbyapi-tp1']
         self.assertEqual(r['weights'][0]['layout'], 'dir')
