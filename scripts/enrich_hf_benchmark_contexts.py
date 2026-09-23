@@ -23,7 +23,7 @@ from pathlib import Path
 
 
 MANIFEST_VERSION = "local-ai-registry/hf-benchmark-context-evidence/v1"
-DEFAULT_MANIFEST = "docs/notes/hf-benchmark-contexts.json"
+DEFAULT_MANIFEST = "cache/hf-benchmark-contexts.json"
 USER_AGENT = "local-ai-registry-benchmark-context-enricher/1.0"
 NUMBER_RE = re.compile(r"(?<![A-Za-z0-9])[-+]?(?:\d+(?:\.\d+)?|\.\d+)(?![A-Za-z0-9])")
 SEPARATOR_RE = re.compile(r"^:?-+:?$")

@@ -20,7 +20,7 @@ pipeline before committing.
 | 0. Scrape | `scrape_geizhals_history.py` | geizhals.de `price_history` API | `out/geizhals-history-<utc>.json` |
 | 0. Scrape | `verify_microcenter_scrape.py` | a Micro Center scrape run | nothing — coverage, duplicate SKU and missing-price checks |
 | 1. Import | `import_localmaxxing.py` | LocalMaxxing snapshot | candidate recipes, instances (`launch.kind: reference`) |
-| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication (see docs/PROVENANCE.md) | candidate recipes + speed-sweep |
+| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication | candidate recipes + speed-sweep |
 | 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
 | 1. Import | `import_market_snapshot.py` | local-ai-scanner-cli snapshot | `registry/price/` |
 | 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
@@ -37,7 +37,7 @@ pipeline before committing.
 | 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |
 | 6. Verify | `npm test` | records + schemas | nothing — ajv validates every record against `registry/schema/*.schema.json` |
 | 7. Visual | `build_price_history_data.py` | `registry/price/` | `cache/price-history-data.json` (every number the page shows) |
-| 7. Visual | `gen_price_history_visual.py` | that payload | `docs/visuals/gpu-price-history.html` |
+| 7. Visual | `gen_price_history_visual.py` | that payload | `public/gpu-price-history.html` |
 
 Standalone tool: `benchmark_openai_chat.py` measures prefill/decode of a
 running OpenAI-compatible endpoint (no hidden token caps) to produce

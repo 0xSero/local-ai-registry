@@ -16,7 +16,7 @@ price-visual:
 	python3 scripts/gen_price_history_visual.py
 
 price-visual-check: price-visual
-	git diff --exit-code docs/visuals/gpu-price-history.html
+	git diff --exit-code public/gpu-price-history.html
 
 ## Weekly price accumulation: scrape both sources, verify, import, enrich, index,
 ## validate, then rebuild the visual. Needs Playwright and a US egress for the
