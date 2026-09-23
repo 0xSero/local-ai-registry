@@ -6,7 +6,7 @@
     "video": true,
     "vision": true
   },
-  "description": "One-B70 Qwen3.8-27B EXL3 4.00bpw on vLLM 0.26.1 XPU with the exl3xpu plugin (bit-exact EXL3 trellis decode in ESIMD kernels), MTP speculative decoding k=3, fp8 KV cache (267,761 tokens), 262,144-token context, 16 sequences, image and video input. Measured on one card: C1 decode 47-67 tok/s, C8 aggregate 238-344 tok/s, cold prefill 1,589 (4K) / 1,497 (32K) / 1,049 (128K) tok/s. Tuning delta vs qwen38-q4km-arcb70-llamacpp-tp1 on the same card: C1 prose 25.0 -> 47.2, C8 56.8 -> 238.4, prefill 32K 629 -> 1,497.",
+  "description": "One-B70 Qwen3.8-27B EXL3 4.00bpw on vLLM 0.26.1 XPU with the exl3xpu plugin (bit-exact EXL3 trellis decode in ESIMD kernels), MTP speculative decoding k=3, fp8 KV cache (267,761 tokens), 262,144-token context, 16 sequences, image and video input. Measured on one card with thinking on: C1 decode 61-77 tok/s, C8 aggregate 280-367 tok/s; cold prefill 1,589 (4K) / 1,497 (32K) / 1,049 (128K) tok/s. Same card, qwen38-q4km-arcb70-llamacpp-tp1: C1 25.0, C8 56.8, prefill 32K 629.",
   "engine": {
     "graph_mode": "XPU graphs, FULL_DECODE_ONLY, capture sizes 1-64",
     "name": "vllm",
@@ -34,15 +34,15 @@
       "qwen3"
     ],
     "container": {
-      "captured_at": "2026-09-23T11:14:49.398640Z",
+      "captured_at": "2026-09-23T22:24:26.048172Z",
       "compose_file": null,
-      "digest": "sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
-      "image": "ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+      "digest": "sha256:753922b1d1668f203eb3fac796bafb5a2118d81f22e44f06c6a6de8a268864b7",
+      "image": "ghcr.io/0xsero/exl3xpu@sha256:753922b1d1668f203eb3fac796bafb5a2118d81f22e44f06c6a6de8a268864b7",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-23T11:14:49.398640Z",
+          "captured_at": "2026-09-23T22:24:26.048172Z",
           "kind": "acceptance-run",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
@@ -54,7 +54,7 @@
       "HF_HUB_OFFLINE": "1"
     },
     "host_port": 8000,
-    "image": "ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+    "image": "ghcr.io/0xsero/exl3xpu@sha256:753922b1d1668f203eb3fac796bafb5a2118d81f22e44f06c6a6de8a268864b7",
     "kind": "docker",
     "mounts": [
       {
@@ -70,18 +70,18 @@
     ],
     "network_mode": "bridge",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1 -o 0xSero",
-      "dockerfile": "https://github.com/0xSero/exl3xpu/blob/2bcd9f6728904f618c5343c944df5cb6660c2bfa/docker/Dockerfile",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:753922b1d1668f203eb3fac796bafb5a2118d81f22e44f06c6a6de8a268864b7 -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/exl3xpu/blob/5feab9bd27ea7f47ce4710ac7955e6d9bd23e23d/docker/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/exl3xpu",
-      "workflow": "https://github.com/0xSero/exl3xpu/actions/runs/35850097315"
+      "workflow": "https://github.com/0xSero/exl3xpu/actions/runs/35926464253"
     },
     "shm_size": "32g"
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-23T11:14:49.398640Z",
-      "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest, weights at /models",
+      "accepted_at": "2026-09-23T22:24:26.048172Z",
+      "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest 753922b1 on one B70 (single render node + filtered by-path)",
       "served_model_id": "qwen3.8-27b-exl3"
     },
     "correctness": {
@@ -99,7 +99,7 @@
       "level_zero_loader": "1.32.0",
       "model_revision": "113cf7ab958054860e43fb7f3063b1af19171095",
       "oneapi": "2025.3",
-      "source_commit": "2bcd9f6728904f618c5343c944df5cb6660c2bfa",
+      "source_commit": "5feab9bd27ea7f47ce4710ac7955e6d9bd23e23d",
       "torch": "2.12.0+xpu"
     },
     "tools_check": {
