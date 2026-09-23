@@ -61,6 +61,10 @@ def entry(recipe, instance, model, hardware):
                 weights.append(weights_item(provision.get("repository"), provision.get("revision"),
                                             provision.get("size_gb"), "dir", target))
             else:
+                # A mount whose target already names the subdirectory holds the files at its root:
+                # mount the parent instead, so the files stay where the launch arguments point.
+                if subdir and target.rstrip("/").endswith("/" + subdir):
+                    target = target.rstrip("/")[: -len(subdir) - 1] or "/"
                 weights.append(weights_item(instance.get("repository"), instance.get("revision"),
                                             (instance.get("weights") or {}).get("size_gb"), "dir",
                                             target, subdir, files))
