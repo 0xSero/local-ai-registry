@@ -37,7 +37,7 @@ pipeline before committing.
 | 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |
 | 6. Verify | `npm test` | records + schemas | nothing — ajv validates every record against `registry/schema/*.schema.json` |
 | 7. Visual | `build_price_history_data.py` | `registry/price/` | `cache/price-history-data.json` (every number the page shows) |
-| 7. Visual | `gen_price_history_visual.py` | that payload | `docs/visuals/gpu-price-history.html` |
+| 7. Visual | `gen_price_history_visual.py` | that payload | `public/gpu-price-history.html` |
 
 Standalone tool: `benchmark_openai_chat.py` measures prefill/decode of a
 running OpenAI-compatible endpoint (no hidden token caps) to produce
