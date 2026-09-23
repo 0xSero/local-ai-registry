@@ -20,7 +20,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-23T02:27:27Z",
+  "generatedAt": "2026-09-23T02:37:30Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -6088,7 +6088,81 @@
         "weights": {
           "subdir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": null,
+            "tools": null,
+            "vision": false
+          },
+          "engine": "tabbyapi",
+          "id": "qwen3827b-exl3-4bpw-rtx6000ada-tabbyapi-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "main.py",
+              "--config",
+              "/app/config.yml"
+            ],
+            "capAdd": [],
+            "containerPort": 5000,
+            "devices": [],
+            "entrypoint": "/opt/venv/bin/python3",
+            "environment": {
+              "NVIDIA_VISIBLE_DEVICES": "all"
+            },
+            "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-4bpw",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml",
+                "target": "/app/config.yml"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "535.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "4 bpw",
+            "repository": "turboderp/Qwen3.8-27B-exl3",
+            "revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+            "servedName": "Qwen3.8-27B-EXL3-4bpw",
+            "sizeGb": 15.73
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 262144,
+            "kvTokens": 262144
+          },
+          "speed": {
+            "tps": 81
+          },
+          "validated": {
+            "acceptedAt": "2026-09-23T02:41:14.386065Z",
+            "harness": "validate_rented.py on vast RTX 6000Ada (weights and config materialized in-container in place of the bind mounts)"
+          },
+          "weights": {
+            "subdir": "Qwen3.8-27B-EXL3-4bpw"
+          }
+        }
+      ]
     },
     "rtx-a6000-48gb": {
       "match": {
@@ -7617,6 +7691,6 @@
       }
     }
   },
-  "registryCommit": "c945376d1943d31f9909f2e6815b60d418afc104",
+  "registryCommit": "9d9bef6b054c7aecd5841c6ce612343688e94b2a",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
