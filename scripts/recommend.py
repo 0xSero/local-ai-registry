@@ -2,10 +2,11 @@
 """Keep exactly one recommended recipe per hardware id.
 
 Among validated, single-card docker or host/flm recipes on each accelerator, prefer the model
-tier below (the card's VRAM picks the model), then the engine order (EXL3 on TabbyAPI or SGLang
-ahead of llama.cpp), then a recipe with vision over one without, then the largest context, then
-the most recent acceptance. Every other recipe on that card loses the flag. Prints the resulting
-table; --dry-run only prints.
+tier below (the card's VRAM picks the model), then EXL3 weights, then an engine that serves them
+in-process (SGLang, vLLM) over TabbyAPI and llama.cpp, then a recipe with vision over one without,
+then the largest context, then the fastest measured single-stream decode, then the most recent
+acceptance. Every other recipe on that card loses the flag. Prints the resulting table; --dry-run
+only prints.
 
     python3 scripts/recommend.py [--dry-run] [--only <hardware-id>]...
 """
@@ -17,7 +18,7 @@ from datetime import datetime
 from pathlib import Path
 
 REG = Path(__file__).resolve().parent.parent / "registry"
-ENGINE_RANK = {"tabbyapi": 0, "sglang": 1, "vllm": 2, "llama.cpp": 3, "llama-cpp": 3, "flm": 4}
+ENGINE_RANK = {"sglang": 0, "vllm": 1, "tabbyapi": 2, "llama.cpp": 3, "llama-cpp": 3, "flm": 4}
 # Tier map (2026-09-22): the card's VRAM picks the model; a card falls back down the tiers when its own
 # tier has no validated recipe. 16 GB and up run Qwen3.8-27B (EXL3 with vision and MTP drafting: 128K
 # on 16 GB, 256K from 24 GB), 12 GB Qwen3.5-9B, below that the best that fits (LFM2.5-2.6B today).
@@ -37,15 +38,28 @@ def tier_models(vram_gb):
     return order
 
 
+def decode_c1(recipe):
+    """The fastest accepted single-stream decode in the recipe's sweeps, prompts up to 32K; 0 when unmeasured."""
+    best = 0
+    for sweep_id in recipe.get("speed_sweep_ids") or []:
+        path = REG / "speed-sweep" / f"{sweep_id}.json"
+        for row in json.loads(path.read_text()).get("rows", []) if path.exists() else []:
+            tps = row.get("decode_tok_s_per_stream") or row.get("decode_tok_s") or 0
+            if row.get("concurrency") == 1 and (row.get("context_tokens") or 0) <= 32768 and row.get("status", "accepted") == "accepted":
+                best = max(best, tps)
+    return best
+
+
 def rank(recipe, models):
     model = recipe["_model_id"]
     tier = models.index(model) if model in models else len(models)
+    exl3 = 0 if "exl3" in recipe.get("model_instance_id", "") else 1
     engine = ((recipe.get("engine") or {}).get("name") or "").lower()
     vision = 1 if (recipe.get("capabilities") or {}).get("vision") is True else 0
     ctx = (recipe.get("serving") or {}).get("max_context_tokens") or 0
     accepted = ((recipe.get("metadata") or {}).get("acceptance") or {}).get("accepted_at") or ""
     accepted_at = datetime.fromisoformat(accepted.replace("Z", "+00:00")).timestamp() if accepted else 0
-    return (tier, ENGINE_RANK.get(engine, 9), -vision, -ctx, -accepted_at)
+    return (tier, exl3, ENGINE_RANK.get(engine, 9), -vision, -ctx, -decode_c1(recipe), -accepted_at)
 
 
 def main():

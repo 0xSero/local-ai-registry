@@ -100,6 +100,8 @@ def entry(recipe, instance, model, hardware):
     return {
         "id": recipe["id"],
         "name": model.get("name") or model["id"],
+        "family": model.get("family") or "",   # a client's logo key
+        "format": " · ".join(x for x in ((instance.get("weights") or {}).get("format"), (instance.get("weights") or {}).get("precision")) if x),
         "engine": (recipe.get("engine") or {}).get("name"),
         "servedName": served,
         "sizeGb": round(sum(w["sizeGb"] for w in weights), 3),

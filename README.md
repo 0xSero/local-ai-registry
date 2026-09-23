@@ -1,6 +1,6 @@
 # Local AI Registry
 
-To add or validate records, see [CONTRIBUTING.md](CONTRIBUTING.md).
+To add or validate records, see [CONTRIBUTING.md](CONTRIBUTING.md). The GPUs Omarchy's Local AI runs a model on, one page each, are in [supported/](supported/README.md).
 
 A hardware-aware registry of local model artifacts, launch recipes, measured speed sweeps, and public quality leaderboards. The standalone registry is data first: clients can read it from disk, serve it as static JSON, or resolve it over any static HTTP host.
 
