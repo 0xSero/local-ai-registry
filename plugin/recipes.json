@@ -7,6 +7,7 @@
     "qwen3827b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC3bpw-H4-V4\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 132096\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 1024\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen3827b-exl3-sc-4-00bpw-h5-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC4bpw-H5\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 132096\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC4bpw-H5\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 263168\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-SC5bpw-H6-V6\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 263168\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 4\n  vision: true\n  vision_offload: false\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen38flashnext-exl3-2-05bpw-h4-ng4-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-Flash-Next-EXL3-205bpw-H4\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262656\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n  # The 26.24 GB n-gram table is indexed by short n-grams and never needs to\n  # be on the card, so it lives in host RAM. 51B of routed-expert weights are\n  # then split off the card so what stays resident fits a 24 GB board, and the\n  # split is chosen from the measured free memory rather than guessed.\n  ngram_ram: true\n  cpu_moe_split_experts: 128\n  draft_model:\n    draft_mode: mtp\n"
@@ -21,7 +22,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-23T02:41:23Z",
+  "generatedAt": "2026-09-23T04:25:43Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -2688,99 +2689,173 @@
       "recipe": {
         "capabilities": {
           "chat": true,
-          "reasoning": false,
-          "tools": false,
-          "vision": false
+          "reasoning": true,
+          "tools": true,
+          "vision": true
         },
-        "engine": "sglang",
-        "id": "lfm25-26b-bf16-rtx4000ada-sglang-tp1",
+        "engine": "tabbyapi",
+        "id": "qwen3827b-exl3-sc4bpw-rtx4000ada-tabbyapi-tp1",
         "image": {
-          "attestation": null,
-          "provenance": "upstream-published"
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+          "provenance": "self-built-attested"
         },
         "launch": {
           "arguments": [
-            "-m",
-            "sglang.launch_server",
-            "--model-path",
-            "LiquidAI/LFM2.5-2.6B",
-            "--revision",
-            "a334ee78cd38458bb71eda24109ac42dcec1309d",
-            "--served-model-name",
-            "lfm2.5-2.6b",
-            "--host",
-            "0.0.0.0",
-            "--port",
-            "30000",
-            "--tp",
-            "1",
-            "--context-length",
-            "131072",
-            "--mem-fraction-static",
-            "0.90",
-            "--attention-backend",
-            "flashinfer",
-            "--max-running-requests",
-            "4",
-            "--cuda-graph-max-bs-decode",
-            "4",
-            "--cuda-graph-max-bs-prefill",
-            "4",
-            "--enable-cache-report",
-            "--trust-remote-code",
-            "--reasoning-parser",
-            "qwen3-thinking",
-            "--tool-call-parser",
-            "lfm2"
+            "main.py",
+            "--config",
+            "/app/config.yml"
           ],
           "capAdd": [],
-          "containerPort": 30000,
+          "containerPort": 5000,
           "devices": [],
-          "entrypoint": "/opt/sglang/bin/python",
+          "entrypoint": "/opt/venv/bin/python3",
           "environment": {
-            "HF_HOME": "/root/.cache/huggingface"
+            "NVIDIA_VISIBLE_DEVICES": "all"
           },
-          "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
           "ipc": null,
           "kind": "docker",
           "mounts": [
             {
-              "read_only": false,
-              "source": "~/.cache/huggingface",
-              "target": "/root/.cache/huggingface"
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
+              "target": "/workspace/models"
+            },
+            {
+              "read_only": true,
+              "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-128k-q4-tabbyapi-config.yml",
+              "target": "/app/config.yml"
             }
           ],
-          "networkMode": "bridge",
+          "networkMode": null,
           "securityOpt": [],
-          "shm": "16g"
+          "shm": "8g"
         },
-        "minDriver": "575.0",
+        "minDriver": "535.0",
         "minEngine": "",
         "model": {
-          "id": "lfm2-5-2-6b",
-          "name": "LFM2.5-2.6B",
-          "precision": "BF16",
-          "repository": "LiquidAI/LFM2.5-2.6B",
-          "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
-          "servedName": "lfm2.5-2.6b",
-          "sizeGb": 5.024
+          "id": "qwen3-8-27b",
+          "name": "Qwen3.8-27B",
+          "precision": "SC 4.00bpw H5",
+          "repository": "turboderp/Qwen3.8-27B-exl3",
+          "revision": "4acd9ad5af224ec9e8815a54d71a033f378a7e9d",
+          "servedName": "Qwen3.8-27B-EXL3-SC4bpw-H5",
+          "sizeGb": 15.59
         },
         "serving": {
           "concurrency": 2,
           "ctxTokens": 131072,
-          "kvTokens": 406972
+          "kvTokens": 132096
         },
         "speed": {
-          "tps": 0
+          "tps": 37
         },
         "validated": {
-          "acceptedAt": null,
-          "harness": null
+          "acceptedAt": "2026-09-23T05:04:23.916317Z",
+          "harness": "validate_rented.py on vast RTX 4000Ada (weights and config materialized in-container in place of the bind mounts)"
         },
         "weights": {
-          "subdir": ""
+          "subdir": "Qwen3.8-27B-EXL3-SC4bpw-H5"
         }
-      }
+      },
+      "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": false,
+            "tools": false,
+            "vision": false
+          },
+          "engine": "sglang",
+          "id": "lfm25-26b-bf16-rtx4000ada-sglang-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "upstream-published"
+          },
+          "launch": {
+            "arguments": [
+              "-m",
+              "sglang.launch_server",
+              "--model-path",
+              "LiquidAI/LFM2.5-2.6B",
+              "--revision",
+              "a334ee78cd38458bb71eda24109ac42dcec1309d",
+              "--served-model-name",
+              "lfm2.5-2.6b",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "30000",
+              "--tp",
+              "1",
+              "--context-length",
+              "131072",
+              "--mem-fraction-static",
+              "0.90",
+              "--attention-backend",
+              "flashinfer",
+              "--max-running-requests",
+              "4",
+              "--cuda-graph-max-bs-decode",
+              "4",
+              "--cuda-graph-max-bs-prefill",
+              "4",
+              "--enable-cache-report",
+              "--trust-remote-code",
+              "--reasoning-parser",
+              "qwen3-thinking",
+              "--tool-call-parser",
+              "lfm2"
+            ],
+            "capAdd": [],
+            "containerPort": 30000,
+            "devices": [],
+            "entrypoint": "/opt/sglang/bin/python",
+            "environment": {
+              "HF_HOME": "/root/.cache/huggingface"
+            },
+            "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": false,
+                "source": "~/.cache/huggingface",
+                "target": "/root/.cache/huggingface"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "16g"
+          },
+          "minDriver": "575.0",
+          "minEngine": "",
+          "model": {
+            "id": "lfm2-5-2-6b",
+            "name": "LFM2.5-2.6B",
+            "precision": "BF16",
+            "repository": "LiquidAI/LFM2.5-2.6B",
+            "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+            "servedName": "lfm2.5-2.6b",
+            "sizeGb": 5.024
+          },
+          "serving": {
+            "concurrency": 2,
+            "ctxTokens": 131072,
+            "kvTokens": 406972
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": null,
+            "harness": null
+          },
+          "weights": {
+            "subdir": ""
+          }
+        }
+      ]
     },
     "rtx-4060-8gb": {
       "match": {
@@ -7764,6 +7839,6 @@
       }
     }
   },
-  "registryCommit": "0edbc79a29e771fd9967e0942e8e6fa0b85cfa8a",
+  "registryCommit": "d8fbb7bc2b6d7dcaabaa633edbcbb7efc3ea7e4f",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
