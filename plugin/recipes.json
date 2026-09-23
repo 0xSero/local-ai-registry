@@ -23,7 +23,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-23T14:53:33Z",
+  "generatedAt": "2026-09-23T16:41:37Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -4947,69 +4947,111 @@
           "tools": true,
           "vision": true
         },
-        "engine": "tabbyapi",
-        "id": "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1",
+        "engine": "sglang",
+        "id": "qwen38-27b-exl3-3bpw-rtx4090-sglang-tp1",
         "image": {
-          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8 -o 0xSero",
           "provenance": "self-built-attested"
         },
         "launch": {
           "arguments": [
-            "main.py",
-            "--config",
-            "/app/config.yml"
+            "python3",
+            "-m",
+            "sglang.launch_server",
+            "--model-path",
+            "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+            "--quantization",
+            "exl3",
+            "--trust-remote-code",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "30000",
+            "--served-model-name",
+            "turboderp-Qwen3.8-27B-exl3-3.00bpw",
+            "--context-length",
+            "204800",
+            "--mem-fraction-static",
+            "0.80",
+            "--kv-cache-dtype",
+            "fp8_e4m3",
+            "--mamba-ssm-dtype",
+            "bfloat16",
+            "--max-running-requests",
+            "1",
+            "--max-mamba-cache-size",
+            "5",
+            "--cuda-graph-max-bs-decode",
+            "1",
+            "--chunked-prefill-size",
+            "1024",
+            "--max-prefill-tokens",
+            "1024",
+            "--reasoning-parser",
+            "qwen3",
+            "--tool-call-parser",
+            "qwen3_coder",
+            "--speculative-algorithm",
+            "NEXTN",
+            "--speculative-num-steps",
+            "3",
+            "--speculative-eagle-topk",
+            "1",
+            "--speculative-num-draft-tokens",
+            "4",
+            "--speculative-token-map",
+            "/opt/sglang-exl3/tokenmaps/qwen38_hot32k_v2.pt"
           ],
           "capAdd": [],
-          "containerPort": 5000,
+          "containerPort": 30000,
           "devices": [],
-          "entrypoint": "/opt/venv/bin/python3",
+          "entrypoint": "/opt/entrypoint.sh",
           "environment": {
-            "NVIDIA_VISIBLE_DEVICES": "all"
+            "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+            "HF_HUB_OFFLINE": "1",
+            "SGLANG_EXL3_EMBED_HOST": "1",
+            "SGLANG_EXL3_KERNEL": "auto",
+            "SGLANG_EXL3_MODEL_PATH": "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw"
           },
-          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+          "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
           "ipc": null,
           "kind": "docker",
           "mounts": [
             {
               "read_only": true,
-              "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
-              "target": "/workspace/models"
-            },
-            {
-              "read_only": true,
-              "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
-              "target": "/app/config.yml"
+              "source": "${MODEL_ROOT}/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+              "target": "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw"
             }
           ],
-          "networkMode": null,
+          "networkMode": "bridge",
           "securityOpt": [],
-          "shm": "8g"
+          "shm": "16g"
         },
-        "minDriver": "535.0",
+        "minDriver": "",
         "minEngine": "",
         "model": {
           "id": "qwen3-8-27b",
           "name": "Qwen3.8-27B",
-          "precision": "SC 4.00bpw H5",
+          "precision": "3 bpw",
           "repository": "turboderp/Qwen3.8-27B-exl3",
-          "revision": "4acd9ad5af224ec9e8815a54d71a033f378a7e9d",
-          "servedName": "Qwen3.8-27B-EXL3-SC4bpw-H5",
-          "sizeGb": 15.59
+          "revision": "6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+          "servedName": "turboderp-Qwen3.8-27B-exl3-3.00bpw",
+          "sizeGb": 13.84
         },
         "serving": {
           "concurrency": 1,
-          "ctxTokens": 262144,
-          "kvTokens": 263168
+          "ctxTokens": 204800,
+          "kvTokens": 272369
         },
         "speed": {
-          "tps": 85
+          "tps": 135
         },
         "validated": {
-          "acceptedAt": "2026-09-22T21:43:05.081645Z",
-          "harness": "validate_rented.py on vast RTX 4090 (weights and config materialized in-container in place of the bind mounts)"
+          "acceptedAt": "2026-09-23T19:37:34.386781Z",
+          "harness": "scripts/accept_recipe.py on a bare RTX 4090 24 GB (recipe argv via docker run)"
         },
         "weights": {
-          "subdir": "Qwen3.8-27B-EXL3-SC4bpw-H5"
+          "subdir": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
         }
       },
       "recipes": [
@@ -5337,6 +5379,78 @@
           },
           "weights": {
             "subdir": "Qwen3.8-27B-EXL3-4bpw"
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
+          "engine": "tabbyapi",
+          "id": "qwen3827b-exl3-sc4bpw-rtx4090-tabbyapi-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "main.py",
+              "--config",
+              "/app/config.yml"
+            ],
+            "capAdd": [],
+            "containerPort": 5000,
+            "devices": [],
+            "entrypoint": "/opt/venv/bin/python3",
+            "environment": {
+              "NVIDIA_VISIBLE_DEVICES": "all"
+            },
+            "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc4bpw-h5",
+                "target": "/workspace/models"
+              },
+              {
+                "read_only": true,
+                "source": "asset/qwen3827b-exl3-sc-4-00bpw-h5-256k-q4-tabbyapi-config.yml",
+                "target": "/app/config.yml"
+              }
+            ],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": "8g"
+          },
+          "minDriver": "535.0",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "SC 4.00bpw H5",
+            "repository": "turboderp/Qwen3.8-27B-exl3",
+            "revision": "4acd9ad5af224ec9e8815a54d71a033f378a7e9d",
+            "servedName": "Qwen3.8-27B-EXL3-SC4bpw-H5",
+            "sizeGb": 15.59
+          },
+          "serving": {
+            "concurrency": 1,
+            "ctxTokens": 262144,
+            "kvTokens": 263168
+          },
+          "speed": {
+            "tps": 85
+          },
+          "validated": {
+            "acceptedAt": "2026-09-22T21:43:05.081645Z",
+            "harness": "validate_rented.py on vast RTX 4090 (weights and config materialized in-container in place of the bind mounts)"
+          },
+          "weights": {
+            "subdir": "Qwen3.8-27B-EXL3-SC4bpw-H5"
           }
         }
       ]
@@ -8346,6 +8460,6 @@
       }
     }
   },
-  "registryCommit": "1fab5441e740ed8a9088c22c9c0458c78cb00561",
+  "registryCommit": "4f67b7281cb10f5a709c9a71cb4bdab37c175603",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
