@@ -2,6 +2,7 @@
   "assets": {
     "gemma4-nvfp4-sglang-engine-patch.diff": "--- /tmp/gemma4_unified.py.orig\t2026-08-23 20:25:26.703455135 +0000\n+++ python/sglang/srt/models/gemma4_unified.py\t2026-08-23 20:35:46.352246434 +0000\n@@ -70,7 +70,12 @@\n\n     def __init__(self, config):\n         super().__init__()\n-        patch_dim = config.model_patch_size**2 * 3  # 48*48*3 = 6912\n+        model_patch_size = getattr(config, \"model_patch_size\", None)\n+        if model_patch_size is None:\n+            # NVFP4 republished configs carry patch_size*pooling_kernel_size\n+            # (16*3=48) instead of the flattened model_patch_size field.\n+            model_patch_size = config.patch_size * getattr(config, \"pooling_kernel_size\", 1)\n+        patch_dim = model_patch_size**2 * 3  # 48*48*3 = 6912\n         mm_embed_dim = config.mm_embed_dim\n\n         self.patch_ln1 = nn.LayerNorm(patch_dim)\n@@ -110,7 +115,11 @@\n\n     def __init__(self, multimodal_config, text_config):\n         super().__init__()\n-        self.multimodal_hidden_size = multimodal_config.output_proj_dims\n+        self.multimodal_hidden_size = getattr(\n+            multimodal_config,\n+            \"audio_embed_dim\",\n+            multimodal_config.output_proj_dims,\n+        )\n         self.text_hidden_size = text_config.hidden_size\n         self.embedding_pre_projection_norm = Gemma4RMSNorm(\n             self.multimodal_hidden_size,\n@@ -190,7 +199,8 @@\n         )\n\n         text_tie = getattr(text_config, \"tie_word_embeddings\", True)\n-        if self.pp_group.world_size == 1 and text_tie:\n+        self.lm_head_is_tied = self.pp_group.world_size == 1 and text_tie\n+        if self.lm_head_is_tied:\n             self.lm_head = self.language_model.embed_tokens\n         elif self.pp_group.is_last_rank:\n             self.lm_head = ParallelLMHead(\n",
     "gemma412bit-exl3-4bpw-128k-q6-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Gemma-4-12B-it-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q6\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
+    "qwen359b-exl3-4bpw-128k-q4-nomtp-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-6hb-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen359b-exl3-4bpw-256k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-6hb-4bpw\n  backend: exllamav3\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
     "qwen3827b-exl3-4bpw-128k-q4-tabbyapi-config.yml": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.8-27B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n",
@@ -22,7 +23,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-23T12:52:13Z",
+  "generatedAt": "2026-09-23T12:52:24Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -3951,6 +3952,88 @@
         },
         "weights": {
           "subdir": "Qwen3.5-9B-EXL3-6hb-4bpw"
+        }
+      }
+    },
+    "rtx-4070-super-12gb": {
+      "match": {
+        "backend": "nvidia",
+        "name": "GeForce RTX 4070 SUPER",
+        "names": [
+          "rtx4070super"
+        ],
+        "vramGb": 12
+      },
+      "recipe": {
+        "capabilities": {
+          "chat": true,
+          "reasoning": null,
+          "tools": null,
+          "vision": false
+        },
+        "engine": "tabbyapi",
+        "id": "qwen359b-exl3-4bpw-rtx4070super-tabbyapi-tp1",
+        "image": {
+          "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448 -o 0xSero",
+          "provenance": "self-built-attested"
+        },
+        "launch": {
+          "arguments": [
+            "main.py",
+            "--config",
+            "/app/config.yml"
+          ],
+          "capAdd": [],
+          "containerPort": 5000,
+          "devices": [],
+          "entrypoint": "/opt/venv/bin/python3",
+          "environment": {
+            "NVIDIA_VISIBLE_DEVICES": "all"
+          },
+          "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
+          "ipc": null,
+          "kind": "docker",
+          "mounts": [
+            {
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-4bpw",
+              "target": "/workspace/models"
+            },
+            {
+              "read_only": true,
+              "source": "asset/qwen359b-exl3-4bpw-128k-q4-nomtp-tabbyapi-config.yml",
+              "target": "/app/config.yml"
+            }
+          ],
+          "networkMode": null,
+          "securityOpt": [],
+          "shm": "8g"
+        },
+        "minDriver": "535.0",
+        "minEngine": "",
+        "model": {
+          "id": "qwen3-5-9b",
+          "name": "Qwen3.5-9B",
+          "precision": "4 bpw",
+          "repository": "turboderp/Qwen3.5-9B-exl3",
+          "revision": "01192d8c6d9cbd94f9cf99c0ddb85e9e217ccc01",
+          "servedName": "Qwen3.5-9B-EXL3-4bpw",
+          "sizeGb": 6.71
+        },
+        "serving": {
+          "concurrency": 2,
+          "ctxTokens": 131072,
+          "kvTokens": 131072
+        },
+        "speed": {
+          "tps": 82
+        },
+        "validated": {
+          "acceptedAt": "2026-09-03T00:15:37Z",
+          "harness": "validate_rented.py on vast RTX 4070S (weights and config materialized in-container in place of the bind mounts)"
+        },
+        "weights": {
+          "subdir": "Qwen3.5-9B-EXL3-4bpw"
         }
       }
     },
@@ -8143,6 +8226,6 @@
       }
     }
   },
-  "registryCommit": "2eb90dad1cf2bb86b2bd6c6e06b20cea167d09ff",
+  "registryCommit": "c808dcba05f99b2abf5674953c19edf933ebfc9e",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }

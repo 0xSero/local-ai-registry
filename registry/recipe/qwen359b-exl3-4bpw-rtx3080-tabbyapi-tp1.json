@@ -5,7 +5,7 @@
     "tools": null,
     "vision": false
   },
-  "description": "Candidate (MTP campaign 2026-09-22): attested tabbyapi-exl3 rebuilt on ExLlamaV3 1.5.1 (digest 0f83e619) and MTP drafting enabled in the config asset; weights switched from turboderp/Qwen3.5-9B-exl3 4.00bpw (no mtp.* tensors, load fails with draft_mode mtp) to TheMelonGod/Qwen3.5-9B-exl3 6hb-4.0bpw (stock 4 bpw quant with the MTP head). Pending acceptance on the card.",
+  "description": "Candidate: Qwen3.5-9B-EXL3-4bpw on one rtx-3080-12gb via TabbyAPI/ExLlamaV3, 131072 tokens, Q4 cache, bridge networking. Pending acceptance on the card.",
   "draft_launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
@@ -19,31 +19,31 @@
       "NVIDIA_VISIBLE_DEVICES": "all"
     },
     "host_port": 5000,
-    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
     "kind": "docker",
     "mounts": [
       {
         "read_only": true,
-        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-6hb-4bpw",
+        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-4bpw",
         "target": "/workspace/models"
       },
       {
         "read_only": true,
-        "source": "asset/qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml",
+        "source": "asset/qwen359b-exl3-4bpw-128k-q4-nomtp-tabbyapi-config.yml",
         "target": "/app/config.yml"
       }
     ],
     "shm_size": "8g",
     "synthesized": {
-      "generated_at": "2026-09-22T17:44:53Z",
-      "image_provenance": "qwen359b-exl3-4bpw-rtx3080-tabbyapi-tp1",
-      "template": "mtp-campaign-v1"
+      "generated_at": "2026-09-02T22:33:56Z",
+      "image_provenance": "gemma-4-12b-it-exl3-4bpw-rtx3090-tabbyapi-tp1",
+      "template": "tabbyapi-exl3-bridge-v1"
     }
   },
   "engine": {
     "graph_mode": "piecewise",
     "name": "tabbyapi",
-    "version": "0.0.1+f07131cd"
+    "version": "0.0.1+e632af41"
   },
   "facts": {},
   "hardware_count": 1,
@@ -51,7 +51,7 @@
   "id": "qwen359b-exl3-4bpw-rtx3080-tabbyapi-tp1",
   "launch": {
     "container": {
-      "captured_at": "2026-09-22T17:44:53Z",
+      "captured_at": "2026-09-02T22:33:56Z",
       "compose_file": null,
       "digest": null,
       "image": null,
@@ -59,7 +59,7 @@
       "runtime": null,
       "source": [
         {
-          "captured_at": "2026-09-22T17:44:53Z",
+          "captured_at": "2026-09-02T22:33:56Z",
           "kind": "normalized-recipe",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
@@ -70,19 +70,15 @@
   },
   "metadata": {
     "image_provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1 -o 0xSero",
-      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/825ff04535dfb9633ab08e1ac97b60fc5895fb76/tabbyapi-exl3/Dockerfile",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448 -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/tabbyapi-exl3/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/local-ai-images",
-      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35754016842"
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/33690503239"
     },
-    "mtp_campaign": {
-      "change": "attested tabbyapi-exl3 rebuilt on ExLlamaV3 1.5.1 (digest 0f83e619) and MTP drafting enabled in the config asset; weights switched from turboderp/Qwen3.5-9B-exl3 4.00bpw (no mtp.* tensors, load fails with draft_mode mtp) to TheMelonGod/Qwen3.5-9B-exl3 6hb-4.0bpw (stock 4 bpw quant with the MTP head)",
-      "changed_at": "2026-09-22T17:44:53Z"
-    },
-    "weights_subdir": "Qwen3.5-9B-EXL3-6hb-4bpw"
+    "weights_subdir": "Qwen3.5-9B-EXL3-4bpw"
   },
-  "model_instance_id": "themelongod-qwen3-5-9b-exl3--6hb-4-0bpw",
+  "model_instance_id": "turboderp-qwen3-5-9b-exl3--4-bpw",
   "provenance": {
     "captured_at": "2026-09-02T22:33:56Z",
     "sources": [
