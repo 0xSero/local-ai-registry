@@ -14,7 +14,7 @@ Each one was tested on that exact card before it was listed; a card that is not 
 | [GeForce RTX 3070 Ti 8 GB](nvidia/rtx-3070-ti-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 3080 10 GB](nvidia/rtx-3080-10gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 3080 Ti 12 GB](nvidia/rtx-3080-ti-12gb.md) | Qwen3.5-9B | TabbyAPI (ExLlamaV3) | 128K | 128 tok/s |
-| [GeForce RTX 3090 24 GB](nvidia/rtx-3090-24gb.md) | Qwen3.8-27B | SGLang | 256K | 147 tok/s |
+| [GeForce RTX 3090 24 GB](nvidia/rtx-3090-24gb.md) | Qwen3.8-27B | SGLang | 200K | 147 tok/s |
 | [GeForce RTX 3090 Ti 24 GB](nvidia/rtx-3090-ti-24gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 256K | 67 tok/s |
 | [GeForce RTX 4060 8 GB](nvidia/rtx-4060-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 4060 Laptop GPU 8 GB](nvidia/rtx-4060-laptop-8gb.md) | LFM2.5-2.6B | llama.cpp | 8K | 124 tok/s |

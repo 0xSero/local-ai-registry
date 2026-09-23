@@ -21,7 +21,7 @@ from tokenize_observed_command import REFERENCE_LAUNCH_FORBIDDEN
 
 COLLECTIONS = ("hardware", "model", "model-instance", "recipe", "speed-sweep", "benchmark", "asset")
 SCHEMA = "local-ai-registry/v1"
-FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph")   # prefill-only graphs are a memory trade; see trust.py
+FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 HF_REPOSITORY = re.compile(r"^[^/\s]+/[^/\s]+$")
 HF_URL = re.compile(r"^https://huggingface\.co/[^/]+/[^/]+/?$")
 HF_SEARCH = re.compile(r"^https://huggingface\.co/models\?search=.+$")

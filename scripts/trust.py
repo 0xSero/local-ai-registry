@@ -40,9 +40,7 @@ REG = Path(__file__).resolve().parent.parent / "registry"
 DIGEST = re.compile(r"@sha256:[0-9a-f]{64}$")
 COMMIT_PIN = re.compile(r"(?:^|/)[0-9a-f]{40}/")
 FULL_REVISION = re.compile(r"^[0-9a-f]{40}$")
-# Eager decode forfeits the speed a validated recipe promises. Prefill-only graphs are a memory trade:
-# decode stays captured (the RTX 3090 SGLang EXL3 recipe needs this to fit 262K on 24 GB).
-FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph")
+FORBIDDEN_LAUNCH = ("--enforce-eager", "disable-cuda-graph", "disable-prefill-cuda-graph")
 # Campaign artifacts we ran ourselves. A sweep pinned to a commit in a repo under this org is acceptance evidence.
 EVIDENCE_ORG = "https://github.com/0xSero/"
 
