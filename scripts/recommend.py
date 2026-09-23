@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Keep exactly one recommended recipe per hardware id.
 
-Among validated, single-card docker or host/flm recipes on each accelerator, prefer the engine
-order below (EXL3 on TabbyAPI or SGLang ahead of llama.cpp, per the V1 plan),
-then the largest context, then the most recent acceptance. Every other recipe
-on that card loses the flag. Prints the resulting table; --dry-run only prints.
+Among validated, single-card docker or host/flm recipes on each accelerator, prefer the model
+tier below (the card's VRAM picks the model), then the engine order (EXL3 on TabbyAPI or SGLang
+ahead of llama.cpp), then a recipe with vision over one without, then the largest context, then
+the most recent acceptance. Every other recipe on that card loses the flag. Prints the resulting
+table; --dry-run only prints.
 
     python3 scripts/recommend.py [--dry-run] [--only <hardware-id>]...
 """
@@ -17,10 +18,11 @@ from pathlib import Path
 
 REG = Path(__file__).resolve().parent.parent / "registry"
 ENGINE_RANK = {"tabbyapi": 0, "sglang": 1, "vllm": 2, "llama.cpp": 3, "llama-cpp": 3, "flm": 4}
-# V1 tier map: the card's VRAM picks the model; a card falls back down the tiers when its own tier has no validated recipe
+# Tier map (2026-09-22): the card's VRAM picks the model; a card falls back down the tiers when its own
+# tier has no validated recipe. 16 GB and up run Qwen3.8-27B (EXL3 with vision and MTP drafting: 128K
+# on 16 GB, 256K from 24 GB), 12 GB Qwen3.5-9B, below that the best that fits (LFM2.5-2.6B today).
 TIERS = [
-    (32, ["qwen3-8-27b", "qwen3-6-35b-a3b"]),
-    (24, ["gemma-4-12b-it", "gemma-4-12b"]),
+    (16, ["qwen3-8-27b"]),
     (12, ["qwen3-5-9b"]),
     (0, ["lfm2-5-2-6b"]),
 ]
@@ -39,10 +41,11 @@ def rank(recipe, models):
     model = recipe["_model_id"]
     tier = models.index(model) if model in models else len(models)
     engine = ((recipe.get("engine") or {}).get("name") or "").lower()
+    vision = 1 if (recipe.get("capabilities") or {}).get("vision") is True else 0
     ctx = (recipe.get("serving") or {}).get("max_context_tokens") or 0
     accepted = ((recipe.get("metadata") or {}).get("acceptance") or {}).get("accepted_at") or ""
     accepted_at = datetime.fromisoformat(accepted.replace("Z", "+00:00")).timestamp() if accepted else 0
-    return (tier, ENGINE_RANK.get(engine, 9), -ctx, -accepted_at)
+    return (tier, ENGINE_RANK.get(engine, 9), -vision, -ctx, -accepted_at)
 
 
 def main():
