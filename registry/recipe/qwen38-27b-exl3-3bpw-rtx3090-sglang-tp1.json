@@ -1,0 +1,216 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "turboderp/Qwen3.8-27B-exl3 3.00bpw (revision 6fe61ad6, file hashes verified) in stock SGLang v0.5.20 through the sglang-exl3 quantization plugin on one bare RTX 3090 24 GB: full 262,144-token window with fp8 KV (pool 272k tokens; the 2.4 GB bf16 token embedding lives in pinned host memory, SGLANG_EXL3_EMBED_HOST=1), NEXTN MTP speculative decoding (3 steps, 4 draft tokens) with a 32k hot-token draft head, vision, qwen3 reasoning and qwen3_coder tool parsers. Per-stream decode at C1: prose 99 / code 143 tok/s (thinking on 147), at a 32k prompt prose 90 / code 124 with 904 tok/s cold prefill. Coherence ladder OK to a 258k-token prompt (TTFT 544 s); 10-minute soak at 32k passed. AWQ-INT4 in the same engine on a bare 3090 (prior validated recipe, no draft): 45 tok/s. 4.0 bpw does not reach 262k on 24 GB.",
+  "engine": {
+    "graph_mode": "full decode CUDA graphs; prefill graphs off",
+    "name": "sglang",
+    "version": "0.5.20"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen38-27b-exl3-3bpw-rtx3090-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+      "--quantization",
+      "exl3",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--served-model-name",
+      "turboderp-Qwen3.8-27B-exl3-3.00bpw",
+      "--context-length",
+      "262144",
+      "--mem-fraction-static",
+      "0.88",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--max-running-requests",
+      "1",
+      "--max-mamba-cache-size",
+      "5",
+      "--cuda-graph-max-bs-decode",
+      "1",
+      "--disable-prefill-cuda-graph",
+      "--chunked-prefill-size",
+      "1024",
+      "--max-prefill-tokens",
+      "1024",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--speculative-algorithm",
+      "NEXTN",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "4",
+      "--speculative-token-map",
+      "/opt/sglang-exl3/tokenmaps/qwen38_hot32k_v2.pt"
+    ],
+    "container": {
+      "captured_at": "2026-09-23T12:14:17Z",
+      "compose_file": null,
+      "digest": "sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-23T12:14:17Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": "/opt/entrypoint.sh",
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "HF_HUB_OFFLINE": "1",
+      "SGLANG_EXL3_EMBED_HOST": "1",
+      "SGLANG_EXL3_KERNEL": "auto",
+      "SGLANG_EXL3_MODEL_PATH": "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw"
+    },
+    "host_port": 30000,
+    "image": "ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8",
+    "ipc": null,
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+        "target": "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:84f75f3424c99a3d63392a4e0348292bdeba9cf7efba2ff1aa9b85c8fc0131e8 -o 0xSero",
+      "captured_at": "2026-09-23T12:14:17Z",
+      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/sglang-exl3/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/local-ai-images",
+      "sources": [
+        {
+          "captured_at": "2026-09-23T12:14:17Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
+        }
+      ],
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35845374392"
+    },
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-23T12:14:17Z",
+      "coherence_ladder": [
+        {
+          "level": 1024,
+          "ok": true,
+          "prompt_tokens": 982,
+          "ttft_ms": 984.7
+        },
+        {
+          "level": 4096,
+          "ok": true,
+          "prompt_tokens": 4056,
+          "ttft_ms": 4175.4
+        },
+        {
+          "level": 8192,
+          "ok": true,
+          "prompt_tokens": 8079,
+          "ttft_ms": 7850.7
+        },
+        {
+          "level": 16384,
+          "ok": true,
+          "prompt_tokens": 16324,
+          "ttft_ms": 16565.7
+        },
+        {
+          "level": 32768,
+          "ok": true,
+          "prompt_tokens": 32714,
+          "ttft_ms": 35700.6
+        },
+        {
+          "level": 131072,
+          "ok": true,
+          "prompt_tokens": 131095,
+          "ttft_ms": 201622.7
+        },
+        {
+          "level": 258048,
+          "ok": true,
+          "prompt_tokens": 258040,
+          "ttft_ms": 543863.6
+        }
+      ],
+      "failed_probes": [],
+      "harness": "rtx-3090/bench/harness.py correctness + ladder + panel (+ soak)",
+      "model_id_matches": true,
+      "served_model_id": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
+    },
+    "quantization": {
+      "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
+      "format": "exl3",
+      "kernel": "sglang-exl3 Marlin-template EXL3 kernels (K=3, decoded weights bit-identical to exllamav3 reconstruct), 2 blocks per SM; K=6 lm_head on exllamav3_ext; MTP draft on a 32k hot-token bf16 head; token embedding in pinned host memory"
+    },
+    "weights_subdir": "turboderp-Qwen3.8-27B-exl3-3.00bpw",
+    "weights_verification": {
+      "checked_at": "2026-09-23",
+      "repository": "turboderp/Qwen3.8-27B-exl3",
+      "revision": "6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+      "sha256": {
+        "model-00001-of-00002.safetensors": "f9f4afe5fc1a2d67ca547c8dcde0f043eb226018257cdbde7c50a0956cddb822",
+        "model-00002-of-00002.safetensors": "d13331e7a531dc2a6e94df6470d5bffa07b13e15912466242b7283469cd58179"
+      }
+    }
+  },
+  "model_instance_id": "turboderp-qwen3-8-27b-exl3--3-bpw",
+  "provenance": {
+    "captured_at": "2026-09-23T12:14:17Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-23T12:14:17Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "recommended": false,
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8_e4m3",
+    "kv_cache_tokens": 272369,
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-exl3-3bpw-rtx3090-sglang-tp1-sweep"
+  ],
+  "status": "candidate"
+}

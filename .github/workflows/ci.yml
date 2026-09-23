@@ -48,7 +48,7 @@ jobs:
         run: |
           python3 scripts/build_price_history_data.py
           python3 scripts/gen_price_history_visual.py
-          git diff --exit-code docs/visuals/gpu-price-history.html
+          git diff --exit-code public/gpu-price-history.html
 
       - name: Omarchy plugin gate accepts every validated Docker recipe
         run: python3 scripts/check_plugin_gate.py
