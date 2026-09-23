@@ -1,6 +1,6 @@
 # Contributing
 
-Everything in `registry/` is data. A contribution is a pull request that adds or corrects records and passes `make check`. Read [docs/system.md](docs/system.md) first (five minutes).
+Everything in `registry/` is data. A contribution is a pull request that adds or corrects records and passes `make check`. The collections and the trust boundary are described in [README.md](README.md).
 
 ## Setup
 
@@ -55,7 +55,7 @@ If `make trust` leaves the recipe as `candidate`, `python3 scripts/trust.py` pri
 
 ## Import external evidence
 
-Importers under `scripts/import_*.py` normalize LocalMaxxing, local.ai publications, Hugging Face, and price snapshots into candidates and metadata. Imported observations are always `candidate` with `launch.kind: reference`. Record the snapshot hash in `docs/PROVENANCE.md`.
+Importers under `scripts/import_*.py` normalize LocalMaxxing, local.ai publications, Hugging Face, and price snapshots into candidates and metadata. Imported observations are always `candidate` with `launch.kind: reference`. Record the snapshot hash in the imported records' `provenance`.
 
 ## Pull request checklist
 

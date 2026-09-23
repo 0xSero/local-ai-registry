@@ -21,8 +21,8 @@ from pathlib import Path
 ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
 ap.add_argument("--data", default="cache/price-history-data.json",
                 help="payload written by build_price_history_data.py")
-ap.add_argument("--out", default="docs/visuals/gpu-price-history.html",
-                help="page path (default: docs/visuals/gpu-price-history.html)")
+ap.add_argument("--out", default="public/gpu-price-history.html",
+                help="page path (default: public/gpu-price-history.html)")
 args = ap.parse_args()
 
 data = Path(args.data).read_text()

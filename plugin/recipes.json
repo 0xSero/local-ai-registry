@@ -21,7 +21,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-22T14:36:14Z",
+  "generatedAt": "2026-09-23T12:48:20Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -128,6 +128,83 @@
         }
       },
       "recipes": [
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": null,
+            "video": true,
+            "vision": true
+          },
+          "engine": "vllm",
+          "id": "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1",
+          "image": {
+            "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1 -o 0xSero",
+            "provenance": "self-built-attested"
+          },
+          "launch": {
+            "arguments": [
+              "models/qwen3.8-27b-exl3-4.00bpw",
+              "--gpu",
+              "0",
+              "--port",
+              "8000",
+              "--model-path",
+              "/models"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "devices": [],
+            "entrypoint": null,
+            "environment": {
+              "HF_HUB_OFFLINE": "1"
+            },
+            "image": "ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [
+              {
+                "read_only": true,
+                "source": "/dev/dri/by-path",
+                "target": "/dev/dri/by-path"
+              },
+              {
+                "read_only": true,
+                "source": "${MODEL_ROOT}/turboderp-Qwen3.8-27B-exl3-4.00bpw",
+                "target": "/models"
+              }
+            ],
+            "networkMode": "bridge",
+            "securityOpt": [],
+            "shm": "32g"
+          },
+          "minDriver": "",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "4 bpw",
+            "repository": "turboderp/Qwen3.8-27B-exl3",
+            "revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+            "servedName": "Qwen3.8-27B-EXL3-4bpw",
+            "sizeGb": 15.73
+          },
+          "serving": {
+            "concurrency": 16,
+            "ctxTokens": 262144,
+            "kvTokens": 267761
+          },
+          "speed": {
+            "tps": 344
+          },
+          "validated": {
+            "acceptedAt": "2026-09-23T11:14:49.398640Z",
+            "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest, weights at /models"
+          },
+          "weights": {
+            "subdir": ""
+          }
+        },
         {
           "capabilities": {
             "chat": true,
@@ -6416,6 +6493,87 @@
             "tools": true,
             "vision": true
           },
+          "engine": "vllm",
+          "id": "qwen38-27b-nvfp4-rtxpro4500-vllm-tp1",
+          "image": {
+            "attestation": null,
+            "provenance": "container-image"
+          },
+          "launch": {
+            "arguments": [
+              "vllm",
+              "serve",
+              "/opt/models/Qwen3.8-27B-NVFP4",
+              "--served-model-name",
+              "Qwen3.8-27B-NVFP4",
+              "--host",
+              "0.0.0.0",
+              "--port",
+              "8000",
+              "--max-model-len",
+              "32768",
+              "--kv-cache-dtype",
+              "fp8",
+              "--gpu-memory-utilization",
+              "0.95",
+              "--trust-remote-code",
+              "--enable-auto-tool-choice",
+              "--tool-call-parser",
+              "qwen3_xml",
+              "--reasoning-parser",
+              "qwen3",
+              "--default-chat-template-kwargs",
+              "{\"enable_thinking\": true}",
+              "--max-num-seqs",
+              "8"
+            ],
+            "capAdd": [],
+            "containerPort": 8000,
+            "devices": [],
+            "entrypoint": null,
+            "environment": {},
+            "image": "ghcr.io/0xsero/vllm-openai@sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+            "ipc": null,
+            "kind": "docker",
+            "mounts": [],
+            "networkMode": null,
+            "securityOpt": [],
+            "shm": null
+          },
+          "minDriver": "",
+          "minEngine": "",
+          "model": {
+            "id": "qwen3-8-27b",
+            "name": "Qwen3.8-27B",
+            "precision": "nvfp4",
+            "repository": "nvidia/Qwen3.8-27B-NVFP4",
+            "revision": "482ca0f3832238542f8f5295dde86b5f22711d80",
+            "servedName": "Qwen3.8-27B-NVFP4",
+            "sizeGb": 21.922
+          },
+          "serving": {
+            "concurrency": 0,
+            "ctxTokens": 32768,
+            "kvTokens": 32768
+          },
+          "speed": {
+            "tps": 0
+          },
+          "validated": {
+            "acceptedAt": "2026-09-22T19:05:19Z",
+            "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py"
+          },
+          "weights": {
+            "subdir": "Qwen3.8-27B-NVFP4"
+          }
+        },
+        {
+          "capabilities": {
+            "chat": true,
+            "reasoning": true,
+            "tools": true,
+            "vision": true
+          },
           "engine": "tabbyapi",
           "id": "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1",
           "image": {
@@ -7180,6 +7338,6 @@
       }
     }
   },
-  "registryCommit": "60c8b927dda3e56037534d9365a3f8e3eb5c9199",
+  "registryCommit": "0568265c8b696abedd5ef2b3463b98cc4698b083",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }

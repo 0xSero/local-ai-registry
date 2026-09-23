@@ -1,0 +1,264 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Qwen3.8-27B-NVFP4 on one rtx-pro-4500-blackwell-32gb via vllm, reasoning, tools, vision at the model's 32768-token window; no accepted measurement yet (candidate)",
+  "engine": {
+    "graph_mode": "full-and-piecewise",
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py chat probe returned the pinned answer",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py reasoning probe: a separate reasoning_content phase with the answer still in content",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py tools probe: a forced call with valid arguments and a round-tripped tool result",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "omp_accept.py vision probe: solid red and blue PNGs named correctly",
+      "state": "known"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "host-probe",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no engine version was captured in engine.json for this run",
+      "state": "unknown"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "container image pinned by digest in the candidate launch",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-22T19:58:20Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T19:58:20Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "the window the loaded server was configured with and served on; the sweep covers shorter prompts and records every attempted row",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "qwen38-27b-nvfp4-rtxpro4500-vllm-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "vllm",
+      "serve",
+      "/opt/models/Qwen3.8-27B-NVFP4",
+      "--served-model-name",
+      "Qwen3.8-27B-NVFP4",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "32768",
+      "--kv-cache-dtype",
+      "fp8",
+      "--gpu-memory-utilization",
+      "0.95",
+      "--trust-remote-code",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3",
+      "--default-chat-template-kwargs",
+      "{\"enable_thinking\": true}",
+      "--max-num-seqs",
+      "8"
+    ],
+    "asset_ids": [],
+    "container": {
+      "captured_at": "2026-09-22T19:58:20Z",
+      "compose_file": null,
+      "digest": "sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+      "image": "ghcr.io/0xsero/vllm-openai@sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T19:58:20Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/vllm-openai"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/vllm-openai@sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+    "kind": "docker",
+    "provenance": {
+      "captured_at": "2026-09-22T19:58:20Z",
+      "kind": "container-image",
+      "sources": [
+        {
+          "captured_at": "2026-09-22T19:58:20Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/vllm-openai"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T19:05:19Z",
+      "captured": true,
+      "failed_probes": [],
+      "harness": "omp_accept.py (identity, chat, reasoning, tools, vision) + omp_bench_client.py",
+      "served_model_id": "Qwen3.8-27B-NVFP4"
+    },
+    "interruption": null,
+    "measurements": {
+      "configuration": {
+        "api_completion_budget_tokens": null,
+        "cache_size_tokens": null,
+        "context_tokens": 32768,
+        "sweep_concurrencies": [
+          1,
+          2,
+          4
+        ],
+        "sweep_contexts": [
+          32768
+        ]
+      },
+      "mtp_acceptance": null,
+      "peak_generation_tps_source": "client end-to-end tok/s per stream (dispatch->last token), NOT engine decode-only",
+      "peak_vram_gb": 29.06,
+      "sweep_arms": [
+        {
+          "accepted": 0,
+          "concurrencies": [
+            1,
+            2,
+            4
+          ],
+          "created_at": "2026-09-22T19:06:04+00:00",
+          "directory": "sweep",
+          "samples_per_concurrency": 3,
+          "total_contexts": [
+            32768
+          ]
+        }
+      ],
+      "sweep_rows": {
+        "accepted": 0,
+        "attempted": 18,
+        "candidate": 18,
+        "complete": false,
+        "expected": 18,
+        "infra_invalid": 0,
+        "measurement_invalid": 0,
+        "not_run": 0
+      },
+      "weights_bytes": null
+    },
+    "origin": {
+      "campaign_path": "campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-qwen38-27b-nvfp4-vllm",
+      "private_repository": "https://github.com/0xSero/inference-index"
+    },
+    "protocol_complete": false,
+    "weights_subdir": "Qwen3.8-27B-NVFP4"
+  },
+  "model_instance_id": "nvidia-qwen3-8-27b-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-22T19:53:41Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-22T19:53:41Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "concurrency_observed": null,
+    "kv_cache_tokens": 32768,
+    "max_concurrency": null,
+    "max_context_tokens": 32768,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-nvfp4-rtxpro4500-vllm-tp1-campaign"
+  ],
+  "status": "validated"
+}

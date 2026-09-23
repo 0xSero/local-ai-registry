@@ -1,0 +1,128 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": null,
+    "video": true,
+    "vision": true
+  },
+  "description": "One-B70 Qwen3.8-27B EXL3 4.00bpw on vLLM 0.26.1 XPU with the exl3xpu plugin (bit-exact EXL3 trellis decode in ESIMD kernels), MTP speculative decoding k=3, fp8 KV cache (267,761 tokens), 262,144-token context, 16 sequences, image and video input. Measured on one card: C1 decode 47-67 tok/s, C8 aggregate 238-344 tok/s, cold prefill 1,589 (4K) / 1,497 (32K) / 1,049 (128K) tok/s. Tuning delta vs qwen38-q4km-arcb70-llamacpp-tp1 on the same card: C1 prose 25.0 -> 47.2, C8 56.8 -> 238.4, prefill 32K 629 -> 1,497.",
+  "engine": {
+    "graph_mode": "XPU graphs, FULL_DECODE_ONLY, capture sizes 1-64",
+    "name": "vllm",
+    "version": "0.26.1.dev0+g568afb3a1.d20260907.xpu + exl3xpu 0.1.0"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1",
+  "launch": {
+    "accelerator_backend": "intel-xpu",
+    "arguments": [
+      "models/qwen3.8-27b-exl3-4.00bpw",
+      "--gpu",
+      "0",
+      "--port",
+      "8000",
+      "--model-path",
+      "/models"
+    ],
+    "container": {
+      "captured_at": "2026-09-23T11:14:49.398640Z",
+      "compose_file": null,
+      "digest": "sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+      "image": "ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-23T11:14:49.398640Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "environment": {
+      "HF_HUB_OFFLINE": "1"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "/dev/dri/by-path",
+        "target": "/dev/dri/by-path"
+      },
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/turboderp-Qwen3.8-27B-exl3-4.00bpw",
+        "target": "/models"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:5674b70b344fdc2ffb583bf507796472e1bcbc7989e9fb0a7bb2580a89b6dfe1 -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/exl3xpu/blob/2bcd9f6728904f618c5343c944df5cb6660c2bfa/docker/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/exl3xpu",
+      "workflow": "https://github.com/0xSero/exl3xpu/actions/runs/35850097315"
+    },
+    "shm_size": "32g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-23T11:14:49.398640Z",
+      "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest, weights at /models",
+      "served_model_id": "qwen3.8-27b-exl3"
+    },
+    "correctness": {
+      "logits_vs_exllamav3_rtx3090": "top-1 99.63%, KL 9.8e-5 (tests/gateA3)",
+      "needle_128k": "3/3",
+      "video": "PASS tests/test_video.py",
+      "vision": "PASS tests/test_vision.py",
+      "weights_bit_exact": "all 401 EXL3 tensors bit-identical to exllamav3 reconstruct (tests/test_bitexact_xpu.py)"
+    },
+    "runtime_identity": {
+      "base_image": "intel/llm-scaler-vllm:0.26.0-b2@sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b",
+      "compute_runtime": "26.31.39395.13",
+      "host_kernel": "7.1.8-arch1-3 (xe)",
+      "igc": "2.40.13",
+      "level_zero_loader": "1.32.0",
+      "model_revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+      "oneapi": "2025.3",
+      "source_commit": "2bcd9f6728904f618c5343c944df5cb6660c2bfa",
+      "torch": "2.12.0+xpu"
+    },
+    "tools_note": "tool calling not tested on this launch; capability left null",
+    "tuned": "ladder climbed; log in https://github.com/0xSero/exl3xpu/blob/main/docs/PROGRESS.md"
+  },
+  "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
+  "provenance": {
+    "captured_at": "2026-09-23T11:30:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-23T11:30:00Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/exl3xpu"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8",
+    "kv_cache_tokens": 267761,
+    "max_concurrency": 16,
+    "max_context_tokens": 262144,
+    "speculative": "mtp k=3 (EXL3 MTP head in the checkpoint), draft lm_head pruned to 512 vocab blocks",
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1-sweep",
+    "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1-acceptance"
+  ],
+  "status": "validated"
+}
