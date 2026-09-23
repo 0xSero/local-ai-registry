@@ -2,7 +2,7 @@
   "capabilities": {
     "chat": true,
     "reasoning": true,
-    "tools": null,
+    "tools": true,
     "video": true,
     "vision": true
   },
@@ -25,7 +25,13 @@
       "--port",
       "8000",
       "--model-path",
-      "/models"
+      "/models",
+      "--",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--reasoning-parser",
+      "qwen3"
     ],
     "container": {
       "captured_at": "2026-09-23T11:14:49.398640Z",
@@ -96,7 +102,11 @@
       "source_commit": "2bcd9f6728904f618c5343c944df5cb6660c2bfa",
       "torch": "2.12.0+xpu"
     },
-    "tools_note": "tool calling not tested on this launch; capability left null",
+    "tools_check": {
+      "checked_at": "2026-09-23",
+      "host": "omarchy test box, Intel Arc Pro B70 (intel-xpu:0)",
+      "result": "claude, codex, opencode, pi, omp, crush, grok and copilot each answered a one-shot prompt through the keyed gateway; without these flags every agent got 400 (auto tool choice needs --enable-auto-tool-choice and --tool-call-parser)"
+    },
     "tuned": "ladder climbed; log in https://github.com/0xSero/exl3xpu/blob/main/docs/PROGRESS.md"
   },
   "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
