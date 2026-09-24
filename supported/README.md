@@ -7,7 +7,7 @@ Each one was tested on that exact card before it was listed; a card that is not 
 |---|---|---|---|---|
 | [AMD Instinct MI300X 192 GB](amd/mi300x-192gb.md) | Qwen3.8-27B | SGLang | 128K | – |
 | [AMD Radeon RX 6800 XT 16 GB](amd/rx-6800-xt-16gb.md) | Qwen3.5-9B-Base | llama.cpp | 64K | – |
-| [Intel Arc Pro B70 32 GB](intel/intel-arc-pro-b70-32gb.md) | Qwen3.8-27B | vLLM | 256K | 84 tok/s |
+| [Intel Arc Pro B70 32 GB](intel/intel-arc-pro-b70-32gb.md) | Qwen3.8-27B | vLLM | 256K | 80 tok/s |
 | [GeForce RTX 3060 12 GB](nvidia/rtx-3060-12gb.md) | Qwen3.5-9B | TabbyAPI (ExLlamaV3) | 128K | 81 tok/s |
 | [GeForce RTX 3060 Ti 8 GB](nvidia/rtx-3060-ti-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 3070 8 GB](nvidia/rtx-3070-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
