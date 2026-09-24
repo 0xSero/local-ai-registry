@@ -61,6 +61,9 @@ jobs:
       - name: Schema-2 export expresses only what a launch consumes
         run: python3 scripts/test_export_plugin_v2.py
 
+      - name: The Arc Pro B70 row launches the EXL3 recipe, not the llama.cpp fallback
+        run: python3 scripts/test_b70_runs_exl3.py
+
       - name: plugin/v2/recipes.json is current (plugin 6.x vendors it)
         run: python3 scripts/check_plugin_catalog.py 2
 
