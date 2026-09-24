@@ -6,9 +6,9 @@ Local AI runs Qwen3.8-27B on this card.
 |---|---|
 | Model | Qwen3.8-27B · EXL3 · 4 bpw |
 | Weights | [turboderp/Qwen3.8-27B-exl3](https://huggingface.co/turboderp/Qwen3.8-27B-exl3/tree/113cf7ab958054860e43fb7f3063b1af19171095) at `113cf7ab` · 15.73 GB |
-| Engine | vLLM · `ghcr.io/0xsero/exl3xpu@sha256:753922b1d1668f203eb3fac796bafb5a2118d81f22e44f06c6a6de8a268864b7` |
+| Engine | vLLM · `ghcr.io/0xsero/exl3xpu@sha256:cff3edf27c183c3378e6e37975e7984bc4f82848665085f5943894925de3a421` |
 | Context | 262,144 tokens |
 | Capabilities | reasoning, tools, vision |
-| Decode, one stream | 74 tok/s |
-| Accepted | 2026-09-23 |
+| Decode, one stream | 84 tok/s |
+| Accepted | 2026-09-24 |
 | Recipe | [`qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1`](../../registry/recipe/qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1.json) |
