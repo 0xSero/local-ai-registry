@@ -1,0 +1,13 @@
+{
+  "available_memory_gib": 464.1244354248047,
+  "eco_release_output": "Released: s15",
+  "eco_reservation_released": true,
+  "processes_observed_before_final_termination": [
+    "53926     1 $STUDIO_HOME/glm53_flash_run/upstream-env/envs/install.SuAmLUwc/bin/python $STUDIO_HOME/glm53_flash_run/upstream-env/current/bin/vllm serve $STUDIO_HOME/.exo/models/pipenetwork--GLM-5.3-Flash-MLX-4bit --max-model-len 262144 --max-num-batched-tokens 256 --kv-cache-dtype auto --max-num-seqs 1 --enable-prefix-caching --host 127.0.0.1 --port 18015 --served-model-name glm53-flash-pipenetwork --speculative-config {\"method\":\"mtp\",\"model\":\"$STUDIO_HOME/glm53_flash_run/mtp-donor-c80f6810\",\"num_speculative_tokens\":2,\"use_local_argmax_reduction\":true} --gpu-memory-utilization 0.9 --limit-mm-per-prompt {\"image\":1,\"video\":0}",
+    "54486 54485 $STUDIO_HOME/glm53_flash_run/upstream-env/current/bin/python $STUDIO_HOME/glm-5.3-flash-m3-ultra/tools/sweep_studio.py --tokenizer $STUDIO_HOME/.exo/models/pipenetwork--GLM-5.3-Flash-MLX-4bit --configuration $STUDIO_HOME/glm-5.3-flash-m3-ultra/evidence/vision-mtp2-pool1-256k-config.json --contexts 65536 131072 261888 --repeats 1 --output-tokens 256 --skip-warmup --timeout 1800 --out $STUDIO_HOME/glm-5.3-flash-m3-ultra/evidence/scans/vision-mtp2-pool1-256k"
+  ],
+  "stopped_verified_pids": [
+    53926,
+    54486
+  ]
+}
