@@ -1,0 +1,138 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "video": null,
+    "vision": null
+  },
+  "description": "oMLX 0.6.4 on one M4 Pro 48GB. gcoli Qwen3.8-27B oQ4e 4-bit MTP, mtp_enabled, no checkpoint edit. Launch is the pinned serve script.",
+  "engine": {
+    "graph_mode": null,
+    "name": "omlx",
+    "version": "0.6.4"
+  },
+  "facts": {
+    "capabilities.video": {
+      "provenance": {
+        "captured_at": "2026-09-25T22:30:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T22:30:00Z",
+            "kind": "server-log",
+            "paths": [
+              "sources/m4-pro-qwen38-27b/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.6.4"
+          }
+        ]
+      },
+      "reason": "no-video-request-measured",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-25T22:30:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T22:30:00Z",
+            "kind": "server-log",
+            "paths": [
+              "sources/m4-pro-qwen38-27b/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.6.4"
+          }
+        ]
+      },
+      "reason": "no-image-request-measured",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-25T22:30:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T22:30:00Z",
+            "kind": "server-log",
+            "paths": [
+              "sources/m4-pro-qwen38-27b/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.6.4"
+          }
+        ]
+      },
+      "reason": "not-reported-by-the-server",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m4-pro-48gb",
+  "id": "qwen3-8-27b-oq4e-mtp-apple-m4-pro-48gb-mlx-tp1",
+  "launch": {
+    "accelerator_backend": "metal",
+    "container": {
+      "captured_at": "2026-09-25T22:30:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "Host Metal process. No container image.",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T22:30:00Z",
+          "kind": "server-log",
+          "paths": [
+            "sources/m4-pro-qwen38-27b/measurement.json"
+          ],
+          "repository": "https://github.com/jundot/omlx",
+          "url": "https://github.com/jundot/omlx/releases/tag/v0.6.4"
+        }
+      ],
+      "state": "none"
+    },
+    "environment": {},
+    "kind": "script",
+    "network_mode": "bridge",
+    "script": {
+      "file": "sources/github/BlivionIaG/local-ai-registry/94c051cb999b13dac8cc402786309671a5e0a6b4/serve-qwen3-8-27b-oq4e-mtp.sh"
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T21:28:49.643218Z",
+      "harness": "local-ai validate",
+      "served_model_id": "gcoli_Qwen3.8-27B-oQ4e-mtp:mtp3"
+    },
+    "wheel": "https://github.com/jundot/omlx/releases/download/v0.6.4/omlx-0.6.4-cp313-cp313-macosx_15_0_universal2.whl"
+  },
+  "model_instance_id": "gcoli-qwen3-8-27b-oq4e-mtp--4bit",
+  "provenance": {
+    "captured_at": "2026-09-25T22:30:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T22:30:00Z",
+        "kind": "server-log",
+        "paths": [
+          "sources/m4-pro-qwen38-27b/measurement.json"
+        ],
+        "repository": "https://github.com/jundot/omlx",
+        "url": "https://github.com/jundot/omlx/releases/tag/v0.6.4"
+      }
+    ]
+  },
+  "recipe_source": "measured-host",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 1,
+    "max_context_tokens": 200000,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-oq4e-mtp-apple-m4-pro-48gb-mlx-tp1-acceptance",
+    "qwen3-8-27b-oq4e-mtp-apple-m4-pro-48gb-mlx-tp1-20260925"
+  ],
+  "status": "validated"
+}

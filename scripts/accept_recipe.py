@@ -217,9 +217,19 @@ def main() -> int:
 
     path = ROOT / "recipe" / f"{args.recipe_id}.json"
     recipe = json.loads(path.read_text())
-    draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") == "docker" else None)
-    if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
-        raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
+    launch_now = recipe.get("launch") or {}
+    script_mode = launch_now.get("kind") == "script"
+    if script_mode:
+        script_file = str((launch_now.get("script") or {}).get("file") or "")
+        if not re.search(r"(?:^|/)[0-9a-f]{40}/", script_file):
+            raise SystemExit("acceptance FAILED: script launch has no commit pin")
+        if recipe["status"] != "candidate" and not args.revalidate:
+            raise SystemExit("acceptance only applies to candidates (or --revalidate)")
+        draft = launch_now
+    else:
+        draft = recipe.get("draft_launch") or (launch_now if launch_now.get("kind") == "docker" else None)
+        if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
+            raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
 
     request_body = json.loads(args.request_json.read_text()) if args.request_json else None
     if request_body is not None and not isinstance(request_body, dict):
@@ -300,6 +310,20 @@ def main() -> int:
         "rows": [row],
     }
     (ROOT / "speed-sweep" / f"{sweep_id}.json").write_text(json.dumps(sweep, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
+
+    if script_mode:
+        recipe["status"] = "validated"
+        recipe.setdefault("speed_sweep_ids", [])
+        if sweep_id not in recipe["speed_sweep_ids"]:
+            recipe["speed_sweep_ids"].append(sweep_id)
+        acceptance = {"accepted_at": now, "served_model_id": served, "harness": args.harness}
+        if apis is not None:
+            acceptance["apis"] = apis
+        recipe.setdefault("metadata", {})["acceptance"] = acceptance
+        path.write_text(json.dumps(recipe, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
+        print(f"PROMOTED {recipe['id']} to validated with evidence {sweep_id}")
+        print("next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR")
+        return 0
 
     launch = {key: value for key, value in draft.items() if key != "synthesized"}
     # drafts cannot carry asset_ids (schema); derive them from asset/ mounts at promotion
