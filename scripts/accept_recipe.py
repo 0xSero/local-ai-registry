@@ -223,8 +223,9 @@ def main() -> int:
     if draft.get("kind") == "script":
         if not re.search(r"(?:^|/)[0-9a-f]{40}/", str((draft.get("script") or {}).get("file") or "")):
             raise SystemExit("acceptance FAILED: native script must be commit-pinned before acceptance")
-        if not isinstance((recipe.get("serving") or {}).get("max_context_tokens"), int):
-            raise SystemExit("acceptance FAILED: native script must state serving.max_context_tokens")
+        native_context = (recipe.get("serving") or {}).get("max_context_tokens")
+        if type(native_context) is not int or native_context <= 0:
+            raise SystemExit("acceptance FAILED: native script must state a positive serving.max_context_tokens")
         native_instance = json.loads((ROOT / "model-instance" / f"{recipe['model_instance_id']}.json").read_text())
         if not re.fullmatch(r"[0-9a-f]{40}", str(native_instance.get("revision") or "")):
             raise SystemExit("acceptance FAILED: native model revision must be pinned before acceptance")

@@ -253,7 +253,7 @@ class NativeScriptAcceptanceTests(unittest.TestCase):
             self.assertEqual(promoted["serving"]["max_context_tokens"], 204800)
 
     def test_unpinned_or_mismatched_native_launch_cannot_be_promoted(self):
-        for invalid in ("script", "revision", "served_name", "context"):
+        for invalid in ("script", "revision", "served_name", "context", "negative_context", "boolean_context"):
             with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 recipe, instance = self.fixture(root)
@@ -263,6 +263,10 @@ class NativeScriptAcceptanceTests(unittest.TestCase):
                     instance["revision"] = "main"
                 elif invalid == "served_name":
                     instance["served_name"] = "different-model"
+                elif invalid == "negative_context":
+                    recipe["serving"]["max_context_tokens"] = -1
+                elif invalid == "boolean_context":
+                    recipe["serving"]["max_context_tokens"] = True
                 else:
                     recipe["serving"]["max_context_tokens"] = None
                 (root / "recipe/native.json").write_text(json.dumps(recipe))
