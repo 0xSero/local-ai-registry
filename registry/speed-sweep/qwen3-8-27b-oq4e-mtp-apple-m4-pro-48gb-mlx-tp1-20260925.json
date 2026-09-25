@@ -1,0 +1,207 @@
+{
+  "accepted_at": "2026-09-25T21:28:49.643218Z",
+  "facts": {
+    "note": {
+      "provenance": {
+        "captured_at": "2026-09-25T21:28:49.643218Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T21:28:49.643218Z",
+            "kind": "server-log",
+            "url": "https://github.com/jundot/omlx"
+          }
+        ]
+      },
+      "reason": {
+        "code": "measured",
+        "detail": "MTP-on prefill curve and agentic prefix-cache session. 200k requested; agentic session reached 157k context with 85% reuse; cold prefill collapses >50k."
+      },
+      "state": "known"
+    }
+  },
+  "id": "qwen3-8-27b-oq4e-mtp-apple-m4-pro-48gb-mlx-tp1-20260925",
+  "measured_at": "2026-09-25T21:28:49.643218Z",
+  "metrics": {
+    "concurrency": 1,
+    "inference_engine_version": "omlx 0.6.4",
+    "latest_point_at": "2026-09-25T21:28:49.643218Z",
+    "max_context_tokens": 30612,
+    "peak_generation_tps": 12.59,
+    "peak_prompt_tps": null,
+    "point_count": 10
+  },
+  "recipe_id": "qwen3-8-27b-oq4e-mtp-apple-m4-pro-48gb-mlx-tp1",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 1812,
+      "decode_method": "streaming_delta",
+      "decode_tok_s": 3.39,
+      "decode_tok_s_per_stream": 3.39,
+      "kind": "prefill_curve",
+      "output_tokens": 64,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 13
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 3612,
+      "decode_method": "streaming_delta",
+      "decode_tok_s": 3.88,
+      "decode_tok_s_per_stream": 3.88,
+      "kind": "prefill_curve",
+      "output_tokens": 64,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 9
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 7212,
+      "decode_method": "streaming_delta",
+      "decode_tok_s": 4.48,
+      "decode_tok_s_per_stream": 4.48,
+      "kind": "prefill_curve",
+      "output_tokens": 64,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 20
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 14412,
+      "decode_method": "streaming_delta",
+      "decode_tok_s": 12.59,
+      "decode_tok_s_per_stream": 12.59,
+      "kind": "prefill_curve",
+      "output_tokens": 64,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 50
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 30612,
+      "decode_method": "streaming_delta",
+      "decode_tok_s": 2.09,
+      "decode_tok_s_per_stream": 2.09,
+      "kind": "prefill_curve",
+      "output_tokens": 64,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "samples": 2,
+      "status": "accepted",
+      "ttft_ms_p50": 138
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 62924,
+      "decode_method": "agentic_session",
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "kind": "agentic_turn",
+      "output_tokens": 32,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "re_prefilled_tokens": 24012,
+      "reuse_rate": 0.618,
+      "reused_tokens": 38912,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null,
+      "turn_wall_s": 281.12
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 86482,
+      "decode_method": "agentic_session",
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "kind": "agentic_turn",
+      "output_tokens": 32,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "re_prefilled_tokens": 25042,
+      "reuse_rate": 0.71,
+      "reused_tokens": 61440,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null,
+      "turn_wall_s": 326.2
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 110040,
+      "decode_method": "agentic_session",
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "kind": "agentic_turn",
+      "output_tokens": 32,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "re_prefilled_tokens": 24024,
+      "reuse_rate": 0.782,
+      "reused_tokens": 86016,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null,
+      "turn_wall_s": 352.38
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 133598,
+      "decode_method": "agentic_session",
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "kind": "agentic_turn",
+      "output_tokens": 32,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "re_prefilled_tokens": 25054,
+      "reuse_rate": 0.812,
+      "reused_tokens": 108544,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null,
+      "turn_wall_s": 409.28
+    },
+    {
+      "concurrency": 1,
+      "context_tokens": 157156,
+      "decode_method": "agentic_session",
+      "decode_tok_s": null,
+      "decode_tok_s_per_stream": null,
+      "kind": "agentic_turn",
+      "output_tokens": 32,
+      "peak_vram_gb": null,
+      "prefill_tok_s": null,
+      "re_prefilled_tokens": 24036,
+      "reuse_rate": 0.847,
+      "reused_tokens": 133120,
+      "samples": 1,
+      "status": "accepted",
+      "ttft_ms_p50": null,
+      "turn_wall_s": null
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "captured_at": "2026-09-25T21:28:49.643218Z",
+    "commit": null,
+    "kind": "server-log",
+    "paths": [
+      "sources/m4-pro-qwen38-27b/measurement.json"
+    ],
+    "repository": "https://github.com/jundot/omlx",
+    "url": "https://github.com/jundot/omlx"
+  }
+}
