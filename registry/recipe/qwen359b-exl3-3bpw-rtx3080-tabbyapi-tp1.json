@@ -2,10 +2,10 @@
   "capabilities": {
     "chat": true,
     "reasoning": true,
-    "tools": true,
-    "vision": true
+    "tools": null,
+    "vision": false
   },
-  "description": "Candidate: the 16 GB Qwen3.8-27B EXL3 SC 3 bpw recipe (MTP draft, reasoning on) on one RTX 2000 Ada 16GB via TabbyAPI/ExLlamaV3. Pending acceptance on the card.",
+  "description": "Candidate: Qwen3.5-9B EXL3 3 bpw (6-bit head, MTP draft) on one rtx-3080-10gb via TabbyAPI/ExLlamaV3, 65536 tokens, Q4 cache, one sequence, reasoning on. Pending acceptance on the card.",
   "engine": {
     "graph_mode": "piecewise",
     "name": "tabbyapi",
@@ -13,8 +13,8 @@
   },
   "facts": {},
   "hardware_count": 1,
-  "hardware_id": "rtx-2000-ada-16gb",
-  "id": "qwen3827b-exl3-sc3bpw-v4-rtx2000ada-tabbyapi-tp1",
+  "hardware_id": "rtx-3080-10gb",
+  "id": "qwen359b-exl3-3bpw-rtx3080-tabbyapi-tp1",
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
@@ -23,10 +23,10 @@
       "/app/config.yml"
     ],
     "asset_ids": [
-      "qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config"
+      "qwen359b-exl3-3bpw-64k-q4-tabbyapi-config"
     ],
     "container": {
-      "captured_at": "2026-09-25T13:26:03Z",
+      "captured_at": "2026-09-25T13:25:41Z",
       "compose_file": null,
       "digest": "sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
       "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
@@ -34,7 +34,7 @@
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-25T13:26:03Z",
+          "captured_at": "2026-09-25T13:25:41Z",
           "kind": "derived-recipe",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
@@ -52,12 +52,12 @@
     "mounts": [
       {
         "read_only": true,
-        "source": "${MODEL_ROOT}/qwen3-8-27b-exl3-sc3bpw-h4-v4",
+        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-6hb-3bpw",
         "target": "/workspace/models"
       },
       {
         "read_only": true,
-        "source": "asset/qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config.yml",
+        "source": "asset/qwen359b-exl3-3bpw-64k-q4-tabbyapi-config.yml",
         "target": "/app/config.yml"
       }
     ],
@@ -71,15 +71,15 @@
     "shm_size": "8g"
   },
   "metadata": {
-    "derived_from": "qwen3827b-exl3-sc3bpw-v4-rtx4060ti-tabbyapi-tp1",
-    "weights_subdir": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4"
+    "derived_from": "qwen359b-exl3-4bpw-rtx3060-tabbyapi-tp1",
+    "weights_subdir": "Qwen3.5-9B-EXL3-6hb-3bpw"
   },
-  "model_instance_id": "turboderp-qwen3-8-27b-exl3--sc-3-00bpw-h4-v4",
+  "model_instance_id": "themelongod-qwen3-5-9b-exl3--6hb-3-0bpw",
   "provenance": {
-    "captured_at": "2026-09-22T17:44:53Z",
+    "captured_at": "2026-09-02T22:33:55Z",
     "sources": [
       {
-        "captured_at": "2026-09-22T17:44:53Z",
+        "captured_at": "2026-09-02T22:33:55Z",
         "kind": "normalized-recipe",
         "url": "https://github.com/0xSero/local-ai-registry"
       }
@@ -89,9 +89,9 @@
   "recommended": false,
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": 132096,
-    "max_concurrency": 2,
-    "max_context_tokens": 131072,
+    "kv_cache_tokens": 65536,
+    "max_concurrency": 1,
+    "max_context_tokens": 65536,
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [],
