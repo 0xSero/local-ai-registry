@@ -18,6 +18,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import string
 import sys
@@ -70,8 +71,10 @@ def render(recipe):
 
 # ----------------------------------------------------------------------------- the server under test
 def call(endpoint, path, body=None, timeout=900):
-    req = urllib.request.Request(endpoint + path, data=json.dumps(body).encode() if body else None,
-                                 headers={"Content-Type": "application/json"})
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("LAB_API_KEY"):  # an owner's server behind a keyed gateway
+        headers["Authorization"] = f"Bearer {os.environ['LAB_API_KEY']}"
+    req = urllib.request.Request(endpoint + path, data=json.dumps(body).encode() if body else None, headers=headers)
     t = time.monotonic()
     with urllib.request.urlopen(req, timeout=timeout) as r:
         out = json.loads(r.read())
@@ -121,7 +124,7 @@ def gates(endpoint, launch):
     ev["tools"] = {"call": calls[:1], "reply": reply[-200:]}
     # context: a code planted near the end of a prompt that fills ~85% of the window
     target = int(launch["ctx"] * 0.85)
-    filler = " ".join(f"Line {i}: the archive notes that shipment {i * 7 % 997} left dock {i % 13} on schedule." for i in range(target // 19))
+    filler = " ".join(f"Line {i}: the archive notes that shipment {i * 7 % 997} left dock {i % 13} on schedule." for i in range(target // 24))  # ~23.6 tokens a line (measured: 32,834 tokens from 1,473 lines)
     prompt = filler + " The access code for the vault is 58213. " + "Anything else is routine."
     c, u, secs = chat(endpoint, served, [{"role": "user", "content": prompt + "\n\nWhat is the access code for the vault? Reply with only the code."}], max_tokens=4096)
     got = u.get("prompt_tokens") or 0
