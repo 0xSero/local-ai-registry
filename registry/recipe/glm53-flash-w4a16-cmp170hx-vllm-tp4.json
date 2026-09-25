@@ -58,7 +58,7 @@
       "2"
     ],
     "container": {
-      "captured_at": "2026-09-25T14:00:00Z",
+      "captured_at": "2026-09-25T15:30:47.366591Z",
       "compose_file": null,
       "digest": "sha256:ee978fb3e3d11cf8577a014539a7ad4e2a8dff95163fc5d96c0a06fcf9c64640",
       "image": "ghcr.io/morrowmake/vllm-cmp170hx@sha256:ee978fb3e3d11cf8577a014539a7ad4e2a8dff95163fc5d96c0a06fcf9c64640",
@@ -66,11 +66,9 @@
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-25T14:00:00Z",
-          "commit": "0ed7d3e7f3f855646a139701598a9b40d5745688",
-          "kind": "self-built-image",
-          "repository": "https://github.com/Morrowmake/vllm-cmp170hx",
-          "url": "https://github.com/Morrowmake/vllm-cmp170hx/tree/0ed7d3e7f3f855646a139701598a9b40d5745688"
+          "captured_at": "2026-09-25T15:30:47.366591Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
         }
       ],
       "state": "digest-pinned"
@@ -159,6 +157,11 @@
     "source": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/tree/v1.3.0"
   },
   "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T15:30:47.366591Z",
+      "harness": "scripts/accept_recipe.py against the container: docker run generated from the recipe launch, 4x CMP 170HX 64 GB, PCIe Gen2 x16, 180 W per card, driver 610.57.04",
+      "served_model_id": "glm-5.3-flash"
+    },
     "capability_notes": "Chat, reasoning (glm47 parser) and tool calls (glm47 parser) are exercised by the recipe's smoke test. Images and video are enabled in this launch but were not checked for this release, so vision is left unknown.",
     "credits": [
       {
@@ -256,7 +259,8 @@
   },
   "speed_sweep_ids": [
     "glm53-flash-w4a16-cmp170hx-vllm-tp4-release-1-3-0",
-    "glm53-flash-w4a16-cmp170hx-vllm-tp4-localmaxxing-p2p-on"
+    "glm53-flash-w4a16-cmp170hx-vllm-tp4-localmaxxing-p2p-on",
+    "glm53-flash-w4a16-cmp170hx-vllm-tp4-acceptance"
   ],
-  "status": "candidate"
+  "status": "validated"
 }
