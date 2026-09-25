@@ -1,0 +1,128 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": null
+  },
+  "description": "oMLX 0.7.0.dev4 on one M5 Ultra 256GB. Vontra GLM-5.3-Flash 4-bit MTP, mtp_enabled, no checkpoint edit.",
+  "engine": {
+    "graph_mode": null,
+    "name": "omlx",
+    "version": "0.7.0.dev4"
+  },
+  "facts": {
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-25T19:06:21Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T19:06:21Z",
+            "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+            "kind": "server-log",
+            "paths": [
+              "sources/m5-ultra-glm53-4bit-mtp/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+          }
+        ]
+      },
+      "reason": "no-image-request-measured",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-25T19:06:21Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T19:06:21Z",
+            "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+            "kind": "server-log",
+            "paths": [
+              "sources/m5-ultra-glm53-4bit-mtp/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+          }
+        ]
+      },
+      "reason": "not-reported-by-the-server",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-ultra-256gb",
+  "id": "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1",
+  "launch": {
+    "accelerator_backend": "metal",
+    "arguments": [
+      "omlx",
+      "serve",
+      "--model-dir",
+      "${MODEL_DIR}"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T19:06:21Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "Host Metal process. No container image.",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T19:06:21Z",
+          "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+          "kind": "server-log",
+          "paths": [
+            "sources/m5-ultra-glm53-4bit-mtp/measurement.json"
+          ],
+          "repository": "https://github.com/jundot/omlx",
+          "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+        }
+      ],
+      "state": "none"
+    },
+    "environment": {},
+    "kind": "native",
+    "network_mode": "bridge"
+  },
+  "metadata": {
+    "tool_call": {
+      "arguments": {
+        "a": 2,
+        "b": 2
+      },
+      "finish_reason": "tool_calls",
+      "name": "add"
+    },
+    "wheel": "https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp312-cp312-macosx_15_0_universal2.whl"
+  },
+  "model_instance_id": "vontra-glm-5-3-flash-mlx-4bit-mtp--4bit",
+  "provenance": {
+    "captured_at": "2026-09-25T19:06:21Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T19:06:21Z",
+        "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+        "kind": "server-log",
+        "paths": [
+          "sources/m5-ultra-glm53-4bit-mtp/measurement.json"
+        ],
+        "repository": "https://github.com/jundot/omlx",
+        "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+      }
+    ]
+  },
+  "recipe_source": "measured-host",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 1,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1-20260925"
+  ],
+  "status": "candidate"
+}
