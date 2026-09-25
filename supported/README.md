@@ -1,12 +1,13 @@
 # Supported GPUs
 
-Local AI runs a validated model on 36 GPUs: 33 NVIDIA, 1 Intel, 2 AMD.
+Local AI runs a validated model on 37 GPUs: 33 NVIDIA, 1 Intel, 3 AMD.
 Each one was tested on that exact card before it was listed; a card that is not here shows Coming soon.
 
 | GPU | Model | Engine | Context | Decode |
 |---|---|---|---|---|
 | [AMD Instinct MI300X 192 GB](amd/mi300x-192gb.md) | Qwen3.8-27B | SGLang | 128K | – |
 | [AMD Radeon RX 6800 XT 16 GB](amd/rx-6800-xt-16gb.md) | Qwen3.5-9B-Base | llama.cpp | 64K | – |
+| [AMD Radeon RX 7600 XT 16 GB](amd/rx-7600-xt-16gb.md) | Qwen3.5-9B-Base | llama.cpp | 64K | 41 tok/s |
 | [Intel Arc Pro B70 32 GB](intel/intel-arc-pro-b70-32gb.md) | Qwen3.8-27B | vLLM | 256K | 81 tok/s |
 | [GeForce RTX 3060 12 GB](nvidia/rtx-3060-12gb.md) | Qwen3.5-9B | TabbyAPI (ExLlamaV3) | 128K | 81 tok/s |
 | [GeForce RTX 3060 Ti 8 GB](nvidia/rtx-3060-ti-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
