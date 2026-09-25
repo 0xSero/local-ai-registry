@@ -248,7 +248,7 @@ def rented(recipe, launch, args):
     def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
         return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
     LabSpec.onstart_script = onstart
-    ns = argparse.Namespace(vast_min_inet=500, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
+    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
     provider = vr.PROVIDERS[args.on](ns)
     spec = LabSpec()
     exclude = set()
@@ -413,6 +413,7 @@ def main():
     t.add_argument("--proxy-gpu", help="run on this twin card, memory capped to the card's")
     t.add_argument("--proxy-vram", type=int, default=16)
     t.add_argument("--min-cuda", type=float)
+    t.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
     t.add_argument("--max-price", type=float, default=1.5)
     t.add_argument("--disk", type=int, default=60)
     t.add_argument("--dry-run", action="store_true")
@@ -424,6 +425,7 @@ def main():
     cv.add_argument("--proxy-gpu")
     cv.add_argument("--proxy-vram", type=int, default=16)
     cv.add_argument("--min-cuda", type=float)
+    cv.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
     cv.add_argument("--max-price", type=float, default=2.0)
     cv.add_argument("--disk", type=int, default=80)
     sub.add_parser("render").add_argument("recipe")
