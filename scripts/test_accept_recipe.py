@@ -216,5 +216,67 @@ class AcceptanceTests(unittest.TestCase):
             self.assertEqual(json.loads(recipe_path.read_text())["serving"]["max_context_tokens"], 8192)
 
 
+class NativeScriptAcceptanceTests(unittest.TestCase):
+    def fixture(self, root):
+        for kind in ("recipe", "model-instance", "speed-sweep"):
+            (root / kind).mkdir()
+        recipe = {"id": "native", "status": "candidate", "model_instance_id": "native-instance",
+                  "serving": {"max_context_tokens": 204800},
+                  "launch": {"kind": "script", "script": {
+                      "file": "https://example.org/source/" + "a" * 40 + "/serve.sh"}}}
+        instance = {"revision": "b" * 40, "served_name": "native-model"}
+        (root / "recipe/native.json").write_text(json.dumps(recipe))
+        (root / "model-instance/native-instance.json").write_text(json.dumps(instance))
+        return recipe, instance
+
+    def test_pinned_script_uses_real_acceptance_without_inventing_a_container(self):
+        run = {"started_at": "2026-09-25T00:00:00Z", "prompt_tokens": 100, "tokens": 128,
+               "decode_tok_s": 40.0, "ttft_ms": 300.0, "server_prefill_tok_s": 500.0,
+               "decode_method": "timings.predicted_per_second", "content": "Synthetic answer",
+               "reasoning_content": "", "response_model_ids": ["native-model"]}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            recipe, _ = self.fixture(root)
+            with patch.object(accept_recipe, "ROOT", root), \
+                    patch.object(sys, "argv", ["accept_recipe.py", "native", "--endpoint", "http://127.0.0.1:9999"]), \
+                    patch.object(accept_recipe, "http_json", return_value={"data": [{"id": "native-model"}]}), \
+                    patch.object(accept_recipe, "measure", return_value=[dict(run) for _ in range(3)]), \
+                    redirect_stdout(io.StringIO()):
+                self.assertEqual(accept_recipe.main(), 0)
+            promoted = json.loads((root / "recipe/native.json").read_text())
+            self.assertEqual(promoted["status"], "validated")
+            self.assertEqual(promoted["launch"]["script"], recipe["launch"]["script"])
+            self.assertEqual(promoted["launch"]["container"]["state"], "none")
+            self.assertIsNone(promoted["launch"]["container"]["image"])
+            sweep = json.loads((root / "speed-sweep/native-acceptance.json").read_text())
+            self.assertEqual(sweep["rows"][0]["context_tokens"], 100)
+            self.assertEqual(promoted["serving"]["max_context_tokens"], 204800)
+
+    def test_unpinned_or_mismatched_native_launch_cannot_be_promoted(self):
+        for invalid in ("script", "revision", "served_name", "context"):
+            with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                recipe, instance = self.fixture(root)
+                if invalid == "script":
+                    recipe["launch"]["script"]["file"] = "https://example.org/main/serve.sh"
+                elif invalid == "revision":
+                    instance["revision"] = "main"
+                elif invalid == "served_name":
+                    instance["served_name"] = "different-model"
+                else:
+                    recipe["serving"]["max_context_tokens"] = None
+                (root / "recipe/native.json").write_text(json.dumps(recipe))
+                (root / "model-instance/native-instance.json").write_text(json.dumps(instance))
+                with patch.object(accept_recipe, "ROOT", root), \
+                        patch.object(sys, "argv", ["accept_recipe.py", "native", "--endpoint", "http://127.0.0.1:9999"]), \
+                        patch.object(accept_recipe, "http_json", return_value={"data": [{"id": "native-model"}]}), \
+                        patch.object(accept_recipe, "measure") as measure:
+                    with self.assertRaises(SystemExit):
+                        accept_recipe.main()
+                    measure.assert_not_called()
+                self.assertEqual(json.loads((root / "recipe/native.json").read_text())["status"], "candidate")
+                self.assertEqual(list((root / "speed-sweep").iterdir()), [])
+
+
 if __name__ == "__main__":
     unittest.main()

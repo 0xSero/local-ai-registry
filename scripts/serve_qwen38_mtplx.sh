@@ -16,6 +16,6 @@ exec "${MTPLX_BIN:-mtplx}" serve \
   --model-id qwen38-27b-mtplx-4bit \
   --host 127.0.0.1 --port "${PORT:-18198}" --no-auth \
   --profile turbo --generation-mode mtp --depth 3 \
-  --context-window 204800 --kv-quant q4 --prefill-chunk-tokens 512 \
+  --context-window 204800 --kv-quant q4 --prefill-chunk-tokens 4096 \
   --fan-mode default --ssd-session-cache off --agent-rewrites off \
   --no-stats-footer --warmup-tokens 0 --stream-stall-deadline-s 1800
