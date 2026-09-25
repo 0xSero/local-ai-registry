@@ -6,7 +6,7 @@
     "video": true,
     "vision": true
   },
-  "description": "One-B70 Qwen3.8-27B EXL3 4.00bpw on vLLM 0.26.1 XPU with the exl3xpu plugin (bit-exact EXL3 trellis decode in ESIMD kernels), MTP speculative decoding k=3, fp8 KV cache (272,570 tokens in 1600-token blocks), 262,144-token context, 16 sequences, image and video input (up to 32 images / 4 videos per request; images above 4.2 MP are downscaled). Measured on one card with thinking on: C1 decode 63-77 tok/s, C8 aggregate 294-363 tok/s, C16 344-410 tok/s; cold prefill 1,654 (4K) / 1,483 (32K) / 1,020 (128K) tok/s with 4096-token chunks (decode waits <=~3.7 s behind a long prompt). Same card, qwen38-q4km-arcb70-llamacpp-tp1: C1 25.0, C8 56.8, prefill 32K 629. Prefix caching is on (--enable-prefix-caching; vLLM 0.26 leaves it off for hybrid GDN models): a repeated 14.4K-token prompt goes from 11.1 s to 1.8 s TTFT, decode is unchanged (greedy prose C8 334 vs 338 tok/s), and cold prefill costs 5-12% (1,636 / 1,423 / 923 tok/s at 4K / 32K / 128K) because align-mode chunks round to 1600-token blocks.",
+  "description": "One-B70 Qwen3.8-27B EXL3 4.00bpw on vLLM 0.26.1 XPU with the exl3xpu plugin (bit-exact EXL3 trellis decode in ESIMD kernels), MTP speculative decoding k=3, fp8 KV cache (272,570 tokens in 1600-token blocks), 262,144-token context, 16 sequences, image and video input (up to 32 images / 4 videos per request; images above 4.2 MP are downscaled). Measured on one card with thinking on: C1 decode 63-77 tok/s, C8 aggregate 294-363 tok/s, C16 344-410 tok/s; cold prefill with int8 prefill linears (on by default, EXL3_INT8_PREFILL=1: W8A8 on the XMX units, Hadamard-domain activations with per-row scales, one static codebook weight scale): 1,979 (32K) / 1,135 (128K) tok/s vs 1,434 / 928 fp16 on the same boot day, at +0.17% teacher-forced NLL (top-1 97.2% vs fp16 prefill; decode unchanged and bit-exact); real omp agent sessions replayed with tools + thinking (18K median / 63K max prompt): 24/24 turns ok, TTFT p50 4.65 -> 3.78 s, 4096-token chunks (decode waits <=~3.7 s behind a long prompt). Same card, qwen38-q4km-arcb70-llamacpp-tp1: C1 25.0, C8 56.8, prefill 32K 629. Prefix caching is on (--enable-prefix-caching; vLLM 0.26 leaves it off for hybrid GDN models): a repeated 14.4K-token prompt goes from 11.1 s to 1.8 s TTFT, decode is unchanged (greedy prose C8 334 vs 338 tok/s), and cold prefill costs 5-12% (1,636 / 1,423 / 923 tok/s at 4K / 32K / 128K) because align-mode chunks round to 1600-token blocks.",
   "engine": {
     "graph_mode": "XPU graphs, FULL_DECODE_ONLY, capture sizes 1-64",
     "name": "vllm",
@@ -35,15 +35,15 @@
       "qwen3"
     ],
     "container": {
-      "captured_at": "2026-09-24T11:21:50.101800Z",
+      "captured_at": "2026-09-25T09:24:52.392459Z",
       "compose_file": null,
-      "digest": "sha256:86276b00c9f0161e7e7ccba1e683ca622679466a5c855e952b375ddbb6ec57c4",
-      "image": "ghcr.io/0xsero/exl3xpu@sha256:86276b00c9f0161e7e7ccba1e683ca622679466a5c855e952b375ddbb6ec57c4",
+      "digest": "sha256:5d8630ed6a1a066c5e51d853372df4a6c210ede7c4448d703c8bb669f7dcec3d",
+      "image": "ghcr.io/0xsero/exl3xpu@sha256:5d8630ed6a1a066c5e51d853372df4a6c210ede7c4448d703c8bb669f7dcec3d",
       "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "captured_at": "2026-09-24T11:21:50.101800Z",
+          "captured_at": "2026-09-25T09:24:52.392459Z",
           "kind": "acceptance-run",
           "url": "https://github.com/0xSero/local-ai-registry"
         }
@@ -55,7 +55,7 @@
       "HF_HUB_OFFLINE": "1"
     },
     "host_port": 8000,
-    "image": "ghcr.io/0xsero/exl3xpu@sha256:86276b00c9f0161e7e7ccba1e683ca622679466a5c855e952b375ddbb6ec57c4",
+    "image": "ghcr.io/0xsero/exl3xpu@sha256:5d8630ed6a1a066c5e51d853372df4a6c210ede7c4448d703c8bb669f7dcec3d",
     "kind": "docker",
     "mounts": [
       {
@@ -71,18 +71,18 @@
     ],
     "network_mode": "bridge",
     "provenance": {
-      "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:86276b00c9f0161e7e7ccba1e683ca622679466a5c855e952b375ddbb6ec57c4 -o 0xSero",
-      "dockerfile": "https://github.com/0xSero/exl3xpu/blob/0e39bf9dadb6b332324110ac93a6b3b09f53415c/docker/Dockerfile",
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/exl3xpu@sha256:5d8630ed6a1a066c5e51d853372df4a6c210ede7c4448d703c8bb669f7dcec3d -o 0xSero",
+      "dockerfile": "https://github.com/0xSero/exl3xpu/blob/e5adb9f10953225731f492d069c31692c0f749ce/docker/Dockerfile",
       "kind": "self-built-attested",
       "source": "https://github.com/0xSero/exl3xpu",
-      "workflow": "https://github.com/0xSero/exl3xpu/actions/runs/35991049843"
+      "workflow": "https://github.com/0xSero/exl3xpu/actions/runs/36116746222"
     },
     "shm_size": "32g"
   },
   "metadata": {
     "acceptance": {
-      "accepted_at": "2026-09-24T11:21:50.101800Z",
-      "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest 86276b00 on one B70 (single render node + filtered by-path), recipe launch args",
+      "accepted_at": "2026-09-25T09:24:52.392459Z",
+      "harness": "scripts/accept_recipe.py via ssh tunnel to omarchy, published image digest 5d8630ed (int8 prefill on) on one B70 (single render node + filtered by-path), recipe launch args",
       "served_model_id": "qwen3.8-27b-exl3"
     },
     "correctness": {
@@ -100,7 +100,7 @@
       "level_zero_loader": "1.32.0",
       "model_revision": "113cf7ab958054860e43fb7f3063b1af19171095",
       "oneapi": "2025.3",
-      "source_commit": "0e39bf9dadb6b332324110ac93a6b3b09f53415c",
+      "source_commit": "e5adb9f10953225731f492d069c31692c0f749ce",
       "torch": "2.12.0+xpu"
     },
     "tools_check": {
@@ -108,7 +108,8 @@
       "host": "omarchy test box, Intel Arc Pro B70 (intel-xpu:0)",
       "result": "claude, codex, opencode, pi, omp, crush, grok and copilot each answered a one-shot prompt through the keyed gateway; without these flags every agent got 400 (auto tool choice needs --enable-auto-tool-choice and --tool-call-parser)"
     },
-    "tuned": "ladder climbed; log in https://github.com/0xSero/exl3xpu/blob/main/docs/PROGRESS.md"
+    "tuned": "ladder climbed; log in https://github.com/0xSero/exl3xpu/blob/main/docs/PROGRESS.md",
+    "tuning_delta": "2026-09-25: +int8 prefill (EXL3_INT8_PREFILL=1): 32K cold prefill 1434 -> 1979 tok/s, 128K 928 -> 1135, omp replay TTFT p50 4.65 -> 3.78 s / p95 9.00 -> 8.30 s; NLL +0.17% (docs/PROGRESS.md in exl3xpu)"
   },
   "model_instance_id": "turboderp-qwen3-8-27b-exl3--4-bpw",
   "provenance": {
