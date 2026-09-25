@@ -5,7 +5,7 @@
     "tools": true,
     "vision": null
   },
-  "description": "oMLX 0.7.0.dev4 on one M5 Ultra 256GB. Vontra GLM-5.3-Flash 4-bit MTP, mtp_enabled, no checkpoint edit.",
+  "description": "oMLX 0.7.0.dev4 on one M5 Ultra 256GB. Vontra GLM-5.3-Flash 4-bit MTP, mtp_enabled, no checkpoint edit. Launch is the pinned serve script.",
   "engine": {
     "graph_mode": null,
     "name": "omlx",
@@ -56,12 +56,6 @@
   "id": "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1",
   "launch": {
     "accelerator_backend": "metal",
-    "arguments": [
-      "omlx",
-      "serve",
-      "--model-dir",
-      "${MODEL_DIR}"
-    ],
     "container": {
       "captured_at": "2026-09-25T19:06:21Z",
       "compose_file": null,
@@ -84,10 +78,18 @@
       "state": "none"
     },
     "environment": {},
-    "kind": "native",
-    "network_mode": "bridge"
+    "kind": "script",
+    "network_mode": "bridge",
+    "script": {
+      "file": "sources/github/BlivionIaG/local-ai-registry/5248b66d030b5c8db55c7e713fb24ae57c0c4837/serve-glm-5-3-flash-4bit-mtp.sh"
+    }
   },
   "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T20:39:40.067233Z",
+      "harness": "accept_recipe.py --endpoint http://127.0.0.1:8000",
+      "served_model_id": "GLM-5.3-Flash-MLX-4bit-MTP"
+    },
     "tool_call": {
       "arguments": {
         "a": 2,
@@ -122,7 +124,8 @@
     "tensor_parallel": 1
   },
   "speed_sweep_ids": [
-    "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1-20260925"
+    "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1-20260925",
+    "glm-5-3-flash-4bit-mtp-apple-m5-ultra-256gb-omlx-tp1-acceptance"
   ],
-  "status": "candidate"
+  "status": "validated"
 }
