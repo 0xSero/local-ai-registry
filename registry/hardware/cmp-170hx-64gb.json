@@ -1,0 +1,181 @@
+{
+  "accelerator": {
+    "count": 1,
+    "unit": "GPU"
+  },
+  "accelerator_backend": "nvidia",
+  "aliases": [
+    "cmp 170hx 64gb",
+    "nvidia cmp 170hx 64gb"
+  ],
+  "captured_at": "2026-09-25",
+  "compute": {
+    "architecture": "NVIDIA Ampere (GA100, compute capability 8.0)",
+    "stats": {}
+  },
+  "configuration": {
+    "modified": true,
+    "pcie_link": "PCIe Gen2 x16 (modified; stock cards run at x4)",
+    "stock_memory_gb": 8,
+    "summary": "Not a stock configuration. Stock CMP 170HX cards expose 8 GB of HBM2e and run on a PCIe x4 link. This entry is for cards that expose 64 GB (nvidia-smi reports 65,536 MiB) on a PCIe Gen2 x16 link after modification; getting there is outside the scope of this registry and of the recipe that uses it."
+  },
+  "facts": {
+    "compute.architecture": {
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "kind": "spec-database",
+            "publisher": "TechPowerUp",
+            "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "compute.stats": {
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "kind": "spec-database",
+            "publisher": "TechPowerUp",
+            "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+          }
+        ]
+      },
+      "reason": {
+        "code": "no-vendor-figures",
+        "detail": "NVIDIA publishes no compute throughput for the CMP 170HX; none is entered."
+      },
+      "state": "unknown"
+    },
+    "configuration.pcie_link": {
+      "note": "Stock cards run on a PCIe x4 link; this configuration runs at Gen2 x16.",
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "commit": "8e89d08c3c93bc945411f743646a91058314044d",
+            "kind": "recipe-readme",
+            "paths": [
+              "README.md"
+            ],
+            "repository": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe",
+            "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/blob/v1.3.0/README.md#what-you-need"
+          }
+        ]
+      },
+      "scope": "modified configuration",
+      "state": "known"
+    },
+    "memory.bandwidth_gb_per_s": {
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "kind": "spec-database",
+            "publisher": "TechPowerUp",
+            "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+          }
+        ]
+      },
+      "reason": {
+        "code": "no-published-figure-for-configuration",
+        "detail": "No published bandwidth for the 64 GB configuration. The stock 8 GB card is listed at 1,493 GB/s (4096-bit HBM2e at 1458 MHz); that figure is not carried over."
+      },
+      "state": "unknown"
+    },
+    "memory.vram_gb": {
+      "note": "64 GB is the memory these cards expose after modification. Stock CMP 170HX cards expose 8 GB.",
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "commit": "8e89d08c3c93bc945411f743646a91058314044d",
+            "kind": "recipe-readme",
+            "paths": [
+              "README.md"
+            ],
+            "repository": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe",
+            "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/blob/v1.3.0/README.md#what-you-need"
+          },
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "kind": "spec-database",
+            "publisher": "TechPowerUp",
+            "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+          }
+        ]
+      },
+      "scope": "modified configuration",
+      "state": "known"
+    },
+    "memory.vram_type": {
+      "provenance": {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T14:00:00Z",
+            "kind": "spec-database",
+            "publisher": "TechPowerUp",
+            "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "family": "cmp-170hx",
+  "id": "cmp-170hx-64gb",
+  "kind": "discrete",
+  "memory": {
+    "bandwidth_gb_per_s": null,
+    "cpu_memory_gb": null,
+    "vram_gb": 64,
+    "vram_type": "HBM2e"
+  },
+  "name": "CMP 170HX 64GB (modified)",
+  "product_names": [],
+  "products": [],
+  "provenance": {
+    "captured_at": "2026-09-25T14:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "commit": "8e89d08c3c93bc945411f743646a91058314044d",
+        "kind": "recipe-readme",
+        "paths": [
+          "README.md"
+        ],
+        "repository": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe",
+        "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/blob/v1.3.0/README.md#what-you-need"
+      },
+      {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "kind": "spec-database",
+        "publisher": "TechPowerUp",
+        "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+      }
+    ]
+  },
+  "schema_version": "local-ai-registry/v1",
+  "sources": [
+    {
+      "captured_at": "2026-09-25",
+      "kind": "recipe-readme",
+      "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/blob/v1.3.0/README.md#what-you-need"
+    },
+    {
+      "captured_at": "2026-09-25",
+      "kind": "spec-database",
+      "url": "https://www.techpowerup.com/gpu-specs/cmp-170hx.c3830"
+    }
+  ],
+  "vendor": "nvidia"
+}
