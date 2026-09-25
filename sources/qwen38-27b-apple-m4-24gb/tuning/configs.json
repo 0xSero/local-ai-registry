@@ -1,0 +1,82 @@
+{
+ "protocol": {
+  "harness": "harness/bench.py against llama-server b11182 started by serve-24gb.sh via harness/restart.sh",
+  "request": "/v1/chat/completions, concurrency 1, non-streaming, temperature 0, chat_template_kwargs.enable_thinking=false",
+  "prompts": {
+   "code": "first-n-primes Python function, max_tokens 200",
+   "prose": "why the sky is blue in ~200 words, max_tokens 200",
+   "prefill4k": "~5,190-token numbered-line prompt, max_tokens 16"
+  },
+  "metric": "llama-server timings.predicted_per_second (decode) and prompt_per_second (prefill)",
+  "samples_per_cell": 1,
+  "server": "restarted for each config (cold), except iq3xxs-mtp3, which ran on the first server after the first smoke requests",
+  "common_argv": "serve-24gb.sh at tuning time: identical to the final argv except --image-min-tokens 1024 was not yet present and --spec-draft-n-max defaulted to 3"
+ },
+ "configs": {
+  "iq3xxs-mtp3": {
+   "env": {
+    "QUANT": "UD-IQ3_XXS",
+    "DRAFT_N": "3"
+   },
+   "log": "tuning/logs/server-24gb.log"
+  },
+  "iq3xxs-nomtp": {
+   "env": {
+    "QUANT": "UD-IQ3_XXS",
+    "SPEC": "none"
+   },
+   "log": "tuning/logs/server-nomtp.log"
+  },
+  "iq3xxs-mtp2": {
+   "env": {
+    "QUANT": "UD-IQ3_XXS",
+    "DRAFT_N": "2"
+   },
+   "log": "tuning/logs/server-mtp2.log"
+  },
+  "iq3xxs-mtp1": {
+   "env": {
+    "QUANT": "UD-IQ3_XXS",
+    "DRAFT_N": "1"
+   },
+   "log": "tuning/logs/server-mtp1.log"
+  },
+  "q3kxl-mtp1": {
+   "env": {
+    "QUANT": "UD-Q3_K_XL",
+    "DRAFT_N": "1"
+   },
+   "log": "tuning/logs/server-q3kxl-mtp1.log"
+  },
+  "q3kxl-nomtp": {
+   "env": {
+    "QUANT": "UD-Q3_K_XL",
+    "SPEC": "none"
+   },
+   "log": "tuning/logs/server-q3kxl-nomtp.log"
+  },
+  "q3kxl-mtp2": {
+   "env": {
+    "QUANT": "UD-Q3_K_XL",
+    "DRAFT_N": "2"
+   },
+   "log": "tuning/logs/server-q3kxl-mtp2.log"
+  }
+ },
+ "mlx_comparison": {
+  "engine": "mlx 0.32.2, mlx-vlm 0.7.3",
+  "target": "lukaskremla/Qwen3.8-27B-3bit-MLX @ b3503b31b36125107e12a2b57fbe690c37bfc053",
+  "drafter": "mlx-community/Qwen3.8-27B-MTP-4bit @ b643c01b6d3b094e325edb6ebd832e16c486c575",
+  "command": "python -m mlx_vlm.generate --model <target> [--draft-model <drafter> --draft-kind mtp [--draft-block-size 2]] --prompt <code|prose prompt> --max-tokens 200 --temperature 0 --thinking-mode disabled --verbose",
+  "labels": {
+   "mlx-nomtp": "no drafter",
+   "mlx-mtp-b3": "drafter, default block size 3 (2 draft tokens)",
+   "mlx-mtp-b2": "drafter, --draft-block-size 2 (1 draft token)"
+  },
+  "samples_per_cell": 1
+ },
+ "perplexity": {
+  "command": "llama-perplexity -m <gguf> -f wikitext-2-raw/wiki.test.raw -c 512 --chunks 40 -ngl 99 -fa on",
+  "dataset": "wikitext-2-raw-v1 test (ggml-org/ci wikitext-2-raw-v1.zip)"
+ }
+}
