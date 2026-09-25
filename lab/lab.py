@@ -213,7 +213,7 @@ def rented(recipe, launch, args):
 
     real_onstart = vr.Spec.onstart_script
     def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
-        return real_onstart(self).replace("python3 -c ", "env HF_HUB_OFFLINE=0 python3 -c ").replace("/opt/venv/bin/python3 -c ", "env HF_HUB_OFFLINE=0 /opt/venv/bin/python3 -c ")
+        return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
     LabSpec.onstart_script = onstart
     ns = argparse.Namespace(vast_min_inet=500, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
     provider = vr.PROVIDERS[args.on](ns)
@@ -362,6 +362,10 @@ def cmd_check(_):
 
 
 def main():
+    import signal
+    def stop(*_):  # background jobs ignore SIGINT; SIGTERM must unwind so a rented box is always destroyed
+        raise SystemExit("terminated")
+    signal.signal(signal.SIGTERM, stop)
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("try")
