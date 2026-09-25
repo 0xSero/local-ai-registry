@@ -89,7 +89,7 @@ def legacy(recipe_id):
 
 
 # ----------------------------------------------------------------------------- the server under test
-def call(endpoint, path, body=None, timeout=900):
+def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small card takes a while; never cut an answer short
     headers = {"Content-Type": "application/json"}
     if os.environ.get("LAB_API_KEY"):  # an owner's server behind a keyed gateway
         headers["Authorization"] = f"Bearer {os.environ['LAB_API_KEY']}"
@@ -202,6 +202,7 @@ def rented(recipe, launch, args):
             if args.proxy_gpu:  # a twin card with more memory: search by its own size
                 self.vram_gb = args.proxy_vram
             self.provision = []
+            self.online = True
             if launch.get("config"):
                 text = re.sub(r"^(\s*host:\s*)127\.0\.0\.1", r"\g<1>0.0.0.0", launch["config"]["text"], flags=re.MULTILINE)
                 self.provision.append(("asset", launch["config"]["at"], text))
@@ -210,6 +211,10 @@ def rented(recipe, launch, args):
                     raise SystemExit(f"weights layout {w.get('layout')} cannot be provisioned on a rented host yet")
                 self.provision.append(("weights", w["at"], (w["repo"], w["revision"])))
 
+    real_onstart = vr.Spec.onstart_script
+    def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
+        return real_onstart(self).replace("python3 -c ", "env HF_HUB_OFFLINE=0 python3 -c ").replace("/opt/venv/bin/python3 -c ", "env HF_HUB_OFFLINE=0 /opt/venv/bin/python3 -c ")
+    LabSpec.onstart_script = onstart
     ns = argparse.Namespace(vast_min_inet=500, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
     provider = vr.PROVIDERS[args.on](ns)
     spec = LabSpec()
