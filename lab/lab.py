@@ -28,7 +28,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-ENGINES, RECIPES, RUNS, CARDS = ROOT / "engines", ROOT / "recipes", ROOT / "lab" / "runs", ROOT / "registry" / "hardware"
+ENGINES, RECIPES, RUNS, CARDS = ROOT / "engines", ROOT / "recipes", ROOT / "lab" / "runs", ROOT / "cards"
 GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
 MIN_TPS = 15.0
 MAX_RECIPE_BYTES = 1024
@@ -48,6 +48,20 @@ def profile(ref):
     return p
 
 
+def card(card_id):
+    """The card record: cards/<vendor>/<card>.json."""
+    found = list(CARDS.glob(f"*/{card_id}.json"))
+    if not found:
+        raise SystemExit(f"unknown card {card_id}")
+    return json.loads(found[0].read_text())
+
+
+def recipe_path(r, launch):
+    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k.json"""
+    kind = profile(r["engine"]).get("engine", r["engine"].split("@")[0])
+    return RECIPES / card(r["card"])["vendor"] / r["card"] / f"{r['model']}.{kind}.{launch['ctx'] // 1024}k.json"
+
+
 def dirname(weights):
     repo, rev = weights.split("@")
     return f"{repo.split('/')[1]}-{rev[:8]}"
@@ -55,9 +69,13 @@ def dirname(weights):
 
 def render(recipe):
     """The launch contract for a recipe: image, entrypoint, args, env, port, shm, weights and config file."""
-    if recipe["engine"].startswith("registry@"):
-        return legacy(recipe["engine"].split("@", 1)[1])
     p = profile(recipe["engine"])
+    if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
+        cfg = p.get("config")
+        return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
+                "env": p.get("env") or {}, "weights": p["weights"],
+                "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
+                "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
     s = {**p["defaults"], **recipe.get("set", {})}
     name = dirname(recipe["weights"])
     values = {**{k: str(v).lower() if isinstance(v, bool) else v for k, v in s.items()}, "name": name,
@@ -69,23 +87,6 @@ def render(recipe):
             "env": {}, "weights": {"repo": repo, "revision": rev, "at": string.Template(p["weights_at"]).substitute(name=name)},
             "config": {"at": p["config_at"], "text": config, "sha256": hashlib.sha256(config.encode()).hexdigest()},
             "ctx": int(s["ctx"]), "seqs": int(s["seqs"]), "vision": bool(s["vision"]), "backend": p["backend"]}
-
-
-def legacy(recipe_id):
-    """The launch of a recipe validated before the lab, as the plugin export carries it."""
-    v2 = json.loads((ROOT / "plugin" / "v2" / "recipes.json").read_text())
-    for hw in v2["hardware"].values():
-        for e in hw["recipes"]:
-            if e["id"] == recipe_id:
-                a = e.get("asset")
-                return {"image": e["image"], "entrypoint": e["launch"].get("entrypoint"), "args": e["launch"].get("arguments") or [],
-                        "port": e["launch"]["port"], "shm": e["launch"].get("shm"), "env": e["launch"].get("environment") or {},
-                        "weights": [{"repo": w["repository"], "revision": w["revision"], "at": w["mountPath"] + ("/" + w["dir"] if w.get("dir") else ""),
-                                     "layout": w["layout"], "files": w.get("files")} for w in e["weights"]],
-                        "config": {"at": a["mountPath"], "text": a["text"]} if a else None,
-                        "ctx": (e.get("serving") or {}).get("ctxTokens") or 0, "seqs": 1, "cards": e.get("cards", 1),
-                        "vision": bool((e.get("capabilities") or {}).get("vision")), "backend": None, "legacy": recipe_id}
-    raise SystemExit(f"{recipe_id} is not in plugin/v2/recipes.json")
 
 
 # ----------------------------------------------------------------------------- the server under test
@@ -229,8 +230,7 @@ def rented(recipe, launch, args):
             self.name = f"local-ai-lab-{recipe['card']}"[:60]
             tok = Path.home() / ".cache" / "huggingface" / "token"
             self.env = {**(launch.get("env") or {}), **({"HF_TOKEN": tok.read_text().strip()} if tok.exists() else {})}
-            hw = json.loads((CARDS / f"{recipe['card']}.json").read_text())
-            self.vram_gb = (hw.get("memory") or {}).get("vram_gb") or 0
+            self.vram_gb = card(recipe["card"])["vram_gb"] or 0
             self.gpu_override, self.hardware_id = args.proxy_gpu or args.gpu, recipe["card"]
             if args.proxy_gpu:  # a twin card with more memory: search by its own size
                 self.vram_gb = args.proxy_vram
@@ -287,8 +287,7 @@ def rented(recipe, launch, args):
 def cmd_try(args):
     if not re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", args.weights):
         raise SystemExit("weights must be <repo>@<40-hex revision>")
-    if not (CARDS / f"{args.card}.json").exists():
-        raise SystemExit(f"unknown card {args.card}")
+    card(args.card)
     p = profile(args.engine)
     sets = {}
     for kv in args.set:
@@ -328,7 +327,7 @@ def cmd_try(args):
     if not passed:
         log("FAILED: no recipe written")
         return 1
-    out = RECIPES / args.card / f"{slug}.json"
+    out = recipe_path(recipe, launch)
     out.parent.mkdir(parents=True, exist_ok=True)
     old = json.loads(out.read_text()) if out.exists() else None
     proofs = [proof] + ([q for q in old["proof"] if old.get("weights") == recipe["weights"] and old.get("engine") == recipe["engine"] and old.get("set") == sets][:2] if old else [])
@@ -338,7 +337,7 @@ def cmd_try(args):
 
 
 def cmd_convert(args):
-    files = [f for f in (RECIPES / args.card).glob("*.registry.*.json")]
+    files = [f for f in RECIPES.glob(f"*/{args.card}/*.json") if json.loads(f.read_text())["proof"][0].get("legacy")]
     if not files:
         raise SystemExit(f"{args.card} has no legacy recipe")
     f = files[0]
@@ -381,10 +380,11 @@ def cmd_check(_):
         name = f.relative_to(ROOT)
         try:
             assert set(r) == {"model", "weights", "engine", "set", "card", "proof"}, f"fields {sorted(r)}"
-            assert re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", r["weights"]), "weights not pinned"
-            assert f.parent.name == r["card"] and (CARDS / f"{r['card']}.json").exists(), "card"
+            assert r["weights"] == "baked-into-image" or re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", r["weights"]), "weights not pinned"
+            c = card(r["card"])
+            assert f.parent.name == r["card"] and f.parent.parent.name == c["vendor"], "path is not recipes/<vendor>/<card>/"
             launch = render(r)
-            assert f.name == f"{r['model']}.{r['engine'].split('@')[0]}.{launch['ctx'] // 1024}k.json", "file name"
+            assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
             need = {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
             assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
             assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"

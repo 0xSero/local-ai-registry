@@ -1,0 +1,46 @@
+{
+  "id": "vllm-qwen3.8-27b-exl3-4bpw-256k",
+  "engine": "vllm",
+  "about": "Qwen3.8-27B (EXL3 \u00b7 4 bpw)",
+  "image": "ghcr.io/0xsero/exl3xpu@sha256:5d8630ed6a1a066c5e51d853372df4a6c210ede7c4448d703c8bb669f7dcec3d",
+  "backend": "intel-xpu",
+  "port": 8000,
+  "entrypoint": null,
+  "args": [
+    "models/qwen3.8-27b-exl3-4.00bpw",
+    "--gpu",
+    "0",
+    "--port",
+    "8000",
+    "--model-path",
+    "/models",
+    "--",
+    "--enable-prefix-caching",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--reasoning-parser",
+    "qwen3"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "turboderp/Qwen3.8-27B-exl3",
+      "revision": "113cf7ab958054860e43fb7f3063b1af19171095",
+      "at": "/models",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "frozen_from": [
+    "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1"
+  ]
+}

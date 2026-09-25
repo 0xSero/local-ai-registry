@@ -24,21 +24,20 @@ def build(today=None):
         old = bool(r["proof"][0].get("legacy"))
         if not old and (not m or m["family"] not in fam or (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]):
             continue
-        key = f"{r['card']}/{f.stem}"
+        key = str(f.relative_to(lab.RECIPES).with_suffix(""))
         recipes[key] = {**r, "launch": lab.render(r)}
         # a lab recipe always ranks above a legacy one; legacy ones keep a card from being empty until a lab run passes
         rank = (1, 0, 0) if old else (0, fam[m["family"]], -dt.date.fromisoformat(m["released"]).toordinal())
         cards.setdefault(r["card"], []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
     out_cards = {}
     for card, rows in sorted(cards.items()):
-        hw = json.loads((lab.CARDS / f"{card}.json").read_text())
+        hw = lab.card(card)
         picks, seen = [], set()
         for *_, model, key in sorted(rows):
             if model not in seen and len(picks) < 3:
                 picks.append(key)
                 seen.add(model)
-        out_cards[card] = {"name": hw.get("name"), "vendor": hw.get("vendor"), "backend": hw.get("accelerator_backend"),
-                           "vram_gb": (hw.get("memory") or {}).get("vram_gb"), "names": hw.get("product_names") or [], "picks": picks}
+        out_cards[card] = {**{k: hw[k] for k in ("name", "vendor", "backend", "vram_gb", "names")}, "picks": picks}
     used = {k for c in out_cards.values() for k in c["picks"]}
     body = {"schema": "local-ai-registry/catalog/3", "models": meta["models"], "cards": out_cards,
             "recipes": {k: v for k, v in sorted(recipes.items()) if k in used}}

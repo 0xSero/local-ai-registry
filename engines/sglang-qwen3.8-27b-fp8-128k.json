@@ -1,0 +1,68 @@
+{
+  "id": "sglang-qwen3.8-27b-fp8-128k",
+  "engine": "sglang",
+  "about": "Qwen3.8-27B (safetensors \u00b7 FP8)",
+  "image": "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi30x-20260823@sha256:8805fe3744f9b549b4e329b37134bce6ce4afd7ec749ea1249507bcbcea10096",
+  "backend": "amd-rocm",
+  "port": 30000,
+  "entrypoint": "/opt/venv/bin/python",
+  "args": [
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "Qwen/Qwen3.8-27B-FP8",
+    "--revision",
+    "017b9c7af6b5689d5dd426a76e0bc077eb5ca20a",
+    "--served-model-name",
+    "qwen3.8-27b",
+    "--trust-remote-code",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--context-length",
+    "262144",
+    "--mem-fraction-static",
+    "0.90",
+    "--max-running-requests",
+    "4",
+    "--attention-backend",
+    "aiter",
+    "--mamba-ssm-dtype",
+    "bfloat16",
+    "--mamba-radix-cache-strategy",
+    "extra_buffer",
+    "--chunked-prefill-size",
+    "2048",
+    "--max-prefill-tokens",
+    "16384",
+    "--cuda-graph-max-bs-decode",
+    "4",
+    "--enable-cache-report",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "Qwen/Qwen3.8-27B-FP8",
+      "revision": "017b9c7af6b5689d5dd426a76e0bc077eb5ca20a",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "qwen38-27b-fp8-mi300x-sglang-tp1"
+  ]
+}

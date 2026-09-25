@@ -1,0 +1,41 @@
+{
+  "id": "llama.cpp-bonsai-2-27b-ptq1-0-128k",
+  "engine": "llama.cpp",
+  "about": "bonsai-27b (GGUF \u00b7 PTQ1_0)",
+  "image": "ghcr.io/0xsero/deploy-llamacpp-bonsai-ptq1-rtx-2000-ada-16gb@sha256:9a646183bf0dd199504bea9b6f47d9ec2aa07a3bdf1a4827382f449e94292f02",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/opt/llama/llama-server",
+  "args": [
+    "--model",
+    "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-PTQ1_0.gguf",
+    "--mmproj",
+    "/opt/models/Ternary-Bonsai-2-27B/Ternary-Bonsai-2-27B-mmproj-Q8_0.gguf",
+    "--alias",
+    "Ternary-Bonsai-2-27B-PTQ1_0",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "131072",
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q4_0",
+    "--n-gpu-layers",
+    "99",
+    "--jinja"
+  ],
+  "env": {},
+  "shm": null,
+  "weights": [],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "frozen_from": [
+    "ternary-bonsai-27b-ptq1-rtx2000ada-16gb"
+  ]
+}
