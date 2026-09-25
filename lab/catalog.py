@@ -21,13 +21,14 @@ def build(today=None):
     for f in sorted(lab.RECIPES.rglob("*.json")):
         r = json.loads(f.read_text())
         m = meta["models"].get(r["model"])
-        if not m or m["family"] not in fam:
-            continue
-        if (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]:
+        old = bool(r["proof"][0].get("legacy"))
+        if not old and (not m or m["family"] not in fam or (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]):
             continue
         key = f"{r['card']}/{f.stem}"
         recipes[key] = {**r, "launch": lab.render(r)}
-        cards.setdefault(r["card"], []).append((fam[m["family"]], -dt.date.fromisoformat(m["released"]).toordinal(), -r["proof"][0]["tps"], r["model"], key))
+        # a lab recipe always ranks above a legacy one; legacy ones keep a card from being empty until a lab run passes
+        rank = (1, 0, 0) if old else (0, fam[m["family"]], -dt.date.fromisoformat(m["released"]).toordinal())
+        cards.setdefault(r["card"], []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
     out_cards = {}
     for card, rows in sorted(cards.items()):
         hw = json.loads((lab.CARDS / f"{card}.json").read_text())

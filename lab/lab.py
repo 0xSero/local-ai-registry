@@ -55,6 +55,8 @@ def dirname(weights):
 
 def render(recipe):
     """The launch contract for a recipe: image, entrypoint, args, env, port, shm, weights and config file."""
+    if recipe["engine"].startswith("registry@"):
+        return legacy(recipe["engine"].split("@", 1)[1])
     p = profile(recipe["engine"])
     s = {**p["defaults"], **recipe.get("set", {})}
     name = dirname(recipe["weights"])
@@ -69,6 +71,23 @@ def render(recipe):
             "ctx": int(s["ctx"]), "seqs": int(s["seqs"]), "vision": bool(s["vision"]), "backend": p["backend"]}
 
 
+def legacy(recipe_id):
+    """The launch of a recipe validated before the lab, as the plugin export carries it."""
+    v2 = json.loads((ROOT / "plugin" / "v2" / "recipes.json").read_text())
+    for hw in v2["hardware"].values():
+        for e in hw["recipes"]:
+            if e["id"] == recipe_id:
+                a = e.get("asset")
+                return {"image": e["image"], "entrypoint": e["launch"].get("entrypoint"), "args": e["launch"].get("arguments") or [],
+                        "port": e["launch"]["port"], "shm": e["launch"].get("shm"), "env": e["launch"].get("environment") or {},
+                        "weights": [{"repo": w["repository"], "revision": w["revision"], "at": w["mountPath"] + ("/" + w["dir"] if w.get("dir") else ""),
+                                     "layout": w["layout"], "files": w.get("files")} for w in e["weights"]],
+                        "config": {"at": a["mountPath"], "text": a["text"]} if a else None,
+                        "ctx": (e.get("serving") or {}).get("ctxTokens") or 0, "seqs": 1, "cards": e.get("cards", 1),
+                        "vision": bool((e.get("capabilities") or {}).get("vision")), "backend": None, "legacy": recipe_id}
+    raise SystemExit(f"{recipe_id} is not in plugin/v2/recipes.json")
+
+
 # ----------------------------------------------------------------------------- the server under test
 def call(endpoint, path, body=None, timeout=900):
     headers = {"Content-Type": "application/json"}
@@ -81,9 +100,24 @@ def call(endpoint, path, body=None, timeout=900):
     return out, time.monotonic() - t
 
 
+def count(endpoint, text):
+    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode)."""
+    try:
+        out, _ = call(endpoint, "/v1/token/encode", {"text": text}, timeout=120)
+        return int(out.get("length") or len(out.get("tokens") or [])), "tokenizer"
+    except Exception:
+        return len(text) // 4, "estimate"
+
+
 def chat(endpoint, model, messages, **kw):
     out, secs = call(endpoint, "/v1/chat/completions", {"model": model, "messages": messages, "temperature": 0.6, **kw})
-    return out["choices"][0], out.get("usage") or {}, secs
+    c, u = out["choices"][0], dict(out.get("usage") or {})
+    if not u.get("prompt_tokens"):  # TabbyAPI called directly leaves usage empty; count what went in and came out
+        u["prompt_tokens"], u["counted"] = count(endpoint, "\n".join(m.get("content") or "" for m in messages))
+    if not u.get("completion_tokens"):
+        m = c.get("message") or {}
+        u["completion_tokens"], u["counted"] = count(endpoint, (m.get("reasoning_content") or m.get("reasoning") or "") + (m.get("content") or ""))
+    return c, u, secs
 
 
 def gates(endpoint, launch):
@@ -93,11 +127,11 @@ def gates(endpoint, launch):
     served = models["data"][0]["id"]
     ok["load"] = True
     # chat: an answer that ends by itself
-    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "Name three primary colors, comma separated."}], max_tokens=2048)
+    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "Name three primary colors, comma separated."}])
     ok["chat"] = bool((c["message"].get("content") or "").strip()) and c.get("finish_reason") == "stop"
     ev["chat"] = {"content": c["message"].get("content"), "finish": c.get("finish_reason")}
     # reasoning: thinking comes back separately, and the answer is right
-    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "What is 17 * 23? Reply with only the number."}], max_tokens=4096)
+    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "What is 17 * 23? Reply with only the number."}])
     thinking = c["message"].get("reasoning_content") or c["message"].get("reasoning") or ""
     content = c["message"].get("content") or ""
     ok["reasoning"] = bool(thinking.strip()) and "391" in content and "<think>" not in content
@@ -106,7 +140,7 @@ def gates(endpoint, launch):
     tool = {"type": "function", "function": {"name": "get_weather", "description": "Current weather for a city",
             "parameters": {"type": "object", "properties": {"city": {"type": "string"}}, "required": ["city"]}}}
     msgs = [{"role": "user", "content": "What's the weather in Paris right now? Use the tool."}]
-    c, u, _ = chat(endpoint, served, msgs, tools=[tool], max_tokens=4096)
+    c, u, _ = chat(endpoint, served, msgs, tools=[tool])
     calls = c["message"].get("tool_calls") or []
     args = {}
     try:
@@ -118,7 +152,7 @@ def gates(endpoint, launch):
     if first:
         msgs += [{"role": "assistant", "content": c["message"].get("content") or "", "tool_calls": calls},
                  {"role": "tool", "tool_call_id": calls[0].get("id", "0"), "content": json.dumps({"city": "Paris", "temp_c": 17, "sky": "overcast"})}]
-        c2, _, _ = chat(endpoint, served, msgs, tools=[tool], max_tokens=4096)
+        c2, _, _ = chat(endpoint, served, msgs, tools=[tool])
         reply = c2["message"].get("content") or ""
     ok["tools"] = first and "17" in reply
     ev["tools"] = {"call": calls[:1], "reply": reply[-200:]}
@@ -126,16 +160,15 @@ def gates(endpoint, launch):
     target = int(launch["ctx"] * 0.85)
     filler = " ".join(f"Line {i}: the archive notes that shipment {i * 7 % 997} left dock {i % 13} on schedule." for i in range(target // 24))  # ~23.6 tokens a line (measured: 32,834 tokens from 1,473 lines)
     prompt = filler + " The access code for the vault is 58213. " + "Anything else is routine."
-    c, u, secs = chat(endpoint, served, [{"role": "user", "content": prompt + "\n\nWhat is the access code for the vault? Reply with only the code."}], max_tokens=4096)
+    c, u, secs = chat(endpoint, served, [{"role": "user", "content": prompt + "\n\nWhat is the access code for the vault? Reply with only the code."}])
     got = u.get("prompt_tokens") or 0
     ok["context"] = "58213" in (c["message"].get("content") or "") and got >= launch["ctx"] * 0.6
     ev["context"] = {"prompt_tokens": got, "seconds": round(secs, 1), "content": (c["message"].get("content") or "")[-80:]}
-    # speed: decode at concurrency 1 on a short prompt
-    c, u, secs = chat(endpoint, served, [{"role": "user", "content": "Write a detailed 600-word story about a lighthouse keeper."}],
-                      max_tokens=1024, temperature=0.8)
+    # speed: decode at concurrency 1 on a short prompt; no generation is ever capped, it runs to its natural end
+    c, u, secs = chat(endpoint, served, [{"role": "user", "content": "Write a detailed 600-word story about a lighthouse keeper."}], temperature=0.8)
     tps = (u.get("completion_tokens") or 0) / secs if secs else 0
     ok["speed"] = tps >= MIN_TPS
-    ev["speed"] = {"completion_tokens": u.get("completion_tokens"), "seconds": round(secs, 2)}
+    ev["speed"] = {"completion_tokens": u.get("completion_tokens"), "seconds": round(secs, 2), "counted": u.get("counted", "server")}
     prefill = round(got / ev["context"]["seconds"]) if got and ev["context"]["seconds"] else None
     proof = {"gates": " ".join(g for g in GATES if ok.get(g)), "tps": round(tps, 1), "prefill": prefill, "served": served}
     return all(ok.get(g) for g in GATES), proof, {"ok": ok, **ev}
@@ -260,7 +293,8 @@ def cmd_check(_):
             assert f.parent.name == r["card"] and (CARDS / f"{r['card']}.json").exists(), "card"
             launch = render(r)
             assert f.name == f"{r['model']}.{r['engine'].split('@')[0]}.{launch['ctx'] // 1024}k.json", "file name"
-            assert r["proof"] and all(set(GATES) <= set(p["gates"].split()) for p in r["proof"][:1]), "latest proof lacks a gate"
+            need = {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+            assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
             assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"
         except (AssertionError, KeyError, ValueError, SystemExit, FileNotFoundError) as e:
             bad.append(f"{name}: {e}")
