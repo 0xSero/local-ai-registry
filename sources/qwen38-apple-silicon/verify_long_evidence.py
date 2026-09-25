@@ -17,6 +17,20 @@ import sys
 
 EXPECTED_VALUES = ["maple-7429", "harbor-6183", "violet-9052", "red", "blue"]
 VISION_PNG_SHA256 = "1c8bed001809ffd620bec5e6907f12545a55322179f76e6129683de5b8598570"
+# Bind the archive, distant key positions, image and question to the reviewed
+# make_long_request.py --tokens 200000 --with-image fixture (1754 repeats per
+# section). Derivation: SHA256(json.dumps(request["messages"], sort_keys=True,
+# ensure_ascii=False, separators=(",", ":")).encode("utf-8")). The generator's
+# original request file SHA256 is 745a772b15dcd912386c9cca78a2e19e544f417692d7c630e5f49a902e586a20
+# in workload-200k-image.json. Hashing messages alone permits HTTP serialization,
+# model-path and request-control differences without accepting another workload.
+COMBINED_MESSAGES_SHA256 = "6e86af767b630388aa9dce853ca18306a1dcd3206022981b321c70652e0cb533"
+# Only these controls accompany the reviewed workload. Other server inputs can
+# add template text or constrain the answer without changing request.messages.
+SAFE_REQUEST_KEYS = frozenset({
+    "model", "messages", "temperature", "max_tokens", "enable_thinking",
+    "chat_template_kwargs", "stream", "stream_options",
+})
 ATTENTION_LAYERS = list(range(3, 64, 4))
 EXPECTED_CLASSES = {"ArraysCache": 48, "BatchTurboQuantKVCache": 15, "BatchKVCache": 1}
 
@@ -132,6 +146,20 @@ def replay_raw(raw_data, request_sha, request_bytes):
 
 
 def verify_request(request, summary):
+    unexpected = set(request) - SAFE_REQUEST_KEYS
+    require(not unexpected, "unsupported request inputs: " + ", ".join(sorted(unexpected)))
+    if "enable_thinking" in request:
+        require(request["enable_thinking"] is False, "enable_thinking must be false")
+    if "chat_template_kwargs" in request:
+        template = request["chat_template_kwargs"]
+        require(isinstance(template, dict) and set(template) == {"enable_thinking"}
+                and template["enable_thinking"] is False,
+                "chat_template_kwargs must contain only enable_thinking=false")
+    if "temperature" in request:
+        require(type(request["temperature"]) in (int, float) and request["temperature"] >= 0,
+                "temperature must be a nonnegative number")
+    if "max_tokens" in request:
+        require(count(request["max_tokens"], 1), "max_tokens must be a positive integer")
     model = request.get("model")
     require(isinstance(model, str) and model and summary.get("model") == model,
             "request and summary model identities differ")
@@ -140,6 +168,9 @@ def verify_request(request, summary):
     options = request.get("stream_options")
     require(isinstance(options, dict) and options.get("include_usage") is True,
             "request did not include streaming usage")
+    require(set(options) <= {"include_usage", "include_obfuscation"}
+            and all(type(value) is bool for value in options.values()),
+            "unsupported streaming controls")
     messages = request.get("messages")
     require(isinstance(messages, list) and messages, "request has no messages")
     images = []
@@ -161,6 +192,13 @@ def verify_request(request, summary):
     except ValueError as error:
         raise VerificationError("invalid PNG base64") from error
     require(sha256(png) == VISION_PNG_SHA256, "image differs from the red-left/blue-right fixture")
+    canonical_messages = json.dumps(
+        messages, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+    ).encode("utf-8")
+    messages_sha = sha256(canonical_messages)
+    require(messages_sha == COMBINED_MESSAGES_SHA256,
+            "messages differ from the trusted combined 200k retrieval/image workload")
+    return messages_sha
 
 
 def verify_summary(summary):
@@ -260,10 +298,11 @@ def verify(probe_dir, server_log):
     replayed = replay_raw(inputs["raw.jsonl"], request_sha, request_bytes)
     for key, value in replayed.items():
         require(summary.get(key) == value, "summary disagrees with raw SSE: " + key)
-    verify_request(request, summary)
+    messages_sha = verify_request(request, summary)
     tokens, counters = verify_summary(summary)
     audit = verify_audit(inputs["server_log"], tokens)
     return {"verified": True, "model": request["model"], "request_bytes": request_bytes,
+            "verified_messages_sha256": messages_sha,
             "prompt_tokens": tokens, "completion_tokens": summary["usage"]["completion_tokens"],
             "answer": summary["content"], "mtp": {"draft_kind": "mtp", **counters},
             "cache_class_counts": EXPECTED_CLASSES, "full_attention_layers_retaining_prompt": 16,

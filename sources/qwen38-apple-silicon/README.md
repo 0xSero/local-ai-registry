@@ -177,7 +177,7 @@ python3 sources/qwen38-apple-silicon/verify_long_evidence.py \
   > runs/qwen38/long-evidence-receipt.json
 ```
 
-Replace the probe directory with the actual unique directory printed by the harness. The verifier replays the captured SSE independently, compares it with the summary, checks the exact request hash and image fixture, and requires the complete five-value answer with a `stop` finish reason. It also requires at least 200,000 cold prompt tokens, positive native MTP counters, and one matching final-prefill audit with all 16 full-attention caches retaining the full prompt. Fifteen caches must be TurboQuant 4-bit and one unquantized; the 48 recurrent states are checked separately. Its success receipt contains hashes of the files it checked. Keep those file bytes unchanged afterward.
+Replace the probe directory with the actual unique directory printed by the harness. The verifier replays the captured SSE independently, compares it with the summary, checks the exact request hash and image fixture, and requires the complete five-value answer with a `stop` finish reason. A separate canonical message hash binds the archive text, distant key positions, and image question to this specific combined 200k workload; a different prompt needs a separately reviewed fixture. It also requires at least 200,000 cold prompt tokens, positive native MTP counters, and one matching final-prefill audit with all 16 full-attention caches retaining the full prompt. Fifteen caches must be TurboQuant 4-bit and one unquantized; the 48 recurrent states are checked separately. Its success receipt contains hashes of the files it checked. Keep those file bytes unchanged afterward.
 
 ## Results and scope
 

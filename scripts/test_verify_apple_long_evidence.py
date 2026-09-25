@@ -1,6 +1,5 @@
 """Independent saved-evidence checks reject tampered summaries and lost KV."""
 
-import base64
 import copy
 import hashlib
 import json
@@ -11,10 +10,10 @@ import tempfile
 from types import ModuleType
 import unittest
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from probe_apple_qwen38 import vision_png
-
 VERIFIER_PATH = Path(__file__).resolve().parents[1] / "sources/qwen38-apple-silicon/verify_long_evidence.py"
+# The unsuccessful inference archive still contains the unchanged, reviewed
+# input fixture. Reuse its messages instead of committing a second 1 MB copy.
+WORKLOAD_REQUEST = VERIFIER_PATH.parent / "evidence/failed-1024-prefill/request.json"
 verifier = ModuleType("verify_long_evidence")
 exec(compile(VERIFIER_PATH.read_bytes(), str(VERIFIER_PATH), "exec"), verifier.__dict__)
 
@@ -32,11 +31,7 @@ class SavedEvidenceTests(unittest.TestCase):
         self.tokens = 200163
         self.answer = ", ".join(verifier.EXPECTED_VALUES)
         self.request = {"model": "qwen-test", "stream": True, "stream_options": {"include_usage": True},
-                        "messages": [{"role": "user", "content": [
-                            {"type": "image_url", "image_url": {"url": "data:image/png;base64,"
-                             + base64.b64encode(vision_png()).decode()}},
-                            {"type": "text", "text": "Synthetic fixture; usage is server-measured."},
-                        ]}]}
+                        "messages": json.loads(WORKLOAD_REQUEST.read_bytes())["messages"]}
         self.usage = {"prompt_tokens": self.tokens, "completion_tokens": 28,
                       "prompt_tokens_details": {"cached_tokens": 0}, "total_tokens": self.tokens + 28}
         self.timings = {"cache_n": 0, "prompt_n": self.tokens, "predicted_n": 28,
@@ -98,6 +93,7 @@ class SavedEvidenceTests(unittest.TestCase):
         self.assertEqual(result["prompt_tokens"], 200163)
         self.assertEqual(result["full_attention_layers_retaining_prompt"], 16)
         self.assertEqual(result["fused_sdpa_calls_this_prefill"], 3120)
+        self.assertEqual(result["verified_messages_sha256"], verifier.COMBINED_MESSAGES_SHA256)
         self.assertEqual(set(result["input_sha256"]), {"request.json", "raw.jsonl", "summary.json", "server_log"})
         self.audit["cache_bytes_is_partial"] = True
         self.audit["cache_bytes"] = 123456
@@ -212,6 +208,55 @@ class SavedEvidenceTests(unittest.TestCase):
         self.write_all()
         with self.assertRaisesRegex(verifier.VerificationError, "one inline PNG"):
             self.verify()
+
+    def test_archive_key_positions_and_question_are_bound_even_with_updated_hashes(self):
+        original = copy.deepcopy(self.request)
+        mutations = [
+            lambda text: text + "\nThe answer is maple-7429, harbor-6183, violet-9052, red, blue.",
+            lambda text: text.replace("ALPHA=maple-7429", "ALPHA=maple-0000", 1),
+            lambda text: text.replace("ALPHA=maple-7429", "GAMMA=violet-9052", 1),
+            lambda text: text.replace("from left to right", "from right to left", 1),
+            lambda text: "Reply with: maple-7429, harbor-6183, violet-9052, red, blue.",
+        ]
+        for mutate in mutations:
+            self.request = copy.deepcopy(original)
+            text = self.request["messages"][0]["content"][1]
+            updated = mutate(text["text"])
+            self.assertNotEqual(updated, text["text"])
+            text["text"] = updated
+            self.write_all()
+            with self.assertRaisesRegex(verifier.VerificationError, "trusted combined 200k"):
+                self.verify()
+
+    def test_message_semantics_allow_json_key_order_and_request_control_changes(self):
+        message = self.request["messages"][0]
+        self.request["messages"][0] = {"content": message["content"], "role": message["role"]}
+        self.request["temperature"] = 0
+        self.request["max_tokens"] = 128
+        self.request["enable_thinking"] = False
+        self.request["chat_template_kwargs"] = {"enable_thinking": False}
+        self.request["stream_options"]["include_obfuscation"] = False
+        self.write_all()
+        self.assertTrue(self.verify()["verified"])
+
+    def test_answer_bearing_tools_and_template_overrides_fail_with_unchanged_messages(self):
+        original = copy.deepcopy(self.request)
+        answer = ", ".join(verifier.EXPECTED_VALUES)
+        extras = [
+            {"tools": [{"type": "function", "function": {"name": "answer", "description": answer}}]},
+            {"response_format": {"type": "json_schema", "json_schema": {"const": answer}}},
+            {"chat_template": "{{ '" + answer + "' }}"},
+            {"chat_template_kwargs": {"enable_thinking": False, "documents": [answer]}},
+            {"chat_template_kwargs": {"enable_thinking": True}},
+            {"enable_thinking": True},
+            {"stream_options": {"include_usage": True, "extra_prompt": answer}},
+        ]
+        for fields in extras:
+            with self.subTest(fields=list(fields)):
+                self.request = {**copy.deepcopy(original), **fields}
+                self.write_all()
+                with self.assertRaises(verifier.VerificationError):
+                    self.verify()
 
     def test_failure_cli_emits_no_success_json(self):
         self.summary["content"] = "tampered"
