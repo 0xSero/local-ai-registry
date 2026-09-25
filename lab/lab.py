@@ -184,16 +184,22 @@ def rented(recipe, launch, args):
             self.arguments, self.port, self.disk = list(launch["args"]), launch["port"], args.disk
             self.name = f"local-ai-lab-{recipe['card']}"[:60]
             tok = Path.home() / ".cache" / "huggingface" / "token"
-            self.env = {"HF_TOKEN": tok.read_text().strip()} if tok.exists() else {}
+            self.env = {**(launch.get("env") or {}), **({"HF_TOKEN": tok.read_text().strip()} if tok.exists() else {})}
             hw = json.loads((CARDS / f"{recipe['card']}.json").read_text())
             self.vram_gb = (hw.get("memory") or {}).get("vram_gb") or 0
             self.gpu_override, self.hardware_id = args.proxy_gpu or args.gpu, recipe["card"]
             if args.proxy_gpu:  # a twin card with more memory: search by its own size
                 self.vram_gb = args.proxy_vram
-            self.provision = [("asset", launch["config"]["at"], launch["config"]["text"]),
-                              ("weights", launch["weights"]["at"], (launch["weights"]["repo"], launch["weights"]["revision"]))]
+            self.provision = []
+            if launch.get("config"):
+                text = re.sub(r"^(\s*host:\s*)127\.0\.0\.1", r"\g<1>0.0.0.0", launch["config"]["text"], flags=re.MULTILINE)
+                self.provision.append(("asset", launch["config"]["at"], text))
+            for w in (launch["weights"] if isinstance(launch["weights"], list) else [launch["weights"]]):
+                if w.get("layout", "dir") != "dir":
+                    raise SystemExit(f"weights layout {w.get('layout')} cannot be provisioned on a rented host yet")
+                self.provision.append(("weights", w["at"], (w["repo"], w["revision"])))
 
-    ns = argparse.Namespace(vast_min_inet=500, vast_min_cuda=args.min_cuda or profile(recipe["engine"]).get("min_cuda", 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
+    ns = argparse.Namespace(vast_min_inet=500, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
     provider = vr.PROVIDERS[args.on](ns)
     spec = LabSpec()
     exclude = set()
@@ -277,6 +283,38 @@ def cmd_try(args):
     return 0
 
 
+def cmd_convert(args):
+    files = [f for f in (RECIPES / args.card).glob("*.registry.*.json")]
+    if not files:
+        raise SystemExit(f"{args.card} has no legacy recipe")
+    f = files[0]
+    recipe = json.loads(f.read_text())
+    launch = render(recipe)
+    stop = lambda: None
+    if args.on == "endpoint":
+        endpoint, where = args.endpoint.rstrip("/"), {"on": "owner", "gpu": args.gpu}
+    else:
+        endpoint, where, stop = rented(recipe, launch, args)
+    try:
+        passed, proof, evidence = gates(endpoint, launch)
+    finally:
+        stop()
+    at = dt.datetime.now(dt.timezone.utc)
+    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
+    RUNS.mkdir(parents=True, exist_ok=True)
+    text = json.dumps({"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence}, indent=1, ensure_ascii=False)
+    (RUNS / f"{args.card}.{f.stem}.{at.strftime('%Y%m%dT%H%M%S')}.json").write_text(text + "\n")
+    proof["log"] = "sha256:" + hashlib.sha256(text.encode()).hexdigest()[:16]
+    log(f"gates: {evidence['ok']}  decode {proof['tps']} tok/s, prefill {proof['prefill']} tok/s")
+    if not passed:
+        log("FAILED: the legacy recipe stays legacy")
+        return 1
+    recipe["proof"] = [proof]
+    f.write_text(json.dumps(recipe, separators=(",", ":")) + "\n")
+    log(f"PASSED: {f.relative_to(ROOT)} is now a full recipe")
+    return 0
+
+
 def cmd_render(args):
     print(json.dumps(render(json.loads(Path(args.recipe).read_text())), indent=2))
     return 0
@@ -320,10 +358,20 @@ def main():
     t.add_argument("--max-price", type=float, default=1.5)
     t.add_argument("--disk", type=int, default=60)
     t.add_argument("--dry-run", action="store_true")
+    cv = sub.add_parser("convert")
+    cv.add_argument("card")
+    cv.add_argument("--on", default="vast", choices=["vast", "runpod", "endpoint"])
+    cv.add_argument("--endpoint")
+    cv.add_argument("--gpu")
+    cv.add_argument("--proxy-gpu")
+    cv.add_argument("--proxy-vram", type=int, default=16)
+    cv.add_argument("--min-cuda", type=float)
+    cv.add_argument("--max-price", type=float, default=2.0)
+    cv.add_argument("--disk", type=int, default=80)
     sub.add_parser("render").add_argument("recipe")
     sub.add_parser("check")
     a = ap.parse_args()
-    return {"try": cmd_try, "render": cmd_render, "check": cmd_check}[a.cmd](a)
+    return {"try": cmd_try, "convert": cmd_convert, "render": cmd_render, "check": cmd_check}[a.cmd](a)
 
 
 if __name__ == "__main__":
