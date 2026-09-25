@@ -1,6 +1,6 @@
 # Supported GPUs
 
-Local AI runs a validated model on 37 GPUs: 33 NVIDIA, 1 Intel, 3 AMD.
+Local AI runs a validated model on 38 GPUs: 34 NVIDIA, 1 Intel, 3 AMD.
 Each one was tested on that exact card before it was listed; a card that is not here shows Coming soon.
 
 | GPU | Model | Engine | Context | Decode |
@@ -33,6 +33,7 @@ Each one was tested on that exact card before it was listed; a card that is not 
 | [GeForce RTX 5060 Ti 8 GB](nvidia/rtx-5060-ti-8gb.md) | LFM2.5-2.6B | SGLang | 128K | – |
 | [GeForce RTX 5070 12 GB](nvidia/rtx-5070-12gb.md) | Qwen3.5-9B | TabbyAPI (ExLlamaV3) | 128K | 146 tok/s |
 | [GeForce RTX 5070 Ti 16 GB](nvidia/rtx-5070-ti-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 76 tok/s |
+| [GeForce RTX 5070 Ti Laptop GPU 12 GB](nvidia/rtx-5070-ti-laptop-12gb.md) | Qwen3.5-9B | TabbyAPI (ExLlamaV3) | 128K | 69 tok/s |
 | [GeForce RTX 5080 16 GB](nvidia/rtx-5080-16gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 128K | 78 tok/s |
 | [GeForce RTX 5090 32 GB](nvidia/rtx-5090-32gb.md) | Qwen3.8-27B | TabbyAPI (ExLlamaV3) | 256K | 117 tok/s |
 | [RTX 2000 Ada Generation 16 GB](nvidia/rtx-2000-ada-16gb.md) | LFM2.5-2.6B | SGLang | 128K | – |

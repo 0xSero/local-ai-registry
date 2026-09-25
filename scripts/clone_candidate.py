@@ -69,9 +69,10 @@ def main():
     contract = launch if launch.get("kind") == "docker" else source.get("draft_launch")
     if not contract:
         raise SystemExit(f"{args.source_id} has no docker launch or draft_launch to clone")
-    # draft_launch schema: no container/provenance/network_mode, ipc only as a string, synthesized required
+    # draft_launch schema: no container/provenance/network_mode/asset_ids, ipc only as a string, synthesized
+    # required; accept_recipe.py derives asset_ids from the asset/ mounts at promotion
     contract = {k: v for k, v in contract.items()
-                if k not in ("container", "synthesized", "provenance", "network_mode", "ipc")}
+                if k not in ("container", "synthesized", "provenance", "network_mode", "ipc", "asset_ids")}
     contract.setdefault("kind", "docker")
     contract["synthesized"] = {"template": "clone-candidate-v1", "generated_at": NOW, "image_provenance": source["id"]}
     arguments = list(contract.get("arguments") or [])
@@ -102,6 +103,11 @@ def main():
         if "--served-model-name" in arguments and instance.get("served_name"):
             arguments[arguments.index("--served-model-name") + 1] = instance["served_name"]
 
+    # where the weights sit under the mount is part of the launch contract (the plugin export reads it);
+    # it names the source's artifact, so it only carries over when the model is unchanged
+    subdir = (source.get("metadata") or {}).get("weights_subdir")
+    weights_subdir = {"weights_subdir": subdir} if subdir and not args.instance else {}
+
     new_id = args.id or derive_id(source["id"], source["hardware_id"], args.hardware_id)
     path = REG / "recipe" / f"{new_id}.json"
     if path.exists() and not args.force:
@@ -128,7 +134,7 @@ def main():
             "reason": "draft-pending-acceptance", "captured_at": NOW, "source": [source_ref]}},
         "draft_launch": contract,
         "speed_sweep_ids": [],
-        "metadata": {"derived_from": source["id"]},
+        "metadata": {"derived_from": source["id"], **weights_subdir},
         "provenance": {"captured_at": NOW, "sources": [source_ref]},
         "facts": {},
         "description": args.description or (
