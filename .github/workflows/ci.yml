@@ -76,5 +76,11 @@ jobs:
           git diff --exit-code registry/index/
           test ! -f registry/index.json
 
+      - name: Production recipes (lab output) are well-formed and pinned
+        run: python3 lab/lab.py check
+
+      - name: dist/catalog.json is current
+        run: python3 lab/catalog.py --check
+
       - name: Build
         run: npm run build

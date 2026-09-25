@@ -1,6 +1,24 @@
 # Local AI Registry: design
 
-Status: proposal, 2026-09-25. It replaces the record model on `main` (schema `local-ai-registry/v1`). Nothing in it is built yet; the migration plan at the end says in what order it lands.
+Status: proposal, 2026-09-25, revised the same day. Two rules drive it:
+
+- **Nothing is deleted.** The repository holds two systems. **Data** (`registry/`) keeps everything it has today: 3,049 recipes and observations, sweeps, models, builds, hardware, prices and benchmarks. It feeds the website and research. **Production** (`engines/`, `recipes/`, `dist/`) is small, and it is the only thing programs read.
+- **A recipe is output, not input.** Nobody writes one. `lab/lab.py try` runs a model on a card, checks it, and writes the recipe only if every gate passes. A recipe is about 600 bytes: the pinned weights, a pinned engine profile, the settings that differ from the profile's defaults, the card, and the proof. The full launch is rendered from the profile.
+
+A production recipe, as the lab writes it:
+
+```json
+{"model":"qwen3.5-9b","weights":"TheMelonGod/Qwen3.5-9B-exl3@22ef1303062e0f6d0b282440f8c1f685947f4938",
+ "engine":"tabbyapi-exl3@0f83e6198dc3","set":{"ctx":65536,"draft":"mtp"},"card":"rtx-3070-8gb",
+ "proof":[{"at":"2026-09-25","on":"vast","gpu":"RTX 3070","gates":"load chat reasoning tools context speed",
+           "tps":61.2,"prefill":1450,"served":"Qwen3.5-9B-exl3-22ef1303","log":"sha256:…"}]}
+```
+
+- **`engine`:** a profile in `engines/` (image digest, entrypoint, arguments, config template, defaults), pinned by the first 12 characters of its image digest. Changing a profile's image makes every recipe that names the old digest fail `lab.py check` until it is run again.
+- **`proof`:** the latest three passing runs, newest first. The full evidence of every run, passed or failed, is kept in `lab/runs/`, which is data.
+- **Confirmation:** anyone who runs the same recipe on the same card adds a proof. A recipe with proofs from two different hosts is confirmed.
+
+The rest of this document is the longer version. Where it describes records and fields for data, those stay in `registry/` as they are; production uses only the recipe above, the profiles, the cards (`registry/hardware/`) and `lab/models.json`.
 
 ## 1. What the registry is
 
@@ -100,9 +118,9 @@ One validation of one recipe on one card: the only way anything becomes publishe
 ### pick
 Derived, never hand-edited. For each card, at most three recipes, ranked, one per model; the first is the recommended one. Section 5 gives the rules.
 
-### What is removed
+### What production leaves out (it stays in data)
 - **Launch kinds:** `reference`, `docker-compose`, `script`, `native`, `controller` and `host`. There is one launch shape: a container.
-- **Records:** all 2,707 reference observations and the unvalidated candidates (tagged `archive/pre-v2` first).
+- **Records:** the 2,707 reference observations and the unvalidated candidates stay in `registry/` and are never read by programs.
 - **Fields and duplicates:**
   - `draft_launch`;
   - the `facts` boilerplate (53% of a recipe's bytes today);
@@ -217,17 +235,10 @@ Projection from `main` today: 59 of the 153 validated recipes meet rules 1–3, 
 
 ## 8. Migration
 
-1. **Tag:** tag `main` as `archive/pre-v2`.
-2. **Convert:**
-   - convert the 59 kept recipes into builds, recipes and runs; the acceptance sweeps become runs, and their missing gates are recorded as not run;
-   - generate picks and `catalog.json`;
-   - keep generating the v1 and v2 plugin files and `/api/v1`;
-   - delete everything else.
-
-   This is one PR, and CI proves the plugin files still work.
-3. **Rerun:** rerun every kept recipe through the new harness. Until then, recipes whose runs lack the reasoning and tools gates are shown as "legacy acceptance".
-4. **New cards:** runs for the 11 NVIDIA cards without EXL3 Qwen.
-5. **Consumers:** the plugin moves to catalog 3, and Local Studio to `/api/v2`. Then the old exports go.
+1. **Land the lab:** `engines/`, `lab/lab.py`, `lab/catalog.py`, `lab/models.json`, an empty `recipes/`, and CI running `lab.py check` and `catalog.py --check`. Nothing in `registry/` changes, and the plugin v1 and v2 files keep being generated from it.
+2. **Fill production by running:** production starts empty and fills only through `lab.py try`. The first runs are EXL3 Qwen on every NVIDIA card (the 22 that have a legacy recipe are re-run through the new gates, and the 11 that don't get their first), then AMD and Intel.
+3. **Switch the exports:** once production covers every card the plugin supports, `plugin/v2/recipes.json` is generated from `dist/catalog.json` instead of `registry/`, so installed plugins move over without an update.
+4. **Consumers:** the plugin, Local AI for Linux and Local Studio read `dist/catalog.json` (or `/api/v2`). `/api/v1` keeps serving `registry/` for as long as anyone uses it.
 
 ## 9. Open decisions
 
