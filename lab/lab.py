@@ -175,6 +175,17 @@ def gates(endpoint, launch):
 
 
 # ----------------------------------------------------------------------------- where it runs
+def save_logs(handle, recipe):
+    """The rented container's last 400 log lines, kept with the run evidence."""
+    import subprocess
+    try:
+        out = subprocess.run(["vastai", "logs", str(handle["id"]), "--tail", "400"], capture_output=True, text=True, timeout=90).stdout
+        RUNS.mkdir(parents=True, exist_ok=True)
+        (RUNS / f"{recipe['card']}.{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S')}.container.log").write_text(out)
+    except Exception as e:
+        log(f"could not save the container log: {e}")
+
+
 def rented(recipe, launch, args):
     import validate_rented as vr
 
@@ -222,10 +233,15 @@ def rented(recipe, launch, args):
                 time.sleep(10)
             log(f"ready after {int(time.monotonic() - t0)}s at {handle['endpoint']}")
             return handle["endpoint"], {"on": args.on, "gpu": handle.get("gpu"), "host": handle.get("host"), "cost_h": handle.get("cost")}, \
-                lambda: provider.destroy(handle)
+                lambda: (save_logs(handle, recipe), provider.destroy(handle))
         except vr.StartStalled as stall:
+            save_logs(handle, recipe)
             provider.destroy(handle)
             log(f"attempt {attempt}: {stall}; trying another host")
+        except BaseException:
+            save_logs(handle, recipe)  # any other failure: keep the container's log, never leave the box running
+            provider.destroy(handle)
+            raise
     raise SystemExit("no host started the container")
 
 
