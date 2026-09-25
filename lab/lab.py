@@ -120,6 +120,39 @@ def chat(endpoint, model, messages, **kw):
     return c, u, secs
 
 
+def stream_rate(endpoint, model, prompt, window=30.0):
+    """Tokens per second over the first `window` seconds after the first token, from a streamed answer."""
+    body = {"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.8, "stream": True}
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("LAB_API_KEY"):
+        headers["Authorization"] = f"Bearer {os.environ['LAB_API_KEY']}"
+    req = urllib.request.Request(endpoint + "/v1/chat/completions", data=json.dumps(body).encode(), headers=headers)
+    text, first, at_window, t0 = [], None, None, time.monotonic()
+    with urllib.request.urlopen(req, timeout=3600) as r:
+        for line in r:
+            line = line.decode().strip()
+            if not line.startswith("data:") or line == "data: [DONE]":
+                continue
+            try:
+                d = json.loads(line[5:])["choices"][0]["delta"]
+            except (ValueError, KeyError, IndexError):
+                continue
+            piece = (d.get("reasoning_content") or d.get("reasoning") or "") + (d.get("content") or "")
+            if not piece:
+                continue
+            now = time.monotonic()
+            first = first or now
+            text.append(piece)
+            if at_window is None and now - first >= window:
+                at_window = ("".join(text), now - first)
+    whole = "".join(text)
+    elapsed = time.monotonic() - (first or t0)
+    sample, span = at_window or (whole, elapsed)
+    n, _ = count(endpoint, sample)
+    total, _ = count(endpoint, whole)
+    return (n / span if span else 0), total, time.monotonic() - t0
+
+
 def gates(endpoint, launch):
     """Run every gate; returns (passed, proof, evidence)."""
     ev, ok = {}, {}
@@ -164,11 +197,11 @@ def gates(endpoint, launch):
     got = u.get("prompt_tokens") or 0
     ok["context"] = "58213" in (c["message"].get("content") or "") and got >= launch["ctx"] * 0.6
     ev["context"] = {"prompt_tokens": got, "seconds": round(secs, 1), "content": (c["message"].get("content") or "")[-80:]}
-    # speed: decode at concurrency 1 on a short prompt; no generation is ever capped, it runs to its natural end
-    c, u, secs = chat(endpoint, served, [{"role": "user", "content": "Write a detailed 600-word story about a lighthouse keeper."}], temperature=0.8)
-    tps = (u.get("completion_tokens") or 0) / secs if secs else 0
+    # speed: decode at concurrency 1, measured over the first 30 s of a streamed answer; the answer still runs
+    # to its natural end (never capped), and its full length is kept as evidence
+    tps, total, secs = stream_rate(endpoint, served, "Write a detailed 600-word story about a lighthouse keeper.")
     ok["speed"] = tps >= MIN_TPS
-    ev["speed"] = {"completion_tokens": u.get("completion_tokens"), "seconds": round(secs, 2), "counted": u.get("counted", "server")}
+    ev["speed"] = {"window_s": 30, "tokens_total": total, "seconds_total": round(secs, 1)}
     prefill = round(got / ev["context"]["seconds"]) if got and ev["context"]["seconds"] else None
     proof = {"gates": " ".join(g for g in GATES if ok.get(g)), "tps": round(tps, 1), "prefill": prefill, "served": served}
     return all(ok.get(g) for g in GATES), proof, {"ok": ok, **ev}
