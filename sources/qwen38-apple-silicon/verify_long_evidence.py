@@ -110,8 +110,14 @@ def replay_raw(raw_data, request_sha, request_bytes):
                     and choice["index"] == 0, "unexpected completion choice")
             delta = choice.get("delta")
             require(isinstance(delta, dict), "SSE delta must be an object")
-            answer = delta.get("content") or ""
-            thought = delta.get("reasoning_content") or delta.get("reasoning") or ""
+            answer = delta.get("content")
+            if answer is None:
+                answer = ""
+            thought = delta.get("reasoning_content")
+            if thought is None:
+                thought = delta.get("reasoning")
+            if thought is None:
+                thought = ""
             require(isinstance(answer, str) and isinstance(thought, str), "non-text SSE output")
             require(finish_reason is None or not (answer or thought), "output continued after finish")
             content.append(answer)
@@ -231,7 +237,9 @@ def verify_audit(server_data, tokens):
         elif expected == "BatchKVCache":
             require(all(layer.get(key) is None for key in ("bits", "key_bits", "value_bits")),
                     "final attention cache unexpectedly reports quantization")
-    require(dict(counts) == EXPECTED_CLASSES and audit.get("cache_class_counts") == EXPECTED_CLASSES,
+    reported_counts = audit.get("cache_class_counts")
+    require(isinstance(reported_counts, dict) and all(type(value) is int for value in reported_counts.values())
+            and dict(counts) == EXPECTED_CLASSES and reported_counts == EXPECTED_CLASSES,
             "cache class counts disagree")
     require(type(audit.get("cache_bytes_is_partial")) is bool,
             "cache byte accounting completeness is unspecified")

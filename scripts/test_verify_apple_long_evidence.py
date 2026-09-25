@@ -139,6 +139,15 @@ class SavedEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(verifier.VerificationError, "DONE"):
             self.verify()
 
+    def test_invalid_raw_json_and_duplicate_keys_fail(self):
+        path = self.directory / "raw.jsonl"
+        original = path.read_bytes()
+        for data in (b"not JSON\n" + original,
+                     original.replace(b'"event": "request"', b'"event": "request", "event": "request"', 1)):
+            path.write_bytes(data)
+            with self.assertRaises(verifier.VerificationError):
+                self.verify()
+
     def test_short_or_cached_prompt_fails_even_when_raw_agrees(self):
         for prompt, cache in ((199999, 0), (200163, 1)):
             self.usage["prompt_tokens"] = prompt
