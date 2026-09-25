@@ -54,7 +54,7 @@
       "qwen38-mlx-vlm-serve"
     ],
     "asset_sha256": {
-      "qwen38-mlx-vlm-serve": "2d89f5c56d5061527c3017a7fc5ad8d3344c70ec22d7e260b2ea8ac0f330b04f"
+      "qwen38-mlx-vlm-serve": "31a7329012d0b4e32d1b1582f81cb13641520fe8617c13606b21decc15192ab1"
     },
     "container": {
       "captured_at": "2026-09-25T18:11:09.780925Z",
@@ -95,6 +95,7 @@
     "url": "https://github.com/0xSero/local-ai-registry/blob/main/sources/qwen38-apple-silicon/README.md"
   },
   "metadata": {
+    "long_context_evidence_status": "Pending qualification with bounded fused attention. The earlier default-attention run with 1024-token chunks failed with Metal OOM after the last logged progress of 113,664 / 200,163 tokens.",
     "reproduction_guide": "sources/qwen38-apple-silicon/README.md",
     "validation_limits": [
       "No 24 GB host available. No M1, M2, M4, M5 or M6 measurement is implied by this M3 Max recipe.",
@@ -115,6 +116,7 @@
   "recipe_source": "native-apple-acceptance",
   "schema_version": "local-ai-registry/v1",
   "serving": {
+    "attention_implementation": "mlx-force-fused-bf16-head256-long-prefill",
     "kv_cache_bits": 4,
     "kv_cache_last_attention_layer": "bf16",
     "kv_cache_quantization": "turboquant",

@@ -38,7 +38,7 @@ def main():
 
     def messages(repeats):
         sections = ["Read the entire archive. Retain the three retrieval keys.\n"]
-        # Needles at the beginning, middle and near the end exercise distant retrieval.
+        # Keys near the start, one-third, and two-thirds exercise distant retrieval.
         for key in needles:
             sections.extend(["\nRETRIEVAL KEY: " + key + "\n", filler * repeats])
         sections.append(

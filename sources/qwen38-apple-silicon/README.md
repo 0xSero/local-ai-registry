@@ -1,6 +1,6 @@
 # Qwen3.8-27B on Apple Silicon: reproducible native recipe
 
-**RESULTS PENDING.** This directory records the pinned setup and acceptance procedure for [the M3 Max 36 GB recipe](../../registry/recipe/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k.json). Installing the runtime, downloading weights, or starting the server does not establish 200k-context, vision, MTP, or memory-fit success. Replace the pending results below only with completed run evidence.
+**200k qualification pending.** This directory records the pinned setup and acceptance procedure for [the M3 Max 36 GB recipe](../../registry/recipe/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k.json). Short vision and 8k retrieval probes passed; the corrected fused launcher also passed the combined 8,301-token image/retrieval request with native MTP. A 1024-token prefill attempt using the default attention path failed with Metal out-of-memory after the last logged progress of 113,664 / 200,163 tokens; see [the failure evidence](evidence/failed-1024-prefill/summary.json). No 200k completion has passed yet.
 
 The available host is an **Apple M3 Max with 36 GiB unified memory**, running macOS 27.2; see [hardware.json](hardware.json). This is a native macOS/Metal launch with one request at a time. There is no 24 GB measurement, no exact 32 GB measurement, and no result for M1, M2, M4, M5, or M6. Reproducibility of this launch is not evidence that it is optimal on every M-series chip.
 
@@ -49,6 +49,10 @@ Download the complete snapshots, including their processors, tokenizer, chat tem
 ## Launch
 
 [The pinned server wrapper](../../registry/asset/qwen38-mlx-vlm-serve.py) passes the following arguments to the pinned MLX-VLM server, sets an MLX allocation guideline, and emits runtime/cache audit JSON in the server log. Its default allocation guideline is the smaller of 27 GiB and the device's recommended working set, with a 256 MiB allocator cache. This guideline is **not a hard process-memory cap or a no-swap guarantee**. It supplies no evidence of a 24 GB fit.
+
+The wrapper also selects MLX's public `force_fused=True` attention path for the measured BF16 text-prefill shape: one batch, 24 query heads, four KV heads, head dimension 256, more than eight query tokens, and at least 8192 KV tokens. It passes the mask unchanged and raises if the fused kernel is unavailable. In pinned MLX 0.32.2, [the default head-256 routing on pre-NAX GPUs](https://github.com/ml-explore/mlx/blob/1f8e74e3f12f31365464a6867c6579f0e9b29d85/mlx/backend/metal/scaled_dot_product_attention.cpp#L761) uses an unfused path whose score-buffer storage grows with query length times context length. That path caused the recorded M3 out-of-memory failure.
+
+A [bounded synthetic attention comparison](sdpa-memory-comparison.json) on this Mac measured 1.816 GB peak MLX allocation for default attention versus 0.193 GB forced-fused at 1024 query / 32768 KV tokens. These are single attention operations, not full-model memory figures. The forced path was about 7% slower for that isolated operation but avoided the large score buffer. BF16 parity tests allow small floating-point differences from changed accumulation order; they do not assert identical logits or broad model quality. The wrapper records actual forced-call counts per prefill and allocation snapshots every 16384 processed columns.
 
 Prefix caching is disabled in memory and on disk. The four-hour token-queue timeout allows the long cold prefill to complete without the default queue timeout interrupting it.
 
@@ -103,6 +107,8 @@ runs/qwen38/venv/bin/python scripts/probe_apple_qwen38.py \
 
 The vision fixture has a red left panel and a blue right panel. Its request asks for their order without naming either color:
 
+![Submitted vision fixture](evidence/vision/vision.png)
+
 ```sh
 runs/qwen38/venv/bin/python scripts/probe_apple_qwen38.py \
   --endpoint http://127.0.0.1:8766 --model runs/qwen38/models/Qwen3.8-27B-4bit \
@@ -150,7 +156,7 @@ The generator's workload manifest hashes its output file. The harness separately
 
 ## Optional runtime checks
 
-[test_runtime.py](test_runtime.py) checks the wrapper's allocation settings and runtime pin, cache retention accounting, and a tiny synthetic model's chunked native MTP path. It requires the pinned runtime and the additional test dependency `pytest==9.1.1`. These checks use Metal but do not load the 27B checkpoint or establish its context, quality, or hardware qualification. Run them with the serving process stopped so they do not compete with a measured inference run.
+[test_runtime.py](test_runtime.py) checks the wrapper's allocation settings and runtime pin, cache retention accounting, fused-attention routing and BF16 mask parity, and a tiny synthetic model's chunked native MTP path. It requires the pinned runtime and the additional test dependency `pytest==9.1.1`. These checks use Metal but do not load the 27B checkpoint or establish its context, quality, or hardware qualification. Run them with the serving process stopped so they do not compete with a measured inference run.
 
 ```sh
 uv pip install --python runs/qwen38/venv/bin/python pytest==9.1.1
@@ -159,6 +165,19 @@ runs/qwen38/venv/bin/python -B -m pytest -q -p no:cacheprovider \
 ```
 
 The test loads the wrapper with `compile`/`exec`, so it does not create `__pycache__` under `registry/asset`. The command also disables Python bytecode output and pytest's cache provider. The stdlib evidence-gate tests run separately with `python3 -m unittest discover -s scripts -p test_probe_apple_qwen38.py`; those tests do not need the model runtime or a GPU.
+
+## Independently verify the combined evidence
+
+After a successful combined request, copy the server log to a fixed snapshot and run:
+
+```sh
+python3 sources/qwen38-apple-silicon/verify_long_evidence.py \
+  --probe-dir runs/qwen38/evidence/COMBINED_RUN_DIRECTORY \
+  --server-log runs/qwen38/server-evidence.log \
+  > runs/qwen38/long-evidence-receipt.json
+```
+
+Replace the probe directory with the actual unique directory printed by the harness. The verifier replays the captured SSE independently, compares it with the summary, checks the exact request hash and image fixture, and requires the complete five-value answer with a `stop` finish reason. It also requires at least 200,000 cold prompt tokens, positive native MTP counters, and one matching final-prefill audit with all 16 full-attention caches retaining the full prompt. Fifteen caches must be TurboQuant 4-bit and one unquantized; the 48 recurrent states are checked separately. Its success receipt contains hashes of the files it checked. Keep those file bytes unchanged afterward.
 
 ## Results and scope
 
@@ -172,7 +191,8 @@ The test loads the wrapper with `compile`/`exec`, so it does not create `__pycac
 | At least 200k cold prompt tokens | RESULTS PENDING | Pending server usage and `cache_n=0` |
 | Full-attention KV retention | RESULTS PENDING | Pending final-prefill wrapper audit |
 | Long-context retrieval answer | RESULTS PENDING | Pending completed answer with all three values |
-| Combined long-context retrieval, vision, and MTP | RESULTS PENDING | Pending one request with all five values and positive MTP counters |
+| Combined 8k retrieval, vision, and MTP with fused fix | Passed: all five values, 32 forced-fused calls | [Combined 8k receipt](evidence/combined-8k-fused/summary.json), 8,301 input / 26 output tokens |
+| Combined long-context retrieval, vision, and MTP | RESULTS PENDING | Earlier unfused attempt failed; fused 200k qualification is pending |
 | Peak runtime memory and swap observations | RESULTS PENDING | Pending runtime timings and host observations |
 
 Keep the recipe a candidate until its required runtime evidence is complete and the registry's acceptance rules pass. Successful static tests or a recipe PR do not fulfill the bounty's hardware requirements. The 24 GB tier, other Apple generations, broad quality, and cross-chip optimization remain separate work requiring their own measured runs.

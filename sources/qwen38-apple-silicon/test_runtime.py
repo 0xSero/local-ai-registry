@@ -6,6 +6,7 @@ these checks do not load the 27B checkpoint or establish hardware qualification.
 
 from pathlib import Path
 from types import ModuleType, SimpleNamespace
+import json
 import pytest
 import mlx.core as mx
 from mlx_vlm.generate.ar import PromptProcessingBatch
@@ -58,6 +59,7 @@ def test_audit_does_not_mistake_recurrent_state_for_kv():
 def test_hook_preserves_chunked_native_mtp_execution(monkeypatch, capsys):
     original = PromptProcessingBatch.generate
     monkeypatch.setattr(PromptProcessingBatch, 'generate', original)
+    monkeypatch.setattr(PromptProcessingBatch, 'prompt_step', PromptProcessingBatch.prompt_step)
     serve.install_cache_audit(mx)
     _run_tiny_chunked_mtp()
     output = capsys.readouterr().err
@@ -65,6 +67,115 @@ def test_hook_preserves_chunked_native_mtp_execution(monkeypatch, capsys):
     assert '"full_attention_cache_retained": true' in output
     assert '"prompt_tokens_per_row": [9]' in output
     assert '"hidden_shape": [1, 1, 64]' in output
+    assert '"fused_sdpa_calls_this_prefill": 0' in output
+
+
+def test_fused_sdpa_dispatch_preserves_mask_and_other_arguments(capsys):
+    calls = []
+    def native(*args, **kwargs):
+        calls.append((args, kwargs))
+        return 'output'
+    fake_mx = SimpleNamespace(fast=SimpleNamespace(scaled_dot_product_attention=native),
+                              bfloat16=mx.bfloat16)
+    stats = serve.install_fused_sdpa(fake_mx)
+    assert serve.install_fused_sdpa(fake_mx) is stats
+    def tensor(shape, dtype=mx.bfloat16):
+        return SimpleNamespace(shape=shape, ndim=len(shape), dtype=dtype)
+    q = tensor((1, 24, 33, 256))
+    k = tensor((1, 4, 8193, 256))
+    mask = object()
+    assert fake_mx.fast.scaled_dot_product_attention(q, k, k, scale=.0625, mask=mask,
+                                                    sinks=None, stream='sentinel') == 'output'
+    assert calls[-1][1] == dict(scale=.0625, mask=mask, sinks=None, stream='sentinel', force_fused=True)
+    excluded = [
+        (tensor((1, 24, 8, 256)), k, k),
+        (q, tensor((1, 4, 8191, 256)), tensor((1, 4, 8191, 256))),
+        (tensor((2, 24, 33, 256)), k, k),
+        (tensor((1, 16, 33, 256)), k, k),
+        (q, tensor((1, 2, 8193, 256)), tensor((1, 2, 8193, 256))),
+        (q, k, tensor((1, 4, 8193, 128))),
+        (tensor(q.shape, mx.float32), k, k),
+        (tensor(q.shape, mx.float16), tensor(k.shape, mx.float16), tensor(k.shape, mx.float16)),
+    ]
+    for args in excluded:
+        fake_mx.fast.scaled_dot_product_attention(*args, scale=.0625, mask=mask)
+        assert 'force_fused' not in calls[-1][1]
+    assert stats['calls'] == 1
+    assert capsys.readouterr().err.count('qwen38_first_fused_sdpa') == 1
+
+
+def test_fused_sdpa_failure_does_not_retry_unfused():
+    calls = []
+    def unavailable(*args, **kwargs):
+        calls.append(kwargs)
+        raise ValueError('fused kernel unavailable')
+    fake_mx = SimpleNamespace(fast=SimpleNamespace(scaled_dot_product_attention=unavailable),
+                              bfloat16=mx.bfloat16)
+    stats = serve.install_fused_sdpa(fake_mx)
+    q = SimpleNamespace(shape=(1, 24, 33, 256), ndim=4, dtype=mx.bfloat16)
+    k = SimpleNamespace(shape=(1, 4, 8193, 256), ndim=4, dtype=mx.bfloat16)
+    with pytest.raises(ValueError, match='unavailable'):
+        fake_mx.fast.scaled_dot_product_attention(q, k, k, scale=.0625)
+    assert calls == [{'scale': .0625, 'force_fused': True}] and stats['calls'] == 0
+
+
+@pytest.mark.parametrize('mask_kind', ['causal_array', 'left_padding_array', 'additive_array'])
+def test_fused_sdpa_matches_bf16_cached_attention(monkeypatch, mask_kind):
+    native = mx.fast.scaled_dot_product_attention
+    monkeypatch.setattr(mx.fast, 'scaled_dot_product_attention', native)
+    mx.random.seed(381)
+    q = mx.random.normal((1, 24, 33, 256)).astype(mx.bfloat16)
+    k = mx.random.normal((1, 4, 8193, 256)).astype(mx.bfloat16)
+    v = mx.random.normal((1, 4, 8193, 256)).astype(mx.bfloat16)
+    key_positions = mx.arange(8193)[None, :]
+    mask = (mx.arange(8160, 8193)[:, None] >= key_positions)[None, None, :, :]
+    if mask_kind == 'left_padding_array':
+        mask = mask & (key_positions >= 17)[None, None, :, :]
+    elif mask_kind == 'additive_array':
+        mask = mx.where(mask, mx.array(0, mx.bfloat16), mx.array(-float('inf'), mx.bfloat16))
+    expected = native(q, k, v, scale=.0625, mask=mask)
+    stats = serve.install_fused_sdpa(mx)
+    actual = mx.fast.scaled_dot_product_attention(q, k, v, scale=.0625, mask=mask)
+    mx.eval(expected, actual)
+    diff = expected.astype(mx.float32) - actual.astype(mx.float32)
+    assert bool(mx.all(mx.isfinite(actual)).item())
+    assert float(mx.max(mx.abs(diff)).item()) < .02
+    relative_rms = mx.sqrt(mx.mean(diff * diff) / mx.mean(expected.astype(mx.float32) ** 2))
+    assert float(relative_rms.item()) < .03
+    assert stats['calls'] == 1
+    mx.synchronize()
+
+
+def test_prefill_counter_and_periodic_allocation_metadata(monkeypatch, capsys):
+    stats = {'calls': 5}
+    native = lambda *args, **kwargs: None
+    native._qwen38_fused_sdpa_stats = stats
+    fake_mx = SimpleNamespace(
+        fast=SimpleNamespace(scaled_dot_product_attention=native),
+        get_active_memory=lambda: 101, get_peak_memory=lambda: 202,
+        get_cache_memory=lambda: 303,
+    )
+    def step(self):
+        self._processed_prompt_columns += 16384
+        stats['calls'] += 2
+        return 16384
+    def generate(self):
+        stats['calls'] += 3
+        return SimpleNamespace(prompt_cache=[], hidden=None)
+    monkeypatch.setattr(PromptProcessingBatch, 'prompt_step', step)
+    monkeypatch.setattr(PromptProcessingBatch, 'generate', generate)
+    serve.install_cache_audit(fake_mx)
+    processing = SimpleNamespace(_processed_prompt_columns=0,
+                                 _prompt_tokens_per_row=[32769],
+                                 _cached_tokens_per_row=[0], model=SimpleNamespace())
+    PromptProcessingBatch.prompt_step(processing)
+    PromptProcessingBatch.prompt_step(processing)
+    PromptProcessingBatch.generate(processing)
+    events = [json.loads(line) for line in capsys.readouterr().err.splitlines()]
+    assert [e['prefill_processed_columns'] for e in events[:2]] == [16384, 32768]
+    assert [e['fused_sdpa_calls_this_prefill'] for e in events] == [2, 4, 7]
+    assert events[-1]['fused_sdpa_calls_process_total'] == 12
+    assert all(e['mlx_active_bytes'] == 101 for e in events)
 
 
 def test_runtime_cache_without_nbytes_does_not_abort_audit():

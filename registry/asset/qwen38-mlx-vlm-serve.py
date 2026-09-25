@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run pinned MLX-VLM with allocation guidance and a final-prefill cache audit.
+"""Run pinned MLX-VLM with bounded target attention and cache allocation audits.
 
 All arguments pass through to mlx_vlm.server.cli.main(). The default MLX
 allocation guideline is min(27 GiB, the device's recommended working set),
@@ -27,6 +27,14 @@ MIB = 1024**2
 RUNTIME_VERSION = "0.7.3"
 RUNTIME_REVISION = "573562df9fd9259047e3dc793e6b48be23389221"
 MEMORY_ENV = "QWEN38_MEMORY_LIMIT_GIB"
+FUSED_SDPA_POLICY = {
+    "query_shape": [1, 24, "query_tokens > 8", 256],
+    "key_value_shape": [1, 4, "kv_tokens >= 8192", 256],
+    "qkv_dtype": "bfloat16",
+    "mask": "preserved unchanged",
+    "force_fused": True,
+    "unsupported_fused_kernel": "raise; never retry unfused",
+}
 
 
 def emit(record):
@@ -88,6 +96,69 @@ def configure_memory(mx):
         "mlx_memory_limit_bytes": memory_limit,
         "mlx_allocator_cache_limit_bytes": cache_limit,
         "mlx_memory_limit_is_hard_process_cap": False,
+    }
+
+
+def install_fused_sdpa(mx):
+    """Use MLX's public fused kernel for the measured long-prefill shape.
+
+    MLX 0.32.2 otherwise selects an O(query_tokens * kv_tokens) score buffer
+    for head dimension 256 on M3. Preserve masks and all other arguments.
+    Decode, MTP verification, vision and unsupported dtypes retain stock routing.
+    """
+    original = mx.fast.scaled_dot_product_attention
+    existing = getattr(original, "_qwen38_fused_sdpa_stats", None)
+    if existing is not None:
+        return existing
+    stats = {"calls": 0}
+
+    @functools.wraps(original)
+    def bounded_sdpa(q, k, v, **kwargs):
+        applies = (
+            all(getattr(t, "ndim", None) == 4 for t in (q, k, v))
+            and q.shape[0] == 1 and q.shape[1] == 24 and q.shape[3] == 256
+            and q.shape[2] > 8
+            and k.shape[0] == 1 and k.shape[1] == 4 and k.shape[3] == 256
+            and k.shape[2] >= 8192 and tuple(k.shape) == tuple(v.shape)
+            and all(t.dtype == mx.bfloat16 for t in (q, k, v))
+        )
+        if not applies:
+            return original(q, k, v, **kwargs)
+        kwargs["force_fused"] = True
+        result = original(q, k, v, **kwargs)
+        stats["calls"] += 1
+        if stats["calls"] == 1:
+            mask = kwargs.get("mask")
+            mask_kind = (
+                "none" if mask is None else
+                "causal" if isinstance(mask, str) and mask == "causal" else
+                "array" if hasattr(mask, "shape") else "other"
+            )
+            emit({
+                "event": "qwen38_first_fused_sdpa", "schema_version": 1,
+                "q_shape": list(q.shape), "k_shape": list(k.shape),
+                "v_shape": list(v.shape), "dtype": str(q.dtype),
+                "mask_kind": mask_kind,
+                "mask_shape": list(mask.shape) if hasattr(mask, "shape") else None,
+                "mask_dtype": str(mask.dtype) if hasattr(mask, "dtype") else None,
+            })
+        return result
+
+    bounded_sdpa._qwen38_fused_sdpa_stats = stats
+    mx.fast.scaled_dot_product_attention = bounded_sdpa
+    return stats
+
+
+def _fused_sdpa_calls(mx):
+    stats = getattr(mx.fast.scaled_dot_product_attention, "_qwen38_fused_sdpa_stats", None)
+    return int(stats["calls"]) if stats is not None else 0
+
+
+def _allocation_metadata(mx):
+    return {
+        "mlx_active_bytes": mx.get_active_memory(),
+        "mlx_peak_bytes": mx.get_peak_memory(),
+        "mlx_allocator_cache_bytes": mx.get_cache_memory(),
     }
 
 
@@ -167,9 +238,13 @@ def prefill_audit(processing, generated, mx):
         "full_attention_cache_retained": not errors if validate else None,
         "full_attention_layers_verified": verified_attention_layers,
         "errors": errors,
-        "mlx_active_bytes": mx.get_active_memory(),
-        "mlx_peak_bytes": mx.get_peak_memory(),
-        "mlx_allocator_cache_bytes": mx.get_cache_memory(),
+        "fused_sdpa_policy": FUSED_SDPA_POLICY,
+        "fused_sdpa_calls_process_total": _fused_sdpa_calls(mx),
+        "fused_sdpa_calls_this_prefill": (
+            _fused_sdpa_calls(mx) - processing._qwen38_fused_sdpa_start_count
+            if hasattr(processing, "_qwen38_fused_sdpa_start_count") else None
+        ),
+        **_allocation_metadata(mx),
     }
     return record
 
@@ -181,8 +256,34 @@ def install_cache_audit(mx):
     if getattr(original, "_qwen38_audited", False):
         return
 
+    original_step = PromptProcessingBatch.prompt_step
+
+    def capture_start(processing):
+        if not hasattr(processing, "_qwen38_fused_sdpa_start_count"):
+            processing._qwen38_fused_sdpa_start_count = _fused_sdpa_calls(mx)
+
+    @functools.wraps(original_step)
+    def audited_step(self, *args, **kwargs):
+        capture_start(self)
+        result = original_step(self, *args, **kwargs)
+        processed = int(self._processed_prompt_columns)
+        bucket = processed // 16384
+        if bucket > getattr(self, "_qwen38_allocation_bucket", 0):
+            self._qwen38_allocation_bucket = bucket
+            emit({
+                "event": "qwen38_prefill_progress_allocation", "schema_version": 1,
+                "prefill_processed_columns": processed,
+                "prompt_tokens_per_row": [int(n) for n in self._prompt_tokens_per_row],
+                "fused_sdpa_calls_this_prefill": (
+                    _fused_sdpa_calls(mx) - self._qwen38_fused_sdpa_start_count
+                ),
+                **_allocation_metadata(mx),
+            })
+        return result
+
     @functools.wraps(original)
     def audited_generate(self, *args, **kwargs):
+        capture_start(self)
         generated = original(self, *args, **kwargs)
         record = prefill_audit(self, generated, mx)
         emit(record)
@@ -192,6 +293,7 @@ def install_cache_audit(mx):
 
     audited_generate._qwen38_audited = True
     PromptProcessingBatch.generate = audited_generate
+    PromptProcessingBatch.prompt_step = audited_step
 
 
 def main():
@@ -204,6 +306,8 @@ def main():
     if not mx.metal.is_available():
         raise RuntimeError("This recipe requires an Apple Silicon Metal device.")
     metadata.update(configure_memory(mx))
+    install_fused_sdpa(mx)
+    metadata["fused_sdpa_policy"] = FUSED_SDPA_POLICY
     metadata.update(event="qwen38_runtime_startup", schema_version=1)
     emit(metadata)
     install_cache_audit(mx)

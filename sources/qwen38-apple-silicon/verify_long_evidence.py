@@ -213,6 +213,8 @@ def verify_audit(server_data, tokens):
             and audit.get("full_attention_cache_retained") is True and audit.get("errors") == [],
             "prefill audit did not establish full cache retention")
     require(int_list(audit.get("hidden_shape"), [1, 1, 5120]), "unexpected final MTP hidden-state shape")
+    require(count(audit.get("fused_sdpa_calls_this_prefill"), 1),
+            "prefill audit must record positive fused SDPA calls for this prefill")
     require(int_list(audit.get("full_attention_layers_verified"), ATTENTION_LAYERS),
             "prefill audit did not verify all 16 expected attention layers")
     layers = audit.get("layers")
@@ -266,6 +268,7 @@ def verify(probe_dir, server_log):
             "answer": summary["content"], "mtp": {"draft_kind": "mtp", **counters},
             "cache_class_counts": EXPECTED_CLASSES, "full_attention_layers_retaining_prompt": 16,
             "hidden_shape": audit["hidden_shape"],
+            "fused_sdpa_calls_this_prefill": audit["fused_sdpa_calls_this_prefill"],
             "cache_byte_accounting_complete": not audit["cache_bytes_is_partial"],
             "input_sha256": {name: sha256(data) for name, data in inputs.items()}}
 

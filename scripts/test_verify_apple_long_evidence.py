@@ -49,6 +49,7 @@ class SavedEvidenceTests(unittest.TestCase):
                       "prompt_tokens_per_row": [self.tokens], "cached_tokens_per_row": [0],
                       "single_row_qwen_mapping_verified": True, "full_attention_cache_retained": True,
                       "errors": [], "hidden_shape": [1, 1, 5120], "cache_bytes_is_partial": False,
+                      "fused_sdpa_calls_this_prefill": 3120,
                       "full_attention_layers_verified": verifier.ATTENTION_LAYERS,
                       "cache_class_counts": verifier.EXPECTED_CLASSES, "layers": []}
         for index in range(64):
@@ -96,6 +97,7 @@ class SavedEvidenceTests(unittest.TestCase):
         self.assertTrue(result["verified"])
         self.assertEqual(result["prompt_tokens"], 200163)
         self.assertEqual(result["full_attention_layers_retaining_prompt"], 16)
+        self.assertEqual(result["fused_sdpa_calls_this_prefill"], 3120)
         self.assertEqual(set(result["input_sha256"]), {"request.json", "raw.jsonl", "summary.json", "server_log"})
         self.audit["cache_bytes_is_partial"] = True
         self.audit["cache_bytes"] = 123456
@@ -184,6 +186,17 @@ class SavedEvidenceTests(unittest.TestCase):
             self.verify()
         self.log.write_bytes(encoded(self.audit) * 2)
         with self.assertRaisesRegex(verifier.VerificationError, "exactly one"):
+            self.verify()
+
+    def test_fused_sdpa_must_have_positive_calls_in_this_prefill(self):
+        for value in (None, 0, -1, True, "3120", 1.5):
+            self.audit["fused_sdpa_calls_this_prefill"] = value
+            self.write_audit()
+            with self.assertRaisesRegex(verifier.VerificationError, "positive fused SDPA"):
+                self.verify()
+        del self.audit["fused_sdpa_calls_this_prefill"]
+        self.write_audit()
+        with self.assertRaisesRegex(verifier.VerificationError, "positive fused SDPA"):
             self.verify()
 
     def test_wrong_color_order_or_extra_answer_text_fails(self):
