@@ -1,0 +1,131 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "video": null,
+    "vision": null
+  },
+  "description": "Qwen3.8-27B affine 4-bit weights with BF16 native MTP drafter, vision and TurboQuant 4-bit KV on Apple M3 Max 36 GB. Hardware and long-context acceptance pending.",
+  "engine": {
+    "graph_mode": null,
+    "name": "mlx-vlm",
+    "version": "0.7.3"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "apple-m3-max-36gb",
+  "id": "qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k",
+  "launch": {
+    "accelerator_backend": "metal",
+    "arguments": [
+      "runs/qwen38/venv/bin/python",
+      "registry/asset/qwen38-mlx-vlm-serve.py",
+      "--model",
+      "runs/qwen38/models/Qwen3.8-27B-4bit",
+      "--draft-model",
+      "runs/qwen38/models/Qwen3.8-27B-MTP-bf16",
+      "--draft-kind",
+      "mtp",
+      "--draft-block-size",
+      "3",
+      "--kv-bits",
+      "4",
+      "--kv-quant-scheme",
+      "turboquant",
+      "--prefill-step-size",
+      "1024",
+      "--max-kv-size",
+      "201024",
+      "--max-num-seqs",
+      "1",
+      "--vision-cache-size",
+      "1",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8766",
+      "--max-tokens",
+      "256",
+      "--quantized-kv-start",
+      "0"
+    ],
+    "asset_ids": [
+      "qwen38-mlx-vlm-serve"
+    ],
+    "asset_sha256": {
+      "qwen38-mlx-vlm-serve": "2d89f5c56d5061527c3017a7fc5ad8d3344c70ec22d7e260b2ea8ac0f330b04f"
+    },
+    "container": {
+      "captured_at": "2026-09-25T18:11:09.780925Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "native-macos-metal-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T18:11:09.780925Z",
+          "kind": "native-metal-recipe",
+          "url": "https://github.com/Blaizzy/mlx-vlm/tree/573562df9fd9259047e3dc793e6b48be23389221"
+        }
+      ],
+      "state": "none"
+    },
+    "endpoint": "http://127.0.0.1:8766/v1",
+    "environment": {
+      "APC_DISK_ENABLED": "0",
+      "APC_ENABLED": "0",
+      "HF_HUB_OFFLINE": "1",
+      "KV_BITS": "4",
+      "KV_GROUP_SIZE": "64",
+      "KV_QUANT_SCHEME": "turboquant",
+      "MAX_KV_SIZE": "201024",
+      "MLX_VLM_DRAFT_KIND": "mtp",
+      "MLX_VLM_DRAFT_MODEL": "runs/qwen38/models/Qwen3.8-27B-MTP-bf16",
+      "MLX_VLM_TOKEN_QUEUE_TIMEOUT": "14400",
+      "MLX_VLM_VISION_CACHE_SIZE": "1",
+      "QUANTIZED_KV_START": "0",
+      "TOKENIZERS_PARALLELISM": "false"
+    },
+    "host_port": 8766,
+    "kind": "native",
+    "source_commit": "573562df9fd9259047e3dc793e6b48be23389221",
+    "source_repository": "https://github.com/Blaizzy/mlx-vlm",
+    "url": "https://github.com/0xSero/local-ai-registry/blob/main/sources/qwen38-apple-silicon/README.md"
+  },
+  "metadata": {
+    "reproduction_guide": "sources/qwen38-apple-silicon/README.md",
+    "validation_limits": [
+      "No 24 GB host available. No M1, M2, M4, M5 or M6 measurement is implied by this M3 Max recipe.",
+      "Synthetic vision and long-context probes are not general quality benchmarks."
+    ]
+  },
+  "model_instance_id": "mlx-community-qwen3-8-27b-4bit--affine-4bit",
+  "provenance": {
+    "captured_at": "2026-09-25T18:11:09.780925Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T18:11:09.780925Z",
+        "kind": "native-metal-recipe",
+        "url": "https://github.com/Blaizzy/mlx-vlm/tree/573562df9fd9259047e3dc793e6b48be23389221"
+      }
+    ]
+  },
+  "recipe_source": "native-apple-acceptance",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_bits": 4,
+    "kv_cache_last_attention_layer": "bf16",
+    "kv_cache_quantization": "turboquant",
+    "max_concurrency": 1,
+    "max_context_tokens": 201024,
+    "measured_max_prompt_tokens": null,
+    "mtp_draft_block_size": 3,
+    "mtp_repository": "mlx-community/Qwen3.8-27B-MTP-bf16",
+    "mtp_revision": "9b1e8ab2bcfd157956a4d85927310de551fcdab1",
+    "prefix_cache_enabled": false
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
