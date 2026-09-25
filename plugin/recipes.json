@@ -23,7 +23,7 @@
       "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/35164534977"
     }
   },
-  "generatedAt": "2026-09-24T16:26:28Z",
+  "generatedAt": "2026-09-25T13:17:16Z",
   "hardware": {
     "intel-arc-pro-b70-32gb": {
       "match": {
@@ -8393,6 +8393,97 @@
         }
       }
     },
+    "rx-7600-xt-16gb": {
+      "match": {
+        "backend": "amd-rocm",
+        "name": "AMD Radeon RX 7600 XT",
+        "names": [
+          "rx7600xt"
+        ],
+        "vramGb": 16
+      },
+      "recipe": {
+        "capabilities": {
+          "chat": null,
+          "reasoning": null,
+          "tools": null,
+          "vision": null
+        },
+        "engine": "llama.cpp",
+        "id": "qwen35-9b-q4km-rx7600xt-llamacpp-rocm",
+        "image": {
+          "attestation": null,
+          "provenance": "upstream"
+        },
+        "launch": {
+          "arguments": [
+            "-m",
+            "/models/Qwen3.5-9B-Q4_K_M.gguf",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080",
+            "--ctx-size",
+            "65536",
+            "--n-gpu-layers",
+            "999",
+            "--flash-attn",
+            "auto",
+            "--jinja",
+            "--reasoning-format",
+            "deepseek",
+            "--parallel",
+            "1"
+          ],
+          "capAdd": [],
+          "containerPort": 8080,
+          "devices": [],
+          "entrypoint": null,
+          "environment": {
+            "HSA_OVERRIDE_GFX_VERSION": "11.0.0"
+          },
+          "image": "ghcr.io/ggml-org/llama.cpp@sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+          "ipc": null,
+          "kind": "docker",
+          "mounts": [
+            {
+              "read_only": true,
+              "source": "${MODEL_ROOT}/qwen3-5-9b-q4-k-m",
+              "target": "/models"
+            }
+          ],
+          "networkMode": null,
+          "securityOpt": [],
+          "shm": "8g"
+        },
+        "minDriver": "",
+        "minEngine": "",
+        "model": {
+          "id": "qwen3-5-9b-base",
+          "name": "Qwen3.5-9B-Base",
+          "precision": "Q4_K_M",
+          "repository": "unsloth/Qwen3.5-9B-GGUF",
+          "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+          "servedName": "/models/Qwen3.5-9B-Q4_K_M.gguf",
+          "sizeGb": 5.681
+        },
+        "serving": {
+          "concurrency": 0,
+          "ctxTokens": 65536,
+          "kvTokens": 0
+        },
+        "speed": {
+          "tps": 41
+        },
+        "validated": {
+          "acceptedAt": "2026-09-22T13:29:16.589211Z",
+          "harness": "AMD Radeon RX 7600 XT gfx1102 local ROCm"
+        },
+        "weights": {
+          "subdir": ""
+        }
+      }
+    },
     "xdna2-krackan-16gb": {
       "match": {
         "backend": "amd-npu",
@@ -8461,6 +8552,6 @@
       }
     }
   },
-  "registryCommit": "30cc580e9328b62c7cf3c8823812a2db44455535",
+  "registryCommit": "794f5add7db2fc5b001f3e61d83127d191d82687",
   "schemaVersion": "omarchy-local-ai/recipes/1"
 }
