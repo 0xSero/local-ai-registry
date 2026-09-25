@@ -1,0 +1,664 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Candidate no-drafter EXL3 3.00bpw on one bare RTX 3090: fp8 KV pool 222139; eight admitted streams at short contexts, not eight 200k streams. Three-wave acceptance run: correctness, coherence ladder to 200619 prompt tokens, and every ctx-0 G0/S0 cell clean (C1 prose 52.4, C8 prose 46.1 tok/s per stream, 362.5 aggregate). C8 with cold 16k prompts is prefill-bound (~1.1k tok/s): its four gate cells are flagged and the 10-minute C8/16k soak failed drift, so there is no acceptance date. A 200775-token text plus full 4096x4096 image request read correctly at 217173 prompt tokens. Prefill chunk 8192 beats 1024 by 13% at 32k; 32768 OOMs. Prefill CUDA graphs disabled, so registry trust keeps this nonrecommended candidate.",
+  "engine": {
+    "graph_mode": "full decode CUDA graphs; prefill graphs off",
+    "name": "sglang",
+    "version": "0.5.20"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen38-27b-exl3-3bpw-c8-vision-rtx3090-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+      "--quantization",
+      "exl3",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--served-model-name",
+      "turboderp-Qwen3.8-27B-exl3-3.00bpw",
+      "--context-length",
+      "262144",
+      "--mem-fraction-static",
+      "0.85",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--max-running-requests",
+      "8",
+      "--max-mamba-cache-size",
+      "24",
+      "--cuda-graph-max-bs-decode",
+      "8",
+      "--disable-prefill-cuda-graph",
+      "--chunked-prefill-size",
+      "8192",
+      "--max-prefill-tokens",
+      "8192",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--mamba-radix-cache-strategy",
+      "no_buffer",
+      "--disable-overlap-schedule",
+      "--image-processor-backend",
+      "pil"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T18:02:05Z",
+      "compose_file": null,
+      "digest": "sha256:fe511aef8dd30b6ff65562ceea147b52f5ccf79621b7d693bad13fdf80ed2200",
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:fe511aef8dd30b6ff65562ceea147b52f5ccf79621b7d693bad13fdf80ed2200",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-25T18:02:05Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/36015975928"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": "/opt/entrypoint.sh",
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "HF_HUB_OFFLINE": "1",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SGLANG_EXL3_EMBED_HOST": "1",
+      "SGLANG_OPT_MAMBA_SKIP_DECODE_LOCK": "1"
+    },
+    "host_port": 30000,
+    "image": "ghcr.io/0xsero/sglang-exl3@sha256:fe511aef8dd30b6ff65562ceea147b52f5ccf79621b7d693bad13fdf80ed2200",
+    "ipc": null,
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/turboderp-Qwen3.8-27B-exl3-3.00bpw",
+        "target": "/models/turboderp-Qwen3.8-27B-exl3-3.00bpw"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:fe511aef8dd30b6ff65562ceea147b52f5ccf79621b7d693bad13fdf80ed2200 -o 0xSero",
+      "captured_at": "2026-09-25T18:02:05Z",
+      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/sglang-exl3/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/local-ai-images",
+      "sources": [
+        {
+          "captured_at": "2026-09-25T18:02:05Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/36015975928"
+        }
+      ],
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/36015975928"
+    },
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": null,
+      "coherence_ladder": [
+        {
+          "level": 1024,
+          "ok": true,
+          "prompt_tokens": 972,
+          "ttft_ms": 951.4
+        },
+        {
+          "level": 4096,
+          "ok": true,
+          "prompt_tokens": 4091,
+          "ttft_ms": 3508.3
+        },
+        {
+          "level": 8192,
+          "ok": true,
+          "prompt_tokens": 8078,
+          "ttft_ms": 6838.3
+        },
+        {
+          "level": 16384,
+          "ok": true,
+          "prompt_tokens": 16306,
+          "ttft_ms": 14264.8
+        },
+        {
+          "level": 32768,
+          "ok": true,
+          "prompt_tokens": 32723,
+          "ttft_ms": 30880.2
+        },
+        {
+          "level": 131072,
+          "ok": true,
+          "prompt_tokens": 131014,
+          "ttft_ms": 175299.0
+        },
+        {
+          "level": 200704,
+          "ok": true,
+          "prompt_tokens": 200619,
+          "ttft_ms": 324566.1
+        }
+      ],
+      "failed_gates": [
+        "panel G0 C8/ctx16384/prose/thinkoff: flagged:STREAM_ENDED",
+        "panel G0 C8/ctx16384/prose/thinkon: flagged:STREAM_ENDED,UNDERFILLED",
+        "panel G0 C8/ctx16384/code/thinkoff: flagged:STREAM_ENDED",
+        "panel G0 C8/ctx16384/code/thinkon: flagged:STREAM_ENDED,UNDERFILLED",
+        "soak C8/ctx16384: DRIFT"
+      ],
+      "failed_probes": [],
+      "harness": "rtx-3090/bench/harness.py correctness + ladder + panel + soak",
+      "model_id_matches": true,
+      "served_model_id": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
+    },
+    "combined_long_text_vision": {
+      "answer": "TRN25612",
+      "canvas": "4096x4096",
+      "completion_tokens": 8,
+      "correct": true,
+      "err": null,
+      "expected": "TRN25612",
+      "ok": true,
+      "prompt_tokens": 217173,
+      "text_tokens": 200775,
+      "ttft_s": 465.73
+    },
+    "prefill_knob_comparison": {
+      "complete": false,
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:fe511aef8dd30b6ff65562ceea147b52f5ccf79621b7d693bad13fdf80ed2200",
+      "note": "Different boots, same image and launch options except paired prefill knobs; flagged rows have null comparison speeds.",
+      "rows": [
+        {
+          "chunked_prefill_size": 1024,
+          "comparable": true,
+          "concurrency": 1,
+          "context_tokens": 32768,
+          "decode_tok_s_per_stream": 48.07,
+          "decode_tok_s_total": 48.5,
+          "flags": [],
+          "max_prefill_tokens": 1024,
+          "metrics_valid": true,
+          "pool_tokens": 222153,
+          "prefill_tok_s": 930.4,
+          "ttft_ms_p50": 35325.5
+        },
+        {
+          "chunked_prefill_size": 1024,
+          "comparable": false,
+          "concurrency": 1,
+          "context_tokens": 131072,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "SHORT_OUT",
+            "LOOP"
+          ],
+          "max_prefill_tokens": 1024,
+          "metrics_valid": true,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 1024,
+          "comparable": false,
+          "concurrency": 8,
+          "context_tokens": 16384,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "STREAM_ENDED",
+            "UNDERFILLED",
+            "LOOP"
+          ],
+          "max_prefill_tokens": 1024,
+          "metrics_valid": false,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 8192,
+          "comparable": true,
+          "concurrency": 1,
+          "context_tokens": 32768,
+          "decode_tok_s_per_stream": 48.07,
+          "decode_tok_s_total": 48.4,
+          "flags": [],
+          "max_prefill_tokens": 8192,
+          "metrics_valid": true,
+          "pool_tokens": 222153,
+          "prefill_tok_s": 1050.9,
+          "ttft_ms_p50": 31261.1
+        },
+        {
+          "chunked_prefill_size": 8192,
+          "comparable": false,
+          "concurrency": 1,
+          "context_tokens": 131072,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "LOOP"
+          ],
+          "max_prefill_tokens": 8192,
+          "metrics_valid": true,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 8192,
+          "comparable": false,
+          "concurrency": 8,
+          "context_tokens": 16384,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "STREAM_ENDED",
+            "UNDERFILLED",
+            "LOOP"
+          ],
+          "max_prefill_tokens": 8192,
+          "metrics_valid": false,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 32768,
+          "comparable": false,
+          "concurrency": 1,
+          "context_tokens": 32768,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "FIRST_TOKEN_TIMEOUT",
+            "ENGINE_OOM"
+          ],
+          "max_prefill_tokens": 32768,
+          "metrics_valid": false,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 32768,
+          "comparable": false,
+          "concurrency": 1,
+          "context_tokens": 131072,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "NOT_RUN",
+            "ENGINE_OOM"
+          ],
+          "max_prefill_tokens": 32768,
+          "metrics_valid": false,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        },
+        {
+          "chunked_prefill_size": 32768,
+          "comparable": false,
+          "concurrency": 8,
+          "context_tokens": 16384,
+          "decode_tok_s_per_stream": null,
+          "decode_tok_s_total": null,
+          "flags": [
+            "NOT_RUN",
+            "ENGINE_OOM"
+          ],
+          "max_prefill_tokens": 32768,
+          "metrics_valid": false,
+          "pool_tokens": 222153,
+          "prefill_tok_s": null,
+          "ttft_ms_p50": null
+        }
+      ],
+      "source_file": "prefill_20260925T155900Z_summary.json"
+    },
+    "quantization": {
+      "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
+      "format": "exl3",
+      "kernel": ""
+    },
+    "vision_standard": {
+      "max_area_accepted": [
+        67108864,
+        "8192x8192"
+      ],
+      "max_area_correct": [
+        37748736,
+        "6144x6144"
+      ],
+      "note": "Raw input acceptance and successful OCR are distinct; each result is one sampled code.",
+      "rows": [
+        {
+          "answer": "Red",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 1880,
+          "prompt_tokens": 282,
+          "tag": "colour/red",
+          "ttft_s": 0.436
+        },
+        {
+          "answer": "Blue",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 1880,
+          "prompt_tokens": 282,
+          "tag": "colour/blue",
+          "ttft_s": 0.433
+        },
+        {
+          "answer": "TRN14847",
+          "canvas": "256x256",
+          "correct": true,
+          "err": null,
+          "expected": "TRN14847",
+          "glyph_px": 28,
+          "image_tokens": 66,
+          "megapixels": 0.07,
+          "ok": true,
+          "pixels": 65536,
+          "png_bytes": 1206,
+          "prompt_tokens": 95,
+          "tag": "area/256",
+          "ttft_s": 0.134
+        },
+        {
+          "answer": "TRN22766",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "expected": "TRN22766",
+          "glyph_px": 28,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 2333,
+          "prompt_tokens": 287,
+          "tag": "area/512",
+          "ttft_s": 0.435
+        },
+        {
+          "answer": "TRN30685",
+          "canvas": "1024x1024",
+          "correct": true,
+          "err": null,
+          "expected": "TRN30685",
+          "glyph_px": 28,
+          "image_tokens": 1026,
+          "megapixels": 1.05,
+          "ok": true,
+          "pixels": 1048576,
+          "png_bytes": 5906,
+          "prompt_tokens": 1055,
+          "tag": "area/1024",
+          "ttft_s": 1.347
+        },
+        {
+          "answer": "TRN38604",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN38604",
+          "glyph_px": 28,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17556,
+          "prompt_tokens": 4127,
+          "tag": "area/2048",
+          "ttft_s": 6.671
+        },
+        {
+          "answer": "TRN46523",
+          "canvas": "3072x3072",
+          "correct": true,
+          "err": null,
+          "expected": "TRN46523",
+          "glyph_px": 28,
+          "image_tokens": 9218,
+          "megapixels": 9.44,
+          "ok": true,
+          "pixels": 9437184,
+          "png_bytes": 35462,
+          "prompt_tokens": 9247,
+          "tag": "area/3072",
+          "ttft_s": 20.036
+        },
+        {
+          "answer": "TRN54442",
+          "canvas": "4096x4096",
+          "correct": true,
+          "err": null,
+          "expected": "TRN54442",
+          "glyph_px": 28,
+          "image_tokens": 16386,
+          "megapixels": 16.78,
+          "ok": true,
+          "pixels": 16777216,
+          "png_bytes": 59330,
+          "prompt_tokens": 16415,
+          "tag": "area/4096",
+          "ttft_s": 116.144
+        },
+        {
+          "answer": "TRN62361",
+          "canvas": "6144x6144",
+          "correct": true,
+          "err": null,
+          "expected": "TRN62361",
+          "glyph_px": 28,
+          "image_tokens": 16386,
+          "megapixels": 37.75,
+          "ok": true,
+          "pixels": 37748736,
+          "png_bytes": 125511,
+          "prompt_tokens": 16415,
+          "tag": "area/6144",
+          "ttft_s": 117.312
+        },
+        {
+          "answer": "TRN70290",
+          "canvas": "8192x8192",
+          "correct": false,
+          "err": null,
+          "expected": "TRN70280",
+          "glyph_px": 28,
+          "image_tokens": 16386,
+          "megapixels": 67.11,
+          "ok": true,
+          "pixels": 67108864,
+          "png_bytes": 216499,
+          "prompt_tokens": 16415,
+          "tag": "area/8192",
+          "ttft_s": 117.881
+        },
+        {
+          "answer": "TRN78139",
+          "canvas": "2048x2048",
+          "correct": false,
+          "err": null,
+          "expected": "TRN78199",
+          "glyph_px": 7,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17080,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale1",
+          "ttft_s": 6.276
+        },
+        {
+          "answer": "TRN86118",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN86118",
+          "glyph_px": 14,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17110,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale2",
+          "ttft_s": 6.277
+        },
+        {
+          "answer": "TRN94037",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN94037",
+          "glyph_px": 21,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17292,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale3",
+          "ttft_s": 6.318
+        },
+        {
+          "answer": "TRN01956",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN01956",
+          "glyph_px": 28,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17511,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale4",
+          "ttft_s": 6.266
+        },
+        {
+          "answer": "TRN09875",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN09875",
+          "glyph_px": 42,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17981,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale6",
+          "ttft_s": 6.25
+        },
+        {
+          "answer": "TRN17794",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN17794",
+          "glyph_px": 56,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 18383,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale8",
+          "ttft_s": 6.29
+        },
+        {
+          "answer": "TRN25713",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN25713",
+          "glyph_px": 84,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 19312,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale12",
+          "ttft_s": 6.228
+        }
+      ],
+      "token_saturation": {
+        "image_tokens": 16386,
+        "pixels": 37748736,
+        "previous_image_tokens": 16386,
+        "previous_pixels": 16777216
+      }
+    },
+    "weights_subdir": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
+  },
+  "model_instance_id": "turboderp-qwen3-8-27b-exl3--3-bpw",
+  "provenance": {
+    "captured_at": "2026-09-25T18:02:05Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T18:02:05Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "recommended": false,
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8_e4m3",
+    "kv_cache_tokens": 222139,
+    "max_concurrency": 8,
+    "max_context_tokens": 217181,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-exl3-3bpw-c8-vision-rtx3090-sglang-tp1-sweep"
+  ],
+  "status": "candidate"
+}
