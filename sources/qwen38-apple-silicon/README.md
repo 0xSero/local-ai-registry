@@ -1,6 +1,8 @@
 # Qwen3.8-27B on Apple Silicon: reproducible native recipe
 
-**200k qualification pending.** This directory records the pinned setup and acceptance procedure for [the M3 Max 36 GB recipe](../../registry/recipe/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k.json). Short vision and 8k retrieval probes passed; the corrected fused launcher also passed the combined 8,301-token image/retrieval request with native MTP. A 1024-token prefill attempt using the default attention path failed with Metal out-of-memory after the last logged progress of 113,664 / 200,163 tokens; see [the failure evidence](evidence/failed-1024-prefill/summary.json). No 200k completion has passed yet.
+**The combined 200k smoke test passed on M3 Max 36 GiB.** [The archived run](evidence/combined-200k-fused/summary.json) processed **200,163 cold prompt tokens** and returned all three distant archive values and both image colors in a 26-token answer with native MTP active. [The independent verification receipt](evidence/combined-200k-fused/verification-receipt.json) confirms the answer and retention of the complete prompt in all 16 full-attention caches. [The M3 Max 36 GB recipe](../../registry/recipe/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k.json) is now validated by a separate three-sample short acceptance run; the measured MTP/no-MTP comparison is recorded below.
+
+The earlier 1024-token prefill attempt using the default attention path failed with Metal out-of-memory after the last logged progress of 113,664 / 200,163 tokens; [the failure evidence](evidence/failed-1024-prefill/summary.json) is preserved. The successful run used the bounded fused-attention wrapper below.
 
 The available host is an **Apple M3 Max with 36 GiB unified memory**, running macOS 27.2; see [hardware.json](hardware.json). This is a native macOS/Metal launch with one request at a time. There is no 24 GB measurement, no exact 32 GB measurement, and no result for M1, M2, M4, M5, or M6. Reproducibility of this launch is not evidence that it is optimal on every M-series chip.
 
@@ -131,7 +133,7 @@ runs/qwen38/venv/bin/python scripts/probe_apple_qwen38.py \
   --output-dir runs/qwen38/evidence
 ```
 
-To exercise the long archive, vision, and native MTP together, generate the combined request with `--with-image`. Its saved [workload manifest](workload-200k-image.json) records **200,092 tokenizer-counted tokens before image-token expansion**. The actual server prompt count is pending a completed run; it must be read from that run's usage.
+To exercise the long archive, vision, and native MTP together, generate the combined request with `--with-image`. Its saved [workload manifest](workload-200k-image.json) records **200,092 tokenizer-counted tokens before image-token expansion**. The completed [combined run](evidence/combined-200k-fused/summary.json) reports **200,163 prompt tokens** after image-token expansion, with both usage and timings reporting zero cached tokens.
 
 ```sh
 runs/qwen38/venv/bin/python sources/qwen38-apple-silicon/make_long_request.py \
@@ -153,6 +155,41 @@ The long-context gate requires a completed SSE response, nonempty answer text, a
 The runtime's `timings.peak_memory` is its **process-lifetime MLX allocator peak in decimal GB**. It is not request-isolated RSS, total system RAM, or a no-swap guarantee. The cache audit separately records active/peak MLX bytes and per-layer cache storage; `cache_bytes_is_partial` must be checked before interpreting the aggregate. Native MTP acceptance counters can include verified draft tokens beyond the final stop token. They prove drafter activity, not an automatic speedup or the number of emitted output tokens.
 
 The generator's workload manifest hashes its output file. The harness separately hashes the exact submitted request after setting streaming/usage controls and serializing it, so the two JSON byte hashes need not match. Keep both artifacts when auditing a run.
+
+## Short acceptance and MTP comparison
+
+The [short acceptance sweep](../../registry/speed-sweep/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k-acceptance.json) and [MTP/no-MTP comparison](evidence/decode-comparison/comparison.json) are complete. They use the unchanged [decode request](decode-request.json): deterministic sampling, thinking disabled, and a 128-token output cap. Finalize the recipe's launch/serving fields before acceptance, which binds their fingerprint. To repeat acceptance for this now-validated recipe, start a fresh pinned MTP server with the launch command above, wait for readiness, then run one warmup followed by three measured samples:
+
+```sh
+runs/qwen38/venv/bin/python scripts/probe_apple_qwen38.py \
+  --endpoint http://127.0.0.1:8766 --model runs/qwen38/models/Qwen3.8-27B-4bit \
+  --kind request --request-json sources/qwen38-apple-silicon/decode-request.json \
+  --require-mtp --timeout 14400 --output-dir runs/qwen38/mtp-comparison/mtp-warmup
+
+runs/qwen38/venv/bin/python scripts/accept_recipe.py \
+  qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k \
+  --revalidate \
+  --endpoint http://127.0.0.1:8766 --harness native-apple-short-acceptance \
+  --request-json sources/qwen38-apple-silicon/decode-request.json \
+  --raw-output runs/qwen38/acceptance-mtp.jsonl
+```
+
+Choose a new raw-output filename for each acceptance attempt; existing files are rejected. The harness promotes a passing candidate and records completion/decode evidence, but does not itself qualify vision, 200k context, or MTP. Check the measured samples' native draft counters separately. Use `--revalidate` only when deliberately refreshing an already validated recipe's acceptance.
+
+For the no-MTP baseline, stop the server and confirm that its PID has exited before restarting. Use the same launch command and settings, removing the three option/value pairs `--draft-model`, `--draft-kind`, and `--draft-block-size`, and the two environment assignments `MLX_VLM_DRAFT_MODEL` and `MLX_VLM_DRAFT_KIND`. Also unset those two variables in the launching shell if inherited. Preserve a separate server log. After readiness, run one warmup and three measured requests; no MTP requirement is applied:
+
+```sh
+for sample in warmup 1 2 3; do
+  runs/qwen38/venv/bin/python scripts/probe_apple_qwen38.py \
+    --endpoint http://127.0.0.1:8766 --model runs/qwen38/models/Qwen3.8-27B-4bit \
+    --kind request --request-json sources/qwen38-apple-silicon/decode-request.json \
+    --timeout 14400 --output-dir "runs/qwen38/mtp-comparison/no-mtp-${sample}"
+done
+```
+
+Exclude both warmups. Compare the median of each configuration's three server `timings.predicted_per_second` values; do not mix server rates with client SSE estimates. Check prompt counts, completion counts, answer text, finish reasons, and draft counters alongside the rates. Using the same request body does not guarantee identical outputs or token counts with speculative decoding; report any differences and do not label unequal outputs as identical token work. Positive MTP acceptance counters establish activity, not a speedup.
+
+The [archived comparison](evidence/decode-comparison/comparison.json) used identical submitted request objects and 62 prompt tokens in all six measured requests. MTP produced 90 output tokens per request at a median **19.36455 tok/s**, with **38 draft rounds, 76 drafted tokens, and 52 accepted tokens** in each sample; [the acceptance stream](evidence/decode-comparison/mtp-acceptance.jsonl) preserves the answers and counters. Without MTP, each answer contained 73 tokens at a median **16.15422 tok/s**. All six requests finished with `stop`, but the answers differed between configurations. Median client elapsed time was **5,263 ms with MTP versus 5,023 ms without MTP**. The sequential MTP-first/no-MTP-second comparison was not randomized and does not establish a matched-output latency speedup, exact decoding parity, or a general MTP benefit.
 
 ## Optional runtime checks
 
@@ -179,6 +216,8 @@ python3 sources/qwen38-apple-silicon/verify_long_evidence.py \
 
 Replace the probe directory with the actual unique directory printed by the harness. The verifier replays the captured SSE independently, compares it with the summary, checks the exact request hash and image fixture, and requires the complete five-value answer with a `stop` finish reason. A separate canonical message hash binds the archive text, distant key positions, and image question to this specific combined 200k workload; a different prompt needs a separately reviewed fixture. It also requires at least 200,000 cold prompt tokens, positive native MTP counters, and one matching final-prefill audit with all 16 full-attention caches retaining the full prompt. Fifteen caches must be TurboQuant 4-bit and one unquantized; the 48 recurrent states are checked separately. Its success receipt contains hashes of the files it checked. Keep those file bytes unchanged afterward.
 
+The successful run is preserved in [the combined 200k archive](evidence/combined-200k-fused/archive.json), with [its verification receipt](evidence/combined-200k-fused/verification-receipt.json) and [server log](evidence/combined-200k-fused/server.log). To replay verification against those fixed files, pass `--probe-dir sources/qwen38-apple-silicon/evidence/combined-200k-fused --server-log sources/qwen38-apple-silicon/evidence/combined-200k-fused/server.log` to the verifier.
+
 ## Results and scope
 
 | Gate | Result | Evidence |
@@ -188,11 +227,16 @@ Replace the probe directory with the actual unique directory printed by the harn
 | 8k cold retrieval completion | Passed: all three values | [8k receipt](evidence/retrieval-8k/summary.json): 8,198 input / 22 output tokens |
 | Native MTP activity | Passed at short context | [8k receipt](evidence/retrieval-8k/summary.json): 11 accepted of 22 drafted tokens over 11 rounds |
 | Image color-order check | Passed: `Red, Blue` | [Vision receipt](evidence/vision/summary.json), 112 input / 4 output tokens, native MTP active |
-| At least 200k cold prompt tokens | RESULTS PENDING | Pending server usage and `cache_n=0` |
-| Full-attention KV retention | RESULTS PENDING | Pending final-prefill wrapper audit |
-| Long-context retrieval answer | RESULTS PENDING | Pending completed answer with all three values |
+| At least 200k cold prompt tokens | Passed: 200,163, zero cached | [Combined run usage/timings](evidence/combined-200k-fused/summary.json) |
+| Full-attention KV retention | Passed: all 16 layers retain 200,163 tokens | [Verified audit](evidence/combined-200k-fused/verification-receipt.json): 15 TurboQuant 4-bit + 1 BF16 cache; 48 separate recurrent states; 3,024 forced-fused calls |
+| Long-context retrieval answer | Passed: all three values | [Verified answer](evidence/combined-200k-fused/verification-receipt.json): `maple-7429, harbor-6183, violet-9052, red, blue` |
 | Combined 8k retrieval, vision, and MTP with fused fix | Passed: all five values, 32 forced-fused calls | [Combined 8k receipt](evidence/combined-8k-fused/summary.json), 8,301 input / 26 output tokens |
-| Combined long-context retrieval, vision, and MTP | RESULTS PENDING | Earlier unfused attempt failed; fused 200k qualification is pending |
-| Peak runtime memory and swap observations | RESULTS PENDING | Pending runtime timings and host observations |
+| Combined long-context retrieval, vision, and MTP | Passed: exact five-value answer, 26 output tokens, `stop` | [Combined 200k receipt](evidence/combined-200k-fused/verification-receipt.json): 12 MTP rounds, 24 drafted tokens, 14 accepted |
+| Combined 200k performance | 55.24855 prompt tok/s; 2.86290 decode tok/s | [Server timings](evidence/combined-200k-fused/summary.json): 60.38 min prefill; 60.55 min total client elapsed |
+| Peak runtime memory and swap observations | 27.94146 GB decimal MLX peak (26.02 GiB); maximum global swap growth 3.09 GiB | [Memory summary](evidence/combined-200k-fused/memory-summary.json) and [sample log](evidence/combined-200k-fused/memory.jsonl) |
+| Short registry acceptance | Passed: three samples; median 19.36455 decode tok/s | [Acceptance sweep](../../registry/speed-sweep/qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k-acceptance.json): 62 input / 90 output tokens, `stop`, active native MTP in each sample |
+| Short no-MTP comparison | Median 16.15422 decode tok/s; 62 input / 73 output tokens | [Comparison archive](evidence/decode-comparison/comparison.json): different answers across configurations; no matched-output speedup claim |
 
-Keep the recipe a candidate until its required runtime evidence is complete and the registry's acceptance rules pass. Successful static tests or a recipe PR do not fulfill the bounty's hardware requirements. The 24 GB tier, other Apple generations, broad quality, and cross-chip optimization remain separate work requiring their own measured runs.
+The MLX peak is process-lifetime allocator usage, not total system memory. The [watchdog observations](evidence/combined-200k-fused/memory-summary.json) began with **4.58 GiB of global swap already used** and measured a maximum additional **3,316,446,659 bytes (3.09 GiB)**. Global swap cannot be attributed entirely to this server; this is not a no-swap result. The watchdog did not trigger and observed the server exit. A [late-prefill power snapshot](power-observation-fused.json), taken after 182,272 processed tokens, records AC power and no recorded thermal/performance warning at that moment; it is not continuous telemetry.
+
+The recipe passed short registry acceptance and is validated. The successful combined smoke test establishes this measured 36 GiB host and workload, not the bounty's 24 GB tier, exact 32 GB machines, other Apple generations, broad quality, or optimal settings across chips. Those require separate measured runs.

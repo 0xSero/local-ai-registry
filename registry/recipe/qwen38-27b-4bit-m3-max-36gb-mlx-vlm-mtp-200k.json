@@ -1,12 +1,12 @@
 {
   "capabilities": {
-    "chat": null,
+    "chat": true,
     "reasoning": null,
     "tools": null,
     "video": null,
-    "vision": null
+    "vision": true
   },
-  "description": "Qwen3.8-27B affine 4-bit weights with BF16 native MTP drafter, vision and TurboQuant 4-bit KV on Apple M3 Max 36 GB. Hardware and long-context acceptance pending.",
+  "description": "Qwen3.8-27B affine 4-bit text weights with BF16 vision/native MTP and TurboQuant 4-bit KV. Completed a 200,163-token cold combined retrieval/image prompt on Apple M3 Max 36 GiB; one request at a time.",
   "engine": {
     "graph_mode": null,
     "name": "mlx-vlm",
@@ -57,7 +57,7 @@
       "qwen38-mlx-vlm-serve": "31a7329012d0b4e32d1b1582f81cb13641520fe8617c13606b21decc15192ab1"
     },
     "container": {
-      "captured_at": "2026-09-25T18:11:09.780925Z",
+      "captured_at": "2026-09-25T20:18:24.775495Z",
       "compose_file": null,
       "digest": null,
       "image": null,
@@ -65,9 +65,10 @@
       "runtime": null,
       "source": [
         {
-          "captured_at": "2026-09-25T18:11:09.780925Z",
-          "kind": "native-metal-recipe",
-          "url": "https://github.com/Blaizzy/mlx-vlm/tree/573562df9fd9259047e3dc793e6b48be23389221"
+          "captured_at": "2026-09-25T20:18:24.775495Z",
+          "commit": "573562df9fd9259047e3dc793e6b48be23389221",
+          "kind": "acceptance-run",
+          "url": "https://github.com/Blaizzy/mlx-vlm"
         }
       ],
       "state": "none"
@@ -95,11 +96,52 @@
     "url": "https://github.com/0xSero/local-ai-registry/blob/main/sources/qwen38-apple-silicon/README.md"
   },
   "metadata": {
-    "long_context_evidence_status": "Pending qualification with bounded fused attention. The earlier default-attention run with 1024-token chunks failed with Metal OOM after the last logged progress of 113,664 / 200,163 tokens.",
+    "acceptance": {
+      "accepted_at": "2026-09-25T20:18:24.775495Z",
+      "hardware": {
+        "chip": "Apple M3 Max",
+        "hardware_id": "apple-m3-max-36gb",
+        "machine": "arm64",
+        "macos_version": "27.2",
+        "memory_bytes": 38654705664,
+        "system": "Darwin"
+      },
+      "harness": "scripts/accept_recipe.py",
+      "launch_sha256": "1514b907739b8dc42cd09f8cee37f71809db1b6ed5273472f488e06d48679141",
+      "model_instance_id": "mlx-community-qwen3-8-27b-4bit--affine-4bit",
+      "model_repository": "mlx-community/Qwen3.8-27B-4bit",
+      "model_revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+      "raw_capture": {
+        "path": "sources/qwen38-apple-silicon/evidence/decode-comparison/mtp-acceptance.jsonl",
+        "sha256": "b8b1d6be052eeb7bf28fd7e8accca82baaf080100cfa4cc4d3e9b737db6c61e3"
+      },
+      "scope": "completion-and-speed; no automatic vision, MTP, or maximum-context verification",
+      "served_model_id": "runs/qwen38/models/Qwen3.8-27B-4bit",
+      "source_commit": "573562df9fd9259047e3dc793e6b48be23389221",
+      "source_repository": "https://github.com/Blaizzy/mlx-vlm"
+    },
+    "long_context_evidence": {
+      "completion_tokens": 26,
+      "decode_tokens_per_second": 2.8628977452337945,
+      "full_attention_layers_retaining_prompt": 16,
+      "prefill_tokens_per_second": 55.24854946110532,
+      "prompt_tokens": 200163,
+      "receipt": "sources/qwen38-apple-silicon/evidence/combined-200k-fused/verification-receipt.json",
+      "scope": "One synthetic combined retrieval/image workload; no broad quality or cross-chip optimization claim.",
+      "sha256": "f41fdb0af230e287cca481b442f19d495270959363eff4941b6525c89bf88e1d"
+    },
+    "long_context_evidence_status": "Passed combined 200,163-token cold retrieval, vision and native MTP with full attention-cache retention; see the independent verification receipt.",
+    "mtp_comparison": {
+      "matched_output_speedup_claimed": false,
+      "path": "sources/qwen38-apple-silicon/evidence/decode-comparison/comparison.json",
+      "sha256": "11c827caf013f160c98514ad888711c279699d2c925b5762ef8cd17674f25322"
+    },
     "reproduction_guide": "sources/qwen38-apple-silicon/README.md",
     "validation_limits": [
-      "No 24 GB host available. No M1, M2, M4, M5 or M6 measurement is implied by this M3 Max recipe.",
-      "Synthetic vision and long-context probes are not general quality benchmarks."
+      "Measured only on an M3 Max with 36 GiB memory and 30 GPU cores; no 24 GB, exact 32 GB, M1, M2, M4, M5 or M6 measurement.",
+      "MLX allocator peak was 27.941462578 decimal GB, not total process/system memory. Global swap was already in use and grew by up to 3.09 GiB during monitoring; this is not a swap-free fit.",
+      "Synthetic vision and long-context probes are not general quality benchmarks. Native MTP counters establish activity, not an automatic speedup.",
+      "The short MTP-on/off requests produced different answers and output lengths (90 versus 73 tokens); no matched-output speedup or exact decoding parity is claimed."
     ]
   },
   "model_instance_id": "mlx-community-qwen3-8-27b-4bit--affine-4bit",
@@ -122,12 +164,14 @@
     "kv_cache_quantization": "turboquant",
     "max_concurrency": 1,
     "max_context_tokens": 201024,
-    "measured_max_prompt_tokens": null,
+    "measured_max_prompt_tokens": 200163,
     "mtp_draft_block_size": 3,
     "mtp_repository": "mlx-community/Qwen3.8-27B-MTP-bf16",
     "mtp_revision": "9b1e8ab2bcfd157956a4d85927310de551fcdab1",
     "prefix_cache_enabled": false
   },
-  "speed_sweep_ids": [],
-  "status": "candidate"
+  "speed_sweep_ids": [
+    "qwen38-27b-4bit-m3-max-36gb-mlx-vlm-mtp-200k-acceptance"
+  ],
+  "status": "validated"
 }
