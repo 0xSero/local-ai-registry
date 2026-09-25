@@ -62,7 +62,37 @@
   "seqs": 1,
   "vision": false,
   "cards": 1,
-  "frozen_from": [
-    "qwen38-27b-fp8-mi300x-sglang-tp1"
-  ]
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "safetensors \u00b7 FP8",
+    "engine": "sglang",
+    "servedName": "qwen3.8-27b",
+    "sizeGb": 30.867,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": false,
+      "tools": false,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 1015433
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "hub",
+        "mountPath": "/root/.cache/huggingface",
+        "sizeGb": 30.867
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "mi300x-192gb": "qwen38-27b-fp8-mi300x-sglang-tp1"
+  }
 }

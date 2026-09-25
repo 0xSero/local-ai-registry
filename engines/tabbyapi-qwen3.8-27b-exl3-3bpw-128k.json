@@ -32,13 +32,43 @@
   "seqs": 1,
   "vision": true,
   "cards": 1,
-  "frozen_from": [
-    "qwen3827b-exl3-sc3bpw-v4-rtx4060ti-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx4070tisuper-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx4080-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx4080super-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx5060ti-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx5070ti-tabbyapi-tp1",
-    "qwen3827b-exl3-sc3bpw-v4-rtx5080-tabbyapi-tp1"
-  ]
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "EXL3 \u00b7 SC 3.00bpw H4 V4",
+    "engine": "tabbyapi",
+    "servedName": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4",
+    "sizeGb": 12.12,
+    "minDriver": "535.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 132096
+    },
+    "weights": [
+      {
+        "dir": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/workspace/models",
+        "sizeGb": 12.12
+      }
+    ],
+    "asset": "qwen3827b-exl3-sc-3-00bpw-h4-v4-128k-q4-tabbyapi-config.yml"
+  },
+  "ids": {
+    "rtx-4060-ti-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx4060ti-tabbyapi-tp1",
+    "rtx-4070-ti-super-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx4070tisuper-tabbyapi-tp1",
+    "rtx-4080-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx4080-tabbyapi-tp1",
+    "rtx-4080-super-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx4080super-tabbyapi-tp1",
+    "rtx-5060-ti-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx5060ti-tabbyapi-tp1",
+    "rtx-5070-ti-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx5070ti-tabbyapi-tp1",
+    "rtx-5080-16gb": "qwen3827b-exl3-sc3bpw-v4-rtx5080-tabbyapi-tp1"
+  }
 }

@@ -37,7 +37,7 @@ def build(today=None):
             if model not in seen and len(picks) < 3:
                 picks.append(key)
                 seen.add(model)
-        out_cards[card] = {**{k: hw[k] for k in ("name", "vendor", "backend", "vram_gb", "names")}, "picks": picks}
+        out_cards[card] = {**{k: hw[k] for k in ("name", "vendor", "backend", "vram_gb", "match")}, "picks": picks}
     used = {k for c in out_cards.values() for k in c["picks"]}
     body = {"schema": "local-ai-registry/catalog/3", "models": meta["models"], "cards": out_cards,
             "recipes": {k: v for k, v in sorted(recipes.items()) if k in used}}

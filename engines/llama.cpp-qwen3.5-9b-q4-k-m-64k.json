@@ -41,7 +41,37 @@
   "seqs": 1,
   "vision": false,
   "cards": 1,
-  "frozen_from": [
-    "qwen35-9b-q4km-rx6800xt-llamacpp-rocm"
-  ]
+  "plugin": {
+    "name": "Qwen3.5-9B-Base",
+    "family": "qwen",
+    "format": "GGUF \u00b7 Q4_K_M",
+    "engine": "llama.cpp",
+    "servedName": "/models/Qwen3.5-9B-Q4_K_M.gguf",
+    "sizeGb": 5.681,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": false,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 65536,
+      "kvTokens": 65536
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "Qwen3.5-9B-Q4_K_M.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 5.681
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rx-6800-xt-16gb": "qwen35-9b-q4km-rx6800xt-llamacpp-rocm"
+  }
 }

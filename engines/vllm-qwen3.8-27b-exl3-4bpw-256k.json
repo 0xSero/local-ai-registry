@@ -40,7 +40,38 @@
   "seqs": 1,
   "vision": true,
   "cards": 1,
-  "frozen_from": [
-    "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1"
-  ]
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "EXL3 \u00b7 4 bpw",
+    "engine": "vllm",
+    "servedName": "qwen3.8-27b-exl3",
+    "sizeGb": 15.73,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "video": true,
+      "vision": true
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 272570
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 15.73
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "intel-arc-pro-b70-32gb": "qwen38-27b-exl3-4bpw-arcb70-vllm-exl3xpu-tp1"
+  }
 }

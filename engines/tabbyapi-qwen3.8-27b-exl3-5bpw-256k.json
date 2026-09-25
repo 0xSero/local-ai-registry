@@ -32,10 +32,40 @@
   "seqs": 1,
   "vision": true,
   "cards": 1,
-  "frozen_from": [
-    "qwen3827b-exl3-sc5bpw-v6-rtx5090-tabbyapi-tp1",
-    "qwen3827b-exl3-sc5bpw-v6-rtx6000ada-tabbyapi-tp1",
-    "qwen3827b-exl3-sc5bpw-v6-rtxa6000-tabbyapi-tp1",
-    "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1"
-  ]
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "EXL3 \u00b7 SC 5.00bpw H6 V6",
+    "engine": "tabbyapi",
+    "servedName": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6",
+    "sizeGb": 18.24,
+    "minDriver": "535.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 263168
+    },
+    "weights": [
+      {
+        "dir": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/workspace/models",
+        "sizeGb": 18.24
+      }
+    ],
+    "asset": "qwen3827b-exl3-sc-5-00bpw-h6-v6-256k-q4-tabbyapi-config.yml"
+  },
+  "ids": {
+    "rtx-5090-32gb": "qwen3827b-exl3-sc5bpw-v6-rtx5090-tabbyapi-tp1",
+    "rtx-6000-ada-48gb": "qwen3827b-exl3-sc5bpw-v6-rtx6000ada-tabbyapi-tp1",
+    "rtx-a6000-48gb": "qwen3827b-exl3-sc5bpw-v6-rtxa6000-tabbyapi-tp1",
+    "rtx-pro-4500-blackwell-32gb": "qwen3827b-exl3-sc5bpw-v6-rtxpro4500-tabbyapi-tp1"
+  }
 }
