@@ -315,10 +315,11 @@ def validate(root):
     for recipe in data["recipe"].values():
         # status is derived, never asserted: scripts/trust.py is the single definition
         instance = data["model-instance"].get(recipe.get("model_instance_id"))
+        hardware = data["hardware"].get(recipe.get("hardware_id"))
         sweeps = [data["speed-sweep"].get(s) for s in recipe.get("speed_sweep_ids") or []]
-        derived = trust.derive_status(recipe, instance, sweeps)
+        derived = trust.derive_status(recipe, instance, sweeps, hardware, data["asset"])
         if recipe.get("status") != derived:
-            why = "; ".join(trust.failures(recipe, instance, sweeps)) or "meets every criterion"
+            why = "; ".join(trust.failures(recipe, instance, sweeps, hardware, data["asset"])) or "meets every criterion"
             errors.append(f"{recipe['id']}: status {recipe.get('status')!r} but derived {derived!r} ({why}); run scripts/trust.py --apply")
         if recipe.get("recommended"):
             why = trust.recommendable(recipe)

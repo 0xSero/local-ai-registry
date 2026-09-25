@@ -1,0 +1,123 @@
+{
+  "content": "Bread dough rises because yeast consumes sugars and releases carbon dioxide gas, creating bubbles that expand the dough. Bakers let it rest to allow this fermentation process to fully develop, which strengthens the gluten network and improves flavor. This resting period ensures the bread has a light, airy texture and a well-structured crumb once it is finally baked in the oven.",
+  "correctness_passed": null,
+  "elapsed_ms": 5022.890624997672,
+  "endpoint": "http://127.0.0.1:8766/v1/chat/completions",
+  "failures": [],
+  "finish_reason": "stop",
+  "finished_at": "2026-09-25T20:19:45.990874+00:00",
+  "first_content_ms": 569.7767919918988,
+  "first_output_ms": 569.7767919918988,
+  "gates": {
+    "expected_model": "runs/qwen38/models/Qwen3.8-27B-4bit",
+    "expected_substring": null,
+    "min_prompt_tokens": 0,
+    "require_mtp": false
+  },
+  "hardware": {
+    "chip": {
+      "command": [
+        "sysctl",
+        "-n",
+        "machdep.cpu.brand_string"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Apple M3 Max"
+    },
+    "machine": "arm64",
+    "macos_version": "27.2",
+    "memory_bytes": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.memsize"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "38654705664"
+    },
+    "platform": "Darwin"
+  },
+  "kind": "request",
+  "last_output_ms": 4955.783124984009,
+  "memory_after": {
+    "at": "2026-09-25T20:19:45.990876+00:00",
+    "swap": {
+      "command": [
+        "sysctl",
+        "vm.swapusage"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "vm.swapusage: total = 6144.00M  used = 5103.69M  free = 1040.31M  (encrypted)"
+    },
+    "vm_stat": {
+      "command": [
+        "vm_stat"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                     5833.\nPages active:                                 445742.\nPages inactive:                               468335.\nPages speculative:                             34331.\nPages throttled:                                   0.\nPages wired down:                            1296009.\nPages purgeable:                                2721.\n\"Translation faults\":                      960272817.\nPages copy-on-write:                        25503917.\nPages zero filled:                        2627869148.\nPages reactivated:                          94544881.\nPages purged:                               37733403.\nFile-backed pages:                            623071.\nAnonymous pages:                              325337.\nPages stored in compressor:                   143850.\nPages occupied by compressor:                  53613.\nDecompressions:                            142879053.\nCompressions:                              167111033.\nPageins:                                    46454391.\nPageouts:                                     118131.\nSwapins:                                     3570568.\nSwapouts:                                    4290815."
+    }
+  },
+  "memory_before": {
+    "at": "2026-09-25T20:19:40.961684+00:00",
+    "swap": {
+      "command": [
+        "sysctl",
+        "vm.swapusage"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "vm.swapusage: total = 6144.00M  used = 5103.69M  free = 1040.31M  (encrypted)"
+    },
+    "vm_stat": {
+      "command": [
+        "vm_stat"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                    15786.\nPages active:                                 449606.\nPages inactive:                               467497.\nPages speculative:                             35200.\nPages throttled:                                   0.\nPages wired down:                            1282112.\nPages purgeable:                               10750.\n\"Translation faults\":                      960220386.\nPages copy-on-write:                        25497517.\nPages zero filled:                        2627740447.\nPages reactivated:                          94544875.\nPages purged:                               37733387.\nFile-backed pages:                            621688.\nAnonymous pages:                              330615.\nPages stored in compressor:                   144180.\nPages occupied by compressor:                  53629.\nDecompressions:                            142878178.\nCompressions:                              167111033.\nPageins:                                    46443766.\nPageouts:                                     118131.\nSwapins:                                     3570484.\nSwapouts:                                    4290815."
+    }
+  },
+  "model": "runs/qwen38/models/Qwen3.8-27B-4bit",
+  "mtp_proven": false,
+  "output_dir": "sources/qwen38-apple-silicon/evidence/decode-comparison/no-mtp-2",
+  "passed": true,
+  "reasoning_content": "",
+  "request_bytes": 631,
+  "request_sha256": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+  "response_model_ids": [
+    "runs/qwen38/models/Qwen3.8-27B-4bit"
+  ],
+  "schema_version": 1,
+  "sse_event_count": 74,
+  "started_at": "2026-09-25T20:19:40.953905+00:00",
+  "stream_done": true,
+  "timeout_seconds": 14400.0,
+  "timings": {
+    "cache_n": 0,
+    "draft_kind": null,
+    "draft_n": null,
+    "draft_n_accepted": null,
+    "draft_rounds": null,
+    "peak_memory": 16.363948042,
+    "predicted_ms": 4518.943545239179,
+    "predicted_n": 73,
+    "predicted_per_second": 16.154218185997774,
+    "predicted_per_token_ms": 61.90333623615314,
+    "prompt_ms": 493.2318750070408,
+    "prompt_n": 62,
+    "prompt_per_second": 125.70152729710536,
+    "prompt_per_token_ms": 7.9553528226942065
+  },
+  "usage": {
+    "completion_tokens": 73,
+    "prompt_tokens": 62,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 135
+  }
+}

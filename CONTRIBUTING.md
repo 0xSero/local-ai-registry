@@ -34,7 +34,7 @@ Create `registry/hardware/<chip>-<memory>.json` from `registry/schema/hardware.s
 Run it on the exact hardware and record the acceptance:
 
 ```bash
-python3 scripts/accept_recipe.py <recipe-id> --endpoint http://127.0.0.1:<port>/v1
+python3 scripts/accept_recipe.py <recipe-id> --endpoint http://127.0.0.1:<port>
 # or, on a rented card:
 python3 scripts/validate_rented.py <recipe-id>
 ```
@@ -48,6 +48,16 @@ make check
 ```
 
 If `make trust` leaves the recipe as `candidate`, `python3 scripts/trust.py` prints the exact reasons. Fix the record, not the status.
+
+### Native Apple Silicon / Metal
+
+Use `launch.kind: native` for a server running directly on macOS. Declare `accelerator_backend: metal`, the exact `hardware_id` (chip and unified-memory capacity), `hardware_count: 1`, `host_port`, executable `arguments` as an argv array, an HTTPS `source_repository`, and its full 40-character `source_commit`. State the engine name/version and a positive `serving.max_context_tokens`. As with other non-container launches, `launch.container` has `state: none`, null `runtime`, `image`, `digest`, and `compose_file`, plus its reason and provenance. Do not add a Docker image.
+
+For native launch artifacts under `registry/asset/`, declare their `launch.asset_ids` and pin every one in `launch.asset_sha256` as an asset-id-to-SHA256 map. Pins must match the asset manifests; acceptance verifies the files themselves before contacting the server. A changed artifact requires an updated launch pin and fresh acceptance.
+
+Install and start the pinned runtime with the pinned model revision yourself; `bin/local-ai run/validate` remains Docker-only. Native acceptance requires the model revision to be pinned **before** the run. Set the instance's `served_name` to the server's model id if it differs from the Hugging Face repository name. Then run the acceptance command above locally, using the loopback endpoint on `launch.host_port`. The harness checks macOS/arm64 and the exact chip/memory configuration, and records the runtime commit, model revision, hardware, and launch fingerprint. Changing runtime arguments, serving configuration, or those pins requires fresh acceptance.
+
+Default acceptance measures a short text completion and decode speed. It does not prove the configured context limit, vision, or MTP. Preserve separate real requests and runtime evidence for those claims; `--request-json` supplies a workload and `--raw-output` saves the timestamped response stream. Native recipes are not exported or recommended by the Omarchy plugin.
 
 ## Recommend a recipe
 

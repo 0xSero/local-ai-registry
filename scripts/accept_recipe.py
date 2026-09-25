@@ -11,20 +11,25 @@ cannot be satisfied.
 
 import argparse
 import datetime as dt
+import hashlib
 import json
 import math
+import platform
 import re
 import shlex
 import ssl
+import subprocess
 import sys
 import time
 import urllib.error
 import urllib.request
+from urllib.parse import urlsplit
 from contextlib import nullcontext
 from pathlib import Path
 
 from import_localmaxxing import server_context_limit
 from sweep_metrics import derive_metrics
+import trust
 
 ROOT = Path(__file__).resolve().parent.parent / "registry"
 CTX = ssl.create_default_context()
@@ -203,6 +208,58 @@ def pinned_revision(repo):
     return sha
 
 
+def native_host(recipe, endpoint):
+    """Accept only a local native endpoint on the recipe's exact Apple machine."""
+    parsed = urlsplit(endpoint)
+    if (parsed.scheme != "http" or parsed.hostname not in ("localhost", "127.0.0.1", "::1")
+            or parsed.username or parsed.password or parsed.path not in ("", "/")
+            or parsed.query or parsed.fragment or parsed.port != recipe["launch"]["host_port"]):
+        raise ValueError("native acceptance requires a loopback HTTP endpoint matching launch.host_port, without /v1")
+    if platform.system() != "Darwin" or platform.machine() != "arm64":
+        raise ValueError("native acceptance must run locally on Apple Silicon macOS")
+    chip = subprocess.check_output(["sysctl", "-n", "machdep.cpu.brand_string"], text=True).strip()
+    memory_bytes = int(subprocess.check_output(["sysctl", "-n", "hw.memsize"], text=True).strip())
+    if not re.fullmatch(r"Apple M[1-9][0-9]*(?: (?:Pro|Max|Ultra))?", chip) or memory_bytes <= 0 or memory_bytes % (1 << 30):
+        raise ValueError("could not identify the exact Apple chip and unified memory capacity")
+    hardware_id = f"{chip.lower().replace(' ', '-')}-{memory_bytes // (1 << 30)}gb"
+    if re.search(r"-[1-9][0-9]*c$", recipe["hardware_id"]):
+        displays = json.loads(subprocess.check_output(["system_profiler", "SPDisplaysDataType", "-json"], text=True))
+        gpu = [item for item in displays.get("SPDisplaysDataType", []) if item.get("sppci_model") == chip]
+        cores = str(gpu[0].get("sppci_cores", "")) if len(gpu) == 1 else ""
+        if not re.fullmatch(r"[1-9][0-9]*", cores):
+            raise ValueError("could not identify the GPU core count required by this hardware record")
+        hardware_id += f"-{cores}c"
+    if hardware_id != recipe["hardware_id"]:
+        raise ValueError(f"native hardware mismatch: detected {hardware_id}, recipe requires {recipe['hardware_id']}")
+    return {"hardware_id": hardware_id, "chip": chip, "memory_bytes": memory_bytes,
+            "system": "Darwin", "machine": "arm64", "macos_version": platform.mac_ver()[0]}
+
+
+def native_assets(recipe):
+    """Read manifests without trusting paths or stale blob digests."""
+    assets = {}
+    identifiers = recipe.get("launch", {}).get("asset_ids", [])
+    if not isinstance(identifiers, list):
+        return assets
+    for identifier in identifiers:
+        if not isinstance(identifier, str) or not re.fullmatch(r"[a-z0-9][a-z0-9.-]*", identifier):
+            continue
+        path = ROOT / "asset" / f"{identifier}.json"
+        if path.is_file():
+            assets[identifier] = json.loads(path.read_text())
+    reasons = trust.native_asset_failures(recipe, assets)
+    if reasons:
+        raise ValueError("; ".join(reasons))
+    for identifier, asset in assets.items():
+        blob = ROOT / "asset" / asset["file"]
+        if not blob.is_file():
+            raise ValueError(f"native asset {identifier} blob is missing")
+        data = blob.read_bytes()
+        if hashlib.sha256(data).hexdigest() != asset["sha256"] or len(data) != asset.get("size_bytes"):
+            raise ValueError(f"native asset {identifier} blob does not match its pinned manifest")
+    return assets
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("recipe_id")
@@ -217,9 +274,30 @@ def main() -> int:
 
     path = ROOT / "recipe" / f"{args.recipe_id}.json"
     recipe = json.loads(path.read_text())
-    draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") == "docker" else None)
+    draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") in ("docker", "native") else None)
     if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
-        raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
+        raise SystemExit("acceptance requires a docker draft, docker launch, or native Metal launch (or --revalidate)")
+
+    instance_path = ROOT / "model-instance" / f"{recipe['model_instance_id']}.json"
+    instance = json.loads(instance_path.read_text())
+    native = draft.get("kind") == "native"
+    hardware = None
+    assets = None
+    host = None
+    if native:
+        hardware_path = ROOT / "hardware" / f"{recipe.get('hardware_id')}.json"
+        hardware = json.loads(hardware_path.read_text()) if hardware_path.is_file() else None
+        try:
+            assets = native_assets(recipe)
+        except (OSError, ValueError) as exc:
+            raise SystemExit(f"acceptance FAILED: {exc}") from None
+        reasons = trust.native_contract_failures(recipe, instance, hardware, assets)
+        if reasons:
+            raise SystemExit("acceptance FAILED: " + "; ".join(reasons))
+        try:
+            host = native_host(recipe, args.endpoint)
+        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            raise SystemExit(f"acceptance FAILED: {exc}") from None
 
     request_body = json.loads(args.request_json.read_text()) if args.request_json else None
     if request_body is not None and not isinstance(request_body, dict):
@@ -237,6 +315,8 @@ def main() -> int:
         served = loaded if isinstance(loaded, str) and loaded else models[0]
     if served not in models:
         raise SystemExit(f"acceptance FAILED: requested model {served!r} is absent from /v1/models")
+    if native and served not in (instance.get("served_name"), instance.get("repository")):
+        raise SystemExit("acceptance FAILED: native served model must match the pinned instance repository or served_name")
     print(f"server is healthy; serving model id: {served}")
     apis = probe_dialects(args.endpoint, served, args.gateway)
     if apis is not None:
@@ -249,6 +329,10 @@ def main() -> int:
         raise SystemExit(f"acceptance FAILED: {exc}") from None
     if len({run["prompt_tokens"] for run in runs}) != 1 or len({run["decode_method"] for run in runs}) != 1:
         raise SystemExit("acceptance FAILED: samples disagree on prompt token count or decode measurement method")
+    if native and any(run.get("response_model_ids") != [served] for run in runs):
+        raise SystemExit("acceptance FAILED: native completion must report the selected model id")
+    if native and not (request_body or {}).get("tools") and any(not run.get("content", "").strip() for run in runs):
+        raise SystemExit("acceptance FAILED: native completion produced no answer text")
     decode = sorted(run["decode_tok_s"] for run in runs)[len(runs) // 2]
     ttft = sorted(run["ttft_ms"] for run in runs)[len(runs) // 2]
     completion_tokens = sorted(run["tokens"] for run in runs)[len(runs) // 2]
@@ -258,8 +342,6 @@ def main() -> int:
     if decode < args.min_decode:
         raise SystemExit(f"acceptance FAILED: decode {decode:.1f} tok/s is below the {args.min_decode} tok/s floor")
 
-    instance_path = ROOT / "model-instance" / f"{recipe['model_instance_id']}.json"
-    instance = json.loads(instance_path.read_text())
     if not (isinstance(instance.get("revision"), str) and re.fullmatch(r"[0-9a-f]{40}", instance["revision"] or "")):
         instance["revision"] = pinned_revision(instance["repository"])
         instance_path.write_text(json.dumps(instance, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
@@ -299,7 +381,14 @@ def main() -> int:
         "metrics": derive_metrics([row], runs[0]["started_at"]),
         "rows": [row],
     }
-    (ROOT / "speed-sweep" / f"{sweep_id}.json").write_text(json.dumps(sweep, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
+    if native:
+        sweep["source"].update({
+            "repository": draft["source_repository"], "commit": draft["source_commit"],
+            "hardware_id": recipe["hardware_id"], "model_instance_id": recipe["model_instance_id"],
+            "model_repository": instance["repository"], "model_revision": instance["revision"],
+            "served_model_id": served,
+            "launch_sha256": trust.native_launch_fingerprint(recipe),
+        })
 
     launch = {key: value for key, value in draft.items() if key != "synthesized"}
     # drafts cannot carry asset_ids (schema); derive them from asset/ mounts at promotion
@@ -313,17 +402,25 @@ def main() -> int:
         if len(ids) != len(asset_files):
             raise SystemExit(f"acceptance FAILED to promote: asset records missing for {asset_files}")
         launch["asset_ids"] = sorted(ids)
-    digest = "sha256:" + launch["image"].split("@sha256:")[1]
-    launch["container"] = {
-        "state": "digest-pinned",
-        "runtime": "docker",
-        "image": launch["image"],
-        "digest": digest,
-        "compose_file": None,
-        "reason": "image-reference-in-launch",
-        "captured_at": now,
-        "source": [{"kind": "acceptance-run", "url": "https://github.com/0xSero/local-ai-registry", "captured_at": now}],
-    }
+    if native:
+        launch["container"] = {
+            "state": "none", "runtime": None, "image": None, "digest": None, "compose_file": None,
+            "reason": "native-macos-metal-launch", "captured_at": now,
+            "source": [{"kind": "acceptance-run", "url": draft["source_repository"],
+                        "commit": draft["source_commit"], "captured_at": now}],
+        }
+    else:
+        digest = "sha256:" + launch["image"].split("@sha256:")[1]
+        launch["container"] = {
+            "state": "digest-pinned",
+            "runtime": "docker",
+            "image": launch["image"],
+            "digest": digest,
+            "compose_file": None,
+            "reason": "image-reference-in-launch",
+            "captured_at": now,
+            "source": [{"kind": "acceptance-run", "url": "https://github.com/0xSero/local-ai-registry", "captured_at": now}],
+        }
     # drafts cannot carry image provenance (schema); candidates park it in metadata until promotion
     image_provenance = (recipe.get("metadata") or {}).pop("image_provenance", None)
     if image_provenance:
@@ -335,9 +432,20 @@ def main() -> int:
     if sweep_id not in recipe["speed_sweep_ids"]:
         recipe["speed_sweep_ids"].append(sweep_id)
     acceptance = {"accepted_at": now, "served_model_id": served, "harness": args.harness}
+    if native:
+        acceptance.update({"hardware": host, "model_instance_id": recipe["model_instance_id"],
+                           "model_repository": instance["repository"], "model_revision": instance["revision"],
+                           "source_repository": launch["source_repository"], "source_commit": launch["source_commit"],
+                           "launch_sha256": sweep["source"]["launch_sha256"],
+                           "scope": "completion-and-speed; no automatic vision, MTP, or maximum-context verification"})
     if apis is not None:
         acceptance["apis"] = apis
     recipe.setdefault("metadata", {})["acceptance"] = acceptance
+    if native:
+        reasons = trust.failures(recipe, instance, [sweep], hardware, assets)
+        if reasons:
+            raise SystemExit("acceptance FAILED to promote: " + "; ".join(reasons))
+    (ROOT / "speed-sweep" / f"{sweep_id}.json").write_text(json.dumps(sweep, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
     path.write_text(json.dumps(recipe, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
     print(f"PROMOTED {recipe['id']} to validated with evidence {sweep_id}")
     print("next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR")
