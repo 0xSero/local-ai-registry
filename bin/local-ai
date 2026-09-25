@@ -34,13 +34,13 @@ detect_macos() {
 }
 
 detect_nvidia() {
-  local line name memory records
+  local line name memory
   command -v nvidia-smi >/dev/null 2>&1 || return 1
   line=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | head -1)
   name=${line%,*}
   memory=${line##*, }
-  records=$(jq -s '.' "$ROOT"/hardware/*.json)
-  jq -nr --arg name "$name" --argjson memory "$memory" --argjson records "$records" '
+  # --slurpfile, not --argjson: the hardware records exceed Linux's 128 KiB limit on one argument
+  jq -nr --arg name "$name" --argjson memory "$memory" --slurpfile records <(cat "$ROOT"/hardware/*.json) '
     def norm: ascii_downcase | gsub("nvidia|geforce|workstation edition|generation| "; "") | gsub("[^a-z0-9]"; "");
     ($memory / 1024 | round) as $gb
     | [$records[] | select(.vendor == "nvidia" and ((.name | norm) == ($name | norm)) and ((.memory.vram_gb - $gb) | fabs) <= 1)][0].id // empty
@@ -96,9 +96,8 @@ detect_count() {
 }
 
 list_json() {
-  local hardware=$1 count=${2:-1} target records summary instance model
+  local hardware=$1 count=${2:-1} target summary instance model
   target=$(record hardware "$hardware")
-  records=$(jq -s '.' "$ROOT"/hardware/*.json)
   while IFS= read -r summary; do
     [[ -n $summary ]] || continue
     instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$summary")")
@@ -112,7 +111,7 @@ list_json() {
         precision: $instance.weights.precision
       }
     '
-  done < <(jq -c --arg hardware "$hardware" --argjson count "$count" --argjson target "$target" --argjson records "$records" '
+  done < <(jq -c --arg hardware "$hardware" --argjson count "$count" --argjson target "$target" --slurpfile records <(cat "$ROOT"/hardware/*.json) '
     .recipes[] as $recipe
     | ($records[] | select(.id == $recipe.hardware_id)) as $recipe_hardware
     | select(
