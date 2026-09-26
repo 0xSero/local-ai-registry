@@ -27,7 +27,8 @@ def build(today=None):
         key = str(f.relative_to(lab.RECIPES).with_suffix(""))
         recipes[key] = {**r, "launch": lab.render(r)}
         # a lab recipe always ranks above a legacy one; legacy ones keep a card from being empty until a lab run passes
-        rank = (1, 0, 0) if old else (0, fam[m["family"]], -dt.date.fromisoformat(m["released"]).toordinal())
+        mf = (fam.get(m["family"], len(fam)), -dt.date.fromisoformat(m["released"]).toordinal()) if m else (len(fam), 0)
+        rank = (1 if old else 0, *mf)
         cards.setdefault(r["card"], []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
     out_cards = {}
     for card, rows in sorted(cards.items()):

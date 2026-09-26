@@ -43,6 +43,8 @@ def profile(ref):
     """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
     name, _, digest = ref.partition("@")
     p = json.loads((ENGINES / f"{name}.json").read_text())
+    if p.get("kind") == "host":  # a program on the host has no image to pin
+        return p
     if digest and not p["image"].split("@sha256:")[1].startswith(digest):
         raise SystemExit(f"{ref}: the profile's image is now {p['image']}; rerun the recipe")
     return p
@@ -72,7 +74,11 @@ def render(recipe):
     p = profile(recipe["engine"])
     if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
         cfg = p.get("config")
+        if p.get("kind") == "host":  # a program on the host, not a container
+            return {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None, "weights": [],
+                    "config": None, "ctx": p["ctx"], "seqs": 1, "vision": False, "backend": p.get("backend"), "cards": 1}
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
+                **{k: p[k] for k in ("flags", "machines") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
