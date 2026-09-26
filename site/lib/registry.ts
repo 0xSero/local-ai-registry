@@ -12,9 +12,11 @@ export type Launch = {
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
   kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
 };
-export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; card: string; proof: Proof[]; launch: Launch };
+export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; profile: string; card: string; proof: Proof[]; launch: Launch };
 export type Model = { family: string; name: string; released: string; reasoning: boolean; vision: boolean; about?: string; good_for?: string; logo?: string; hf?: string };
-export type Card = { id: string; name: string; vendor: string; backend: string; vram_gb: number; bandwidth_gb_s: number | null; picks: string[]; more?: string[] };
+/** One way to run a card: one card, several in one machine, or several machines. Picks and more are recipe keys. */
+export type Setup = { cards: number; machines: number; label: string; vram_gb: number; picks: string[]; more: string[] };
+export type Card = { id: string; name: string; vendor: string; backend: string; vram_gb: number; bandwidth_gb_s: number | null; picks: string[]; more?: string[]; setups: Setup[] };
 
 type Raw = { models: Record<string, Model>; builds: Record<string, { format: string; size_gb: number }>; cards: Record<string, Omit<Card, "id">>; recipes: Record<string, Omit<Recipe, "key" | "slug">> };
 const raw = catalog as unknown as Raw;
@@ -31,8 +33,21 @@ function vendorRank(v: string) { return ["nvidia", "amd", "intel"].indexOf(v); }
 export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel" };
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
-export const picks = (c: Card) => c.picks.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
-export const more = (c: Card) => (c.more ?? []).map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
+const byKey = (keys: string[]) => keys.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
+export const picks = (c: Card | Setup) => byKey(c.picks);
+export const more = (c: Card | Setup) => byKey(c.more ?? []);
+/** "RTX PRO 6000 Blackwell", "4 × RTX PRO 6000 Blackwell in one machine", "2 × DGX Spark GB10". */
+export function setupName(name: string, cards = 1, machines = 1) {
+  if (machines > 1) return `${machines} × ${name}${cards > 1 ? `, ${cards} cards each` : ""}`;
+  return cards > 1 ? `${cards} × ${name} in one machine` : name;
+}
+/** The setup a recipe runs on, named, with its total memory. */
+export function setupOf(r: Recipe) {
+  const c = card(r.card)!, n = r.launch.cards ?? 1, m = r.launch.machines ?? 1;
+  return { cards: n, machines: m, name: setupName(short(c.name), n, m), vram_gb: c.vram_gb * n * m };
+}
+/** The setups beyond one card, as "4×" or "2 machines". */
+export const setupTag = (s: Setup) => (s.machines > 1 ? `${s.machines} machines` : `${s.cards}×`);
 export const model = (r: Recipe): Model => models[r.model] ?? { family: "", name: r.model, released: "", reasoning: false, vision: false };
 export const engineKind = (r: Recipe) => r.slug.slice(r.model.length + 1).replace(/\.\d+k(\.\d+x)?$/, "");
 export const weightsList = (l: Launch) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);

@@ -14,12 +14,12 @@ for i, c in cat["cards"].items():
 js = subprocess.run(["node", "--input-type=module", "-e", """
 import { readFileSync } from "node:fs"; import { detect, steps } from "./sdk/js/index.js";
 const cat = JSON.parse(readFileSync("dist/catalog.json"));
-const out = {}; for (const [i, c] of Object.entries(cat.cards)) out[i] = [detect(cat, c.name, c.vram_gb), [...c.picks, ...c.more].map((k) => steps({ key: k, ...cat.recipes[k] }))];
+const out = {}; for (const [i, c] of Object.entries(cat.cards)) out[i] = [detect(cat, c.name, c.vram_gb), c.setups.flatMap((s) => [...s.picks, ...s.more]).map((k) => steps({ key: k, ...cat.recipes[k] }))];
 console.log(JSON.stringify(out));"""], capture_output=True, text=True, check=True).stdout
 n = 0
 for i, (got, sts) in json.loads(js).items():
     assert got == i, (i, got)
-    for k, st in zip(cat["cards"][i]["picks"] + cat["cards"][i]["more"], sts):
+    for k, st in zip([k for s in cat["cards"][i]["setups"] for k in s["picks"] + s["more"]], sts):
         assert st == L.steps({"key": k, **cat["recipes"][k]}), f"js and python steps differ for {k}"
         n += 1
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")

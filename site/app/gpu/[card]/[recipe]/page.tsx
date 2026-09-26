@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Copy from "@/components/Copy";
 import Logo from "@/components/Logo";
 import Viewed from "@/components/Viewed";
-import { recipes, recipe, card, model, format, ctxLabel, engineKind, gates, status, steps, weightsList, fmtDate, cardName } from "@/lib/registry";
+import { recipes, recipe, card, model, format, ctxLabel, engineKind, gates, status, steps, weightsList, fmtDate, cardName, setupOf } from "@/lib/registry";
 
 type P = { params: Promise<{ card: string; recipe: string }> };
 export const generateStaticParams = () => recipes.map((r) => ({ card: r.card, recipe: r.slug }));
@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
   const { card: c, recipe: s } = await params;
   const r = recipe(c, s);
   if (!r) return {};
-  return { title: `${model(r).name} on ${cardName(c)}`, description: `${format(r)}, ${ctxLabel(r.launch.ctx)} context, ${Math.round(r.proof[0].tps ?? 0)} tok/s on the ${cardName(c)}. ${status(r).detail}` };
+  const on = setupOf(r).name;
+  return { title: `${model(r).name} on ${on}`, description: `${format(r)}, ${ctxLabel(r.launch.ctx)} context, ${Math.round(r.proof[0].tps ?? 0)} tok/s on ${setupOf(r).cards * setupOf(r).machines > 1 ? on : `the ${on}`}. ${status(r).detail}` };
 }
 
 export default async function RecipePage({ params }: P) {
@@ -33,7 +34,7 @@ export default async function RecipePage({ params }: P) {
       <Viewed event="recipe_viewed" props={{ gpu: cid, recipe: r.key, model: r.model }} />
       <Link href={`/gpu/${cid}`} className="back">‹ {cardName(cid)}</Link>
       <h1 className="title"><Logo family={m.logo ?? m.family} size={28} />{m.name}</h1>
-      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {(r.launch as any).machines ? `${(r.launch as any).machines} × ` : ""}{cardName(cid)} {c.vram_gb} GB</div>
+      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {setupOf(r).name} · {setupOf(r).vram_gb} GB</div>
       {m.about && <p style={{ maxWidth: "70ch", marginTop: 22 }}>{m.about}</p>}
 
       <section className="grid cols-4">
@@ -71,7 +72,7 @@ export default async function RecipePage({ params }: P) {
           <dt>Weights</dt><dd>{!w ? "inside the image" : <a href={`https://huggingface.co/${w.repo}/tree/${w.revision}`}>{w.repo} @ {w.revision.slice(0, 10)} ›</a>}</dd>
           <dt>Image</dt><dd>{r.launch.build ? <a href={`https://github.com/${r.launch.build.repo}/tree/${r.launch.build.commit}`}>built from {r.launch.build.repo} @ {r.launch.build.commit.slice(0, 10)} ›</a> : r.launch.image ?? "none: a program on the host"}</dd>
           {r.launch.source && <><dt>Source</dt><dd><a href={r.launch.source}>{r.launch.source.replace("https://github.com/", "").replace("/tree/", " @ ").slice(0, 60)} ›</a></dd></>}
-          <dt>Engine profile</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/engines/${r.engine.split("@")[0]}.json`}>{r.engine.split("@")[0]} ›</a></dd>
+          <dt>{r.profile.startsWith("registry/launches/") ? "Launch" : "Engine profile"}</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/${r.profile}`}>{r.engine.split("@")[0]} ›</a></dd>
           <dt>Recipe file</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/recipes/${r.key}.json`}>registry/recipes/{r.key}.json ›</a></dd>
           {m.released && <><dt>Model released</dt><dd>{fmtDate(m.released)}</dd></>}
           <dt>Tested</dt><dd>{p.reported ? `not yet by us; reported by ${p.on}` : p.on === "legacy" ? "earlier acceptance" : `${p.on}${p.gpu ? `, ${p.gpu}` : ""}`}{p.proxy ? ` (sibling: ${cardName(p.proxy)})` : ""}</dd>
