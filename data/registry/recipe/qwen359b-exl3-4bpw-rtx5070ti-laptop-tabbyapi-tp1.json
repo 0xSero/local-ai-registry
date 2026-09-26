@@ -1,0 +1,99 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": false
+  },
+  "description": "Text-only acceptance on one RTX 5070 Ti Laptop GPU (Acer Predator PHN16S-71), launch contract unchanged from qwen359b-exl3-4bpw-rtx5070-tabbyapi-tp1. At launch: plugged in; power-profiles-daemon: performance; GPU power limit 70 W (the firmware default on this laptop; nvidia-powerd did not raise it), so decode is power-bound. Reasoning, tools and vision were not validated.",
+  "engine": {
+    "graph_mode": "piecewise",
+    "name": "tabbyapi",
+    "version": "0.0.1+f07131cd"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-5070-ti-laptop-12gb",
+  "id": "qwen359b-exl3-4bpw-rtx5070ti-laptop-tabbyapi-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "main.py",
+      "--config",
+      "/app/config.yml"
+    ],
+    "asset_ids": [
+      "qwen359b-exl3-4bpw-128k-q4-tabbyapi-config"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T12:59:03.020222Z",
+      "compose_file": null,
+      "digest": "sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+      "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-25T12:59:03.020222Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 5000,
+    "entrypoint": "/opt/venv/bin/python3",
+    "environment": {
+      "NVIDIA_VISIBLE_DEVICES": "all"
+    },
+    "host_port": 5000,
+    "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/qwen3-5-9b-exl3-6hb-4bpw",
+        "target": "/workspace/models"
+      },
+      {
+        "read_only": true,
+        "source": "asset/qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml",
+        "target": "/app/config.yml"
+      }
+    ],
+    "shm_size": "8g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T12:59:03.020222Z",
+      "harness": "local-ai validate",
+      "served_model_id": "Qwen3.5-9B-EXL3-6hb-4bpw"
+    },
+    "derived_from": "qwen359b-exl3-4bpw-rtx5070-tabbyapi-tp1",
+    "weights_subdir": "Qwen3.5-9B-EXL3-6hb-4bpw"
+  },
+  "model_instance_id": "themelongod-qwen3-5-9b-exl3--6hb-4-0bpw",
+  "provenance": {
+    "captured_at": "2026-09-25T12:48:31Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T12:48:31Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "recommended": true,
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": 2,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen359b-exl3-4bpw-rtx5070ti-laptop-tabbyapi-tp1-acceptance"
+  ],
+  "status": "validated"
+}
