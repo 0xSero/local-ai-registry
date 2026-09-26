@@ -1,0 +1,80 @@
+{
+  "answers_equal_across_configurations": false,
+  "artifact_sha256": {
+    "mtp-acceptance.jsonl": "b8b1d6be052eeb7bf28fd7e8accca82baaf080100cfa4cc4d3e9b737db6c61e3",
+    "mtp-server.log": "f847f9f945f0e504f03095ca47c878eab4289ddc1697abdcf7d0108c1da5fd67",
+    "mtp-warmup/archive.json": "95e36c20970fe59a397f781471cf0783c9266a7aaf937d604bb78494fdca40a3",
+    "mtp-warmup/raw.jsonl": "e4fd3abec4d4c271bc1f28878f19c66965b9ba390940dab1012853e616d1fde6",
+    "mtp-warmup/request.json": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+    "mtp-warmup/summary.json": "c595114db6c4e24ec3f453180762313d311bd19fc3c8c61dd314c64e61f9902e",
+    "no-mtp-1/archive.json": "5a43f4e3480f56450c7d18bfbca960911efb2c11592843641147daede5df9e84",
+    "no-mtp-1/raw.jsonl": "01707369bb148c3d513ef55427579e0608ce84a18d360ebc5c46f7915c46158c",
+    "no-mtp-1/request.json": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+    "no-mtp-1/summary.json": "87e62e7977df9fa7f248bba300e1eda2d96990c23a656719bc59b4b125fa50c8",
+    "no-mtp-2/archive.json": "3372b73fbd5f81112a76863f17c9e05a4aa55dc9cb6462c442b7d3ca74488afb",
+    "no-mtp-2/raw.jsonl": "c3cf11234314ab38f241af75b5229499354b8bd6ee4e109a7efea0407643352b",
+    "no-mtp-2/request.json": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+    "no-mtp-2/summary.json": "141d4c07781a412a5d50e68c5a73c1efee48cd88bd39c159c62b1f3497d531f9",
+    "no-mtp-3/archive.json": "7a2186ee862ad6e59c9cae427b24d66cc0749629758bfa2f4b10d2d0e49a08be",
+    "no-mtp-3/raw.jsonl": "d7034a0dacaae27bd32a53636552b76c3a9de104dc27c487c64b957007f4124c",
+    "no-mtp-3/request.json": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+    "no-mtp-3/summary.json": "c6301a03a922b9b00803cf5bba9769b63b6706c56645491e5e99a2845f5e5a35",
+    "no-mtp-launch.json": "f3129d3e3f53187e407e5bc4a529f5ea2450e0e570e06c6dfe9f69594ed31dc7",
+    "no-mtp-server.log": "30fb750fa8867455f5b2540acd5917923eaed2cc27855847396f7445527af145",
+    "no-mtp-warmup/archive.json": "71e44791698e126ac62c49af9df61fbab0443d318e527d14d5fc023ac3d4ca1b",
+    "no-mtp-warmup/raw.jsonl": "9829b9a08d5a47e2625af02ef92a69924e0a0bc3bef1de8831580cd02375c8e8",
+    "no-mtp-warmup/request.json": "f4918d8190fbe2af39cabfa6a3c4314d746cf65211e8991e878c1f28a02abb17",
+    "no-mtp-warmup/summary.json": "f4fd6a7a61f9010d43a37e9cea368ef747e775a5a01deebbcf685c1d976472e5"
+  },
+  "identical_submitted_request_objects": true,
+  "mtp": {
+    "accepted_draft_tokens": [
+      52,
+      52,
+      52
+    ],
+    "completion_tokens": [
+      90,
+      90,
+      90
+    ],
+    "draft_rounds": [
+      38,
+      38,
+      38
+    ],
+    "drafted_tokens": [
+      76,
+      76,
+      76
+    ],
+    "median_client_elapsed_ms": 5263.433958985843,
+    "median_server_decode_tps": 19.36455151952941,
+    "server_decode_tps_samples": [
+      19.36455151952941,
+      18.73522233291749,
+      19.491253108521043
+    ],
+    "within_configuration_answers_equal": true
+  },
+  "no_mtp": {
+    "completion_tokens": [
+      73,
+      73,
+      73
+    ],
+    "median_client_elapsed_ms": 5022.890624997672,
+    "median_server_decode_tps": 16.154218185997774,
+    "server_decode_tps_samples": [
+      16.209046115374868,
+      16.154218185997774,
+      16.076116094191867
+    ],
+    "within_configuration_answers_equal": true
+  },
+  "prompt_tokens": 62,
+  "protocol": "Fresh process for each configuration, one identical-request warmup excluded, then three serial measured requests. MTP first, no-MTP second; not randomized. Same pinned runtime, wrapper and target model; remove only drafter CLI options and environment assignments for baseline.",
+  "request_file": "sources/qwen38-apple-silicon/decode-request.json",
+  "request_file_sha256": "9f6ce3c6e931a767fddea5cf7096d53ab49c7f0c295194108b1201b4844d1b57",
+  "scope": "Short natural-language workload only. Answers and output token counts differ between configurations; no matched-output latency speedup, exact decoding parity, or broad MTP benefit is claimed."
+}
