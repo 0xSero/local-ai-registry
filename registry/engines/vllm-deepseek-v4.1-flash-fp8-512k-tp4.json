@@ -1,0 +1,65 @@
+{
+  "id": "vllm-deepseek-v4.1-flash-fp8-512k-tp4",
+  "engine": "vllm",
+  "about": "deepseek-v4.1-flash on 4x RTX PRO 6000 Blackwell (one machine, TP4), the owner's production launch after the blackwell-forge campaign (ledger D1/D3/D4/D5, 2026-09-26). Engram tables are read from disk with io_uring: the seccomp profile is Docker's default plus three io_uring syscalls (published with the 2026-09-18 evidence at 0xSero/local-ai-registry@7d85cce3, sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/). Record: data/registry/recipe/deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4.json",
+  "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": "/usr/local/bin/serve-ds41-jovian.sh",
+  "args": [
+    "--served-model-name",
+    "deepseek-v4.1-flash",
+    "--kv-cache-memory-bytes",
+    "11274289152",
+    "--speculative-config",
+    "{\"method\": \"dspark\", \"num_speculative_tokens\": 5, \"draft_tensor_parallel_size\": 4, \"attention_backend\": \"B12X\", \"draft_sample_method\": \"greedy\", \"rejection_sample_method\": \"standard\", \"enable_adaptive_verification\": true}",
+    "--enable-prompt-tokens-details"
+  ],
+  "env": {
+    "BLOCK_SIZE": "256",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "DCP_SIZE": "1",
+    "DSPARK_ADAPTIVE_VERIFICATION": "1",
+    "ENGRAM_TABLE_MEMORY": "disk",
+    "GPU_MEMORY_UTILIZATION": "0.95",
+    "HF_HUB_OFFLINE": "1",
+    "HOST": "0.0.0.0",
+    "MAX_CUDAGRAPH_CAPTURE_SIZE": "192",
+    "MAX_MODEL_LEN": "524288",
+    "MAX_NUM_BATCHED_TOKENS": "4096",
+    "MAX_NUM_SEQS": "32",
+    "MAX_PARALLEL_PREFILLS": "1",
+    "MODEL_PATH": "/models",
+    "OMP_NUM_THREADS": "8",
+    "PORT": "8000",
+    "PREFILL_COMPUTE_SHARE": "0.4",
+    "SERVED_MODEL_NAME": "deepseek-v4.1-flash",
+    "SWA_BLOCK_SIZE": "128",
+    "TP_SIZE": "4",
+    "TRANSFORMERS_OFFLINE": "1",
+    "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "revision": "fb2764a5cf321eaa5070ca8f9e892818f477c16d",
+      "at": "/models",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 524288,
+  "seqs": 1,
+  "vision": true,
+  "cards": 4,
+  "flags": [
+    "--ipc host",
+    "--security-opt seccomp=seccomp-default-plus-io_uring.json",
+    "--ulimit memlock=-1",
+    "--ulimit stack=67108864"
+  ],
+  "frozen_from": [
+    "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4"
+  ]
+}

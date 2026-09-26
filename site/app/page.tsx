@@ -10,11 +10,11 @@ export default function Home() {
       <div className="hero">
         <div className="label" style={{ marginBottom: 18 }}>Local AI registry</div>
         <h1>The model to run on your GPU, and exactly how.</h1>
-        <p>Pick your card. You get the three best models it can run, how fast each one goes, and the command that starts it. Every recipe here was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace.</p>
+        <p>Pick your card. You get the three best models it can run, how fast each one goes, and the command that starts it. A tested recipe was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace. Below the top three, each card lists every other recipe we know of, including ones published by others, marked as reported until our checks run.</p>
         <Picker options={cards.map((c) => ({ id: c.id, name: short(c.name), vendor: c.vendor, vram: c.vram_gb }))} />
         <div className="facts">
           <span><b>{stats.gpus}</b> GPUs</span><span><b>{stats.recipes}</b> recipes</span>
-          <span><b>{stats.tested}</b> tested on the real card</span><span><b>6</b> checks each</span>
+          <span><b>{stats.tested}</b> tested on the real card</span><span><b>{stats.reported}</b> reported</span>
         </div>
       </div>
 

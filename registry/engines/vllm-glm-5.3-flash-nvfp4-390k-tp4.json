@@ -1,0 +1,69 @@
+{
+  "id": "vllm-glm-5.3-flash-nvfp4-390k-tp4",
+  "engine": "vllm",
+  "about": "glm-5.3-flash on 4x RTX PRO 6000 Blackwell (one machine, TP4), the owner's production launch after the blackwell-forge campaign (ledger K8, 2026-09-26): native MTP3, 48 sequences, KV pinned at 31 GiB/GPU. The /draft weights are mounted as in production; MTP does not read them. Record: data/registry/recipe/glm53-flash-lil-r35-rtxpro6000-vllm-tp4.json",
+  "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": null,
+  "args": [
+    "/model",
+    "--mm-processor-device",
+    "cpu",
+    "--limit-mm-per-prompt",
+    "{\"image\":64,\"video\":1}",
+    "--kv-cache-memory-bytes",
+    "33285996544",
+    "--enable-prompt-tokens-details"
+  ],
+  "env": {
+    "CACHE_MODE": "vram",
+    "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 128 192",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "DCP": "1",
+    "DFLASH_MODEL": "/draft",
+    "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+    "GPU_MEMORY_UTILIZATION": "0.93",
+    "HF_HUB_OFFLINE": "1",
+    "KV_CACHE_QUANT": "fp8_ds_mla",
+    "MAX_CUDAGRAPH_CAPTURE_SIZE": "192",
+    "MAX_MODEL_LEN": "400000",
+    "MAX_NUM_BATCHED_TOKENS": "8192",
+    "MAX_NUM_SEQS": "48",
+    "MODEL": "/model",
+    "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+    "MTP_DEPTH": "3",
+    "PORT": "8000",
+    "PREFILL_COMPUTE_SHARE": "0.4",
+    "PREFILL_SCHEDULE_INTERVAL": "1",
+    "SERVED_MODEL_NAME": "glm-5.3-flash",
+    "SPECULATOR": "mtp",
+    "TP": "4"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "local-inference-lab/GLM-5.3-Flash-NVFP4",
+      "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "at": "/model",
+      "layout": "dir"
+    },
+    {
+      "repo": "local-inference-lab/GLM-5.3-Flash-DFlash2",
+      "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+      "at": "/draft",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 400000,
+  "seqs": 1,
+  "vision": true,
+  "cards": 4,
+  "flags": [
+    "--ipc host"
+  ],
+  "frozen_from": [
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4"
+  ]
+}
