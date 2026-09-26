@@ -27,18 +27,17 @@
       "33285996544"
     ],
     "container": {
-      "captured_at": "2026-09-26T05:45:00Z",
+      "captured_at": "2026-09-26T08:25:58.263280Z",
       "compose_file": null,
       "digest": "sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
       "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
-      "reason": "runtime-digest-of-live-controller-image (localinferencelab/vllm:jovian-judgement-community-20260911-r35); controller runs the public digest directly, no local wrapper",
+      "reason": "image-reference-in-launch",
       "runtime": "docker",
       "source": [
         {
-          "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
-          "kind": "local-acceptance",
-          "repository": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
-          "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/README.md"
+          "captured_at": "2026-09-26T08:25:58.263280Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
         }
       ],
       "state": "digest-pinned"
@@ -98,36 +97,9 @@
   },
   "metadata": {
     "acceptance": {
-      "coherence_needle_pass_tokens": [
-        279322
-      ],
-      "coherence_needle_pass_tokens_x001": [
-        123194,
-        343766
-      ],
-      "completion": true,
-      "evidence": "blackwell-forge ledger exps R1-flash-kvbytes31, R2a-flash-jitcache-cold, S0-flash-base, S2-mnbt8192, X001-mtp3",
-      "smoke": "math + tool call ok on R1, R2a, S2",
-      "tools": true,
-      "vision": true,
-      "vision_x001": [
-        {
-          "accuracy": 1.0,
-          "codes_found": 8,
-          "images": 8,
-          "prompt_tokens": 12976,
-          "resolution": "1280x960",
-          "ttft_ms": 3828
-        },
-        {
-          "accuracy": 1.0,
-          "codes_found": 32,
-          "images": 32,
-          "prompt_tokens": 33392,
-          "resolution": "1024x768",
-          "ttft_ms": 8886
-        }
-      ]
+      "accepted_at": "2026-09-26T08:25:58.263280Z",
+      "harness": "blackwell-forge accept_recipe",
+      "served_model_id": "glm-5.3-flash"
     },
     "benchmark_workload": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
     "credits": [
@@ -303,7 +275,8 @@
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
-    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep"
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep",
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-acceptance"
   ],
-  "status": "candidate"
+  "status": "validated"
 }
