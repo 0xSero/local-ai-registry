@@ -1,5 +1,9 @@
 # Qwen3.8-27B: native MTPLX on Apple M4 Max, 128 GB
 
+Archived measurements from the pre-lab registry. Run the historical commands
+below from `data/`. The active lab integration is documented in
+[the native M4 guide](../../../lab/native-mtplx.md).
+
 This is a native macOS recipe for the registry's data/research collection. It is
 not an Omarchy/Linux container recommendation. Hardware claims apply only to the
 M4 Max with 128 GB tested here. Other chips, 24 GB and 32 GB machines require

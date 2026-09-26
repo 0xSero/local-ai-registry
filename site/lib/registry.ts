@@ -52,6 +52,7 @@ export const fmtDate = (d: string) => (d ? new Date(d + "T00:00:00Z").toLocaleDa
 /** The format as people say it: "EXL3 3 bpw", "GGUF Q4_K_M", "FP8". */
 export function format(r: Recipe) {
   const b = builds[r.weights]?.format;
+  if (r.launch.kind === "native") return b ?? "MLX";
   if (b) { const m = b.match(/EXL3 · (?:SC )?(\d+(?:\.\d+)?)\s*bpw/); if (m) return `EXL3 ${Number(m[1])} bpw`; }
   const w = weightsList(r.launch)[0];
   const s = `${w?.repo ?? ""} ${w?.at ?? ""} ${r.engine} ${r.slug}`.toLowerCase();
