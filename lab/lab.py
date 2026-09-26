@@ -108,12 +108,21 @@ def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small c
 
 
 def count(endpoint, text):
-    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode)."""
+    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode; SGLang and vLLM:
+    /v1/tokenize). Only a server without either falls back to an estimate."""
     try:
         out, _ = call(endpoint, "/v1/token/encode", {"text": text}, timeout=120)
         return int(out.get("length") or len(out.get("tokens") or [])), "tokenizer"
     except Exception:
-        return len(text) // 4, "estimate"
+        pass
+    try:
+        out, _ = call(endpoint, "/v1/tokenize", {"prompt": text}, timeout=120)
+        n = out.get("count") or len(out.get("tokens") or [])
+        if n or not text:
+            return int(n), "tokenizer"
+    except Exception:
+        pass
+    return len(text) // 4, "estimate"
 
 
 def chat(endpoint, model, messages, **kw):
@@ -324,7 +333,7 @@ def cmd_try(args):
         proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
     slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
     RUNS.mkdir(parents=True, exist_ok=True)
-    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": launch["config"]["sha256"]}
+    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch["config"] or {}).get("sha256")}  # frozen profiles carry no config file
     text = json.dumps(run, indent=1, ensure_ascii=False)
     run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
     run_path.write_text(text + "\n")

@@ -1,0 +1,523 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "Qwen3.6-35B-A3B EXL3 3.00bpw-H5 (yeasah revision 73da68ef) in stock SGLang v0.5.20 through the sglang-exl3 plugin (image v0.7.0-ampere) on one bare RTX 3090 24 GB, single-stream at the full 262,144-token window with vision: NEXTN MTP 3/1/4 with the 32k hot-token draft head, fp8 KV (pool 419,114 tokens; coherence ladder OK to a 258,056-token prompt), fp16-accumulate prefill GEMMs on the dense layers, breakable prefill CUDA graphs to 240 tokens, chunk 4096 with --prefill-decode-interval 16, PIL image processing and the plugin's Ampere vision-tower fixes. Per-stream decode, 3 waves, T 0: prose 251.7 / code 357.9 (thinking on 342.1 / 359.0); at a 32k prompt prose 220.5 / code 290.6; T 0.7 prose 235.2 / code 328.4. Cold prefill 7.4k tok/s at 8k, 5.6k at 32k, 2.8k at 131k, 1.7k at 258k. 4096x4096 image TTFT 15.3 s. C1/32K soak passed (64 requests, drift +2.4 %, TTFT p95 6.0 s). Tuning delta vs qwen36-35b-a3b-exl3-3bpw-rtx3090-sglang-tp1 (v0.5.1, C2): decode unchanged (prose 252, code 352 -> 358), cold prefill at 32k 4.5k -> 5.6k tok/s, 4096^2 image OOM -> 15.3 s, prefill graphs on. Two streams at ctx 0 measured 202.8 per stream (397.2 aggregate) clean, but the C2/32K gate cells cannot hold two decoding streams (short answers end before the second cold 32k prefill; greedy long-form answers loop), so the claim is C1.",
+  "engine": {
+    "graph_mode": "full decode CUDA graphs (bs 1); breakable prefill CUDA graphs to 240 tokens",
+    "name": "sglang",
+    "version": "0.5.20"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "qwen36-35b-a3b-exl3-3bpw-mtp-vision-rtx3090-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "python3",
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+      "--quantization",
+      "exl3",
+      "--trust-remote-code",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--served-model-name",
+      "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+      "--context-length",
+      "262144",
+      "--mem-fraction-static",
+      "0.85",
+      "--kv-cache-dtype",
+      "fp8_e4m3",
+      "--mamba-ssm-dtype",
+      "bfloat16",
+      "--max-running-requests",
+      "1",
+      "--max-mamba-cache-size",
+      "5",
+      "--cuda-graph-max-bs-decode",
+      "1",
+      "--cuda-graph-max-bs-prefill",
+      "240",
+      "--chunked-prefill-size",
+      "4096",
+      "--max-prefill-tokens",
+      "4096",
+      "--prefill-decode-interval",
+      "16",
+      "--reasoning-parser",
+      "qwen3",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--image-processor-backend",
+      "pil",
+      "--speculative-algorithm",
+      "NEXTN",
+      "--speculative-num-steps",
+      "3",
+      "--speculative-eagle-topk",
+      "1",
+      "--speculative-num-draft-tokens",
+      "4",
+      "--speculative-token-map",
+      "/opt/sglang-exl3/tokenmaps/qwen36_hot32k_v2.pt",
+      "--disable-shared-experts-fusion"
+    ],
+    "container": {
+      "captured_at": "2026-09-26T10:17:17Z",
+      "compose_file": null,
+      "digest": "sha256:c8922bd7256caf1b273af7ac49221e652be9e6072c1cdec4b959f506fd415d79",
+      "image": "ghcr.io/0xsero/sglang-exl3@sha256:c8922bd7256caf1b273af7ac49221e652be9e6072c1cdec4b959f506fd415d79",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-26T10:17:17Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/36210770340"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": "/opt/entrypoint.sh",
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "HF_HUB_OFFLINE": "1",
+      "SGLANG_EXL3_PREFILL_FP16_ACC": "1",
+      "SGLANG_EXL3_VIT_MLP_CHUNK": "8192",
+      "SGLANG_EXL3_VIT_SDPA": "1",
+      "SGLANG_VLM_CACHE_SIZE_MB": "256"
+    },
+    "host_port": 30000,
+    "image": "ghcr.io/0xsero/sglang-exl3@sha256:c8922bd7256caf1b273af7ac49221e652be9e6072c1cdec4b959f506fd415d79",
+    "ipc": null,
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+        "target": "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "attestation": "gh attestation verify oci://ghcr.io/0xsero/sglang-exl3@sha256:c8922bd7256caf1b273af7ac49221e652be9e6072c1cdec4b959f506fd415d79 -o 0xSero",
+      "captured_at": "2026-09-26T10:17:17Z",
+      "dockerfile": "https://github.com/0xSero/local-ai-images/blob/main/sglang-exl3/Dockerfile",
+      "kind": "self-built-attested",
+      "source": "https://github.com/0xSero/local-ai-images",
+      "sources": [
+        {
+          "captured_at": "2026-09-26T10:17:17Z",
+          "kind": "release-image-workflow",
+          "url": "https://github.com/0xSero/local-ai-images/actions/runs/36210770340"
+        }
+      ],
+      "workflow": "https://github.com/0xSero/local-ai-images/actions/runs/36210770340"
+    },
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-26T10:17:17Z",
+      "coherence_ladder": [
+        {
+          "level": 1024,
+          "ok": true,
+          "prompt_tokens": 1000,
+          "ttft_ms": 172.4
+        },
+        {
+          "level": 4096,
+          "ok": true,
+          "prompt_tokens": 4058,
+          "ttft_ms": 1046.7
+        },
+        {
+          "level": 8192,
+          "ok": true,
+          "prompt_tokens": 8145,
+          "ttft_ms": 1097.3
+        },
+        {
+          "level": 16384,
+          "ok": true,
+          "prompt_tokens": 16378,
+          "ttft_ms": 2463.7
+        },
+        {
+          "level": 32768,
+          "ok": true,
+          "prompt_tokens": 32624,
+          "ttft_ms": 5848.1
+        },
+        {
+          "level": 131072,
+          "ok": true,
+          "prompt_tokens": 131040,
+          "ttft_ms": 47340.7
+        },
+        {
+          "level": 258048,
+          "ok": true,
+          "prompt_tokens": 258056,
+          "ttft_ms": 154743.5
+        }
+      ],
+      "failed_gates": [],
+      "failed_probes": [],
+      "harness": "rtx-3090/bench/harness.py correctness + ladder + panel + soak",
+      "model_id_matches": true,
+      "served_model_id": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
+    },
+    "quantization": {
+      "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
+      "format": "exl3",
+      "kernel": ""
+    },
+    "vision_standard": {
+      "max_area_accepted": [
+        37748736,
+        "6144x6144"
+      ],
+      "max_area_correct": [
+        37748736,
+        "6144x6144"
+      ],
+      "note": "Raw input acceptance and successful OCR are distinct; each result is one sampled code.",
+      "rows": [
+        {
+          "answer": "red",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 1880,
+          "prompt_tokens": 282,
+          "tag": "colour/red",
+          "ttft_s": 0.176
+        },
+        {
+          "answer": "blue",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 1880,
+          "prompt_tokens": 282,
+          "tag": "colour/blue",
+          "ttft_s": 0.174
+        },
+        {
+          "answer": "TRN40517",
+          "canvas": "256x256",
+          "correct": true,
+          "err": null,
+          "expected": "TRN40517",
+          "glyph_px": 28,
+          "image_tokens": 66,
+          "megapixels": 0.07,
+          "ok": true,
+          "pixels": 65536,
+          "png_bytes": 1187,
+          "prompt_tokens": 95,
+          "tag": "area/256",
+          "ttft_s": 0.081
+        },
+        {
+          "answer": "TRN48436",
+          "canvas": "512x512",
+          "correct": true,
+          "err": null,
+          "expected": "TRN48436",
+          "glyph_px": 28,
+          "image_tokens": 258,
+          "megapixels": 0.26,
+          "ok": true,
+          "pixels": 262144,
+          "png_bytes": 2441,
+          "prompt_tokens": 287,
+          "tag": "area/512",
+          "ttft_s": 0.168
+        },
+        {
+          "answer": "TRN56355",
+          "canvas": "1024x1024",
+          "correct": true,
+          "err": null,
+          "expected": "TRN56355",
+          "glyph_px": 28,
+          "image_tokens": 1026,
+          "megapixels": 1.05,
+          "ok": true,
+          "pixels": 1048576,
+          "png_bytes": 5801,
+          "prompt_tokens": 1055,
+          "tag": "area/1024",
+          "ttft_s": 0.424
+        },
+        {
+          "answer": "TRN64274",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN64274",
+          "glyph_px": 28,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17552,
+          "prompt_tokens": 4127,
+          "tag": "area/2048",
+          "ttft_s": 1.888
+        },
+        {
+          "answer": "TRN72193",
+          "canvas": "3072x3072",
+          "correct": true,
+          "err": null,
+          "expected": "TRN72193",
+          "glyph_px": 28,
+          "image_tokens": 9218,
+          "megapixels": 9.44,
+          "ok": true,
+          "pixels": 9437184,
+          "png_bytes": 35373,
+          "prompt_tokens": 9247,
+          "tag": "area/3072",
+          "ttft_s": 6.035
+        },
+        {
+          "answer": "TRN80112",
+          "canvas": "4096x4096",
+          "correct": true,
+          "err": null,
+          "expected": "TRN80112",
+          "glyph_px": 28,
+          "image_tokens": 16386,
+          "megapixels": 16.78,
+          "ok": true,
+          "pixels": 16777216,
+          "png_bytes": 59337,
+          "prompt_tokens": 16415,
+          "tag": "area/4096",
+          "ttft_s": 15.268
+        },
+        {
+          "answer": "TRN88031",
+          "canvas": "6144x6144",
+          "correct": true,
+          "err": null,
+          "expected": "TRN88031",
+          "glyph_px": 28,
+          "image_tokens": 16386,
+          "megapixels": 37.75,
+          "ok": true,
+          "pixels": 37748736,
+          "png_bytes": 125503,
+          "prompt_tokens": 16415,
+          "tag": "area/6144",
+          "ttft_s": 15.821
+        },
+        {
+          "answer": "TRN95958",
+          "canvas": "2048x2048",
+          "correct": false,
+          "err": null,
+          "expected": "TRN95950",
+          "glyph_px": 7,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17065,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale1",
+          "ttft_s": 1.824
+        },
+        {
+          "answer": "TRN03869",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN03869",
+          "glyph_px": 14,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17129,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale2",
+          "ttft_s": 1.842
+        },
+        {
+          "answer": "TRN11788",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN11788",
+          "glyph_px": 21,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17256,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale3",
+          "ttft_s": 1.825
+        },
+        {
+          "answer": "TRN19707",
+          "canvas": "2048x2048",
+          "correct": true,
+          "err": null,
+          "expected": "TRN19707",
+          "glyph_px": 28,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17481,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale4",
+          "ttft_s": 1.823
+        },
+        {
+          "answer": "TRUNCATE",
+          "canvas": "2048x2048",
+          "correct": false,
+          "err": null,
+          "expected": "TRN27626",
+          "glyph_px": 42,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 17942,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale6",
+          "ttft_s": 1.849
+        },
+        {
+          "answer": "THANKS",
+          "canvas": "2048x2048",
+          "correct": false,
+          "err": null,
+          "expected": "TRN35545",
+          "glyph_px": 56,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 18466,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale8",
+          "ttft_s": 1.825
+        },
+        {
+          "answer": "T H I N K I N G",
+          "canvas": "2048x2048",
+          "correct": false,
+          "err": null,
+          "expected": "TRN43464",
+          "glyph_px": 84,
+          "image_tokens": 4098,
+          "megapixels": 4.19,
+          "ok": true,
+          "pixels": 4194304,
+          "png_bytes": 19398,
+          "prompt_tokens": 4127,
+          "tag": "acuity/scale12",
+          "ttft_s": 1.857
+        }
+      ],
+      "token_saturation": {
+        "image_tokens": 16386,
+        "pixels": 37748736,
+        "previous_image_tokens": 16386,
+        "previous_pixels": 16777216
+      }
+    },
+    "weights_subdir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+    "tuning": [
+      {
+        "step": "35B recipe argv on the v0.7.0 plugin (p35A_base)",
+        "result": "cold prefill 5,558 / 5,481 / 4,657 tok/s at 4k/16k/32k; 4096^2 image OOM in the ViT MLP killed the server",
+        "verdict": "baseline"
+      },
+      {
+        "step": "SGLANG_EXL3_PREFILL_FP16_ACC=1 (p35B)",
+        "result": "6,256 / 6,064 / 5,057 (+9-13 %; routed experts run on the grouped MoE kernel, not the dense path)",
+        "verdict": "kept"
+      },
+      {
+        "step": "+ VIT_SDPA, VIT_MLP_CHUNK 8192, VLM cache 256 MB, prefill graphs 240, chunk 4096, --prefill-decode-interval 16 (p35C)",
+        "result": "16k 6,715 / 32k 5,597; C1 prose 253.3, C2 prose 401.9 agg, C1 code 350.1, C2 code 559.0 (recipe 251.9 / 388.5 / 352.1); 4096^2 still HTTP 500 (fast image processor on the GPU)",
+        "verdict": "kept"
+      },
+      {
+        "step": "--image-processor-backend pil (p35D)",
+        "result": "4096^2 image read, TTFT 15.0 s",
+        "verdict": "kept"
+      },
+      {
+        "step": "C2 launch, protocol acceptance (accept35_v070)",
+        "result": "ladder OK to 257,962; G0 C1/C2 ctx0 and C1/32k clean; C2/32k long-form: ~26k-token greedy outputs, accept 0.96 (LOOP)",
+        "verdict": "C2 claim rejected at 32K"
+      },
+      {
+        "step": "C1 launch (max-running 1, mamba cache 5)",
+        "result": "pool 390,170 -> 419,114; all gates pass",
+        "verdict": "kept"
+      }
+    ],
+    "headroom": {
+      "peak_vram_mib": 22802,
+      "card_mib": 24576,
+      "peak_pct": 92.8
+    }
+  },
+  "model_instance_id": "yeasah-qwen3-6-35b-a3b-exl3--3-00bpw-h5",
+  "provenance": {
+    "captured_at": "2026-09-26T10:17:17Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-26T10:17:17Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "recommended": false,
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8_e4m3",
+    "kv_cache_tokens": 419114,
+    "max_concurrency": 1,
+    "max_context_tokens": 258056,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen36-35b-a3b-exl3-3bpw-mtp-vision-rtx3090-sglang-tp1-sweep"
+  ],
+  "status": "validated"
+}
