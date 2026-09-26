@@ -7,8 +7,9 @@ The model to run on your GPU, and exactly how to run it. Every recipe here is th
 ```
 registry/                      the source of truth, tiny
   cards/<vendor>/<card>.json          a GPU: name, memory, how programs detect it
-  engines/<profile>.json              an engine: pinned image, arguments, config
-  recipes/<vendor>/<card>/<model>.<engine>.<context>k.json
+  engines/<profile>.json              an engine template: pinned image, arguments, config, defaults
+  launches/<name>.json                a launch frozen exactly as it was validated (one recipe each, until a lab run replaces it)
+  recipes/<vendor>/<card>/<model>.<engine>.<context>k[.<n>x].json   (n = cards in the setup)
                                       one recipe (~400 bytes): weights, engine, settings, proof
   models.json                         each model: family, release date, what it is for
 lab/            run, check and publish recipes (lab.py try | convert | render | check)

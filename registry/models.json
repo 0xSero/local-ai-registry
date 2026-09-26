@@ -282,6 +282,50 @@
       "good_for": "Agentic coding at 128K on a 16 GB card",
       "logo": "qwen",
       "hf": "ukisai/Swift-1.5-Qwen3.8-27b"
+    },
+    "lfm2.5-2.6b": {
+      "family": "lfm",
+      "name": "LFM2.5-2.6B",
+      "released": "2026-07-28",
+      "reasoning": false,
+      "vision": false,
+      "about": "Liquid AI's 2.6B hybrid model: tiny and fast, built for on-device work.",
+      "good_for": "Quick chat on 8 GB cards",
+      "logo": "hf",
+      "hf": "LiquidAI/LFM2.5-2.6B"
+    },
+    "lfm2.5-8b-a1b": {
+      "family": "lfm",
+      "name": "LFM2.5-8B-A1B",
+      "released": "2026-05-28",
+      "reasoning": false,
+      "vision": false,
+      "about": "Liquid AI's 8B mixture-of-experts with about 1B active: fast on small cards.",
+      "good_for": "Fast chat on 8-10 GB cards",
+      "logo": "hf",
+      "hf": "LiquidAI/LFM2.5-8B-A1B"
+    },
+    "ornith-1.5-9b": {
+      "family": "ornith",
+      "name": "Ornith-1.5-9B",
+      "released": "2026-08-18",
+      "reasoning": true,
+      "vision": false,
+      "about": "Ornith 1.5, the dense 9B.",
+      "good_for": "A small reasoning model",
+      "logo": "hf",
+      "hf": "ornith-ai/Ornith-1.5-9B"
+    },
+    "gemma-4-e4b": {
+      "family": "gemma",
+      "name": "Gemma 4 E4B",
+      "released": "2026-03-02",
+      "reasoning": true,
+      "vision": true,
+      "about": "Google's Gemma 4 E4B: an efficient on-device multimodal model.",
+      "good_for": "Vision and chat on laptops",
+      "logo": "hf",
+      "hf": "google/gemma-4-E4B-it"
     }
   },
   "builds": {
@@ -364,6 +408,273 @@
     "leonsarmiento/Qwen3.8-27B-3bit-mlx@5fc234d9e6080b8388a11286380e801b7c9f535c": {
       "format": "MLX · 3-bit (g64), 8-bit vision, MTP drafter",
       "size_gb": 12.73
+    },
+    "ggml-org/Qwen3.8-27B-GGUF@0669b98607d47046c7c2b3f801011d54a08cfccf": {
+      "format": "GGUF Q4_K_M",
+      "size_gb": 18.974
+    },
+    "turboderp/Qwen3.8-27B-exl3@113cf7ab958054860e43fb7f3063b1af19171095": {
+      "format": "EXL3 · 4 bpw",
+      "size_gb": 15.73
+    },
+    "Qwen/Qwen3.6-35B-A3B@995ad96eacd98c81ed38be0c5b274b04031597b0": {
+      "format": "safetensors · NVFP4",
+      "size_gb": 71.9
+    },
+    "ornith-ai/Ornith-1.5-35B-A3B@10fbf86fed7ecee4a061f8b499a618f46001cac1": {
+      "format": "nvfp4",
+      "size_gb": 71.9
+    },
+    "LiquidAI/LFM2.5-2.6B@a334ee78cd38458bb71eda24109ac42dcec1309d": {
+      "format": "safetensors · BF16",
+      "size_gb": 5.024
+    },
+    "unsloth/Qwen3.5-9B-GGUF@3885219b6810b007914f3a7950a8d1b469d598a5": {
+      "format": "GGUF · Q4_K_M",
+      "size_gb": 5.68
+    },
+    "unsloth/Qwen3.8-27B-GGUF@4ca720788d1e01f1bff70c033e0d0028fd02e502": {
+      "format": "GGUF · UD-Q2_K_XL",
+      "size_gb": 9.83
+    },
+    "unsloth/Qwen3.6-27B-MTP-GGUF@5cb35eb3dcbf52dbce5f87dbc64df6aaffadcace": {
+      "format": "GGUF · IQ4_XS + MTP",
+      "size_gb": 15.71
+    },
+    "unsloth/Qwen3.6-35B-A3B-GGUF@a483e9e6cbd595906af30beda3187c2663a1118c": {
+      "format": "GGUF · UD-IQ3_S",
+      "size_gb": 13.677
+    },
+    "ornith-ai/Ornith-1.5-35B-A3B-GGUF@12393612fd4f730ff5aadc23e9b8f9648aa49ceb": {
+      "format": "Q6_K",
+      "size_gb": 29.209
+    },
+    "unsloth/gemma-4-26B-A4B-it-GGUF@c099eb48e663fd284577b04978a94ffccb261841": {
+      "format": "Q3_K_XL",
+      "size_gb": 12.907
+    },
+    "orcarouter/Qwen3.8-27B-Uncensored-GGUF@a855f377abf5cbda99a278414466743f427e97c8": {
+      "format": "Q6_K",
+      "size_gb": 22.431
+    },
+    "unsloth/Qwen3.6-35B-A3B-MTP-GGUF@5bc3e238d916f48a861bac2f8a1990a0e9b7e98d": {
+      "format": "Q4_K_M",
+      "size_gb": 22.663
+    },
+    "FastFlowLM/Qwen3.5-9B-NPU2@eb89ce72f46131fd55d62ecfec42fd653fa20c86": {
+      "format": "NPU2 · Q4NX",
+      "size_gb": 8.67
+    },
+    "ornith-ai/Ornith-1.5-35B-A3B-NVFP4@0f0b1b59b879ccde1353e6ebd0fb10c204d4c544": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 21.8
+    },
+    "RedHatAI/Muse-Glimmer-30B-NVFP4@e83ead547c81973aaa09c0072c0dbc916e0d8190": {
+      "format": "NVFP4",
+      "size_gb": 23.38
+    },
+    "turboderp/Qwen3.8-27B-exl3@f33f26d929e2b20ef21361145d582f5239e3831f": {
+      "format": "EXL3 · SC 5.00bpw H6 V6",
+      "size_gb": 18.24
+    },
+    "unsloth/gemma-4-12b-it-NVFP4@b1f649734b34aa5575b03d186abd1b9be3d0d5c4": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 8.7
+    },
+    "RadixArk/Qwen3.8-27B-NVFP4@319f741cce68d7914884900c138a1fbb70a42f30": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 20.4
+    },
+    "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4@bee7596271d1495f6992ae224aefde4410e816b8": {
+      "format": "NVFP4",
+      "size_gb": 21.56
+    },
+    "turboderp/Qwen3.8-27B-exl3@d23340a1fdb479f3c2878136dcede06cf57ea31a": {
+      "format": "EXL3 · bpw set by the launch"
+    },
+    "ornith-ai/Ornith-1.5-9B@489cb97981b8654bcfcf30ce1f94ed1b62e07b53": {
+      "format": "BF16",
+      "size_gb": 17.99
+    },
+    "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency@d14fd7339b09364ea2aabc542ea20f7dccd97ca1": {
+      "format": "GPTQ · INT4 W4A16",
+      "size_gb": 20
+    },
+    "cyankiwi/Qwen3.8-27B-AWQ-INT4@63768c10df38c0395e12ef49edac1bd539eaeeea": {
+      "format": "AWQ · INT4 W4A16",
+      "size_gb": 20
+    },
+    "turboderp/Qwen3.8-27B-exl3@6fe61ad620abfe97c5b49f9722c2bceeea4ccc28": {
+      "format": "EXL3 · 3 bpw",
+      "size_gb": 13.84
+    },
+    "ultimatechris/Ornith-1.5-35B-A3B-EXL3-4bpw@875ac67dae8e793770396908c575c507f4cd5f75": {
+      "format": "EXL3 · 4 bpw",
+      "size_gb": 18.47
+    },
+    "Mia-AiLab/Qwen3.8-27B-EXL3-3.5bpw@19441ac874c4018295da848e250f23511361cda4": {
+      "format": "EXL3 · 3.5 bpw",
+      "size_gb": 15.34
+    },
+    "yeasah/Qwen3.6-35B-A3B-exl3@73da68ef827084d72c59936b4c2088c6580f4e2b": {
+      "format": "EXL3 · 3.00 bpw, head 5 bits",
+      "size_gb": 15.92
+    },
+    "turboderp/Qwen3.8-27B-exl3@4acd9ad5af224ec9e8815a54d71a033f378a7e9d": {
+      "format": "EXL3 · SC 4.00bpw H5",
+      "size_gb": 15.59
+    },
+    "google/gemma-4-E4B-it-qat-q4_0-gguf@4b4a2c1d584be7264f87aac328a1bc739ce81b6c": {
+      "format": "Q4_K_XL",
+      "size_gb": 5.15
+    },
+    "LiquidAI/LFM2.5-2.6B-GGUF@84022ce711b28455e8c4fc364ce68c00cf995875": {
+      "format": "GGUF · QAD-Q4_0",
+      "size_gb": 1.59
+    },
+    "google/gemma-4-12B-it-qat-q4_0-gguf@29d097773436b69ff9feafd636ab4cf873786537": {
+      "format": "GGUF · Q4_0",
+      "size_gb": 6.98
+    },
+    "LiquidAI/LFM2.5-8B-A1B-GGUF@49c14831707011e64d70b2ebd8462ba08d608434": {
+      "format": "GGUF · Q4_K_M",
+      "size_gb": 5.16
+    },
+    "turboderp/Qwen3.8-27B-exl3@004a887127d8304ca2d5475d3a3c41f1761fdd27": {
+      "format": "EXL3 · SC 3.00bpw H4 V4",
+      "size_gb": 12.12
+    },
+    "Mia-AiLab/Qwen3.8-27B-EXL3-2.0bpw@b4925724092da59826c02d25a7201fb272bf4f34": {
+      "format": "EXL3 · 2.0 bpw",
+      "size_gb": 9.68
+    },
+    "deepseek-ai/DeepSeek-V4.1-Flash@fb2764a5cf321eaa5070ca8f9e892818f477c16d": {
+      "format": "safetensors · FP8",
+      "size_gb": 510.313
+    },
+    "unsloth/Qwen3.8-27B-NVFP4@f0b7c9e722f5565102fff8481c99e4d86ae099c7": {
+      "format": "NVFP4",
+      "size_gb": 23.42
+    },
+    "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw@ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe": {
+      "format": "EXL3 Trellis TR3 · 3.0 bpw",
+      "size_gb": 316.42026932
+    },
+    "local-inference-lab/GLM-5.3-Flash-NVFP4@46aaae8a82032f77100f2f03e9cc11b391df3b4d": {
+      "format": "NVFP4 · NVFP4 experts / BF16 sensitive target weights",
+      "size_gb": 199.387195646
+    },
+    "poolside/Laguna-S-2.1-NVFP4@826aacdf6d8b2699d4e367def6f17c83b06044c2": {
+      "format": "NVFP4",
+      "size_gb": 99.697
+    },
+    "brandonmusic/GLM-5.2-EXL3-TR3-3.0bpw@677eaa98b41b9f06abaad03953659c2872c22ce3": {
+      "format": "EXL3 Trellis TR3 · 3.0 bpw",
+      "size_gb": 294.8
+    },
+    "RadixArk/Qwen3.8-27B-NVFP4-BF16-LMHead@009632fef96dd349150baa780c984e62e70e91fe": {
+      "format": "safetensors · NVFP4",
+      "size_gb": 23.749
+    },
+    "kodelow/Hy3-NVFP4-W4A16@4f7e1f02f32f4662bdc47f1237f34995088867a9": {
+      "format": "NVFP4",
+      "size_gb": 180.84
+    },
+    "lukealonso/MiMo-V2.5-NVFP4@a147dd04d6cf861e43b2d783dcde23b53ab7ee68": {
+      "format": "NVFP4",
+      "size_gb": 183.5
+    },
+    "jarrelscy/GLM-5.2-NVFP4-AQLM-hybrid@2d2ee496fbbe81222789bc8828a770241d2ffa2b": {
+      "format": "NVFP4",
+      "size_gb": 291.56
+    },
+    "stepfun-ai/Step-3.7-Flash-NVFP4@4275532ffd9a9496ff36b7a2dc4a9db1048da438": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 129.242
+    },
+    "deepseek-ai/DeepSeek-V4-Flash@60d8d70770c6776ff598c94bb586a859a38244f1": {
+      "format": "IQ3_XXS",
+      "size_gb": 159.62
+    },
+    "thinkingmachines/Inkling-Small-NVFP4@b6a99534467840620d411e4cd4ad5819b2610d9c": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 170.73
+    },
+    "nvidia/NVIDIA-Nemotron-Labs-3-Puzzle-75B-A9B-NVFP4@1d370e47fbc56d1019a471c2339663cdbbb5236f": {
+      "format": "NVFP4",
+      "size_gb": 53.504
+    },
+    "jarrelscy/GLM-5.2-NVFP4-AQLM-hybrid@53e0082eedebd806b63e19779c47905937d768ca": {
+      "format": "hybrid ModelOpt+AQLM · NVFP4 hot experts + AQLM 2-bit cold experts",
+      "size_gb": 272
+    },
+    "0xSero/deepseek-v4-flash-0731-spark@22f28d32b9b29b4352eaa380ff8c2c170b2847ab": {
+      "format": "EXL3 · 3.0 bpw REAP-K216",
+      "size_gb": 99.5
+    },
+    "nvidia/Gemma-4-31B-IT-NVFP4@4135a98a9b728a548947683219633b25682223ac": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 32.633
+    },
+    "nvidia/Qwen3.8-Flash-Next-NVFP4@fc694b54fb0174e0913e6adf86691ef85a4ead47": {
+      "format": "NVFP4",
+      "size_gb": 132.735
+    },
+    "nvidia/Qwen3.6-27B-NVFP4@0893e1606ff3d5f97a441f405d5fc541a6bdf404": {
+      "format": "safetensors · NVFP4 modelopt-mixed W4A16+FP8",
+      "size_gb": 21.922
+    },
+    "unsloth/Qwen3.6-35B-A3B-NVFP4@739af1e7aac320af1682ed1e0cce369af4c5265d": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 26.49
+    },
+    "ornith-ai/Ornith-1.5-35B-A3B-NVFP4@94e431d9cc47fa1986a7a1a4e9a80f7f118b03aa": {
+      "format": "NVFP4",
+      "size_gb": 23.42
+    },
+    "nvidia/Gemma-4-26B-A4B-NVFP4@a19cfe00be84568a6867111c9a68c9c44fdcffe6": {
+      "format": "safetensors · NVFP4",
+      "size_gb": 18.788
+    },
+    "deepseek-ai/DeepSeek-V4-Flash-Vision-Exp@86f746b36186f0e567729a5c06a8c918caba82a9": {
+      "format": "safetensors · FP8",
+      "size_gb": 167.82
+    },
+    "inclusionAI/Ling-3.0-flash-int4@7a27e9eb8179b2c2eb71eb214f0dab14ec6a63f2": {
+      "format": "INT4",
+      "size_gb": 77.01
+    },
+    "mistralai/Leanstral-1.5-119B-A6B@81592da95d94ab0439bfce16df1d55b402e598b6": {
+      "format": "safetensors · FP8",
+      "size_gb": 120.93
+    },
+    "XiaomiMiMo/MiMo-V2.6-Flash-RL@3b38d063180c3e4aed9691fdc735f3d10b266ee4": {
+      "format": "safetensors · FP8",
+      "size_gb": 177.74
+    },
+    "LibertAIDAI/GLM-5.3-Flash-NVFP4@9e0d74e3cef17f634e84fb8e2223707e02616290": {
+      "format": "ModelOpt · NVFP4",
+      "size_gb": 182
+    },
+    "Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw@25a44fdbf16862a46b7cc9921142c6c81350af2f": {
+      "format": "EXL3 TR3 · 4 bpw",
+      "size_gb": 175.64
+    },
+    "deepseek-ai/DeepSeek-V4-Flash-0731@7872f01b1d1fe23eabc4c98b48bffcef5a386062": {
+      "format": "safetensors · FP8",
+      "size_gb": 166.887
+    },
+    "Mia-AiLab/Qwen3.8-Flash-Next-NVFP4@925d7be6c14c6c9442ef83e8f05b5a3c39304f69": {
+      "format": "NVFP4",
+      "size_gb": 105.88
+    },
+    "LibertAIDAI/GLM-5.3-Flash-NVFP4@caca4e6a4ebbd66f159d3d2fc256683fd6e27177": {
+      "format": "NVFP4",
+      "size_gb": 194.67
+    },
+    "Mia-AiLab/DeepSeek-V4.1-Flash-EXL3-2.9bpw@64ba41b6c916a587db06eae2e19b7845f7be6e6b": {
+      "format": "EXL3 · 2.9 bpw",
+      "size_gb": 210.6
     }
   }
 }

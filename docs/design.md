@@ -7,7 +7,8 @@ The registry answers one question for a program: on this GPU, which model should
 | File | What it is | Written by |
 |---|---|---|
 | `cards/<vendor>/<card>.json` | A GPU: name, vendor, backend, memory, bandwidth, and the `match` block programs use to recognise it | Hand, rarely |
-| `engines/<profile>.json` | An engine: pinned image, entrypoint, arguments, environment, port, config file. A template profile (`tabbyapi-exl3`, `vllm`, `sglang`, `sglang-exl3`) has `defaults` a recipe can change; a frozen profile is a launch exactly as it was validated before the lab, or as its publisher runs it | Hand, reviewed |
+| `engines/<profile>.json` | An engine template (`tabbyapi-exl3`, `vllm`, `sglang`, `sglang-exl3`): pinned image, entrypoint, arguments, environment, port, config file, and `defaults` a recipe can change | Hand, reviewed |
+| `launches/<name>.json` | A launch frozen exactly as it was validated before the lab, or as its publisher runs it; one recipe points at it until a lab run replaces it | `lab/import_data.py`, `lab/import_reported.py` |
 | `recipes/<vendor>/<card>/<model>.<engine>.<ctx>k[.<n>x].json` | A recipe: weights at a commit, a profile pinned to its image digest, settings that differ from the profile's defaults, the card, and the proof | `lab/lab.py` only |
 | `dist/catalog.json`, `plugin/v2/recipes.json` | Everything above, rendered, with at most 3 picks per card setup | `make` |
 

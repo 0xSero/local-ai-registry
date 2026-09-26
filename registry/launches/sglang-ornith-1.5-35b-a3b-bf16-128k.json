@@ -1,0 +1,67 @@
+{
+  "id": "sglang-ornith-1.5-35b-a3b-bf16-128k",
+  "engine": "sglang",
+  "about": "ornith-1.5-35b-a3b as validated in ornith15-35b-a3b-bf16-mi300x-sglang-tp1",
+  "image": "lmsysorg/sglang-rocm:v0.5.18-rocm720-mi30x-20260823@sha256:8805fe3744f9b549b4e329b37134bce6ce4afd7ec749ea1249507bcbcea10096",
+  "backend": "amd-rocm",
+  "port": 30000,
+  "entrypoint": "/opt/venv/bin/python",
+  "args": [
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "ornith-ai/Ornith-1.5-35B-A3B",
+    "--revision",
+    "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+    "--served-model-name",
+    "ornith-1.5-35b-a3b",
+    "--trust-remote-code",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--context-length",
+    "262144",
+    "--mem-fraction-static",
+    "0.90",
+    "--max-running-requests",
+    "4",
+    "--attention-backend",
+    "aiter",
+    "--mamba-ssm-dtype",
+    "bfloat16",
+    "--mamba-radix-cache-strategy",
+    "extra_buffer",
+    "--chunked-prefill-size",
+    "2048",
+    "--max-prefill-tokens",
+    "16384",
+    "--cuda-graph-max-bs-decode",
+    "4",
+    "--enable-cache-report",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "ornith-ai/Ornith-1.5-35B-A3B",
+      "revision": "10fbf86fed7ecee4a061f8b499a618f46001cac1",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "ornith15-35b-a3b-bf16-mi300x-sglang-tp1"
+  ]
+}

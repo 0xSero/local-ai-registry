@@ -12,7 +12,7 @@ export type Launch = {
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
   kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
 };
-export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; card: string; proof: Proof[]; launch: Launch };
+export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; profile: string; card: string; proof: Proof[]; launch: Launch };
 export type Model = { family: string; name: string; released: string; reasoning: boolean; vision: boolean; about?: string; good_for?: string; logo?: string; hf?: string };
 /** One way to run a card: one card, several in one machine, or several machines. Picks and more are recipe keys. */
 export type Setup = { cards: number; machines: number; label: string; vram_gb: number; picks: string[]; more: string[] };

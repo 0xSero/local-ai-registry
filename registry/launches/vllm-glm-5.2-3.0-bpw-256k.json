@@ -1,0 +1,72 @@
+{
+  "id": "vllm-glm-5.2-3.0-bpw-256k",
+  "engine": "vllm",
+  "about": "glm-5.2 as validated in glm52-exl3-rtxpro6000-vllm-tp4",
+  "image": "voipmonitor/vllm:gilded-gnosis-v20-vllmb46c3aa-si35aebc6-fi801d57a-cu132-20260730-r12@sha256:bcd65c13076b00cf7804001ce70085453de958b082897b9674a26d9fab4d436a",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": null,
+  "args": [
+    "-lc",
+    "mkdir -p /tmp/glm52-candidate && cp /usr/local/bin/serve-glm52-v19.sh /usr/local/bin/serve-glm52-v16.sh /usr/local/bin/glm52-pcie-runtime-env.sh /usr/local/bin/glm52-dcp-prefill-policy.sh /usr/local/bin/glm52-pcie-calibration.py /tmp/glm52-candidate/ && sed -i \"s|exec /usr/local/bin/serve-glm52-v16.sh|exec /tmp/glm52-candidate/serve-glm52-v16.sh|\" /tmp/glm52-candidate/serve-glm52-v19.sh && sed -i \"s/export VLLM_ENABLE_PCIE_ALLREDUCE=1/export VLLM_ENABLE_PCIE_ALLREDUCE=0/\" /tmp/glm52-candidate/glm52-pcie-runtime-env.sh && export GLM52_SERVER=/tmp/glm52-candidate/serve-glm52-v19.sh && exec /usr/local/bin/serve-gilded-gnosis.sh"
+  ],
+  "env": {
+    "ASYNC_SCHEDULING": "0",
+    "B12X_PCIE_DMA": "0",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "DCP": "4",
+    "DCP_BACKEND": "ag_rs",
+    "DCP_CKV_GATHER": "auto",
+    "DCP_CKV_GATHER_MAX_TOKENS": "16384",
+    "DCP_CKV_PREFETCH_DEPTH": "auto",
+    "DCP_INDEXER_SHARDS": "auto",
+    "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+    "DCP_QUERY_SPLIT": "auto",
+    "DCP_TOPK_OWNER_MERGE": "auto",
+    "GPUS": "0,1,2,3",
+    "GPU_MEMORY_UTILIZATION": "0.95",
+    "GRAPH": "56",
+    "KV_FP8_ROPE": "1",
+    "LMCACHE_MODE": "off",
+    "MAX_BATCHED_TOKENS": "3072",
+    "MAX_MODEL_LEN": "262144",
+    "MAX_NUM_SEQS": "8",
+    "MODEL": "/model",
+    "MODEL_FAMILY": "glm52-exl3",
+    "MTP": "6",
+    "MTP_DRAFT_SAMPLE_METHOD": "greedy",
+    "MTP_MOE_BACKEND": "triton",
+    "NCCL_IB_DISABLE": "1",
+    "NCCL_P2P_LEVEL": "SYS",
+    "NCCL_PROTO": "LL,LL128,Simple",
+    "PCIE_CALIBRATION": "off",
+    "SERVED_MODEL_NAME": "glm-5.2",
+    "TORCH_CUDA_ARCH_LIST": "12.0a",
+    "TP": "4",
+    "VLLM_DISABLED_KERNELS": "MarlinFP8ScaledMMLinearKernel",
+    "VLLM_DISABLE_SHARED_EXPERTS_STREAM": "0",
+    "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+    "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "1",
+    "VLLM_USE_B12X_DCP_A2A": "0"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "brandonmusic/GLM-5.2-EXL3-TR3-3.0bpw",
+      "revision": "677eaa98b41b9f06abaad03953659c2872c22ce3",
+      "at": "/model",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": false,
+  "cards": 4,
+  "flags": [
+    "--ipc host"
+  ],
+  "frozen_from": [
+    "glm52-exl3-rtxpro6000-vllm-tp4"
+  ]
+}

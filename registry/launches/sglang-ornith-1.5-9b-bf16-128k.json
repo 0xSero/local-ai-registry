@@ -1,0 +1,41 @@
+{
+  "id": "sglang-ornith-1.5-9b-bf16-128k",
+  "engine": "sglang",
+  "about": "Ornith-1.5-9B as validated in ornith15-9b-rtxpro4500-sglang-tp1",
+  "image": "ghcr.io/0xsero/sglang@sha256:787461f889674cdd9339be2409a6e8b46ec2f5aac71669481c319f87c2beca13",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": null,
+  "args": [
+    "/opt/sglang/bin/python3",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/opt/models/Ornith-1.5-9B",
+    "--served-model-name",
+    "Ornith-1.5-9B",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--context-length",
+    "131072",
+    "--mem-fraction-static",
+    "0.85",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--reasoning-parser",
+    "qwen3"
+  ],
+  "env": {},
+  "shm": null,
+  "weights": [],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "frozen_from": [
+    "ornith15-9b-rtxpro4500-sglang-tp1"
+  ]
+}

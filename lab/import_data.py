@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Bring a recipe validated before the lab from data/ into production, exactly as it was validated:
-its launch becomes a frozen profile in registry/engines/, and a recipe points at it with a legacy proof.
+its launch becomes a frozen launch in registry/launches/, and a recipe points at it with a legacy proof.
 A lab run of the card later replaces it.
 
     lab/import_data.py <data recipe id> <model id in registry/models.json> [--profile <name>]
@@ -71,10 +71,10 @@ def freeze(rid, model, name=None):
     base = re.sub(r"[^a-z0-9.]+", "-", f"{engine}-{model}-{mi['weights'].get('precision') or mi['weights']['format']}-{ctx // 1024}k".lower()).strip("-")
     base = name or base
     name, n = base, 2
-    while (lab.ENGINES / f"{name}.json").exists() and load(lab.ENGINES / f"{name}.json").get("frozen_from") != [rid]:
+    while (lab.LAUNCHES / f"{name}.json").exists() and load(lab.LAUNCHES / f"{name}.json").get("frozen_from") != [rid]:
         name, n = f"{base}-v{n}", n + 1
     prof = {"id": name, **prof, "frozen_from": [rid]}
-    (lab.ENGINES / f"{name}.json").write_text(json.dumps(prof, indent=2) + "\n")
+    (lab.LAUNCHES / f"{name}.json").write_text(json.dumps(prof, indent=2) + "\n")
     digest = prof["image"].split("@sha256:")[1][:12] if prof.get("image") and "@sha256:" in prof["image"] else "host"
     recipe = {"model": model, "weights": f"{mi['repository']}@{mi['revision']}" if mi.get("revision") else "baked-into-image",
               "engine": f"{name}@{digest}", "set": {}, "card": r["hardware_id"],

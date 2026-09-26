@@ -1,0 +1,36 @@
+{
+  "id": "sglang-qwen3.8-27b-int4-w4a16-135k",
+  "engine": "sglang",
+  "about": "Qwen3.8-27B as validated in qwen38-awq-int4-rtx3090-sglang-tp4",
+  "image": "ghcr.io/0xsero/qwen38-3090-sglang@sha256:cc2bfc369c709c53d239ef2af41d4ae2530904975816bb2ca484188008586ac9",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": "/bin/bash",
+  "args": [
+    "-lc",
+    "exec /entrypoint.sh"
+  ],
+  "env": {
+    "DSPARK": "1",
+    "MODELS_DIR": "/models",
+    "PORT": "8000",
+    "TP": "4"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+      "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+      "at": "/models",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 138452,
+  "seqs": 1,
+  "vision": true,
+  "cards": 4,
+  "frozen_from": [
+    "qwen38-awq-int4-rtx3090-sglang-tp4"
+  ]
+}

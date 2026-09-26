@@ -1,0 +1,63 @@
+{
+  "id": "llama.cpp-gemma-4-e4b-q4-0-8k",
+  "engine": "llama.cpp",
+  "about": "gemma-4-E4B-it-qat-q4_0-gguf as validated in gemma4-e4b-qat-q4-0-rtx4060-laptop-llamacpp-tp1",
+  "image": "ghcr.io/ggml-org/llama.cpp@sha256:87c812ce5a8955364c665229d0848e07a2cf38fbd387d83530bc4575a22ffaa1",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--device",
+    "CUDA0",
+    "--model",
+    "/models/gemma-4-E4B_q4_0-it.gguf",
+    "--alias",
+    "gemma-4-E4B-it-qat-q4_0-gguf",
+    "--ctx-size",
+    "8192",
+    "--parallel",
+    "1",
+    "--n-gpu-layers",
+    "999",
+    "--fit",
+    "off",
+    "--flash-attn",
+    "on",
+    "--no-mmproj",
+    "--jinja",
+    "--metrics",
+    "--perf",
+    "--threads",
+    "8",
+    "--threads-batch",
+    "8",
+    "--batch-size",
+    "512",
+    "--ubatch-size",
+    "128",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--reasoning-budget",
+    "0"
+  ],
+  "env": {},
+  "shm": null,
+  "weights": [
+    {
+      "repo": "google/gemma-4-E4B-it-qat-q4_0-gguf",
+      "revision": "4b4a2c1d584be7264f87aac328a1bc739ce81b6c",
+      "at": "/models",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 8192,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "gemma4-e4b-qat-q4-0-rtx4060-laptop-llamacpp-tp1"
+  ]
+}

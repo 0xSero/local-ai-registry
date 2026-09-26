@@ -1,0 +1,36 @@
+{
+  "id": "sglang-gemma-4-12b-nvfp4-128k-v3",
+  "engine": "sglang",
+  "about": "unsloth/gemma-4-12b-it-NVFP4 as validated in gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1",
+  "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/bin/bash",
+  "args": [
+    "-lc",
+    "set -euo pipefail; echo 'dede8848dbcbfcfc6507da963a65d120add93101b6ff5fb54a03f19e86233d11  /tmp/gemma4-engine-patch.diff' | sha256sum -c -; echo 'd5498b253f35e83ab0aaf219a2c2bf2f42c6bbd3f95ffce02760e78b2e38a4e9  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; (cd /sgl-workspace/sglang && patch -p0 < /tmp/gemma4-engine-patch.diff); echo 'b0614b99a0d7fe654ed102fb5db04c578e3be6042896f73f9418965e6672c737  /sgl-workspace/sglang/python/sglang/srt/models/gemma4_unified.py' | sha256sum -c -; exec /opt/sglang/bin/python -m sglang.launch_server --model-path unsloth/gemma-4-12b-it-NVFP4 --revision b1f649734b34aa5575b03d186abd1b9be3d0d5c4 --tp 1 --host 0.0.0.0 --port 30000 --context-length 131072 --mem-fraction-static 0.94 --attention-backend triton --kv-cache-dtype fp8_e4m3 --max-running-requests 4 --cuda-graph-max-bs-decode 4 --enable-cache-report --trust-remote-code --reasoning-parser gemma4 --tool-call-parser gemma4"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "unsloth/gemma-4-12b-it-NVFP4",
+      "revision": "b1f649734b34aa5575b03d186abd1b9be3d0d5c4",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": {
+    "at": "/tmp/gemma4-engine-patch.diff",
+    "text": "--- /tmp/gemma4_unified.py.orig\t2026-08-23 20:25:26.703455135 +0000\n+++ python/sglang/srt/models/gemma4_unified.py\t2026-08-23 20:35:46.352246434 +0000\n@@ -70,7 +70,12 @@\n\n     def __init__(self, config):\n         super().__init__()\n-        patch_dim = config.model_patch_size**2 * 3  # 48*48*3 = 6912\n+        model_patch_size = getattr(config, \"model_patch_size\", None)\n+        if model_patch_size is None:\n+            # NVFP4 republished configs carry patch_size*pooling_kernel_size\n+            # (16*3=48) instead of the flattened model_patch_size field.\n+            model_patch_size = config.patch_size * getattr(config, \"pooling_kernel_size\", 1)\n+        patch_dim = model_patch_size**2 * 3  # 48*48*3 = 6912\n         mm_embed_dim = config.mm_embed_dim\n\n         self.patch_ln1 = nn.LayerNorm(patch_dim)\n@@ -110,7 +115,11 @@\n\n     def __init__(self, multimodal_config, text_config):\n         super().__init__()\n-        self.multimodal_hidden_size = multimodal_config.output_proj_dims\n+        self.multimodal_hidden_size = getattr(\n+            multimodal_config,\n+            \"audio_embed_dim\",\n+            multimodal_config.output_proj_dims,\n+        )\n         self.text_hidden_size = text_config.hidden_size\n         self.embedding_pre_projection_norm = Gemma4RMSNorm(\n             self.multimodal_hidden_size,\n@@ -190,7 +199,8 @@\n         )\n\n         text_tie = getattr(text_config, \"tie_word_embeddings\", True)\n-        if self.pp_group.world_size == 1 and text_tie:\n+        self.lm_head_is_tied = self.pp_group.world_size == 1 and text_tie\n+        if self.lm_head_is_tied:\n             self.lm_head = self.language_model.embed_tokens\n         elif self.pp_group.is_last_rank:\n             self.lm_head = ParallelLMHead(\n"
+  },
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "gemma-4-12b-it-nvfp4-rtxpro6000-sglang-tp1"
+  ]
+}

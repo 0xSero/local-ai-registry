@@ -35,7 +35,7 @@ def build(today=None):
         if old != 1 and (not m or m["family"] not in fam or (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]):
             continue
         key = str(f.relative_to(lab.RECIPES).with_suffix(""))
-        recipes[key] = {**r, "launch": lab.render(r)}
+        recipes[key] = {**r, "launch": lab.render(r), "profile": str(lab.profile_file(r["engine"].split("@")[0] + ".json").relative_to(ROOT))}
         # a lab recipe ranks above a legacy one, and a legacy one above one reported by its publisher
         mf = (fam.get(m["family"], len(fam)), -dt.date.fromisoformat(m["released"]).toordinal()) if m else (len(fam), 0)
         rank = (old, *mf)

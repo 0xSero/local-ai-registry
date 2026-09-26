@@ -1,0 +1,52 @@
+{
+  "id": "vllm-qwen3.8-27b-int4-w4a16-40k",
+  "engine": "vllm",
+  "about": "Qwen3.8-27B as validated in qwen38-awq-int4-rtx3090-vllm-tp1",
+  "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": null,
+  "args": [
+    "--model",
+    "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+    "--revision",
+    "63768c10df38c0395e12ef49edac1bd539eaeeea",
+    "--served-model-name",
+    "Qwen3.8-27B",
+    "--tensor-parallel-size",
+    "1",
+    "--max-model-len",
+    "40960",
+    "--max-num-seqs",
+    "2",
+    "--kv-cache-dtype",
+    "fp8",
+    "--gpu-memory-utilization",
+    "0.97",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_xml",
+    "--reasoning-parser",
+    "qwen3"
+  ],
+  "env": {
+    "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "cyankiwi/Qwen3.8-27B-AWQ-INT4",
+      "revision": "63768c10df38c0395e12ef49edac1bd539eaeeea",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 40960,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "qwen38-awq-int4-rtx3090-vllm-tp1"
+  ]
+}

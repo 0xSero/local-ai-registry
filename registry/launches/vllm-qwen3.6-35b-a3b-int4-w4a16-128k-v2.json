@@ -1,0 +1,52 @@
+{
+  "id": "vllm-qwen3.6-35b-a3b-int4-w4a16-128k-v2",
+  "engine": "vllm",
+  "about": "Qwen3.6-35B as validated in qwen36-gptq-int4-rtx3090-vllm-tp2",
+  "image": "vllm/vllm-openai@sha256:0a51ea5b4ae2dc5d81890e5173f54203d2a3ae0cfffe51b8fd2afd4391bfd967",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": null,
+  "args": [
+    "--model",
+    "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+    "--revision",
+    "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+    "--served-model-name",
+    "Qwen3.6-35B",
+    "--tensor-parallel-size",
+    "2",
+    "--max-model-len",
+    "131072",
+    "--max-num-seqs",
+    "8",
+    "--kv-cache-dtype",
+    "fp8",
+    "--gpu-memory-utilization",
+    "0.97",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_xml",
+    "--reasoning-parser",
+    "qwen3"
+  ],
+  "env": {
+    "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS": "0"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "Twu31/Qwen3.6-35B-A3B-GPTQ-INT4-W4A16-LowLatency",
+      "revision": "d14fd7339b09364ea2aabc542ea20f7dccd97ca1",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 2,
+  "frozen_from": [
+    "qwen36-gptq-int4-rtx3090-vllm-tp2"
+  ]
+}
