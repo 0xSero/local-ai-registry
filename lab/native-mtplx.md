@@ -16,6 +16,24 @@ measures speed on its separate short story prompt; it does not assert 15
 tokens/s at maximum context. Its six gates do not re-test vision or certify
 optimal settings. The previous vision/MTP evidence supports those settings.
 
+## Lab result, 2026-09-26
+
+All six gates passed. The lab wrote
+`registry/recipes/apple/apple-m4-max-128gb/qwen3.8-27b.mtplx.200k.json` (409 bytes).
+The [generated run evidence](runs/apple-m4-max-128gb.qwen3.8-27b.mtplx-qwen3.8-27b-4bit-200k.200k.20260926T103549.json)
+records a normal chat stop, separate reasoning with the correct answer `391`,
+a `get_weather` call for Paris followed by use of the synthetic 17°C result,
+and correct recall of `58213` from **166,625 prompt tokens**. That context request
+took 1,512.3 seconds. The lab's approximate 85%-window prompt generator and its
+unchanged acceptance threshold were used; this run is not another full-200k
+vision test.
+
+The first 30 seconds of the separate story stream measured **34.4 tokens/s**,
+using the local tokenizer, above the unchanged 15 tokens/s gate. The complete
+stream contained 6,310 counted tokens including reasoning and took 121.1 seconds.
+This is one passing lab run, not an optimized cross-hardware comparison.
+The evidence's native launch SHA-256 was checked against the rendered profile.
+
 ## Start and test
 
 Read `registry/engines/mtplx-qwen3.8-27b-4bit-200k.json`. Its `runtime` block is
