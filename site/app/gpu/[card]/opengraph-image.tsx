@@ -2,6 +2,7 @@ import { og, size } from "@/lib/og";
 import { cards, card, picks, model, format, ctxLabel, short } from "@/lib/registry";
 export { size };
 export const contentType = "image/png";
+export const dynamic = "force-static";
 export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
 export default async function Image({ params }: { params: Promise<{ card: string }> }) {
   const c = card((await params).card)!;

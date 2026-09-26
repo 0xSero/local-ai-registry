@@ -9,8 +9,6 @@ let started = false;
 
 export function track(event: string, props: Record<string, unknown> = {}) {
   if (KEY) posthog.capture(event, props);
-  // Vercel custom events, where the plan has them
-  import("@vercel/analytics").then(({ track }) => track(event, props as Record<string, string | number | boolean | null>)).catch(() => {});
 }
 
 export default function PostHog() {

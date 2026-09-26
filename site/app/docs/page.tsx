@@ -1,4 +1,4 @@
-import { SITE } from "../layout";
+const SITE = "https://local.sybilsolutions.ai";
 
 export const metadata = { title: "How it works", description: "How a recipe is made, checked and run; the file tree; the API and SDK." };
 
@@ -57,8 +57,8 @@ export default function Docs() {
 
       <section id="api"><span className="label">API</span>
         <table className="t"><tbody>
-          <tr><td><code>GET /api/v2/catalog</code></td><td className="dim">Everything: every GPU, its picks, every recipe with its rendered launch</td></tr>
-          <tr><td><code>GET /api/v2/gpus/&lt;card&gt;</code></td><td className="dim">One GPU and its top recipes, launches included</td></tr>
+          <tr><td><code>GET /api/v2/catalog.json</code></td><td className="dim">Everything: every GPU, its picks, every recipe with its rendered launch</td></tr>
+          <tr><td><code>GET /api/v2/gpus/&lt;gpu&gt;.json</code></td><td className="dim">One GPU and its top recipes, launches included</td></tr>
           <tr><td><code>GET /api/v2/pick?gpu=RTX%203090&amp;vram=24</code></td><td className="dim">The recommended recipe for the GPU a program detected</td></tr>
         </tbody></table>
         <pre className="code" style={{ marginTop: 14 }}>{`curl -s "${SITE}/api/v2/pick?gpu=RTX%204090&vram=24" | jq .recipe.launch.image`}</pre>

@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import PostHog from "@/components/PostHog";
 import { stats } from "@/lib/registry";
 import "./globals.css";
 
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500"] });
-export const SITE = "https://local.sybilsolutions.ai";
+const SITE = "https://local.sybilsolutions.ai";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -40,8 +38,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </footer>
         </div>
         <PostHog />
-        <Analytics />
-        <SpeedInsights />
+        {/* Cloudflare Web Analytics: page views and Core Web Vitals, no cookies */}
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9e30875864824920804a1f95dd926025"}' />
       </body>
     </html>
   );
