@@ -10,7 +10,7 @@ Run a model validated for your GPU, or one across several cards of a kind, and o
 ## Install
 
 ```bash
-git clone <this repo> && cd local-ai-linux-app
+git clone https://github.com/0xSero/local-ai-registry && cd local-ai-registry/app
 sudo make install          # /usr/local/bin/local-ai, /usr/local/share/local-ai, the polkit action
 local-ai doctor            # what this machine has and lacks, with the command that adds each piece
 ```
@@ -71,7 +71,7 @@ It shows `AI`, `AI 1` when a model is ready, `AI …` while one starts and `AI !
 |---|---|
 | `core/local-ai` | The backend: GPUs, downloads, containers, agents, usage, the snapshot |
 | `core/Model.js` | The view model every panel draws: plain functions, snapshot and UI state in, rows and actions out |
-| `core/recipes.json` | The vendored recipes, one card kind per line (`make sync REGISTRY=<registry checkout>`) |
+| `core/recipes.json` | The vendored recipes, one card kind per line (`make sync` copies them from `../plugin/v2/recipes.json`) |
 | `core/org.local-ai.policy.in` | The polkit actions for the password prompts (installed with the command's path) |
 | `test/` | `core-test.sh` runs the backend end to end with shims for Docker, Podman, the GPU tools and pkexec; `model-test.sh` checks the view model; `make test` runs both |
 
