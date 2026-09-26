@@ -1,4 +1,5 @@
-export type Launch = { image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
+export type Launch = { kind?: "native"; platform?: string; steps?: { title: string; code: string }[]; runtime?: { python: string; requirements: string[] };
+  image: string | null; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
   weights: Weights | Weights[]; config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; backend?: string | null; cards?: number };
 export type Weights = { repo: string; revision: string; at: string; layout?: string };
 export type Proof = { at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null; proxy?: string; legacy?: boolean };

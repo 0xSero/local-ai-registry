@@ -34,7 +34,8 @@ docs/           design.md
 ```
 
 - `weights`: a Hugging Face repo at a full commit.
-- `engine`: a profile in `registry/engines/`, pinned to its image digest.
+- `engine`: a profile in `registry/engines/`, pinned to its image digest (containers)
+  or canonical profile SHA-256 (native macOS).
 - `set`: only the settings that differ from the profile's defaults.
 - `proof`: the latest passing runs. A proof marked `proxy` was run on the sibling card it names; one marked `legacy` passed the older acceptance (load and chat) and is waiting for a full run.
 
@@ -42,7 +43,8 @@ docs/           design.md
 
 ## Running a recipe
 
-Every program runs one the same way:
+Every program runs a container recipe the same way (native Apple launches are
+described below):
 
 1. Download the weights at the pinned commit.
 2. Write the config file.
@@ -58,6 +60,16 @@ python3 lab/lab.py try <repo>@<commit> --model <id> --engine tabbyapi-exl3 --car
 ```
 
 `try` rents the card on Vast (or RunPod, or `--on endpoint --endpoint <url>` for your own machine), runs the six checks, writes the recipe only if all pass, and destroys the machine. `lab/campaign.py <plan>` runs many at once. `lab.py convert <card>` re-runs a `legacy` recipe the same way. Then `make` and open a pull request; CI runs `make check`.
+
+### Native Apple Silicon
+
+Native profiles use `kind: native`, `platform: darwin-arm64`, a pinned Python
+and dependency list, commit-pinned weights, and a loopback server command. Their
+profile pin covers the entire profile, including arguments and environment.
+The catalog and both SDKs render native installation/download/start steps;
+these profiles have no container image and are excluded from the Linux-only
+Omarchy export. Native runs require `--on endpoint`; the lab never rents a host
+for them. See [the M4 Max run guide](lab/native-mtplx.md).
 
 ## Using it
 

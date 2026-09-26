@@ -43,6 +43,8 @@ def build():
     meta = json.loads((ROOT / "registry" / "models.json").read_text())
     hw = {}
     for card, c in sorted(cat["cards"].items()):
+        if c["backend"] == "metal":
+            continue  # Omarchy is Linux/container-only; native launches remain in catalog/SDKs.
         hw[card] = {"match": c["match"],
                     "recipes": [entry(k, cat["recipes"][k], meta) for k in c["picks"]]}
     head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}

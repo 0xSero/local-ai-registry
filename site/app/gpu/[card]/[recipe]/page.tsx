@@ -68,7 +68,8 @@ export default async function RecipePage({ params }: P) {
         <span className="label">Details</span>
         <dl className="kv">
           <dt>Weights</dt><dd>{!w ? "inside the image" : <a href={`https://huggingface.co/${w.repo}/tree/${w.revision}`}>{w.repo} @ {w.revision.slice(0, 10)} ›</a>}</dd>
-          <dt>Image</dt><dd>{r.launch.image}</dd>
+          <dt>{r.launch.kind === "native" ? "Runtime" : "Image"}</dt>
+          <dd>{r.launch.kind === "native" ? `${engineKind(r)} on macOS · Python ${r.launch.runtime?.python}` : r.launch.image}</dd>
           <dt>Engine profile</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/engines/${r.engine.split("@")[0]}.json`}>{r.engine.split("@")[0]} ›</a></dd>
           <dt>Recipe file</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/recipes/${r.key}.json`}>registry/recipes/{r.key}.json ›</a></dd>
           {m.released && <><dt>Model released</dt><dd>{fmtDate(m.released)}</dd></>}

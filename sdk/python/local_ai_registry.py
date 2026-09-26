@@ -61,6 +61,8 @@ def _q(s):
 def steps(r):
     """The steps to run a recipe by hand: download the weights, write the config, start the container."""
     l = r["launch"]
+    if l.get("kind") == "native":
+        return [dict(s) for s in l["steps"]]
     name = (r.get("key") or r["model"]).split("/")[-1]
     ws = [w for w in (l["weights"] if isinstance(l["weights"], list) else [l["weights"]]) if w and w.get("repo")]
     out, mounts, dl = [], [], []

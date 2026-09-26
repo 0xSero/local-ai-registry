@@ -34,6 +34,7 @@ const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filt
 
 /** The steps to run a recipe by hand: download the weights, write the config, start the container. */
 export function steps(r) {
+  if (r.launch.kind === "native") return r.launch.steps.map((s) => ({ ...s }));
   const l = r.launch, name = (r.key ?? r.model).split("/").pop();
   const out = [], mounts = [], dl = [];
   for (const w of weights(l)) {
