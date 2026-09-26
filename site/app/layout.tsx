@@ -11,7 +11,7 @@ const SITE = "https://local.sybilsolutions.ai";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: { default: "Local AI: the model to run on your GPU", template: "%s · Local AI" },
-  description: `Tested recipes for ${stats.gpus} GPUs: which model to run, how fast it goes, and the exact command. Every recipe passed six checks on the card.`,
+  description: `Tested recipes for ${stats.gpus} GPUs: which model to run, how fast it goes, and the exact command. Tested recipes passed six checks on the card.`,
   openGraph: { siteName: "Local AI", type: "website" },
   twitter: { card: "summary_large_image" },
 };

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import RecipeCard from "@/components/RecipeCard";
-import { cards, card, picks, model, VENDOR, short } from "@/lib/registry";
+import RecipeCard, { ENGINE } from "@/components/RecipeCard";
+import { cards, card, picks, more, model, format, engineKind, ctxLabel, status, VENDOR, short } from "@/lib/registry";
 
 type P = { params: Promise<{ card: string }> };
 export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
@@ -33,6 +33,24 @@ export default async function Gpu({ params }: P) {
           {ps.map((r) => <RecipeCard key={r.key} r={r} all={ps} />)}
         </div>
       </section>
+      {more(c).length > 0 && (
+        <section>
+          <span className="label">More recipes ({more(c).length})</span>
+          <div style={{ overflowX: "auto" }}><table className="t">
+            <thead><tr><th>Model</th><th>Format</th><th>Engine</th><th>Context</th><th>Machines</th><th>Decode</th><th>Status</th></tr></thead>
+            <tbody>
+              {more(c).map((r) => (
+                <tr key={r.key}>
+                  <td><Link href={`/gpu/${r.card}/${r.slug}`}>{model(r).name} ›</Link></td>
+                  <td>{format(r) || "–"}</td><td>{ENGINE[engineKind(r)] ?? engineKind(r)}</td><td>{ctxLabel(r.launch.ctx)}</td>
+                  <td>{r.launch.machines ?? 1}</td><td>{r.proof[0].tps ? `${Math.round(r.proof[0].tps)} tok/s` : "–"}</td>
+                  <td className="dim">{status(r).label}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table></div>
+        </section>
+      )}
     </main>
   );
 }

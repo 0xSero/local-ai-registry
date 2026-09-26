@@ -24,7 +24,7 @@ for line in Path(a.plan).read_text().splitlines():
     if lab.recipe_path(r, lab.render({**r, "set": {k: int(v) if v.isdigit() else v for k, v in r["set"].items()}})).exists():
         print(f"skip {card} {model}: recipe exists"); continue
     todo.append((card, model, ["python3", str(lab.ROOT / "lab" / "lab.py"), "try", weights, "--model", model, "--engine", a.engine, "--card", card,
-                               "--max-price", a.max_price, "--min-cuda", a.min_cuda, "--min-inet", a.min_inet, "--disk", "50"] + [x for s in sets for x in ("--set", s)]))
+                               "--max-price", a.max_price, "--min-cuda", a.min_cuda, "--min-inet", a.min_inet, "--disk", "90"] + [x for s in sets for x in ("--set", s)]))
 running = []
 while todo or running:
     while todo and len(running) < a.jobs:
