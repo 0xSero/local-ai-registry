@@ -64,6 +64,8 @@ def steps(r):
     if l.get("kind") == "native":
         return [dict(s) for s in l["steps"]]
     name = (r.get("key") or r["model"]).split("/")[-1]
+    if l.get("kind") == "host":
+        return [{"title": "Install", "code": f"# {l['install']}"}, {"title": "Start the server", "code": " ".join(l["command"])}]
     ws = [w for w in (l["weights"] if isinstance(l["weights"], list) else [l["weights"]]) if w and w.get("repo")]
     out, mounts, dl = [], [], []
     for w in ws:
@@ -86,11 +88,13 @@ def steps(r):
             args.append(f"{a[i]} {_q(a[i + 1])}"); i += 2
         else:
             args.append(_q(a[i])); i += 1
-    run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"]
+    run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or [])
     run += [f"--shm-size {l['shm']}"] if l.get("shm") else []
     run += [f"-e {k}={_q(v)}" for k, v in (l.get("env") or {}).items()] + mounts
     run += [f"--entrypoint {l['entrypoint']}"] if l.get("entrypoint") else []
-    out.append({"title": "Start the server", "code": " \\\n  ".join(run + [l["image"]] + args)})
+    m = l.get("machines")
+    title = f"Start the server on each of the {m} machines (NODE_RANK 0 to {m - 1})" if m else "Start the server"
+    out.append({"title": title, "code": " \\\n  ".join(run + [l["image"]] + args)})
     return out
 
 

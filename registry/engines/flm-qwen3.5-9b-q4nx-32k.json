@@ -1,0 +1,22 @@
+{
+  "id": "flm-qwen3.5-9b-q4nx-32k",
+  "kind": "host",
+  "engine": "flm",
+  "about": "qwen3.5:9b on xdna2-krackan-16gb, as validated in qwen35-9b-npu2-xdna2-krackan-16gb-flm-tp1",
+  "command": [
+    "flm",
+    "serve",
+    "qwen3.5:9b",
+    "--port",
+    "52626"
+  ],
+  "install": "https://github.com/FastFlowLM/FastFlowLM",
+  "port": 52626,
+  "ctx": 32768,
+  "seqs": 1,
+  "vision": false,
+  "backend": "amd-npu",
+  "frozen_from": [
+    "qwen35-9b-npu2-xdna2-krackan-16gb-flm-tp1"
+  ]
+}

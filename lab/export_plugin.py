@@ -44,9 +44,11 @@ def build():
     hw = {}
     for card, c in sorted(cat["cards"].items()):
         if c["backend"] == "metal":
-            continue  # Omarchy is Linux/container-only; native launches remain in catalog/SDKs.
-        hw[card] = {"match": c["match"],
-                    "recipes": [entry(k, cat["recipes"][k], meta) for k in c["picks"]]}
+            continue
+        # The plugin runs plain containers; native and host launches stay in the catalog/SDKs.
+        ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines"))]
+        if ok:
+            hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
     head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}
     lines = ["{"] + [f'  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)},' for k, v in head.items()] + ['  "hardware": {']
     lines += [f'    {json.dumps(k)}: {json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' + ("," if i < len(hw) - 1 else "") for i, (k, v) in enumerate(hw.items())]

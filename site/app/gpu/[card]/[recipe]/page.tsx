@@ -33,7 +33,7 @@ export default async function RecipePage({ params }: P) {
       <Viewed event="recipe_viewed" props={{ gpu: cid, recipe: r.key, model: r.model }} />
       <Link href={`/gpu/${cid}`} className="back">‹ {cardName(cid)}</Link>
       <h1 className="title"><Logo family={m.logo ?? m.family} size={28} />{m.name}</h1>
-      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {cardName(cid)} {c.vram_gb} GB</div>
+      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {(r.launch as any).machines ? `${(r.launch as any).machines} × ` : ""}{cardName(cid)} {c.vram_gb} GB</div>
       {m.about && <p style={{ maxWidth: "70ch", marginTop: 22 }}>{m.about}</p>}
 
       <section className="grid cols-4">
@@ -69,7 +69,7 @@ export default async function RecipePage({ params }: P) {
         <dl className="kv">
           <dt>Weights</dt><dd>{!w ? "inside the image" : <a href={`https://huggingface.co/${w.repo}/tree/${w.revision}`}>{w.repo} @ {w.revision.slice(0, 10)} ›</a>}</dd>
           <dt>{r.launch.kind === "native" ? "Runtime" : "Image"}</dt>
-          <dd>{r.launch.kind === "native" ? `${engineKind(r)} on macOS · Python ${r.launch.runtime?.python}` : r.launch.image}</dd>
+          <dd>{r.launch.kind === "native" ? `${engineKind(r)} on macOS · Python ${r.launch.runtime?.python}` : (r.launch.image ?? "none: a program on the host")}</dd>
           <dt>Engine profile</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/engines/${r.engine.split("@")[0]}.json`}>{r.engine.split("@")[0]} ›</a></dd>
           <dt>Recipe file</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/recipes/${r.key}.json`}>registry/recipes/{r.key}.json ›</a></dd>
           {m.released && <><dt>Model released</dt><dd>{fmtDate(m.released)}</dd></>}

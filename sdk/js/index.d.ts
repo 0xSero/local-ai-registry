@@ -1,4 +1,4 @@
-export type Launch = { kind?: "native"; platform?: string; steps?: { title: string; code: string }[]; runtime?: { python: string; requirements: string[] };
+export type Launch = { kind?: "native" | "host"; platform?: string; steps?: { title: string; code: string }[]; runtime?: { python: string; requirements: string[] };
   image: string | null; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
   weights: Weights | Weights[]; config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; backend?: string | null; cards?: number };
 export type Weights = { repo: string; revision: string; at: string; layout?: string };
