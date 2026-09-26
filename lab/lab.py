@@ -27,7 +27,6 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 REG = ROOT / "registry"
 ENGINES, RECIPES, RUNS, CARDS = REG / "engines", REG / "recipes", ROOT / "lab" / "runs", REG / "cards"
 GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
@@ -222,7 +221,7 @@ def save_logs(handle, recipe):
 
 
 def rented(recipe, launch, args):
-    import validate_rented as vr
+    import rent as vr  # Vast and RunPod: offers, create, poll, destroy
 
     class LabSpec(vr.Spec):
         def __init__(self):
@@ -369,6 +368,25 @@ def cmd_convert(args):
     return 0
 
 
+def cmd_proxy(args):
+    """A card nobody rents takes its sibling's passing lab recipes, each proof marked proxy (same chip family, same memory)."""
+    made = 0
+    for f in sorted(RECIPES.glob(f"*/{args.sibling}/*.json")):
+        r = json.loads(f.read_text())
+        p = r["proof"][0]
+        if p.get("legacy") or p.get("proxy"):
+            continue
+        r = {**r, "card": args.card, "proof": [{**p, "proxy": args.sibling}]}
+        out = recipe_path(r, render(r))
+        if out.exists() and not json.loads(out.read_text())["proof"][0].get("proxy"):
+            continue  # a real run on the card wins
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(r, separators=(",", ":")) + "\n")
+        made += 1
+    log(f"{args.card}: {made} recipe(s) from {args.sibling}, marked proxy")
+    return 0
+
+
 def cmd_render(args):
     print(json.dumps(render(json.loads(Path(args.recipe).read_text())), indent=2))
     return 0
@@ -429,10 +447,13 @@ def main():
     cv.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
     cv.add_argument("--max-price", type=float, default=2.0)
     cv.add_argument("--disk", type=int, default=80)
+    px = sub.add_parser("proxy")
+    px.add_argument("card")
+    px.add_argument("--from", dest="sibling", required=True)
     sub.add_parser("render").add_argument("recipe")
     sub.add_parser("check")
     a = ap.parse_args()
-    return {"try": cmd_try, "convert": cmd_convert, "render": cmd_render, "check": cmd_check}[a.cmd](a)
+    return {"try": cmd_try, "convert": cmd_convert, "proxy": cmd_proxy, "render": cmd_render, "check": cmd_check}[a.cmd](a)
 
 
 if __name__ == "__main__":
