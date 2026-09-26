@@ -28,7 +28,7 @@ export async function pick({ gpu, vram, all = false }, cat) {
   return all ? rs : rs[0];
 }
 
-const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "intel-xpu": "--device /dev/dri" };
+const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 

@@ -271,6 +271,17 @@
       "about": "Alibaba's dense Qwen3.6, 27B parameters.",
       "good_for": "A dense all-rounder",
       "logo": "qwen"
+    },
+    "swift-1.5-qwen3.8-27b": {
+      "family": "qwen",
+      "name": "Swift-1.5-Qwen3.8-27B",
+      "released": "2026-09-16",
+      "reasoning": true,
+      "vision": false,
+      "about": "UkisAI's post-training of Qwen3.8-27B for long-horizon agentic and coding work: it spends 58.5% fewer thinking tokens than Swift 1.0 while scoring slightly higher. The GSQ-RCO quants reuse ISTA-DASLab's published per-tensor allocation, refined with a Swift importance matrix, so IQ3_S lands at a KLD of 0.0417.",
+      "good_for": "Agentic coding at 128K on a 16 GB card",
+      "logo": "qwen",
+      "hf": "ukisai/Swift-1.5-Qwen3.8-27b"
     }
   },
   "builds": {
@@ -341,6 +352,10 @@
     "Qwen/Qwen3.8-27B-FP8@017b9c7af6b5689d5dd426a76e0bc077eb5ca20a": {
       "format": "FP8",
       "size_gb": 30.9
+    },
+    "ukisai/Swift-1.5-Qwen3.8-27B-GSQ-RCO-GGUF@d74895bbe5db4bec1e0024e7cc87d59c02d7631a": {
+      "format": "GGUF · IQ3_S + MTP",
+      "size_gb": 12.12
     }
   }
 }
