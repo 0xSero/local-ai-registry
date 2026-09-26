@@ -32,10 +32,32 @@ const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
+const pairs = (a) => {
+  const args = [];
+  for (let i = 0; i < a.length; i++) {
+    const x = a[i], y = a[i + 1];
+    if (x.startsWith("-") && y !== undefined && !y.startsWith("-")) { args.push(`${x} ${q(y)}`); i++; } else args.push(q(x));
+  }
+  return args;
+};
+
+/** A program on the host. One with pinned packages (MLX on Apple silicon) also downloads its weights, writes its
+ *  launcher and raises the GPU wired-memory limit before it starts. */
+function hostSteps(l) {
+  if (!l.pip) return [{ title: "Install", code: `# ${l.install}` }, { title: "Start the server", code: l.command.join(" ") }];
+  const out = [{ title: "Install the engine", code: `python3 -m pip install ${l.pip.join(" ")}` }];
+  if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
+  if (l.config) out.push({ title: "Write the launcher", code: `cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
+  if (l.sysctl) out.push({ title: "Raise the GPU memory limit (resets on reboot)", code: Object.entries(l.sysctl).map(([k, v]) => `sudo sysctl ${k}=${v}`).join("\n") });
+  const run = [...Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`), l.command[0], ...pairs(l.command.slice(1))];
+  out.push({ title: "Start the server", code: run.join(" \\\n  ") });
+  return out;
+}
+
 /** The steps to run a recipe by hand: download the weights, write the config, start the container. */
 export function steps(r) {
   const l = r.launch, name = (r.key ?? r.model).split("/").pop();
-  if (l.kind === "host") return [{ title: "Install", code: `# ${l.install}` }, { title: "Start the server", code: l.command.join(" ") }];
+  if (l.kind === "host") return hostSteps(l);
   const out = [], mounts = [], dl = [];
   for (const w of weights(l)) {
     const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;

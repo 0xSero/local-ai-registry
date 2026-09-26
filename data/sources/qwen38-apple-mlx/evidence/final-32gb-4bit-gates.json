@@ -1,0 +1,86 @@
+{
+  "endpoint": "http://127.0.0.1:8080",
+  "model": "models/Qwen3.8-27B-4bit",
+  "gates": {
+    "chat": {
+      "pass": true,
+      "wall_s": 5.95,
+      "prompt_tokens": 19,
+      "completion_tokens": 4,
+      "prefill_tok_s": 5.097231080614147,
+      "decode_tok_s": 3.459046450064718,
+      "peak_memory_gb": 17.08468146,
+      "draft_kind": "mtp",
+      "draft_n": 6,
+      "draft_n_accepted": 2,
+      "answer": "LOCAL_AI_READY",
+      "tool_calls": null
+    },
+    "reasoning": {
+      "pass": true,
+      "wall_s": 13.06,
+      "prompt_tokens": 84,
+      "completion_tokens": 224,
+      "prefill_tok_s": 352.44021972772344,
+      "decode_tok_s": 17.60362451524898,
+      "peak_memory_gb": 17.252182151,
+      "draft_kind": "mtp",
+      "draft_n": 172,
+      "draft_n_accepted": 139,
+      "answer": "155",
+      "tool_calls": null
+    },
+    "tools": {
+      "pass": true,
+      "wall_s": 2.98,
+      "prompt_tokens": 280,
+      "completion_tokens": 28,
+      "prefill_tok_s": 203.26132786290623,
+      "decode_tok_s": 18.44325494715892,
+      "peak_memory_gb": 17.257414716,
+      "draft_kind": "mtp",
+      "draft_n": 22,
+      "draft_n_accepted": 16,
+      "answer": "",
+      "tool_calls": [
+        {
+          "type": "function",
+          "index": 0,
+          "id": "9c690af4-44c3-4067-806b-5072ab769b14",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Lisbon\"}"
+          }
+        }
+      ]
+    },
+    "vision": {
+      "pass": true,
+      "wall_s": 2.13,
+      "prompt_tokens": 291,
+      "completion_tokens": 7,
+      "prefill_tok_s": 222.6555532895728,
+      "decode_tok_s": 11.745829068493599,
+      "peak_memory_gb": 17.266129207,
+      "draft_kind": "mtp",
+      "draft_n": 8,
+      "draft_n_accepted": 4,
+      "answer": "Red 7394",
+      "tool_calls": null
+    },
+    "mtp": {
+      "pass": true,
+      "wall_s": 22.67,
+      "prompt_tokens": 27,
+      "completion_tokens": 384,
+      "prefill_tok_s": 91.35423766457536,
+      "decode_tok_s": 17.920080091730817,
+      "peak_memory_gb": 17.266129207,
+      "draft_kind": "mtp",
+      "draft_n": 266,
+      "draft_n_accepted": 251,
+      "answer": "  []\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    len1, len2 = len(list1), len(list2)\n\n    while i < len1 and j < len2:\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n\n    # Append any remaining elements\n    while i < len1:\n        merged.append(list1[i])\n        i += 1\n\n    while j < len2:",
+      "tool_calls": null
+    }
+  }
+}

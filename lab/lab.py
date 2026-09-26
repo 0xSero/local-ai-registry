@@ -39,11 +39,30 @@ def log(msg):
 
 
 # ----------------------------------------------------------------------------- rendering
+def config_text(p):
+    """A profile's config file: inline `text`, or a `file` next to the profile (a host launcher script)."""
+    cfg = p.get("config")
+    if not cfg:
+        return None
+    return cfg["text"] if "text" in cfg else (ENGINES / cfg["file"]).read_text()
+
+
+def pin(p):
+    """What a recipe pins a profile to: its image digest, or for a host program the sha256 of everything it launches,
+    so a change to the command, packages, weights or launcher invalidates the recipes like a new image would."""
+    if p.get("kind") != "host":
+        return p["image"].split("@sha256:")[1]
+    keys = ("command", "install", "pip", "env", "port", "weights", "ctx", "seqs", "vision", "wired_limit_reserve_mb")
+    return hashlib.sha256(json.dumps({**{k: p.get(k) for k in keys}, "config": config_text(p)}, sort_keys=True).encode()).hexdigest()
+
+
 def profile(ref):
     """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
     name, _, digest = ref.partition("@")
     p = json.loads((ENGINES / f"{name}.json").read_text())
-    if p.get("kind") == "host":  # a program on the host has no image to pin
+    if p.get("kind") == "host":  # a program on the host has no image; `@host` recipes predate the launch pin
+        if digest and digest != "host" and not pin(p).startswith(digest):
+            raise SystemExit(f"{ref}: the profile now pins {pin(p)[:12]}; rerun the recipe")
         return p
     if digest and not p["image"].split("@sha256:")[1].startswith(digest):
         raise SystemExit(f"{ref}: the profile's image is now {p['image']}; rerun the recipe")
@@ -75,8 +94,18 @@ def render(recipe):
     if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
         cfg = p.get("config")
         if p.get("kind") == "host":  # a program on the host, not a container
-            return {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None, "weights": [],
-                    "config": None, "ctx": p["ctx"], "seqs": 1, "vision": False, "backend": p.get("backend"), "cards": 1}
+            out = {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None,
+                   "weights": p.get("weights") or [], "config": None, "ctx": p["ctx"], "seqs": p.get("seqs", 1),
+                   "vision": p.get("vision", False), "backend": p.get("backend"), "cards": 1}
+            # MLX on Apple silicon: pinned packages, a launcher file, its environment, and a GPU wired-memory limit that
+            # follows the card's unified memory
+            out.update({k: p[k] for k in ("pip", "env") if p.get(k)})
+            text = config_text(p)
+            if text:
+                out["config"] = {"at": p["config"]["at"], "text": text, "sha256": hashlib.sha256(text.encode()).hexdigest()}
+            if "wired_limit_reserve_mb" in p:
+                out["sysctl"] = {"iogpu.wired_limit_mb": card(recipe["card"])["vram_gb"] * 1024 - p["wired_limit_reserve_mb"]}
+            return out
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
                 **{k: p[k] for k in ("flags", "machines") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
@@ -119,6 +148,8 @@ def count(endpoint, text):
 def chat(endpoint, model, messages, **kw):
     out, secs = call(endpoint, "/v1/chat/completions", {"model": model, "messages": messages, "temperature": 0.6, **kw})
     c, u = out["choices"][0], dict(out.get("usage") or {})
+    if (out.get("timings") or {}).get("peak_memory"):  # mlx-vlm: the allocator's peak for this request, decimal GB
+        u["peak_memory_gb"] = out["timings"]["peak_memory"]
     if not u.get("prompt_tokens"):  # TabbyAPI called directly leaves usage empty; count what went in and came out
         u["prompt_tokens"], u["counted"] = count(endpoint, "\n".join(m.get("content") or "" for m in messages))
     if not u.get("completion_tokens"):
@@ -204,6 +235,8 @@ def gates(endpoint, launch):
     got = u.get("prompt_tokens") or 0
     ok["context"] = "58213" in (c["message"].get("content") or "") and got >= launch["ctx"] * 0.6
     ev["context"] = {"prompt_tokens": got, "seconds": round(secs, 1), "content": (c["message"].get("content") or "")[-80:]}
+    if u.get("peak_memory_gb"):
+        ev["context"]["peak_gib"] = round(u["peak_memory_gb"] * 1e9 / 2**30, 2)
     # speed: decode at concurrency 1, measured over the first 30 s of a streamed answer; the answer still runs
     # to its natural end (never capped), and its full length is kept as evidence
     tps, total, secs = stream_rate(endpoint, served, "Write a detailed 600-word story about a lighthouse keeper.")
@@ -303,13 +336,15 @@ def cmd_try(args):
         v = int(v) if v.isdigit() else {"true": True, "false": False}.get(v, v)
         if v != p["defaults"][k]:
             sets[k] = v
-    recipe = {"model": args.model, "weights": args.weights, "engine": f"{p['id']}@{p['image'].split('@sha256:')[1][:12]}",
+    recipe = {"model": args.model, "weights": args.weights, "engine": f"{p['id']}@{pin(p)[:12]}",
               "set": sets, "card": args.card}
     launch = render(recipe)
     if args.dry_run:
         print(json.dumps({"recipe": recipe, "launch": launch}, indent=2))
         return 0
     stop = lambda: None
+    if launch.get("kind") == "host" and args.on != "endpoint":
+        raise SystemExit(f"{p['id']} runs on the owner's machine, not a rented container: start it and use --on endpoint")
     if args.on == "endpoint":
         endpoint, where = args.endpoint.rstrip("/"), {"on": "owner", "gpu": args.gpu}
     else:
@@ -320,11 +355,21 @@ def cmd_try(args):
         stop()
     at = dt.datetime.now(dt.timezone.utc)
     proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
-    if args.proxy_gpu:
+    if args.proxy_gpu and args.on == "endpoint":
+        # an owner's larger machine standing in for this card: nothing caps its memory, so the proof states the
+        # measured peak against the card's GPU budget, and a run over budget writes no recipe
+        peak = evidence.get("context", {}).get("peak_gib")
+        sysctl = launch.get("sysctl") or {}
+        budget = sysctl["iogpu.wired_limit_mb"] / 1024 if "iogpu.wired_limit_mb" in sysctl else card(args.card)["vram_gb"]
+        proof["proxy"] = f"{args.proxy_gpu}, not memory-capped; context-gate peak {peak} GiB of the card's {budget:g} GiB GPU budget"
+        if peak is None or peak > budget:
+            passed = False
+            log(f"proxy run: peak {peak} GiB does not fit the card's {budget:g} GiB")
+    elif args.proxy_gpu:
         proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
     slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
     RUNS.mkdir(parents=True, exist_ok=True)
-    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": launch["config"]["sha256"]}
+    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch.get("config") or {}).get("sha256")}
     text = json.dumps(run, indent=1, ensure_ascii=False)
     run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
     run_path.write_text(text + "\n")

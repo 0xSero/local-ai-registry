@@ -1,0 +1,86 @@
+{
+  "endpoint": "http://127.0.0.1:8080",
+  "model": "models/Qwen3.8-27B-3bit-mlx",
+  "gates": {
+    "chat": {
+      "pass": true,
+      "wall_s": 2.3,
+      "prompt_tokens": 19,
+      "completion_tokens": 4,
+      "prefill_tok_s": 29.455467225809723,
+      "decode_tok_s": 11.664017962485453,
+      "peak_memory_gb": 13.683567718,
+      "draft_kind": "mtp",
+      "draft_n": 6,
+      "draft_n_accepted": 2,
+      "answer": "LOCAL_AI_READY",
+      "tool_calls": null
+    },
+    "reasoning": {
+      "pass": true,
+      "wall_s": 14.11,
+      "prompt_tokens": 72,
+      "completion_tokens": 261,
+      "prefill_tok_s": 355.2812731236593,
+      "decode_tok_s": 18.75835513416248,
+      "peak_memory_gb": 13.85170535,
+      "draft_kind": "mtp",
+      "draft_n": 186,
+      "draft_n_accepted": 169,
+      "answer": "To find the duration of the trip:\n\n- From 14:35 to 17:10 is **2 hours and 35 minutes**.\n- 2 hours = 120 minutes\n- 120 + 35 = 155 minutes\n\n**155**",
+      "tool_calls": null
+    },
+    "tools": {
+      "pass": true,
+      "wall_s": 2.58,
+      "prompt_tokens": 280,
+      "completion_tokens": 28,
+      "prefill_tok_s": 259.80846549994214,
+      "decode_tok_s": 18.572110253382082,
+      "peak_memory_gb": 13.856944975,
+      "draft_kind": "mtp",
+      "draft_n": 22,
+      "draft_n_accepted": 18,
+      "answer": "",
+      "tool_calls": [
+        {
+          "type": "function",
+          "index": 0,
+          "id": "635d3ff0-f347-41f2-844e-508a6687313d",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\": \"Lisbon\"}"
+          }
+        }
+      ]
+    },
+    "vision": {
+      "pass": true,
+      "wall_s": 1.58,
+      "prompt_tokens": 291,
+      "completion_tokens": 8,
+      "prefill_tok_s": 281.52994251539803,
+      "decode_tok_s": 18.63482387640062,
+      "peak_memory_gb": 14.159084478,
+      "draft_kind": "mtp",
+      "draft_n": 6,
+      "draft_n_accepted": 4,
+      "answer": "red, 7394",
+      "tool_calls": null
+    },
+    "mtp": {
+      "pass": true,
+      "wall_s": 20.92,
+      "prompt_tokens": 27,
+      "completion_tokens": 384,
+      "prefill_tok_s": 112.06997025346043,
+      "decode_tok_s": 18.562212798002957,
+      "peak_memory_gb": 14.159084478,
+      "draft_kind": "mtp",
+      "draft_n": 277,
+      "draft_n_accepted": 245,
+      "answer": " j = 0, 0\n    len1, len2 = len(list1), len2\n\n    # Compare elements from both lists and append the smaller one\n    while i < len1 and j < len2:\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n\n    # Append any remaining elements from list1\n    while i < len1:\n        merged.append(list1[i])",
+      "tool_calls": null
+    }
+  }
+}
