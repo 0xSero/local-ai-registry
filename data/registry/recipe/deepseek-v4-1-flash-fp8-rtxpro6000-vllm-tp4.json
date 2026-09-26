@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Native-precision DeepSeek-V4.1-Flash on four RTX PRO 6000 Blackwell cards with 125 GiB of host RAM, using Local Inference Lab vLLM jovian-judgement r38 unchanged: TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 with adaptive verification, vision, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Engram tables are read from disk with io_uring, so the host does not need the ~189 GiB that RAM mode pins; the container needs unlimited memlock and a seccomp profile that allows io_uring (Docker default plus three syscalls, shipped with the evidence). Boot reports a 7,636,766-token KV pool (14.57x at 524k). A cold 500,000-token prefill and eight concurrent cold 150,000-token prompts completed with flat GPU memory. Replaces the SGLang recipe on the same host, which hit CUDA OOM in the low-ratio indexer on cold prefills past about 290k tokens. Host GPUs are capped at 275 W without a P2P driver override, so decode is below Local Inference Lab's published r38 figures.",
+  "description": "DeepSeek-V4.1-Flash (FP8) on 4x RTX PRO 6000 Blackwell: Local Inference Lab vLLM jovian-judgement r38 (the image's DS4.1 entrypoint), TP4, B12X attention/MoE/linear, FP8 KV pinned by --kv-cache-memory-bytes 11274289152 (8,536,802-token pool), DSpark K5 adaptive speculative decoding, Engram tables read from disk (needs the io_uring seccomp profile and memlock), 524,288 context, 32 sequences, 4096 batched tokens, CUDA graphs to 192, vision. The owner's production config after the blackwell-forge campaign (2026-09-26, D1/D3/D4).",
   "engine": {
     "graph_mode": "full-and-piecewise",
     "name": "vllm",
@@ -62,24 +62,13 @@
     "accelerator_backend": "nvidia",
     "arguments": [
       "--served-model-name",
-      "deepseek-v4.1-flash"
+      "deepseek-v4.1-flash",
+      "--kv-cache-memory-bytes",
+      "11274289152",
+      "--speculative-config",
+      "{\"method\": \"dspark\", \"num_speculative_tokens\": 5, \"draft_tensor_parallel_size\": 4, \"attention_backend\": \"B12X\", \"draft_sample_method\": \"greedy\", \"rejection_sample_method\": \"standard\", \"enable_adaptive_verification\": true}",
+      "--enable-prompt-tokens-details"
     ],
-    "container": {
-      "captured_at": "2026-09-18T22:15:00Z",
-      "compose_file": null,
-      "digest": "sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
-      "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
-      "reason": "image-reference-in-launch",
-      "runtime": "docker",
-      "source": [
-        {
-          "captured_at": "2026-09-18T22:15:00Z",
-          "kind": "recipe-launch",
-          "url": "https://github.com/0xSero/local-ai-registry"
-        }
-      ],
-      "state": "digest-pinned"
-    },
     "container_port": 8000,
     "entrypoint": "/usr/local/bin/serve-ds41-jovian.sh",
     "environment": {
@@ -91,10 +80,10 @@
       "GPU_MEMORY_UTILIZATION": "0.95",
       "HF_HUB_OFFLINE": "1",
       "HOST": "0.0.0.0",
-      "MAX_CUDAGRAPH_CAPTURE_SIZE": "128",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "192",
       "MAX_MODEL_LEN": "524288",
       "MAX_NUM_BATCHED_TOKENS": "4096",
-      "MAX_NUM_SEQS": "16",
+      "MAX_NUM_SEQS": "32",
       "MAX_PARALLEL_PREFILLS": "1",
       "MODEL_PATH": "/models",
       "OMP_NUM_THREADS": "8",
@@ -112,6 +101,11 @@
     "kind": "docker",
     "mounts": [
       {
+        "provision": {
+          "repository": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "revision": "fb2764a5cf321eaa5070ca8f9e892818f477c16d",
+          "size_gb": 510.313
+        },
         "read_only": true,
         "source": "${MODEL_ROOT}/DeepSeek-V4.1-Flash",
         "target": "/models"
@@ -137,11 +131,40 @@
       "stack=67108864"
     ]
   },
-  "metadata": {},
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-26T15:06:01Z",
+      "experiments": [
+        "D3-ds41-dspark-k5",
+        "D4-ds41-seqs32",
+        "D5-ds41-csweep"
+      ],
+      "harness": "blackwell-forge bench.py smoke (17 x 23 = 391, tool call) and coherence cells",
+      "note": "D3-k5 and D4 smoke passed (391, tool call); coherence at 391K was measured on D1 (same image and KV, K7, 16 sequences)."
+    },
+    "superseded_launch_20260926": {
+      "arguments": [
+        "--served-model-name",
+        "deepseek-v4.1-flash"
+      ],
+      "entrypoint": "/usr/local/bin/serve-ds41-jovian.sh",
+      "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00"
+    }
+  },
   "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
   "provenance": {
-    "captured_at": "2026-09-18T22:15:00Z",
+    "captured_at": "2026-09-26T15:06:01Z",
     "sources": [
+      {
+        "captured_at": "2026-09-26T15:06:01Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os controller recipe (the one serving production), read-only"
+      },
+      {
+        "captured_at": "2026-09-26T15:06:01Z",
+        "kind": "owner-ledger",
+        "path": "data/sources/pop-os/2026-09-26-blackwell-forge/ledger.jsonl"
+      },
       {
         "captured_at": "2026-09-18T22:15:00Z",
         "kind": "submitter",
@@ -151,24 +174,20 @@
         "captured_at": "2026-09-18T22:15:00Z",
         "kind": "submitter",
         "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/env.list"
-      },
-      {
-        "captured_at": "2026-09-18T22:15:00Z",
-        "kind": "submitter",
-        "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/README.md"
       }
     ]
   },
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": 7636766,
-    "max_concurrency": 16,
+    "kv_cache_tokens": 8536802,
+    "max_concurrency": 32,
     "max_context_tokens": 524288,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
-    "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-sweep"
+    "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-sweep",
+    "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-forge-20260926"
   ],
-  "status": "validated"
+  "status": "candidate"
 }
