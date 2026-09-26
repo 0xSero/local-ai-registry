@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Native-precision DeepSeek-V4.1-Flash on four RTX PRO 6000 Blackwell cards with 125 GiB of host RAM, using Local Inference Lab vLLM jovian-judgement r38 unchanged: TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 with adaptive verification, vision, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Engram tables are read from disk with io_uring, so the host does not need the ~189 GiB that RAM mode pins; the container needs unlimited memlock and a seccomp profile that allows io_uring (Docker default plus three syscalls, shipped with the evidence). Boot reports a 7,636,766-token KV pool (14.57x at 524k). A cold 500,000-token prefill and eight concurrent cold 150,000-token prompts completed with flat GPU memory. Replaces the SGLang recipe on the same host, which hit CUDA OOM in the low-ratio indexer on cold prefills past about 290k tokens. Host GPUs are capped at 275 W without a P2P driver override, so decode is below Local Inference Lab's published r38 figures.",
+  "description": "Native-precision DeepSeek-V4.1-Flash on four RTX PRO 6000 Blackwell cards with 125 GiB of host RAM, using Local Inference Lab vLLM jovian-judgement r38 unchanged: TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 with adaptive verification, vision, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Engram tables are read from disk with io_uring, so the host does not need the ~189 GiB that RAM mode pins; the container needs unlimited memlock and a seccomp profile that allows io_uring (Docker default plus three syscalls, shipped with the evidence). blackwell-forge (2026-09-26) pins --kv-cache-memory-bytes 11274289152 (10.5 GiB/GPU), which skips the profiling graph pass and uses the utilisation slack: KV pool 7,636,766 -> 8,536,802 tokens (16.28x at 524k), warm boot 205 -> 161 s, coherence ok at 391K; measured C1 146 prose / 244 code, C4 268, C8 453 aggregate tok/s, cold 32K prefill 6.5-6.7K. A cold 500,000-token prefill and eight concurrent cold 150,000-token prompts completed with flat GPU memory. Replaces the SGLang recipe on the same host, which hit CUDA OOM in the low-ratio indexer on cold prefills past about 290k tokens. Host GPUs are capped at 275 W without a P2P driver override, so decode is below Local Inference Lab's published r38 figures.",
   "engine": {
     "graph_mode": "full-and-piecewise",
     "name": "vllm",
@@ -28,16 +28,16 @@
     },
     "serving.kv_cache_tokens": {
       "provenance": {
-        "captured_at": "2026-09-18T22:15:00Z",
+        "captured_at": "2026-09-26T05:45:00Z",
         "sources": [
           {
-            "captured_at": "2026-09-18T22:15:00Z",
-            "kind": "submitter",
-            "url": "https://github.com/0xSero/local-ai-registry/blob/7d85cce3dff965cbdf26bba231ec9e1aff384db3/sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4/README.md"
+            "captured_at": "2026-09-26T05:45:00Z",
+            "kind": "campaign-ledger",
+            "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
           }
         ]
       },
-      "reason": "engine-boot-log-gpu-kv-cache-size",
+      "reason": "engine-boot-log-gpu-kv-cache-size (D1-ds41-kvbytes105)",
       "state": "known"
     },
     "serving.max_context_tokens": {
@@ -62,14 +62,16 @@
     "accelerator_backend": "nvidia",
     "arguments": [
       "--served-model-name",
-      "deepseek-v4.1-flash"
+      "deepseek-v4.1-flash",
+      "--kv-cache-memory-bytes",
+      "11274289152"
     ],
     "container": {
-      "captured_at": "2026-09-18T22:15:00Z",
+      "captured_at": "2026-09-26T05:45:00Z",
       "compose_file": null,
       "digest": "sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
       "image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
-      "reason": "image-reference-in-launch",
+      "reason": "public image localinferencelab/vllm:jovian-judgement-community-20260914-r38; production runs thin local tag local/ds41-jovian:r38-f41ca8bb (image id sha256:049a86e3987d036ce81dce5072c65dcd43eb05f4383ceaa76cdc55d4387169b8) whose only change is ENTRYPOINT /usr/local/bin/serve-ds41-jovian.sh, expressed here as launch.entrypoint",
       "runtime": "docker",
       "source": [
         {
@@ -137,11 +139,92 @@
       "stack=67108864"
     ]
   },
-  "metadata": {},
+  "metadata": {
+    "acceptance": {
+      "coherence_needle_pass_tokens": [
+        390809
+      ],
+      "evidence": "blackwell-forge ledger exp D1-ds41-kvbytes105",
+      "smoke": "math + tool call ok"
+    },
+    "benchmark_workload": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
+    "image_wrapper": {
+      "base_image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+      "production_image_id": "sha256:049a86e3987d036ce81dce5072c65dcd43eb05f4383ceaa76cdc55d4387169b8",
+      "production_ref": "local/ds41-jovian:r38-f41ca8bb",
+      "what_it_does": "Sets ENTRYPOINT to /usr/local/bin/serve-ds41-jovian.sh; nothing else."
+    },
+    "previous_sweep_20260918": "LIL llm-inference-bench v0.6.2 sweep of the unpinned r38 config (commit 7d85cce3 sources/pop-os/2026-09-18/deepseek-v4-1-flash-vllm-r38-tp4): C1 123, C8 509, C16 801 tok/s, cold 32K prefill 12.0K tok/s. Different bench, not comparable cell-for-cell.",
+    "tuning": {
+      "campaign": "blackwell-forge",
+      "date": "2026-09-26",
+      "ladder": [
+        {
+          "c1_code": 230.8,
+          "c1_prose": 146.5,
+          "c4": 272.8,
+          "c8": 477.2,
+          "coherence_tokens": 377594,
+          "kv_tokens": 7636766,
+          "mixed_c4_32k": 313.8,
+          "prefill_32k": [
+            6561.0,
+            6789.7
+          ],
+          "ready_s_cold": 201.0,
+          "ready_s_warm": 205.1,
+          "run": "D0-ds41-cold / D0b-ds41-warm",
+          "step": "r38 recipe + seeded /cache",
+          "verdict": "baseline (two graph passes, 38 + 56 s)"
+        },
+        {
+          "c1_code": 244.4,
+          "c1_prose": 145.7,
+          "c4": 267.5,
+          "c8": 453.1,
+          "coherence_tokens": 390809,
+          "kv_tokens": 8536802,
+          "mixed_c4_32k": 318.0,
+          "prefill_32k": [
+            6471.8,
+            6662.3
+          ],
+          "ready_s": 160.8,
+          "run": "D1-ds41-kvbytes105",
+          "step": "--kv-cache-memory-bytes 11274289152",
+          "verdict": "kept: KV +11.8 %, boot -22 %"
+        }
+      ],
+      "power_cap_w_per_gpu": 275,
+      "protocol": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
+      "rejected": [
+        {
+          "c1_code": 241.5,
+          "c1_prose": 144.7,
+          "c8": 454.3,
+          "kv_tokens": 6487457,
+          "mixed_c4_32k": 287.6,
+          "run": "D2-ds41-mnbt8192",
+          "step": "MAX_NUM_BATCHED_TOKENS 8192",
+          "verdict": "rejected: KV -24 % vs D1, no prefill gain, mixed stall 1437 ms"
+        }
+      ]
+    }
+  },
   "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
   "provenance": {
-    "captured_at": "2026-09-18T22:15:00Z",
+    "captured_at": "2026-09-26T05:45:00Z",
     "sources": [
+      {
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "campaign-ledger",
+        "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
+      },
+      {
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "controller-recipe",
+        "url": "http://100.90.62.80:8080/recipes"
+      },
       {
         "captured_at": "2026-09-18T22:15:00Z",
         "kind": "submitter",
@@ -162,13 +245,16 @@
   "recipe_source": "0xsero",
   "schema_version": "local-ai-registry/v1",
   "serving": {
-    "kv_cache_tokens": 7636766,
+    "explicit_kv_cache_bytes_per_rank": 11274289152,
+    "kv_cache_tokens": 8536802,
     "max_concurrency": 16,
     "max_context_tokens": 524288,
+    "max_num_batched_tokens": 4096,
+    "max_num_seqs": 16,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
     "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-sweep"
   ],
-  "status": "validated"
+  "status": "candidate"
 }

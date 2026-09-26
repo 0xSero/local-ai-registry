@@ -77,7 +77,12 @@ class PluginExportV2Tests(unittest.TestCase):
 
     def test_scratch_and_two_weight_sets(self):
         self.assertEqual(self.recipes['qwen38-awq-int4-rtx3090-vllm-tp2']['scratch'], '/root/.cache/vllm')
-        glm = self.recipes['glm53-flash-lil-r35-rtxpro6000-vllm-tp4']
+        # Built directly: the export only ships validated recipes, and this one's status is derived.
+        v1 = exporter.v1
+        recipes, instances, models, hardware = (v1.load(c) for c in ("recipe", "model-instance", "model", "hardware"))
+        r = recipes['glm53-flash-lil-r35-rtxpro6000-vllm-tp4']
+        i = instances[r['model_instance_id']]
+        glm = exporter.entry(r, i, models[i['model_id']], hardware[r['hardware_id']])
         self.assertEqual([w['mountPath'] for w in glm['weights']], ['/model', '/draft'])
         self.assertEqual(glm['cards'], 4)
 

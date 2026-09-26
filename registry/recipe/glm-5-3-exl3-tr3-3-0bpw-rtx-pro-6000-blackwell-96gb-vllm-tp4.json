@@ -5,7 +5,7 @@
     "tools": true,
     "vision": false
   },
-  "description": "Validated GLM-5.3 EXL3/TR3 3.0 bpw recipe on four RTX PRO 6000 Blackwell 96 GB GPUs with TP4/DCP4, MTP3, quantized KV cache, full and piecewise CUDA graphs, an 800k context envelope, and uncapped C1-C3 matched-window measurements.",
+  "description": "GLM-5.3 EXL3/TR3 3.0 bpw on four RTX PRO 6000 Blackwell 96 GB, production Local Studio config after campaign F1 and blackwell-forge: TP4/DCP4 (ag_rs), NCCL allreduce, MTP3 probabilistic draft, NVFP4 MLA KV + FP8 rope, 11 GiB KV/rank = 1,359,616-token pool, 327,680 context, 8 sequences, 2048-token prefill chunks, --prefill-schedule-interval 2 and a persistent /cache mount. Measured at 275 W/GPU: C1 prose 81 / code 86-88, C4 168, C8 224-232 aggregate tok/s, cold prefill 1.7-2.0K tok/s, decode under concurrent 32K prefill 51 -> 83 with PSI2; coherence to 236K; warm relaunch 285 -> 151 s.",
   "engine": {
     "graph_mode": "full-and-piecewise",
     "name": "vllm",
@@ -103,44 +103,44 @@
     },
     "serving.kv_cache_tokens": {
       "provenance": {
-        "captured_at": "2026-09-01T04:00:19Z",
+        "captured_at": "2026-09-26T05:45:00Z",
         "sources": [
           {
-            "captured_at": "2026-09-01T04:00:19Z",
-            "kind": "runtime-capacity",
-            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+            "captured_at": "2026-09-26T05:45:00Z",
+            "kind": "campaign-ledger",
+            "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
           }
         ]
       },
-      "reason": "live-runtime-kv-pool-capacity",
+      "reason": "engine-boot-log-gpu-kv-cache-size (G1-glm53-psi2)",
       "state": "known"
     },
     "serving.max_concurrency": {
       "provenance": {
-        "captured_at": "2026-09-01T04:00:19Z",
+        "captured_at": "2026-09-26T05:45:00Z",
         "sources": [
           {
-            "captured_at": "2026-09-01T04:00:19Z",
-            "kind": "matched-window-benchmark",
-            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+            "captured_at": "2026-09-26T05:45:00Z",
+            "kind": "campaign-ledger",
+            "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
           }
         ]
       },
-      "reason": "uncapped-c3-sustained-decode-completed-with-effective-concurrency-3-and-no-queue",
+      "reason": "max-num-seqs-8-with-c8-decode-and-10-min-c8-soak-in-F1",
       "state": "known"
     },
     "serving.max_context_tokens": {
       "provenance": {
-        "captured_at": "2026-09-01T04:00:19Z",
+        "captured_at": "2026-09-26T05:45:00Z",
         "sources": [
           {
-            "captured_at": "2026-09-01T04:00:19Z",
-            "kind": "runtime-identity",
-            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+            "captured_at": "2026-09-26T05:45:00Z",
+            "kind": "campaign-ledger",
+            "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
           }
         ]
       },
-      "reason": "live-served-model-context-envelope",
+      "reason": "live-controller-max-model-len",
       "state": "known"
     }
   },
@@ -155,14 +155,16 @@
       "--attention-config",
       "{\"indexer_kv_dtype\":\"fp8\"}",
       "--kv-cache-memory-bytes",
-      "8589934592"
+      "11811160064",
+      "--prefill-schedule-interval",
+      "2"
     ],
     "container": {
-      "captured_at": "2026-09-01T04:00:19Z",
+      "captured_at": "2026-09-26T05:45:00Z",
       "compose_file": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-compose.yml",
       "digest": "sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
       "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
-      "reason": "published-oci-manifest-and-compose-launch-captured-during-accepted-sweep",
+      "reason": "public base image digest; production runs the thin local wrapper local/glm53-exl3-r17:tuned-f1 (sha256:1bcb83c677d5d6f8c4022abd0ceafea3fbfd185d1dee44e44016c299acc499e7) described in metadata.image_wrapper",
       "runtime": "docker",
       "source": [
         {
@@ -178,45 +180,48 @@
     "environment": {
       "ASYNC_SCHEDULING": "0",
       "B12X_PCIE_DMA": "0",
-      "CUDA_DEVICE_MAX_CONNECTIONS": "1",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "DCP": "4",
-      "DCP_A2A_LARGE_BACKEND": "ag_rs",
-      "DCP_BACKEND": "a2a",
+      "DCP_BACKEND": "ag_rs",
+      "DCP_CKV_GATHER": "auto",
       "DCP_CKV_GATHER_MAX_TOKENS": "262144",
-      "DCP_CKV_PREFETCH_DEPTH": "0",
-      "DCP_CKV_PREFETCH_WORKSPACE_MIB": "0",
-      "F8_DMA": "0",
+      "DCP_CKV_PREFETCH_DEPTH": "auto",
+      "DCP_INDEXER_SHARDS": "auto",
+      "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+      "DCP_QUERY_SPLIT": "auto",
+      "DCP_TOPK_OWNER_MERGE": "auto",
       "GPU_MEMORY_UTILIZATION": "0.98",
-      "GRAPH": "12",
+      "GRAPH": "32",
       "INSTANTTENSOR_BACKEND": "BUFFERED",
       "INSTANTTENSOR_COPY": "0",
       "KV_CACHE_DTYPE": "nvfp4_ds_mla",
-      "KV_FP8_ROPE": "0",
+      "KV_FP8_ROPE": "1",
       "LMCACHE_MODE": "off",
       "LOAD_FORMAT": "instanttensor",
-      "MAX_BATCHED_TOKENS": "3072",
-      "MAX_MODEL_LEN": "800000",
-      "MAX_NUM_SEQS": "3",
+      "MAX_BATCHED_TOKENS": "2048",
+      "MAX_MODEL_LEN": "327680",
+      "MAX_NUM_SEQS": "8",
       "MODEL": "/model",
       "MODEL_FAMILY": "glm52-exl3",
       "MOE_BACKEND": "b12x",
       "MOE_MODE": "a16",
       "MTP": "3",
-      "MTP_DRAFT_SAMPLE_METHOD": "greedy",
+      "MTP_DRAFT_SAMPLE_METHOD": "probabilistic",
       "MTP_MOE_BACKEND": "triton",
       "PCIE_CALIBRATION": "off",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
       "QUANTIZATION": "exl3",
       "SERVED_MODEL_NAME": "glm-5.3",
       "TP": "4",
       "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
       "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
       "VLLM_EXL3_PREFILL_CAPACITY": "2048",
-      "VLLM_EXL3_PREFILL_CHUNK": "128",
-      "VLLM_EXL3_PREFILL_TRELLIS": "1",
-      "VLLM_EXL3_TRELLIS_BLOCK_M": "8",
-      "VLLM_EXL3_TRELLIS_MAX_M": "16",
-      "VLLM_EXL3_TRELLIS_MIN_M": "1",
-      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0"
+      "VLLM_EXL3_TRELLIS_MAX_M": "64",
+      "VLLM_LONG_PREFILL_TOKEN_THRESHOLD": "4096",
+      "VLLM_MAX_LONG_PARTIAL_PREFILLS": "1",
+      "VLLM_MAX_NUM_PARTIAL_PREFILLS": "2",
+      "VLLM_USE_B12X_DCP_A2A": "0"
     },
     "host_port": 8000,
     "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
@@ -237,6 +242,11 @@
         "read_only": true,
         "source": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
         "target": "/models"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/forge-glm53-jit",
+        "target": "/cache"
       }
     ],
     "network_mode": "bridge",
@@ -244,6 +254,72 @@
   },
   "metadata": {
     "acceptance_evidence": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json",
+    "benchmarks_f1": {
+      "blended_c4_plus_32k_prefill": {
+        "decode_agg": 63,
+        "max_stall_ms": 1089
+      },
+      "coherence_needle_pass": [
+        1024,
+        8192,
+        34000,
+        119000,
+        230000
+      ],
+      "decode_aggregate": {
+        "c2": 119.9,
+        "c4": 169.2,
+        "c8": 223.6,
+        "c8_at_32k": 212.9
+      },
+      "decode_c1": {
+        "code": 88.2,
+        "prose": 81.1,
+        "prose_at_32k": 75.4,
+        "thinking_on_prose": 80.6
+      },
+      "omp_replay": {
+        "c4": {
+          "decode_per_stream": 43.9,
+          "fails": 0,
+          "requests": 48,
+          "ttft_ms_p50": 892,
+          "ttft_ms_p95": 3651
+        },
+        "c8": {
+          "decode_per_stream": 15.7,
+          "fails": 0
+        }
+      },
+      "prefill_cold_tok_s": {
+        "115k": 1810,
+        "235k": 1690,
+        "32k": 1896,
+        "8k": 1998
+      },
+      "protocol": "~/tuning/bench.py on pop-os, temp 1.0 top-p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; per-stream p50 / aggregate tok/s; power cap 275 W/GPU",
+      "soak_c8_10min": {
+        "agg_mean": 196.7,
+        "drift_pct_excluding_ramp": 1.4,
+        "fails": 0,
+        "loops": 0,
+        "peak_vram_gb_per_gpu": 94.6
+      }
+    },
+    "coherence_needle_pass_tokens": [
+      975,
+      7699,
+      35301,
+      121422,
+      235774
+    ],
+    "image_wrapper": {
+      "base_image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+      "entrypoint": "/usr/local/bin/glm53-tuned-entrypoint.sh",
+      "production_image_id": "sha256:1bcb83c677d5d6f8c4022abd0ceafea3fbfd185d1dee44e44016c299acc499e7",
+      "production_ref": "local/glm53-exl3-r17:tuned-f1",
+      "what_it_does": "Copies serve-glm52-v19/v16 and glm52-pcie-runtime-env.sh to /tmp, rewrites VLLM_ENABLE_PCIE_ALLREDUCE=1 to 0 (NCCL allreduce) unless PCIE_ALLREDUCE != nccl, applies optional WRAP_SED hooks, sets GLM52_SERVER to the patched v19 script and execs /usr/local/bin/serve-gilded-gnosis.sh. Not published; reproduce it with that one sed on the base image. The base entrypoint alone keeps PCIe allreduce on."
+    },
     "quality_sidecars": {
       "arithmetic": true,
       "reasoning_request": true,
@@ -251,25 +327,88 @@
       "tool_call": true
     },
     "runtime_identity": {
+      "allreduce": "nccl",
       "architecture": "GlmMoeDsaForCausalLM",
       "cuda_graphs": "full-and-piecewise",
+      "dcp_backend": "ag_rs",
       "indexer_kv_dtype": "fp8",
       "kv_cache_dtype": "nvfp4_ds_mla",
+      "kv_fp8_rope": true,
       "load_format": "instanttensor",
       "parallelism": "tp4-dcp4",
       "quantization": "exl3",
-      "speculation": "mtp3"
+      "speculation": "mtp3-probabilistic"
     },
     "scheduler": {
-      "kv_cache_memory_bytes_per_rank": 8589934592,
-      "max_num_batched_tokens": 3072,
-      "max_num_seqs": 3
+      "kv_cache_memory_bytes_per_rank": 11811160064,
+      "max_num_batched_tokens": 2048,
+      "max_num_seqs": 8,
+      "prefill_schedule_interval": 2
+    },
+    "superseded_config_20260901": "800k context, 3 sequences, 8 GiB KV/rank (862,975 tokens), a2a DCP, MTP3 greedy, 3072 batched tokens; validated C1-C3 sweep of 2026-09-01 (docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json)",
+    "tuning": {
+      "campaign": "F1 (2026-09-25) + blackwell-forge (2026-09-26)",
+      "f1_ladder": "E000 registry 49.1 -> E001 ag_rs+NCCL+MTP6 63.1 -> E004 MTP4 prob 75.0 -> E007 MTP3 prob 81.0 -> E011/E012b KV 10->11 GiB with 2048 chunk (pool 988K->1.36M). Rejected: b12x oneshot AR (-20%), mxfp8 dense overlay (0%), async sched (0%), MTP6 greedy/prob, DFlash2 K7 (57), 12 GiB KV/1024 chunk (-20% prefill, kept as alt).",
+      "ladder": [
+        {
+          "c1_code": 90.3,
+          "c1_prose": 81.2,
+          "c8": 223.6,
+          "kv_tokens": 1359616,
+          "mixed_c4_32k": 63.0,
+          "run": "F1-glm53-freeze",
+          "step": "F1 production config",
+          "verdict": "baseline"
+        },
+        {
+          "c1_code": 83.7,
+          "c1_prose": 75.2,
+          "c4": 160.5,
+          "c8": 236.0,
+          "mixed_c4_32k": 50.8,
+          "ready_s_cold": 285.2,
+          "ready_s_warm": 150.7,
+          "run": "G0-glm53-cache-cold / G0b-glm53-cache-warm",
+          "step": "persistent /cache mount (also keeps the EXL3 online cache)",
+          "verdict": "kept: relaunch 285 -> 151 s"
+        },
+        {
+          "c1_code": 86.4,
+          "c1_prose": 81.2,
+          "c4": 168.4,
+          "c8": 231.5,
+          "mixed_c4_32k": 83.3,
+          "ready_s": 144.7,
+          "run": "G1-glm53-psi2",
+          "step": "--prefill-schedule-interval 2",
+          "verdict": "kept: decode under concurrent prefill 51 -> 83 (+64 %), other cells flat"
+        }
+      ],
+      "power_cap_w_per_gpu": 275,
+      "protocol": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
+      "rejected": [
+        {
+          "run": "G2-glm53-dcp2",
+          "step": "DCP=2",
+          "verdict": "rejected: did not boot (likely KV bytes / DCP interplay); revisit with KV bytes rescaled"
+        }
+      ]
     }
   },
   "model_instance_id": "davidsyoung-glm-5-3-exl3-tr3-3-0bpw--3-0-bpw",
   "provenance": {
-    "captured_at": "2026-09-01T04:00:19Z",
+    "captured_at": "2026-09-26T05:45:00Z",
     "sources": [
+      {
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "campaign-ledger",
+        "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
+      },
+      {
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "controller-recipe",
+        "url": "http://100.90.62.80:8080/recipes"
+      },
       {
         "captured_at": "2026-09-01T04:00:19Z",
         "kind": "validated-runtime-recipe",
@@ -281,12 +420,13 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "data_context_parallel": 4,
-    "explicit_kv_cache_bytes_per_rank": 8589934592,
-    "kv_cache_tokens": 862975,
-    "max_concurrency": 3,
-    "max_context_tokens": 800000,
-    "max_num_batched_tokens": 3072,
-    "max_num_seqs": 3,
+    "explicit_kv_cache_bytes_per_rank": 11811160064,
+    "kv_cache_tokens": 1359616,
+    "max_concurrency": 8,
+    "max_context_tokens": 327680,
+    "max_num_batched_tokens": 2048,
+    "max_num_seqs": 8,
+    "prefill_schedule_interval": 2,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
