@@ -43,7 +43,9 @@ def build():
     meta = json.loads((ROOT / "registry" / "models.json").read_text())
     hw = {}
     for card, c in sorted(cat["cards"].items()):
-        # the plugin runs one plain container per card: no host programs, host IPC or networking, or several machines
+        if c["backend"] == "metal":
+            continue
+        # The plugin runs plain containers; native and host launches stay in the catalog/SDKs.
         ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines"))]
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}

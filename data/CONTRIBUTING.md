@@ -34,7 +34,7 @@ Create `registry/hardware/<chip>-<memory>.json` from `registry/schema/hardware.s
 Run it on the exact hardware and record the acceptance:
 
 ```bash
-python3 scripts/accept_recipe.py <recipe-id> --endpoint http://127.0.0.1:<port>/v1
+python3 scripts/accept_recipe.py <recipe-id> --endpoint http://127.0.0.1:<port>
 # or, on a rented card:
 python3 scripts/validate_rented.py <recipe-id>
 ```
@@ -48,6 +48,16 @@ make check
 ```
 
 If `make trust` leaves the recipe as `candidate`, `python3 scripts/trust.py` prints the exact reasons. Fix the record, not the status.
+
+For a native runtime, the existing `script` launch kind is also accepted by
+`accept_recipe.py`. Start the script yourself on the exact hardware, then pass
+the server's base URL (without `/v1`). Pin `launch.script.file` to a full commit,
+pin the script's runtime dependencies and the model revision before running,
+state `serving.max_context_tokens`, and match the instance's `served_name`.
+The helper measures the running endpoint; it does not execute the script.
+Script recipes are data/research records, not Omarchy Docker recommendations.
+Claims about vision or long context require separate workload evidence; a short
+completion alone does not validate those capabilities or the configured window.
 
 ## Recommend a recipe
 

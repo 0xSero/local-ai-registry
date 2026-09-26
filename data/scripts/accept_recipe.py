@@ -217,9 +217,18 @@ def main() -> int:
 
     path = ROOT / "recipe" / f"{args.recipe_id}.json"
     recipe = json.loads(path.read_text())
-    draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") == "docker" else None)
+    draft = recipe.get("draft_launch") or (recipe["launch"] if recipe["launch"].get("kind") in ("docker", "script") else None)
     if draft is None or (recipe["status"] != "candidate" and not args.revalidate):
-        raise SystemExit("acceptance only applies to candidates with a docker draft or docker launch (or --revalidate)")
+        raise SystemExit("acceptance only applies to candidates with a docker draft, docker launch, or pinned script launch (or --revalidate)")
+    if draft.get("kind") == "script":
+        if not re.search(r"(?:^|/)[0-9a-f]{40}/", str((draft.get("script") or {}).get("file") or "")):
+            raise SystemExit("acceptance FAILED: native script must be commit-pinned before acceptance")
+        native_context = (recipe.get("serving") or {}).get("max_context_tokens")
+        if type(native_context) is not int or native_context <= 0:
+            raise SystemExit("acceptance FAILED: native script must state a positive serving.max_context_tokens")
+        native_instance = json.loads((ROOT / "model-instance" / f"{recipe['model_instance_id']}.json").read_text())
+        if not re.fullmatch(r"[0-9a-f]{40}", str(native_instance.get("revision") or "")):
+            raise SystemExit("acceptance FAILED: native model revision must be pinned before acceptance")
 
     request_body = json.loads(args.request_json.read_text()) if args.request_json else None
     if request_body is not None and not isinstance(request_body, dict):
@@ -237,6 +246,8 @@ def main() -> int:
         served = loaded if isinstance(loaded, str) and loaded else models[0]
     if served not in models:
         raise SystemExit(f"acceptance FAILED: requested model {served!r} is absent from /v1/models")
+    if draft.get("kind") == "script" and served != native_instance.get("served_name"):
+        raise SystemExit("acceptance FAILED: native endpoint served model does not match the pinned instance")
     print(f"server is healthy; serving model id: {served}")
     apis = probe_dialects(args.endpoint, served, args.gateway)
     if apis is not None:
@@ -313,14 +324,15 @@ def main() -> int:
         if len(ids) != len(asset_files):
             raise SystemExit(f"acceptance FAILED to promote: asset records missing for {asset_files}")
         launch["asset_ids"] = sorted(ids)
-    digest = "sha256:" + launch["image"].split("@sha256:")[1]
+    is_docker = launch.get("kind") == "docker"
+    digest = "sha256:" + launch["image"].split("@sha256:")[1] if is_docker else None
     launch["container"] = {
-        "state": "digest-pinned",
-        "runtime": "docker",
-        "image": launch["image"],
+        "state": "digest-pinned" if is_docker else "none",
+        "runtime": "docker" if is_docker else None,
+        "image": launch["image"] if is_docker else None,
         "digest": digest,
         "compose_file": None,
-        "reason": "image-reference-in-launch",
+        "reason": "image-reference-in-launch" if is_docker else "commit-pinned-native-script",
         "captured_at": now,
         "source": [{"kind": "acceptance-run", "url": "https://github.com/0xSero/local-ai-registry", "captured_at": now}],
     }

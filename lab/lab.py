@@ -25,6 +25,7 @@ import sys
 import time
 import urllib.request
 from pathlib import Path
+import native
 
 ROOT = Path(__file__).resolve().parent.parent
 REG = ROOT / "registry"
@@ -43,11 +44,19 @@ def profile(ref):
     """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
     name, _, digest = ref.partition("@")
     p = json.loads((ENGINES / f"{name}.json").read_text())
-    if p.get("kind") == "host":  # a program on the host has no image to pin
+    if p.get("kind") == "host":  # preserve upstream's unpinned host-program contract
         return p
-    if digest and not p["image"].split("@sha256:")[1].startswith(digest):
-        raise SystemExit(f"{ref}: the profile's image is now {p['image']}; rerun the recipe")
+    actual = profile_digest(p)
+    if digest and not actual.startswith(digest):
+        raise SystemExit(f"{ref}: profile pin changed; rerun the recipe")
     return p
+
+
+def profile_digest(p):
+    if p.get("kind") == "native":
+        native.validate(p)
+        return native.digest(p)
+    return p["image"].split("@sha256:")[1]
 
 
 def card(card_id):
@@ -72,6 +81,8 @@ def dirname(weights):
 def render(recipe):
     """The launch contract for a recipe: image, entrypoint, args, env, port, shm, weights and config file."""
     p = profile(recipe["engine"])
+    if p.get("kind") == "native":
+        return native.render(p, recipe)
     if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
         cfg = p.get("config")
         if p.get("kind") == "host":  # a program on the host, not a container
@@ -107,8 +118,10 @@ def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small c
     return out, time.monotonic() - t
 
 
-def count(endpoint, text):
+def count(endpoint, text, tokenizer=None):
     """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode)."""
+    if tokenizer is not None:
+        return len(tokenizer.encode(text, add_special_tokens=False)), "local-tokenizer"
     try:
         out, _ = call(endpoint, "/v1/token/encode", {"text": text}, timeout=120)
         return int(out.get("length") or len(out.get("tokens") or [])), "tokenizer"
@@ -127,7 +140,7 @@ def chat(endpoint, model, messages, **kw):
     return c, u, secs
 
 
-def stream_rate(endpoint, model, prompt, window=30.0):
+def stream_rate(endpoint, model, prompt, window=30.0, tokenizer=None):
     """Tokens per second over the first `window` seconds after the first token, from a streamed answer."""
     body = {"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.8, "stream": True}
     headers = {"Content-Type": "application/json"}
@@ -155,16 +168,18 @@ def stream_rate(endpoint, model, prompt, window=30.0):
     whole = "".join(text)
     elapsed = time.monotonic() - (first or t0)
     sample, span = at_window or (whole, elapsed)
-    n, _ = count(endpoint, sample)
-    total, _ = count(endpoint, whole)
+    n, _ = count(endpoint, sample, tokenizer)
+    total, _ = count(endpoint, whole, tokenizer)
     return (n / span if span else 0), total, time.monotonic() - t0
 
 
-def gates(endpoint, launch):
+def gates(endpoint, launch, tokenizer=None):
     """Run every gate; returns (passed, proof, evidence)."""
     ev, ok = {}, {}
     models, _ = call(endpoint, "/v1/models", timeout=30)
     served = models["data"][0]["id"]
+    if launch.get("served_name") and served != launch["served_name"]:
+        raise SystemExit("endpoint model does not match the native profile")
     ok["load"] = True
     # chat: an answer that ends by itself
     c, u, _ = chat(endpoint, served, [{"role": "user", "content": "Name three primary colors, comma separated."}])
@@ -206,9 +221,11 @@ def gates(endpoint, launch):
     ev["context"] = {"prompt_tokens": got, "seconds": round(secs, 1), "content": (c["message"].get("content") or "")[-80:]}
     # speed: decode at concurrency 1, measured over the first 30 s of a streamed answer; the answer still runs
     # to its natural end (never capped), and its full length is kept as evidence
-    tps, total, secs = stream_rate(endpoint, served, "Write a detailed 600-word story about a lighthouse keeper.")
+    tps, total, secs = stream_rate(endpoint, served, "Write a detailed 600-word story about a lighthouse keeper.", tokenizer=tokenizer)
     ok["speed"] = tps >= MIN_TPS
     ev["speed"] = {"window_s": 30, "tokens_total": total, "seconds_total": round(secs, 1)}
+    if tokenizer is not None:
+        ev["speed"]["counted"] = "local-tokenizer"
     prefill = round(got / ev["context"]["seconds"]) if got and ev["context"]["seconds"] else None
     proof = {"gates": " ".join(g for g in GATES if ok.get(g)), "tps": round(tps, 1), "prefill": prefill, "served": served}
     return all(ok.get(g) for g in GATES), proof, {"ok": ok, **ev}
@@ -227,6 +244,8 @@ def save_logs(handle, recipe):
 
 
 def rented(recipe, launch, args):
+    if launch.get("kind") == "native":
+        raise SystemExit("native macOS profiles require --on endpoint; no rental was started")
     import rent as vr  # Vast and RunPod: offers, create, poll, destroy
 
     class LabSpec(vr.Spec):
@@ -298,24 +317,30 @@ def cmd_try(args):
     sets = {}
     for kv in args.set:
         k, _, v = kv.partition("=")
-        if k not in p["defaults"]:
-            raise SystemExit(f"{k} is not a setting of {p['id']}: {sorted(p['defaults'])}")
+        if k not in p.get("defaults", {}):
+            raise SystemExit(f"{k} is not a setting of {p['id']}: {sorted(p.get('defaults', {}))}")
         v = int(v) if v.isdigit() else {"true": True, "false": False}.get(v, v)
         if v != p["defaults"][k]:
             sets[k] = v
-    recipe = {"model": args.model, "weights": args.weights, "engine": f"{p['id']}@{p['image'].split('@sha256:')[1][:12]}",
+    recipe = {"model": args.model, "weights": args.weights, "engine": f"{p['id']}@{profile_digest(p)[:12]}",
               "set": sets, "card": args.card}
     launch = render(recipe)
     if args.dry_run:
         print(json.dumps({"recipe": recipe, "launch": launch}, indent=2))
         return 0
     stop = lambda: None
+    tokenizer = None
+    if launch.get("kind") == "native":
+        if args.on != "endpoint" or not args.endpoint or not args.tokenizer:
+            raise SystemExit("native acceptance requires --on endpoint --endpoint URL --tokenizer LOCAL_WEIGHTS")
+        from transformers import AutoTokenizer
+        tokenizer = AutoTokenizer.from_pretrained(args.tokenizer, local_files_only=True, trust_remote_code=False)
     if args.on == "endpoint":
         endpoint, where = args.endpoint.rstrip("/"), {"on": "owner", "gpu": args.gpu}
     else:
         endpoint, where, stop = rented(recipe, launch, args)
     try:
-        passed, proof, evidence = gates(endpoint, launch)
+        passed, proof, evidence = gates(endpoint, launch, tokenizer=tokenizer)
     finally:
         stop()
     at = dt.datetime.now(dt.timezone.utc)
@@ -324,7 +349,9 @@ def cmd_try(args):
         proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
     slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
     RUNS.mkdir(parents=True, exist_ok=True)
-    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": launch["config"]["sha256"]}
+    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch.get("config") or {}).get("sha256")}
+    if launch.get("kind") == "native":
+        run["launch_sha256"] = native.digest(launch)
     text = json.dumps(run, indent=1, ensure_ascii=False)
     run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
     run_path.write_text(text + "\n")
@@ -434,6 +461,7 @@ def main():
     t.add_argument("--set", action="append", default=[])
     t.add_argument("--on", default="vast", choices=["vast", "runpod", "endpoint"])
     t.add_argument("--endpoint")
+    t.add_argument("--tokenizer", help="native: local pinned weights directory for exact speed token counting (never recorded)")
     t.add_argument("--gpu", help="provider GPU name (default from the card) or, with --on endpoint, the GPU the owner ran it on")
     t.add_argument("--proxy-gpu", help="run on this twin card, memory capped to the card's")
     t.add_argument("--proxy-vram", type=int, default=16)

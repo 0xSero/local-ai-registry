@@ -61,6 +61,8 @@ def _q(s):
 def steps(r):
     """The steps to run a recipe by hand: download the weights, write the config, start the container."""
     l = r["launch"]
+    if l.get("kind") == "native":
+        return [dict(s) for s in l["steps"]]
     name = (r.get("key") or r["model"]).split("/")[-1]
     if l.get("kind") == "host":
         return [{"title": "Install", "code": f"# {l['install']}"}, {"title": "Start the server", "code": " ".join(l["command"])}]

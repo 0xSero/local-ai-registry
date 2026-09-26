@@ -6,6 +6,7 @@ all:
 	python3 lab/export_plugin.py
 
 check:
+	python3 -m unittest discover -s lab -p 'test_*.py'
 	python3 lab/lab.py check
 	python3 lab/catalog.py --check
 	python3 lab/export_plugin.py --check

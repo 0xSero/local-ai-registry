@@ -7,7 +7,8 @@ export type Proof = {
   proxy?: string; legacy?: boolean; log?: string;
 };
 export type Launch = {
-  image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
+  kind?: "native" | "host"; platform?: string; steps?: { title: string; code: string }[]; runtime?: { python: string; requirements: string[] };
+  image: string | null; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
   weights: { repo: string; revision: string; at: string; layout?: string } | { repo: string; revision: string; at: string; layout?: string }[];
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
 };
@@ -25,9 +26,9 @@ export const cards: Card[] = Object.entries(raw.cards)
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 export const recipes: Recipe[] = Object.entries(raw.recipes).map(([key, r]) => ({ key, slug: key.split("/").pop()!, ...r }));
 
-function vendorRank(v: string) { return ["nvidia", "amd", "intel"].indexOf(v); }
+function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple"].indexOf(v); }
 
-export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel" };
+export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple" };
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
 export const picks = (c: Card) => c.picks.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
@@ -51,6 +52,7 @@ export const fmtDate = (d: string) => (d ? new Date(d + "T00:00:00Z").toLocaleDa
 /** The format as people say it: "EXL3 3 bpw", "GGUF Q4_K_M", "FP8". */
 export function format(r: Recipe) {
   const b = builds[r.weights]?.format;
+  if (r.launch.kind === "native") return b ?? "MLX";
   if (b) { const m = b.match(/EXL3 · (?:SC )?(\d+(?:\.\d+)?)\s*bpw/); if (m) return `EXL3 ${Number(m[1])} bpw`; }
   const w = weightsList(r.launch)[0];
   const s = `${w?.repo ?? ""} ${w?.at ?? ""} ${r.engine} ${r.slug}`.toLowerCase();

@@ -22,6 +22,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Native engine contracts
+        run: python3 -m unittest discover -s lab -p 'test_*.py'
       - name: The JavaScript and Python SDKs agree on every card
         run: sdk/test.sh
       - name: The site builds
