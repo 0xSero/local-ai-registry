@@ -1,0 +1,71 @@
+{
+ "recipe": {
+  "model": "qwen3.5-9b",
+  "weights": "TheMelonGod/Qwen3.5-9B-exl3@22ef1303062e0f6d0b282440f8c1f685947f4938",
+  "engine": "tabbyapi-exl3@0f83e6198dc3",
+  "set": {
+   "ctx": 65536,
+   "draft": "mtp"
+  },
+  "card": "rtx-4060-8gb"
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 4060",
+  "host": "British Columbia, CA",
+  "cost_h": 0.07977777777777778
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 4060",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 55.2,
+  "prefill": 927,
+  "served": "Qwen3.5-9B-exl3-22ef1303"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, Yellow, Blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 832,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_ddab226f50054816af95a40c",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nThe current weather in Paris is 17°C with an overcast sky."
+  },
+  "context": {
+   "prompt_tokens": 52573,
+   "seconds": 56.7,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 2012,
+   "seconds": 36.43,
+   "counted": "tokenizer"
+  }
+ },
+ "launch_config_sha256": "dbc8ed48107e1d932bfa68aabbd04f679bfbb73398ba31d65c7c175bc1c917c6"
+}

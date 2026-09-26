@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the export is stamped with the last commit that touched registry/
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests (includes JSON Schema validation of every record)
+        run: npm test
+
+      - name: Generated types are in sync with schemas
+        run: |
+          npm run gen:types
+          git diff --exit-code registry/schema/types.ts
+
+      - name: Registry files are canonically formatted
+        run: python3 scripts/format_registry.py --check
+
+      - name: Referential integrity and trust boundary
+        run: |
+          python3 scripts/validate_registry.py
+          python3 scripts/check_lil_import.py
+
+      - name: Price-history visual is current
+        run: |
+          python3 scripts/build_price_history_data.py
+          python3 scripts/gen_price_history_visual.py
+          git diff --exit-code public/gpu-price-history.html
+
+      - name: Omarchy plugin gate accepts every validated Docker recipe
+        run: python3 scripts/check_plugin_gate.py
+
+      - name: Plugin export preserves multi-GPU recipes and context
+        run: python3 scripts/test_export_plugin_recipes.py
+      - name: plugin/recipes.json is current (plugin 5.x fetches it from this branch)
+        run: python3 scripts/check_plugin_catalog.py 1
+
+      - name: Schema-2 export expresses only what a launch consumes
+        run: python3 scripts/test_export_plugin_v2.py
+
+      - name: The Arc Pro B70 row launches the EXL3 recipe, not the llama.cpp fallback
+        run: python3 scripts/test_b70_runs_exl3.py
+
+      - name: plugin/v2/recipes.json is current (plugin 6.x vendors it)
+        run: python3 scripts/check_plugin_catalog.py 2
+
+      - name: supported/ matches the plugin catalog
+        run: python3 scripts/gen_supported.py --check
+
+      - name: index shards match the records they summarize
+        run: |
+          python3 scripts/curate_registry.py --index-only
+          git diff --exit-code registry/index/
+          test ! -f registry/index.json
+
+      - name: Build
+        run: npm run build

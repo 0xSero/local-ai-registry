@@ -40,7 +40,7 @@ def entry(key, r, meta):
 
 def build():
     cat = json.loads((ROOT / "dist" / "catalog.json").read_text())
-    meta = json.loads((ROOT / "lab" / "models.json").read_text())
+    meta = json.loads((ROOT / "registry" / "models.json").read_text())
     hw = {}
     for card, c in sorted(cat["cards"].items()):
         hw[card] = {"match": c["match"],

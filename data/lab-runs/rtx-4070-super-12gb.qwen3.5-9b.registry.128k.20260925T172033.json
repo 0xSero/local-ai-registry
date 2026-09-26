@@ -1,0 +1,66 @@
+{
+ "recipe": {
+  "model": "qwen3.5-9b",
+  "weights": "turboderp/Qwen3.5-9B-exl3@01192d8c6d9cbd94f9cf99c0ddb85e9e217ccc01",
+  "engine": "registry@qwen359b-exl3-4bpw-rtx4070super-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-4070-super-12gb",
+  "proof": [
+   {
+    "at": "2026-09-03",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 82.0,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 4070S",
+  "host": "California, US",
+  "cost_h": 0.23946887125925925
+ },
+ "passed": false,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 4070S",
+  "gates": "load chat reasoning context speed",
+  "tps": 80.4,
+  "prefill": 1531,
+  "served": "Qwen3.5-9B-EXL3-4bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": false,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, Yellow, Blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 909,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [],
+   "reply": ""
+  },
+  "context": {
+   "prompt_tokens": 106242,
+   "seconds": 69.4,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 2902,
+   "seconds": 36.1,
+   "counted": "tokenizer"
+  }
+ }
+}

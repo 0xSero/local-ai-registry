@@ -1,0 +1,175 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: glm-5.3-flash.yml posted by cyysky",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "localinferencelab/vllm:jovian-judgement-community-20260911-r35"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1548244373953847368-glm-5.3-flash.yml"
+            ],
+            "publisher": "cyysky",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1548244373953847368-glm-5.3-flash.yml"
+            ],
+            "publisher": "cyysky",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "compose": {
+      "file": "1548244373953847368-glm-5.3-flash.yml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1548244373953847368-glm-5.3-flash.yml",
+      "digest": null,
+      "image": "localinferencelab/vllm:jovian-judgement-community-20260911-r35",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1548244373953847368-glm-5.3-flash.yml"
+          ],
+          "publisher": "cyysky",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "DFLASH_MODEL_REVISION": "${DFLASH_MODEL_REVISION:-}",
+      "MODEL": "${MODEL:-local-inference-lab/GLM-5.3-Flash-NVFP4}",
+      "MODEL_REVISION": "${MODEL_REVISION:-}",
+      "SERVED_MODEL_NAME": "${SERVED_MODEL_NAME:-GLM-5.3-Flash-NVFP4}"
+    },
+    "host_port": 8000,
+    "image": "localinferencelab/vllm:jovian-judgement-community-20260911-r35",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "cyysky",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "glm-5.3-flash.yml",
+      "author": "cyysky",
+      "channel_id": "1471527895439638528",
+      "message_id": "1548244373953847368",
+      "posted_at": "2026-09-12T08:10:23.740000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ],
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "source": "https://huggingface.co/api/models/local-inference-lab/GLM-5.3-Flash-NVFP4/revision/46aaae8a82032f77100f2f03e9cc11b391df3b4d?blobs=true",
+      "weight_files": 47,
+      "weights_gb": 199.4
+    }
+  },
+  "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1548244373953847368-glm-5.3-flash.yml"
+        ],
+        "publisher": "cyysky",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1548244373953847368-glm-5.3-flash.yml"
+        ],
+        "publisher": "cyysky",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1548244373953847368"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [
+    "discord-sweep-1547969722937507871",
+    "discord-sweep-1547969736451559477",
+    "discord-sweep-1547969741967204453",
+    "discord-sweep-1549703283403395094"
+  ],
+  "status": "candidate"
+}

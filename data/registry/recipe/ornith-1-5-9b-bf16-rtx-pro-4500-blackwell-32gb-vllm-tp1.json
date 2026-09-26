@@ -1,0 +1,261 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "vLLM serving Ornith-1.5-9B bf16 on a 32 GB RTX PRO 4500 Blackwell at the full 131072-token window, with reasoning, tools and vision all verified on the card. This is the engine half of the SGLang/vLLM pair and the campaign's only protocol-v2 speed measurement for this model. The mount carries a chat template that always opens a thinking block: the model's own template emits an EMPTY one when enable_thinking is false, and vLLM defines that variable, which is why the 2026-09-19 attempt produced no reasoning and was rejected.",
+  "engine": {
+    "graph_mode": "cuda-graph",
+    "name": "vllm",
+    "version": "0.29.0"
+  },
+  "facts": {
+    "audit.speed": {
+      "as_of": "2026-09-22",
+      "note": "Protocol-v2 sweep, 33 measured cells, six samples per (context, concurrency). Decode is the median of the server-reported per-request rate; prefill is tokenizer-verified prompt tokens over client-observed TTFT. 32k: 48.0 / 45.0 / 36.6 tok/s at concurrency 1 / 2 / 4. 131k: 43.8 / 27.7 / 8.0 tok/s. The 131072/c4 cell was cut by the 5400 s sweep wall after 3 of 6 samples, so it carries the least weight.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-sweep",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt2/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "measured-protocol-v2",
+      "state": "known",
+      "unit": "tokens/second"
+    },
+    "capabilities.chat": {
+      "note": "Acceptance chat probe returned the expected completion on this image and card.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "note": "Acceptance reasoning probe returned 465 characters of separate reasoning plus the correct final answer under --reasoning-parser qwen3.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "Acceptance tool probe returned a parsed get_weather call whose arguments round-tripped into a final answer.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "note": "Acceptance vision probe answered two differently coloured images differently, each naming its own colour.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-acceptance",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "as_of": "2026-09-22",
+      "note": "The server reports a 495,272-token KV cache and 3.78x concurrency at 131,072 tokens per request, so the full window is real on this card.",
+      "provenance": {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T10:20:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt2/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "measured-engine-kv-report",
+      "state": "known",
+      "unit": "tokens"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-4500-blackwell-32gb",
+  "id": "ornith-1-5-9b-bf16-rtx-pro-4500-blackwell-32gb-vllm-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "/opt/models/Ornith-1.5-9B",
+      "--served-model-name",
+      "Ornith-1.5-9B",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--max-model-len",
+      "131072",
+      "--kv-cache-dtype",
+      "fp8",
+      "--gpu-memory-utilization",
+      "0.92",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "qwen3_xml",
+      "--reasoning-parser",
+      "qwen3",
+      "--chat-template",
+      "/opt/chat_template.jinja",
+      "--trust-remote-code"
+    ],
+    "asset_ids": [
+      "ornith-1-5-9b-vllm-thinking-chat-template"
+    ],
+    "container": {
+      "captured_at": "2026-09-22T10:20:00Z",
+      "compose_file": null,
+      "digest": "sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+      "image": "ghcr.io/0xsero/vllm-openai@sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T10:20:00Z",
+          "kind": "campaign-artifact",
+          "repository": "0xSero/inference-index",
+          "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt2/startup.log"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "entrypoint": "vllm",
+    "environment": {},
+    "host_port": 8000,
+    "image": "ghcr.io/0xsero/vllm-openai@sha256:1de88ff218282ce71da7811f62ea527556648e1ad05dd36e5fc82d0f9ff07424",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      },
+      {
+        "read_only": true,
+        "source": "asset/ornith-1-5-9b-vllm-thinking-chat-template.jinja",
+        "target": "/opt/chat_template.jinja"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T10:20:00Z",
+      "harness": "inference-index omp_run.py accept",
+      "served_model_id": "Ornith-1.5-9B"
+    },
+    "campaign": "omp-cheap-gpu-2026-09-18",
+    "lab": {
+      "backend": "cuda",
+      "hardware_label": "NVIDIA RTX PRO 4500 Blackwell",
+      "host": "RunPod SECURE, 32623 MiB, driver 595.91.07",
+      "notes": "Protocol-v2 sweep, 33 of 36 cells measured before the 5400 s wall cut the three 131072/c4 cells. The 2026-09-19 attempt on this same row failed acceptance on reasoning for two reasons, both now fixed in the campaign harness: the probe read only message.reasoning_content (vLLM returns message.reasoning), and its prompt was easy enough that the model answered without thinking at all.",
+      "sweep_tok_s": {
+        "131072/c1": {
+          "decode": 43.8,
+          "prefill": 761688,
+          "tpot_ms": 22.85,
+          "ttft_ms": 14705
+        },
+        "131072/c2": {
+          "decode": 27.7,
+          "prefill": 1134124,
+          "tpot_ms": 48.29,
+          "ttft_ms": 14283
+        },
+        "131072/c4": {
+          "decode": 8.0,
+          "prefill": 39102,
+          "tpot_ms": 125.63,
+          "ttft_ms": 66779
+        },
+        "32768/c1": {
+          "decode": 48.0,
+          "prefill": 959963,
+          "tpot_ms": 20.85,
+          "ttft_ms": 168
+        },
+        "32768/c2": {
+          "decode": 45.0,
+          "prefill": 1362995,
+          "tpot_ms": 22.24,
+          "ttft_ms": 237
+        },
+        "32768/c4": {
+          "decode": 36.6,
+          "prefill": 872702,
+          "tpot_ms": 28.55,
+          "ttft_ms": 2119
+        }
+      }
+    },
+    "row": "R22"
+  },
+  "model_instance_id": "ornith-ai-ornith-1-5-9b",
+  "provenance": {
+    "captured_at": "2026-09-22T10:20:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "kind": "campaign-acceptance",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt3/acceptance.json"
+      },
+      {
+        "captured_at": "2026-09-22T10:20:00Z",
+        "kind": "campaign-sweep",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-pro-4500-blackwell-32gb-ornith15-9b-vllm-attempt2/sweep/manifest.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 495272,
+    "max_concurrency": null,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

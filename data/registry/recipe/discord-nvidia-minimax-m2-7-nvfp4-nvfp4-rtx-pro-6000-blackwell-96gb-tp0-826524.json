@@ -1,0 +1,166 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by justmarky",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/sglang:cu130"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "justmarky",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "justmarky",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "justmarky",
+            "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526580110633730109"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-nvidia-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp0-826524",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/sglang:cu130",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "justmarky",
+          "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {},
+    "host_port": 8000,
+    "image": "voipmonitor/sglang:cu130",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "justmarky",
+      "source": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "justmarky",
+      "channel_id": "1481304034198421515",
+      "message_id": "1526581556183826524",
+      "posted_at": "2026-07-14T13:30:05.508000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "e79701cb1f9dce8fe5395b9ed2b20170beebecde",
+      "source": "https://huggingface.co/api/models/nvidia/MiniMax-M2.7-NVFP4/revision/e79701cb1f9dce8fe5395b9ed2b20170beebecde?blobs=true",
+      "weight_files": 15,
+      "weights_gb": 139.9
+    },
+    "rig_resolution": {
+      "from_message": "1526580110633730109",
+      "gap_days": 0.0,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "nvidia-minimax-m2-7-nvfp4-nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "justmarky",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526581556183826524"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "justmarky",
+        "url": "https://discord.com/channels/1466898002793857221/1481304034198421515/1526580110633730109"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

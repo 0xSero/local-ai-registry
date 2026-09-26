@@ -2,7 +2,7 @@
 """Build dist/catalog.json from the production recipes: every card, its picks (at most 3, one per model,
 the first recommended) and each picked recipe with its rendered launch. `--check` fails if it is stale.
 
-Ranking on a card: family order in lab/models.json, then the newest model, then decode speed. A model
+Ranking on a card: family order in registry/models.json, then the newest model, then decode speed. A model
 older than max_age_days, or outside the families, is never picked. Standard library only."""
 import datetime as dt, hashlib, json, sys
 from pathlib import Path
@@ -15,7 +15,7 @@ OUT = ROOT / "dist" / "catalog.json"
 
 def build(today=None):
     today = today or dt.date.today()
-    meta = json.loads((ROOT / "lab" / "models.json").read_text())
+    meta = json.loads((ROOT / "registry" / "models.json").read_text())
     fam = {f: i for i, f in enumerate(meta["families"])}
     cards, recipes = {}, {}
     for f in sorted(lab.RECIPES.rglob("*.json")):

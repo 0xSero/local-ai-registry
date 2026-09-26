@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.5-9b",
+  "weights": "TheMelonGod/Qwen3.5-9B-exl3@e98453aa143a24fab9eb14b718daed02e2fa6eef",
+  "engine": "registry@qwen359b-exl3-4bpw-rtx4070ti-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-4070-ti-12gb",
+  "proof": [
+   {
+    "at": "2026-09-23",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 102.7,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 4070 Ti",
+  "host": "North Carolina, US",
+  "cost_h": 0.2413888888888889
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 4070 Ti",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 77.5,
+  "prefill": 1632,
+  "served": "Qwen3.5-9B-EXL3-6hb-4bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, Yellow, Blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 673,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_04893388ca214255994de648",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nThe current weather in Paris is:\n- **Temperature:** 17°C\n- **Sky Condition:** Overcast"
+  },
+  "context": {
+   "prompt_tokens": 106242,
+   "seconds": 65.1,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 2077,
+   "seconds": 26.8,
+   "counted": "tokenizer"
+  }
+ }
+}

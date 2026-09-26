@@ -1,0 +1,924 @@
+import { readFileSync } from "node:fs"
+import path from "node:path"
+
+import type {
+  Benchmark,
+  Hardware,
+  Model,
+  ModelInstance,
+  PriceRecord,
+  Recipe,
+  RegistryCollectionsIndex,
+  RegistryRecipesIndex,
+  SpeedSweep,
+} from "@/registry/schema/types"
+
+type RegistryIndex = RegistryCollectionsIndex & { recipes: RegistryRecipesIndex["recipes"] }
+
+export type HuggingFaceIdentity = {
+  link_type: "repository" | "search"
+  status: "known" | "unknown" | "unavailable"
+  url: string
+  [key: string]: unknown
+}
+
+export type ModelInstanceCreditIdentity = {
+  link_type: HuggingFaceIdentity["link_type"]
+  publisher: string | null
+  repository: string | null
+  status: HuggingFaceIdentity["status"]
+  url: string
+}
+
+export type ModelInstanceCredits = {
+  artifact: ModelInstanceCreditIdentity
+  base_model: ModelInstanceCreditIdentity | null
+  provenance: ModelInstance["provenance"]
+}
+
+type RegistryModelInstance = Omit<ModelInstance, "huggingface"> & {
+  huggingface: HuggingFaceIdentity
+}
+
+export type ModelInstanceResult = RegistryModelInstance & {
+  credits: ModelInstanceCredits
+  hugging_face_url: string
+}
+
+export type CompatibilityFilters = {
+  backend?: string
+  chat?: string
+  engine?: string
+  evidence?: string
+  hardware_id?: string
+  hardware?: string
+  hardware_count?: string
+  instance_kind?: string
+  launch_kind?: string
+  launchable?: string
+  runtime?: string
+  max_vram_gb?: string
+  min_context?: string
+  min_vram_gb?: string
+  model_id?: string
+  model_instance_id?: string
+  model?: string
+  precision?: string
+  q?: string
+  reasoning?: string
+  sort_by?: string
+  status?: string
+  tools?: string
+  vendor?: string
+  vision?: string
+}
+
+export type Pagination = {
+  limit: number
+  offset: number
+}
+
+export type CompatibilityResult = {
+  hardware: Hardware
+  id: string
+  launchable: boolean
+  links: {
+    api: string
+    detail: string
+    hardware: string
+    model: string
+    model_instance: string
+  }
+  model: Model
+  model_instance: ModelInstanceResult
+  recipe: Recipe
+  speed_evidence: {
+    available: boolean
+    count: number
+    detail_urls: string[]
+    speed_sweep_ids: string[]
+  }
+}
+
+export type PriceResult = PriceRecord
+
+type RegistryRecord = Record<string, unknown>
+type CompatibilityRow = RegistryIndex["recipes"][number]
+
+type RecordLink = {
+  api: string
+  href: string
+  id: string
+  name?: string
+}
+
+type Dataset = {
+  hardware: Map<string, Hardware>
+  index: RegistryIndex
+  instances: Map<string, RegistryModelInstance>
+  models: Map<string, Model>
+  prices: Map<string, PriceRecord>
+  recipes: Map<string, Recipe>
+  benchmarks: Map<string, Benchmark>
+  sweeps: Map<string, SpeedSweep>
+}
+
+let cachedDataset: Dataset | undefined
+
+
+function readJson<T>(...parts: string[]): T {
+  return JSON.parse(
+    readFileSync(path.join(process.cwd(), "registry", ...parts), "utf8"),
+  ) as T
+}
+
+function loadCollection<T>(
+  index: RegistryIndex,
+  collection: keyof RegistryIndex["collections"] & string,
+): Map<string, T> {
+  return new Map(
+    index.collections[collection].map((id) => [
+      id,
+      readJson<T>(collection, `${id}.json`),
+    ]),
+  )
+}
+
+function dataset(): Dataset {
+  if (cachedDataset) return cachedDataset
+
+  const collectionsDoc = readJson<RegistryCollectionsIndex>("index", "collections.json")
+  const recipesDoc = readJson<RegistryRecipesIndex>("index", "recipes.json")
+  const index: RegistryIndex = { ...collectionsDoc, recipes: recipesDoc.recipes }
+  cachedDataset = {
+    hardware: loadCollection<Hardware>(index, "hardware"),
+    index,
+    instances: loadCollection<RegistryModelInstance>(index, "model-instance"),
+    models: loadCollection<Model>(index, "model"),
+    prices: new Map(
+      (index.collections.price ?? []).map((id) => {
+        const separator = id.lastIndexOf("--")
+        const productId = id.slice(0, separator)
+        const region = id.slice(separator + 2)
+        return [id, readJson<PriceRecord>("price", productId, `${region}.json`)]
+      }),
+    ),
+    recipes: new Map(),
+    benchmarks: loadCollection<Benchmark>(index, "benchmark"),
+    sweeps: new Map(),
+  }
+  return cachedDataset
+}
+
+function readRecord<T>(
+  collection: "speed-sweep" | "recipe",
+  id: string,
+): T | undefined {
+  const ids = dataset().index.collections[collection]
+  if (!ids.includes(id)) return undefined
+  return readJson<T>(collection, `${id}.json`)
+}
+
+export function getRegistryIndex(): RegistryIndex {
+  return dataset().index
+}
+
+export type Recommendation = {
+  recipe_id: string
+  model_instance_id: string
+  engine: string
+  max_context_tokens: number | null
+  image: string | null
+}
+
+export type RecommendationsIndex = {
+  schema_version: string
+  rule: string
+  recommendations: Record<string, Recommendation>
+}
+
+/** One validated recipe per hardware id: the consumer contract behind registry/index/recommendations.json. */
+export function getRecommendations(): RecommendationsIndex {
+  return readJson<RecommendationsIndex>("index", "recommendations.json")
+}
+
+export function getModel(id: string): Model | undefined {
+  return dataset().models.get(id)
+}
+
+export function getModelInstance(id: string): RegistryModelInstance | undefined {
+  return dataset().instances.get(id)
+}
+
+export function getHardware(id: string): Hardware | undefined {
+  return dataset().hardware.get(id)
+}
+
+export function getRecipe(id: string): Recipe | undefined {
+  return readRecord("recipe", id)
+}
+
+export function getSpeedSweep(id: string): SpeedSweep | undefined {
+  return readRecord("speed-sweep", id)
+}
+
+export type ModelBenchmarkScore = {
+  benchmark_id: string
+  category: string | null
+  rank: number | null
+  score: number | null
+  variant: string | null
+  conf: string | null
+}
+
+let cachedScores: Record<string, ModelBenchmarkScore[]> | undefined
+
+export function getModelBenchmarkScores(modelId: string): ModelBenchmarkScore[] {
+  if (!cachedScores) {
+    cachedScores = readJson<{ benchmarks_by_model: Record<string, ModelBenchmarkScore[]> }>(
+      "index",
+      "benchmarks-by-model.json",
+    ).benchmarks_by_model
+  }
+  return cachedScores[modelId] ?? []
+}
+
+export type RegionMarket = {
+  record_id: string
+  region: string
+  currency: string
+  lowest_new: number | null
+  lowest_refurbished: number | null
+  lowest_used: number | null
+  listing_count: number
+  retailer_count: number
+  observed_at: string
+}
+
+let cachedPricesByHardware: Record<string, string[]> | undefined
+
+function pricesByHardware(): Record<string, string[]> {
+  if (!cachedPricesByHardware) {
+    cachedPricesByHardware = readJson<{ prices_by_hardware: Record<string, string[]> }>(
+      "index",
+      "prices-by-hardware.json",
+    ).prices_by_hardware
+  }
+  return cachedPricesByHardware
+}
+
+export function getHardwareMarket(hardwareId: string): RegionMarket[] {
+  const ids = pricesByHardware()[hardwareId] ?? []
+  const rows: RegionMarket[] = []
+  for (const id of ids) {
+    const record = dataset().prices.get(id)
+    if (!record) continue
+    rows.push({
+      record_id: id,
+      region: record.region.code,
+      currency: record.region.currency,
+      lowest_new: record.summary.lowest_new,
+      lowest_refurbished: record.summary.lowest_refurbished,
+      lowest_used: record.summary.lowest_used,
+      listing_count: record.summary.listing_count,
+      retailer_count: record.summary.retailer_count,
+      observed_at: record.observed_at,
+    })
+  }
+  return rows.sort((left, right) => left.region.localeCompare(right.region))
+}
+
+export type BandwidthRange = { min: number; max: number }
+
+export type HardwareComparisonRow = {
+  id: string
+  name: string
+  vendor: string
+  vram_gb: number
+  bandwidth_gb_per_s: number | BandwidthRange | null
+  fp16_tflops: number | null
+  fp8_tflops: number | null
+  fp4_tflops: number | null
+  int8_tflops: number | null
+  fp16_sparse: boolean
+  fp8_sparse: boolean
+  fp4_sparse: boolean
+  int8_sparse: boolean
+  lowest_new_usd: number | null
+  price_observed_at: string | null
+  recipe_count: number
+  speed_sweep_count: number
+  evidence_point_count: number
+  measured_model_count: number
+  peak_prefill_tok_s: number | null
+  peak_decode_tok_s: number | null
+  fastest_ttft_ms: number | null
+  max_observed_context_tokens: number | null
+  peak_observed_vram_gb: number | null
+}
+
+type HardwareSpeedEvidence = {
+  sweep_count: number
+  point_count: number
+  model_count: number
+  peak_prefill_tok_s?: number
+  peak_decode_tok_s?: number
+  fastest_ttft_ms?: number
+  max_observed_context_tokens?: number
+  peak_observed_vram_gb?: number
+}
+
+function bestThroughput(record: Hardware, dtype: string): { value: number | null; sparse: boolean } {
+  const stats = (record.compute?.stats ?? {}) as Record<string, Record<string, { state?: string; value?: number | null }>>
+  const entry = stats[dtype]
+  if (!entry) return { value: null, sparse: false }
+  const dense = entry.dense
+  if (dense?.state === "known" && typeof dense.value === "number") return { value: dense.value, sparse: false }
+  const sparse = entry.structured_2_4
+  if (sparse?.state === "known" && typeof sparse.value === "number") return { value: sparse.value, sparse: true }
+  return { value: null, sparse: false }
+}
+
+export function hardwareComparison(): HardwareComparisonRow[] {
+  const data = dataset()
+  const evidenceByHardware = readJson<{ hardware: Record<string, HardwareSpeedEvidence> }>(
+    "index",
+    "hardware-speed-evidence.json",
+  ).hardware
+  return [...data.hardware.values()].map((record) => {
+    const fp16 = bestThroughput(record, "fp16")
+    const fp8 = bestThroughput(record, "fp8")
+    const fp4 = bestThroughput(record, "fp4")
+    const int8 = bestThroughput(record, "int8")
+    const market = getHardwareMarket(record.id)
+    const us = market.find((row) => row.region === "US" && row.lowest_new !== null)
+    const evidence = evidenceByHardware[record.id]
+    return {
+      id: record.id,
+      name: record.name,
+      vendor: record.vendor,
+      vram_gb: record.memory.vram_gb,
+      bandwidth_gb_per_s: record.memory.bandwidth_gb_per_s as number | BandwidthRange | null,
+      fp16_tflops: fp16.value,
+      fp8_tflops: fp8.value,
+      fp4_tflops: fp4.value,
+      int8_tflops: int8.value,
+      fp16_sparse: fp16.sparse,
+      fp8_sparse: fp8.sparse,
+      fp4_sparse: fp4.sparse,
+      int8_sparse: int8.sparse,
+      lowest_new_usd: us?.lowest_new ?? null,
+      price_observed_at: us?.observed_at ?? null,
+      recipe_count: recipeCountForHardware(record.id),
+      speed_sweep_count: evidence?.sweep_count ?? 0,
+      evidence_point_count: evidence?.point_count ?? 0,
+      measured_model_count: evidence?.model_count ?? 0,
+      peak_prefill_tok_s: evidence?.peak_prefill_tok_s ?? null,
+      peak_decode_tok_s: evidence?.peak_decode_tok_s ?? null,
+      fastest_ttft_ms: evidence?.fastest_ttft_ms ?? null,
+      max_observed_context_tokens: evidence?.max_observed_context_tokens ?? null,
+      peak_observed_vram_gb: evidence?.peak_observed_vram_gb ?? null,
+    }
+  })
+}
+
+const REGISTRY_BASE_URL = "https://local-ai-registry.vercel.app"
+
+type AssetManifest = { id: string; file: string; sha256: string }
+
+function assetManifests(recipe: Recipe): AssetManifest[] {
+  const ids = ((recipe.launch as Record<string, unknown>).asset_ids as string[]) ?? []
+  return ids.map((id) => readJson<AssetManifest>("asset", `${id}.json`))
+}
+
+export function dockerCommand(recipe: Recipe): string | null {
+  const launch = recipe.launch as Record<string, unknown>
+  if (recipe.status !== "validated" || launch.kind !== "docker") return null
+  const quote = (part: string) => (/[\s"'$;|&<>()]/.test(part) ? `'${part.replaceAll("'", `'\\''`)}'` : part)
+  const manifests = assetManifests(recipe)
+  const byFile = new Map(manifests.map((manifest) => [manifest.file, manifest]))
+
+  const preamble: string[] = []
+  const lines: string[][] = [["docker", "run", "--rm"]]
+  if (launch.accelerator_backend === "nvidia") lines.push(["--gpus", "all"])
+  for (const device of (launch.devices as string[]) ?? []) lines.push(["--device", device])
+  if (typeof launch.ipc === "string") lines.push(["--ipc", launch.ipc])
+  if (typeof launch.shm_size === "string") lines.push(["--shm-size", launch.shm_size])
+  if (typeof launch.network_mode === "string" && launch.network_mode !== "bridge") lines.push(["--network", launch.network_mode as string])
+  if (typeof launch.host_port === "number" && typeof launch.container_port === "number") {
+    lines.push(["-p", `${launch.host_port}:${launch.container_port}`])
+  }
+  for (const [key, value] of Object.entries((launch.environment as Record<string, string>) ?? {})) {
+    lines.push(["-e", `${key}=${value}`])
+  }
+  for (const mount of (launch.mounts as Array<{ source: string; target: string; read_only?: boolean }>) ?? []) {
+    let source = mount.source
+    if (source.startsWith("asset/")) {
+      const file = source.slice("asset/".length)
+      const manifest = byFile.get(file)
+      if (!manifest) return null
+      if (preamble.length === 0) {
+        preamble.push(`ASSETS="\${TMPDIR:-/tmp}/local-ai-assets" && mkdir -p "$ASSETS"`)
+      }
+      preamble.push(
+        `curl -fsSL '${REGISTRY_BASE_URL}/api/v1/asset/${manifest.id}/file' -o "$ASSETS/${file}"`,
+        `{ printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | sha256sum -c - 2>/dev/null || printf '%s  %s\\n' '${manifest.sha256}' "$ASSETS/${file}" | shasum -a 256 -c -; }`,
+      )
+      source = `"$ASSETS/${file}"`
+      lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+      continue
+    }
+    lines.push(["-v", `${source}:${mount.target}${mount.read_only ? ":ro" : ""}`])
+  }
+  if (typeof launch.entrypoint === "string" && launch.entrypoint) lines.push(["--entrypoint", launch.entrypoint])
+  lines.push([launch.image as string])
+  for (const argument of (launch.arguments as string[]) ?? []) lines.push([argument])
+  const docker = lines
+    .map((line) => line.map((part) => (part.startsWith('"$ASSETS/') ? part.replace(/^("\$ASSETS\/[^:]+")/, "$1") : quote(part))).join(" "))
+    .join(" \\\n  ")
+  return preamble.length > 0 ? `${preamble.join(" && \\\n")} && \\\n${docker}` : docker
+}
+
+export function getBenchmark(id: string): Benchmark | undefined {
+  return dataset().benchmarks.get(id)
+}
+
+export function listBenchmarks(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().benchmarks.values()]
+    .filter((benchmark) => contains(benchmark, filters.q) && equals(benchmark.category, filters.category))
+    .sort((left, right) => left.name.localeCompare(right.name, undefined, { numeric: true }) || left.id.localeCompare(right.id))
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+function creditIdentity(identity: Pick<HuggingFaceIdentity, "link_type" | "status" | "url"> & { repository?: unknown }): ModelInstanceCreditIdentity {
+  const repository = typeof identity.repository === "string" && identity.repository.includes("/") ? identity.repository : null
+  return {
+    link_type: identity.link_type,
+    publisher: repository?.split("/")[0] ?? null,
+    repository,
+    status: identity.status,
+    url: identity.url,
+  }
+}
+
+export function modelInstanceResult(instance: RegistryModelInstance): ModelInstanceResult {
+  if (instance.huggingface.url.length === 0) {
+    throw new Error(`Model instance '${instance.id}' has an empty authoritative Hugging Face URL`)
+  }
+
+  const model = dataset().models.get(instance.model_id)
+  return {
+    ...instance,
+    credits: {
+      artifact: creditIdentity(instance.huggingface),
+      base_model: model ? creditIdentity(model.huggingface) : null,
+      provenance: instance.provenance,
+    },
+    hugging_face_url: instance.huggingface.url,
+  }
+}
+
+function primitiveText(value: unknown): string[] {
+  if (value === null || value === undefined) return []
+  if (Array.isArray(value)) return value.flatMap(primitiveText)
+  if (typeof value === "object") return Object.values(value).flatMap(primitiveText)
+  return [String(value)]
+}
+
+function contains(record: unknown, query: string | undefined): boolean {
+  if (!query?.trim()) return true
+  const terms = query.toLowerCase().trim().split(/\s+/)
+  const haystack = primitiveText(record).join(" ").toLowerCase()
+  return terms.every((term) => haystack.includes(term))
+}
+
+function equals(value: unknown, filter: string | undefined): boolean {
+  if (!filter?.trim()) return true
+  return String(value ?? "").toLowerCase() === filter.toLowerCase()
+}
+
+function numericFilter(value: number, minimum?: string, maximum?: string): boolean {
+  const min = minimum ? Number(minimum) : undefined
+  const max = maximum ? Number(maximum) : undefined
+  if (min !== undefined && Number.isFinite(min) && value < min) return false
+  if (max !== undefined && Number.isFinite(max) && value > max) return false
+  return true
+}
+
+function booleanFilter(value: boolean | null, filter: string | undefined): boolean {
+  if (!filter) return true
+  if (filter === "unknown") return value === null
+  if (filter === "true") return value === true
+  if (filter === "false") return value === false
+  return true
+}
+
+export function isLaunchable(row: Pick<CompatibilityRow, "status" | "launch_kind">): boolean {
+  return row.status === "validated" && row.launch_kind !== "reference"
+}
+
+export function runtimeGroup(kind: string): "docker" | "native" | "reference" {
+  if (kind === "docker" || kind === "docker-compose") return "docker"
+  if (kind === "reference") return "reference"
+  return "native"
+}
+
+export function recipeCountForHardware(hardwareId: string): number {
+  return dataset().index.recipes.reduce((count, row) => count + (row.hardware_id === hardwareId ? 1 : 0), 0)
+}
+
+function matchingCompatibilityRows(filters: CompatibilityFilters): CompatibilityRow[] {
+  const data = dataset()
+
+  return data.index.recipes.filter((row) => {
+    const instance = data.instances.get(row.model_instance_id)
+    const model = instance ? data.models.get(instance.model_id) : undefined
+    const hardware = data.hardware.get(row.hardware_id)
+    if (!instance || !model || !hardware) return false
+
+    if (!contains([model, instance], filters.model)) return false
+    if (!contains(hardware, filters.hardware)) return false
+    if (!contains([row, model, instance, hardware], filters.q)) return false
+    if (!equals(model.id, filters.model_id)) return false
+    if (!equals(instance.id, filters.model_instance_id)) return false
+    if (!equals(hardware.id, filters.hardware_id)) return false
+    if (!equals(row.status, filters.status)) return false
+    if (!equals(row.engine, filters.engine)) return false
+    if (!equals(row.launch_kind, filters.launch_kind)) return false
+    if (!equals(instance.weights.precision, filters.precision)) return false
+    if (!equals(instance.kind, filters.instance_kind)) return false
+    if (!equals(hardware.vendor, filters.vendor)) return false
+    if (!equals(hardware.accelerator_backend, filters.backend)) return false
+    if (!equals(row.hardware_count, filters.hardware_count)) return false
+    if (!numericFilter(hardware.memory.vram_gb, filters.min_vram_gb, filters.max_vram_gb)) return false
+    if (!booleanFilter(row.capabilities.chat, filters.chat)) return false
+    if (!booleanFilter(row.capabilities.reasoning, filters.reasoning)) return false
+    if (!booleanFilter(row.capabilities.tools, filters.tools)) return false
+    if (!booleanFilter(row.capabilities.vision, filters.vision)) return false
+    if (filters.evidence === "true" && !row.has_evidence) return false
+    if (filters.evidence === "false" && row.has_evidence) return false
+    if (filters.min_context) {
+      const recipeRecord = readRecord<Recipe>("recipe", row.id)
+      const context = (recipeRecord?.serving as { max_context_tokens?: number | null } | undefined)?.max_context_tokens
+      if (typeof context !== "number" || context < Number(filters.min_context)) return false
+    }
+    if (filters.launchable === "true" && !isLaunchable(row)) return false
+    if (filters.launchable === "false" && isLaunchable(row)) return false
+    if (filters.runtime && runtimeGroup(row.launch_kind) !== filters.runtime) return false
+    return true
+  })
+}
+
+function compatibilityResult(row: CompatibilityRow): CompatibilityResult | undefined {
+  const data = dataset()
+  const instance = data.instances.get(row.model_instance_id)
+  const model = instance ? data.models.get(instance.model_id) : undefined
+  const hardware = data.hardware.get(row.hardware_id)
+  const recipe = getRecipe(row.id)
+  if (!instance || !model || !hardware || !recipe) return undefined
+
+  return {
+    id: row.id,
+    launchable: isLaunchable(row),
+    model,
+    model_instance: modelInstanceResult(instance),
+    hardware,
+    recipe,
+    speed_evidence: {
+      available: row.has_evidence,
+      count: recipe.speed_sweep_ids.length,
+      speed_sweep_ids: recipe.speed_sweep_ids,
+      detail_urls: recipe.speed_sweep_ids.map((id) => `/api/v1/speed-sweep/${id}`),
+    },
+    links: {
+      api: `/api/v1/recipes/${row.id}`,
+      detail: `/recipes/${row.id}`,
+      hardware: `/hardware/${hardware.id}`,
+      model: `/models/${model.id}`,
+      model_instance: `/model-instances/${instance.id}`,
+    },
+  }
+}
+
+export function queryCompatibility(
+  filters: CompatibilityFilters,
+  pagination: Pagination,
+): { data: CompatibilityResult[]; total: number } {
+  const data = dataset()
+  const primary = filters.sort_by === "model" ? "model" : "hardware"
+  const rows = matchingCompatibilityRows(filters).sort((left, right) => {
+    const leftInstance = data.instances.get(left.model_instance_id)
+    const rightInstance = data.instances.get(right.model_instance_id)
+    const leftModel = leftInstance ? data.models.get(leftInstance.model_id)?.name ?? leftInstance.model_id : left.model_instance_id
+    const rightModel = rightInstance ? data.models.get(rightInstance.model_id)?.name ?? rightInstance.model_id : right.model_instance_id
+    const leftHardware = data.hardware.get(left.hardware_id)?.name ?? left.hardware_id
+    const rightHardware = data.hardware.get(right.hardware_id)?.name ?? right.hardware_id
+    const leftKeys = primary === "hardware" ? [leftHardware, leftModel] : [leftModel, leftHardware]
+    const rightKeys = primary === "hardware" ? [rightHardware, rightModel] : [rightModel, rightHardware]
+    return leftKeys[0].localeCompare(rightKeys[0], undefined, { numeric: true })
+      || leftKeys[1].localeCompare(rightKeys[1], undefined, { numeric: true })
+      || left.engine.localeCompare(right.engine)
+      || left.id.localeCompare(right.id)
+  })
+  const selected = rows.slice(pagination.offset, pagination.offset + pagination.limit)
+  return {
+    data: selected.flatMap((row) => {
+      const result = compatibilityResult(row)
+      return result ? [result] : []
+    }),
+    total: rows.length,
+  }
+}
+
+export function listModels(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().models.values()]
+    .filter(
+      (model) =>
+        contains(model, filters.q) &&
+        equals(model.family, filters.family) &&
+        (filters.architecture === "unknown" ? model.architecture === null : equals(model.architecture, filters.architecture)),
+    )
+    .sort(
+      (left, right) =>
+        (right.downloads?.last_30d ?? -1) - (left.downloads?.last_30d ?? -1) ||
+        left.name.localeCompare(right.name, undefined, { numeric: true }) ||
+        left.id.localeCompare(right.id),
+    )
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+export function listModelInstances(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().instances.values()]
+    .map(modelInstanceResult)
+    .filter(
+      (instance) =>
+        contains(instance, filters.q) &&
+        equals(instance.model_id, filters.model_id) &&
+        equals(instance.kind, filters.kind) &&
+        equals(instance.weights.precision, filters.precision) &&
+        equals(instance.weights.format, filters.format) &&
+        equals(instance.huggingface.status, filters.huggingface_status) &&
+        equals(instance.huggingface.link_type, filters.huggingface_link_type),
+    )
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+export function listHardware(filters: Record<string, string>, pagination: Pagination) {
+  const all = [...dataset().hardware.values()].filter((hardware) => {
+    const hasPrices = marketPriceCount(hardware.id) > 0
+    const hasRecipes = recipeCountForHardware(hardware.id) > 0
+    return (
+      contains(hardware, filters.q) &&
+      equals(hardware.vendor, filters.vendor) &&
+      equals(hardware.accelerator_backend, filters.backend) &&
+      equals(hardware.kind, filters.kind) &&
+      equals(hardware.family, filters.family) &&
+      numericFilter(hardware.memory.vram_gb, filters.min_vram_gb, filters.max_vram_gb) &&
+      booleanFilter(hasPrices, filters.priced_only) &&
+      booleanFilter(hasRecipes, filters.has_recipes)
+    )
+  })
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+function priceAmount(record: PriceRecord): number | null {
+  return record.summary.lowest_new ?? record.summary.lowest_refurbished ?? record.summary.lowest_used
+}
+
+function priceResults(): PriceResult[] {
+  return [...dataset().prices.values()]
+}
+
+export function marketPriceCount(hardwareId: string): number {
+  return priceResults().filter((record) => record.hardware.some((hardware) => hardware.id === hardwareId)).length
+}
+
+export function listPrices(filters: Record<string, string>, pagination: Pagination) {
+  const all = priceResults().filter((record) => {
+    const amount = priceAmount(record)
+    return (
+      contains(record, filters.q) &&
+      equals(record.product.category, filters.category) &&
+      equals(record.region.code, filters.region) &&
+      equals(record.region.currency, filters.currency) &&
+      (!filters.condition || record.observations.some((observation) => equals(observation.condition, filters.condition))) &&
+      (!filters.retailer || record.observations.some((observation) => equals(observation.retailer, filters.retailer))) &&
+      (!filters.in_stock || record.observations.some((observation) => booleanFilter(observation.in_stock, filters.in_stock))) &&
+      (amount === null ? !filters.min_price && !filters.max_price : numericFilter(amount, filters.min_price, filters.max_price))
+    )
+  })
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+export function listSpeedSweeps(filters: Record<string, string>, pagination: Pagination) {
+  const ids = dataset().index.collections["speed-sweep"]
+  const all = ids.flatMap((id) => {
+    const sweep = getSpeedSweep(id)
+    if (!sweep) return []
+    if (!contains(sweep, filters.q) || !equals(sweep.recipe_id, filters.recipe_id)) return []
+    return [sweep]
+  })
+  return { data: all.slice(pagination.offset, pagination.offset + pagination.limit), total: all.length }
+}
+
+function recipeRowsForModel(modelId: string): CompatibilityRow[] {
+  const instanceIds = new Set(
+    [...dataset().instances.values()]
+      .filter((instance) => instance.model_id === modelId)
+      .map((instance) => instance.id),
+  )
+  return dataset().index.recipes.filter((row) => instanceIds.has(row.model_instance_id))
+}
+
+function recordLink(collection: string, id: string, name?: string): RecordLink {
+  return {
+    api: `/api/v1/${collection}/${id}`,
+    href: `/${collection}/${id}`,
+    id,
+    ...(name ? { name } : {}),
+  }
+}
+
+function recipeLink(row: CompatibilityRow): RecordLink & Pick<CompatibilityRow, "engine" | "hardware_count" | "status"> {
+  return {
+    ...recordLink("recipes", row.id),
+    engine: row.engine,
+    hardware_count: row.hardware_count,
+    status: row.status,
+  }
+}
+
+function modelLinksForRows(rows: CompatibilityRow[]): RecordLink[] {
+  const links = new Map<string, RecordLink>()
+  for (const row of rows) {
+    const instance = dataset().instances.get(row.model_instance_id)
+    const model = instance ? dataset().models.get(instance.model_id) : undefined
+    if (model) links.set(model.id, recordLink("models", model.id, model.name))
+  }
+  return [...links.values()]
+}
+
+function hardwareLinksForRows(rows: CompatibilityRow[]): RecordLink[] {
+  const links = new Map<string, RecordLink>()
+  for (const row of rows) {
+    const hardware = dataset().hardware.get(row.hardware_id)
+    if (hardware) links.set(hardware.id, recordLink("hardware", hardware.id, hardware.name))
+  }
+  return [...links.values()]
+}
+
+export function getEntityDetail(collection: string, id: string): RegistryRecord | undefined {
+  const data = dataset()
+
+  if (collection === "models") {
+    const model = data.models.get(id)
+    if (!model) return undefined
+    const instances = [...data.instances.values()].filter((instance) => instance.model_id === id)
+    const rows = recipeRowsForModel(id)
+    return {
+      ...model,
+      relationships: {
+        hardware: hardwareLinksForRows(rows),
+        model_instances: instances.map((instance) => recordLink("model-instances", instance.id, instance.repository)),
+        recipes: rows.map(recipeLink),
+      },
+    }
+  }
+
+  if (collection === "model-instances") {
+    const instance = data.instances.get(id)
+    if (!instance) return undefined
+    return {
+      ...modelInstanceResult(instance),
+      relationships: {
+        hardware: hardwareLinksForRows(data.index.recipes.filter((row) => row.model_instance_id === id)),
+        model: recordLink("models", instance.model_id, data.models.get(instance.model_id)?.name),
+        recipes: data.index.recipes.filter((row) => row.model_instance_id === id).map(recipeLink),
+      },
+    }
+  }
+
+  if (collection === "hardware") {
+    const hardware = data.hardware.get(id)
+    if (!hardware) return undefined
+    const rows = data.index.recipes.filter((row) => row.hardware_id === id)
+    return {
+      ...hardware,
+      recipe_count: rows.length,
+      relationships: {
+        models: modelLinksForRows(rows),
+        prices: priceResults()
+          .filter((record) => record.hardware.some((candidate) => candidate.id === id))
+          .map((record) => recordLink("prices", record.id, `${record.product.name} · ${record.region.code}`)),
+        recipes: rows.map(recipeLink),
+      },
+    }
+  }
+
+  if (collection === "prices") {
+    const price = data.prices.get(id)
+    if (!price) return undefined
+    return {
+      ...price,
+      relationships: {
+        hardware: price.hardware.map(({ id: hardwareId, match_scope }) => ({
+          ...recordLink("hardware", hardwareId, data.hardware.get(hardwareId)?.name),
+          match_scope,
+        })),
+      },
+    }
+  }
+
+  if (collection === "recipes") {
+    const row = data.index.recipes.find((candidate) => candidate.id === id)
+    if (!row) return undefined
+    const result = compatibilityResult(row)
+    if (!result) return undefined
+    return {
+      ...result.recipe,
+      huggingface: result.model_instance.huggingface,
+      registry: {
+        launchable: result.launchable,
+        speed_evidence: result.speed_evidence,
+        runtime: runtimeGroup(result.recipe.launch.kind),
+      },
+      relationships: {
+        hardware: recordLink("hardware", result.hardware.id, result.hardware.name),
+        model: recordLink("models", result.model.id, result.model.name),
+        model_instance: recordLink("model-instances", result.model_instance.id, result.model_instance.repository),
+        speed_sweep: result.recipe.speed_sweep_ids.map((sweepId) => recordLink("speed-sweep", sweepId)),
+      },
+    }
+  }
+
+  if (collection === "speed-sweep") {
+    const sweep = getSpeedSweep(id)
+    if (!sweep) return undefined
+    const recipe = getRecipe(sweep.recipe_id)
+    return {
+      ...sweep,
+      relationships: {
+        recipe: recipe ? recordLink("recipes", recipe.id) : null,
+      },
+    }
+  }
+
+  if (collection === "benchmark") {
+    const benchmark = dataset().benchmarks.get(id)
+    if (!benchmark) return undefined
+    return { ...benchmark }
+  }
+
+  return undefined
+}
+
+function unique(values: Array<string | number | null | undefined>): Array<string | number> {
+  return [...new Set(values.filter((value): value is string | number => value !== null && value !== undefined))]
+    .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }))
+}
+
+export function getFacets() {
+  const data = dataset()
+  const prices = priceResults()
+  return {
+    models: {
+      architecture: unique([...data.models.values()].map((model) => model.architecture ?? "unknown")),
+      family: unique([...data.models.values()].map((model) => model.family)),
+    },
+    model_instances: {
+      huggingface_link_type: unique([...data.instances.values()].map((instance) => instance.huggingface.link_type)),
+      huggingface_status: unique([...data.instances.values()].map((instance) => instance.huggingface.status)),
+      format: unique([...data.instances.values()].map((instance) => instance.weights.format)),
+      kind: unique([...data.instances.values()].map((instance) => instance.kind)),
+      precision: unique([...data.instances.values()].map((instance) => instance.weights.precision)),
+    },
+    hardware: {
+      backend: unique([...data.hardware.values()].map((hardware) => hardware.accelerator_backend)),
+      kind: unique([...data.hardware.values()].map((hardware) => hardware.kind)),
+      vendor: unique([...data.hardware.values()].map((hardware) => hardware.vendor)),
+      vram_gb: unique([...data.hardware.values()].map((hardware) => hardware.memory.vram_gb)),
+    },
+    prices: {
+      amount: unique(prices.map(priceAmount)),
+      category: unique(prices.map((price) => price.product.category)),
+      condition: unique(prices.flatMap((price) => price.observations.map((observation) => observation.condition))),
+      currency: unique(prices.map((price) => price.region.currency)),
+      region: unique(prices.map((price) => price.region.code)),
+      retailer: unique(prices.flatMap((price) => price.observations.map((observation) => observation.retailer))),
+    },
+    recipes: {
+      engine: unique(data.index.recipes.map((recipe) => recipe.engine)),
+      hardware_count: unique(data.index.recipes.map((recipe) => recipe.hardware_count)),
+      launch_kind: unique(data.index.recipes.map((recipe) => recipe.launch_kind)),
+      runtime: unique(data.index.recipes.map((recipe) => runtimeGroup(recipe.launch_kind))),
+      status: unique(data.index.recipes.map((recipe) => recipe.status)),
+    },
+    benchmarks: {
+      category: unique([...data.benchmarks.values()].map((benchmark) => benchmark.category)),
+    },
+  }
+}
+
+export function collectionCounts(): RegistryIndex["counts"] {
+  return dataset().index.counts
+}

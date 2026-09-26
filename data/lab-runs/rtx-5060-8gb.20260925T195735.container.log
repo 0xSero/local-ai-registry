@@ -1,0 +1,84 @@
+
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Fetching 13 files:   8%|▊         | 1/13 [00:00<00:08,  1.39it/s]
+Fetching 13 files:  38%|███▊      | 5/13 [00:00<00:01,  6.95it/s]
+Fetching 13 files:  54%|█████▍    | 7/13 [00:01<00:01,  5.19it/s]
+Fetching 13 files:  77%|███████▋  | 10/13 [00:01<00:00,  7.34it/s]
+Fetching 13 files:  92%|█████████▏| 12/13 [00:02<00:00,  3.77it/s]
+Fetching 13 files: 100%|██████████| 13/13 [03:22<00:00, 35.33s/it]
+Fetching 13 files: 100%|██████████| 13/13 [03:22<00:00, 15.57s/it]
+19:55:06.099 INFO:     Using config file /app/config.yml
+19:55:06.106 INFO:     Configured backend: cudaMallocAsync
+19:55:07.989 WARNING:  No sampler override preset is configured
+                       (sampling.override_preset), so sampling parameters have
+                       no fallback values. Requests that omit them run
+                       untruncated: temperature 1.0, top_k 0, top_p 1.0, min_p
+                       0. Set override_preset to safe_defaults unless this is
+                       intentional.
+19:55:07.991 WARNING:  Generation config file not found in model directory,
+                       skipping.
+19:55:07.992 INFO:     exllamav3 version: 1.5.1
+19:55:08.566 INFO:     The provided model has vision capabilities, vision is
+                       disabled in config.
+19:55:08.567 INFO:     Using main model MTP component for drafting
+19:55:08.567 INFO:     Disabling GPU split because one GPU is in use.
+19:55:08.567 INFO:     Context: max_seq_len 65,536 tokens (configured),
+                       cache_size 66,560 tokens
+19:55:08.590 INFO:     Using template "chat_template" for chat completions.
+19:55:08.590 INFO:     Response parsing: tool format qwen3_coder (config),
+                       reasoning tags <think> </think> (template)
+19:55:09.137 INFO:     Loading model /workspace/models/Qwen3.5-9B-exl3-22ef1303
+                       (manual GPU split)
+Loading draft modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 3/3   0:00:00
+Loading model modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 35/35 0:00:00
+19:55:30.536 INFO:     Model loaded in 21.9 s
+19:55:30.537 WARNING:  Disabling authentication makes your instance vulnerable.
+                       Set the `disable_auth` flag to False in config.yml if you
+                       want to share this instance with others.
+19:55:30.537 WARNING:  With authentication disabled and `allowed_origins` left
+                       at ["*"], any website open in a browser on this machine
+                       can send requests to this instance and read the
+                       responses, including admin endpoints. Set
+                       `network.allowed_origins` to your own frontends (or [])
+                       unless you use a browser-based frontend that needs it.
+19:55:30.538 INFO:     Serving OAI API on http://0.0.0.0:5000 (docs at
+                       http://0.0.0.0:5000/redoc)
+19:55:42.614 INFO:     #3 chat/completions: 18 prompt tokens · temperature: 0.6
+                       (req), max_tokens: 65517 (auto)
+19:56:12.838 WARNING:  #3 chat/completions: generation stopped because a token
+                       loop was detected
+19:56:12.839 INFO:     #3 chat/completions: 2,846 tokens generated at 109.1 T/s
+                       · prompt 18 tokens, none cached, 18 new in 4.12 s · first
+                       token 4.12 s, total 30.2 s · draft 2080/3064 accepted
+                       (68%) · loop detected
+19:56:15.482 INFO:     #6 chat/completions: 26 prompt tokens · temperature: 0.6
+                       (req), max_tokens: 65509 (auto)
+19:56:17.141 INFO:     #6 chat/completions: 239 tokens generated at 147.4 T/s ·
+                       prompt 26 tokens, none cached, 26 new in 0.03 s · first
+                       token 0.03 s, total 1.65 s · draft 179/240 accepted (75%)
+19:56:19.381 INFO:     #9 chat/completions: 280 prompt tokens · temperature: 0.6
+                       (req), max_tokens: 65255 (auto)
+19:56:21.126 INFO:     #9 chat/completions: parsed 1 tool call (qwen3_coder)
+19:56:21.127 INFO:     #9 chat/completions: 82 tokens generated at 159.2 T/s ·
+                       prompt 280 tokens, none cached, 280 new in 1.23 s (228
+                       T/s) · first token 1.23 s, total 1.75 s · draft 63/76
+                       accepted (83%)
+19:56:23.365 INFO:     #12 chat/completions: 344 prompt tokens · temperature:
+                       0.6 (req), max_tokens: 65191 (auto)
+19:56:24.703 INFO:     #12 chat/completions: 71 tokens generated at 119.1 T/s ·
+                       prompt 344 tokens, 74% cached, 88 new in 0.73 s · first
+                       token 0.74 s, total 1.33 s · draft 49/88 accepted (56%)
+19:56:28.125 INFO:     #15 chat/completions: 52,583 prompt tokens · temperature:
+                       0.6 (req), max_tokens: 12952 (auto)
+19:57:01.743 INFO:     #15 chat/completions: 329 tokens generated at 102.9 T/s ·
+                       prompt 52,583 tokens, none cached, 52,583 new in 30.4 s
+                       (1,729 T/s) · first token 30.4 s, total 33.6 s · draft
+                       244/340 accepted (72%)
+19:57:06.676 INFO:     #18 chat/completions (stream): 25 prompt tokens ·
+                       temperature: 0.8 (req), max_tokens: 65510 (auto)
+19:57:31.126 INFO:     #18 chat/completions (stream): 2,125 tokens generated at
+                       87.0 T/s · prompt 25 tokens, none cached, 25 new in 0.03
+                       s · first token 0.03 s, total 24.4 s · draft 1238/3548
+                       accepted (35%)
+

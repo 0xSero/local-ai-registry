@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@f33f26d929e2b20ef21361145d582f5239e3831f",
+  "engine": "registry@qwen3827b-exl3-sc5bpw-v6-rtxa6000-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-a6000-48gb",
+  "proof": [
+   {
+    "at": "2026-09-22",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 58.1,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX A6000",
+  "host": "Romania, RO",
+  "cost_h": 0.6023148148148147
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX A6000",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 69.4,
+  "prefill": 579,
+  "served": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nred, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 140,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_c3e57733a62e44d299e5f99b",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nThe weather in Paris right now is **17°C** with **overcast** skies."
+  },
+  "context": {
+   "prompt_tokens": 213561,
+   "seconds": 368.9,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 8885,
+   "seconds": 128.11,
+   "counted": "tokenizer"
+  }
+ }
+}

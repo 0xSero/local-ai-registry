@@ -1,0 +1,415 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: message.txt posted by brandonmusic.",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "voipmonitor/vllm:glm52-v11-darkdevotion-vllma86f74e-b12x5b2e018-cu132-20260618"
+  },
+  "facts": {
+    "capabilities.reasoning": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "note": "read from the launch the poster published",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1517222801688232027-message.txt"
+            ],
+            "publisher": "brandonmusic.",
+            "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-0xsero-glm-5-2-nvfp4-reap-469b-nvfp4-reap-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "bash",
+      "-lc",
+      "exec python -m vllm.entrypoints.cli.main serve /models-archive/GLM-5.2-REAP-NVFP4  --served-model-name glm-5.2-nvfp4 --host 0.0.0.0 --port 9300  --tensor-parallel-size 4 --decode-context-parallel-size 2  --moe-backend b12x --linear-backend b12x  --attention-backend B12X_MLA_SPARSE --kv-cache-dtype fp8 --block-size 256 --load-format safetensors  --gpu-memory-utilization 0.90 --max-model-len 200000 --max-num-seqs 16  --enable-chunked-prefill --max-num-batched-tokens 8192 --max-cudagraph-capture-size 64  --compilation-config '{\\",
+      "cudagraph_mode\\\":\\\"FULL_AND_PIECEWISE\\\",\\\"custom_ops\\\":[\\\"all\\\"]}'",
+      "--enable-flashinfer-autotune",
+      "--hf-overrides",
+      "{\\\"use_index_cache\\\":true,\\\"index_topk_pattern\\\":\\\"FFFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSSFSSS\\\"}",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-auto-tool-choice\"",
+      "⚠️",
+      "The",
+      "two",
+      "fixes",
+      "that",
+      "make",
+      "long-context",
+      "correct",
+      "(without",
+      "them",
+      "it",
+      "degrades",
+      "to",
+      "token-salad",
+      "past",
+      "~1–2K",
+      "generated",
+      "tokens)",
+      "-e",
+      "B12X_MOE_FORCE_A16=1",
+      "—",
+      "forces",
+      "w4a16",
+      "MoE",
+      "decode.",
+      "The",
+      "default",
+      "w4a4",
+      "kernel",
+      "accumulates",
+      "quantization",
+      "error",
+      "over",
+      "long",
+      "generation.",
+      "--hf-overrides",
+      "…",
+      "index_topk_pattern",
+      "—",
+      "the",
+      "DSA",
+      "sparse-indexer",
+      "skip",
+      "pattern.",
+      "Config",
+      "ships",
+      "it",
+      "null",
+      "→",
+      "the",
+      "indexer",
+      "mis-selects",
+      "tokens.",
+      "Derive",
+      "it",
+      "from",
+      "your",
+      "config:",
+      "",
+      ".join('F'",
+      "if",
+      "t=='full'",
+      "else",
+      "S",
+      "for",
+      "t",
+      "in",
+      "config['indexer_types'])",
+      "(F=full",
+      "attn",
+      "layer,",
+      "S=shared/sparse).",
+      "Performance",
+      "(single-user",
+      "decode,",
+      "measured)",
+      "Config",
+      "t/s",
+      "KV",
+      "capacity",
+      "DCP=2",
+      "(this",
+      "launch)",
+      "~67",
+      "256K",
+      "DCP=1",
+      "+",
+      "MTP=2",
+      "(--speculative-config",
+      "method=mtp",
+      "num_speculative_tokens=2",
+      "+",
+      "--linear-backend",
+      "auto)",
+      "~95",
+      "154K",
+      "DCP=4",
+      "~47",
+      "512K",
+      "MTP",
+      "and",
+      "DCP",
+      "are",
+      "mutually",
+      "exclusive",
+      "on",
+      "this",
+      "image",
+      "—",
+      "running",
+      "both",
+      "crashes",
+      "with",
+      "an",
+      "off-by-one",
+      "(tensor",
+      "(N)",
+      "must",
+      "match",
+      "(N+1))",
+      "under",
+      "concurrency.",
+      "Pick",
+      "one:",
+      "MTP",
+      "for",
+      "single-user",
+      "speed,",
+      "DCP",
+      "for",
+      "context/concurrency.",
+      "Result:",
+      "correct",
+      "long-context",
+      "retrieval,",
+      "clean",
+      "tool",
+      "calls,",
+      "full",
+      "reasoning",
+      "(--reasoning-parser",
+      "glm45).",
+      "KV",
+      "fp8",
+      "is",
+      "fine",
+      "on",
+      "the",
+      "b12x",
+      "sparse",
+      "path",
+      "(the",
+      "fp8 garbles GLM-5",
+      "warning",
+      "is",
+      "for",
+      "plain",
+      "SGLang",
+      "FlashInfer,",
+      "which",
+      "lacks",
+      "the",
+      "KV-dequant-scale",
+      "patch)."
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:glm52-v11-darkdevotion-vllma86f74e-b12x5b2e018-cu132-20260618",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1517222801688232027-message.txt"
+          ],
+          "publisher": "brandonmusic.",
+          "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_DENSE_SPLITK_TURBO": "1",
+      "B12X_MLA_SM120_UNIFIED": "1",
+      "B12X_MOE_FORCE_A16": "1",
+      "B12X_W4A16_TC_DECODE": "1",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HF_HUB_OFFLINE": "1",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "SYS",
+      "NCCL_PROTO": "LL,LL128,Simple",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "USES_B12X": "True",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
+      "VLLM_PCIE_ALLREDUCE_BACKEND": "b12x",
+      "VLLM_USE_AOT_COMPILE": "1",
+      "VLLM_USE_B12X_FP8_GEMM": "1",
+      "VLLM_USE_B12X_MHC": "1",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+      "VLLM_USE_B12X_WO_PROJECTION": "1",
+      "VLLM_USE_FLASHINFER_SAMPLER": "1",
+      "VLLM_USE_FUSED_MOE_GROUPED_TOPK": "1",
+      "VLLM_USE_V2_MODEL_RUNNER": "1"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:glm52-v11-darkdevotion-vllma86f74e-b12x5b2e018-cu132-20260618",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "brandonmusic.",
+      "source": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "message.txt",
+      "author": "brandonmusic.",
+      "channel_id": "1517182540853809162",
+      "message_id": "1517222801688232027",
+      "posted_at": "2026-06-18T17:41:44.559000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ],
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": [
+          "repository resolved by prose-repository-mentioned; it is named in the source message, not in the launch line"
+        ]
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    }
+  },
+  "model_instance_id": "0xsero-glm-5-2-nvfp4-reap-469b--nvfp4-reap",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1517222801688232027-message.txt"
+        ],
+        "publisher": "brandonmusic.",
+        "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1517222801688232027-message.txt"
+        ],
+        "publisher": "brandonmusic.",
+        "url": "https://discord.com/channels/1466898002793857221/1517182540853809162/1517222801688232027"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [
+    "discord-sweep-1521189256528269312-att-1521189256528269312-dock"
+  ],
+  "status": "candidate"
+}

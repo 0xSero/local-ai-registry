@@ -1,0 +1,462 @@
+#!/bin/bash
+
+set -euo pipefail
+
+ROOT=${LOCAL_AI_REGISTRY_DIR:-$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)/registry}
+
+fail() {
+  printf 'local-ai: %s\n' "$*" >&2
+  exit 1
+}
+
+need() {
+  command -v "$1" >/dev/null 2>&1 || fail "$1 is required"
+}
+
+record() {
+  local collection=$1 id=$2 path
+  path="$ROOT/$collection/$id.json"
+  [[ -f $path ]] || fail "no $collection record $id"
+  cat "$path"
+}
+
+detect_macos() {
+  local info chip memory id
+  info=$(system_profiler SPHardwareDataType -json)
+  chip=$(jq -r '.SPHardwareDataType[0].chip_type // empty' <<<"$info")
+  memory=$(jq -r '.SPHardwareDataType[0].physical_memory // empty | capture("(?<gb>[0-9]+) GB").gb' <<<"$info")
+  [[ $chip == Apple\ M* && -n $memory ]] || return 1
+  chip=${chip#Apple }
+  chip=$(tr '[:upper:] ' '[:lower:]-' <<<"$chip")
+  id="apple-$chip-${memory}gb"
+  [[ -f $ROOT/hardware/$id.json ]] || return 1
+  printf '%s\n' "$id"
+}
+
+detect_nvidia() {
+  local line name memory records
+  command -v nvidia-smi >/dev/null 2>&1 || return 1
+  line=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | head -1)
+  name=${line%,*}
+  memory=${line##*, }
+  records=$(jq -s '.' "$ROOT"/hardware/*.json)
+  jq -nr --arg name "$name" --argjson memory "$memory" --argjson records "$records" '
+    def norm: ascii_downcase | gsub("nvidia|geforce|workstation edition|generation| "; "") | gsub("[^a-z0-9]"; "");
+    ($memory / 1024 | round) as $gb
+    | [$records[] | select(.vendor == "nvidia" and ((.name | norm) == ($name | norm)) and ((.memory.vram_gb - $gb) | fabs) <= 1)][0].id // empty
+  '
+}
+
+detect_linux_accelerator() {
+  local description
+  command -v lspci >/dev/null 2>&1 || return 1
+  description=$(lspci 2>/dev/null)
+  if command -v rocminfo >/dev/null 2>&1; then
+    description+=$'\n'$(rocminfo 2>/dev/null | awk -F: '/Marketing Name/ {print $2}')
+  fi
+  description=$(tr '[:upper:]' '[:lower:]' <<<"$description")
+  case $description in
+    *"ai pro r9700"*) printf 'radeon-ai-pro-r9700-32gb\n' ;;
+    *"rx 7900 xtx"*) printf 'rx-7900-xtx-24gb\n' ;;
+    *"rx 7900 xt"*) printf 'rx-7900-xt-20gb\n' ;;
+    *"rx 9070 xt"*) printf 'rx-9070-xt-16gb\n' ;;
+    *"rx 7700 xt"*) printf 'rx-7700-xt-12gb\n' ;;
+    *"mi300x"*) printf 'mi300x-192gb\n' ;;
+    *"ryzen ai max+ 395"*|*"radeon 8060s"*) printf 'ryzen-ai-max-plus-395-128gb\n' ;;
+    *"arc pro b70"*) printf 'intel-arc-pro-b70-32gb\n' ;;
+    *"arc pro b60"*) printf 'intel-arc-pro-b60-24gb\n' ;;
+    *) return 1 ;;
+  esac
+}
+
+detect() {
+  local id=${LOCAL_AI_HARDWARE:-}
+  if [[ -n $id ]]; then
+    [[ -f $ROOT/hardware/$id.json ]] || fail "LOCAL_AI_HARDWARE does not match a registry record"
+  elif [[ $(uname -s) == "Darwin" ]]; then
+    id=$(detect_macos) || fail "Apple hardware does not match a registry record"
+  else
+    id=$(detect_nvidia) || id=$(detect_linux_accelerator) || fail "hardware detection failed; set LOCAL_AI_HARDWARE"
+  fi
+  printf '%s\n' "$id"
+}
+
+detect_count() {
+  local first
+  if [[ -n ${LOCAL_AI_HARDWARE_COUNT:-} ]]; then
+    printf '%s\n' "$LOCAL_AI_HARDWARE_COUNT"
+  elif [[ $(uname -s) == "Darwin" ]]; then
+    printf '1\n'
+  elif command -v nvidia-smi >/dev/null 2>&1; then
+    first=$(nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | head -1)
+    nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits | awk -v first="$first" '$0 == first {count++} END {print count}'
+  else
+    printf '1\n'
+  fi
+}
+
+list_json() {
+  local hardware=$1 count=${2:-1} target records summary instance model
+  target=$(record hardware "$hardware")
+  records=$(jq -s '.' "$ROOT"/hardware/*.json)
+  while IFS= read -r summary; do
+    [[ -n $summary ]] || continue
+    instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$summary")")
+    model=$(record model "$(jq -r '.model_id' <<<"$instance")")
+    jq -cn --argjson summary "$summary" --argjson instance "$instance" --argjson model "$model" '
+      $summary + {
+        model_id: $model.id,
+        model_name: $model.name,
+        repository: $instance.repository,
+        revision: $instance.revision,
+        precision: $instance.weights.precision
+      }
+    '
+  done < <(jq -c --arg hardware "$hardware" --argjson count "$count" --argjson target "$target" --argjson records "$records" '
+    .recipes[] as $recipe
+    | ($records[] | select(.id == $recipe.hardware_id)) as $recipe_hardware
+    | select(
+        $recipe.hardware_count <= $count
+        and (
+          $recipe.hardware_id == $hardware
+          or (
+            $recipe_hardware.vendor == $target.vendor
+            and $recipe_hardware.accelerator_backend == $target.accelerator_backend
+            and $recipe_hardware.memory.vram_gb <= $target.memory.vram_gb
+          )
+        )
+      )
+    | $recipe + {match: (if $recipe.hardware_id == $hardware then "exact" else "capacity" end)}
+  ' "$ROOT/index/recipes.json") | jq -s 'sort_by([.match != "exact", .status != "validated", .model_name, .id])'
+}
+
+list() {
+  local hardware="" json="" arg count
+  for arg in "$@"; do
+    if [[ $arg == "--json" ]]; then
+      json=--json
+    elif [[ -z $hardware ]]; then
+      hardware=$arg
+    else
+      fail "list accepts one hardware id"
+    fi
+  done
+  if [[ -n $hardware ]]; then
+    count=${LOCAL_AI_HARDWARE_COUNT:-1}
+  else
+    hardware=$(detect)
+    count=$(detect_count)
+  fi
+  record hardware "$hardware" >/dev/null
+  local rows
+  rows=$(list_json "$hardware" "$count")
+  if [[ $json == "--json" ]]; then
+    printf '%s\n' "$rows"
+  else
+    jq -r '.[] | [.match, .status, .model_name, (.precision // "unknown"), .engine, .id] | @tsv' <<<"$rows"
+  fi
+}
+
+resolve() {
+  local id=$1 recipe instance model hardware sweeps='[]' sweep_id
+  recipe=$(record recipe "$id")
+  instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$recipe")")
+  model=$(record model "$(jq -r '.model_id' <<<"$instance")")
+  hardware=$(record hardware "$(jq -r '.hardware_id' <<<"$recipe")")
+  while IFS= read -r sweep_id; do
+    [[ -n $sweep_id ]] || continue
+    sweeps=$(jq -cn --argjson rows "$sweeps" --argjson sweep "$(record speed-sweep "$sweep_id")" '$rows + [$sweep]')
+  done < <(jq -r '.speed_sweep_ids[]?' <<<"$recipe")
+  jq -n --argjson recipe "$recipe" --argjson instance "$instance" --argjson model "$model" --argjson hardware "$hardware" --argjson sweeps "$sweeps" \
+    '{recipe: $recipe, model_instance: $instance, model: $model, hardware: $hardware, speed_sweeps: $sweeps}'
+}
+
+search() {
+  local query=$1 path id collection
+  rg -ilF --glob '*.json' -- "$query" "$ROOT"/{hardware,model,model-instance,recipe} | while IFS= read -r path; do
+    id=${path##*/}
+    id=${id%.json}
+    collection=${path%/*}
+    collection=${collection##*/}
+    printf '%s\t%s\n' "$collection" "$id"
+  done | sort -u
+}
+
+choose() {
+  local hardware=${1:-} rows choices selected label count
+  local labels=()
+  if [[ -n $hardware ]]; then
+    count=${LOCAL_AI_HARDWARE_COUNT:-1}
+  else
+    hardware=$(detect)
+    count=$(detect_count)
+  fi
+  rows=$(list_json "$hardware" "$count")
+  (( $(jq length <<<"$rows") > 0 )) || fail "no recipes for $hardware"
+  choices=$(jq -r '.[] | "\(.match) · \(.status) · \(.model_name) · \(.precision // "unknown") · \(.engine)\t\(.id)"' <<<"$rows")
+  if command -v gum >/dev/null 2>&1; then
+    selected=$(cut -f1 <<<"$choices" | gum choose --header "Local AI · ${count}× $hardware")
+  else
+    while IFS= read -r label; do
+      labels+=("$label")
+    done < <(cut -f1 <<<"$choices")
+    PS3="Local AI · ${count}× $hardware: "
+    select selected in "${labels[@]}"; do [[ -n $selected ]] && break; done
+  fi
+  selected=$(awk -F '\t' -v label="$selected" '$1 == label {print $2; exit}' <<<"$choices")
+  [[ -n $selected ]] || fail "no recipe selected"
+  resolve "$selected"
+}
+
+
+
+warn() { printf 'local-ai: warning: %s\n' "$*" >&2; }
+
+preflight() {
+  # Foolproofing before launch: verify this machine can actually run the recipe.
+  # LOCAL_AI_FORCE=1 (or run --force) downgrades hardware-mismatch failures to warnings.
+  local recipe=$1 force=${2:-0}
+  local required_hw required_count backend host_port detected detected_count
+  required_hw=$(jq -r '.hardware_id' <<<"$recipe")
+  required_count=$(jq -r '.hardware_count // 1' <<<"$recipe")
+  backend=$(jq -r '.launch.accelerator_backend // empty' <<<"$recipe")
+  host_port=$(jq -r '.launch.host_port // empty' <<<"$recipe")
+
+  if [[ $backend == nvidia ]]; then
+    command -v nvidia-smi >/dev/null 2>&1 || fail "this recipe targets NVIDIA hardware (${required_hw} x${required_count}); no NVIDIA driver detected on this machine (nvidia-smi not found)."
+  fi
+  command -v docker >/dev/null 2>&1 || fail "Docker is required to run this recipe. Install Docker and retry."
+  docker info >/dev/null 2>&1 || fail "The Docker daemon is not running. Start Docker and retry."
+  if [[ $backend == nvidia ]] && ! docker info 2>/dev/null | grep -qi 'nvidia'; then
+    warn "the NVIDIA container runtime was not visible in 'docker info'; if launch fails with a GPU error, install nvidia-container-toolkit."
+  fi
+
+  detected=$(detect 2>/dev/null || true)
+  detected_count=$(detect_count 2>/dev/null || printf '1')
+  if [[ -z $detected ]]; then
+    if [[ $force == 1 ]]; then
+      warn "could not detect local hardware; continuing because --force was given."
+    else
+      fail "could not detect local hardware. Set LOCAL_AI_HARDWARE to your registry hardware id, or pass --force to skip this check."
+    fi
+  elif [[ $detected != "$required_hw" ]]; then
+    local msg="this recipe was validated on ${required_hw} x${required_count}; this machine detects as ${detected} x${detected_count}."
+    if [[ $force == 1 ]]; then
+      warn "$msg Continuing because --force was given."
+      local need_vram have_vram
+      need_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$required_hw")")
+      have_vram=$(jq -r '.memory.vram_gb' <<<"$(record hardware "$detected")")
+      if [[ -n $need_vram && -n $have_vram ]] && (( $(printf '%.0f' "$have_vram") * detected_count < $(printf '%.0f' "$need_vram") * required_count )); then
+        warn "detected VRAM ($(printf '%.0f' "$have_vram")GB x${detected_count}) is below the validated requirement ($(printf '%.0f' "$need_vram")GB x${required_count}); the launch will likely fail or OOM."
+      fi
+    else
+      fail "$msg A validated recipe is a contract for its exact hardware. Pass --force to run anyway."
+    fi
+  elif (( detected_count < required_count )); then
+    if [[ $force == 1 ]]; then
+      warn "recipe needs ${required_count} accelerators, detected ${detected_count}; continuing because --force was given."
+    else
+      fail "this recipe needs ${required_count} accelerators; only ${detected_count} detected. Pass --force to run anyway."
+    fi
+  fi
+
+  if [[ -n $host_port ]] && command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$host_port" -sTCP:LISTEN >/dev/null 2>&1; then
+    fail "host port ${host_port} is already in use. Free it or stop the conflicting service, then retry."
+  fi
+
+  local instance size_gb cache_dir free_gb
+  instance=$(record model-instance "$(jq -r '.model_instance_id' <<<"$recipe")")
+  size_gb=$(jq -r '.weights.size_gb // empty' <<<"$instance")
+  cache_dir="$HOME/.cache/huggingface"
+  mkdir -p "$cache_dir" 2>/dev/null || true
+  if [[ -n $size_gb ]]; then
+    free_gb=$(df -Pk "$cache_dir" 2>/dev/null | awk 'NR==2 {printf "%d", $4/1048576}')
+    if [[ -n $free_gb ]] && (( free_gb < $(printf '%.0f' "$size_gb") + 5 )); then
+      fail "weights need ~${size_gb}GB but only ${free_gb}GB is free under ${cache_dir}. Free disk space and retry."
+    fi
+  fi
+}
+
+launch_args() {
+  # Build the docker argv for a VALIDATED docker recipe into the global array LAUNCH.
+  local recipe=$1 launch status kind backend
+  status=$(jq -r '.status' <<<"$recipe")
+  kind=$(jq -r '.launch.kind' <<<"$recipe")
+  if [[ $status != validated || $kind != docker ]]; then
+    fail "only validated docker recipes materialize to a launch command; this recipe is ${status}/${kind}. Candidates are evidence, not launch contracts."
+  fi
+  launch=$(jq -c '.launch' <<<"$recipe")
+  if ! jq -e '
+    .devices == null or .devices == [] or
+    (.accelerator_backend == "nvidia" and .devices == ["/dev/nvidia-uvm"]) or
+    (.accelerator_backend == "intel-xpu" and .devices == ["/dev/dri"])
+  ' >/dev/null <<<"$launch"; then
+    fail "unsupported host devices for accelerator backend"
+  fi
+  LAUNCH=(docker run --rm)
+  backend=$(jq -r '.accelerator_backend // empty' <<<"$launch")
+  if [[ $backend == nvidia ]]; then
+    LAUNCH+=(--gpus all)
+    if jq -e '.devices == ["/dev/nvidia-uvm"]' >/dev/null <<<"$launch"; then
+      LAUNCH+=(--device /dev/nvidia-uvm)
+    fi
+  fi
+  local value
+  value=$(jq -r '.ipc // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--ipc "$value"); fi
+  value=$(jq -r '.shm_size // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--shm-size "$value"); fi
+  value=$(jq -r '.network_mode // empty' <<<"$launch")
+  if [[ -n $value && $value != bridge ]]; then LAUNCH+=(--network "$value"); fi
+  local host_port container_port
+  host_port=$(jq -r '.host_port // empty' <<<"$launch")
+  container_port=$(jq -r '.container_port // empty' <<<"$launch")
+  if [[ -n $host_port && -n $container_port ]]; then LAUNCH+=(-p "${host_port}:${container_port}"); fi
+  local pair
+  while IFS= read -r pair; do
+    if [[ -n $pair ]]; then LAUNCH+=(-e "$pair"); fi
+  done < <(jq -r '(.environment // {}) | to_entries[] | "\(.key)=\(.value)"' <<<"$launch")
+  local source target ro suffix
+  while IFS=$'\t' read -r source target ro; do
+    [[ -n $source ]] || continue
+    source=${source/#\~/$HOME}
+    case $source in
+      '${MODEL_ROOT}/'*) source="${MODEL_ROOT:?set MODEL_ROOT to your model directory}/${source#*/}" ;;
+      '${CACHE_ROOT}/'*) source="${CACHE_ROOT:?set CACHE_ROOT to your cache directory}/${source#*/}" ;;
+    esac
+    if [[ $source == asset/* ]]; then
+      if [[ -f $ROOT/$source ]]; then
+        source="$ROOT/$source"
+      else
+        # cartridge mode: no checkout — fetch the asset and verify its recorded digest
+        local asset_file asset_id manifest sha cache
+        asset_file=${source#asset/}
+        cache="${TMPDIR:-/tmp}/local-ai-assets"
+        mkdir -p "$cache"
+        asset_id=""
+        while IFS= read -r candidate; do
+          manifest=$(curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$candidate" 2>/dev/null | jq -c '.data // .' 2>/dev/null) || continue
+          if [[ $(jq -r '.file // empty' <<<"$manifest") == "$asset_file" ]]; then asset_id=$candidate; break; fi
+        done < <(jq -r '.launch.asset_ids[]?' <<<"$recipe")
+        [[ -n $asset_id ]] || fail "asset $asset_file is not declared by this recipe"
+        sha=$(jq -r '.sha256' <<<"$manifest")
+        curl -fsSL "${LOCAL_AI_BASE_URL:-https://local-ai-registry.vercel.app}/api/v1/asset/$asset_id/file" -o "$cache/$asset_file" || fail "could not fetch asset $asset_file"
+        if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | shasum -a 256 -c - >/dev/null 2>&1; then
+          if ! printf '%s  %s\n' "$sha" "$cache/$asset_file" | sha256sum -c - >/dev/null 2>&1; then
+            fail "asset $asset_file failed sha256 verification"
+          fi
+        fi
+        source="$cache/$asset_file"
+      fi
+    fi
+    suffix=""
+    if [[ $ro == true ]]; then suffix=":ro"; fi
+    LAUNCH+=(-v "${source}:${target}${suffix}")
+  done < <(jq -r '(.mounts // [])[] | [.source, .target, (.read_only // false | tostring)] | @tsv' <<<"$launch")
+  value=$(jq -r '.entrypoint // empty' <<<"$launch")
+  if [[ -n $value ]]; then LAUNCH+=(--entrypoint "$value"); fi
+  LAUNCH+=("$(jq -r '.image' <<<"$launch")")
+  while IFS= read -r -d '' value; do
+    LAUNCH+=("$value")
+  done < <(jq -j '(.arguments // [])[] | . + "\u0000"' <<<"$launch")
+}
+
+
+cmd_validate() {
+  # Run a candidate's draft (or docker candidate launch) on THIS machine,
+  # accept it with a real completion + speed measurement, and promote it.
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
+  local id=$1 recipe contract cname port
+  recipe=$(record recipe "$id")
+  [[ $(jq -r '.status' <<<"$recipe") == candidate ]] || fail "only candidates can be validated; this recipe is $(jq -r '.status' <<<"$recipe")"
+  if [[ $(jq -r '.launch.kind' <<<"$recipe") == docker ]]; then
+    contract=$(jq -c '.launch' <<<"$recipe")
+  else
+    contract=$(jq -c '.draft_launch // empty' <<<"$recipe")
+    [[ -n $contract ]] || fail "this candidate has no docker launch and no draft_launch; run scripts/synthesize_launches.py or curate one"
+  fi
+  # stage the contract first so preflight sees the draft backend and ports
+  local staged
+  staged=$(jq -c --argjson launch "$contract" '.launch = $launch | .status = "validated"' <<<"$recipe")
+  preflight "$staged" "$force"
+  launch_args "$staged"
+  port=$(jq -r '.host_port' <<<"$contract")
+  cname="local-ai-accept-$$"
+  printf 'launching draft for acceptance (container %s, port %s)...\n' "$cname" "$port" >&2
+  # detach: replace 'docker run --rm' with named detached run
+  local detached=("${LAUNCH[@]:0:2}" -d --name "$cname" "${LAUNCH[@]:2}")
+  "${detached[@]}" >/dev/null || fail "docker launch failed"
+  trap 'docker rm -f "'"$cname"'" >/dev/null 2>&1 || true' EXIT
+  printf 'waiting for the server (weights may download; up to 60 minutes)...\n' >&2
+  local waited=0
+  until curl -fsS -m 5 "http://localhost:${port}/v1/models" >/dev/null 2>&1; do
+    if ! docker inspect -f '{{.State.Running}}' "$cname" 2>/dev/null | grep -q true; then
+      docker logs --tail 40 "$cname" >&2 || true
+      fail "the server exited before becoming healthy (last logs above)"
+    fi
+    sleep 10; waited=$((waited+10))
+    (( waited % 120 == 0 )) && printf '  still waiting (%ss)...\n' "$waited" >&2
+    (( waited >= 3600 )) && { docker logs --tail 40 "$cname" >&2 || true; fail "server did not become healthy within 60 minutes"; }
+  done
+  printf 'server healthy after %ss; running acceptance...\n' "$waited" >&2
+  python3 "$ROOT/../scripts/accept_recipe.py" "$id" --endpoint "http://localhost:${port}" || fail "acceptance failed; recipe stays candidate"
+  docker rm -f "$cname" >/dev/null 2>&1 || true
+  trap - EXIT
+  printf 'done. Rebuild the index, run make check, and open a PR with the promotion.\n' >&2
+}
+
+cmd_command() {
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  printf '%q ' "${LAUNCH[@]}"
+  printf '\n'
+}
+
+cmd_run() {
+  local force=0
+  if [[ ${1:-} == --force ]]; then force=1; shift; fi
+  [[ ${LOCAL_AI_FORCE:-0} == 1 ]] && force=1
+  local recipe
+  recipe=$(record recipe "$1")
+  launch_args "$recipe"
+  preflight "$recipe" "$force"
+  printf 'preflight passed; launching validated recipe %s\n' "$1" >&2
+  printf 'the server will listen on http://localhost:%s (OpenAI-compatible)\n' "$(jq -r '.launch.host_port' <<<"$recipe")" >&2
+  exec "${LAUNCH[@]}"
+}
+
+usage() {
+  cat <<'EOF'
+Usage: local-ai [command]
+
+  detect                         print the local hardware id
+  list [hardware-id] [--json]    list compatible recipe summaries
+  choose [hardware-id]           choose a recipe in a TUI and resolve it
+  show <recipe-id>               resolve a recipe and its references
+  get <collection> <id>          print one record
+  search <text>                  search all registry records
+  command <recipe-id>            print the exact docker command for a validated recipe
+  run [--force] <recipe-id>      preflight this machine, then launch a validated recipe
+  validate [--force] <recipe-id> run a candidate draft here, accept it, and promote to validated
+EOF
+}
+
+need jq
+[[ -f $ROOT/index/recipes.json ]] || fail "registry not found at $ROOT"
+
+case ${1:-choose} in
+  command) shift; [[ $# -eq 1 ]] || fail "usage: local-ai command <recipe-id>"; cmd_command "$1" ;;
+  run) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai run [--force] <recipe-id>"; cmd_run "$@" ;;
+  validate) shift; [[ $# -ge 1 && $# -le 2 ]] || fail "usage: local-ai validate [--force] <recipe-id>"; cmd_validate "$@" ;;
+  detect) detect ;;
+  list) shift; list "$@" ;;
+  choose) choose "${2:-}" ;;
+  show) (( $# == 2 )) || fail "show requires a recipe id"; resolve "$2" ;;
+  get) (( $# == 3 )) || fail "get requires a collection and id"; record "$2" "$3" ;;
+  search) (( $# == 2 )) || fail "search requires one text query"; need rg; search "$2" ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac

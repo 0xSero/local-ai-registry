@@ -28,7 +28,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
-ENGINES, RECIPES, RUNS, CARDS = ROOT / "engines", ROOT / "recipes", ROOT / "lab" / "runs", ROOT / "cards"
+REG = ROOT / "registry"
+ENGINES, RECIPES, RUNS, CARDS = REG / "engines", REG / "recipes", ROOT / "lab" / "runs", REG / "cards"
 GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
 MIN_TPS = 15.0
 MAX_RECIPE_BYTES = 1024

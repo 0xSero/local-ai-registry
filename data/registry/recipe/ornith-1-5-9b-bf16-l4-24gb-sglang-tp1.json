@@ -1,0 +1,212 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "description": "SGLang serving Ornith-1.5-9B bf16 on a 24 GB L4. The card runs the model but NOT at the 131072 window the tier wanted: 19.33 GB of bf16 weights leave about 4 GB of KV, and SGLang refuses any prompt over 14786 tokens, so this recipe pins the MEASURED ceiling of 14336 and carries no speed claim. For the full 131072 window use the 32 GB RTX PRO 4500 Blackwell recipe.",
+  "engine": {
+    "graph_mode": "cuda-graph",
+    "name": "sglang",
+    "version": "0.5.19"
+  },
+  "facts": {
+    "audit.speed": {
+      "note": "No speed claim is supportable on this card: the protocol's five-stream wave at an 8192-token context needs 40960 tokens of KV against a ~14786-token budget, so all 36 sweep cells were measurement-invalid.",
+      "provenance": {
+        "captured_at": "2026-09-22T09:10:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T09:05:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/sweep/manifest.json"
+          }
+        ]
+      },
+      "reason": "capacity-blocked-no-valid-sweep",
+      "state": "unavailable"
+    },
+    "capabilities.chat": {
+      "as_of": "2026-09-22",
+      "note": "The acceptance harness's chat probe returned the expected content on this image and card.",
+      "provenance": {
+        "captured_at": "2026-09-22T08:47:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T08:47:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.reasoning": {
+      "as_of": "2026-09-22",
+      "note": "The reasoning probe answered correctly with a non-empty reasoning trace under --reasoning-parser qwen3.",
+      "provenance": {
+        "captured_at": "2026-09-22T08:47:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T08:47:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.tools": {
+      "as_of": "2026-09-22",
+      "note": "The tool probe returned a parsed tool call under --tool-call-parser qwen3_coder.",
+      "provenance": {
+        "captured_at": "2026-09-22T08:47:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T08:47:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "capabilities.vision": {
+      "as_of": "2026-09-22",
+      "note": "Two differently coloured images produced differing answers, both naming their own colour.",
+      "provenance": {
+        "captured_at": "2026-09-22T08:47:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T08:47:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+          }
+        ]
+      },
+      "reason": "verified-by-acceptance",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "as_of": "2026-09-22",
+      "note": "SGLang reports its own ceiling on this card: 'Input length (16000 tokens) exceeds the maximum allowed length (14786 tokens)'. The recipe pins 14336, the largest window verified end to end.",
+      "provenance": {
+        "captured_at": "2026-09-22T09:10:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-22T09:10:00Z",
+            "kind": "campaign-artifact",
+            "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/capacity-failure.json"
+          }
+        ]
+      },
+      "reason": "measured-engine-ceiling",
+      "state": "known",
+      "unit": "tokens"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "l4-24gb",
+  "id": "ornith-1-5-9b-bf16-l4-24gb-sglang-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-m",
+      "sglang.launch_server",
+      "--model-path",
+      "/opt/models/Ornith-1.5-9B",
+      "--served-model-name",
+      "Ornith-1.5-9B",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "30000",
+      "--context-length",
+      "14336",
+      "--mem-fraction-static",
+      "0.85",
+      "--tool-call-parser",
+      "qwen3_coder",
+      "--reasoning-parser",
+      "qwen3"
+    ],
+    "container": {
+      "captured_at": "2026-09-22T08:47:00Z",
+      "compose_file": null,
+      "digest": "sha256:d7b64265dbeb3391213071aa393ff7693c1551b4bf4a43bb005193722b39d175",
+      "image": "ghcr.io/0xsero/deploy-sglang-ornith15-9b-l4-24gb@sha256:d7b64265dbeb3391213071aa393ff7693c1551b4bf4a43bb005193722b39d175",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-22T08:47:00Z",
+          "kind": "campaign-artifact",
+          "repository": "0xSero/inference-index",
+          "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": "/opt/sglang/bin/python3",
+    "environment": {},
+    "host_port": 30000,
+    "image": "ghcr.io/0xsero/deploy-sglang-ornith15-9b-l4-24gb@sha256:d7b64265dbeb3391213071aa393ff7693c1551b4bf4a43bb005193722b39d175",
+    "ipc": "host",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "~/.cache/huggingface",
+        "target": "/root/.cache/huggingface"
+      }
+    ],
+    "shm_size": "16g"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-22T08:47:00Z",
+      "harness": "inference-index omp_run.py accept",
+      "served_model_id": "Ornith-1.5-9B"
+    },
+    "campaign": "omp-cheap-gpu-2026-09-18",
+    "lab": {
+      "backend": "cuda",
+      "hardware_label": "NVIDIA L4",
+      "notes": "Acceptance passed with failed_probes empty at a 14336-token window: chat, reasoning, tools and vision all verified on the card. The speed sweep is NOT available at this window: the protocol's wave shape is five concurrent streams, which at an 8192-token context needs 40960 tokens of KV, and the card holds about 14786. All 36 sweep cells came back measurement-invalid. This recipe therefore carries no speed claim."
+    },
+    "row": "R17"
+  },
+  "model_instance_id": "ornith-ai-ornith-1-5-9b",
+  "provenance": {
+    "captured_at": "2026-09-22T09:10:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-22T08:47:00Z",
+        "kind": "campaign-artifact",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/acceptance.json"
+      },
+      {
+        "captured_at": "2026-09-22T09:10:00Z",
+        "kind": "campaign-artifact",
+        "repository": "0xSero/inference-index",
+        "url": "https://github.com/0xSero/inference-index/blob/main/campaigns/omp-cheap-gpu-2026-09-18/artifacts/l4-24gb-ornith15-9b-sglang-attempt3/capacity-failure.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": 14336,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

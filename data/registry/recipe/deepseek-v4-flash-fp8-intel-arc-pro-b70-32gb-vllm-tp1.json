@@ -1,0 +1,222 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "vllm recipe for DeepSeek-V4-Flash-180B on Intel Arc Pro B70 with tensor parallelism 1.",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.1.dev1172+g4a6fd8747.xpu; local vLLM 264c7f2f7; XPU kernels 313156737; oneCCL 48fda4f0e"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "description": {
+      "provenance": {
+        "captured_at": "2026-08-31T22:39:04Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T22:39:04Z",
+            "kind": "registry-derived",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "derived-from-recipe-identifiers",
+      "state": "known"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "runtime-detail-not-published",
+      "state": "unknown"
+    },
+    "metadata.localmaxxing.engine_flags.tensorParallel": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "kv-cache-capacity-not-published",
+      "state": "unknown"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-08-31T23:03:15Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-31T23:03:15Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+          }
+        ]
+      },
+      "reason": "server-capacity-not-evidenced",
+      "state": "unknown"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-01T10:20:39Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T10:20:39Z",
+            "kind": "source-semantics",
+            "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+          }
+        ]
+      },
+      "reason": "context-limit-not-evidenced",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "intel-arc-pro-b70-32gb",
+  "id": "deepseek-v4-flash-fp8-intel-arc-pro-b70-32gb-vllm-tp1",
+  "launch": {
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "reference-only-launch",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "run_id": "cmrquta9905w3lg013m5vxoqx",
+    "source": "localmaxxing",
+    "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+  },
+  "metadata": {
+    "localmaxxing": {
+      "base_lineage": "known",
+      "engine_flags": {
+        "attentionBackend": "vLLM XPU",
+        "flashAttn": false,
+        "gpuLayers": 99,
+        "kvCacheDtype": "f16",
+        "mtpEnabled": false,
+        "specDecoding": true,
+        "tensorParallel": null
+      },
+      "hardware_label": "4x Intel Arc Pro B70 32GB",
+      "notes": "Four-B70 single-session DeepSeek V4 Flash K160 DSpark7 record. The guarded greedy target path projects each local 32320-token vocabulary shard, gathers only tiny top-1 value/index pairs, and commits target tokens with a native SYCL rejection op instead of all-gathering and sampling full 129280-token FP32 logits. Three fresh strict suite medians are 80.820052, 76.900178, and 78.287226 tok/s; all 36 requests are cache-zero. Four ordered exact-canary suites pass 24/24. Unsupported sampler settings fail closed to the canonical path. The unchanged K160 target verifies accepted tokens. No aggregate throughput, cache/history reuse, model substitution, or benchmark routing.",
+      "revision_unpinned": false,
+      "run_id": "cmrquta9905w3lg013m5vxoqx"
+    }
+  },
+  "model_instance_id": "0xsero-deepseek-v4-flash-180b--fp8",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://www.localmaxxing.com/en/runs/cmrquta9905w3lg013m5vxoqx"
+      }
+    ]
+  },
+  "recipe_source": "localmaxxing",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": null,
+    "max_concurrency": null,
+    "max_context_tokens": null,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "deepseek-v4-flash-fp8-intel-arc-pro-b70-32gb-vllm-tp1-sweep"
+  ],
+  "status": "candidate"
+}

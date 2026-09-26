@@ -1,0 +1,115 @@
+# Registry scripts
+
+Every script is **Python standard library only** (Python ≥ 3.10) — there is no
+dependency manifest because there are no dependencies — except the two scrapers
+that drive a browser (see the contract notes). Run scripts from the repository
+root; each resolves `registry/` relative to the current directory (or takes a root
+as its first positional argument).
+
+`make check` runs the same verification suite as CI.
+
+## The pipeline, in order
+
+Importers and enrichment rewrite records; everything downstream of them is
+regeneration and verification. After any step that writes records, finish the
+pipeline before committing.
+
+| Step | Script | Reads | Writes |
+|---|---|---|---|
+| 0. Scrape | `scrape_microcenter_prices.py` | microcenter.com category pages (US egress) | `out/latest.json`, `out/run-<utc>.json`, `out/latest.csv` |
+| 0. Scrape | `scrape_geizhals_history.py` | geizhals.de `price_history` API | `out/geizhals-history-<utc>.json` |
+| 0. Scrape | `verify_microcenter_scrape.py` | a Micro Center scrape run | nothing — coverage, duplicate SKU and missing-price checks |
+| 1. Import | `import_localmaxxing.py` | LocalMaxxing snapshot | candidate recipes, instances (`launch.kind: reference`) |
+| 1. Import | `import_postgres_publication.py` | local.ai Postgres publication | candidate recipes + speed-sweep |
+| 1. Import | `import_hf_benchmarks.py` | HF Model & Benchmark Matrix scrape | `registry/benchmark/` |
+| 1. Import | `import_market_snapshot.py` | local-ai-scanner-cli snapshot | `registry/price/` |
+| 1. Import | `fetch_extra_prices.py` | public retailer search pages | scanner-style snapshot for the market import |
+| 1. Import | `fetch_hf_downloads.py` | public Hugging Face API | `model.downloads` (30-day + all-time counts; drives the models-page sort) |
+| 1. Import | `import_verified_sources.py` | LocalMaxxing / Mia Labs / mlx.fast / HF configs | candidate + validated recipes |
+| 2. Tokenize | `tokenize_observed_command.py` | observed shell strings on records | `metadata.<source>.tokenized` (never the launch contract) |
+| 3. Enrich | `enrich_registry.py` | records | shared enrichment contract fields (facts, provenance) |
+| 3. Enrich | `enrich_localmaxxing_live.py` | paginated public LocalMaxxing leaderboard API | exact live fields on existing recipes + speed sweeps; never creates records |
+| 3. Enrich | `enrich_hardware_prices.py` | fresh, exact US price observations | current hardware street/system prices, stock, availability, price history |
+| 3. Enrich | `enrich_hf_metadata.py`, `enrich_hf_active_params.py`, `enrich_hf_model_lineage.py`, `enrich_benchmark_aliases.py` | public Hugging Face API/model cards | exact model metadata, active parameters, lineage, benchmark aliases |
+| 3. Enrich | `fill_derived_fields.py` | already cited registry evidence | deterministic exact derivations only |
+| 4. Curate | `curate_registry.py` | records | curated hardware, sanitized candidates, **`registry/index/` shards** (`--index-only` for just the index) |
+| 5. Format | `format_registry.py` | every `registry/**/*.json` | canonical form: 2-space indent, sorted keys (schemas keep hand order), raw UTF-8, trailing newline |
+| 6. Verify | `validate_registry.py` | records + index | nothing — referential integrity, trust boundary, index staleness |
+| 6. Verify | `npm test` | records + schemas | nothing — ajv validates every record against `registry/schema/*.schema.json` |
+| 7. Visual | `build_price_history_data.py` | `registry/price/` | `cache/price-history-data.json` (every number the page shows) |
+| 7. Visual | `gen_price_history_visual.py` | that payload | `public/gpu-price-history.html` |
+
+Standalone tool: `benchmark_openai_chat.py` measures prefill/decode of a
+running OpenAI-compatible endpoint (no hidden token caps) to produce
+speed-sweep evidence.
+
+Driver: `weekly_prices.sh` runs the whole price chain — scrape, verify, map,
+import, enrich, rebuild the index, validate, rebuild the visual. Committing the
+registry is left to review, not automated.
+
+## Contract notes
+
+- **Two scrapers are not standard library only.** `scrape_microcenter_prices.py`
+  and `scrape_geizhals_history.py` drive a real browser through Playwright,
+  because both sites sit behind a Cloudflare challenge that a plain HTTP client
+  cannot clear. The Micro Center scrape additionally needs a US egress: the site
+  rejects non-US IPs outright and challenges a datacenter IP, so the scraper raises
+  its own SOCKS tunnel to a US host. They write only to the gitignored `out/`;
+  everything downstream of them is standard library only.
+- **Shape rules live in the JSON Schemas** (`registry/schema/`), enforced by
+  ajv in `npm test`. `validate_registry.py` covers only what schemas cannot
+  express. Change the schema first, then run `npm run gen:types` — `types.ts`
+  is generated output.
+- Observed source commands never become launch contracts: candidate imports
+  stay `launch.kind: "reference"` and tokenized argv lives in metadata
+  (`tokenize_observed_command.py` docstring has the full rules).
+
+## Promotion: candidates to cartridges
+
+Observed candidates keep `launch.kind: reference` forever — the evidence
+is never rewritten. The path to a validated, replayable recipe:
+
+1. `synthesize_launches.py` adds a `draft_launch` to eligible candidates
+   (NVIDIA vllm/sglang/llama.cpp today) — a mechanically generated,
+   UNVERIFIED docker contract built from the candidate's own facts and an
+   image digest already audited elsewhere in this registry.
+2. On the target hardware: `local-ai validate <recipe-id>` preflights the
+   machine, launches the draft, waits for health, runs a real completion
+   with streaming TTFT/decode measurement (`accept_recipe.py`), pins the
+   served model revision, writes an acceptance speed-sweep, and promotes:
+   draft_launch becomes launch, status becomes validated.
+3. Rebuild the index, run `make check`, commit, open a PR. CI re-verifies
+   everything the promotion claims.
+
+A failed acceptance changes nothing: the recipe stays a candidate.
+
+## Validation on rented GPUs
+
+For hardware nobody on the team owns, the same acceptance runs on a rented
+box. The recipe's digest-pinned image is the container image and its
+arguments are the container command, so the contract under test is the
+published one; rented containers have no docker daemon, so nothing is
+docker-in-docker.
+
+| Script | Does |
+|---|---|
+| `clone_candidate.py <source> <hardware-id>` | derives a candidate for another card from a validated launch or a draft: contract copied, evidence not. `--ctx`, `--instance`, `--id` adjust it. |
+| `validate_rented.py <recipe-id> [--provider vast\|runpod]` | rents the card, waits for `/v1/models`, runs `accept_recipe.py` against the box's public endpoint, promotes (`--recommend` also flags it), always destroys the box. Retries once on a host whose image pull stalls. |
+| `validate_batch.sh <recipe-id>...` | runs several, logs under `../runs/`, prints PROMOTED/FAILED per recipe. `PARALLEL=N` rents N boxes at once; `PROVIDER` picks the provider. |
+| `make_tabbyapi_candidate.py --repo R --branch B --model M --hardware H --ctx N` | writes the EXL3 model-instance for a branch head, a TabbyAPI config asset for the context and cache mode, and a bridge-networked candidate recipe. `--image` and `--image-provenance` pin a self-built image. |
+| `recommend.py [--dry-run]` | keeps exactly one `recommended` recipe per hardware id by the V1 tier map (VRAM picks the model; TabbyAPI/SGLang ahead of llama.cpp; larger context first), never a host-networked or host-IPC recipe. |
+| `export_plugin_recipes.py` | emits the file the Omarchy plugin vendors: one validated, recommended, single-GPU docker recipe per hardware id. Fails on two recommended for one card; lists cards with validated but no recommended recipe. |
+
+Providers: **Vast.ai** (`vastai` CLI, key in `~/.config/vastai/vast_api_key`)
+pulls any public registry through the host's docker and is the default.
+**RunPod** (`~/.runpod/config.toml`) cannot pull from ghcr.io on community
+hosts, so it only works for Docker Hub images such as vllm and sglang.
+
+TabbyAPI recipes need weights under `<mount>/<model_name>` (the config's `model_name`); the rented run provisions that in-container and `metadata.weights_subdir` records it for the plugin.
+
+`ipc: host` is dropped from a contract validated this way: the box ran
+without it, and the Omarchy plugin refuses recipes that ask for it.
+
+## trust.py
+
+`status` is derived, never asserted. `python3 scripts/trust.py` lists every recipe whose stored status disagrees with the criteria in the module docstring; `--apply` rewrites them and drops `recommended` from anything that no longer qualifies. `validate_registry.py` imports the same function, so CI fails on drift. `make trust` runs apply + format.

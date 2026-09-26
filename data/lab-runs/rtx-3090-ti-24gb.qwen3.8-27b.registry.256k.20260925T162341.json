@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@4acd9ad5af224ec9e8815a54d71a033f378a7e9d",
+  "engine": "registry@qwen3827b-exl3-sc4bpw-rtx3090ti-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-3090-ti-24gb",
+  "proof": [
+   {
+    "at": "2026-09-22",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 67.2,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 3090 Ti",
+  "host": "Romania, RO",
+  "cost_h": 0.24694444444444447
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 3090 Ti",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 86.8,
+  "prefill": 439,
+  "served": "Qwen3.8-27B-EXL3-SC4bpw-H5"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nred, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 130,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_8333ddc98684411683db9477",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nIt's currently **17°C** in Paris, with **overcast** skies. 🌥️"
+  },
+  "context": {
+   "prompt_tokens": 213561,
+   "seconds": 486.8,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 18277,
+   "seconds": 210.53,
+   "counted": "tokenizer"
+  }
+ }
+}

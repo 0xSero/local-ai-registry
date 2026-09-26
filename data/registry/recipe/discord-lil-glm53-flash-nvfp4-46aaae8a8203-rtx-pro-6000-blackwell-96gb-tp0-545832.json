@@ -1,0 +1,166 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by RTX6kPRO Bot",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:jovian-judgement-community-20260902-r15"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.model_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "RTX6kPRO Bot",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-glm53-flash-nvfp4-46aaae8a8203-rtx-pro-6000-blackwell-96gb-tp0-545832",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "$IMAGE",
+      "```",
+      "Runbook:",
+      "https://github.com/local-inference-lab/rtx6kpro/blob/master/models/glm-5.3-flash.md",
+      "Merge",
+      "checklist",
+      "for",
+      "Luke:",
+      "https://github.com/local-inference-lab/vllm/issues/500"
+    ],
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "voipmonitor/vllm:jovian-judgement-community-20260902-r15",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "RTX6kPRO Bot",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "DCP": "1",
+      "MODEL": "local-inference-lab/GLM-5.3-Flash-NVFP4",
+      "PORT": "5001",
+      "TP": "4"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:jovian-judgement-community-20260902-r15",
+    "kind": "docker",
+    "provenance": {
+      "kind": "discord-message",
+      "publisher": "RTX6kPRO Bot",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "author": "RTX6kPRO Bot",
+      "channel_id": "1471527895439638528",
+      "message_id": "1544557486512545832",
+      "posted_at": "2026-09-02T04:00:01.275000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Resolution from the same author's own messages in this channel or thread; metadata.resolution points at every source message."
+    ],
+    "observed_command": null,
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 384,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "source": "https://huggingface.co/api/models/local-inference-lab/GLM-5.3-Flash-NVFP4/revision/46aaae8a82032f77100f2f03e9cc11b391df3b4d?blobs=true",
+      "weight_files": 47,
+      "weights_gb": 199.4
+    }
+  },
+  "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "RTX6kPRO Bot",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1544557486512545832"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [
+    "discord-sweep-1544557486512545832"
+  ],
+  "status": "candidate"
+}

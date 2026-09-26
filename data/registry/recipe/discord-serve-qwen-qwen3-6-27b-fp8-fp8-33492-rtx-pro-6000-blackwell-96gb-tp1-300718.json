@@ -1,0 +1,203 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": true
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by r0kh0rd",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "Qwen",
+            "url": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497351875576598749"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_concurrency": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "r0kh0rd",
+            "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-qwen-qwen3-6-27b-fp8-fp8-33492-rtx-pro-6000-blackwell-96gb-tp1-300718",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "r0kh0rd",
+          "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+  },
+  "metadata": {
+    "discord": {
+      "author": "r0kh0rd",
+      "channel_id": "1473975364727476224",
+      "message_id": "1497343885167300718",
+      "posted_at": "2026-04-24T21:10:01.528000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+    },
+    "model_resolution": "explicit",
+    "observed_command": "Hey all. I see lots of experiments here trying to get the best possible token generation throughput, but has anyone tried running Qwen3.6-27B for a few hours with OpenCode specifically? I have been fighting all kinds of tool call parsing issues. Here's the latest vLLM command I am using: ``` vllm serve -O3 --model Qwen/Qwen3.6-27B-FP8 --served-model-name qwen3.6-27b-fp8 --tensor-parallel-size 1 --gpu-memory-utilization 0.90 --max-model-len 262144 --max-num-seqs 128 --max-num-batched-tokens 32758 --max-cudagraph-capture-size 256 --block-size 32 --enable-auto-tool-choice --reasoning-parser qwen3 --tool-call-parser qwen3_coder --chat-template /chat-templates/qwen3.5-enhanced.jinja --enable-prefix-caching --async-scheduling --attention-backend flashinfer --load-format instanttensor --default-chat-template-kwargs.preserve_thinking true --override-generation-config.temperature 0.6 --override-generation-config.top_p 0.95 --override-generation-config.top_k 20 --override-generation-config.min_p 0.0 --override-generation-config.repetition_penalty 1.0 --override-generation-config.min_new_tokens 4 --speculative-config.method mtp --speculative-config.num_speculative_tokens 3 --speculative-config.rejection_sample_method probabilistic ``` (Will add more details, don't have Nitro, can't post longer messages).",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "e89b16ebf1988b3d6befa7de50abc2d76f26eb09",
+      "source": "https://huggingface.co/api/models/Qwen/Qwen3.6-27B-FP8/revision/e89b16ebf1988b3d6befa7de50abc2d76f26eb09?blobs=true",
+      "weight_files": 66,
+      "weights_gb": 30.9
+    },
+    "rig_resolution": {
+      "from_message": "1497351875576598749",
+      "gap_days": 0.02,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "qwen-qwen3-6-27b-fp8--fp8--33492",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "r0kh0rd",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497343885167300718"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "r0kh0rd",
+        "url": "https://discord.com/channels/1466898002793857221/1473975364727476224/1497351875576598749"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 128,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

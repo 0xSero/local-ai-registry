@@ -1,0 +1,247 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": true
+  },
+  "description": "Observed in the Local Inference Lab Discord: glm-5-3-flash-exl3-k4-compose.yml posted by daring_hare_33657",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "ghcr.io/tpurtell/glm-5.3-flash-exl3-4bpw-2x-rtx"
+  },
+  "facts": {
+    "capabilities.vision": {
+      "note": "Hugging Face pipeline tag: image-text-to-text",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "huggingface-api",
+            "publisher": "brandonmusic",
+            "url": "https://huggingface.co/api/models/brandonmusic/GLM-5.3-Flash-tr3-4bpw"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+            ],
+            "publisher": "daring_hare_33657",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+            ],
+            "publisher": "daring_hare_33657",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-brandonmusic-glm-5-3-flash-tr3-4bpw-exl3-4bpw-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "compose": {
+      "file": "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml",
+      "digest": "sha256:5b0486d3ada90ee3c0d822baed55e1a4d65e06e6ecc78c66a40bd22bcfa9a891",
+      "image": "ghcr.io/tpurtell/glm-5.3-flash-exl3-4bpw-2x-rtx@sha256:5b0486d3ada90ee3c0d822baed55e1a4d65e06e6ecc78c66a40bd22bcfa9a891",
+      "reason": "image-pinned-in-message",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+          ],
+          "publisher": "daring_hare_33657",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8001,
+    "environment": {
+      "B12X_AUTOTUNE_CACHE_DIR": "/cache/b12x_autotune",
+      "B12X_EXL3_BF16_EPILOGUE": "1",
+      "B12X_EXL3_BF16_GEMV": "1",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "4,5",
+      "GLM53_STARTUP_WARMUP": "1",
+      "GLM53_STARTUP_WARMUP_TIMEOUT_S": "1800",
+      "HF_HOME": "/root/.cache/huggingface",
+      "HF_HUB_OFFLINE": "1                      # weights are pre-downloaded; drop + set HF_TOKEN to pull in-container",
+      "HUGGINGFACE_HUB_CACHE": "/root/.cache/huggingface/hub",
+      "KV_FP8_ROPE": "0",
+      "NCCL_DEBUG": "WARN",
+      "NVIDIA_DRIVER_CAPABILITIES": "compute,utility",
+      "NVIDIA_VISIBLE_DEVICES": "4,5",
+      "OMP_NUM_THREADS": "16",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "SAFETENSORS_FAST_GPU": "1",
+      "TORCHINDUCTOR_CACHE_DIR": "/cache/torchinductor",
+      "TRITON_CACHE_DIR": "/cache/triton",
+      "VLLM_ADAPTIVE_MTP": "0",
+      "VLLM_B12X_DCP_A2A": "1",
+      "VLLM_B12X_DCP_TOPK_MAX_ROWS": "2048",
+      "VLLM_B12X_DCP_TOPK_MIN_ROWS": "128",
+      "VLLM_B12X_DCP_TOPK_OWNER_EXCHANGE": "1",
+      "VLLM_B12X_GLM_H64_QUERY_PROJ": "auto",
+      "VLLM_B12X_PCIE_EAGER": "0",
+      "VLLM_DCP_GLOBAL_TOPK": "1",
+      "VLLM_DCP_QUERY_SPLIT": "0",
+      "VLLM_DCP_TOPK_OWNER_MERGE": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "1",
+      "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+      "VLLM_EXL3_PREFILL_BLOCK_M": "64",
+      "VLLM_EXL3_PREFILL_CAPACITY": "1024",
+      "VLLM_EXL3_PREFILL_TRELLIS": "1",
+      "VLLM_EXL3_TRELLIS_BLOCK_M": "8",
+      "VLLM_EXL3_TRELLIS_MAX_M": "32",
+      "VLLM_EXL3_TRELLIS_MIN_M": "1",
+      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0",
+      "VLLM_PCIE_ALLREDUCE_BACKEND": "b12x",
+      "VLLM_PCIE_ONESHOT_ALLREDUCE_MAX_SIZE": "384KB",
+      "VLLM_USE_B12X_KPOOL_INDEXER": "1",
+      "VLLM_USE_B12X_MHC": "auto",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+      "VLLM_USE_FLASHINFER_SAMPLER": "0",
+      "capabilities": "[gpu]",
+      "command": "",
+      "deploy": "",
+      "device_ids": "[\"4\", \"5\"]",
+      "devices": "",
+      "driver": "nvidia",
+      "hard": "67108864",
+      "healthcheck": "",
+      "interval": "30s",
+      "memlock": "",
+      "nofile": "",
+      "reservations": "",
+      "resources": "",
+      "retries": "5",
+      "shm_size": "32g",
+      "soft": "67108864",
+      "stack": "",
+      "start_period": "1800s",
+      "test": "[\"CMD\", \"curl\", \"-f\", \"http://localhost:8001/health\"]",
+      "timeout": "10s",
+      "ulimits": "",
+      "volumes": ""
+    },
+    "host_port": 24717,
+    "image": "ghcr.io/tpurtell/glm-5.3-flash-exl3-4bpw-2x-rtx@sha256:5b0486d3ada90ee3c0d822baed55e1a4d65e06e6ecc78c66a40bd22bcfa9a891",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "daring_hare_33657",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "glm-5-3-flash-exl3-k4-compose.yml",
+      "author": "daring_hare_33657",
+      "channel_id": "1471527895439638528",
+      "message_id": "1547093497952084048",
+      "posted_at": "2026-09-09T03:57:13.519000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ],
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 96,
+      "memory_fit": {
+        "fits": false,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "61e26e1484e16d7a603f77040cda9b43cc4a31d6",
+      "source": "https://huggingface.co/api/models/brandonmusic/GLM-5.3-Flash-tr3-4bpw/revision/61e26e1484e16d7a603f77040cda9b43cc4a31d6?blobs=true",
+      "weight_files": 120,
+      "weights_gb": 175.6
+    }
+  },
+  "model_instance_id": "brandonmusic-glm-5-3-flash-tr3-4bpw--exl3-4bpw",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+        ],
+        "publisher": "daring_hare_33657",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1547093497952084048-glm-5-3-flash-exl3-k4-compose.yml"
+        ],
+        "publisher": "daring_hare_33657",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1547093497952084048"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

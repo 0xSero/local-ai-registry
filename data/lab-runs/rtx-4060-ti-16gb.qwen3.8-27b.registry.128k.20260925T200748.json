@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@004a887127d8304ca2d5475d3a3c41f1761fdd27",
+  "engine": "registry@qwen3827b-exl3-sc3bpw-v4-rtx4060ti-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-4060-ti-16gb",
+  "proof": [
+   {
+    "at": "2026-09-22",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 38.2,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 4060 Ti",
+  "host": "California, US",
+  "cost_h": 0.11583702725925926
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 4060 Ti",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 29.0,
+  "prefill": 374,
+  "served": "Qwen3.8-27B-EXL3-SC3bpw-H4-V4"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 135,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_690702dff9db45d2b04b9c90",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nHere's the current weather in Paris:\n\n- **Temperature:** 17°C\n- **Sky:** Overcast\n\nIt's a cool, cloudy day in Paris right now."
+  },
+  "context": {
+   "prompt_tokens": 106243,
+   "seconds": 284.3,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 20193,
+   "seconds_total": 437.8
+  }
+ }
+}

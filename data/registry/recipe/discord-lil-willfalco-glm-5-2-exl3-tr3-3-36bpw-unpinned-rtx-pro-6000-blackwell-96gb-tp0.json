@@ -1,0 +1,192 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Observed in the Local Inference Lab Discord: docker-compose.yml posted by daring_hare_33657",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "voipmonitor/vllm:gilded-gnosis-v20-vllm4d006a4-b12xcd3ce19-fi1ac6942-cu132-20260810-r34"
+  },
+  "facts": {
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-attachment",
+            "paths": [
+              "1537224373931479110-docker-compose.yml"
+            ],
+            "publisher": "daring_hare_33657",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "paths": [
+              "1537224373931479110-docker-compose.yml"
+            ],
+            "publisher": "daring_hare_33657",
+            "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-lil-willfalco-glm-5-2-exl3-tr3-3-36bpw-unpinned-rtx-pro-6000-blackwell-96gb-tp0",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "-lc",
+      "|"
+    ],
+    "compose": {
+      "file": "1537224373931479110-docker-compose.yml"
+    },
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": "1537224373931479110-docker-compose.yml",
+      "digest": null,
+      "image": "voipmonitor/vllm:gilded-gnosis-v20-vllm4d006a4-b12xcd3ce19-fi1ac6942-cu132-20260810-r34",
+      "reason": "only-a-mutable-tag-was-posted",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-attachment",
+          "paths": [
+            "1537224373931479110-docker-compose.yml"
+          ],
+          "publisher": "daring_hare_33657",
+          "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_MAX_CONNECTIONS": "32",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "DCP": "4",
+      "DCP_KV_CACHE_INTERLEAVE_SIZE": "64",
+      "HF_HOME": "/root/.cache/huggingface",
+      "HUGGINGFACE_HUB_CACHE": "/root/.cache/huggingface/hub",
+      "MAX_MODEL_LEN": "-1",
+      "MAX_NUM_SEQS": "4",
+      "MODEL": "willfalco/GLM-5.2-EXL3-TR3-3.36bpw",
+      "MODEL_FAMILY": "glm52-exl3",
+      "MODEL_REVISION": "8d9aa923a17502675ca23737349b67f2e66bb69d",
+      "MOE_MODE": "a16",
+      "MTP": "3",
+      "NCCL_MIN_NCHANNELS": "8",
+      "NVIDIA_DRIVER_CAPABILITIES": "compute,utility",
+      "NVIDIA_VISIBLE_DEVICES": "0,1,2,3",
+      "OMP_NUM_THREADS": "16",
+      "PORT": "8000",
+      "SAFETENSORS_FAST_GPU": "1",
+      "SERVED_MODEL_NAME": "glm-5.2",
+      "TP": "4",
+      "VLLM_B12X_MLA_CKV_GATHER_MAX_TOKENS": "16384",
+      "VLLM_DCP_INDEXER_SHARDS": "4",
+      "VLLM_USE_FLASHINFER_SAMPLER": "0"
+    },
+    "host_port": 8000,
+    "image": "voipmonitor/vllm:gilded-gnosis-v20-vllm4d006a4-b12xcd3ce19-fi1ac6942-cu132-20260810-r34",
+    "kind": "docker-compose",
+    "provenance": {
+      "kind": "discord-attachment",
+      "publisher": "daring_hare_33657",
+      "source": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+    }
+  },
+  "metadata": {
+    "discord": {
+      "attachment": "docker-compose.yml",
+      "author": "daring_hare_33657",
+      "channel_id": "1471527895439638528",
+      "message_id": "1537224373931479110",
+      "posted_at": "2026-08-12T22:20:50.993000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+    },
+    "model_resolution": "explicit",
+    "notes": [
+      "Imported from a launch file posted in the Local Inference Lab Discord; numbers reported by the poster stay on the message."
+    ],
+    "prod_checks": {
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "memory_fit": {
+        "reason": "instance has no pinned revision",
+        "state": "unknown"
+      }
+    }
+  },
+  "model_instance_id": "lil-willfalco-glm-5-2-exl3-tr3-3-36bpw--unpinned",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-attachment",
+        "paths": [
+          "1537224373931479110-docker-compose.yml"
+        ],
+        "publisher": "daring_hare_33657",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "paths": [
+          "1537224373931479110-docker-compose.yml"
+        ],
+        "publisher": "daring_hare_33657",
+        "url": "https://discord.com/channels/1466898002793857221/1471527895439638528/1537224373931479110"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {},
+  "speed_sweep_ids": [
+    "discord-sweep-1533813479134466098",
+    "discord-sweep-1535955577195462706",
+    "discord-sweep-1543521724916695121-att-1543521724916695121-dock",
+    "discord-sweep-1545320840932106311"
+  ],
+  "status": "candidate"
+}

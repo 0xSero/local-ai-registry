@@ -1,0 +1,103 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": false,
+    "tools": false,
+    "vision": false
+  },
+  "description": "Release-blocked Gemma-4-12B-it EXL3 3 bpw candidate on one RTX 2000 Ada. Exact 128K C1/C2/C4, deterministic correctness, and CUDA graphs passed in a pinned base image with the pinned TabbyAPI stack installed, but the declared release image still needs an exact replay.",
+  "engine": {
+    "graph_mode": "piecewise",
+    "name": "tabbyapi",
+    "version": "0.0.1+e632af41"
+  },
+  "facts": {
+    "metadata": {
+      "provenance": {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "sources": [
+          {
+            "captured_at": "2026-08-27T06:04:13.773Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "not-observed",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-2000-ada-16gb",
+  "id": "gemma-4-12b-it-exl3-3bpw-rtx2000ada-tabbyapi-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "main.py",
+      "--config",
+      "/app/config.yml"
+    ],
+    "container": {
+      "captured_at": "2026-08-27T06:04:13.773Z",
+      "compose_file": null,
+      "digest": "sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+      "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-08-27T06:04:13.773Z",
+          "kind": "recipe-launch",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 5000,
+    "entrypoint": "/opt/venv/bin/python3",
+    "environment": {
+      "NVIDIA_VISIBLE_DEVICES": "all"
+    },
+    "host_port": 5000,
+    "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": true,
+        "source": "${MODEL_ROOT}/gemma-4-12b-it-exl3-3bpw",
+        "target": "/workspace/models"
+      }
+    ],
+    "network_mode": "host",
+    "shm_size": "8g"
+  },
+  "metadata": {
+    "launch_config": {
+      "detail": "The referenced TabbyAPI config for the EXL3 3bpw variant was never captured; the mount has been removed rather than pointing at a nonexistent file.",
+      "state": "not-captured"
+    }
+  },
+  "model_instance_id": "turboderp-gemma-4-12b-it-exl3--3-bpw",
+  "provenance": {
+    "captured_at": "2026-08-27T06:04:13.773Z",
+    "sources": [
+      {
+        "captured_at": "2026-08-27T06:04:13.773Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_tokens": 557056,
+    "max_concurrency": 4,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "gemma-4-12b-it-exl3-3bpw-rtx2000ada-tabbyapi-tp1-sweep"
+  ],
+  "status": "validated"
+}

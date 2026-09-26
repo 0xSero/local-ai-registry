@@ -1,0 +1,74 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@60d005a257b39ecb25e4ba23c1dd29df877d5c69",
+  "engine": "tabbyapi-exl3@0f83e6198dc3",
+  "set": {
+   "ctx": 262144,
+   "seqs": 4,
+   "cache": "Q8",
+   "draft": "mtp",
+   "vision": true,
+   "think": "always"
+  },
+  "card": "rtx-pro-6000-blackwell-96gb"
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX PRO 6000 WS",
+  "host": "Spain, ES",
+  "cost_h": 1.4947222222222223
+ },
+ "passed": false,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX PRO 6000 WS",
+  "gates": "load chat reasoning tools",
+  "tps": 0.0,
+  "prefill": null,
+  "served": "Qwen3.8-27B-exl3-60d005a2"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": false,
+   "speed": false
+  },
+  "chat": {
+   "content": "\n\nred, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 140,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_b23404dd6f5945d5a9831cd5",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nIt's currently 17°C (63°F) and overcast in Paris."
+  },
+  "context": {
+   "prompt_tokens": 0,
+   "seconds": 124.1,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": null,
+   "seconds": 11.64
+  }
+ },
+ "launch_config_sha256": "30fbd2a0a608e10fd9c5671853ac9fc61c0ba0e2f423c29d24de94a17f5931ab"
+}

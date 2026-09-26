@@ -1,0 +1,147 @@
+{
+  "cold_cache_completed_runs": 10,
+  "cold_cache_summary": [
+    {
+      "decode_tps_median": 36.8610075514797,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 253.76762933084856,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 512,
+      "samples": 2,
+      "ttft_seconds_median": 2.017602812498808
+    },
+    {
+      "decode_tps_median": 35.311968959125736,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 279.7342296023297,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 4096,
+      "samples": 2,
+      "ttft_seconds_median": 14.643035854489426
+    },
+    {
+      "decode_tps_median": 35.041375870538374,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 296.05845224814664,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 8192,
+      "samples": 2,
+      "ttft_seconds_median": 27.670298041484784
+    },
+    {
+      "decode_tps_median": 36.194479767943434,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 305.038714405487,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 32768,
+      "samples": 2,
+      "ttft_seconds_median": 107.42473933349538
+    },
+    {
+      "decode_tps_median": 31.417233885913838,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 296.1619661265213,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 65536,
+      "samples": 1,
+      "ttft_seconds_median": 221.28432241702103
+    },
+    {
+      "decode_tps_median": 30.319311546326563,
+      "output_tokens": 256,
+      "prefill_tps_ttft_median": 276.47054885679125,
+      "prefix_cache_hits": 0.0,
+      "prompt_tokens": 131072,
+      "samples": 1,
+      "ttft_seconds_median": 474.0902802920027
+    }
+  ],
+  "configuration": {
+    "allocated_kv_blocks": 75,
+    "allocated_kv_gib": 3.86,
+    "client_concurrency": 1,
+    "compile_enabled": true,
+    "gpu_memory_utilization": 0.9,
+    "id": "vision-mtp2-pool1-256k",
+    "kv_cap_gib": null,
+    "kv_token_capacity": 265686,
+    "max_model_len": 262144,
+    "max_num_batched_tokens": 256,
+    "max_num_seqs": 1,
+    "mtp_tokens": 2,
+    "runtime_upstream_commit": "4c61c85123326a269b81f2d4e9700ec450ffcdea",
+    "source_commit": "3984922",
+    "vision": true
+  },
+  "eco_host": "s15",
+  "eco_reservation_released": true,
+  "gateway_image": "ghcr.io/0xsero/glm-5.3-flash-m3-ultra-gateway@sha256:b700a59f2cef4a206cd29d4f68dffcdce60b9677e58e145c74908381f39a4df1",
+  "hardware": "Apple M3 Ultra 512 GiB",
+  "measurement_notes": [
+    "Decode excludes prefill and the complete first delivered chunk.",
+    "Prefill is input tokens divided by client TTFT, not isolated kernel speed.",
+    "Every completed cold-cache run reported zero prefix-cache hits.",
+    "Original text-only qualification used separate prompts and a 16384-token serving limit; do not merge with the vision-enabled 262144-limit sweep.",
+    "All recipes remain candidates; public gateway is not a self-contained Metal inference container."
+  ],
+  "release": "intermediate-20260924",
+  "source_repository": "https://github.com/0xSero/glm-5.3-flash-m3-ultra",
+  "source_visibility": "private",
+  "status": "partial-campaign-stopped-at-user-request",
+  "text_only_qualification": {
+    "code": {
+      "median": 46.37518623858575,
+      "minimum": 46.22059901374629,
+      "rates": [
+        46.22059901374629,
+        46.37518623858575,
+        46.46988588804002
+      ],
+      "same_ids": true
+    },
+    "reasoning": {
+      "median": 47.144111047722255,
+      "minimum": 47.040469963735234,
+      "rates": [
+        47.040469963735234,
+        47.144111047722255,
+        47.19589775744131
+      ],
+      "same_ids": true
+    },
+    "tides": {
+      "median": 45.604987382069865,
+      "minimum": 45.49783429193001,
+      "rates": [
+        45.49783429193001,
+        45.604987382069865,
+        45.71185594357954
+      ],
+      "same_ids": true
+    },
+    "tides_long": {
+      "median": 41.30608880901067,
+      "minimum": 41.27549340679276,
+      "rates": [
+        41.34904195380138,
+        41.30608880901067,
+        41.27549340679276
+      ],
+      "same_ids": true
+    }
+  },
+  "unverified_or_unfinished": [
+    "261888 prompt tokens plus 256 output tokens: interrupted, not passed",
+    "MTP 0 versus 1 versus 2 controlled comparison",
+    "Larger KV pool / max_num_seqs comparison",
+    "Native inference from the freshly installed wheel",
+    "Full regression suite for new vision/profile fixes",
+    "Tools and video capability tests"
+  ],
+  "verified_max_prompt_tokens": 131072,
+  "verified_output_tokens": 256,
+  "vision_perception_passed_pixel_sizes": [
+    448,
+    1792
+  ]
+}

@@ -1,0 +1,354 @@
+{
+  "capabilities": {
+    "chat": null,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "MiniCPM5-2B-GPTQ on one rtx-3090-24gb-minicpm5-2b via sglang at the model's 131072-token window, measured C1/C2/C4 at 32768, 131070 prompt tokens",
+  "engine": {
+    "graph_mode": null,
+    "name": "sglang",
+    "version": "0.5.19"
+  },
+  "facts": {
+    "capabilities.chat": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no acceptance probe was captured for this run",
+      "state": "unknown"
+    },
+    "capabilities.reasoning": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no acceptance probe was captured for this run",
+      "state": "unknown"
+    },
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no acceptance probe was captured for this run",
+      "state": "unknown"
+    },
+    "capabilities.vision": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "no acceptance probe was captured for this run",
+      "state": "unknown"
+    },
+    "engine.version": {
+      "provenance": {
+        "captured_at": "2026-09-20T17:13:55.274163Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T17:13:55.274163Z",
+            "kind": "host-probe",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "engine version reported by the running server and recorded in engine.json (sglang 0.5.19)",
+      "state": "known"
+    },
+    "launch.image": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "container image pinned by digest in the candidate launch",
+      "state": "known"
+    },
+    "serving.max_context_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-20T18:40:30Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-20T18:40:30Z",
+            "kind": "campaign-run",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "reason": "the window the loaded server was configured with and served on; the sweep covers shorter prompts and records every attempted row",
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rtx-3090-24gb",
+  "id": "sglang-minicpm5-gptq-rtx-3090-24gb-pilot-tp1",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [],
+    "asset_ids": [],
+    "container": {
+      "captured_at": "2026-09-20T18:40:30Z",
+      "compose_file": null,
+      "digest": "sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+      "image": "ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb@sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-20T18:40:30Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 30000,
+    "entrypoint": null,
+    "host_port": 30000,
+    "image": "ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb@sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+    "kind": "docker",
+    "mounts": [
+      {
+        "read_only": false,
+        "source": "${MODEL_ROOT}",
+        "target": "/opt/models"
+      }
+    ],
+    "provenance": {
+      "captured_at": "2026-09-20T18:40:30Z",
+      "kind": "container-image",
+      "sources": [
+        {
+          "captured_at": "2026-09-20T18:40:30Z",
+          "kind": "oci-image",
+          "url": "https://ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": null,
+      "captured": false,
+      "failed_probes": [],
+      "harness": null,
+      "served_model_id": "MiniCPM5-2B-GPTQ"
+    },
+    "acquisition": {
+      "entrypoint_verified": "config.Entrypoint=['/opt/deploy-preflight.sh'] per Main's skopeo --config inspection of the exact digest",
+      "method": "ENTRYPOINT (/opt/deploy-preflight.sh) preflight snapshot_download of the pinned model revision into /opt/models (blocking, .omp-ready marker); needs outbound HuggingFace network + local disk at first launch; /opt/models volume optional cache",
+      "model_branch": "main",
+      "model_repo": "openbmb/MiniCPM5-2B-GPTQ",
+      "model_revision": "48d57c14fba6b1f86109e1a54fafb0848c163f04",
+      "weights_gb": 2.11
+    },
+    "context_ledger": {
+      "ceiling_search_run": false,
+      "intended_context_tokens": 131072,
+      "native_ceiling_tokens": 131072,
+      "note": "Intended window is a starting point, not a demonstrated ceiling; no ceiling search has been run on this package. Brief target: 256k where supported, 128k at 8 GB. The budget decision authorised incomplete packages without redefining the accepted context target. Per ExperimentAudit context-clip audit 2026-09-20.",
+      "status": "full-brief-window"
+    },
+    "deploy_image": {
+      "cuda_floor_ge": "13.0",
+      "digest": "sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+      "digest_version": "v2 (OMP_SSH_FIRST + /opt/omp-acquire readiness contract, 2026-09-20; per-package engine=proof readiness landed). Supersedes the pre-fix and interim digests.",
+      "engine_base": "sglang",
+      "engine_base_digest": "sha256:787461f889674cdd9339be2409a6e8b46ec2f5aac71669481c319f87c2beca13",
+      "owner": "0xSero",
+      "status": "digest-pinned owned deploy image; this PILOT PULLED the image and ran it on rtx-3090-24gb (partial 32/36 protocol-v2 sweep, witness-bound cold/warm) -> layers WERE pulled and a real (partial) run occurred. Still NO validated badge and NO full-protocol/acceptance verification. Build/config was source-verified pre-run; this pilot adds partial runtime evidence only."
+    },
+    "draft_launch_note": "UNVERIFIED draft. The owned deploy image bakes engine+pinned serve config into its ENTRYPOINT/CMD (effective command comes from the image config, NOT the stale DELIVERY-24 pinned_startup snippet). Weights are NOT baked: the ENTRYPOINT preflight self-fetches the pinned model revision into /opt/models/<name> (blocking, .omp-ready marker) at first launch; the ${MODEL_ROOT}->/opt/models mount is an optional persistent cache. No verified inference.",
+    "intended": {
+      "capabilities": {
+        "chat": true,
+        "reasoning": true,
+        "tools": null,
+        "vision": null
+      },
+      "context_tokens": 131072,
+      "pinned_startup_provenance": "sglang.launch_server --context-length 131072 --mem-fraction-static 0.85",
+      "quant_authoritative": "OCI label ai.omarchy.model.quant / config.json, not the repo or image name"
+    },
+    "interruption": {
+      "cause": "SSH step-command timeout: the controller's SSH run of the sweep step exceeded plan.sweep_timeout=7200s (driver-summary.json error: 'timed out after 7200 seconds'). NOT a remote SIGTERM (no in-container signal evidence).",
+      "completed_cells": 32,
+      "in_flight_at_timeout": "t131072-c4-cold-s3",
+      "in_flight_note": "the frozen client writes per-cell detail only AFTER run_wave returns; t131072-c4-cold-s3's run_wave did not return, so NO partial raw exists for it; its manifest entry stays planned",
+      "in_flight_raw_present": false,
+      "measurement_invalid": 0,
+      "not_reached": [
+        "t131072-c4-warm-s1",
+        "t131072-c4-warm-s2",
+        "t131072-c4-warm-s3"
+      ],
+      "source": "controller (omp_calibrate) timeout/progress evidence: driver-summary.json 7200s SSH timeout + on-pod sweep manifest planned entries read read-only before teardown; rows stay neutral not-run, this file carries the interruption distinction verbatim",
+      "total_cells": 36
+    },
+    "measurements": {
+      "configuration": {
+        "api_completion_budget_tokens": null,
+        "cache_size_tokens": null,
+        "context_tokens": 131072,
+        "sweep_concurrencies": [
+          1,
+          2,
+          4
+        ],
+        "sweep_contexts": [
+          32768,
+          131072
+        ]
+      },
+      "mtp_acceptance": null,
+      "peak_generation_tps_source": "client end-to-end tok/s per stream (dispatch->last token), NOT engine decode-only",
+      "peak_vram_gb": 22.51,
+      "sweep_arms": [
+        {
+          "accepted": 32,
+          "concurrencies": [
+            1,
+            2,
+            4
+          ],
+          "created_at": "2026-09-20T15:23:52+00:00",
+          "directory": "sweep",
+          "samples_per_concurrency": 3,
+          "total_contexts": [
+            32768,
+            131072
+          ]
+        }
+      ],
+      "sweep_rows": {
+        "accepted": 32,
+        "attempted": 36,
+        "candidate": 0,
+        "complete": false,
+        "expected": 36,
+        "infra_invalid": 0,
+        "measurement_invalid": 0,
+        "not_run": 4
+      },
+      "weights_bytes": null
+    },
+    "mtp": {
+      "reason": "no draft model configured in this deploy image; the engine (sglang) supports speculative decoding but none is set here.",
+      "status": "not-enabled"
+    },
+    "origin": {
+      "campaign_path": "campaigns/omp-cheap-gpu-2026-09-18/artifacts/rtx-3090-24gb-minicpm5-2b",
+      "private_repository": "https://github.com/0xSero/inference-index"
+    },
+    "pilot_control": {
+      "actual_hardware": "rtx-3090-24gb (measured GPU); the reused deploy image filename targets rtx-3080-ti-12gb but this run confers NO 12GB validation credit and is not a new/unique image",
+      "billing": "estimate only (~1.2317 USD, rate x elapsed); finalize blocked (no imported-artifact verification; provider-final charge unavailable)",
+      "evidence_mirror": "evidence/omp-cheap-gpu-2026-09-18/pilots/rtx-3090-24gb-minicpm5-2b/ (raw+witness+source; public witness re-derivation reproduces 17 cold + 15 warm)",
+      "launch_fidelity": "CORRECTED: the baked image defaults ARE byte-equivalent to the observed serve-argv. Main inspected the exact digest with `skopeo inspect --override-os linux --override-arch amd64 --config`: config.Entrypoint=['/opt/deploy-preflight.sh'] and config.Cmd EXACTLY EQUALS the observed serve-argv.json list, INCLUDING --enable-cache-report. So arguments=[] is the observed image-default-equivalent launch (the preflight ENTRYPOINT runs the baked Cmd) and reproduces the run faithfully. My earlier claim that the baked default omitted --enable-cache-report was WRONG: it relied on a public code-search of the build repo, which proves nothing about the built image bytes; the OCI config is authoritative. See Main's minimal OCI-config proof in the mirror.",
+      "metrics_status": "PUBLISHED (partial 32/36): per-cell throughput now in the speed-sweep. peak_prompt_tps=6005.5 tok/s (accepted COLD C1 only, real uncached prefill; warm cached-prefill rows nulled with reason, TTFT/e2e/raw retained). peak_generation_tps=185.1 tok/s (client end-to-end, dispatch->last token, NOT engine decode-only; basis in metadata.measurements.peak_generation_tps_source). Still candidate, capabilities unknown, no validated badge, partial coverage (4 cells not completed).",
+      "observed_launch_exact": [
+        "/opt/sglang/bin/python3",
+        "-m",
+        "sglang.launch_server",
+        "--enable-cache-report",
+        "--model-path",
+        "/opt/models/MiniCPM5-2B-GPTQ",
+        "--served-model-name",
+        "MiniCPM5-2B-GPTQ",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "30000",
+        "--context-length",
+        "131072",
+        "--mem-fraction-static",
+        "0.85",
+        "--tool-call-parser",
+        "minicpm5",
+        "--reasoning-parser",
+        "qwen3"
+      ],
+      "reused_image_digest": "ghcr.io/0xsero/deploy-sglang-minicpm5-gptq-rtx-3080-ti-12gb@sha256:789a1eea0acbc01b88f005403ad93fedf1f532ed8736686ca3d34e5d35c46aff",
+      "role": "hardware-specific pilot-CONTROL record; NOT a delivery slot; the 24 target recipes' accounting is preserved separately",
+      "run": {
+        "partial": "32/36 sweep cells completed (no measurement-invalid); 4 not completed (t131072-c4-cold-s3 interrupted no partial raw; 3 warm not started)",
+        "timeout": "local SSH command timeout (7200s), NOT a proven remote SIGTERM",
+        "witness": "source-verified-zero-omission witness BOUND (pod j96u4khhwoge9w, PID 975, 0 restart); 17 source-verified cold + 15 verified warm; engine 0.5.19"
+      }
+    },
+    "protocol_complete": false,
+    "provenance_note": "Pilot-CONTROL from campaign omp-cheap-gpu-2026-09-18 (separate from the 24 delivery packages). Reused deploy image digest cited exactly; observed launch cited exactly; no validated badge; metrics held.",
+    "readiness_proof": {
+      "aggregate_verification": "Main independently fetched all 24 completed engine=proof logs 2026-09-20: every resolved digest is an exact match to the final inventory, 24 unique digests, 0 mismatches.",
+      "anon_layer_pull": "5/5 incl C1 full-fetch (small weights)",
+      "confers_no_runtime_badge": true,
+      "digest_verified": true,
+      "evidence": "evidence/omp-cheap-gpu-2026-09-18/cpu-proof/final-image-pull-audit.json (Main independent audit; sha256 in the sibling manifest.json)",
+      "pilot_proof_run": "35513797144 (789a1eea full-warm pilot)",
+      "readiness_contract": "OMP_SSH_FIRST + /opt/omp-acquire (sshd-first; blocking fail-closed acquire; .omp-ready pins the revision)",
+      "scope": "IMAGE build/pull provenance (history, incl the 24-package cpu-proof audit); distinct from this pilot's partial runtime. confers_no_runtime_badge.",
+      "type": "engine=proof (CPU-proof readiness discharge; NOT runtime inference)"
+    },
+    "weights_subdir": "MiniCPM5-2B-GPTQ"
+  },
+  "model_instance_id": "openbmb-minicpm5-2b-gptq--awq-4bit",
+  "provenance": {
+    "captured_at": "2026-09-20T18:02:50Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-20T18:02:50Z",
+        "kind": "normalized-recipe",
+        "url": "https://github.com/0xSero/local-ai-registry"
+      }
+    ]
+  },
+  "recipe_source": "0xsero",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "concurrency_observed": [
+      1,
+      2,
+      4
+    ],
+    "kv_cache_tokens": 131072,
+    "max_concurrency": null,
+    "max_context_tokens": 131072,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "sglang-minicpm5-gptq-rtx-3090-24gb-pilot-tp1-campaign"
+  ],
+  "status": "candidate"
+}

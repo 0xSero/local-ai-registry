@@ -1,0 +1,158 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": null
+  },
+  "description": "Serving launch posted in the Local Inference Lab Discord by rajamourgou",
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {
+    "metadata.prod_checks": {
+      "note": "serving settings recomputed from the launch arguments; mismatches listed under consistency.mismatches",
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "registry-enrichment",
+            "url": "https://github.com/0xSero/local-ai-registry"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "metadata.rig_resolution": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+          },
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667324474359818"
+          }
+        ]
+      },
+      "state": "known"
+    },
+    "serving.tensor_parallel": {
+      "provenance": {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-19T05:35:00Z",
+            "kind": "discord-report",
+            "publisher": "rajamourgou",
+            "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 2,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "discord-serve-lukealonso-minimax-m2-7-nvfp4-nvfp4-rtx-pro-6000-blackwell-96gb-tp2-409898",
+  "launch": {
+    "container": {
+      "captured_at": "2026-09-19T05:35:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "observed-command-in-a-discord-message",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-19T05:35:00Z",
+          "kind": "discord-report",
+          "publisher": "rajamourgou",
+          "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+        }
+      ],
+      "state": "none"
+    },
+    "kind": "reference",
+    "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+  },
+  "metadata": {
+    "discord": {
+      "author": "rajamourgou",
+      "channel_id": "1484016763124453456",
+      "message_id": "1507667249870409898",
+      "posted_at": "2026-05-23T08:51:23.472000+00:00",
+      "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+    },
+    "model_resolution": "prose-repository-mentioned",
+    "observed_command": "set -euo pipefail export CUDA_HOME=/usr/local/cuda-13.2 export PATH=/usr/local/cuda-13.2/bin:$PATH export PYTORCH_ALLOC_CONF=expandable_segments:True,max_split_size_mb:512 export NCCL_IB_DISABLE=1 export NCCL_NET_GDR_LEVEL=5 export NCCL_ALGO=Ring export VLLM_ALLREDUCE_USE_SYMM_MEM=0 export VLLM_ATTENTION_BACKEND=FLASH_ATTN export VLLM_TORCH_COMPILE_LEVEL=plus export VLLM_SLEEP_WHEN_IDLE=1 export SAFETENSORS_FAST_GPU=1 export CUDA_VISIBLE_DEVICES=0,1 MODEL=\"lukealonso/MiniMax-M2.7-NVFP4\" MODELNAME=\"MiniMax-M2.7\" GPU_UTIL=0.97 SAMPLER_OVERRIDE=\"{\\\"temperature\\\": 1, \\\"top_p\\\": 0.95, \\\"top_k\\\": 40, \\\"repetition_penalty\\\": 1.1, \\\"frequency_penalty\\\": 0.40}\" MAX_MODEL_LEN=\"${MAX_MODEL_LEN:-191000}\" MAX_NUM_SEQS=\"${MAX_NUM_SEQS:-64}\" MAX_NUM_BATCHED_TOKENS=\"${MAX_NUM_BATCHED_TOKENS:-65536}\" ENABLE_CHUNKED_PREFILL=\"${ENABLE_CHUNKED_PREFILL:-1}\" KV_CACHE_DTYPE=\"${KV_CACHE_DTYPE:-fp8}\" vllm serve \"${MODEL}\" --served-model-name \"${MODELNAME}\" --trust-remote-code --gpu-memory-utilization ${GPU_UTIL} --tensor-parallel-size 2 --disable-custom-all-reduce --enable-auto-tool-choice --tool-call-parser minimax_m2 --reasoning-parser minimax_m2 --host 0.0.0.0 --port 8013 --kv-cache-dtype \"${KV_CACHE_DTYPE}\" --enable-chunked-prefill --enable-prefix-caching --max-model-len \"${MAX_MODEL_LEN}\" --max-num-seqs \"${MAX_NUM_SEQS}\" --max-num-batched-tokens \"${MAX_NUM_BATCHED_TOKENS}\" --override-generation-config \"${SAMPLER_OVERRIDE}\"",
+    "prod_checks": {
+      "checked_at": "2026-09-19T05:35:00Z",
+      "consistency": {
+        "checked": [
+          "context",
+          "tensor_parallel",
+          "concurrency",
+          "container-state",
+          "hardware_count",
+          "pinned-repository"
+        ],
+        "checked_at": "2026-09-19T05:35:00Z",
+        "mismatches": [],
+        "notes": []
+      },
+      "hardware_vram_gb": 192,
+      "memory_fit": {
+        "fits": true,
+        "reason": null,
+        "state": "known"
+      },
+      "revision": "db821d7a3ce29ee96d80a1cae88d878d8586b54e",
+      "source": "https://huggingface.co/api/models/lukealonso/MiniMax-M2.7-NVFP4/revision/db821d7a3ce29ee96d80a1cae88d878d8586b54e?blobs=true",
+      "weight_files": 44,
+      "weights_gb": 134.5
+    },
+    "rig_resolution": {
+      "from_message": "1507667324474359818",
+      "gap_days": 0.0,
+      "hardware_id": "rtx-pro-6000-blackwell-96gb",
+      "note": "the launch does not state hardware; within 7 days this author named exactly one rig",
+      "scope": "author-time-window",
+      "window_days": 7
+    }
+  },
+  "model_instance_id": "lukealonso-minimax-m2-7-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-09-19T05:35:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rajamourgou",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667249870409898"
+      },
+      {
+        "captured_at": "2026-09-19T05:35:00Z",
+        "kind": "discord-report",
+        "publisher": "rajamourgou",
+        "url": "https://discord.com/channels/1466898002793857221/1484016763124453456/1507667324474359818"
+      }
+    ]
+  },
+  "recipe_source": "discord",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

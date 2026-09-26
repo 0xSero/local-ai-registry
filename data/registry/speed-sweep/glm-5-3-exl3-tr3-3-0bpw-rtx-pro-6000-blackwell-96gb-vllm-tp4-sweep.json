@@ -1,0 +1,152 @@
+{
+  "accepted_at": "2026-09-01T04:00:19Z",
+  "facts": {
+    "metrics.peak_generation_tps": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "matched-window-benchmark",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "openai-continuous-usage-completion-tokens-divided-by-common-measurement-window",
+      "state": "known"
+    },
+    "metrics.peak_memory_bytes": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "gpu-telemetry",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "maximum-summed-memory-used-from-340-half-second-four-gpu-samples",
+      "state": "known"
+    },
+    "metrics.peak_prompt_tps": {
+      "provenance": {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-01T04:00:19Z",
+            "kind": "client-prefill-benchmark",
+            "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+          }
+        ]
+      },
+      "reason": "exact-prompt-tokens-divided-by-common-wall-time-to-first-token-with-uncapped-natural-stop-requests",
+      "state": "known"
+    }
+  },
+  "id": "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep",
+  "measured_at": "2026-09-01T03:45:33.045685Z",
+  "metrics": {
+    "concurrency": 3,
+    "decode_mode": "sustained-matched-window",
+    "inference_engine_version": "0.26.1rc0+infernal.invocation.cu133.r17.vllmc53cc73.b12xc0a44a1",
+    "latest_point_at": "2026-09-01T03:45:33.045685Z",
+    "max_context_tokens": 800000,
+    "max_prompt_tokens": 8192,
+    "peak_generation_tps": 115.54216047003095,
+    "peak_memory_bytes": "397263503360",
+    "peak_prompt_tps": 1855.529757592193,
+    "point_count": 3
+  },
+  "provenance": {
+    "captured_at": "2026-09-01T04:00:19Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-01T04:00:19Z",
+        "kind": "validated-speed-sweep",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+      }
+    ]
+  },
+  "recipe_id": "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4",
+  "rows": [
+    {
+      "aggregate_source": "openai_continuous_usage",
+      "capacity_limited": false,
+      "concurrency": 1,
+      "context_tokens": 78,
+      "decode_tok_s": 61.211351220680136,
+      "decode_tok_s_per_stream": 61.211351220680136,
+      "effective_concurrency": 1,
+      "errors": 0,
+      "measurement_seconds": 29.994437,
+      "measurement_wall_seconds": 30.002724,
+      "output_token_limit": "omitted",
+      "output_tokens": 1836,
+      "peak_vram_gb": 369.98046875,
+      "peak_vram_scope": "sweep-wide-maximum",
+      "prefill_prompt_tokens_per_stream": 8192,
+      "prefill_samples": 3,
+      "prefill_tok_s": 1752.1921570768548,
+      "samples": 1,
+      "status": "validated",
+      "ttft_ms_p50": 325.48395899357274,
+      "underfilled": false
+    },
+    {
+      "aggregate_source": "openai_continuous_usage",
+      "capacity_limited": false,
+      "concurrency": 2,
+      "context_tokens": 78,
+      "decode_tok_s": 85.78290512963244,
+      "decode_tok_s_per_stream": 42.89145256481622,
+      "effective_concurrency": 2,
+      "errors": 0,
+      "measurement_seconds": 29.982664,
+      "measurement_wall_seconds": 30.002177,
+      "output_token_limit": "omitted",
+      "output_tokens": 2572,
+      "peak_vram_gb": 369.98046875,
+      "peak_vram_scope": "sweep-wide-maximum",
+      "prefill_prompt_tokens_per_stream": 8192,
+      "prefill_samples": 1,
+      "prefill_tok_s": 1768.0545490264913,
+      "samples": 1,
+      "status": "validated",
+      "ttft_ms_p50": 503.0794579979556,
+      "underfilled": false
+    },
+    {
+      "aggregate_source": "openai_continuous_usage",
+      "capacity_limited": false,
+      "concurrency": 3,
+      "context_tokens": 78,
+      "decode_tok_s": 115.54216047003095,
+      "decode_tok_s_per_stream": 38.51405349001032,
+      "effective_concurrency": 3,
+      "errors": 0,
+      "measurement_seconds": 29.980398,
+      "measurement_wall_seconds": 30.002163,
+      "output_token_limit": "omitted",
+      "output_tokens": 3464,
+      "peak_vram_gb": 369.98046875,
+      "peak_vram_scope": "sweep-wide-maximum",
+      "prefill_prompt_tokens_per_stream": 8192,
+      "prefill_samples": 1,
+      "prefill_tok_s": 1855.529757592193,
+      "samples": 1,
+      "status": "validated",
+      "ttft_ms_p50": 675.0417910006945,
+      "underfilled": false
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "kind": "live-gpu-benchmark",
+    "paths": [
+      "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+    ],
+    "repository": "https://github.com/0xSero/local-ai-registry",
+    "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
+  }
+}

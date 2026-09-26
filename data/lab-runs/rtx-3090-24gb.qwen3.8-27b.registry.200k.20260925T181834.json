@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+  "engine": "registry@qwen38-27b-exl3-3bpw-rtx3090-sglang-tp1",
+  "set": {},
+  "card": "rtx-3090-24gb",
+  "proof": [
+   {
+    "at": "2026-09-23",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 146.6,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 3090",
+  "host": "Bulgaria, BG",
+  "cost_h": 0.1875925925925926
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 3090",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 138.8,
+  "prefill": 583,
+  "served": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nred, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 118,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_34562676b0504bcfb402592f",
+     "index": 0,
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "\n\nRight now in Paris, it's **17°C (63°F)** with **overcast** skies."
+  },
+  "context": {
+   "prompt_tokens": 166667,
+   "seconds": 285.7,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 26383,
+   "seconds": 190.09,
+   "counted": "server"
+  }
+ }
+}
