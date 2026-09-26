@@ -1,0 +1,76 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@f33f26d929e2b20ef21361145d582f5239e3831f",
+  "engine": "registry@qwen3827b-exl3-sc5bpw-v6-rtx5090-tabbyapi-tp1",
+  "set": {},
+  "card": "rtx-5090-32gb",
+  "proof": [
+   {
+    "at": "2026-09-22",
+    "on": "legacy",
+    "gates": "load chat",
+    "tps": 117.0,
+    "legacy": true
+   }
+  ]
+ },
+ "where": {
+  "on": "vast",
+  "gpu": "RTX 5090",
+  "host": "Czechia, CZ",
+  "cost_h": 0.7992407407407407
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-25",
+  "on": "vast",
+  "gpu": "RTX 5090",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 155.0,
+  "prefill": 1407,
+  "served": "Qwen3.8-27B-EXL3-SC5bpw-H6-V6"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 158,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_a79a5b1ea0b6494688aa0a93",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nIt's currently **17°C (63°F)** and **overcast** in Paris."
+  },
+  "context": {
+   "prompt_tokens": 213561,
+   "seconds": 151.8,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "completion_tokens": 9836,
+   "seconds": 63.46,
+   "counted": "tokenizer"
+  }
+ }
+}

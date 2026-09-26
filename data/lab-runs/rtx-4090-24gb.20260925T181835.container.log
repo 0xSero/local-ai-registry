@@ -1,0 +1,440 @@
+
+Fetching 17 files:   0%|          | 0/17 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Fetching 17 files:   6%|▌         | 1/17 [00:00<00:01,  9.57it/s]
+Fetching 17 files:  53%|█████▎    | 9/17 [00:00<00:00, 46.79it/s]
+Fetching 17 files:  82%|████████▏ | 14/17 [00:00<00:00, 42.80it/s]
+Fetching 17 files: 100%|██████████| 17/17 [00:19<00:00,  1.12s/it]
+/sgl-workspace/sglang/python/sglang/launch_server.py:71: UserWarning: 'python -m sglang.launch_server' is still supported, but 'sglang serve' is the recommended entrypoint.
+  Example: sglang serve --model-path <model> [options]
+  warnings.warn(
+[2026-09-25 18:13:29] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:13:29] Attention backend not specified. Use flashinfer backend by default.
+[2026-09-25 18:13:30] server_args={'model_path': '/models/turboderp-Qwen3.8-27B-exl3-3.00bpw', 'tokenizer_path': '/models/turboderp-Qwen3.8-27B-exl3-3.00bpw', 'tokenizer_mode': 'auto', 'tokenizer_backend': 'huggingface', 'tokenizer_worker_num': 1, 'detokenizer_worker_num': 1, 'skip_tokenizer_init': False, 'load_format': 'auto', 'model_loader_extra_config': '{}', 'trust_remote_code': True, 'context_length': 204800, 'is_embedding': False, 'enable_multimodal': None, 'revision': None, 'model_impl': 
+[2026-09-25 18:13:30] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:13:35] Multimodal data loading enabled with 16 worker threads (auto).
+[2026-09-25 18:13:35] Using default HuggingFace chat template with detected content format: openai
+[2026-09-25 18:13:35] Auto-detected template features: reasoning_config=ReasoningToggleConfig(toggle_param='enable_thinking', default_enabled=True, special_case=None, effort_kwarg=None), reasoning_parser=qwen3, tool_call_parser=qwen3_coder
+[2026-09-25 18:13:38] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:13:40] Multimodal data loading enabled with 16 worker threads (auto).
+[2026-09-25 18:13:40] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:13:40] Init torch distributed begin.
+[2026-09-25 18:13:40] Init torch distributed ends. elapsed=0.05 s, mem usage=0.06 GB
+[2026-09-25 18:13:40] Load weight begin. avail mem=23.05 GB
+[2026-09-25 18:13:40] EXL3 checkpoint /models/turboderp-Qwen3.8-27B-exl3-3.00bpw: 409 quantized linears {'K=3 mul1': 400, 'K=4 mul1': 8, 'K=6 mul1': 1}, 790 other tensors
+[2026-09-25 18:13:40] Multimodal attention backend not set. Use triton_attn.
+[2026-09-25 18:13:40] Using triton_attn as multimodal attention backend.
+[2026-09-25 18:13:42] sglang-exl3: token embedding (248320, 5120) kept in pinned host memory (2.37 GB)
+[2026-09-25 18:13:42] using attn output gate!
+
+Multi-thread loading shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Multi-thread loading shards:  50% Completed | 1/2 [00:06<00:06,  6.38s/it]
+Multi-thread loading shards: 100% Completed | 2/2 [00:09<00:00,  4.67s/it]
+Multi-thread loading shards: 100% Completed | 2/2 [00:09<00:00,  4.92s/it]
+[2026-09-25 18:13:53] sglang-exl3 kernel knobs: blocks_per_sm=2 in_had_inlaunch=0 out_had_inlaunch=1 had_warps=8
+[2026-09-25 18:13:53] lm_head: ExLlamaV3 kernels (n=248320 above SGLANG_EXL3_HOPPER_MAX_N=65536 (lm_head stays on ExLlamaV3's kernel))
+[2026-09-25 18:13:53] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0.
+[2026-09-25 18:13:53] Load weight end. elapsed=12.32 s, type=Qwen3_5ForConditionalGeneration, quant=exl3, bits=3.0, avail mem=12.32 GB, mem usage=10.73 GB.
+[2026-09-25 18:13:53] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:13:53] Init torch distributed begin.
+[2026-09-25 18:13:53] Init torch distributed ends. elapsed=0.00 s, mem usage=0.00 GB
+[2026-09-25 18:13:53] Load weight begin. avail mem=12.29 GB
+[2026-09-25 18:13:53] EXL3 checkpoint /models/turboderp-Qwen3.8-27B-exl3-3.00bpw: 409 quantized linears {'K=3 mul1': 400, 'K=4 mul1': 8, 'K=6 mul1': 1}, 790 other tensors
+[2026-09-25 18:13:53] sglang-exl3: MTP fc replaced by an EXL3 linear ((10240, 5120, 8, 'mul1'))
+
+Multi-thread loading shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+Multi-thread loading shards: 100% Completed | 2/2 [00:00<00:00, 27.38it/s]
+[2026-09-25 18:13:53] lm_head: no EXL3 tensors were delivered; layer left empty
+[2026-09-25 18:13:53] Using FP8 KV cache but no scaling factors provided. Defaulting to scaling factors of 1.0.
+[2026-09-25 18:13:53] Load weight end. elapsed=0.11 s, type=Qwen3_5ForCausalLMMTP, quant=exl3, bits=3.0, avail mem=12.07 GB, mem usage=0.22 GB.
+[2026-09-25 18:13:54] Reserving 0.10 GB of the KV budget for post-sizing multimodal allocations (feature-transport pools + embedding cache).
+[2026-09-25 18:13:54] Mamba Cache is allocated. max_mamba_cache_size: 5, conv_state size: 0.02GB, ssm_state size: 0.42GB intermediate_ssm_state_cache size: 0.56GB intermediate_conv_window_cache size: 0.01GB 
+[2026-09-25 18:13:55] KV Cache is allocated. dtype: torch.float8_e4m3fn, #tokens: 207692, K size: 3.17 GB, V size: 3.17 GB
+[2026-09-25 18:13:55] Memory pool end. avail mem=4.71 GB
+[2026-09-25 18:13:55] KV Cache is allocated. dtype: torch.float8_e4m3fn, #tokens: 207692, K size: 0.20 GB, V size: 0.20 GB
+[2026-09-25 18:13:55] Memory pool end. avail mem=4.31 GB
+[2026-09-25 18:13:56] sglang-exl3: draft hot-token head (32768, 5120) built from the EXL3 target head (320 MB)
+[2026-09-25 18:13:56] Linear attention kernel backend: decode=triton, prefill=triton, verify=triton
+[2026-09-25 18:13:56] Using hybrid linear attention backend for hybrid GDN models.
+[2026-09-25 18:13:56] GDN kernel dispatcher: decode=TritonGDNKernel, extend=TritonGDNKernel, verify=TritonGDNKernel packed_decode=True
+[2026-09-25 18:13:56] Linear attention kernel backend: decode=triton, prefill=triton, verify=triton
+[2026-09-25 18:13:56] Using hybrid linear attention backend for hybrid GDN models.
+[2026-09-25 18:13:56] GDN kernel dispatcher: decode=TritonGDNKernel, extend=TritonGDNKernel, verify=TritonGDNKernel packed_decode=True
+[2026-09-25 18:13:57] Capture target prefill CUDA graph begin. backend=breakable, num_tokens=[4, 8, 12, 16, 20, 24, 28, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 576, 640, 704, 768, 832, 896, 960, 1024], avail mem=3.53 GB
+
+  0%|          | 0/38 [00:00<?, ?it/s]
+Capturing num tokens (num_tokens=1024 avail_mem=3.52 GB):   0%|          | 0/38 [00:00<?, ?it/s]/opt/sglang/lib/python3.12/site-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+
+Capturing num tokens (num_tokens=1024 avail_mem=3.52 GB):   3%|▎         | 1/38 [00:23<14:29, 23.50s/it]
+Capturing num tokens (num_tokens=960 avail_mem=2.49 GB):   3%|▎         | 1/38 [00:23<14:29, 23.50s/it] 
+Capturing num tokens (num_tokens=960 avail_mem=2.49 GB):   5%|▌         | 2/38 [00:24<06:08, 10.23s/it]
+Capturing num tokens (num_tokens=896 avail_mem=2.45 GB):   5%|▌         | 2/38 [00:24<06:08, 10.23s/it]
+Capturing num tokens (num_tokens=896 avail_mem=2.45 GB):   8%|▊         | 3/38 [0
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+
+Capturing num tokens (num_tokens=32 avail_mem=1.81 GB):  82%|████████▏ | 31/38 [00:37<00:02,  3.35it/s]
+Capturing num tokens (num_tokens=28 avail_mem=1.79 GB):  82%|████████▏ | 31/38 [00:37<00:02,  3.35it/s]
+Capturing num tokens (num_tokens=28 avail_mem=1.79 GB):  84%|████████▍ | 32/38 [00:37<00:02,  2.99it/s]
+Capturing num tokens (num_tokens=24 avail_mem=1.77 GB):  84%|████████▍ | 32/38 [00:37<00:02,  2.99it/s]
+Capturing num tokens (num_tokens=24 avail_mem=1.77 GB):  87%|████████▋ | 33/38 [00:
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+
+Capturing num tokens (num_tokens=16 avail_mem=1.74 GB):  92%|█████████▏| 35/38 [00:38<00:00,  3.19it/s]
+Capturing num tokens (num_tokens=12 avail_mem=1.72 GB):  92%|█████████▏| 35/38 [00:38<00:00,  3.19it/s]
+Capturing num tokens (num_tokens=12 avail_mem=1.72 GB):  95%|█████████▍| 36/38 [00:38<00:00,  3.50it/s]
+Capturing num tokens (num_tokens=8 avail_mem=1.71 GB):  95%|█████████▍| 36/38 [00:38<00:00,  3.50it/s] 
+Capturing num tokens (num_tokens=8 avail_mem=1.71 GB):  97%|█████████▋| 37/38 [00:3
+[2026-09-25 18:14:37] Capture target prefill CUDA graph end. elapsed=40.21 s, mem usage=1.38 GB, avail mem=2.15 GB.
+[2026-09-25 18:14:37] Capture target verify CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=2.15 GB
+
+  0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=2.15 GB):   0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=2.15 GB): 100%|██████████| 1/1 [00:01<00:00,  1.44s/it]
+Capturing batches (bs=1 avail_mem=2.15 GB): 100%|██████████| 1/1 [00:01<00:00,  1.44s/it]
+[2026-09-25 18:14:40] Capture target verify CUDA graph end. elapsed=2.21 s, mem usage=0.02 GB, avail mem=2.13 GB.
+[2026-09-25 18:14:40] Capture draft prefill CUDA graph begin. backend=breakable, num_tokens=[4, 8, 12, 16, 20, 24, 28, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, 288, 320, 352, 384, 416, 448, 480, 512, 576, 640, 704, 768, 832, 896, 960, 1024], avail mem=2.13 GB
+
+  0%|          | 0/38 [00:00<?, ?it/s]
+Capturing num tokens (num_tokens=1024 avail_mem=2.13 GB):   0%|          | 0/38 [00:00<?, ?it/s]
+Capturing num tokens (num_tokens=1024 avail_mem=2.13 GB):   3%|▎         | 1/38 [00:00<00:04,  7.83it/s]
+Capturing num tokens (num_tokens=960 avail_mem=1.45 GB):   3%|▎         | 1/38 [00:00<00:04,  7.83it/s] 
+Capturing num tokens (num_tokens=896 avail_mem=1.45 GB):   3%|▎         | 1/38 [00:00<00:04,  7.83it/s]
+Capturing num tokens (num_tokens=832 avail_mem=1.
+[2026-09-25 18:14:41] Capture draft prefill CUDA graph end. elapsed=1.24 s, mem usage=0.22 GB, avail mem=1.91 GB.
+[2026-09-25 18:14:41] Capture draft decode CUDA graph begin. backend=full, num_tokens_per_req=1, bs=[1], avail mem=1.91 GB
+
+  0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=1.91 GB):   0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=1.91 GB): 100%|██████████| 1/1 [00:01<00:00,  1.47s/it]
+Capturing batches (bs=1 avail_mem=1.91 GB): 100%|██████████| 1/1 [00:01<00:00,  1.47s/it]
+[2026-09-25 18:14:43] Capture draft decode CUDA graph end. elapsed=2.28 s, mem usage=0.00 GB, avail mem=1.91 GB.
+[2026-09-25 18:14:43] Capture draft extend CUDA graph begin. backend=full, num_tokens_per_req=4, bs=[1], avail mem=1.91 GB
+
+  0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=1.91 GB):   0%|          | 0/1 [00:00<?, ?it/s]
+Capturing batches (bs=1 avail_mem=1.91 GB): 100%|██████████| 1/1 [00:00<00:00, 83.58it/s]
+[2026-09-25 18:14:44] Capture draft extend CUDA graph end. elapsed=0.86 s, mem usage=0.00 GB, avail mem=1.91 GB.
+[2026-09-25 18:14:44] max_total_num_tokens=207692, chunked_prefill_size=1024, max_prefill_tokens=1024, max_running_requests=1, context_len=204800, available_gpu_mem=1.91 GB
+[2026-09-25 18:14:44] Init Unified Radix Cache. Components: (<ComponentType.FULL: 0>, <ComponentType.MAMBA: 2>). Tree Core: UnifiedTreeCore
+[2026-09-25 18:14:44] Tree cache initialized: source=default impl=UnifiedRadixCache hybrid_swa=False hybrid_ssm=True hicache_attached=False streaming_wrapped=False
+[2026-09-25 18:14:44] exl3 quantization is not fully optimized yet. The speed can be slower than non-quantized models.
+[2026-09-25 18:14:45] Engine startup timings (s): load_weight=12.44, kv_cache_allocation=2.36, scheduler_e2e=66.25, cuda_graph={prefill=40.21, decode=0.00, target_verify=2.21, draft_prefill=1.24, draft_decode=2.28, draft_extend=0.86}, tokenizer_e2e=74.74
+[2026-09-25 18:14:45] INFO:     Started server process [1]
+[2026-09-25 18:14:45] INFO:     Waiting for application startup.
+[2026-09-25 18:14:45] Using default chat sampling params from model generation config: {'temperature': 1.0, 'top_k': 20, 'top_p': 0.95}
+[2026-09-25 18:14:45] INFO:     Application startup complete.
+[2026-09-25 18:14:45] INFO:     Uvicorn running on http://0.0.0.0:30000 (Press CTRL+C to quit)
+[2026-09-25 18:14:46] INFO:     127.0.0.1:47176 - "GET /model_info HTTP/1.1" 200 OK
+/sgl-workspace/sglang/python/sglang/srt/entrypoints/http_server.py:454: FastAPIDeprecationWarning: ORJSONResponse is deprecated, FastAPI now serializes data directly to JSON bytes via Pydantic when a return type or response model is set, which is faster and doesn't need a custom response class. Read more in the FastAPI docs: https://fastapi.tiangolo.com/advanced/custom-response/#orjson-or-response-model and https://fastapi.tiangolo.com/tutorial/response-model/
+  return await original_handler(ORJSONRequest(request.scope, request.receive))
+[2026-09-25 18:14:47] INFO:     143.244.47.69:52225 - "GET /v1/models HTTP/1.1" 200 OK
+[2026-09-25 18:14:47] INFO:     143.244.47.69:52226 - "GET /v1/models HTTP/1.1" 200 OK
+[2026-09-25 18:14:48] Prefill batch, #new-seq: 1, #new-token: 122, #cached-token: 0, full token usage: 0.00, mamba usage: 0.80, #running-req: 0, #queue-req: 1, #pending-token: 0, cuda graph: True, input throughput (token/s): 29.26
+[2026-09-25 18:14:48] INFO:     127.0.0.1:47182 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:14:48] INFO:     127.0.0.1:47188 - "POST /freeze_gc HTTP/1.1" 200 OK
+[2026-09-25 18:14:48] The server is fired up and ready to roll!
+[2026-09-25 18:14:48] Prefill batch, #new-seq: 1, #new-token: 60, #cached-token: 0, full token usage: 0.00, mamba usage: 0.60, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 297.18
+[2026-09-25 18:14:49] INFO:     143.244.47.69:52228 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:14:49] Prefill batch, #new-seq: 1, #new-token: 68, #cached-token: 0, full token usage: 0.00, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 74.51
+[2026-09-25 18:14:49] Decode batch, #running-req: 1, #full token: 113, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 3.25, accept rate: 0.75, cuda graph: True, gen throughput (token/s): 23.64, #queue-req: 0
+[2026-09-25 18:14:50] INFO:     143.244.47.69:52231 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:14:50] Prefill batch, #new-seq: 1, #new-token: 329, #cached-token: 0, full token usage: 0.00, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 390.48
+[2026-09-25 18:14:51] INFO:     143.244.47.69:52237 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:14:51] Prefill batch, #new-seq: 1, #new-token: 73, #cached-token: 320, full token usage: 0.00, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 54.87
+[2026-09-25 18:14:52] Decode batch, #running-req: 1, #full token: 445, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 3.23, accept rate: 0.74, cuda graph: True, gen throughput (token/s): 57.91, #queue-req: 0
+[2026-09-25 18:14:52] INFO:     143.244.47.69:52240 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:14:54] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.01, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 165643, cuda graph: True, input throughput (token/s): 345.95
+[2026-09-25 18:14:55] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.01, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 164619, cuda graph: True, input throughput (token/s): 2232.34
+[2026-09-25 18:14:55] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.02, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 163595, cuda graph: True, input throughput (token/s): 2250.66
+[2026-09-25 18:14:56] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.02, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 162571, cuda graph: True, input throughput (token/s): 2203.98
+[2026-09-25 18:14:56] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.03, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 161547, cuda graph: True, input throughput (token/s): 2209.61
+[2026-09-25 18:14:57] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.03, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 160523, cuda graph: True, input throughput (token/s): 2175.89
+[2026-09-25 18:14:57] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.04, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 159499, cuda graph: True, input throughput (token/s): 2170.39
+[2026-09-25 18:14:58] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.04, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 158475, cuda graph: True, input throughput (token/s): 2146.02
+[2026-09-25 18:14:58] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.05, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 157451, cuda graph: True, input throughput (token/s): 2128.17
+[2026-09-25 18:14:59] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.05, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 156427, cuda graph: True, input throughput (token/s): 2116.37
+[2026-09-25 18:14:59] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.06, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 155403, cuda graph: True, input throughput (token/s): 2097.32
+[2026-09-25 18:15:00] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.06, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 154379, cuda graph: True, input throughput (token/s): 2085.17
+[2026-09-25 18:15:00] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.07, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 153355, cuda graph: True, input throughput (token/s): 2066.28
+[2026-09-25 18:15:01] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.07, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 152331, cuda graph: True, input throughput (token/s): 2050.34
+[2026-09-25 18:15:01] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.08, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 151307, cuda graph: True, input throughput (token/s): 2034.60
+[2026-09-25 18:15:02] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.08, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 150283, cuda graph: True, input throughput (token/s): 2018.75
+[2026-09-25 18:15:02] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.09, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 149259, cuda graph: True, input throughput (token/s): 2008.43
+[2026-09-25 18:15:03] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.09, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 148235, cuda graph: True, input throughput (token/s): 1987.63
+[2026-09-25 18:15:03] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.10, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 147211, cuda graph: True, input throughput (token/s): 1980.95
+[2026-09-25 18:15:04] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.10, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 146187, cuda graph: True, input throughput (token/s): 1964.02
+[2026-09-25 18:15:04] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.11, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 145163, cuda graph: True, input throughput (token/s): 1949.50
+[2026-09-25 18:15:05] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.11, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 144139, cuda graph: True, input throughput (token/s): 1934.48
+[2026-09-25 18:15:05] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.12, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 143115, cuda graph: True, input throughput (token/s): 1923.25
+[2026-09-25 18:15:06] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.12, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 142091, cuda graph: True, input throughput (token/s): 1908.05
+[2026-09-25 18:15:06] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.13, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 141067, cuda graph: True, input throughput (token/s): 1896.28
+[2026-09-25 18:15:07] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.13, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 140043, cuda graph: True, input throughput (token/s): 1883.79
+[2026-09-25 18:15:07] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.14, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 139019, cuda graph: True, input throughput (token/s): 1866.94
+[2026-09-25 18:15:08] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.14, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 137995, cuda graph: True, input throughput (token/s): 1857.29
+[2026-09-25 18:15:09] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.15, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 136971, cuda graph: True, input throughput (token/s): 1843.70
+[2026-09-25 18:15:09] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.15, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 135947, cuda graph: True, input throughput (token/s): 1831.29
+[2026-09-25 18:15:10] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.16, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 134923, cuda graph: True, input throughput (token/s): 1818.73
+[2026-09-25 18:15:10] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.16, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 133899, cuda graph: True, input throughput (token/s): 1804.52
+[2026-09-25 18:15:11] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.17, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 132875, cuda graph: True, input throughput (token/s): 1792.01
+[2026-09-25 18:15:11] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.17, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 131851, cuda graph: True, input throughput (token/s): 1781.31
+[2026-09-25 18:15:12] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.18, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 130827, cuda graph: True, input throughput (token/s): 1767.52
+[2026-09-25 18:15:13] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.18, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 129803, cuda graph: True, input throughput (token/s): 1758.58
+[2026-09-25 18:15:13] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.19, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 128779, cuda graph: True, input throughput (token/s): 1745.69
+[2026-09-25 18:15:14] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.19, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 127755, cuda graph: True, input throughput (token/s): 1734.08
+[2026-09-25 18:15:14] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.20, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 126731, cuda graph: True, input throughput (token/s): 1722.16
+[2026-09-25 18:15:15] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.20, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 125707, cuda graph: True, input throughput (token/s): 1711.50
+[2026-09-25 18:15:16] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.21, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 124683, cuda graph: True, input throughput (token/s): 1698.94
+[2026-09-25 18:15:16] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.21, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 123659, cuda graph: True, input throughput (token/s): 1689.30
+[2026-09-25 18:15:17] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.22, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 122635, cuda graph: True, input throughput (token/s): 1678.17
+[2026-09-25 18:15:17] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.22, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 121611, cuda graph: True, input throughput (token/s): 1667.97
+[2026-09-25 18:15:18] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.23, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 120587, cuda graph: True, input throughput (token/s): 1656.47
+[2026-09-25 18:15:19] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.23, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 119563, cuda graph: True, input throughput (token/s): 1645.91
+[2026-09-25 18:15:19] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.24, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 118539, cuda graph: True, input throughput (token/s): 1634.08
+[2026-09-25 18:15:20] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.24, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 117515, cuda graph: True, input throughput (token/s): 1624.58
+[2026-09-25 18:15:20] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.25, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 116491, cuda graph: True, input throughput (token/s): 1613.19
+[2026-09-25 18:15:21] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.25, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 115467, cuda graph: True, input throughput (token/s): 1603.22
+[2026-09-25 18:15:22] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.26, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 114443, cuda graph: True, input throughput (token/s): 1593.75
+[2026-09-25 18:15:22] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.26, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 113419, cuda graph: True, input throughput (token/s): 1584.04
+[2026-09-25 18:15:23] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.27, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 112395, cuda graph: True, input throughput (token/s): 1572.66
+[2026-09-25 18:15:24] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.27, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 111371, cuda graph: True, input throughput (token/s): 1558.61
+[2026-09-25 18:15:24] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.28, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 110347, cuda graph: True, input throughput (token/s): 1550.52
+[2026-09-25 18:15:25] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.28, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 109323, cuda graph: True, input throughput (token/s): 1539.99
+[2026-09-25 18:15:26] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.29, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 108299, cuda graph: True, input throughput (token/s): 1538.10
+[2026-09-25 18:15:26] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.29, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 107275, cuda graph: True, input throughput (token/s): 1538.07
+[2026-09-25 18:15:27] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.30, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 106251, cuda graph: True, input throughput (token/s): 1514.66
+[2026-09-25 18:15:28] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.30, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 105227, cuda graph: True, input throughput (token/s): 1506.94
+[2026-09-25 18:15:28] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.31, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 104203, cuda graph: True, input throughput (token/s): 1501.14
+[2026-09-25 18:15:29] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.31, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 103179, cuda graph: True, input throughput (token/s): 1496.45
+[2026-09-25 18:15:30] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.32, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 102155, cuda graph: True, input throughput (token/s): 1487.04
+[2026-09-25 18:15:30] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.32, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 101131, cuda graph: True, input throughput (token/s): 1478.90
+[2026-09-25 18:15:31] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.33, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 100107, cuda graph: True, input throughput (token/s): 1470.84
+[2026-09-25 18:15:32] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.33, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 99083, cuda graph: True, input throughput (token/s): 1461.81
+[2026-09-25 18:15:33] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.34, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 98059, cuda graph: True, input throughput (token/s): 1453.35
+[2026-09-25 18:15:33] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.34, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 97035, cuda graph: True, input throughput (token/s): 1443.79
+[2026-09-25 18:15:34] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.35, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 96011, cuda graph: True, input throughput (token/s): 1436.16
+[2026-09-25 18:15:35] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.35, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 94987, cuda graph: True, input throughput (token/s): 1427.57
+[2026-09-25 18:15:35] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.35, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 93963, cuda graph: True, input throughput (token/s): 1419.67
+[2026-09-25 18:15:36] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.36, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 92939, cuda graph: True, input throughput (token/s): 1411.28
+[2026-09-25 18:15:37] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.36, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 91915, cuda graph: True, input throughput (token/s): 1402.12
+[2026-09-25 18:15:38] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.37, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 90891, cuda graph: True, input throughput (token/s): 1396.18
+[2026-09-25 18:15:38] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.37, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 89867, cuda graph: True, input throughput (token/s): 1387.95
+[2026-09-25 18:15:39] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.38, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 88843, cuda graph: True, input throughput (token/s): 1379.51
+[2026-09-25 18:15:40] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.38, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 87819, cuda graph: True, input throughput (token/s): 1373.49
+[2026-09-25 18:15:41] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.39, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 86795, cuda graph: True, input throughput (token/s): 1366.54
+[2026-09-25 18:15:41] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.39, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 85771, cuda graph: True, input throughput (token/s): 1358.20
+[2026-09-25 18:15:42] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.40, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 84747, cuda graph: True, input throughput (token/s): 1351.09
+[2026-09-25 18:15:43] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.40, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 83723, cuda graph: True, input throughput (token/s): 1344.23
+[2026-09-25 18:15:44] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.41, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 82699, cuda graph: True, input throughput (token/s): 1336.47
+[2026-09-25 18:15:44] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.41, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 81675, cuda graph: True, input throughput (token/s): 1329.29
+[2026-09-25 18:15:45] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.42, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 80651, cuda graph: True, input throughput (token/s): 1322.84
+[2026-09-25 18:15:46] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.42, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 79627, cuda graph: True, input throughput (token/s): 1315.76
+[2026-09-25 18:15:47] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.43, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 78603, cuda graph: True, input throughput (token/s): 1309.37
+[2026-09-25 18:15:48] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.43, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 77579, cuda graph: True, input throughput (token/s): 1303.26
+[2026-09-25 18:15:48] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.44, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 76555, cuda graph: True, input throughput (token/s): 1295.94
+[2026-09-25 18:15:49] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.44, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 75531, cuda graph: True, input throughput (token/s): 1291.57
+[2026-09-25 18:15:50] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.45, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 74507, cuda graph: True, input throughput (token/s): 1283.59
+[2026-09-25 18:15:51] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.45, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 73483, cuda graph: True, input throughput (token/s): 1277.35
+[2026-09-25 18:15:52] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.46, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 72459, cuda graph: True, input throughput (token/s): 1270.27
+[2026-09-25 18:15:52] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.46, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 71435, cuda graph: True, input throughput (token/s): 1265.73
+[2026-09-25 18:15:53] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.47, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 70411, cuda graph: True, input throughput (token/s): 1257.84
+[2026-09-25 18:15:54] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.47, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 69387, cuda graph: True, input throughput (token/s): 1253.15
+[2026-09-25 18:15:55] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.48, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 68363, cuda graph: True, input throughput (token/s): 1247.65
+[2026-09-25 18:15:56] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.48, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 67339, cuda graph: True, input throughput (token/s): 1240.67
+[2026-09-25 18:15:56] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.49, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 66315, cuda graph: True, input throughput (token/s): 1235.05
+[2026-09-25 18:15:57] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.49, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 65291, cuda graph: True, input throughput (token/s): 1230.62
+[2026-09-25 18:15:58] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.50, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 64267, cuda graph: True, input throughput (token/s): 1221.49
+[2026-09-25 18:15:59] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.50, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 63243, cuda graph: True, input throughput (token/s): 1216.69
+[2026-09-25 18:16:00] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.51, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 62219, cuda graph: True, input throughput (token/s): 1211.74
+[2026-09-25 18:16:01] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.51, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 61195, cuda graph: True, input throughput (token/s): 1206.82
+[2026-09-25 18:16:01] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.52, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 60171, cuda graph: True, input throughput (token/s): 1201.81
+[2026-09-25 18:16:02] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.52, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 59147, cuda graph: True, input throughput (token/s): 1195.82
+[2026-09-25 18:16:03] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.53, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 58123, cuda graph: True, input throughput (token/s): 1189.63
+[2026-09-25 18:16:04] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.53, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 57099, cuda graph: True, input throughput (token/s): 1185.13
+[2026-09-25 18:16:05] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.54, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 56075, cuda graph: True, input throughput (token/s): 1179.27
+[2026-09-25 18:16:06] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.54, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 55051, cuda graph: True, input throughput (token/s): 1172.51
+[2026-09-25 18:16:07] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.55, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 54027, cuda graph: True, input throughput (token/s): 1169.22
+[2026-09-25 18:16:08] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.55, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 53003, cuda graph: True, input throughput (token/s): 1164.01
+[2026-09-25 18:16:08] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.56, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 51979, cuda graph: True, input throughput (token/s): 1158.39
+[2026-09-25 18:16:09] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.56, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 50955, cuda graph: True, input throughput (token/s): 1153.45
+[2026-09-25 18:16:10] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.57, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 49931, cuda graph: True, input throughput (token/s): 1147.19
+[2026-09-25 18:16:11] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.57, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 48907, cuda graph: True, input throughput (token/s): 1142.78
+[2026-09-25 18:16:12] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.58, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 47883, cuda graph: True, input throughput (token/s): 1138.42
+[2026-09-25 18:16:13] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.58, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 46859, cuda graph: True, input throughput (token/s): 1133.58
+[2026-09-25 18:16:14] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.59, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 45835, cuda graph: True, input throughput (token/s): 1128.22
+[2026-09-25 18:16:15] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.59, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 44811, cuda graph: True, input throughput (token/s): 1122.62
+[2026-09-25 18:16:16] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.60, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 43787, cuda graph: True, input throughput (token/s): 1118.17
+[2026-09-25 18:16:17] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.60, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 42763, cuda graph: True, input throughput (token/s): 1114.17
+[2026-09-25 18:16:18] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.61, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 41739, cuda graph: True, input throughput (token/s): 1108.86
+[2026-09-25 18:16:18] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.61, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 40715, cuda graph: True, input throughput (token/s): 1104.24
+[2026-09-25 18:16:19] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.62, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 39691, cuda graph: True, input throughput (token/s): 1099.45
+[2026-09-25 18:16:20] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.62, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 38667, cuda graph: True, input throughput (token/s): 1095.54
+[2026-09-25 18:16:21] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.63, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 37643, cuda graph: True, input throughput (token/s): 1091.01
+[2026-09-25 18:16:22] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.63, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 36619, cuda graph: True, input throughput (token/s): 1086.50
+[2026-09-25 18:16:23] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.64, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 35595, cuda graph: True, input throughput (token/s): 1081.13
+[2026-09-25 18:16:24] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.64, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 34571, cuda graph: True, input throughput (token/s): 1077.34
+[2026-09-25 18:16:25] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.65, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 33547, cuda graph: True, input throughput (token/s): 1072.41
+[2026-09-25 18:16:26] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.65, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 32523, cuda graph: True, input throughput (token/s): 1068.49
+[2026-09-25 18:16:27] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.66, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 31499, cuda graph: True, input throughput (token/s): 1064.25
+[2026-09-25 18:16:28] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.66, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 30475, cuda graph: True, input throughput (token/s): 1060.20
+[2026-09-25 18:16:29] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.67, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 29451, cuda graph: True, input throughput (token/s): 1054.75
+[2026-09-25 18:16:30] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.67, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 28427, cuda graph: True, input throughput (token/s): 1051.75
+[2026-09-25 18:16:31] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.68, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 27403, cuda graph: True, input throughput (token/s): 1048.09
+[2026-09-25 18:16:32] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.68, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 26379, cuda graph: True, input throughput (token/s): 1043.04
+[2026-09-25 18:16:33] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.69, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 25355, cuda graph: True, input throughput (token/s): 1038.23
+[2026-09-25 18:16:34] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.69, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 24331, cuda graph: True, input throughput (token/s): 1035.88
+[2026-09-25 18:16:35] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.70, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 23307, cuda graph: True, input throughput (token/s): 1029.89
+[2026-09-25 18:16:36] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.70, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 22283, cuda graph: True, input throughput (token/s): 1023.10
+[2026-09-25 18:16:37] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.71, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 21259, cuda graph: True, input throughput (token/s): 1021.05
+[2026-09-25 18:16:38] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.71, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 20235, cuda graph: True, input throughput (token/s): 1021.90
+[2026-09-25 18:16:39] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.71, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 19211, cuda graph: True, input throughput (token/s): 1018.79
+[2026-09-25 18:16:40] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.72, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 18187, cuda graph: True, input throughput (token/s): 1008.63
+[2026-09-25 18:16:41] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.72, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 17163, cuda graph: True, input throughput (token/s): 1004.24
+[2026-09-25 18:16:42] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.73, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 16139, cuda graph: True, input throughput (token/s): 1002.41
+[2026-09-25 18:16:43] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.73, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 15115, cuda graph: True, input throughput (token/s): 1000.54
+[2026-09-25 18:16:44] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.74, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 14091, cuda graph: True, input throughput (token/s): 997.12
+[2026-09-25 18:16:45] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.74, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 13067, cuda graph: True, input throughput (token/s): 993.54
+[2026-09-25 18:16:46] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.75, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 12043, cuda graph: True, input throughput (token/s): 988.56
+[2026-09-25 18:16:47] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.75, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 11019, cuda graph: True, input throughput (token/s): 983.52
+[2026-09-25 18:16:48] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.76, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 9995, cuda graph: True, input throughput (token/s): 981.46
+[2026-09-25 18:16:49] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.76, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 8971, cuda graph: True, input throughput (token/s): 978.37
+[2026-09-25 18:16:50] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.77, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 7947, cuda graph: True, input throughput (token/s): 974.44
+[2026-09-25 18:16:51] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.77, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 6923, cuda graph: True, input throughput (token/s): 970.55
+[2026-09-25 18:16:52] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.78, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 5899, cuda graph: True, input throughput (token/s): 966.07
+[2026-09-25 18:16:53] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.78, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 4875, cuda graph: True, input throughput (token/s): 962.55
+[2026-09-25 18:16:54] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.79, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 3851, cuda graph: True, input throughput (token/s): 960.54
+[2026-09-25 18:16:55] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.79, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 2827, cuda graph: True, input throughput (token/s): 956.52
+[2026-09-25 18:16:57] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.80, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 1803, cuda graph: True, input throughput (token/s): 952.67
+[2026-09-25 18:16:58] Prefill batch, #new-seq: 1, #new-token: 1024, #cached-token: 0, full token usage: 0.80, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 779, cuda graph: True, input throughput (token/s): 995.99
+[2026-09-25 18:16:58] Prefill batch, #new-seq: 1, #new-token: 779, #cached-token: 0, full token usage: 0.80, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 13810.57
+[2026-09-25 18:16:58] INFO:     143.244.47.69:52243 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[2026-09-25 18:16:59] Prefill batch, #new-seq: 1, #new-token: 67, #cached-token: 0, full token usage: 0.00, mamba usage: 0.80, #running-req: 0, #queue-req: 0, #pending-token: 0, cuda graph: True, input throughput (token/s): 62.41
+[2026-09-25 18:16:59] Decode batch, #running-req: 1, #full token: 114, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 3.42, accept rate: 0.81, cuda graph: True, gen throughput (token/s): 1.08, #queue-req: 0
+[2026-09-25 18:17:00] Decode batch, #running-req: 1, #full token: 199, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.17, accept rate: 0.39, cuda graph: True, gen throughput (token/s): 120.46, #queue-req: 0
+[2026-09-25 18:17:00] Decode batch, #running-req: 1, #full token: 283, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.02, accept rate: 0.34, cuda graph: True, gen throughput (token/s): 112.09, #queue-req: 0
+[2026-09-25 18:17:01] Decode batch, #running-req: 1, #full token: 389, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.65, accept rate: 0.55, cuda graph: True, gen throughput (token/s): 146.66, #queue-req: 0
+[2026-09-25 18:17:02] Decode batch, #running-req: 1, #full token: 518, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 3.30, accept rate: 0.77, cuda graph: True, gen throughput (token/s): 182.61, #queue-req: 0
+[2026-09-25 18:17:03] Decode batch, #running-req: 1, #full token: 658, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 3.45, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 190.91, #queue-req: 0
+[2026-09-25 18:17:03] Decode batch, #running-req: 1, #full token: 746, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.25, accept rate: 0.42, cuda graph: True, gen throughput (token/s): 124.44, #queue-req: 0
+[2026-09-25 18:17:04] Decode batch, #running-req: 1, #full token: 839, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.30, accept rate: 0.43, cuda graph: True, gen throughput (token/s): 127.14, #queue-req: 0
+[2026-09-25 18:17:05] Decode batch, #running-req: 1, #full token: 925, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.10, accept rate: 0.37, cuda graph: True, gen throughput (token/s): 116.12, #queue-req: 0
+[2026-09-25 18:17:05] Decode batch, #running-req: 1, #full token: 1023, full token usage: 0.00, mamba num: 4, mamba usage: 0.80, accept len: 2.45, accept rate: 0.48, cuda graph: True, gen throughput (token/s): 135.42, #queue-req: 0
+[2026-09-25 18:17:06] Decode batch, #running-req: 1, #full token: 1149, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.15, accept rate: 0.72, cuda graph: True, gen throughput (token/s): 174.04, #queue-req: 0
+[2026-09-25 18:17:07] Decode batch, #running-req: 1, #full token: 1283, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.42, accept rate: 0.81, cuda graph: True, gen throughput (token/s): 189.30, #queue-req: 0
+[2026-09-25 18:17:08] Decode batch, #running-req: 1, #full token: 1396, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 2.77, accept rate: 0.59, cuda graph: True, gen throughput (token/s): 153.20, #queue-req: 0
+[2026-09-25 18:17:08] Decode batch, #running-req: 1, #full token: 1518, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 171.18, #queue-req: 0
+[2026-09-25 18:17:09] Decode batch, #running-req: 1, #full token: 1645, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.17, accept rate: 0.72, cuda graph: True, gen throughput (token/s): 175.28, #queue-req: 0
+[2026-09-25 18:17:10] Decode batch, #running-req: 1, #full token: 1772, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.17, accept rate: 0.72, cuda graph: True, gen throughput (token/s): 175.24, #queue-req: 0
+[2026-09-25 18:17:11] Decode batch, #running-req: 1, #full token: 1906, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.27, accept rate: 0.76, cuda graph: True, gen throughput (token/s): 180.64, #queue-req: 0
+[2026-09-25 18:17:11] Decode batch, #running-req: 1, #full token: 2014, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 2.70, accept rate: 0.57, cuda graph: True, gen throughput (token/s): 148.89, #queue-req: 0
+[2026-09-25 18:17:12] Decode batch, #running-req: 1, #full token: 2127, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 2.90, accept rate: 0.63, cuda graph: True, gen throughput (token/s): 159.66, #queue-req: 0
+[2026-09-25 18:17:13] Decode batch, #running-req: 1, #full token: 2276, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.73, accept rate: 0.91, cuda graph: True, gen throughput (token/s): 205.41, #queue-req: 0
+[2026-09-25 18:17:13] Decode batch, #running-req: 1, #full token: 2414, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.45, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 190.11, #queue-req: 0
+[2026-09-25 18:17:14] Decode batch, #running-req: 1, #full token: 2560, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.65, accept rate: 0.88, cuda graph: True, gen throughput (token/s): 201.10, #queue-req: 0
+[2026-09-25 18:17:15] Decode batch, #running-req: 1, #full token: 2715, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 213.33, #queue-req: 0
+[2026-09-25 18:17:16] Decode batch, #running-req: 1, #full token: 2838, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.02, accept rate: 0.68, cuda graph: True, gen throughput (token/s): 166.46, #queue-req: 0
+[2026-09-25 18:17:16] Decode batch, #running-req: 1, #full token: 2964, full token usage: 0.01, mamba num: 4, mamba usage: 0.80, accept len: 3.20, accept rate: 0.73, cuda graph: True, gen throughput (token/s): 176.10, #queue-req: 0
+[2026-09-25 18:17:17] Decode batch, #running-req: 1, #full token: 3117, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.75, accept rate: 0.92, cuda graph: True, gen throughput (token/s): 206.32, #queue-req: 0
+[2026-09-25 18:17:18] Decode batch, #running-req: 1, #full token: 3261, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.67, accept rate: 0.89, cuda graph: True, gen throughput (token/s): 202.09, #queue-req: 0
+[2026-09-25 18:17:19] Decode batch, #running-req: 1, #full token: 3420, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.98, accept rate: 0.99, cuda graph: True, gen throughput (token/s): 218.43, #queue-req: 0
+[2026-09-25 18:17:19] Decode batch, #running-req: 1, #full token: 3516, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 2.40, accept rate: 0.47, cuda graph: True, gen throughput (token/s): 131.89, #queue-req: 0
+[2026-09-25 18:17:20] Decode batch, #running-req: 1, #full token: 3660, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.60, accept rate: 0.87, cuda graph: True, gen throughput (token/s): 197.74, #queue-req: 0
+[2026-09-25 18:17:21] Decode batch, #running-req: 1, #full token: 3817, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 215.59, #queue-req: 0
+[2026-09-25 18:17:21] Decode batch, #running-req: 1, #full token: 3926, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 2.65, accept rate: 0.55, cuda graph: True, gen throughput (token/s): 145.45, #queue-req: 0
+[2026-09-25 18:17:22] Decode batch, #running-req: 1, #full token: 4080, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 215.41, #queue-req: 0
+[2026-09-25 18:17:23] Decode batch, #running-req: 1, #full token: 4201, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.02, accept rate: 0.68, cuda graph: True, gen throughput (token/s): 164.60, #queue-req: 0
+[2026-09-25 18:17:24] Decode batch, #running-req: 1, #full token: 4356, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 209.92, #queue-req: 0
+[2026-09-25 18:17:24] Decode batch, #running-req: 1, #full token: 4473, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 2.92, accept rate: 0.64, cuda graph: True, gen throughput (token/s): 158.42, #queue-req: 0
+[2026-09-25 18:17:25] Decode batch, #running-req: 1, #full token: 4632, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.98, accept rate: 0.99, cuda graph: True, gen throughput (token/s): 215.31, #queue-req: 0
+[2026-09-25 18:17:26] Decode batch, #running-req: 1, #full token: 4779, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.65, accept rate: 0.88, cuda graph: True, gen throughput (token/s): 197.62, #queue-req: 0
+[2026-09-25 18:17:27] Decode batch, #running-req: 1, #full token: 4904, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 167.73, #queue-req: 0
+[2026-09-25 18:17:27] Decode batch, #running-req: 1, #full token: 5004, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 2.52, accept rate: 0.51, cuda graph: True, gen throughput (token/s): 136.58, #queue-req: 0
+[2026-09-25 18:17:28] Decode batch, #running-req: 1, #full token: 5155, full token usage: 0.02, mamba num: 4, mamba usage: 0.80, accept len: 3.80, accept rate: 0.93, cuda graph: True, gen throughput (token/s): 205.55, #queue-req: 0
+[2026-09-25 18:17:29] Decode batch, #running-req: 1, #full token: 5315, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 4.00, accept rate: 1.00, cuda graph: True, gen throughput (token/s): 216.36, #queue-req: 0
+[2026-09-25 18:17:30] Decode batch, #running-req: 1, #full token: 5410, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.33, accept rate: 0.44, cuda graph: True, gen throughput (token/s): 125.58, #queue-req: 0
+[2026-09-25 18:17:30] Decode batch, #running-req: 1, #full token: 5532, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 167.53, #queue-req: 0
+[2026-09-25 18:17:31] Decode batch, #running-req: 1, #full token: 5667, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.38, accept rate: 0.79, cuda graph: True, gen throughput (token/s): 182.37, #queue-req: 0
+[2026-09-25 18:17:32] Decode batch, #running-req: 1, #full token: 5782, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.85, accept rate: 0.62, cuda graph: True, gen throughput (token/s): 153.91, #queue-req: 0
+[2026-09-25 18:17:33] Decode batch, #running-req: 1, #full token: 5899, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.95, accept rate: 0.65, cuda graph: True, gen throughput (token/s): 159.32, #queue-req: 0
+[2026-09-25 18:17:33] Decode batch, #running-req: 1, #full token: 6051, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.80, accept rate: 0.93, cuda graph: True, gen throughput (token/s): 205.30, #queue-req: 0
+[2026-09-25 18:17:34] Decode batch, #running-req: 1, #full token: 6176, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.05, accept rate: 0.68, cuda graph: True, gen throughput (token/s): 164.64, #queue-req: 0
+[2026-09-25 18:17:35] Decode batch, #running-req: 1, #full token: 6277, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.60, accept rate: 0.53, cuda graph: True, gen throughput (token/s): 140.28, #queue-req: 0
+[2026-09-25 18:17:35] Decode batch, #running-req: 1, #full token: 6429, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.73, accept rate: 0.91, cuda graph: True, gen throughput (token/s): 201.01, #queue-req: 0
+[2026-09-25 18:17:36] Decode batch, #running-req: 1, #full token: 6537, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.77, accept rate: 0.59, cuda graph: True, gen throughput (token/s): 149.68, #queue-req: 0
+[2026-09-25 18:17:37] Decode batch, #running-req: 1, #full token: 6651, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.85, accept rate: 0.62, cuda graph: True, gen throughput (token/s): 153.67, #queue-req: 0
+[2026-09-25 18:17:38] Decode batch, #running-req: 1, #full token: 6786, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.30, accept rate: 0.77, cuda graph: True, gen throughput (token/s): 177.94, #queue-req: 0
+[2026-09-25 18:17:38] Decode batch, #running-req: 1, #full token: 6891, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 2.70, accept rate: 0.57, cuda graph: True, gen throughput (token/s): 145.54, #queue-req: 0
+[2026-09-25 18:17:39] Decode batch, #running-req: 1, #full token: 7031, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.48, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 187.33, #queue-req: 0
+[2026-09-25 18:17:40] Decode batch, #running-req: 1, #full token: 7169, full token usage: 0.03, mamba num: 4, mamba usage: 0.80, accept len: 3.48, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 187.26, #queue-req: 0
+[2026-09-25 18:17:41] Decode batch, #running-req: 1, #full token: 7324, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 208.72, #queue-req: 0
+[2026-09-25 18:17:41] Decode batch, #running-req: 1, #full token: 7441, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.85, accept rate: 0.62, cuda graph: True, gen throughput (token/s): 153.42, #queue-req: 0
+[2026-09-25 18:17:42] Decode batch, #running-req: 1, #full token: 7551, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.83, accept rate: 0.61, cuda graph: True, gen throughput (token/s): 152.09, #queue-req: 0
+[2026-09-25 18:17:43] Decode batch, #running-req: 1, #full token: 7691, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.45, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 185.69, #queue-req: 0
+[2026-09-25 18:17:44] Decode batch, #running-req: 1, #full token: 7793, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.60, accept rate: 0.53, cuda graph: True, gen throughput (token/s): 139.85, #queue-req: 0
+[2026-09-25 18:17:44] Decode batch, #running-req: 1, #full token: 7911, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.95, accept rate: 0.65, cuda graph: True, gen throughput (token/s): 158.56, #queue-req: 0
+[2026-09-25 18:17:45] Decode batch, #running-req: 1, #full token: 8066, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 208.33, #queue-req: 0
+[2026-09-25 18:17:46] Decode batch, #running-req: 1, #full token: 8177, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.77, accept rate: 0.59, cuda graph: True, gen throughput (token/s): 149.18, #queue-req: 0
+[2026-09-25 18:17:47] Decode batch, #running-req: 1, #full token: 8291, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.85, accept rate: 0.62, cuda graph: True, gen throughput (token/s): 151.96, #queue-req: 0
+[2026-09-25 18:17:47] Decode batch, #running-req: 1, #full token: 8423, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.30, accept rate: 0.77, cuda graph: True, gen throughput (token/s): 175.61, #queue-req: 0
+[2026-09-25 18:17:48] Decode batch, #running-req: 1, #full token: 8566, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.58, accept rate: 0.86, cuda graph: True, gen throughput (token/s): 190.17, #queue-req: 0
+[2026-09-25 18:17:49] Decode batch, #running-req: 1, #full token: 8703, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.38, accept rate: 0.79, cuda graph: True, gen throughput (token/s): 179.56, #queue-req: 0
+[2026-09-25 18:17:50] Decode batch, #running-req: 1, #full token: 8809, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.70, accept rate: 0.57, cuda graph: True, gen throughput (token/s): 143.57, #queue-req: 0
+[2026-09-25 18:17:50] Decode batch, #running-req: 1, #full token: 8958, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 3.73, accept rate: 0.91, cuda graph: True, gen throughput (token/s): 198.14, #queue-req: 0
+[2026-09-25 18:17:51] Decode batch, #running-req: 1, #full token: 9063, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.58, accept rate: 0.53, cuda graph: True, gen throughput (token/s): 136.88, #queue-req: 0
+[2026-09-25 18:17:52] Decode batch, #running-req: 1, #full token: 9176, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.88, accept rate: 0.62, cuda graph: True, gen throughput (token/s): 152.83, #queue-req: 0
+[2026-09-25 18:17:53] Decode batch, #running-req: 1, #full token: 9292, full token usage: 0.04, mamba num: 4, mamba usage: 0.80, accept len: 2.83, accept rate: 0.61, cuda graph: True, gen throughput (token/s): 150.14, #queue-req: 0
+[2026-09-25 18:17:53] Decode batch, #running-req: 1, #full token: 9413, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 164.75, #queue-req: 0
+[2026-09-25 18:17:54] Decode batch, #running-req: 1, #full token: 9573, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 4.00, accept rate: 1.00, cuda graph: True, gen throughput (token/s): 212.59, #queue-req: 0
+[2026-09-25 18:17:55] Decode batch, #running-req: 1, #full token: 9710, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.35, accept rate: 0.78, cuda graph: True, gen throughput (token/s): 178.04, #queue-req: 0
+[2026-09-25 18:17:56] Decode batch, #running-req: 1, #full token: 9828, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.02, accept rate: 0.68, cuda graph: True, gen throughput (token/s): 160.67, #queue-req: 0
+[2026-09-25 18:17:56] Decode batch, #running-req: 1, #full token: 9975, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.67, accept rate: 0.89, cuda graph: True, gen throughput (token/s): 195.23, #queue-req: 0
+[2026-09-25 18:17:57] Decode batch, #running-req: 1, #full token: 10132, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 208.52, #queue-req: 0
+[2026-09-25 18:17:58] Decode batch, #running-req: 1, #full token: 10274, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.48, accept rate: 0.82, cuda graph: True, gen throughput (token/s): 184.55, #queue-req: 0
+[2026-09-25 18:17:59] Decode batch, #running-req: 1, #full token: 10375, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 2.60, accept rate: 0.53, cuda graph: True, gen throughput (token/s): 138.05, #queue-req: 0
+[2026-09-25 18:17:59] Decode batch, #running-req: 1, #full token: 10529, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.85, accept rate: 0.95, cuda graph: True, gen throughput (token/s): 204.44, #queue-req: 0
+[2026-09-25 18:18:00] Decode batch, #running-req: 1, #full token: 10674, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.62, accept rate: 0.88, cuda graph: True, gen throughput (token/s): 192.50, #queue-req: 0
+[2026-09-25 18:18:01] Decode batch, #running-req: 1, #full token: 10834, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 4.00, accept rate: 1.00, cuda graph: True, gen throughput (token/s): 212.36, #queue-req: 0
+[2026-09-25 18:18:02] Decode batch, #running-req: 1, #full token: 10931, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 2.42, accept rate: 0.47, cuda graph: True, gen throughput (token/s): 128.67, #queue-req: 0
+[2026-09-25 18:18:02] Decode batch, #running-req: 1, #full token: 11081, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.75, accept rate: 0.92, cuda graph: True, gen throughput (token/s): 199.00, #queue-req: 0
+[2026-09-25 18:18:03] Decode batch, #running-req: 1, #full token: 11208, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 164.51, #queue-req: 0
+[2026-09-25 18:18:04] Decode batch, #running-req: 1, #full token: 11328, full token usage: 0.05, mamba num: 4, mamba usage: 0.80, accept len: 3.05, accept rate: 0.68, cuda graph: True, gen throughput (token/s): 161.78, #queue-req: 0
+[2026-09-25 18:18:05] Decode batch, #running-req: 1, #full token: 11431, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.60, accept rate: 0.53, cuda graph: True, gen throughput (token/s): 137.67, #queue-req: 0
+[2026-09-25 18:18:05] Decode batch, #running-req: 1, #full token: 11588, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 207.78, #queue-req: 0
+[2026-09-25 18:18:06] Decode batch, #running-req: 1, #full token: 11742, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.85, accept rate: 0.95, cuda graph: True, gen throughput (token/s): 203.89, #queue-req: 0
+[2026-09-25 18:18:07] Decode batch, #running-req: 1, #full token: 11840, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.40, accept rate: 0.47, cuda graph: True, gen throughput (token/s): 127.07, #queue-req: 0
+[2026-09-25 18:18:08] Decode batch, #running-req: 1, #full token: 11963, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.12, accept rate: 0.71, cuda graph: True, gen throughput (token/s): 165.54, #queue-req: 0
+[2026-09-25 18:18:08] Decode batch, #running-req: 1, #full token: 12076, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.75, accept rate: 0.58, cuda graph: True, gen throughput (token/s): 145.48, #queue-req: 0
+[2026-09-25 18:18:09] Decode batch, #running-req: 1, #full token: 12209, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.40, accept rate: 0.80, cuda graph: True, gen throughput (token/s): 179.92, #queue-req: 0
+[2026-09-25 18:18:10] Decode batch, #running-req: 1, #full token: 12362, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.75, accept rate: 0.92, cuda graph: True, gen throughput (token/s): 197.47, #queue-req: 0
+[2026-09-25 18:18:11] Decode batch, #running-req: 1, #full token: 12450, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.25, accept rate: 0.42, cuda graph: True, gen throughput (token/s): 117.92, #queue-req: 0
+[2026-09-25 18:18:12] Decode batch, #running-req: 1, #full token: 12597, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.70, accept rate: 0.90, cuda graph: True, gen throughput (token/s): 193.96, #queue-req: 0
+[2026-09-25 18:18:12] Decode batch, #running-req: 1, #full token: 12752, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 203.46, #queue-req: 0
+[2026-09-25 18:18:13] Decode batch, #running-req: 1, #full token: 12901, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.73, accept rate: 0.91, cuda graph: True, gen throughput (token/s): 195.38, #queue-req: 0
+[2026-09-25 18:18:14] Decode batch, #running-req: 1, #full token: 13057, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.90, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 204.56, #queue-req: 0
+[2026-09-25 18:18:15] Decode batch, #running-req: 1, #full token: 13212, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 203.18, #queue-req: 0
+[2026-09-25 18:18:15] Decode batch, #running-req: 1, #full token: 13310, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.42, accept rate: 0.47, cuda graph: True, gen throughput (token/s): 127.13, #queue-req: 0
+[2026-09-25 18:18:16] Decode batch, #running-req: 1, #full token: 13398, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.15, accept rate: 0.38, cuda graph: True, gen throughput (token/s): 112.67, #queue-req: 0
+[2026-09-25 18:18:17] Decode batch, #running-req: 1, #full token: 13488, full token usage: 0.06, mamba num: 4, mamba usage: 0.80, accept len: 2.25, accept rate: 0.42, cuda graph: True, gen throughput (token/s): 117.91, #queue-req: 0
+[2026-09-25 18:18:18] Decode batch, #running-req: 1, #full token: 13609, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.10, accept rate: 0.70, cuda graph: True, gen throughput (token/s): 162.47, #queue-req: 0
+[2026-09-25 18:18:18] Decode batch, #running-req: 1, #full token: 13760, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.75, accept rate: 0.92, cuda graph: True, gen throughput (token/s): 196.61, #queue-req: 0
+[2026-09-25 18:18:19] Decode batch, #running-req: 1, #full token: 13852, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 2.25, accept rate: 0.42, cuda graph: True, gen throughput (token/s): 117.70, #queue-req: 0
+[2026-09-25 18:18:20] Decode batch, #running-req: 1, #full token: 13959, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 2.75, accept rate: 0.58, cuda graph: True, gen throughput (token/s): 143.88, #queue-req: 0
+[2026-09-25 18:18:21] Decode batch, #running-req: 1, #full token: 14114, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 202.50, #queue-req: 0
+[2026-09-25 18:18:21] Decode batch, #running-req: 1, #full token: 14266, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.80, accept rate: 0.93, cuda graph: True, gen throughput (token/s): 199.11, #queue-req: 0
+[2026-09-25 18:18:22] Decode batch, #running-req: 1, #full token: 14415, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.73, accept rate: 0.91, cuda graph: True, gen throughput (token/s): 195.06, #queue-req: 0
+[2026-09-25 18:18:23] Decode batch, #running-req: 1, #full token: 14572, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 205.56, #queue-req: 0
+[2026-09-25 18:18:24] Decode batch, #running-req: 1, #full token: 14727, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 202.75, #queue-req: 0
+[2026-09-25 18:18:24] Decode batch, #running-req: 1, #full token: 14885, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.95, accept rate: 0.98, cuda graph: True, gen throughput (token/s): 206.87, #queue-req: 0
+[2026-09-25 18:18:25] Decode batch, #running-req: 1, #full token: 15037, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.80, accept rate: 0.93, cuda graph: True, gen throughput (token/s): 198.68, #queue-req: 0
+[2026-09-25 18:18:26] Decode batch, #running-req: 1, #full token: 15195, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.95, accept rate: 0.98, cuda graph: True, gen throughput (token/s): 206.61, #queue-req: 0
+[2026-09-25 18:18:27] Decode batch, #running-req: 1, #full token: 15355, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 4.00, accept rate: 1.00, cuda graph: True, gen throughput (token/s): 209.30, #queue-req: 0
+[2026-09-25 18:18:28] Decode batch, #running-req: 1, #full token: 15513, full token usage: 0.07, mamba num: 4, mamba usage: 0.80, accept len: 3.95, accept rate: 0.98, cuda graph: True, gen throughput (token/s): 206.47, #queue-req: 0
+[2026-09-25 18:18:28] Decode batch, #running-req: 1, #full token: 15672, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.98, accept rate: 0.99, cuda graph: True, gen throughput (token/s): 207.85, #queue-req: 0
+[2026-09-25 18:18:29] Decode batch, #running-req: 1, #full token: 15831, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.98, accept rate: 0.99, cuda graph: True, gen throughput (token/s): 207.90, #queue-req: 0
+[2026-09-25 18:18:30] Decode batch, #running-req: 1, #full token: 15967, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.40, accept rate: 0.80, cuda graph: True, gen throughput (token/s): 177.69, #queue-req: 0
+[2026-09-25 18:18:31] Decode batch, #running-req: 1, #full token: 16124, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.92, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 205.16, #queue-req: 0
+[2026-09-25 18:18:31] Decode batch, #running-req: 1, #full token: 16271, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.67, accept rate: 0.89, cuda graph: True, gen throughput (token/s): 191.91, #queue-req: 0
+[2026-09-25 18:18:32] Decode batch, #running-req: 1, #full token: 16426, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.88, accept rate: 0.96, cuda graph: True, gen throughput (token/s): 201.82, #queue-req: 0
+[2026-09-25 18:18:33] Decode batch, #running-req: 1, #full token: 16582, full token usage: 0.08, mamba num: 4, mamba usage: 0.80, accept len: 3.90, accept rate: 0.97, cuda graph: True, gen throughput (token/s): 201.64, #queue-req: 0
+[2026-09-25 18:18:33] INFO:     143.244.47.69:52558 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+

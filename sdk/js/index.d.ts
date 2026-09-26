@@ -1,0 +1,14 @@
+export type Launch = { image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
+  weights: Weights | Weights[]; config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; backend?: string | null; cards?: number };
+export type Weights = { repo: string; revision: string; at: string; layout?: string };
+export type Proof = { at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null; proxy?: string; legacy?: boolean };
+export type Recipe = { key?: string; model: string; weights: string; engine: string; card: string; proof: Proof[]; launch: Launch };
+export type Card = { name: string; vendor: string; backend: string; vram_gb: number; bandwidth_gb_s: number | null; picks: string[] };
+export type Catalog = { schema: string; cards: Record<string, Card>; recipes: Record<string, Recipe>; models: Record<string, unknown> };
+export declare const URL: string;
+export declare function catalog(url?: string): Promise<Catalog>;
+export declare function detect(cat: Catalog, gpu: string, vram?: number): string | null;
+export declare function pick(q: { gpu: string; vram?: number; all?: false }, cat?: Catalog): Promise<Recipe | null>;
+export declare function pick(q: { gpu: string; vram?: number; all: true }, cat?: Catalog): Promise<Recipe[]>;
+export declare function steps(r: Recipe): { title: string; code: string }[];
+export declare function command(r: Recipe): string;

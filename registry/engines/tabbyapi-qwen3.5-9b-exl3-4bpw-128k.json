@@ -1,0 +1,71 @@
+{
+  "id": "tabbyapi-qwen3.5-9b-exl3-4bpw-128k",
+  "engine": "tabbyapi",
+  "about": "Qwen3.5-9B (EXL3 \u00b7 4 bpw, 6-bit head (6hb))",
+  "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1",
+  "backend": "nvidia",
+  "port": 5000,
+  "entrypoint": "/opt/venv/bin/python3",
+  "args": [
+    "main.py",
+    "--config",
+    "/app/config.yml"
+  ],
+  "env": {
+    "NVIDIA_VISIBLE_DEVICES": "all"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "TheMelonGod/Qwen3.5-9B-exl3",
+      "revision": "e98453aa143a24fab9eb14b718daed02e2fa6eef",
+      "at": "/workspace/models/Qwen3.5-9B-EXL3-6hb-4bpw",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": {
+    "at": "/app/config.yml",
+    "text": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Qwen3.5-9B-EXL3-6hb-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n  # Qwen3.5/3.8 think before answering; split that into reasoning_content instead of leaking it as text\n  reasoning: true\n  start_in_reasoning: auto\n\ndraft_model:\n  draft_mode: mtp\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
+  },
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "plugin": {
+    "name": "Qwen3.5-9B",
+    "family": "qwen",
+    "format": "EXL3 \u00b7 4 bpw, 6-bit head (6hb)",
+    "engine": "tabbyapi",
+    "servedName": "Qwen3.5-9B-EXL3-6hb-4bpw",
+    "sizeGb": 6.83,
+    "minDriver": "535.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": null,
+      "tools": null,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 131072
+    },
+    "weights": [
+      {
+        "dir": "Qwen3.5-9B-EXL3-6hb-4bpw",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/workspace/models",
+        "sizeGb": 6.83
+      }
+    ],
+    "asset": "qwen359b-exl3-4bpw-128k-q4-tabbyapi-config.yml"
+  },
+  "ids": {
+    "rtx-3080-ti-12gb": "qwen359b-exl3-4bpw-rtx3080ti-tabbyapi-tp1",
+    "rtx-4070-12gb": "qwen359b-exl3-4bpw-rtx4070-tabbyapi-tp1",
+    "rtx-4070-ti-12gb": "qwen359b-exl3-4bpw-rtx4070ti-tabbyapi-tp1",
+    "rtx-5070-12gb": "qwen359b-exl3-4bpw-rtx5070-tabbyapi-tp1"
+  }
+}

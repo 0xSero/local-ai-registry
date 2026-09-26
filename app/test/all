@@ -1,0 +1,9 @@
+#!/bin/bash
+# Every test file under test/, in "ok - …" form. Linux only: the backend uses GNU stat and date.
+set -uo pipefail
+ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+failed=0
+for t in "$ROOT"/test/*-test.sh; do
+  bash "$t" || failed=$((failed + 1))
+done
+((failed == 0)) || { echo "$failed test file(s) failed" >&2; exit 1; }

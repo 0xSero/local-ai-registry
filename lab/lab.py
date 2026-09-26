@@ -1,0 +1,439 @@
+#!/usr/bin/env python3
+"""The recipe lab: run a model on a card, check it, and only then write its recipe.
+
+A recipe is the output of a passing run, never written by hand. It names the weights (pinned), an
+engine profile (pinned), the few settings that differ from the profile's defaults, the card, and the
+proof. Everything a program needs to launch it is rendered from the profile, so a recipe is ~600 bytes.
+
+    lab.py try <repo>@<revision> --model <id> --engine <profile> --card <card> [--set k=v ...]
+               [--on vast|runpod|endpoint] [--endpoint URL] [--proxy-gpu NAME]
+    lab.py render <recipe.json>        # the launch a program runs, as JSON
+    lab.py check                       # every recipe: format, pins, profile, card, proof (CI)
+
+Gates (all must pass): load, chat, reasoning, tools, context, speed. The full evidence goes to
+lab/runs/ (data, kept); the recipe goes to recipes/<card>/ (production). Standard library only.
+"""
+
+import argparse
+import datetime as dt
+import hashlib
+import json
+import os
+import re
+import string
+import sys
+import time
+import urllib.request
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+REG = ROOT / "registry"
+ENGINES, RECIPES, RUNS, CARDS = REG / "engines", REG / "recipes", ROOT / "lab" / "runs", REG / "cards"
+GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
+MIN_TPS = 15.0
+MAX_RECIPE_BYTES = 1024
+
+
+def log(msg):
+    print(f"[lab {dt.datetime.now().strftime('%H:%M:%S')}] {msg}", file=sys.stderr, flush=True)
+
+
+# ----------------------------------------------------------------------------- rendering
+def profile(ref):
+    """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
+    name, _, digest = ref.partition("@")
+    p = json.loads((ENGINES / f"{name}.json").read_text())
+    if digest and not p["image"].split("@sha256:")[1].startswith(digest):
+        raise SystemExit(f"{ref}: the profile's image is now {p['image']}; rerun the recipe")
+    return p
+
+
+def card(card_id):
+    """The card record: cards/<vendor>/<card>.json."""
+    found = list(CARDS.glob(f"*/{card_id}.json"))
+    if not found:
+        raise SystemExit(f"unknown card {card_id}")
+    return json.loads(found[0].read_text())
+
+
+def recipe_path(r, launch):
+    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k.json"""
+    kind = profile(r["engine"]).get("engine", r["engine"].split("@")[0])
+    return RECIPES / card(r["card"])["vendor"] / r["card"] / f"{r['model']}.{kind}.{launch['ctx'] // 1024}k.json"
+
+
+def dirname(weights):
+    repo, rev = weights.split("@")
+    return f"{repo.split('/')[1]}-{rev[:8]}"
+
+
+def render(recipe):
+    """The launch contract for a recipe: image, entrypoint, args, env, port, shm, weights and config file."""
+    p = profile(recipe["engine"])
+    if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
+        cfg = p.get("config")
+        return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
+                "env": p.get("env") or {}, "weights": p["weights"],
+                "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
+                "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
+    s = {**p["defaults"], **recipe.get("set", {})}
+    name = dirname(recipe["weights"])
+    values = {**{k: str(v).lower() if isinstance(v, bool) else v for k, v in s.items()}, "name": name,
+              "cache_tokens": int(s["ctx"]) * int(s["seqs"]) + 1024 * int(s["seqs"]),
+              "draft_block": "{draft_mode: mtp}" if s["draft"] == "mtp" else "{}"}
+    config = "\n".join(string.Template(line).substitute(values) for line in p["config"]) + "\n"
+    repo, rev = recipe["weights"].split("@")
+    return {"image": p["image"], "entrypoint": p["entrypoint"], "args": p["args"], "port": p["port"], "shm": p["shm"],
+            "env": {}, "weights": {"repo": repo, "revision": rev, "at": string.Template(p["weights_at"]).substitute(name=name)},
+            "config": {"at": p["config_at"], "text": config, "sha256": hashlib.sha256(config.encode()).hexdigest()},
+            "ctx": int(s["ctx"]), "seqs": int(s["seqs"]), "vision": bool(s["vision"]), "backend": p["backend"]}
+
+
+# ----------------------------------------------------------------------------- the server under test
+def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small card takes a while; never cut an answer short
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("LAB_API_KEY"):  # an owner's server behind a keyed gateway
+        headers["Authorization"] = f"Bearer {os.environ['LAB_API_KEY']}"
+    req = urllib.request.Request(endpoint + path, data=json.dumps(body).encode() if body else None, headers=headers)
+    t = time.monotonic()
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        out = json.loads(r.read())
+    return out, time.monotonic() - t
+
+
+def count(endpoint, text):
+    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode)."""
+    try:
+        out, _ = call(endpoint, "/v1/token/encode", {"text": text}, timeout=120)
+        return int(out.get("length") or len(out.get("tokens") or [])), "tokenizer"
+    except Exception:
+        return len(text) // 4, "estimate"
+
+
+def chat(endpoint, model, messages, **kw):
+    out, secs = call(endpoint, "/v1/chat/completions", {"model": model, "messages": messages, "temperature": 0.6, **kw})
+    c, u = out["choices"][0], dict(out.get("usage") or {})
+    if not u.get("prompt_tokens"):  # TabbyAPI called directly leaves usage empty; count what went in and came out
+        u["prompt_tokens"], u["counted"] = count(endpoint, "\n".join(m.get("content") or "" for m in messages))
+    if not u.get("completion_tokens"):
+        m = c.get("message") or {}
+        u["completion_tokens"], u["counted"] = count(endpoint, (m.get("reasoning_content") or m.get("reasoning") or "") + (m.get("content") or ""))
+    return c, u, secs
+
+
+def stream_rate(endpoint, model, prompt, window=30.0):
+    """Tokens per second over the first `window` seconds after the first token, from a streamed answer."""
+    body = {"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.8, "stream": True}
+    headers = {"Content-Type": "application/json"}
+    if os.environ.get("LAB_API_KEY"):
+        headers["Authorization"] = f"Bearer {os.environ['LAB_API_KEY']}"
+    req = urllib.request.Request(endpoint + "/v1/chat/completions", data=json.dumps(body).encode(), headers=headers)
+    text, first, at_window, t0 = [], None, None, time.monotonic()
+    with urllib.request.urlopen(req, timeout=3600) as r:
+        for line in r:
+            line = line.decode().strip()
+            if not line.startswith("data:") or line == "data: [DONE]":
+                continue
+            try:
+                d = json.loads(line[5:])["choices"][0]["delta"]
+            except (ValueError, KeyError, IndexError):
+                continue
+            piece = (d.get("reasoning_content") or d.get("reasoning") or "") + (d.get("content") or "")
+            if not piece:
+                continue
+            now = time.monotonic()
+            first = first or now
+            text.append(piece)
+            if at_window is None and now - first >= window:
+                at_window = ("".join(text), now - first)
+    whole = "".join(text)
+    elapsed = time.monotonic() - (first or t0)
+    sample, span = at_window or (whole, elapsed)
+    n, _ = count(endpoint, sample)
+    total, _ = count(endpoint, whole)
+    return (n / span if span else 0), total, time.monotonic() - t0
+
+
+def gates(endpoint, launch):
+    """Run every gate; returns (passed, proof, evidence)."""
+    ev, ok = {}, {}
+    models, _ = call(endpoint, "/v1/models", timeout=30)
+    served = models["data"][0]["id"]
+    ok["load"] = True
+    # chat: an answer that ends by itself
+    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "Name three primary colors, comma separated."}])
+    ok["chat"] = bool((c["message"].get("content") or "").strip()) and c.get("finish_reason") == "stop"
+    ev["chat"] = {"content": c["message"].get("content"), "finish": c.get("finish_reason")}
+    # reasoning: thinking comes back separately, and the answer is right
+    c, u, _ = chat(endpoint, served, [{"role": "user", "content": "What is 17 * 23? Reply with only the number."}])
+    thinking = c["message"].get("reasoning_content") or c["message"].get("reasoning") or ""
+    content = c["message"].get("content") or ""
+    ok["reasoning"] = bool(thinking.strip()) and "391" in content and "<think>" not in content
+    ev["reasoning"] = {"thinking_chars": len(thinking), "content": content[-200:]}
+    # tools: a call with the right arguments, then the result used in the reply
+    tool = {"type": "function", "function": {"name": "get_weather", "description": "Current weather for a city",
+            "parameters": {"type": "object", "properties": {"city": {"type": "string"}}, "required": ["city"]}}}
+    msgs = [{"role": "user", "content": "What's the weather in Paris right now? Use the tool."}]
+    c, u, _ = chat(endpoint, served, msgs, tools=[tool])
+    calls = c["message"].get("tool_calls") or []
+    args = {}
+    try:
+        args = json.loads(calls[0]["function"]["arguments"]) if calls else {}
+    except (ValueError, KeyError):
+        pass
+    first = bool(calls) and calls[0]["function"]["name"] == "get_weather" and "paris" in str(args.get("city", "")).lower()
+    reply = ""
+    if first:
+        msgs += [{"role": "assistant", "content": c["message"].get("content") or "", "tool_calls": calls},
+                 {"role": "tool", "tool_call_id": calls[0].get("id", "0"), "content": json.dumps({"city": "Paris", "temp_c": 17, "sky": "overcast"})}]
+        c2, _, _ = chat(endpoint, served, msgs, tools=[tool])
+        reply = c2["message"].get("content") or ""
+    ok["tools"] = first and "17" in reply
+    ev["tools"] = {"call": calls[:1], "reply": reply[-200:]}
+    # context: a code planted near the end of a prompt that fills ~85% of the window
+    target = int(launch["ctx"] * 0.85)
+    filler = " ".join(f"Line {i}: the archive notes that shipment {i * 7 % 997} left dock {i % 13} on schedule." for i in range(target // 24))  # ~23.6 tokens a line (measured: 32,834 tokens from 1,473 lines)
+    prompt = filler + " The access code for the vault is 58213. " + "Anything else is routine."
+    c, u, secs = chat(endpoint, served, [{"role": "user", "content": prompt + "\n\nWhat is the access code for the vault? Reply with only the code."}])
+    got = u.get("prompt_tokens") or 0
+    ok["context"] = "58213" in (c["message"].get("content") or "") and got >= launch["ctx"] * 0.6
+    ev["context"] = {"prompt_tokens": got, "seconds": round(secs, 1), "content": (c["message"].get("content") or "")[-80:]}
+    # speed: decode at concurrency 1, measured over the first 30 s of a streamed answer; the answer still runs
+    # to its natural end (never capped), and its full length is kept as evidence
+    tps, total, secs = stream_rate(endpoint, served, "Write a detailed 600-word story about a lighthouse keeper.")
+    ok["speed"] = tps >= MIN_TPS
+    ev["speed"] = {"window_s": 30, "tokens_total": total, "seconds_total": round(secs, 1)}
+    prefill = round(got / ev["context"]["seconds"]) if got and ev["context"]["seconds"] else None
+    proof = {"gates": " ".join(g for g in GATES if ok.get(g)), "tps": round(tps, 1), "prefill": prefill, "served": served}
+    return all(ok.get(g) for g in GATES), proof, {"ok": ok, **ev}
+
+
+# ----------------------------------------------------------------------------- where it runs
+def save_logs(handle, recipe):
+    """The rented container's last 400 log lines, kept with the run evidence."""
+    import subprocess
+    try:
+        out = subprocess.run(["vastai", "logs", str(handle["id"]), "--tail", "400"], capture_output=True, text=True, timeout=90).stdout
+        RUNS.mkdir(parents=True, exist_ok=True)
+        (RUNS / f"{recipe['card']}.{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%S')}.container.log").write_text(out)
+    except Exception as e:
+        log(f"could not save the container log: {e}")
+
+
+def rented(recipe, launch, args):
+    import validate_rented as vr
+
+    class LabSpec(vr.Spec):
+        def __init__(self):
+            self.recipe, self.image, self.entrypoint = {"id": "lab"}, launch["image"], launch["entrypoint"]
+            self.arguments, self.port, self.disk = list(launch["args"]), launch["port"], args.disk
+            self.name = f"local-ai-lab-{recipe['card']}"[:60]
+            tok = Path.home() / ".cache" / "huggingface" / "token"
+            self.env = {**(launch.get("env") or {}), **({"HF_TOKEN": tok.read_text().strip()} if tok.exists() else {})}
+            self.vram_gb = card(recipe["card"])["vram_gb"] or 0
+            self.gpu_override, self.hardware_id = args.proxy_gpu or args.gpu, recipe["card"]
+            if args.proxy_gpu:  # a twin card with more memory: search by its own size
+                self.vram_gb = args.proxy_vram
+            self.provision = []
+            self.online = True
+            if launch.get("config"):
+                text = re.sub(r"^(\s*host:\s*)127\.0\.0\.1", r"\g<1>0.0.0.0", launch["config"]["text"], flags=re.MULTILINE)
+                self.provision.append(("asset", launch["config"]["at"], text))
+            for w in (launch["weights"] if isinstance(launch["weights"], list) else [launch["weights"]]):
+                if w.get("layout", "dir") != "dir":
+                    raise SystemExit(f"weights layout {w.get('layout')} cannot be provisioned on a rented host yet")
+                self.provision.append(("weights", w["at"], (w["repo"], w["revision"])))
+
+    real_onstart = vr.Spec.onstart_script
+    def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
+        return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
+    LabSpec.onstart_script = onstart
+    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
+    provider = vr.PROVIDERS[args.on](ns)
+    spec = LabSpec()
+    exclude = set()
+    for attempt in range(1, 3):
+        handle = provider.create(spec, exclude)
+        handle["port"] = spec.port
+        t0 = time.monotonic()
+        log(f"{args.on} {handle['id']}: {handle.get('gpu')} at {handle.get('cost')}/h")
+        try:
+            while True:
+                ep = handle.get("endpoint")
+                if ep and vr.http_probe(f"{ep}/v1/models") == "ok":
+                    break
+                started, note = provider.poll(handle)
+                if not started and time.monotonic() - t0 > 900:
+                    exclude.update({handle.get("offer"), handle.get("machine")})
+                    raise vr.StartStalled(note)
+                if time.monotonic() - t0 > 3600:
+                    raise SystemExit("not ready within an hour")
+                time.sleep(10)
+            log(f"ready after {int(time.monotonic() - t0)}s at {handle['endpoint']}")
+            return handle["endpoint"], {"on": args.on, "gpu": handle.get("gpu"), "host": handle.get("host"), "cost_h": handle.get("cost")}, \
+                lambda: (save_logs(handle, recipe), provider.destroy(handle))
+        except vr.StartStalled as stall:
+            save_logs(handle, recipe)
+            provider.destroy(handle)
+            log(f"attempt {attempt}: {stall}; trying another host")
+        except BaseException:
+            save_logs(handle, recipe)  # any other failure: keep the container's log, never leave the box running
+            provider.destroy(handle)
+            raise
+    raise SystemExit("no host started the container")
+
+
+# ----------------------------------------------------------------------------- commands
+def cmd_try(args):
+    if not re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", args.weights):
+        raise SystemExit("weights must be <repo>@<40-hex revision>")
+    card(args.card)
+    p = profile(args.engine)
+    sets = {}
+    for kv in args.set:
+        k, _, v = kv.partition("=")
+        if k not in p["defaults"]:
+            raise SystemExit(f"{k} is not a setting of {p['id']}: {sorted(p['defaults'])}")
+        v = int(v) if v.isdigit() else {"true": True, "false": False}.get(v, v)
+        if v != p["defaults"][k]:
+            sets[k] = v
+    recipe = {"model": args.model, "weights": args.weights, "engine": f"{p['id']}@{p['image'].split('@sha256:')[1][:12]}",
+              "set": sets, "card": args.card}
+    launch = render(recipe)
+    if args.dry_run:
+        print(json.dumps({"recipe": recipe, "launch": launch}, indent=2))
+        return 0
+    stop = lambda: None
+    if args.on == "endpoint":
+        endpoint, where = args.endpoint.rstrip("/"), {"on": "owner", "gpu": args.gpu}
+    else:
+        endpoint, where, stop = rented(recipe, launch, args)
+    try:
+        passed, proof, evidence = gates(endpoint, launch)
+    finally:
+        stop()
+    at = dt.datetime.now(dt.timezone.utc)
+    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
+    if args.proxy_gpu:
+        proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
+    slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
+    RUNS.mkdir(parents=True, exist_ok=True)
+    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": launch["config"]["sha256"]}
+    text = json.dumps(run, indent=1, ensure_ascii=False)
+    run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
+    run_path.write_text(text + "\n")
+    proof["log"] = "sha256:" + hashlib.sha256(text.encode()).hexdigest()[:16]
+    log(f"gates: {evidence['ok']}  decode {proof['tps']} tok/s, prefill {proof['prefill']} tok/s; evidence {run_path.relative_to(ROOT)}")
+    if not passed:
+        log("FAILED: no recipe written")
+        return 1
+    out = recipe_path(recipe, launch)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    old = json.loads(out.read_text()) if out.exists() else None
+    proofs = [proof] + ([q for q in old["proof"] if old.get("weights") == recipe["weights"] and old.get("engine") == recipe["engine"] and old.get("set") == sets][:2] if old else [])
+    out.write_text(json.dumps({**recipe, "proof": proofs}, separators=(",", ":")) + "\n")
+    log(f"PASSED: wrote {out.relative_to(ROOT)} ({out.stat().st_size} bytes)")
+    return 0
+
+
+def cmd_convert(args):
+    files = [f for f in RECIPES.glob(f"*/{args.card}/*.json") if json.loads(f.read_text())["proof"][0].get("legacy")]
+    if not files:
+        raise SystemExit(f"{args.card} has no legacy recipe")
+    f = files[0]
+    recipe = json.loads(f.read_text())
+    launch = render(recipe)
+    stop = lambda: None
+    if args.on == "endpoint":
+        endpoint, where = args.endpoint.rstrip("/"), {"on": "owner", "gpu": args.gpu}
+    else:
+        endpoint, where, stop = rented(recipe, launch, args)
+    try:
+        passed, proof, evidence = gates(endpoint, launch)
+    finally:
+        stop()
+    at = dt.datetime.now(dt.timezone.utc)
+    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
+    RUNS.mkdir(parents=True, exist_ok=True)
+    text = json.dumps({"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence}, indent=1, ensure_ascii=False)
+    (RUNS / f"{args.card}.{f.stem}.{at.strftime('%Y%m%dT%H%M%S')}.json").write_text(text + "\n")
+    proof["log"] = "sha256:" + hashlib.sha256(text.encode()).hexdigest()[:16]
+    log(f"gates: {evidence['ok']}  decode {proof['tps']} tok/s, prefill {proof['prefill']} tok/s")
+    if not passed:
+        log("FAILED: the legacy recipe stays legacy")
+        return 1
+    recipe["proof"] = [proof]
+    f.write_text(json.dumps(recipe, separators=(",", ":")) + "\n")
+    log(f"PASSED: {f.relative_to(ROOT)} is now a full recipe")
+    return 0
+
+
+def cmd_render(args):
+    print(json.dumps(render(json.loads(Path(args.recipe).read_text())), indent=2))
+    return 0
+
+
+def cmd_check(_):
+    bad = []
+    for f in sorted(RECIPES.rglob("*.json")):
+        r = json.loads(f.read_text())
+        name = f.relative_to(ROOT)
+        try:
+            assert set(r) == {"model", "weights", "engine", "set", "card", "proof"}, f"fields {sorted(r)}"
+            assert r["weights"] == "baked-into-image" or re.fullmatch(r"[\w.-]+/[\w.-]+@[0-9a-f]{40}", r["weights"]), "weights not pinned"
+            c = card(r["card"])
+            assert f.parent.name == r["card"] and f.parent.parent.name == c["vendor"], "path is not recipes/<vendor>/<card>/"
+            launch = render(r)
+            assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
+            need = {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+            assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
+            assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"
+        except (AssertionError, KeyError, ValueError, SystemExit, FileNotFoundError) as e:
+            bad.append(f"{name}: {e}")
+    print("\n".join(bad) or f"recipes ok: {len(list(RECIPES.rglob('*.json')))}")
+    return 1 if bad else 0
+
+
+def main():
+    import signal
+    def stop(*_):  # background jobs ignore SIGINT; SIGTERM must unwind so a rented box is always destroyed
+        raise SystemExit("terminated")
+    signal.signal(signal.SIGTERM, stop)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    t = sub.add_parser("try")
+    t.add_argument("weights")
+    t.add_argument("--model", required=True)
+    t.add_argument("--engine", required=True)
+    t.add_argument("--card", required=True)
+    t.add_argument("--set", action="append", default=[])
+    t.add_argument("--on", default="vast", choices=["vast", "runpod", "endpoint"])
+    t.add_argument("--endpoint")
+    t.add_argument("--gpu", help="provider GPU name (default from the card) or, with --on endpoint, the GPU the owner ran it on")
+    t.add_argument("--proxy-gpu", help="run on this twin card, memory capped to the card's")
+    t.add_argument("--proxy-vram", type=int, default=16)
+    t.add_argument("--min-cuda", type=float)
+    t.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
+    t.add_argument("--max-price", type=float, default=1.5)
+    t.add_argument("--disk", type=int, default=60)
+    t.add_argument("--dry-run", action="store_true")
+    cv = sub.add_parser("convert")
+    cv.add_argument("card")
+    cv.add_argument("--on", default="vast", choices=["vast", "runpod", "endpoint"])
+    cv.add_argument("--endpoint")
+    cv.add_argument("--gpu")
+    cv.add_argument("--proxy-gpu")
+    cv.add_argument("--proxy-vram", type=int, default=16)
+    cv.add_argument("--min-cuda", type=float)
+    cv.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
+    cv.add_argument("--max-price", type=float, default=2.0)
+    cv.add_argument("--disk", type=int, default=80)
+    sub.add_parser("render").add_argument("recipe")
+    sub.add_parser("check")
+    a = ap.parse_args()
+    return {"try": cmd_try, "convert": cmd_convert, "render": cmd_render, "check": cmd_check}[a.cmd](a)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
