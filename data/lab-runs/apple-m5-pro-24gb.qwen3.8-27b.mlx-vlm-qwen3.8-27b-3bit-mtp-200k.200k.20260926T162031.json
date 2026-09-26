@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "leonsarmiento/Qwen3.8-27B-3bit-mlx@5fc234d9e6080b8388a11286380e801b7c9f535c",
+  "engine": "mlx-vlm-qwen3.8-27b-3bit-mtp-200k@c0bef0d7c79a",
+  "set": {},
+  "card": "apple-m5-pro-24gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "Apple M5 Max 48GB (40-core GPU)"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-26",
+  "on": "owner",
+  "gpu": "Apple M5 Max 48GB (40-core GPU)",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 18.5,
+  "prefill": 236,
+  "served": "models/Qwen3.8-27B-3bit-mlx-5fc234d9",
+  "proxy": "Apple M5 Max 48GB (40-core GPU), not memory-capped; context-gate peak 17.72 GiB of the card's 20 GiB GPU budget"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "Red, Yellow, Blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 115,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "index": 0,
+     "id": "4403c83f-70ca-4a83-a49c-782b537dab29",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "Here's the current weather in **Paris**:\n\n- **Temperature:** 17°C\n- **Sky:** Overcast\n\nIt's a cool and cloudy day in Paris — you might want to bring a jacket! 🌥️"
+  },
+  "context": {
+   "prompt_tokens": 166655,
+   "seconds": 705.8,
+   "content": "58213",
+   "peak_gib": 17.72
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 1133,
+   "seconds_total": 63.4
+  }
+ },
+ "launch_config_sha256": "f8cd617060c26a5618d75a314931717779a72848f443c18a645e1db2d165f94a"
+}

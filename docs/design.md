@@ -49,8 +49,12 @@ For each card, `catalog.py` keeps at most three recipes, one per model, ranked b
 3. starts the image on a bridge network, with no host IPC and no added capabilities, passing the card through;
 4. puts the Local AI gateway in front.
 
+A host profile runs on the machine itself instead: install its pinned pip packages, download the weights to the
+profile's paths, write the launcher, raise `iogpu.wired_limit_mb` to the card's memory less the profile's reserve
+(it resets on reboot), and start the launcher. `lab.py try --on endpoint` tests it where it runs.
+
 ## Rules CI enforces
 
-- Every recipe is at its path, with weights pinned to a commit and a profile pinned to an image digest.
+- Every recipe is at its path, with weights pinned to a commit and a profile pinned to an image digest (or, for a host profile, the digest of its launch).
 - Every recipe's latest proof passed all six gates, or is marked `legacy`, or is `reported` with its source.
 - `dist/catalog.json` and `plugin/v2/recipes.json` are current.

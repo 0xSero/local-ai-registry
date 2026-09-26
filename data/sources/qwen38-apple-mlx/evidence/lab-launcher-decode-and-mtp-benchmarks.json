@@ -1,0 +1,209 @@
+{
+  "note": "M5 Max 48 GB, mlx-vlm 0.7.3, 2026-09-26. Background load varied between runs; compare rows measured back to back.",
+  "decode_60k_thinking_off_temp0": {
+    "what": "decode_bench.py: ~60.6k-token prompt, 256 tokens out, 3-bit build",
+    "labels": {
+      "A/A2": "uniform 4-bit KV + MTP (block 3)",
+      "B": "TurboQuant 4-bit KV + MTP",
+      "C": "uniform KV, no MTP",
+      "D": "dequantize + fused SDPA for decode (not used)"
+    },
+    "rows": [
+      {
+        "label": "A-uniform-mtp",
+        "prompt_tokens": 60580,
+        "completion_tokens": 256,
+        "decode_tok_s": 11.35,
+        "prefill_tok_s": 323.0,
+        "draft": "159/193",
+        "peak_gib": 14.38,
+        "wall_s": 211.7
+      },
+      {
+        "label": "B-turbo-mtp",
+        "prompt_tokens": 60580,
+        "completion_tokens": 256,
+        "decode_tok_s": 9.87,
+        "prefill_tok_s": 258.7,
+        "draft": "159/193",
+        "peak_gib": 14.38,
+        "wall_s": 261.6
+      },
+      {
+        "label": "C-uniform-nomtp",
+        "prompt_tokens": 60580,
+        "completion_tokens": 256,
+        "decode_tok_s": 8.04,
+        "prefill_tok_s": 246.3,
+        "draft": "None/None",
+        "peak_gib": 14.21,
+        "wall_s": 279.7
+      },
+      {
+        "label": "D-fused-decode",
+        "prompt_tokens": 60580,
+        "completion_tokens": 256,
+        "decode_tok_s": 5.43,
+        "prefill_tok_s": 195.8,
+        "draft": "167/178",
+        "peak_gib": 15.31,
+        "wall_s": 358.7
+      },
+      {
+        "label": "A2-uniform-mtp",
+        "prompt_tokens": 60580,
+        "completion_tokens": 256,
+        "decode_tok_s": 10.95,
+        "prefill_tok_s": 182.7,
+        "draft": "159/193",
+        "peak_gib": 14.38,
+        "wall_s": 355.2
+      }
+    ]
+  },
+  "speed_gate_prompt_temp08": {
+    "what": "speed_probe.py: lab.py stream_rate on its speed prompt; labels: 3-bit B2/B3/B4 = MTP draft block, NOMTP = no drafter, 4B* = 4-bit build, M4B2 = 3-bit with the mlx-community MTP-4bit drafter",
+    "rows": [
+      {
+        "label": "B2-1",
+        "tps": 19.8,
+        "tokens": 1133,
+        "seconds": 58.7
+      },
+      {
+        "label": "B2-2",
+        "tps": 20.4,
+        "tokens": 1133,
+        "seconds": 56.8
+      },
+      {
+        "label": "B4-1",
+        "tps": 15.3,
+        "tokens": 1037,
+        "seconds": 73.3
+      },
+      {
+        "label": "B4-2",
+        "tps": 14.3,
+        "tokens": 1037,
+        "seconds": 76.3
+      },
+      {
+        "label": "NOMTP-1",
+        "tps": 23.4,
+        "tokens": 1037,
+        "seconds": 46.8
+      },
+      {
+        "label": "NOMTP-2",
+        "tps": 21.2,
+        "tokens": 1037,
+        "seconds": 48.9
+      },
+      {
+        "label": "B3-1",
+        "tps": 17.3,
+        "tokens": 1037,
+        "seconds": 64.6
+      },
+      {
+        "label": "B3-2",
+        "tps": 16.6,
+        "tokens": 1037,
+        "seconds": 65.0
+      },
+      {
+        "label": "4B2-1",
+        "tps": 24.7,
+        "tokens": 8192,
+        "seconds": 280.3
+      },
+      {
+        "label": "4B2-2",
+        "tps": 24.7,
+        "tokens": 8192,
+        "seconds": 328.0
+      },
+      {
+        "label": "4B3-1",
+        "tps": 20.3,
+        "tokens": 8192,
+        "seconds": 370.5
+      },
+      {
+        "label": "4B3-2",
+        "tps": 20.4,
+        "tokens": 8192,
+        "seconds": 350.3
+      },
+      {
+        "label": "4NOMTP-1",
+        "tps": 17.5,
+        "tokens": 8192,
+        "seconds": 535.1
+      },
+      {
+        "label": "4NOMTP-2",
+        "tps": 15.6,
+        "tokens": 8192,
+        "seconds": 594.8
+      },
+      {
+        "label": "L3B2-1",
+        "tps": 11.0,
+        "tokens": 1133,
+        "seconds": 100.8
+      },
+      {
+        "label": "L3B2-2",
+        "tps": 12.0,
+        "tokens": 1133,
+        "seconds": 104.3
+      },
+      {
+        "label": "M4B2-1",
+        "tps": 11.7,
+        "tokens": 1121,
+        "seconds": 105.2
+      },
+      {
+        "label": "ref4B2-1",
+        "tps": 16.6,
+        "tokens": 8192,
+        "seconds": 346.6
+      },
+      {
+        "label": "now-L3B2-1",
+        "tps": 18.4,
+        "tokens": 1133,
+        "seconds": 66.5
+      },
+      {
+        "label": "now-L3B2-2",
+        "tps": 16.3,
+        "tokens": 1133,
+        "seconds": 68.5
+      },
+      {
+        "label": "now-M4B2-1",
+        "tps": 18.3,
+        "tokens": 1121,
+        "seconds": 66.8
+      },
+      {
+        "label": "now-M4B2-2",
+        "tps": 16.7,
+        "tokens": 1121,
+        "seconds": 65.9
+      }
+    ]
+  },
+  "attention_166k_ms_per_layer": {
+    "mlx-vlm quantized SDPA (decode)": 9.58,
+    "Q.K quantized_matmul": 3.36,
+    "P.V quantized_matmul": 7.16,
+    "dequantize + fused SDPA": 6.57,
+    "bf16 fused SDPA": 5.1,
+    "what": "attn_bench.py, one layer, L=4"
+  }
+}

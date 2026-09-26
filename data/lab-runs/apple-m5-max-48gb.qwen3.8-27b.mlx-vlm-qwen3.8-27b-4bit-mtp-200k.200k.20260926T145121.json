@@ -1,0 +1,67 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "mlx-community/Qwen3.8-27B-4bit@10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+  "engine": "mlx-vlm-qwen3.8-27b-4bit-mtp-200k@05a00b1c2404",
+  "set": {},
+  "card": "apple-m5-max-48gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "Apple M5 Max 48GB (40-core GPU)"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-26",
+  "on": "owner",
+  "gpu": "Apple M5 Max 48GB (40-core GPU)",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 24.9,
+  "prefill": 241,
+  "served": "models/Qwen3.8-27B-4bit-10c35caa"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "red, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 139,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "index": 0,
+     "id": "0c6d6ff8-7daa-4fa6-9a0e-0f1266f953fc",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "Right now in Paris it's **17°C** with **overcast** skies. You might want a light jacket if you're heading out!"
+  },
+  "context": {
+   "prompt_tokens": 166667,
+   "seconds": 691.8,
+   "content": "58213",
+   "peak_gib": 20.78
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 8192,
+   "seconds_total": 337.7
+  }
+ },
+ "launch_config_sha256": "f8cd617060c26a5618d75a314931717779a72848f443c18a645e1db2d165f94a"
+}
