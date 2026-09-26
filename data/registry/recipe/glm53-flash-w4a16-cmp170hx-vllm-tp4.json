@@ -1,0 +1,266 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "video": null,
+    "vision": null
+  },
+  "description": "GLM-5.3-Flash W4A16 on four CMP 170HX cards (64 GB each on PCIe Gen2 x16; modified cards, see the hardware entry) with the Morrowmake vLLM fork for sm_80: tensor-parallel 4, DFlash2 drafter at 3 tokens, 262,144-token context, full-precision KV cache (1,174,567 tokens), recipe 1.3.0 defaults with PCIe peer-to-peer off. Launch arguments and environment are the recipe's serve.sh defaults, written out; the only change is --host 0.0.0.0 inside the container.",
+  "engine": {
+    "branch": "ampere-glm53",
+    "commit": "0ed7d3e7f3f855646a139701598a9b40d5745688",
+    "graph_mode": "vLLM default CUDA graph mode (not overridden; no eager mode)",
+    "name": "vllm",
+    "source": "https://github.com/Morrowmake/vllm-cmp170hx",
+    "version": "0.29.1rc1.dev617+g0ed7d3e7f"
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "cmp-170hx-64gb",
+  "id": "glm53-flash-w4a16-cmp170hx-vllm-tp4",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "serve",
+      "/models/GLM-5.3-Flash-W4A16-MTP",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--host",
+      "0.0.0.0",
+      "--pipeline-parallel-size",
+      "1",
+      "--tensor-parallel-size",
+      "4",
+      "--max-model-len",
+      "262144",
+      "--max-num-seqs",
+      "8",
+      "--max-num-batched-tokens",
+      "3460",
+      "--long-prefill-token-threshold",
+      "0",
+      "--gpu-memory-utilization",
+      "0.95",
+      "--trust-remote-code",
+      "--reasoning-parser",
+      "glm47",
+      "--enable-auto-tool-choice",
+      "--tool-call-parser",
+      "glm47",
+      "--port",
+      "8000",
+      "--speculative-config",
+      "{\"method\":\"dflash\",\"model\":\"/models/GLM-5.3-Flash-DFlash2\",\"num_speculative_tokens\":3}",
+      "--prefill-chunk-with-decodes",
+      "384",
+      "--max-num-partial-prefills",
+      "2"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T15:30:47.366591Z",
+      "compose_file": null,
+      "digest": "sha256:ee978fb3e3d11cf8577a014539a7ad4e2a8dff95163fc5d96c0a06fcf9c64640",
+      "image": "ghcr.io/morrowmake/vllm-cmp170hx@sha256:ee978fb3e3d11cf8577a014539a7ad4e2a8dff95163fc5d96c0a06fcf9c64640",
+      "reason": "image-reference-in-launch",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-09-25T15:30:47.366591Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "entrypoint": "/opt/venv/bin/vllm",
+    "environment": {
+      "CUDA_HOME": "/usr/local/cuda",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+      "VLLM_ALLOW_PCIE_P2P_CUSTOM_ALLREDUCE": "0",
+      "VLLM_CUSTOM_ALLREDUCE_ALGO": "2stage",
+      "VLLM_GLM5_DECODE_IDX_GLUE": "1",
+      "VLLM_GLM5_DECODE_KDA_V2": "1",
+      "VLLM_GLM5_DECODE_KERNELS": "1",
+      "VLLM_GLM5_DECODE_MHC_V2": "1",
+      "VLLM_GLM5_DECODE_MOE_ROUTE_V2": "1",
+      "VLLM_GLM5_DETERMINISTIC_MOE_ALIGN": "1",
+      "VLLM_GLM5_DRAFTER_ROPE_FIT": "1",
+      "VLLM_GLM5_DRAFTER_SELECTOR_SHARD": "1",
+      "VLLM_GLM5_HOST_ALLREDUCE": "1",
+      "VLLM_GLM5_INDEXER_DECODE_ROWS": "1",
+      "VLLM_GLM5_LOCAL_LOGITS": "1",
+      "VLLM_GLM5_MOE_MASK_PADDING": "1",
+      "VLLM_GLM5_PREFILL_KERNELS": "1",
+      "VLLM_GLM5_PREFILL_MIN_TOKENS": "384",
+      "VLLM_GLM5_PREFILL_OVERLAP": "1",
+      "VLLM_GLM5_PREFILL_OVERLAP_SPLITS": "2",
+      "VLLM_GLM5_PROLOGUE_FUSE": "1",
+      "VLLM_GLM5_REPLICATED_EMBED": "0",
+      "VLLM_GLM5_SHARED_EXPERT_REORDER": "1",
+      "VLLM_GLM5_THIN_GEMM": "1",
+      "VLLM_GLM5_TOPK_SORTED": "1",
+      "VLLM_GLM5_TOPK_TIEFIX": "1",
+      "VLLM_GLM5_TOPK_TIEFIX_SPLIT_ROWS": "8",
+      "VLLM_SPARSE_INDEXER_MAX_LOGITS_MB": "128"
+    },
+    "host_port": 8000,
+    "image": "ghcr.io/morrowmake/vllm-cmp170hx@sha256:ee978fb3e3d11cf8577a014539a7ad4e2a8dff95163fc5d96c0a06fcf9c64640",
+    "ipc": null,
+    "kind": "docker",
+    "mounts": [
+      {
+        "provision": {
+          "repository": "canada-quant/GLM-5.3-Flash-W4A16-MTP",
+          "revision": "8f425cd3a2ad57233862029b77b05966327ad1a1",
+          "size_gb": 190.85627058
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-W4A16-MTP",
+        "target": "/models/GLM-5.3-Flash-W4A16-MTP"
+      },
+      {
+        "provision": {
+          "repository": "incoai/GLM-5.3-Flash-DFlash2",
+          "revision": "bf582e4eacc1810f76656d1811693ff6c6737d2a",
+          "size_gb": 2.342460697
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-DFlash2",
+        "target": "/models/GLM-5.3-Flash-DFlash2"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/glm53-flash-cmp170hx",
+        "target": "/root/.cache"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "captured_at": "2026-09-25T14:00:00Z",
+      "commit": "0ed7d3e7f3f855646a139701598a9b40d5745688",
+      "kind": "self-built",
+      "note": "vLLM fork installed as the recipe's install.sh installs it (Python 3.12, torch 2.13.0 CUDA 13.0 build, editable install at the pinned commit with upstream's precompiled extensions, the recipe's runtime extras) on nvidia/cuda:13.3.1-devel-ubuntu24.04@sha256:4ff859525f99de5782aa73607ce24219b07dddd48d12b97c1c301d7e1cfb0a87. Image labels carry the fork URL and commit. Weights are not in the image.",
+      "source": "https://github.com/Morrowmake/vllm-cmp170hx",
+      "sources": [
+        {
+          "captured_at": "2026-09-25T14:00:00Z",
+          "commit": "0ed7d3e7f3f855646a139701598a9b40d5745688",
+          "kind": "self-built-image",
+          "repository": "https://github.com/Morrowmake/vllm-cmp170hx",
+          "url": "https://github.com/Morrowmake/vllm-cmp170hx/tree/0ed7d3e7f3f855646a139701598a9b40d5745688"
+        }
+      ]
+    },
+    "shm_size": "16g",
+    "source": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/tree/v1.3.0"
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T15:30:47.366591Z",
+      "harness": "scripts/accept_recipe.py against the container: docker run generated from the recipe launch, 4x CMP 170HX 64 GB, PCIe Gen2 x16, 180 W per card, driver 610.57.04",
+      "served_model_id": "glm-5.3-flash"
+    },
+    "capability_notes": "Chat, reasoning (glm47 parser) and tool calls (glm47 parser) are exercised by the recipe's smoke test. Images and video are enabled in this launch but were not checked for this release, so vision is left unknown.",
+    "credits": [
+      {
+        "name": "Z.ai",
+        "role": "GLM-5.3-Flash base model",
+        "url": "https://huggingface.co/zai-org/GLM-5.3-Flash"
+      },
+      {
+        "name": "canada-quant",
+        "role": "W4A16 quantization with the MTP layer",
+        "url": "https://huggingface.co/canada-quant/GLM-5.3-Flash-W4A16-MTP"
+      },
+      {
+        "name": "incoai",
+        "role": "DFlash2 drafter",
+        "url": "https://huggingface.co/incoai/GLM-5.3-Flash-DFlash2"
+      },
+      {
+        "name": "vLLM project",
+        "role": "Upstream engine",
+        "url": "https://github.com/vllm-project/vllm"
+      },
+      {
+        "name": "Morrowmake",
+        "role": "sm_80 engine fork, recipe, measurements and container image",
+        "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe"
+      }
+    ],
+    "deployment_notes": "Download both checkpoints at the pinned revisions into ${MODEL_ROOT} first (about 193 GB). The server listens on every interface inside the container and has no API key: publish the port only on a trusted network, or add VLLM_API_KEY. The first start compiles kernels and takes several minutes; the ${CACHE_ROOT} mount keeps them for later starts. Uses about 0.95 of each card's memory.",
+    "differences_from_recipe": "The recipe's serve.sh binds 127.0.0.1 on the host; inside the container the server binds 0.0.0.0. Paths are /opt/venv and /models/...; CUDA_HOME is the image's /usr/local/cuda (13.3.1, the toolkit version the recipe was validated with). Everything else is serve.sh's default argv and environment for TP=4 with the DFlash drafter.",
+    "draft": {
+      "method": "dflash",
+      "num_speculative_tokens": 3,
+      "precision": "BF16",
+      "repository": "incoai/GLM-5.3-Flash-DFlash2",
+      "revision": "bf582e4eacc1810f76656d1811693ff6c6737d2a"
+    },
+    "hardware_configuration": "Four CMP 170HX cards, each exposing 64 GB on a PCIe Gen2 x16 link (modified cards; stock cards expose 8 GB on x4). Tensor parallel 4 assumes x16 links; on x4 links it is bus-bound and far slower than the numbers attached here. Power limit 180 W per card, set by the operator; the launch changes no power, clock or fan setting.",
+    "peer_to_peer": "Off in this launch (VLLM_ALLOW_PCIE_P2P_CUSTOM_ALLREDUCE=0): tensor-parallel all-reduces go through a host shared-memory path. The recipe's optional mode, for systems where the driver grants PCIe peer access, sets VLLM_ALLOW_PCIE_P2P_CUSTOM_ALLREDUCE=1 and PYTORCH_CUDA_ALLOC_CONF=expandable_segments:False.",
+    "quality": {
+      "conditions": "Release 1.3.0 defaults, peer-to-peer off, measured on the native install (not in the container). HumanEval allows 4,096 tokens per reply and scores the last complete code block.",
+      "gsm8k_1319_accuracy": 0.975,
+      "humaneval_164_pass_at_1": 0.9573,
+      "perplexity_fixed_60_documents": 3.2858,
+      "source": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/blob/v1.3.0/README.md#results"
+    },
+    "recipe_release": {
+      "commit": "8e89d08c3c93bc945411f743646a91058314044d",
+      "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/releases/tag/v1.3.0",
+      "version": "1.3.0"
+    }
+  },
+  "model_instance_id": "canada-quant-glm-5-3-flash-w4a16-mtp--w4a16",
+  "provenance": {
+    "captured_at": "2026-09-25T14:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "commit": "8e89d08c3c93bc945411f743646a91058314044d",
+        "kind": "recipe-release",
+        "paths": [
+          "serve.sh",
+          "start.sh",
+          "install.sh",
+          ".env.example",
+          "README.md"
+        ],
+        "repository": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe",
+        "url": "https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe/releases/tag/v1.3.0"
+      },
+      {
+        "captured_at": "2026-09-25T14:00:00Z",
+        "commit": "0ed7d3e7f3f855646a139701598a9b40d5745688",
+        "kind": "engine-source",
+        "repository": "https://github.com/Morrowmake/vllm-cmp170hx",
+        "url": "https://github.com/Morrowmake/vllm-cmp170hx/tree/0ed7d3e7f3f855646a139701598a9b40d5745688"
+      }
+    ]
+  },
+  "recipe_source": "morrowmake",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "auto (model dtype; not quantized)",
+    "kv_cache_tokens": 1174567,
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "pipeline_parallel": 1,
+    "prefill_chunk_tokens": 3456,
+    "prefix_caching": true,
+    "speculative": {
+      "method": "dflash",
+      "num_speculative_tokens": 3
+    },
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [
+    "glm53-flash-w4a16-cmp170hx-vllm-tp4-release-1-3-0",
+    "glm53-flash-w4a16-cmp170hx-vllm-tp4-localmaxxing-p2p-on",
+    "glm53-flash-w4a16-cmp170hx-vllm-tp4-acceptance"
+  ],
+  "status": "validated"
+}
