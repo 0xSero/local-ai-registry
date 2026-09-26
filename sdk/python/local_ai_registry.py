@@ -58,12 +58,42 @@ def _q(s):
     return s if re.fullmatch(r"[\w@%+=:,./-]+", s) else shlex.quote(s)
 
 
+def _host_steps(l):
+    """A program on the host. One with pinned packages (MLX on Apple silicon) also downloads its weights, writes its
+    launcher and raises the GPU wired-memory limit before it starts."""
+    if not l.get("pip"):
+        return [{"title": "Install", "code": f"# {l['install']}"}, {"title": "Start the server", "code": " ".join(l["command"])}]
+    out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(l["pip"])}]
+    if l.get("weights"):
+        out.append({"title": "Download the weights", "code": "\n\n".join(
+            f"hf download {w['repo']} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}" for w in l["weights"])})
+    if l.get("config"):
+        out.append({"title": "Write the launcher", "code": f"cat > {l['config']['at']} <<'EOF'\n{l['config']['text'].rstrip()}\nEOF"})
+    if l.get("sysctl"):
+        out.append({"title": "Raise the GPU memory limit (resets on reboot)",
+                    "code": "\n".join(f"sudo sysctl {k}={v}" for k, v in l["sysctl"].items())})
+    run = [f"{k}={_q(v)}" for k, v in (l.get("env") or {}).items()] + [l["command"][0]] + _pairs(l["command"][1:])
+    out.append({"title": "Start the server", "code": " \\\n  ".join(run)})
+    return out
+
+
+def _pairs(a):
+    """Arguments as `--flag value` pairs, one per line."""
+    args, i = [], 0
+    while i < len(a):
+        if a[i].startswith("-") and i + 1 < len(a) and not a[i + 1].startswith("-"):
+            args.append(f"{a[i]} {_q(a[i + 1])}"); i += 2
+        else:
+            args.append(_q(a[i])); i += 1
+    return args
+
+
 def steps(r):
     """The steps to run a recipe by hand: download the weights, write the config, start the container."""
     l = r["launch"]
     name = (r.get("key") or r["model"]).split("/")[-1]
     if l.get("kind") == "host":
-        return [{"title": "Install", "code": f"# {l['install']}"}, {"title": "Start the server", "code": " ".join(l["command"])}]
+        return _host_steps(l)
     ws = [w for w in (l["weights"] if isinstance(l["weights"], list) else [l["weights"]]) if w and w.get("repo")]
     out, mounts, dl = [], [], []
     for w in ws:

@@ -7,7 +7,7 @@ The registry answers one question for a program: on this GPU, which model should
 | File | What it is | Written by |
 |---|---|---|
 | `cards/<vendor>/<card>.json` | A GPU: name, vendor, backend, memory, bandwidth, and the `match` block programs use to recognise it | Hand, rarely |
-| `engines/<profile>.json` | An engine: pinned image, entrypoint, arguments, environment, port, config file. A template profile (`tabbyapi-exl3`) has `defaults` a recipe can change; a frozen profile is a launch exactly as it was validated before the lab existed | Hand, reviewed |
+| `engines/<profile>.json` | An engine: pinned image, entrypoint, arguments, environment, port, config file. A template profile (`tabbyapi-exl3`) has `defaults` a recipe can change; a frozen profile is a launch exactly as it was validated before the lab existed. A host profile (`kind: host`: FastFlowLM on an AMD NPU, MLX on Apple silicon where containers have no GPU) runs a command on the machine itself; one with `pip`, `weights` and a launcher `config` has recipes pin the sha256 of that whole launch | Hand, reviewed |
 | `recipes/<vendor>/<card>/<model>.<engine>.<ctx>k.json` | A recipe: weights at a commit, a profile pinned to its image digest, settings that differ from the profile's defaults, the card, and the proof | `lab/lab.py` only |
 | `dist/catalog.json`, `plugin/v2/recipes.json` | Everything above, rendered, with at most 3 picks per card | `make` |
 
@@ -46,8 +46,12 @@ For each card, `catalog.py` keeps at most three recipes, one per model, ranked b
 3. starts the image on a bridge network, with no host IPC and no added capabilities, passing the card through;
 4. puts the Local AI gateway in front.
 
+A host profile runs on the machine itself instead: install its pinned pip packages, download the weights to the
+profile's paths, write the launcher, raise `iogpu.wired_limit_mb` to the card's memory less the profile's reserve
+(it resets on reboot), and start the launcher. `lab.py try --on endpoint` tests it where it runs.
+
 ## Rules CI enforces
 
-- Every recipe is at its path, with weights pinned to a commit and a profile pinned to an image digest.
+- Every recipe is at its path, with weights pinned to a commit and a profile pinned to an image digest (or, for a host profile, the digest of its launch).
 - Every recipe's latest proof passed all six gates, or is marked `legacy`.
 - `dist/catalog.json` and `plugin/v2/recipes.json` are current.

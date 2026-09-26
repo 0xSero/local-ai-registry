@@ -1,0 +1,74 @@
+{
+  "id": "mlx-vlm-qwen3.8-27b-4bit-mtp-200k",
+  "kind": "host",
+  "engine": "mlx-vlm",
+  "about": "Qwen3.8-27B (MLX · 4-bit, MTP drafter)",
+  "command": [
+    "python3",
+    "qwen38_mlx_serve.py",
+    "--model",
+    "models/Qwen3.8-27B-4bit-10c35caa",
+    "--draft-model",
+    "models/Qwen3.8-27B-MTP-4bit-b643c01b",
+    "--draft-kind",
+    "mtp",
+    "--draft-block-size",
+    "2",
+    "--kv-bits",
+    "4",
+    "--kv-quant-scheme",
+    "uniform",
+    "--kv-group-size",
+    "64",
+    "--max-kv-size",
+    "204800",
+    "--max-tokens",
+    "8192",
+    "--enable-thinking",
+    "--max-num-seqs",
+    "1",
+    "--prefill-step-size",
+    "128",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8080"
+  ],
+  "install": "python3 -m pip install mlx-vlm==0.7.3 mlx==0.32.2 transformers==5.17.0 huggingface_hub==1.33.0 (macOS on Apple silicon, Python >= 3.10)",
+  "pip": [
+    "mlx-vlm==0.7.3",
+    "mlx==0.32.2",
+    "transformers==5.17.0",
+    "huggingface_hub==1.33.0"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1",
+    "MLX_VLM_TOKEN_QUEUE_TIMEOUT": "7200"
+  },
+  "port": 8080,
+  "weights": [
+    {
+      "repo": "mlx-community/Qwen3.8-27B-4bit",
+      "revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+      "at": "models/Qwen3.8-27B-4bit-10c35caa",
+      "layout": "dir",
+      "files": null
+    },
+    {
+      "repo": "mlx-community/Qwen3.8-27B-MTP-4bit",
+      "revision": "b643c01b6d3b094e325edb6ebd832e16c486c575",
+      "at": "models/Qwen3.8-27B-MTP-4bit-b643c01b",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": {
+    "at": "qwen38_mlx_serve.py",
+    "file": "mlx-vlm-qwen3.8-long-prefill.py"
+  },
+  "wired_limit_reserve_mb": 4096,
+  "ctx": 204800,
+  "seqs": 1,
+  "vision": true,
+  "backend": "metal"
+}
