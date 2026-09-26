@@ -10,7 +10,7 @@ import lab
 ROOT = lab.ROOT
 OUT = ROOT / "plugin" / "v2" / "recipes.json"
 GATEWAY = "ghcr.io/0xsero/gateway@sha256:d9743fcca4a9b8dd7f8fa18945ce6e5026f00dcab50b0727edd51690b88d4f32"
-MIN_DRIVER = {"tabbyapi": "575.0", "sglang": "570.0", "vllm": "570.0", "llama.cpp": "535.0"}
+MIN_DRIVER = {"tabbyapi": "575.0", "sglang": "580.0", "vllm": "580.0", "llama.cpp": "535.0"}
 
 
 def entry(key, r, meta):
@@ -33,7 +33,7 @@ def entry(key, r, meta):
             "servedName": name, "sizeGb": b["size_gb"], "cards": 1, "image": L["image"], "minDriver": MIN_DRIVER.get(p["engine"], ""),
             "weights": [{"repository": L["weights"]["repo"], "revision": L["weights"]["revision"], "sizeGb": b["size_gb"], "layout": "dir",
                          "mountPath": L["weights"]["at"].rsplit("/", 1)[0], "dir": name, "files": ""}],
-            "asset": {"name": f"{Path(key).name}.config.yml", "mountPath": L["config"]["at"], "text": L["config"]["text"]},
+            "asset": {"name": f"{Path(key).name}.config.yml", "mountPath": L["config"]["at"], "text": L["config"]["text"]} if L["config"] else None,
             "scratch": None, "launch": {"entrypoint": L["entrypoint"], "arguments": L["args"], "environment": L["env"], "port": L["port"], "shm": L["shm"]},
             "serving": {"ctxTokens": L["ctx"], "kvTokens": L["ctx"] * L["seqs"] + 1024 * L["seqs"]}, "capabilities": caps}
 
