@@ -1,0 +1,81 @@
+{
+  "id": "vllm-leanstral-1.5-119b-a6b-fp8-256k-2x",
+  "engine": "vllm",
+  "about": "Leanstral-1.5-119B-A6B as miaai-lab runs it (MiaAI-Lab/Leanstral-1.5-119B-A6B_2x_DGX_Sparks_vLLM)",
+  "image": "vllm/vllm-openai:v0.24.0@sha256:251eba5cc7c12fed0b75da22a9240e582b1c9e39f6fbc064f86781b963bd814f",
+  "backend": "nvidia",
+  "port": 8888,
+  "entrypoint": [
+    "bash",
+    "-lc",
+    "python3 -m pip install -q 'ray[default]' && ray start --head --node-ip-address='10.0.0.1' --port='6379' --dashboard-host=0.0.0.0 --object-store-memory='4294967296' --temp-dir='/mnt/ray/leanstral-vllm' && until ray status ... (2 active nodes); do sleep 3; done && vllm serve ..."
+  ],
+  "args": [
+    "serve",
+    "mistralai/Leanstral-1.5-119B-A6B",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8888",
+    "--max-model-len",
+    "262144",
+    "--max-num-seqs",
+    "7",
+    "--max-num-batched-tokens",
+    "16384",
+    "--mm-processor-cache-type",
+    "lru",
+    "--tensor-parallel-size",
+    "2",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--enforce-eager",
+    "--no-async-scheduling",
+    "--distributed-executor-backend",
+    "ray",
+    "--tool-call-parser",
+    "mistral",
+    "--enable-auto-tool-choice",
+    "--reasoning-parser",
+    "mistral"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface",
+    "HF_HUB_DISABLE_XET": "1",
+    "HF_HUB_DOWNLOAD_TIMEOUT": "600",
+    "HF_HUB_ETAG_TIMEOUT": "600",
+    "HUGGING_FACE_HUB_TOKEN": "${HUGGING_FACE_HUB_TOKEN:-${HF_TOKEN:-}}",
+    "HF_TOKEN": "${HF_TOKEN:-${HUGGING_FACE_HUB_TOKEN:-}}",
+    "VLLM_HOST_IP": "10.0.0.1",
+    "GLOO_SOCKET_IFNAME": "enp1s0f1np1",
+    "NCCL_SOCKET_IFNAME": "enp1s0f1np1",
+    "RAY_memory_usage_threshold": "0.99",
+    "VLLM_ENGINE_ITERATION_TIMEOUT_S": "600",
+    "RAY_TMPDIR": "/mnt/ray/leanstral-vllm",
+    "RAY_ADDRESS": "10.0.0.1:6379",
+    "RAY_object_spilling_config": "{\"type\":\"filesystem\",\"params\":{\"directory_path\":\"/mnt/ray/leanstral-vllm-spill\"}}"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "mistralai/Leanstral-1.5-119B-A6B",
+      "revision": "81592da95d94ab0439bfce16df1d55b402e598b6",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "flags": [
+    "--gpus all",
+    "--ipc=host",
+    "--network host",
+    "--shm-size 16g"
+  ],
+  "machines": 2,
+  "setup": "Each container pip-installs ray[default] at start (the image lacks the Ray CLI), so both nodes need internet. Head container runs Ray head, waits for 2 active nodes, then vllm serve. Worker (over SSH to 10.0.0.2) runs 'ray start --node-ip-address=10.0.0.2 --address=10.0.0.1:6379 --object-store-memory=4294967296 --temp-dir=/tmp/ray --block' with VLLM_HOST_IP=10.0.0.2, RAY_TMPDIR=/tmp/ray and spill dir /mnt/spark1/ray/leanstral-vllm-spill, no RAY_ADDRESS. Host dirs /mnt/ray/leanstral-vllm and /mnt/ray/leanstral-vllm-spill are bind-mounted at the same paths. HF caches: head /home/zurih/.cache/huggingface, worker WORKER_HF_HOME (default /mnt/spark1/models/.cache/huggingface); weights download on first start from inside each container. Passwordless SSH to the worker.",
+  "source": "https://github.com/MiaAI-Lab/Leanstral-1.5-119B-A6B_2x_DGX_Sparks_vLLM/tree/94d729896226db3eaf7f584e79b7c1f0028bab1d"
+}

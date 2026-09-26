@@ -7,8 +7,8 @@ The registry answers one question for a program: on this GPU, which model should
 | File | What it is | Written by |
 |---|---|---|
 | `cards/<vendor>/<card>.json` | A GPU: name, vendor, backend, memory, bandwidth, and the `match` block programs use to recognise it | Hand, rarely |
-| `engines/<profile>.json` | An engine: pinned image, entrypoint, arguments, environment, port, config file. A template profile (`tabbyapi-exl3`) has `defaults` a recipe can change; a frozen profile is a launch exactly as it was validated before the lab existed | Hand, reviewed |
-| `recipes/<vendor>/<card>/<model>.<engine>.<ctx>k.json` | A recipe: weights at a commit, a profile pinned to its image digest, settings that differ from the profile's defaults, the card, and the proof | `lab/lab.py` only |
+| `engines/<profile>.json` | An engine: pinned image, entrypoint, arguments, environment, port, config file. A template profile (`tabbyapi-exl3`, `vllm`, `sglang`, `sglang-exl3`) has `defaults` a recipe can change; a frozen profile is a launch exactly as it was validated before the lab, or as its publisher runs it | Hand, reviewed |
+| `recipes/<vendor>/<card>/<model>.<engine>.<ctx>k[.<n>x].json` | A recipe: weights at a commit, a profile pinned to its image digest, settings that differ from the profile's defaults, the card, and the proof | `lab/lab.py` only |
 | `dist/catalog.json`, `plugin/v2/recipes.json` | Everything above, rendered, with at most 3 picks per card | `make` |
 
 `lab/models.json` names each model (family, release date) and each build's size and format.
@@ -31,12 +31,15 @@ No answer is ever capped; each runs to its natural end. The full evidence of eve
 A proof may carry:
 - `proxy: <card>`: run on a sibling card, because nobody rents this one.
 - `legacy: true`: the recipe passed the older acceptance (load and chat only). `lab.py convert` re-runs it through all six gates.
+- `reported: true`: someone else published the launch and its numbers (`src` names their repo at a commit; `claims` what they say it does). `lab/import_reported.py` brings these in from `data/reported/<source>/`. Our gates have not run; a lab run replaces it.
+
+A recipe for several computers ends in `.<n>x` and its profile says `machines: n`. A profile may also name `flags` (host networking or IPC), a `build` (an image built from a source's Dockerfile at a commit), `setup` (what the source needs outside the container) and `source`.
 
 A new proof from another host on the same recipe confirms it.
 
 ## What gets picked
 
-For each card, `catalog.py` keeps at most three recipes, one per model, ranked by: lab proof over legacy, then family order (Qwen, Gemma, DeepSeek, GLM, Step, Kimi, MiniMax), newest model, and decode speed. A model older than 240 days is dropped. The first pick is the recommended one.
+For each card, `catalog.py` keeps at most three recipes, one per model, ranked by: lab proof over legacy over reported, then family order (Qwen, Gemma, DeepSeek, GLM, Step, Kimi, MiniMax), newest model, and decode speed. A model older than 240 days is dropped. The first pick is the recommended one. Every other recipe for the card is listed after the picks (`more`), best first. See [data.md](data.md) for where recipes come from.
 
 ## Running a recipe
 
@@ -49,5 +52,5 @@ For each card, `catalog.py` keeps at most three recipes, one per model, ranked b
 ## Rules CI enforces
 
 - Every recipe is at its path, with weights pinned to a commit and a profile pinned to an image digest.
-- Every recipe's latest proof passed all six gates, or is marked `legacy`.
+- Every recipe's latest proof passed all six gates, or is marked `legacy`, or is `reported` with its source.
 - `dist/catalog.json` and `plugin/v2/recipes.json` are current.

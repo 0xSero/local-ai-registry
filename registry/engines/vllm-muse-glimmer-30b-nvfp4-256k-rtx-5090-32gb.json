@@ -1,0 +1,42 @@
+{
+  "id": "vllm-muse-glimmer-30b-nvfp4-256k-rtx-5090-32gb",
+  "kind": "host",
+  "engine": "vllm",
+  "about": "Meta Muse Glimmer 30B NVFP4 (W4A4, vision intact) + DFlash drafter as miaai-lab runs it (MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO)",
+  "command": [
+    "${VENV}/bin/vllm",
+    "serve",
+    "${MODEL_PATH}",
+    "--served-model-name",
+    "muse-glimmer-30b",
+    "--trust-remote-code",
+    "--port",
+    "8888",
+    "--max-model-len",
+    "262144",
+    "--gpu-memory-utilization",
+    "${GPU_MEM_UTIL}",
+    "--reasoning-parser",
+    "muse_glimmer",
+    "--tool-call-parser",
+    "muse_glimmer",
+    "--enable-auto-tool-choice",
+    "--speculative-config",
+    "{\"method\": \"dflash\", \"model\": \"${DRAFT_PATH}\", \"num_speculative_tokens\": 16}",
+    "--kv-cache-dtype",
+    "fp8_e4m3",
+    "--no-enable-flashinfer-autotune"
+  ],
+  "env": {
+    "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+    "PATH": "$VENV/bin:/usr/local/cuda/bin:$PATH"
+  },
+  "install": "https://github.com/MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO/tree/1b71dc011010a3e2c373eafd8a41f12c7c7913fc",
+  "port": 8888,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": true,
+  "backend": "nvidia",
+  "setup": "Bare-metal (no container): needs python3.12, git, CUDA 13 at /usr/local/cuda; start.sh builds ./.venv with the vLLM fork, snapshot_downloads target + drafter into the default HF cache (MODEL_PATH/DRAFT_PATH are the returned snapshot dirs), runs `vllm serve` under nohup writing vllm.log/vllm.pid. 256K context (>131072) additionally REQUIRES two local, uncommitted patches to the fork (muse_glimmer.py and qwen3_dflash.py: size RoPE cos/sin cache to max_model_len) that are described in the README but NOT shipped in this repo; without them positions >131071 crash. Use --max-model-len 131072 otherwise.",
+  "source": "https://github.com/MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO/tree/1b71dc011010a3e2c373eafd8a41f12c7c7913fc"
+}

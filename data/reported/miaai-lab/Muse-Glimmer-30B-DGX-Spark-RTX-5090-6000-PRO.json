@@ -1,0 +1,230 @@
+[
+ {
+  "model_id": "muse-glimmer-30b",
+  "repo": "MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO",
+  "commit": "1b71dc011010a3e2c373eafd8a41f12c7c7913fc",
+  "files": [
+   "start.sh",
+   "stop.sh",
+   "README.md"
+  ],
+  "model": "Meta Muse Glimmer 30B NVFP4 (W4A4, vision intact) + DFlash drafter",
+  "hf_repo": "RedHatAI/Muse-Glimmer-30B-NVFP4",
+  "hf_revision": null,
+  "format": "nvfp4",
+  "bpw": null,
+  "engine": "vllm",
+  "image": null,
+  "build": {
+   "dockerfile": null,
+   "base": "host Python 3.12 venv (no Docker)",
+   "summary": "start.sh clones xianbaoqian/vllm branch tiezhen/new-model-support (vLLM PR #51655; README says pinned commit 99a10304d) and installs it editable with VLLM_USE_PRECOMPILED=1 into ./.venv, plus ninja"
+  },
+  "machines": 1,
+  "gpus_per_machine": 1,
+  "entrypoint": [
+   "${VENV}/bin/vllm"
+  ],
+  "env": {
+   "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+   "PATH": "$VENV/bin:/usr/local/cuda/bin:$PATH"
+  },
+  "port": 8888,
+  "ctx": 262144,
+  "shm": null,
+  "flags": [],
+  "weights_mount": null,
+  "speculative": "DFlash with meta-models/Muse-Glimmer-30B-assistant drafter head (5 layers, block 16), num_speculative_tokens 16",
+  "reasoning": true,
+  "tools": true,
+  "vision": true,
+  "tool_parser": "muse_glimmer",
+  "reasoning_parser": "muse_glimmer",
+  "date": "2026-08-11",
+  "license": "MIT",
+  "extra_setup": "Bare-metal (no container): needs python3.12, git, CUDA 13 at /usr/local/cuda; start.sh builds ./.venv with the vLLM fork, snapshot_downloads target + drafter into the default HF cache (MODEL_PATH/DRAFT_PATH are the returned snapshot dirs), runs `vllm serve` under nohup writing vllm.log/vllm.pid. 256K context (>131072) additionally REQUIRES two local, uncommitted patches to the fork (muse_glimmer.py and qwen3_dflash.py: size RoPE cos/sin cache to max_model_len) that are described in the README but NOT shipped in this repo; without them positions >131071 crash. Use --max-model-len 131072 otherwise.",
+  "card": "dgx-spark-gb10-128gb",
+  "args": [
+   "serve",
+   "${MODEL_PATH}",
+   "--served-model-name",
+   "muse-glimmer-30b",
+   "--trust-remote-code",
+   "--port",
+   "8888",
+   "--max-model-len",
+   "262144",
+   "--gpu-memory-utilization",
+   "0.42",
+   "--reasoning-parser",
+   "muse_glimmer",
+   "--tool-call-parser",
+   "muse_glimmer",
+   "--enable-auto-tool-choice",
+   "--speculative-config",
+   "{\"method\": \"dflash\", \"model\": \"${DRAFT_PATH}\", \"num_speculative_tokens\": 16}",
+   "--kv-cache-dtype",
+   "fp8_e4m3",
+   "--no-enable-flashinfer-autotune"
+  ],
+  "measured": {
+   "decode_tps": 35,
+   "prefill_tps": null,
+   "concurrency_notes": "fp8 KV 2,414,048 token slots = 9.21x 256K at util 0.42; ~13 tok/s without DFlash; single-burst wall clock ~66 tok/s (250-token, DFlash)",
+   "source_line": "| **DGX Spark (GB10)** | `sm_121`, aarch64 | 128 GB unified | 0.42 | **9.2×** (measured) | ~13 → ~35 tok/s (measured) |"
+  },
+  "notes": "Script default GPU_MEM_UTIL=0.42 (reference box). Script header comment names Preyazz/Muse-Glimmer-30B-NVFP4 but MODEL_REPO is RedHatAI/Muse-Glimmer-30B-NVFP4; A16 alternative cloudnathan5/Muse-Glimmer-30B-NVFP4 via MODEL_REPO. Context beyond 131072 is RoPE extrapolation. Final log line says '15 speculative tokens' but config uses 16. Fork branch is unpinned in the script (tracks branch head)."
+ },
+ {
+  "model_id": "muse-glimmer-30b",
+  "repo": "MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO",
+  "commit": "1b71dc011010a3e2c373eafd8a41f12c7c7913fc",
+  "files": [
+   "start.sh",
+   "stop.sh",
+   "README.md"
+  ],
+  "model": "Meta Muse Glimmer 30B NVFP4 (W4A4, vision intact) + DFlash drafter",
+  "hf_repo": "RedHatAI/Muse-Glimmer-30B-NVFP4",
+  "hf_revision": null,
+  "format": "nvfp4",
+  "bpw": null,
+  "engine": "vllm",
+  "image": null,
+  "build": {
+   "dockerfile": null,
+   "base": "host Python 3.12 venv (no Docker)",
+   "summary": "start.sh clones xianbaoqian/vllm branch tiezhen/new-model-support (vLLM PR #51655; README says pinned commit 99a10304d) and installs it editable with VLLM_USE_PRECOMPILED=1 into ./.venv, plus ninja"
+  },
+  "machines": 1,
+  "gpus_per_machine": 1,
+  "entrypoint": [
+   "${VENV}/bin/vllm"
+  ],
+  "env": {
+   "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+   "PATH": "$VENV/bin:/usr/local/cuda/bin:$PATH"
+  },
+  "port": 8888,
+  "ctx": 262144,
+  "shm": null,
+  "flags": [],
+  "weights_mount": null,
+  "speculative": "DFlash with meta-models/Muse-Glimmer-30B-assistant drafter head (5 layers, block 16), num_speculative_tokens 16",
+  "reasoning": true,
+  "tools": true,
+  "vision": true,
+  "tool_parser": "muse_glimmer",
+  "reasoning_parser": "muse_glimmer",
+  "date": "2026-08-11",
+  "license": "MIT",
+  "extra_setup": "Bare-metal (no container): needs python3.12, git, CUDA 13 at /usr/local/cuda; start.sh builds ./.venv with the vLLM fork, snapshot_downloads target + drafter into the default HF cache (MODEL_PATH/DRAFT_PATH are the returned snapshot dirs), runs `vllm serve` under nohup writing vllm.log/vllm.pid. 256K context (>131072) additionally REQUIRES two local, uncommitted patches to the fork (muse_glimmer.py and qwen3_dflash.py: size RoPE cos/sin cache to max_model_len) that are described in the README but NOT shipped in this repo; without them positions >131071 crash. Use --max-model-len 131072 otherwise.",
+  "card": "rtx-pro-6000-blackwell-96gb",
+  "args": [
+   "serve",
+   "${MODEL_PATH}",
+   "--served-model-name",
+   "muse-glimmer-30b",
+   "--trust-remote-code",
+   "--port",
+   "8888",
+   "--max-model-len",
+   "262144",
+   "--gpu-memory-utilization",
+   "0.46",
+   "--reasoning-parser",
+   "muse_glimmer",
+   "--tool-call-parser",
+   "muse_glimmer",
+   "--enable-auto-tool-choice",
+   "--speculative-config",
+   "{\"method\": \"dflash\", \"model\": \"${DRAFT_PATH}\", \"num_speculative_tokens\": 16}",
+   "--kv-cache-dtype",
+   "fp8_e4m3",
+   "--no-enable-flashinfer-autotune"
+  ],
+  "measured": {
+   "decode_tps": 97.9,
+   "prefill_tps": null,
+   "concurrency_notes": "~8x 256K at util ≈0.46; 54.3 tok/s without DFlash; numbers are checkpoint author's card, not measured by this repo",
+   "source_line": "- W4A4 card numbers: **54.3 → 97.9 tok/s** with DFlash; the A16 build does 74.7 → 139.3 (swap via `MODEL_REPO`)."
+  },
+  "notes": "README: retune GPU_MEM_UTIL to ≈0.46 for 8x256K on 96 GB (edit GPU_MEM_UTIL in start.sh; it is not an env override). amd64 sm_120, same precompiled-wheel path. Requires the same unshipped RoPE patches for 256K."
+ },
+ {
+  "model_id": "muse-glimmer-30b",
+  "repo": "MiaAI-Lab/Muse-Glimmer-30B-DGX-Spark-RTX-5090-6000-PRO",
+  "commit": "1b71dc011010a3e2c373eafd8a41f12c7c7913fc",
+  "files": [
+   "start.sh",
+   "stop.sh",
+   "README.md"
+  ],
+  "model": "Meta Muse Glimmer 30B NVFP4 (W4A4, vision intact) + DFlash drafter",
+  "hf_repo": "RedHatAI/Muse-Glimmer-30B-NVFP4",
+  "hf_revision": null,
+  "format": "nvfp4",
+  "bpw": null,
+  "engine": "vllm",
+  "image": null,
+  "build": {
+   "dockerfile": null,
+   "base": "host Python 3.12 venv (no Docker)",
+   "summary": "start.sh clones xianbaoqian/vllm branch tiezhen/new-model-support (vLLM PR #51655; README says pinned commit 99a10304d) and installs it editable with VLLM_USE_PRECOMPILED=1 into ./.venv, plus ninja"
+  },
+  "machines": 1,
+  "gpus_per_machine": 1,
+  "entrypoint": [
+   "${VENV}/bin/vllm"
+  ],
+  "env": {
+   "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+   "PATH": "$VENV/bin:/usr/local/cuda/bin:$PATH"
+  },
+  "port": 8888,
+  "ctx": 262144,
+  "shm": null,
+  "flags": [],
+  "weights_mount": null,
+  "speculative": "DFlash with meta-models/Muse-Glimmer-30B-assistant drafter head (5 layers, block 16), num_speculative_tokens 16",
+  "reasoning": true,
+  "tools": true,
+  "vision": true,
+  "tool_parser": "muse_glimmer",
+  "reasoning_parser": "muse_glimmer",
+  "date": "2026-08-11",
+  "license": "MIT",
+  "extra_setup": "Bare-metal (no container): needs python3.12, git, CUDA 13 at /usr/local/cuda; start.sh builds ./.venv with the vLLM fork, snapshot_downloads target + drafter into the default HF cache (MODEL_PATH/DRAFT_PATH are the returned snapshot dirs), runs `vllm serve` under nohup writing vllm.log/vllm.pid. 256K context (>131072) additionally REQUIRES two local, uncommitted patches to the fork (muse_glimmer.py and qwen3_dflash.py: size RoPE cos/sin cache to max_model_len) that are described in the README but NOT shipped in this repo; without them positions >131071 crash. Use --max-model-len 131072 otherwise.",
+  "card": "rtx-5090-32gb",
+  "args": [
+   "serve",
+   "${MODEL_PATH}",
+   "--served-model-name",
+   "muse-glimmer-30b",
+   "--trust-remote-code",
+   "--port",
+   "8888",
+   "--max-model-len",
+   "262144",
+   "--gpu-memory-utilization",
+   "${GPU_MEM_UTIL}",
+   "--reasoning-parser",
+   "muse_glimmer",
+   "--tool-call-parser",
+   "muse_glimmer",
+   "--enable-auto-tool-choice",
+   "--speculative-config",
+   "{\"method\": \"dflash\", \"model\": \"${DRAFT_PATH}\", \"num_speculative_tokens\": 16}",
+   "--kv-cache-dtype",
+   "fp8_e4m3",
+   "--no-enable-flashinfer-autotune"
+  ],
+  "measured": {
+   "decode_tps": null,
+   "prefill_tps": null,
+   "concurrency_notes": "~2x full 256K KV at util 0.93-0.95; README's 74.9 -> 233.4 tok/s figure is a llama.cpp measurement of a ~17 GB quant from the base-model card, not this vLLM recipe",
+   "source_line": "the base-model card measured a ~17 GB quant on a 5090 at **74.9 → 233.4 tok/s** with DFlash (llama.cpp; vLLM is in the same class)."
+  },
+  "notes": "README: raise GPU_MEM_UTIL to ~0.93-0.95 on a dedicated 5090 (no single value; edit start.sh). Fixed overhead ~25-26 GiB leaves ~4-5 GiB KV. Dropping DFlash frees ~4.7 GiB. Requires the same unshipped RoPE patches for 256K."
+ }
+]
