@@ -1,0 +1,715 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "video": null,
+    "vision": true
+  },
+  "description": "Qwen3.8-27B (unsloth UD-IQ3_XXS, 3.2 bits per weight, revision 4ca72078) on a 24 GB Apple M4 (iMac Mac16,3, 10-core GPU) with native llama.cpp b11182 Metal. One llama-server process serves a 204,800-token window with q4_0 KV, vision (mmproj-BF16) and the MTP head that is built into the GGUF (draft-mtp, 1 draft token). Run `sudo sysctl iogpu.wired_limit_mb=20480` before launch. Cold coherence ladder with a document image and three needles, all five answers correct at each rung: 3,992 tokens (46.5 tok/s prefill, 6.71 tok/s decode), 32,527 tokens (42.6 tok/s prefill, 5.54 tok/s decode), 200,709 tokens (21.3 tok/s prefill, 2.96 tok/s decode). Short-context decode 7.09 tok/s. Tool call, reasoning split and image reading checked on this Mac.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b11182 (e9f824d8c)"
+  },
+  "facts": {
+    "capabilities.video": {
+      "provenance": {
+        "captured_at": "2026-09-25T22:27:29Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T22:27:29Z",
+            "kind": "native-metal-benchmark",
+            "paths": [
+              "sources/qwen38-27b-apple-m4-24gb/README.md",
+              "sources/qwen38-27b-apple-m4-24gb/environment.json",
+              "sources/qwen38-27b-apple-m4-24gb/fit-params-estimate.txt",
+              "sources/qwen38-27b-apple-m4-24gb/gguf-metadata.json",
+              "sources/qwen38-27b-apple-m4-24gb/harness/bench.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/gguf_meta.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/ladder.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/make_image.swift",
+              "sources/qwen38-27b-apple-m4-24gb/harness/restart.sh",
+              "sources/qwen38-27b-apple-m4-24gb/harness/smoke.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/ticket-1280.png",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-004096.json",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-032768.json",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-202000.json",
+              "sources/qwen38-27b-apple-m4-24gb/metal-working-set.txt",
+              "sources/qwen38-27b-apple-m4-24gb/mlx-comparison/mlx-vlm-bench.txt",
+              "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-IQ3_XXS.txt",
+              "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-Q3_K_XL.txt",
+              "sources/qwen38-27b-apple-m4-24gb/serve-24gb.sh",
+              "sources/qwen38-27b-apple-m4-24gb/server-final.log",
+              "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/configs.json",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/llamacpp-bench.jsonl",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-24gb.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp1.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp2.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-nomtp.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp1.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp2.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-nomtp.log"
+            ],
+            "repository": "https://github.com/0xSero/local-ai-registry",
+            "url": "https://github.com/0xSero/local-ai-registry/tree/main/sources/qwen38-27b-apple-m4-24gb"
+          }
+        ]
+      },
+      "reason": "video input not exercised by the harness",
+      "state": "unknown"
+    },
+    "launch.container": {
+      "provenance": {
+        "captured_at": "2026-09-25T22:27:29Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T22:27:29Z",
+            "kind": "native-metal-benchmark",
+            "paths": [
+              "sources/qwen38-27b-apple-m4-24gb/README.md",
+              "sources/qwen38-27b-apple-m4-24gb/environment.json",
+              "sources/qwen38-27b-apple-m4-24gb/fit-params-estimate.txt",
+              "sources/qwen38-27b-apple-m4-24gb/gguf-metadata.json",
+              "sources/qwen38-27b-apple-m4-24gb/harness/bench.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/gguf_meta.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/ladder.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/make_image.swift",
+              "sources/qwen38-27b-apple-m4-24gb/harness/restart.sh",
+              "sources/qwen38-27b-apple-m4-24gb/harness/smoke.py",
+              "sources/qwen38-27b-apple-m4-24gb/harness/ticket-1280.png",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-004096.json",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-032768.json",
+              "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-202000.json",
+              "sources/qwen38-27b-apple-m4-24gb/metal-working-set.txt",
+              "sources/qwen38-27b-apple-m4-24gb/mlx-comparison/mlx-vlm-bench.txt",
+              "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-IQ3_XXS.txt",
+              "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-Q3_K_XL.txt",
+              "sources/qwen38-27b-apple-m4-24gb/serve-24gb.sh",
+              "sources/qwen38-27b-apple-m4-24gb/server-final.log",
+              "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/configs.json",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/llamacpp-bench.jsonl",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-24gb.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp1.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp2.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-nomtp.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp1.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp2.log",
+              "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-nomtp.log"
+            ],
+            "repository": "https://github.com/0xSero/local-ai-registry",
+            "url": "https://github.com/0xSero/local-ai-registry/tree/main/sources/qwen38-27b-apple-m4-24gb"
+          }
+        ]
+      },
+      "state": "known"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m4-24gb",
+  "id": "qwen3-8-27b-ud-iq3-xxs-apple-m4-24gb-llama-cpp-metal-mtp1-vision-200k",
+  "launch": {
+    "accelerator_backend": "metal",
+    "arguments": [
+      "-hf",
+      "unsloth/Qwen3.8-27B-GGUF:UD-IQ3_XXS",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "1",
+      "-c",
+      "204800",
+      "-np",
+      "1",
+      "-fit",
+      "off",
+      "-fa",
+      "on",
+      "-ctk",
+      "q4_0",
+      "-ctv",
+      "q4_0",
+      "-ctkd",
+      "q4_0",
+      "-ctvd",
+      "q4_0",
+      "-ngl",
+      "99",
+      "-ctxcp",
+      "4",
+      "-cram",
+      "0",
+      "--image-min-tokens",
+      "1024",
+      "--jinja",
+      "--alias",
+      "qwen3.8-27b",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8080"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T22:27:29Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "Inference runs natively on macOS Metal. Docker Desktop has no GPU support on macOS, and Docker states there is no GPU passthrough for Metal in containers (https://www.docker.com/blog/docker-model-runner-vllm-metal-macos/)",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T22:27:29Z",
+          "kind": "native-metal-benchmark",
+          "paths": [
+            "sources/qwen38-27b-apple-m4-24gb/README.md",
+            "sources/qwen38-27b-apple-m4-24gb/environment.json",
+            "sources/qwen38-27b-apple-m4-24gb/fit-params-estimate.txt",
+            "sources/qwen38-27b-apple-m4-24gb/gguf-metadata.json",
+            "sources/qwen38-27b-apple-m4-24gb/harness/bench.py",
+            "sources/qwen38-27b-apple-m4-24gb/harness/gguf_meta.py",
+            "sources/qwen38-27b-apple-m4-24gb/harness/ladder.py",
+            "sources/qwen38-27b-apple-m4-24gb/harness/make_image.swift",
+            "sources/qwen38-27b-apple-m4-24gb/harness/restart.sh",
+            "sources/qwen38-27b-apple-m4-24gb/harness/smoke.py",
+            "sources/qwen38-27b-apple-m4-24gb/harness/ticket-1280.png",
+            "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-004096.json",
+            "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-032768.json",
+            "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-202000.json",
+            "sources/qwen38-27b-apple-m4-24gb/metal-working-set.txt",
+            "sources/qwen38-27b-apple-m4-24gb/mlx-comparison/mlx-vlm-bench.txt",
+            "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-IQ3_XXS.txt",
+            "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-Q3_K_XL.txt",
+            "sources/qwen38-27b-apple-m4-24gb/serve-24gb.sh",
+            "sources/qwen38-27b-apple-m4-24gb/server-final.log",
+            "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/configs.json",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/llamacpp-bench.jsonl",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-24gb.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp1.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp2.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-nomtp.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp1.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp2.log",
+            "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-nomtp.log"
+          ],
+          "repository": "https://github.com/0xSero/local-ai-registry",
+          "url": "https://github.com/0xSero/local-ai-registry/tree/main/sources/qwen38-27b-apple-m4-24gb"
+        }
+      ],
+      "state": "none"
+    },
+    "executable": "llama-server",
+    "host_port": 8080,
+    "host_prerequisites": [
+      [
+        "sudo",
+        "sysctl",
+        "iogpu.wired_limit_mb=20480"
+      ]
+    ],
+    "install": {
+      "commit": "e9f824d8c0f011662a742c9d15d4aa18a41e32c0",
+      "note": "Official llama.cpp release asset. Unpack it and run llama-server from the extracted directory. If a browser downloaded the tarball, run xattr -dr com.apple.quarantine on the directory first.",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "sha256": "ca2000b4037c3a467ec0758538af7e6f2b4dc2904f593bbedf4b28a97b6c444a",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11182/llama-b11182-bin-macos-arm64.tar.gz"
+    },
+    "kind": "native",
+    "weights_pin": {
+      "files": {
+        "Qwen3.8-27B-UD-IQ3_XXS.gguf": {
+          "bytes": 10934860704,
+          "sha256": "c0b7c3038681ed2e3040456c1dd45f9858b6c2290bed172c70388a94874f3eee"
+        },
+        "mmproj-BF16.gguf": {
+          "bytes": 931146432,
+          "sha256": "83ee4f4f205fa514161778c41df1ea14144faa0f713510893b63c2395f5c2d53"
+        }
+      },
+      "note": "-hf has no revision selector and resolves the repository's main branch at each online start. The evidence was measured with main at this revision. For a pinned launch, download these two files at this revision, check the sha256 values, and use -m and --mmproj.",
+      "repository": "unsloth/Qwen3.8-27B-GGUF",
+      "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502"
+    }
+  },
+  "metadata": {
+    "coherence_ladder": [
+      {
+        "answer": "1) AMBER-FALCON-4417\n2) 83-19-62\n3) Professor Wobblesworth\n4) 7291\n5) 5",
+        "cached_tokens": 0,
+        "checks": {
+          "5": true,
+          "7291": true,
+          "83-19-62": true,
+          "AMBER-FALCON-4417": true,
+          "Wobblesworth": true
+        },
+        "decode_tok_s": 6.709516121625338,
+        "level": 4096,
+        "mtp_accepted": "23/23",
+        "ok": true,
+        "peak_system_wired_gb": 21.83,
+        "prefill_tok_s": 46.503451279497845,
+        "prompt_tokens": 3992,
+        "receipt": "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-004096.json",
+        "ttft_ms": 85843.091
+      },
+      {
+        "answer": "1) AMBER-FALCON-4417\n2) 83-19-62\n3) Professor Wobblesworth\n4) 7291\n5) 5",
+        "cached_tokens": 0,
+        "checks": {
+          "5": true,
+          "7291": true,
+          "83-19-62": true,
+          "AMBER-FALCON-4417": true,
+          "Wobblesworth": true
+        },
+        "decode_tok_s": 5.543785619592576,
+        "level": 32768,
+        "mtp_accepted": "23/23",
+        "ok": true,
+        "peak_system_wired_gb": 22.0,
+        "prefill_tok_s": 42.583117933826635,
+        "prompt_tokens": 32527,
+        "receipt": "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-032768.json",
+        "ttft_ms": 763847.308
+      },
+      {
+        "answer": "1) AMBER-FALCON-4417\n2) 83-19-62\n3) Professor Wobblesworth\n4) 7291\n5) 5",
+        "cached_tokens": 0,
+        "checks": {
+          "5": true,
+          "7291": true,
+          "83-19-62": true,
+          "AMBER-FALCON-4417": true,
+          "Wobblesworth": true
+        },
+        "decode_tok_s": 2.9612461713554707,
+        "level": 202000,
+        "mtp_accepted": "23/23",
+        "ok": true,
+        "peak_system_wired_gb": 22.23,
+        "prefill_tok_s": 21.331154415179856,
+        "prompt_tokens": 200709,
+        "receipt": "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-202000.json",
+        "ttft_ms": 9409195.4
+      }
+    ],
+    "configuration": {
+      "context_checkpoints": 4,
+      "context_tokens": 204800,
+      "host": {
+        "default_metal_working_set_mib": 18185,
+        "iogpu.wired_limit_mb": 20480,
+        "note": "Every run in this directory used sudo sysctl iogpu.wired_limit_mb=20480 (not persistent across reboot). Before the raise, llama.cpp reported MTL0 with 18185 MiB free. The default limit was not tested with the real model. See metal-working-set.txt."
+      },
+      "image_min_tokens": 1024,
+      "kv_cache": "q4_0 K and V with flash attention; MTP draft KV q4_0",
+      "ladder_haystack": "Prose from ggml-org/llama.cpp docs/, tools/, examples/ and top-level *.md at commit a25c9865fe03c954c93fd755b5d79ae86ba99750, code blocks removed (472,323 chars, sha256 774c20209d5d619000db2843cd9d5c6bf9ba8d51b3092796c23a9fe955f9145d). The corpus is shorter than the 200K rung needs, so harness/ladder.py repeats it: about the last third of that haystack repeats the corpus start, and the 90% needle is in the repeat. Each needle sentence occurs once. Each receipt records its haystack sha256.",
+      "mtp": {
+        "draft_n_max": 1,
+        "spec_type": "draft-mtp"
+      },
+      "prompt_cache_ram_mib": 0,
+      "serve_argv_receipt": "sources/qwen38-27b-apple-m4-24gb/environment.json",
+      "slots": 1,
+      "weights": {
+        "bits_per_weight": {
+          "mmproj": 16.17,
+          "model": 3.2,
+          "model_plus_mmproj": 3.41,
+          "model_without_mtp_block": 3.14
+        },
+        "files": {
+          "Qwen3.8-27B-UD-IQ3_XXS.gguf": {
+            "bytes": 10934860704,
+            "sha256": "c0b7c3038681ed2e3040456c1dd45f9858b6c2290bed172c70388a94874f3eee"
+          },
+          "mmproj-BF16.gguf": {
+            "bytes": 931146432,
+            "sha256": "83ee4f4f205fa514161778c41df1ea14144faa0f713510893b63c2395f5c2d53"
+          }
+        },
+        "mtp": "MTP head is embedded in the UD GGUF (blk.64.nextn.*); llama-server builds the draft context from the target model file",
+        "mtp_block": {
+          "bits_per_weight": 6.61,
+          "params": 424699392,
+          "types": [
+            "F32",
+            "Q6_K",
+            "Q8_0"
+          ]
+        },
+        "receipt": "sources/qwen38-27b-apple-m4-24gb/gguf-metadata.json",
+        "repository": "unsloth/Qwen3.8-27B-GGUF",
+        "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502"
+      }
+    },
+    "hardware_note": "iMac (24-inch, 2024) (Mac16,3), Apple M4 10-core CPU / 10-core GPU, 24 GB unified memory, macOS 26.5 (25F71)",
+    "limitations": [
+      "Every run used sudo sysctl iogpu.wired_limit_mb=20480 (not persistent). Before the raise, llama.cpp reported 18,185 MiB free on MTL0. The default limit was not tested with the real model. System wired memory peaked at 22.23 GB during the 200K rung (metal-working-set.txt has an idle baseline).",
+      "MTP does not give a clear gain on a base M4. With UD-IQ3_XXS, n_max 1 measured 7.21 / 6.5 tok/s against 7.14 / 6.35 without MTP (one run each). n_max 2 and 3 are slower. With UD-Q3_K_XL, and in MLX, MTP is slower. Other chips were not measured.",
+      "Prefill slows with depth: 46.5 tok/s at 3,992 tokens, 42.6 at 32,527, and 21.3 averaged over 200,709. A cold full-window prompt takes about 2.6 h.",
+      "Decode falls with depth: 5.54 tok/s at 32K and 2.96 at 200K. One slot only (-np 1).",
+      "Every speed row and tuning cell is one sample.",
+      "The 200K haystack repeats its corpus (see configuration.ladder_haystack).",
+      "peak_vram_gb is null: vm_stat wired memory is system-wide, so it is recorded as peak_system_wired_gb.",
+      "Not validated: on main, scripts/trust.py (line 68) does not count a native launch as executable, and scripts/accept_recipe.py (lines 220-222) runs only Docker launches. A Docker launch cannot replace it: Docker Desktop GPU support is Windows/WSL2 only, and Docker states that there is no GPU passthrough for Metal in containers (docker.com/blog/docker-model-runner-vllm-metal-macos).",
+      "Video input was not tested."
+    ],
+    "reasoning_check": {
+      "checked_at": "2026-09-25",
+      "ok": true,
+      "receipt": "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+      "result": "thinking on (template default): reasoning_content returned separately; answer '205'"
+    },
+    "served_model_id": "qwen3.8-27b",
+    "tool_check": {
+      "checked_at": "2026-09-25",
+      "ok": true,
+      "receipt": "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+      "result": "get_weather tool offered; one parsed tool call returned: {\"name\": \"get_weather\", \"arguments\": \"{\\\"city\\\":\\\"Dublin\\\"}\"}"
+    },
+    "tuning": {
+      "configs": {
+        "iq3xxs-mtp1": {
+          "env": {
+            "DRAFT_N": "1",
+            "QUANT": "UD-IQ3_XXS"
+          },
+          "log": "tuning/logs/server-mtp1.log"
+        },
+        "iq3xxs-mtp2": {
+          "env": {
+            "DRAFT_N": "2",
+            "QUANT": "UD-IQ3_XXS"
+          },
+          "log": "tuning/logs/server-mtp2.log"
+        },
+        "iq3xxs-mtp3": {
+          "env": {
+            "DRAFT_N": "3",
+            "QUANT": "UD-IQ3_XXS"
+          },
+          "log": "tuning/logs/server-24gb.log"
+        },
+        "iq3xxs-nomtp": {
+          "env": {
+            "QUANT": "UD-IQ3_XXS",
+            "SPEC": "none"
+          },
+          "log": "tuning/logs/server-nomtp.log"
+        },
+        "q3kxl-mtp1": {
+          "env": {
+            "DRAFT_N": "1",
+            "QUANT": "UD-Q3_K_XL"
+          },
+          "log": "tuning/logs/server-q3kxl-mtp1.log"
+        },
+        "q3kxl-mtp2": {
+          "env": {
+            "DRAFT_N": "2",
+            "QUANT": "UD-Q3_K_XL"
+          },
+          "log": "tuning/logs/server-q3kxl-mtp2.log"
+        },
+        "q3kxl-nomtp": {
+          "env": {
+            "QUANT": "UD-Q3_K_XL",
+            "SPEC": "none"
+          },
+          "log": "tuning/logs/server-q3kxl-nomtp.log"
+        }
+      },
+      "date": "2026-09-25",
+      "decode_tok_s_by_config": {
+        "iq3xxs-mtp1": {
+          "code": {
+            "accept": "97/101",
+            "gen_n": 200,
+            "pp_tps": 27.8,
+            "prompt_n": 31,
+            "tg_tps": 7.21
+          },
+          "prefill4k": {
+            "accept": "5/5",
+            "gen_n": 11,
+            "pp_tps": 48.6,
+            "prompt_n": 5190,
+            "tg_tps": 6.68
+          },
+          "prose": {
+            "accept": "89/110",
+            "gen_n": 200,
+            "pp_tps": 27.6,
+            "prompt_n": 32,
+            "tg_tps": 6.5
+          }
+        },
+        "iq3xxs-mtp2": {
+          "code": {
+            "accept": "129/140",
+            "gen_n": 200,
+            "pp_tps": 19.3,
+            "prompt_n": 31,
+            "tg_tps": 6.77
+          },
+          "prefill4k": {
+            "accept": "6/8",
+            "gen_n": 11,
+            "pp_tps": 49.2,
+            "prompt_n": 5190,
+            "tg_tps": 5.16
+          },
+          "prose": {
+            "accept": "109/179",
+            "gen_n": 200,
+            "pp_tps": 28.1,
+            "prompt_n": 32,
+            "tg_tps": 5.46
+          }
+        },
+        "iq3xxs-mtp3": {
+          "code": {
+            "accept": "146/158",
+            "gen_n": 200,
+            "pp_tps": 27.2,
+            "prompt_n": 31,
+            "tg_tps": 6.85
+          },
+          "prefill4k": {
+            "accept": "9/9",
+            "gen_n": 11,
+            "pp_tps": 47.8,
+            "prompt_n": 5190,
+            "tg_tps": 5.51
+          },
+          "prose": {
+            "accept": "119/238",
+            "gen_n": 200,
+            "pp_tps": 28.2,
+            "prompt_n": 32,
+            "tg_tps": 3.25
+          }
+        },
+        "iq3xxs-nomtp": {
+          "code": {
+            "accept": null,
+            "gen_n": 200,
+            "pp_tps": 21.0,
+            "prompt_n": 31,
+            "tg_tps": 7.14
+          },
+          "prefill4k": {
+            "accept": null,
+            "gen_n": 11,
+            "pp_tps": 49.8,
+            "prompt_n": 5190,
+            "tg_tps": 6.63
+          },
+          "prose": {
+            "accept": null,
+            "gen_n": 200,
+            "pp_tps": 28.9,
+            "prompt_n": 32,
+            "tg_tps": 6.35
+          }
+        },
+        "q3kxl-mtp1": {
+          "code": {
+            "accept": "97/101",
+            "gen_n": 200,
+            "pp_tps": 18.6,
+            "prompt_n": 31,
+            "tg_tps": 5.52
+          },
+          "prefill4k": {
+            "accept": "2/2",
+            "gen_n": 4,
+            "pp_tps": 43.9,
+            "prompt_n": 5190,
+            "tg_tps": 3.99
+          },
+          "prose": {
+            "accept": "91/107",
+            "gen_n": 200,
+            "pp_tps": 26.7,
+            "prompt_n": 32,
+            "tg_tps": 4.82
+          }
+        },
+        "q3kxl-mtp2": {
+          "code": {
+            "accept": "129/138",
+            "gen_n": 200,
+            "pp_tps": 18.7,
+            "prompt_n": 31,
+            "tg_tps": 5.0
+          },
+          "prefill4k": {
+            "accept": "2/2",
+            "gen_n": 4,
+            "pp_tps": 46.1,
+            "prompt_n": 5190,
+            "tg_tps": 5.25
+          },
+          "prose": {
+            "accept": "116/165",
+            "gen_n": 200,
+            "pp_tps": 25.3,
+            "prompt_n": 32,
+            "tg_tps": 4.21
+          }
+        },
+        "q3kxl-nomtp": {
+          "code": {
+            "accept": null,
+            "gen_n": 200,
+            "pp_tps": 27.5,
+            "prompt_n": 31,
+            "tg_tps": 6.42
+          },
+          "prefill4k": {
+            "accept": null,
+            "gen_n": 4,
+            "pp_tps": 50.2,
+            "prompt_n": 5190,
+            "tg_tps": 6.09
+          },
+          "prose": {
+            "accept": null,
+            "gen_n": 200,
+            "pp_tps": 26.8,
+            "prompt_n": 32,
+            "tg_tps": 6.33
+          }
+        }
+      },
+      "mlx_comparison": {
+        "command": "python -m mlx_vlm.generate --model <target> [--draft-model <drafter> --draft-kind mtp [--draft-block-size 2]] --prompt <code|prose prompt> --max-tokens 200 --temperature 0 --thinking-mode disabled --verbose",
+        "decode_tok_s": {
+          "mlx-mtp-b2": {
+            "code": 7.384,
+            "prose": 6.784
+          },
+          "mlx-mtp-b3": {
+            "code": 7.365,
+            "prose": 6.079
+          },
+          "mlx-nomtp": {
+            "code": 8.386,
+            "prose": 8.274
+          }
+        },
+        "drafter": "mlx-community/Qwen3.8-27B-MTP-4bit @ b643c01b6d3b094e325edb6ebd832e16c486c575",
+        "engine": "mlx 0.32.2, mlx-vlm 0.7.3",
+        "labels": {
+          "mlx-mtp-b2": "drafter, --draft-block-size 2 (1 draft token)",
+          "mlx-mtp-b3": "drafter, default block size 3 (2 draft tokens)",
+          "mlx-nomtp": "no drafter"
+        },
+        "receipt": "sources/qwen38-27b-apple-m4-24gb/mlx-comparison/mlx-vlm-bench.txt",
+        "samples_per_cell": 1,
+        "target": "lukaskremla/Qwen3.8-27B-3bit-MLX @ b3503b31b36125107e12a2b57fbe690c37bfc053"
+      },
+      "perplexity": {
+        "UD-IQ3_XXS": {
+          "chunks": 40,
+          "ctx": 512,
+          "dataset": "wikitext-2-raw test",
+          "ppl": 6.1271,
+          "receipt": "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-IQ3_XXS.txt",
+          "stderr": 0.14587
+        },
+        "UD-Q3_K_XL": {
+          "chunks": 40,
+          "ctx": 512,
+          "dataset": "wikitext-2-raw test",
+          "ppl": 6.0296,
+          "receipt": "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-Q3_K_XL.txt",
+          "stderr": 0.14404
+        }
+      },
+      "protocol": {
+        "common_argv": "serve-24gb.sh at tuning time: identical to the final argv except --image-min-tokens 1024 was not yet present and --spec-draft-n-max defaulted to 3",
+        "harness": "harness/bench.py against llama-server b11182 started by serve-24gb.sh via harness/restart.sh",
+        "metric": "llama-server timings.predicted_per_second (decode) and prompt_per_second (prefill)",
+        "prompts": {
+          "code": "first-n-primes Python function, max_tokens 200",
+          "prefill4k": "~5,190-token numbered-line prompt, max_tokens 16",
+          "prose": "why the sky is blue in ~200 words, max_tokens 200"
+        },
+        "request": "/v1/chat/completions, concurrency 1, non-streaming, temperature 0, chat_template_kwargs.enable_thinking=false",
+        "samples_per_cell": 1,
+        "server": "restarted for each config (cold), except iq3xxs-mtp3, which ran on the first server after the first smoke requests"
+      },
+      "receipt": "sources/qwen38-27b-apple-m4-24gb/tuning/llamacpp-bench.jsonl",
+      "verdict": "UD-IQ3_XXS with MTP n_max 1 is the fastest llama.cpp configuration measured with MTP on (7.21 / 6.5 tok/s code / prose). Without MTP it measured 7.14 / 6.35, so MTP n_max 1 is within noise (single runs). n_max 2 and 3 are slower. UD-Q3_K_XL has lower perplexity (6.0296 vs 6.1271) but is 23.4-25.8% slower with MTP on and 2.2 GB larger. MLX 3-bit was 16.3-27.3% faster without MTP and 2.4-4.4% faster with its MTP drafter, at short context only. MLX was not run at 200K on this Mac."
+    },
+    "vision_check": {
+      "checked_at": "2026-09-25",
+      "ok": true,
+      "receipt": "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+      "result": "64x64 solid red PNG: 'Red'. 1280x800 rendered ticket (number 7291, destination Galway harbour pier 3, five crates): 'Based on the image provided:\\n\\n- **Ticket Number:** 7291\\n- **Destination:** Galway harbour, pier 3\\n- **Number of Crates:** 5'. Image prompt size 1099 tokens."
+    }
+  },
+  "model_instance_id": "unsloth-qwen3-8-27b-gguf--ud-iq3-xxs",
+  "provenance": {
+    "captured_at": "2026-09-25T22:27:29Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T22:27:29Z",
+        "kind": "native-metal-benchmark",
+        "paths": [
+          "sources/qwen38-27b-apple-m4-24gb/README.md",
+          "sources/qwen38-27b-apple-m4-24gb/environment.json",
+          "sources/qwen38-27b-apple-m4-24gb/fit-params-estimate.txt",
+          "sources/qwen38-27b-apple-m4-24gb/gguf-metadata.json",
+          "sources/qwen38-27b-apple-m4-24gb/harness/bench.py",
+          "sources/qwen38-27b-apple-m4-24gb/harness/gguf_meta.py",
+          "sources/qwen38-27b-apple-m4-24gb/harness/ladder.py",
+          "sources/qwen38-27b-apple-m4-24gb/harness/make_image.swift",
+          "sources/qwen38-27b-apple-m4-24gb/harness/restart.sh",
+          "sources/qwen38-27b-apple-m4-24gb/harness/smoke.py",
+          "sources/qwen38-27b-apple-m4-24gb/harness/ticket-1280.png",
+          "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-004096.json",
+          "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-032768.json",
+          "sources/qwen38-27b-apple-m4-24gb/ladder/ladder-202000.json",
+          "sources/qwen38-27b-apple-m4-24gb/metal-working-set.txt",
+          "sources/qwen38-27b-apple-m4-24gb/mlx-comparison/mlx-vlm-bench.txt",
+          "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-IQ3_XXS.txt",
+          "sources/qwen38-27b-apple-m4-24gb/perplexity/ppl-UD-Q3_K_XL.txt",
+          "sources/qwen38-27b-apple-m4-24gb/serve-24gb.sh",
+          "sources/qwen38-27b-apple-m4-24gb/server-final.log",
+          "sources/qwen38-27b-apple-m4-24gb/smoke.json",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/configs.json",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/llamacpp-bench.jsonl",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-24gb.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp1.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-mtp2.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-nomtp.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp1.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-mtp2.log",
+          "sources/qwen38-27b-apple-m4-24gb/tuning/logs/server-q3kxl-nomtp.log"
+        ],
+        "repository": "https://github.com/0xSero/local-ai-registry",
+        "url": "https://github.com/0xSero/local-ai-registry/tree/main/sources/qwen38-27b-apple-m4-24gb"
+      }
+    ]
+  },
+  "recipe_source": "wyrmkeep",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "q4_0",
+    "kv_cache_tokens": 204800,
+    "max_concurrency": 1,
+    "max_context_tokens": 204800,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-ud-iq3-xxs-apple-m4-24gb-llama-cpp-metal-mtp1-vision-200k-20260925"
+  ],
+  "status": "candidate"
+}

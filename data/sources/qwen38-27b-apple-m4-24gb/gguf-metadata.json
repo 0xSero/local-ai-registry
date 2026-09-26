@@ -1,0 +1,69 @@
+{
+ "file": "Qwen3.8-27B-UD-IQ3_XXS.gguf (+ mmproj-BF16.gguf)",
+ "repository": "unsloth/Qwen3.8-27B-GGUF",
+ "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+ "command": "python3 harness/gguf_meta.py Qwen3.8-27B-UD-IQ3_XXS.gguf mmproj-BF16.gguf",
+ "metadata": {
+  "general.architecture": "qwen35",
+  "general.file_type": 23,
+  "qwen35.block_count": 65,
+  "qwen35.nextn_predict_layers": 1,
+  "qwen35.context_length": 262144,
+  "general.base_model.0.repo_url": "https://huggingface.co/Qwen/Qwen3.8-27B"
+ },
+ "tensor_count": 866,
+ "mtp_block": {
+  "tensors": [
+   "blk.64.attn_k.weight",
+   "blk.64.attn_k_norm.weight",
+   "blk.64.attn_norm.weight",
+   "blk.64.attn_output.weight",
+   "blk.64.attn_q.weight",
+   "blk.64.attn_q_norm.weight",
+   "blk.64.attn_v.weight",
+   "blk.64.ffn_down.weight",
+   "blk.64.ffn_gate.weight",
+   "blk.64.ffn_up.weight",
+   "blk.64.nextn.eh_proj.weight",
+   "blk.64.nextn.enorm.weight",
+   "blk.64.nextn.hnorm.weight",
+   "blk.64.nextn.shared_head_norm.weight",
+   "blk.64.post_attention_norm.weight"
+  ],
+  "types": [
+   "F32",
+   "Q6_K",
+   "Q8_0"
+  ],
+  "params": 424699392,
+  "bits_per_weight": 6.61
+ },
+ "bits_per_weight": {
+  "model": 3.2,
+  "model_without_mtp_block": 3.14,
+  "mmproj": 16.17,
+  "model_plus_mmproj": 3.41
+ },
+ "params": {
+  "model": 27320697856,
+  "model_without_mtp_block": 26895998464,
+  "mmproj": 460730096
+ },
+ "params_share_by_type": {
+  "IQ3_XXS": 0.2857,
+  "IQ3_S": 0.2215,
+  "IQ4_XS": 0.0992,
+  "IQ2_S": 0.0954,
+  "IQ2_XXS": 0.0677,
+  "Q2_K": 0.0652,
+  "Q4_K": 0.0613,
+  "IQ2_XS": 0.037,
+  "IQ1_S": 0.0261,
+  "Q6_K": 0.0152,
+  "Q3_K": 0.0132,
+  "IQ1_M": 0.0098,
+  "Q5_K": 0.0013,
+  "Q8_0": 0.0012,
+  "F32": 0.0001
+ }
+}

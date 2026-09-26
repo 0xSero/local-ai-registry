@@ -1,0 +1,7 @@
+llama-fit-params (llama.cpp b11182) no-alloc estimate, main model + context only (the tool rejects --spec-type/--mmproj,
+so the MTP draft context and the vision projector are NOT included here; they are covered by the measured peak):
+
+command: llama-fit-params -m Qwen3.8-27B-UD-IQ3_XXS.gguf -c 204800 -np 1 -fa on -ctk q4_0 -ctv q4_0 -ngl 99 -fitp on
+columns: device, model MiB, context MiB (q4_0 KV for 16 full-attention layers + Gated DeltaNet recurrent state), compute MiB
+MTL0 9685 3749 1108 
+Host 397 0 440 

@@ -1,0 +1,129 @@
+{
+ "captured_at": "2026-09-25T18:19:18Z",
+ "hardware": {
+  "registry_hardware_id": "apple-m4-24gb",
+  "mac_model_identifier": "Mac16,3",
+  "product": "iMac (24-inch, 2024)",
+  "chip": "Apple M4",
+  "cpu_cores": 10,
+  "gpu_cores": 10,
+  "memory_bytes": 25769803776,
+  "memory_bandwidth_gb_s_registry": 120
+ },
+ "os": {
+  "product_version": "26.5",
+  "build": "25F71"
+ },
+ "host_settings": {
+  "iogpu.wired_limit_mb": 20480,
+  "default_metal_working_set_mib": 18185,
+  "note": "Every run in this directory used sudo sysctl iogpu.wired_limit_mb=20480 (not persistent across reboot). Before the raise, llama.cpp reported MTL0 with 18185 MiB free. The default limit was not tested with the real model. See metal-working-set.txt."
+ },
+ "engine": {
+  "name": "llama.cpp",
+  "release": "b11182",
+  "commit": "e9f824d8c0f011662a742c9d15d4aa18a41e32c0",
+  "asset": "llama-b11182-bin-macos-arm64.tar.gz",
+  "asset_url": "https://github.com/ggml-org/llama.cpp/releases/download/b11182/llama-b11182-bin-macos-arm64.tar.gz",
+  "asset_sha256": "ca2000b4037c3a467ec0758538af7e6f2b4dc2904f593bbedf4b28a97b6c444a",
+  "version_output": "version: 0.5.0-dev (build 11182, commit e9f824d8c)\nbuilt with AppleClang 21.0.0.21000101 for Darwin arm64"
+ },
+ "weights": {
+  "repository": "unsloth/Qwen3.8-27B-GGUF",
+  "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+  "files": {
+   "Qwen3.8-27B-UD-IQ3_XXS.gguf": {
+    "bytes": 10934860704,
+    "sha256": "c0b7c3038681ed2e3040456c1dd45f9858b6c2290bed172c70388a94874f3eee"
+   },
+   "mmproj-BF16.gguf": {
+    "bytes": 931146432,
+    "sha256": "83ee4f4f205fa514161778c41df1ea14144faa0f713510893b63c2395f5c2d53"
+   }
+  },
+  "mtp": "MTP head is embedded in the UD GGUF (blk.64.nextn.*); llama-server builds the draft context from the target model file"
+ },
+ "mlx_comparison": {
+  "mlx": "0.32.2",
+  "mlx_vlm": "0.7.3",
+  "target": {
+   "repository": "lukaskremla/Qwen3.8-27B-3bit-MLX",
+   "revision": "b3503b31b36125107e12a2b57fbe690c37bfc053"
+  },
+  "drafter": {
+   "repository": "mlx-community/Qwen3.8-27B-MTP-4bit",
+   "revision": "b643c01b6d3b094e325edb6ebd832e16c486c575"
+  }
+ },
+ "serve": {
+  "script": "serve-24gb.sh (no env overrides, no extra args)",
+  "env": {
+   "LLAMA_CACHE": "<workdir>/models"
+  },
+  "argv": [
+   "<workdir>/tools/llama-b11182/llama-server",
+   "-hf",
+   "unsloth/Qwen3.8-27B-GGUF:UD-IQ3_XXS",
+   "--spec-type",
+   "draft-mtp",
+   "--spec-draft-n-max",
+   "1",
+   "-c",
+   "204800",
+   "-np",
+   "1",
+   "-fit",
+   "off",
+   "-fa",
+   "on",
+   "-ctk",
+   "q4_0",
+   "-ctv",
+   "q4_0",
+   "-ctkd",
+   "q4_0",
+   "-ctvd",
+   "q4_0",
+   "-ngl",
+   "99",
+   "-ctxcp",
+   "4",
+   "-cram",
+   "0",
+   "--image-min-tokens",
+   "1024",
+   "--jinja",
+   "--alias",
+   "qwen3.8-27b",
+   "--host",
+   "127.0.0.1",
+   "--port",
+   "8080"
+  ],
+  "log": "server-final.log",
+  "used_for": [
+   "ladder/ladder-004096.json",
+   "ladder/ladder-032768.json",
+   "ladder/ladder-202000.json",
+   "smoke.json"
+  ]
+ },
+ "timeline_utc": {
+  "ladder-004096": {
+   "start": "2026-09-25T18:02:31Z",
+   "end": "2026-09-25T18:04:34Z"
+  },
+  "ladder-032768": {
+   "start": "2026-09-25T18:04:35Z",
+   "end": "2026-09-25T18:17:27Z"
+  },
+  "ladder-202000": {
+   "start": "2026-09-25T18:17:46Z",
+   "end": "2026-09-25T20:54:51Z"
+  },
+  "smoke": {
+   "first_response": "2026-09-25T20:55:08Z",
+   "last_response": "2026-09-25T20:57:08Z"
+  }
+ }
+}
