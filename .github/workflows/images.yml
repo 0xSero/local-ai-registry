@@ -34,14 +34,14 @@ permissions:
 jobs:
   build:
     if: inputs.smoke != 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Free runner disk
         run: |
           sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
           sudo docker system prune -af
           df -h /
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Verify pins
         run: |
           set -euo pipefail
@@ -117,7 +117,7 @@ jobs:
           cache-from: type=gha,scope=${{ inputs.image }}
           cache-to: type=gha,mode=max,scope=${{ inputs.image }}
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-name: ghcr.io/0xsero/${{ inputs.image }}
           subject-digest: ${{ steps.push.outputs.digest }}
@@ -138,7 +138,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
   smoke:
     if: inputs.smoke == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Free runner disk
         run: |
@@ -351,7 +351,7 @@ jobs:
           echo "CPU smoke passed (config-source + parser/flag resolution verified; NOT a runtime inference test)" >> "$GITHUB_STEP_SUMMARY"
       - name: Upload tabby source bundle
         if: always() && inputs.engine == 'tabbysource'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: tabby-source-${{ inputs.image }}
           path: tabby-source-bundle
