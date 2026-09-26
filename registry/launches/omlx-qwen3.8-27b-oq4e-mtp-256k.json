@@ -1,0 +1,43 @@
+{
+  "id": "omlx-qwen3.8-27b-oq4e-mtp-256k",
+  "kind": "host",
+  "engine": "omlx",
+  "about": "Qwen3.8-27B (oQ4e, native MTP head and vision tower) on oMLX 0.7.0.dev4; from #108 by BlivionIaG",
+  "command": [
+    "omlx",
+    "serve",
+    "--model-dir",
+    "models",
+    "--base-path",
+    "omlx-home",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000"
+  ],
+  "install": "python3 -m pip install 'https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp313-cp313-macosx_15_0_universal2.whl' (oMLX 0.7.0.dev4, macOS on Apple silicon, Python 3.13)",
+  "pip": [
+    "omlx @ https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp313-cp313-macosx_15_0_universal2.whl"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1"
+  },
+  "port": 8000,
+  "weights": [
+    {
+      "repo": "Jundot/Qwen3.8-27B-oQ4e-mtp",
+      "revision": "04dc5509edd8670fc78cc8c2f74bf9b77b1f2acc",
+      "at": "models/Qwen3.8-27B-oQ4e-mtp",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": {
+    "at": "omlx-home/model_settings.json",
+    "text": "{\n  \"version\": 1,\n  \"models\": {\n    \"Qwen3.8-27B-oQ4e-mtp\": {\n      \"mtp_enabled\": true\n    }\n  }\n}\n"
+  },
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": true,
+  "backend": "metal"
+}

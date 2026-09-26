@@ -58,17 +58,20 @@ def _q(s):
 
 
 def _host_steps(l):
-    """A program on the host. One with pinned packages (MLX on Apple silicon) also downloads its weights, writes its
-    launcher and raises the GPU wired-memory limit before it starts."""
+    """A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
+    its weights, writes its launcher and raises the GPU wired-memory limit before it starts."""
     env = [f"{k}={_q(v)}" for k, v in (l.get("env") or {}).items()]
-    if not l.get("pip"):
+    if not l.get("pip") and not l.get("weights"):
         return [{"title": "Install", "code": _install(l["install"])}, {"title": "Start the server", "code": " ".join(env + [_q(c) for c in l["command"]])}]
-    out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(l["pip"])}]
+    out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(_q(x) for x in l["pip"]) if l.get("pip") else _install(l["install"])}]
     if l.get("weights"):
         out.append({"title": "Download the weights", "code": "\n\n".join(
-            f"hf download {w['repo']} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}" for w in l["weights"])})
+            f"hf download {w['repo']}{''.join(' ' + f for f in w.get('files') or [])} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}"
+            for w in l["weights"])})
     if l.get("config"):
-        out.append({"title": "Write the launcher", "code": f"cat > {l['config']['at']} <<'EOF'\n{l['config']['text'].rstrip()}\nEOF"})
+        at = l["config"]["at"]
+        mk = f"mkdir -p {at.rsplit('/', 1)[0]}\n" if "/" in at else ""
+        out.append({"title": "Write the launcher", "code": f"{mk}cat > {at} <<'EOF'\n{l['config']['text'].rstrip()}\nEOF"})
     if l.get("sysctl"):
         out.append({"title": "Raise the GPU memory limit (resets on reboot)",
                     "code": "\n".join(f"sudo sysctl {k}={v}" for k, v in l["sysctl"].items())})
@@ -137,7 +140,10 @@ def steps(r):
 def _install(url):
     """Getting a source: a pinned GitHub tree becomes a clone at that commit."""
     m = re.fullmatch(r"https://github\.com/([\w.-]+)/([\w.-]+)/tree/([0-9a-f]{40})", url)
-    return f"git clone https://github.com/{m[1]}/{m[2]} && cd {m[2]} && git checkout {m[3]}" if m else f"# {url}"
+    if m:
+        return f"git clone https://github.com/{m[1]}/{m[2]} && cd {m[2]} && git checkout {m[3]}"
+    t = re.fullmatch(r"(https://\S+/([\w.-]+\.tar\.gz))#sha256=([0-9a-f]{64})", url)  # a release archive, checked
+    return f"curl -L -o {t[2]} {t[1]}\necho '{t[3]}  {t[2]}' | shasum -a 256 -c\ntar xzf {t[2]}" if t else f"# {url}"
 
 
 def command(r):

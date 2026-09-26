@@ -1,0 +1,352 @@
+{
+ "base": "http://127.0.0.1:8080",
+ "served_model_ids": [
+  "qwen3.8-27b"
+ ],
+ "props": {
+  "n_ctx": 204800,
+  "build_info": "b11182-e9f824d8c",
+  "modalities": {
+   "vision": true,
+   "video": true,
+   "audio": false
+  }
+ },
+ "all_ok": true,
+ "probes": [
+  {
+   "probe": "chat",
+   "ok": true,
+   "wall_s": 1.47,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "max_tokens": 16,
+    "chat_template_kwargs": {
+     "enable_thinking": false
+    }
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "validation-ok"
+      }
+     }
+    ],
+    "created": 1790369708,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 3,
+     "prompt_tokens": 18,
+     "total_tokens": 21,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-euq6wX96SAJLVJg1qeT9IU71EzDonHKN",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 18,
+     "prompt_ms": 1180.141,
+     "prompt_per_token_ms": 65.5633888888889,
+     "prompt_per_second": 15.25241475383026,
+     "predicted_n": 3,
+     "predicted_ms": 282.306,
+     "predicted_per_token_ms": 141.153,
+     "predicted_per_second": 7.084511133309246,
+     "draft_n": 1,
+     "draft_n_accepted": 1
+    }
+   }
+  },
+  {
+   "probe": "decode",
+   "ok": true,
+   "wall_s": 29.45,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "max_tokens": 256,
+    "chat_template_kwargs": {
+     "enable_thinking": false
+    }
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "```python\ndef first_n_primes(n: int) -> list[int]:\n    \"\"\"Return the first n prime numbers.\n\n    Args:\n        n: The number of primes to return. Must be a non-negative integer.\n\n    Returns:\n        A list containing the first n prime numbers. If n is 0, an empty list is returned.\n\n    Raises:\n        ValueError: If n is negative.\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be a non-negative integer\")\n\n    primes = []\n    candidate = 2\n    while len(primes) < n:\n        is_prime = True\n        for p in primes:\n            if p * p > candidate:\n                break\n            if candidate % p == 0:\n                is_prime = False\n                break\n        if is_prime:\n            primes.append(candidate)\n        candidate += 1\n\n    return primes\n```"
+      }
+     }
+    ],
+    "created": 1790369737,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 202,
+     "prompt_tokens": 28,
+     "total_tokens": 230,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-itbrYe8U1rZNGteyLXiiC7qr7x4cPFXL",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 28,
+     "prompt_ms": 1089.245,
+     "prompt_per_token_ms": 38.90160714285714,
+     "prompt_per_second": 25.705878842684612,
+     "predicted_n": 202,
+     "predicted_ms": 28356.612,
+     "predicted_per_token_ms": 141.07767164179106,
+     "predicted_per_second": 7.08829390478665,
+     "draft_n": 103,
+     "draft_n_accepted": 99
+    }
+   }
+  },
+  {
+   "probe": "tool",
+   "ok": true,
+   "wall_s": 10.22,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "tools": [
+     {
+      "type": "function",
+      "function": {
+       "name": "get_weather",
+       "description": "Get current weather for a city",
+       "parameters": {
+        "type": "object",
+        "properties": {
+         "city": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "city"
+        ]
+       }
+      }
+     }
+    ],
+    "max_tokens": 256,
+    "chat_template_kwargs": {
+     "enable_thinking": false
+    }
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "",
+       "tool_calls": [
+        {
+         "type": "function",
+         "function": {
+          "name": "get_weather",
+          "arguments": "{\"city\":\"Dublin\"}"
+         },
+         "id": "h0mN5qi7I4J9pSKL97gM3NDm2YaTxZwZ"
+        }
+       ]
+      }
+     }
+    ],
+    "created": 1790369748,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 27,
+     "prompt_tokens": 279,
+     "total_tokens": 306,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-UEOAmhyJ9AdfFmwWh5AEblrJ3OLGFoOi",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 279,
+     "prompt_ms": 6596.667,
+     "prompt_per_token_ms": 23.643967741935484,
+     "prompt_per_second": 42.29408578604922,
+     "predicted_n": 27,
+     "predicted_ms": 3610.517,
+     "predicted_per_token_ms": 138.86603846153847,
+     "predicted_per_second": 7.2011847610743835,
+     "draft_n": 13,
+     "draft_n_accepted": 13
+    }
+   }
+  },
+  {
+   "probe": "vision-solid",
+   "ok": true,
+   "wall_s": 28.21,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "max_tokens": 16,
+    "chat_template_kwargs": {
+     "enable_thinking": false
+    }
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "Red"
+      }
+     }
+    ],
+    "created": 1790369776,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 2,
+     "prompt_tokens": 1048,
+     "total_tokens": 1050,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-IttaG0pBbiirkAKGyByv9t0D4YjPlpyy",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 1048,
+     "prompt_ms": 27870.787,
+     "prompt_per_token_ms": 26.594262404580153,
+     "prompt_per_second": 37.60209569970163,
+     "predicted_n": 2,
+     "predicted_ms": 300.079,
+     "predicted_per_token_ms": 300.079,
+     "predicted_per_second": 3.332455786642851,
+     "draft_n": 1,
+     "draft_n_accepted": 1
+    }
+   }
+  },
+  {
+   "probe": "vision-document",
+   "ok": true,
+   "wall_s": 32.32,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "max_tokens": 120,
+    "chat_template_kwargs": {
+     "enable_thinking": false
+    }
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "Based on the image provided:\n\n- **Ticket Number:** 7291\n- **Destination:** Galway harbour, pier 3\n- **Number of Crates:** 5"
+      }
+     }
+    ],
+    "created": 1790369808,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 40,
+     "prompt_tokens": 1099,
+     "total_tokens": 1139,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-Tu1gIcoqWByZQBcvgY1RGVD7WJ6B3Qtp",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 1099,
+     "prompt_ms": 26453.184,
+     "prompt_per_token_ms": 24.070231119199274,
+     "prompt_per_second": 41.545093399720805,
+     "predicted_n": 40,
+     "predicted_ms": 5808.974,
+     "predicted_per_token_ms": 148.9480512820513,
+     "predicted_per_second": 6.713750139009057,
+     "draft_n": 20,
+     "draft_n_accepted": 20
+    }
+   }
+  },
+  {
+   "probe": "reasoning",
+   "ok": true,
+   "wall_s": 20.01,
+   "request": {
+    "model": "qwen3.8-27b",
+    "temperature": 0,
+    "max_tokens": 2048
+   },
+   "response": {
+    "choices": [
+     {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+       "role": "assistant",
+       "content": "205",
+       "reasoning_content": "We need answer simple time difference. Need compute: 09:40 to 13:05. From 09:40 to 13:40 is 240 min, subtract 35 = 205. Or 9:40 to 12:40 = 180, to 13:05 = 25, total 205. User asks answer with just number. Final only 205.\n"
+      }
+     }
+    ],
+    "created": 1790369828,
+    "model": "qwen3.8-27b",
+    "system_fingerprint": "b11182-e9f824d8c",
+    "object": "chat.completion",
+    "usage": {
+     "completion_tokens": 113,
+     "prompt_tokens": 85,
+     "total_tokens": 198,
+     "prompt_tokens_details": {
+      "cached_tokens": 0
+     }
+    },
+    "id": "chatcmpl-npPBV26g6J3pcdXXooelf1iviCRF3DKu",
+    "timings": {
+     "cache_n": 0,
+     "prompt_n": 85,
+     "prompt_ms": 2966.244,
+     "prompt_per_token_ms": 34.89698823529412,
+     "prompt_per_second": 28.655768035266146,
+     "predicted_n": 113,
+     "predicted_ms": 17016.66,
+     "predicted_per_token_ms": 151.93446428571428,
+     "predicted_per_second": 6.581785144675865,
+     "draft_n": 59,
+     "draft_n_accepted": 54
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+# Metal working set on this Mac (Mac16,3, M4 10-core GPU, 24 GB), llama.cpp b11182
+
+## Default limit (iogpu.wired_limit_mb=0), before the sysctl was raised
+source: llama-fit-params no-alloc probe on a header-only stub GGUF, 2026-09-25T17:54:06+0100 local file time
+0.00.111.666 I llama_prepare_model_devices: using device MTL0 (Apple M4) (unknown id) - 18185 MiB free
+
+## Raised limit (sudo sysctl iogpu.wired_limit_mb=20480), used for every run in this directory
+$ sysctl iogpu.wired_limit_mb
+iogpu.wired_limit_mb: 20480
+$ llama-server --list-devices
+Available devices:
+  MTL0: Apple M4 (20480 MiB, 20479 MiB free)
+
+## Idle baseline (no inference server running), 2026-09-25T21:32:04Z
+vm_stat wired: 4.01 GB
+vm.swapusage: total = 2048.00M  used = 1074.00M  free = 974.00M  (encrypted)

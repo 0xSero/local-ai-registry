@@ -1,0 +1,123 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": null,
+    "vision": true
+  },
+  "description": "oMLX 0.7.0.dev4 on one M5 Ultra 256GB. Jundot Qwen3.8-27B oQ4e MTP, vision on, mtp_enabled, native 262144 context.",
+  "engine": {
+    "graph_mode": null,
+    "name": "omlx",
+    "version": "0.7.0.dev4"
+  },
+  "facts": {
+    "capabilities.tools": {
+      "provenance": {
+        "captured_at": "2026-09-25T23:03:18Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T23:03:18Z",
+            "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+            "kind": "server-log",
+            "paths": [
+              "sources/m5-ultra-qwen38-27b/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+          }
+        ]
+      },
+      "reason": "no-tool-call-measured",
+      "state": "unknown"
+    },
+    "engine.graph_mode": {
+      "provenance": {
+        "captured_at": "2026-09-25T23:03:18Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T23:03:18Z",
+            "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+            "kind": "server-log",
+            "paths": [
+              "sources/m5-ultra-qwen38-27b/measurement.json"
+            ],
+            "repository": "https://github.com/jundot/omlx",
+            "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+          }
+        ]
+      },
+      "reason": "not-reported-by-the-server",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "apple-m5-ultra-256gb",
+  "id": "qwen3-8-27b-oq4e-mtp-apple-m5-ultra-256gb-omlx-tp1",
+  "launch": {
+    "accelerator_backend": "metal",
+    "container": {
+      "captured_at": "2026-09-25T23:03:18Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "Host Metal process. No container image.",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T23:03:18Z",
+          "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+          "kind": "server-log",
+          "paths": [
+            "sources/m5-ultra-qwen38-27b/measurement.json"
+          ],
+          "repository": "https://github.com/jundot/omlx",
+          "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+        }
+      ],
+      "state": "none"
+    },
+    "environment": {},
+    "kind": "script",
+    "network_mode": "bridge",
+    "script": {
+      "file": "sources/github/BlivionIaG/local-ai-registry/b00fc75e54b192cf868fd191e71813e2bd414e26/serve-qwen3-8-27b-oq4e-mtp.sh"
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T21:05:06.983264Z",
+      "harness": "accept_recipe.py --endpoint http://127.0.0.1:8000",
+      "served_model_id": "Qwen3.8-27B-oQ4e-mtp"
+    },
+    "wheel": "https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp312-cp312-macosx_15_0_universal2.whl"
+  },
+  "model_instance_id": "jundot-qwen3-8-27b-oq4e-mtp--oq4e",
+  "provenance": {
+    "captured_at": "2026-09-25T23:03:18Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T23:03:18Z",
+        "commit": "14194fe74bab38b89c144bd89656fbedca641d14",
+        "kind": "server-log",
+        "paths": [
+          "sources/m5-ultra-qwen38-27b/measurement.json"
+        ],
+        "repository": "https://github.com/jundot/omlx",
+        "url": "https://github.com/jundot/omlx/releases/tag/v0.7.0.dev4"
+      }
+    ]
+  },
+  "recipe_source": "measured-host",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "max_concurrency": 1,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [
+    "qwen3-8-27b-oq4e-mtp-apple-m5-ultra-256gb-omlx-tp1-20260925",
+    "qwen3-8-27b-oq4e-mtp-apple-m5-ultra-256gb-omlx-tp1-acceptance"
+  ],
+  "status": "validated"
+}

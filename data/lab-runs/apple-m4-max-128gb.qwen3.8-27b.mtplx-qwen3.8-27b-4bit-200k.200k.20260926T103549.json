@@ -1,0 +1,67 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "Youssofal/Qwen3.8-27B-MTPLX-Bare-Speed@b59d7002368575f08a58ba0d26686b53a9c162d6",
+  "engine": "mtplx-qwen3.8-27b-4bit-200k@2942120aab60",
+  "set": {},
+  "card": "apple-m4-max-128gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "Apple M4 Max"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-09-26",
+  "on": "owner",
+  "gpu": "Apple M4 Max",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 34.4,
+  "prefill": 110,
+  "served": "qwen38-27b-mtplx-4bit"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "Red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 104,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_3379e5d3",
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     }
+    }
+   ],
+   "reply": "Here's the current weather in Paris:\n\n- **Temperature:** 17°C\n- **Sky:** Overcast\n\nIt's a mild but cloudy day in Paris right now! 🌥️"
+  },
+  "context": {
+   "prompt_tokens": 166625,
+   "seconds": 1512.3,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 6310,
+   "seconds_total": 121.1,
+   "counted": "local-tokenizer"
+  }
+ },
+ "launch_config_sha256": null,
+ "launch_sha256": "8b374611c926dc2884fbdeaeceea1063e48ce14fd3726f9c0a6967fd0cdc99d2"
+}

@@ -1,0 +1,66 @@
+{
+  "accepted_at": null,
+  "id": "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k-200k-vision-mtp",
+  "measured_at": "2026-09-25T18:04:10.539069Z",
+  "metrics": {
+    "concurrency": 1,
+    "inference_engine_version": "2.12.0",
+    "latest_point_at": "2026-09-25T18:04:10.539069Z",
+    "max_context_tokens": 200592,
+    "peak_generation_tps": 4.383,
+    "peak_prompt_tps": 106.745,
+    "point_count": 1
+  },
+  "recipe_id": "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k",
+  "rows": [
+    {
+      "checks": {
+        "7319": true,
+        "amber-falcon-4821": true,
+        "cold_prefill": true,
+        "full_context": true,
+        "mtp_accepted": true,
+        "mtp_drafted": true,
+        "orbit": true,
+        "silver-badger-1706": true,
+        "violet-otter-6953": true
+      },
+      "concurrency": 1,
+      "context_tokens": 200592,
+      "decode_tok_s": 4.383,
+      "decode_tok_s_per_stream": 4.383,
+      "memory_measurement": "Runtime-reported MLX peak allocation, not total system memory or dedicated VRAM",
+      "mlx_peak_memory_bytes": 74686072406,
+      "mtp_accepted": 46,
+      "mtp_drafted": 54,
+      "output_tokens": 72,
+      "peak_vram_gb": null,
+      "prefill_chunk_tokens": 4096,
+      "prefill_tok_s": 106.745,
+      "request": {
+        "depth": 3,
+        "enable_thinking": false,
+        "generation_mode": "mtp",
+        "max_tokens": 256,
+        "temperature": 0.7,
+        "top_k": 20,
+        "top_p": 0.8
+      },
+      "samples": 1,
+      "status": "passed",
+      "ttft_ms_p50": 1880042.376999976,
+      "workload": "context-200k-vision-mtp"
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": "98a8c1533a7dcd9fd54b68a3a5402966b873edbf",
+    "kind": "native-benchmark-harness",
+    "paths": [
+      "sources/qwen38-mtplx-m4-max-128gb/long.jsonl",
+      "scripts/benchmark_mtplx.py"
+    ],
+    "repository": "https://github.com/swwwamo/local-ai-registry",
+    "url": "https://github.com/swwwamo/local-ai-registry/blob/98a8c1533a7dcd9fd54b68a3a5402966b873edbf/sources/qwen38-mtplx-m4-max-128gb/long.jsonl"
+  }
+}

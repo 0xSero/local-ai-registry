@@ -1,0 +1,43 @@
+{
+  "id": "omlx-glm-5.3-flash-4bit-mtp-1024k",
+  "kind": "host",
+  "engine": "omlx",
+  "about": "GLM-5.3-Flash (MLX \u00b7 4-bit, native MTP) on oMLX 0.7.0.dev4; from #107 by BlivionIaG",
+  "command": [
+    "omlx",
+    "serve",
+    "--model-dir",
+    "models",
+    "--base-path",
+    "omlx-home",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000"
+  ],
+  "install": "python3 -m pip install 'https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp313-cp313-macosx_15_0_universal2.whl' (oMLX 0.7.0.dev4, macOS on Apple silicon, Python 3.13)",
+  "pip": [
+    "omlx @ https://github.com/jundot/omlx/releases/download/v0.7.0.dev4/omlx-0.7.0.dev4-cp313-cp313-macosx_15_0_universal2.whl"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1"
+  },
+  "port": 8000,
+  "weights": [
+    {
+      "repo": "Vontra/GLM-5.3-Flash-MLX-4bit-MTP",
+      "revision": "76add2a341a1cd90ad0e86bb69839ea9c35827c6",
+      "at": "models/GLM-5.3-Flash-MLX-4bit-MTP",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": {
+    "at": "omlx-home/model_settings.json",
+    "text": "{\n  \"version\": 1,\n  \"models\": {\n    \"GLM-5.3-Flash-MLX-4bit-MTP\": {\n      \"mtp_enabled\": true\n    }\n  }\n}\n"
+  },
+  "ctx": 1048576,
+  "seqs": 1,
+  "vision": false,
+  "backend": "metal"
+}
