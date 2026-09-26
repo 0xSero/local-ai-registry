@@ -5,7 +5,7 @@
     "tools": true,
     "vision": true
   },
-  "description": "Locally accepted LIL R35 engine: TP4, 400k input-plus-output context, 8 scheduler slots, native vision/video and DFlash2 K7. Published Docker package adds authentication and old-image pruning. Warm structured-number speeds below are not prose or agent throughput; R35 is slower than the repaired SGLang baseline.",
+  "description": "Production Local Studio config after blackwell-forge (2026-09-26): Local Inference Lab R35 vLLM, TP4, native MTP3 (not DFlash2), FP8 fp8_ds_mla KV pinned with --kv-cache-memory-bytes 33285996544 (31 GiB/GPU, skips the profiling graph pass) for a 4,576,303-token pool, 8192 batched tokens, persistent /cache JIT mount, 400k context, 8 sequences, vision with 64 images. Measured at a 275 W/GPU cap: C1 prose 195-214 / code 211-222, C4 ~396, C8 ~440-470 aggregate tok/s, cold 32K prefill 8.7-9.6K tok/s, mixed C4+32K prefill 230. Coherence passed at 279K (336K in X001); vision 32/32 at 1024x768 (X001). Warm relaunch 217 -> 125 s.",
   "engine": {
     "graph_mode": "FULL_AND_PIECEWISE; capture sizes 1 2 4 8 16 32 40 48 64",
     "name": "vllm",
@@ -22,14 +22,16 @@
       "--mm-processor-device",
       "cpu",
       "--limit-mm-per-prompt",
-      "{\"image\":64,\"video\":1}"
+      "{\"image\":64,\"video\":1}",
+      "--kv-cache-memory-bytes",
+      "33285996544"
     ],
     "container": {
-      "captured_at": "2026-09-13T15:56:24Z",
+      "captured_at": "2026-09-26T05:45:00Z",
       "compose_file": null,
       "digest": "sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
       "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
-      "reason": "runtime-digest-from-live-R35-container",
+      "reason": "runtime-digest-of-live-controller-image (localinferencelab/vllm:jovian-judgement-community-20260911-r35); controller runs the public digest directly, no local wrapper",
       "runtime": "docker",
       "source": [
         {
@@ -47,7 +49,6 @@
       "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 40 48 64",
       "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "DCP": "1",
-      "DFLASH_DEPTH": "7",
       "DFLASH_MODEL": "/draft",
       "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
       "GPU_MEMORY_UTILIZATION": "0.93",
@@ -55,15 +56,16 @@
       "KV_CACHE_QUANT": "fp8_ds_mla",
       "MAX_CUDAGRAPH_CAPTURE_SIZE": "64",
       "MAX_MODEL_LEN": "400000",
-      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
       "MAX_NUM_SEQS": "8",
       "MODEL": "/model",
       "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "MTP_DEPTH": "3",
       "PORT": "8000",
       "PREFILL_COMPUTE_SHARE": "0.4",
       "PREFILL_SCHEDULE_INTERVAL": "1",
       "SERVED_MODEL_NAME": "glm-5.3-flash",
-      "SPECULATOR": "dflash2",
+      "SPECULATOR": "mtp",
       "TP": "4"
     },
     "host_port": 8000,
@@ -84,6 +86,11 @@
         "read_only": true,
         "source": "${MODEL_ROOT}/draft",
         "target": "/draft"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/forge-flash-jit",
+        "target": "/cache"
       }
     ],
     "network_mode": "bridge",
@@ -91,15 +98,38 @@
   },
   "metadata": {
     "acceptance": {
+      "coherence_needle_pass_tokens": [
+        279322
+      ],
+      "coherence_needle_pass_tokens_x001": [
+        123194,
+        343766
+      ],
       "completion": true,
-      "long_c8_input_tokens_per_request": 379951,
-      "long_context_retrieval_tokens": 398064,
-      "strict_json": true,
+      "evidence": "blackwell-forge ledger exps R1-flash-kvbytes31, R2a-flash-jitcache-cold, S0-flash-base, S2-mnbt8192, X001-mtp3",
+      "smoke": "math + tool call ok on R1, R2a, S2",
       "tools": true,
-      "video": true,
-      "vision": true
+      "vision": true,
+      "vision_x001": [
+        {
+          "accuracy": 1.0,
+          "codes_found": 8,
+          "images": 8,
+          "prompt_tokens": 12976,
+          "resolution": "1280x960",
+          "ttft_ms": 3828
+        },
+        {
+          "accuracy": 1.0,
+          "codes_found": 32,
+          "images": 32,
+          "prompt_tokens": 33392,
+          "resolution": "1024x768",
+          "ttft_ms": 8886
+        }
+      ]
     },
-    "benchmark_workload": "Warm structured-number continuation, temperature 1, top_p 0.95, reasoning disabled only for benchmarking; exact token IDs counted in common 30s/60s windows. No isolated pure prefill result.",
+    "benchmark_workload": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
     "credits": [
       {
         "name": "Local Inference Lab",
@@ -132,31 +162,128 @@
         "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/CREDITS.md"
       }
     ],
-    "deployment_notes": "Download target and draft with the pinned package script before raw engine launch. Bind raw engine only on a trusted private network; prefer authenticated Compose package. No GPU power changes.",
+    "deployment_notes": "Seed ${CACHE_ROOT}/forge-flash-jit from the image's baked JIT cache before the first launch; the first boot is cold (~217 s), later relaunches ~125 s. The DFlash2 draft mount and DFLASH_* variables are kept as in the controller, but with SPECULATOR=mtp the launcher never reads them. The controller additionally mounts a host dir at /root/.cache; it is left out here because the plugin export allows one scratch mount and /cache carries the JIT cache. Bind raw engine only on a trusted private network. GPUs capped at 275 W.",
     "docker_compose": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/compose.yaml",
     "docker_package": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
     "draft": {
       "precision": "MXFP8 draft only",
       "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
-      "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50"
+      "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
+      "use": "mounted as in the controller but unused while SPECULATOR=mtp; set SPECULATOR=dflash2 to switch back"
     },
     "history_policy": "Standalone Compose proxy or Local Studio controller prunes older images to 8 while protecting the latest user message and subsequent tool results. Raw engine Docker launch alone does not provide this proxy policy or API authentication.",
-    "limits": "400k is a configured per-request ceiling, not 400k measured at all concurrencies. Accepted C8 held 379,951 input tokens each; profile allocated 4,055,230 total KV tokens. No 24/7/365 guarantee; 64px mixed-history vision counterexample published.",
-    "regressions_vs_repaired_sglang": {
-      "379947_tokens_c1_percent": -12.4,
-      "971_tokens_c1_percent": -5.9,
-      "971_tokens_c8_percent": -55.2
+    "limits": "400k is the per-request ceiling. Pool is 4,576,303 tokens (11.44x at 400k). The pinned KV bytes skip vLLM's over-estimated graph reserve; watch long-uptime stability. Coherence verified to 279K on this config (336K on X001 at util 0.93).",
+    "superseded_acceptance_20260913_dflash2": {
+      "completion": true,
+      "long_c8_input_tokens_per_request": 379951,
+      "long_context_retrieval_tokens": 398064,
+      "strict_json": true,
+      "tools": true,
+      "video": true,
+      "vision": true
     },
-    "validation_scope": "Existing Local Studio engine validated; standalone Docker gateway validated against it. Complete Compose orchestration configuration-checked, not cold-started over the occupied production GPUs."
+    "tuning": {
+      "campaign": "blackwell-forge",
+      "date": "2026-09-26",
+      "ladder": [
+        {
+          "run": "X000-flash-live-r35-dflash2",
+          "step": "previous production: DFlash2 K7",
+          "verdict": "replaced by MTP3 (X001 won every cell)"
+        },
+        {
+          "c1_code": 196.1,
+          "c1_prose": 192.0,
+          "c4": 382.7,
+          "c8": 454.3,
+          "kv_tokens": 4132701,
+          "ready_s": 235,
+          "run": "X001-mtp3",
+          "step": "native MTP3, util 0.93",
+          "verdict": "baseline"
+        },
+        {
+          "c1_prose": 214.1,
+          "c8": 470.6,
+          "kv_tokens": 4576303,
+          "ready_s": 217.0,
+          "run": "R1-flash-kvbytes31",
+          "step": "--kv-cache-memory-bytes 33285996544",
+          "verdict": "kept: KV +10.7 %, coherence 279K ok"
+        },
+        {
+          "ready_s_cold": 217.0,
+          "ready_s_warm": 124.5,
+          "run": "R2a-flash-jitcache-cold / S0-flash-base",
+          "step": "persistent /cache JIT mount",
+          "verdict": "kept: relaunch 217 -> 125 s"
+        },
+        {
+          "c1_code": 211.0,
+          "c1_prose": 192.1,
+          "c4": 396.6,
+          "c8": 435.9,
+          "mixed_c4_32k": 230.2,
+          "prefill_32k": [
+            8705.5,
+            9630.4
+          ],
+          "run": "S2-mnbt8192",
+          "step": "MAX_NUM_BATCHED_TOKENS 4096 -> 8192",
+          "verdict": "kept: cold prefill 4.7-8.7K -> 8.7-9.6K, decode within noise"
+        }
+      ],
+      "power_cap_w_per_gpu": 275,
+      "protocol": "blackwell-forge ~/tuning/bench.py on pop-os: temperature 1.0, top_p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; decode_tok_s is aggregate completion tok/s over the window, decode_tok_s_per_stream is the per-stream p50; prefill is cold (0 cached tokens) prompt tokens / TTFT; GPUs power-capped at 275 W each, stock clocks.",
+      "rejected": [
+        {
+          "c1_code": 179.1,
+          "c1_prose": 178.9,
+          "c8": 439.5,
+          "run": "S1-a16",
+          "step": "VLLM_B12X_MOE_FP4_FORCE_A16=1",
+          "verdict": "rejected: C1 8-19 % slower; quality gain unmeasured"
+        },
+        {
+          "run": "S3-psi2",
+          "step": "PREFILL_SCHEDULE_INTERVAL=2",
+          "verdict": "rejected: did not boot on R35"
+        },
+        {
+          "c1_code": 217.0,
+          "c1_prose": 191.4,
+          "c8": 453.5,
+          "mixed_c4_32k": 220.5,
+          "run": "S4-nccl",
+          "step": "VLLM_ENABLE_PCIE_ALLREDUCE=0 (NCCL allreduce)",
+          "verdict": "neutral, not adopted (stall 1016 -> 502 ms, mixed 232 -> 220)"
+        },
+        {
+          "run": "F5-flash-jjbeta",
+          "step": "ghcr.io/local-inference-lab/vllm:jovian-judgement-beta-20260917 (sha256:8464fb0c1b13a3a80b1ade0421644189f5100a2b30cbb76c1fb9a64f1811bb73)",
+          "verdict": "rejected: launcher forces DFlash2 draft + 1M context and crashes in serve.py argument handling; MTP3 env not honoured"
+        }
+      ]
+    },
+    "validation_scope": "Live Local Studio controller recipe on pop-os, measured by the blackwell-forge campaign; not re-run through accept_recipe.py."
   },
   "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
   "provenance": {
-    "captured_at": "2026-09-13T15:56:24Z",
+    "captured_at": "2026-09-26T05:45:00Z",
     "sources": [
       {
-        "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "campaign-ledger",
+        "url": "ssh://pop-os/home/ser/tuning/ledger.jsonl"
+      },
+      {
+        "captured_at": "2026-09-26T05:45:00Z",
+        "kind": "controller-recipe",
+        "url": "http://100.90.62.80:8080/recipes"
+      },
+      {
+        "captured_at": "2026-09-13T15:56:24Z",
         "kind": "local-acceptance",
-        "repository": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
         "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/README.md"
       }
     ]
@@ -165,14 +292,18 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "decode_context_parallel": 1,
+    "explicit_kv_cache_bytes_per_rank": 33285996544,
     "kv_cache_dtype": "fp8_ds_mla",
-    "kv_cache_tokens": 4055230,
+    "kv_cache_tokens": 4576303,
     "max_concurrency": 8,
     "max_context_tokens": 400000,
+    "max_num_batched_tokens": 8192,
+    "max_num_seqs": 8,
+    "speculative_decoding": "mtp3",
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
     "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep"
   ],
-  "status": "validated"
+  "status": "candidate"
 }
