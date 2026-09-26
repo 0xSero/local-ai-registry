@@ -1,0 +1,90 @@
+{
+  "id": "vllm-glm-5.3-exl3-3.0bpw-320k-tp4",
+  "engine": "vllm",
+  "about": "glm-5.3 on 4x RTX PRO 6000 Blackwell (one machine, TP4/DCP4), the owner's production launch after campaigns F1 and G1 (2026-09-25/26). Production runs a local image built FROM this base that only adds the config file below as its ENTRYPOINT (it switches the PCIe allreduce to NCCL); here the base image runs that same file with /bin/bash. Record: data/registry/recipe/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4.json",
+  "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": "/bin/bash",
+  "args": [
+    "/opt/local-ai/glm53-tuned-entrypoint.sh",
+    "--default-chat-template-kwargs",
+    "{\"reasoning_effort\":\"none\"}",
+    "--attention-config",
+    "{\"indexer_kv_dtype\":\"fp8\"}",
+    "--kv-cache-memory-bytes",
+    "11811160064",
+    "--prefill-schedule-interval",
+    "2",
+    "--enable-prompt-tokens-details"
+  ],
+  "env": {
+    "ASYNC_SCHEDULING": "0",
+    "B12X_PCIE_DMA": "0",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "DCP": "4",
+    "DCP_BACKEND": "ag_rs",
+    "DCP_CKV_GATHER": "auto",
+    "DCP_CKV_GATHER_MAX_TOKENS": "262144",
+    "DCP_CKV_PREFETCH_DEPTH": "auto",
+    "DCP_INDEXER_SHARDS": "auto",
+    "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+    "DCP_QUERY_SPLIT": "auto",
+    "DCP_TOPK_OWNER_MERGE": "auto",
+    "GPU_MEMORY_UTILIZATION": "0.98",
+    "GRAPH": "32",
+    "INSTANTTENSOR_BACKEND": "BUFFERED",
+    "INSTANTTENSOR_COPY": "0",
+    "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+    "KV_FP8_ROPE": "1",
+    "LMCACHE_MODE": "off",
+    "LOAD_FORMAT": "instanttensor",
+    "MAX_BATCHED_TOKENS": "2048",
+    "MAX_MODEL_LEN": "327680",
+    "MAX_NUM_SEQS": "8",
+    "MODEL": "/model",
+    "MODEL_FAMILY": "glm52-exl3",
+    "MOE_BACKEND": "b12x",
+    "MOE_MODE": "a16",
+    "MTP": "3",
+    "MTP_DRAFT_SAMPLE_METHOD": "probabilistic",
+    "MTP_MOE_BACKEND": "triton",
+    "PCIE_CALIBRATION": "off",
+    "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+    "QUANTIZATION": "exl3",
+    "SERVED_MODEL_NAME": "glm-5.3",
+    "TP": "4",
+    "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+    "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+    "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+    "VLLM_EXL3_PREFILL_CAPACITY": "2048",
+    "VLLM_EXL3_TRELLIS_MAX_M": "64",
+    "VLLM_LONG_PREFILL_TOKEN_THRESHOLD": "4096",
+    "VLLM_MAX_LONG_PARTIAL_PREFILLS": "1",
+    "VLLM_MAX_NUM_PARTIAL_PREFILLS": "2",
+    "VLLM_USE_B12X_DCP_A2A": "0"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
+      "revision": "ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe",
+      "at": "/model",
+      "layout": "dir"
+    }
+  ],
+  "config": {
+    "at": "/opt/local-ai/glm53-tuned-entrypoint.sh",
+    "text": "#!/bin/bash\n# NCCL allreduce patch (GLM-5.2 winner) + optional extra sed hooks via WRAP_SED (;; separated sed exprs applied to v16)\nset -e\nD=/tmp/glm52-candidate; mkdir -p $D\ncp /usr/local/bin/serve-glm52-v19.sh /usr/local/bin/serve-glm52-v16.sh /usr/local/bin/glm52-pcie-runtime-env.sh /usr/local/bin/glm52-dcp-prefill-policy.sh /usr/local/bin/glm52-pcie-calibration.py $D/\nsed -i \"s|exec /usr/local/bin/serve-glm52-v16.sh|exec $D/serve-glm52-v16.sh|\" $D/serve-glm52-v19.sh\nsed -i \"s|/usr/local/bin/glm52-pcie-runtime-env.sh|$D/glm52-pcie-runtime-env.sh|g\" $D/serve-glm52-v19.sh $D/serve-glm52-v16.sh\nif [ \"${PCIE_ALLREDUCE:-nccl}\" = nccl ]; then sed -i \"s/export VLLM_ENABLE_PCIE_ALLREDUCE=1/export VLLM_ENABLE_PCIE_ALLREDUCE=0/\" $D/glm52-pcie-runtime-env.sh; fi\nif [ -n \"${WRAP_SED:-}\" ]; then IFS=';;' read -ra EX <<< \"$WRAP_SED\"; for e in \"${EX[@]}\"; do [ -n \"$e\" ] && sed -i \"$e\" $D/serve-glm52-v16.sh; done; fi\necho \"[glm-wrap] effective pcie env:\"; grep -n \"PCIE_ALLREDUCE\" $D/glm52-pcie-runtime-env.sh | head -5\nexport GLM52_SERVER=$D/serve-glm52-v19.sh\nexec /usr/local/bin/serve-gilded-gnosis.sh \"$@\"\n"
+  },
+  "ctx": 327680,
+  "seqs": 1,
+  "vision": false,
+  "cards": 4,
+  "flags": [
+    "--ipc host"
+  ],
+  "frozen_from": [
+    "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4"
+  ]
+}

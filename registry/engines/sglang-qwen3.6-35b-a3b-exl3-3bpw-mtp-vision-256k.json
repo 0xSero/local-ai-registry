@@ -1,0 +1,120 @@
+{
+  "id": "sglang-qwen3.6-35b-a3b-exl3-3bpw-mtp-vision-256k",
+  "engine": "sglang",
+  "about": "Qwen3.6-35B-A3B (EXL3 · 3 bpw)",
+  "image": "ghcr.io/0xsero/sglang-exl3@sha256:c8922bd7256caf1b273af7ac49221e652be9e6072c1cdec4b959f506fd415d79",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/opt/entrypoint.sh",
+  "args": [
+    "python3",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+    "--quantization",
+    "exl3",
+    "--trust-remote-code",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--served-model-name",
+    "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+    "--context-length",
+    "262144",
+    "--mem-fraction-static",
+    "0.85",
+    "--kv-cache-dtype",
+    "fp8_e4m3",
+    "--mamba-ssm-dtype",
+    "bfloat16",
+    "--max-running-requests",
+    "1",
+    "--max-mamba-cache-size",
+    "5",
+    "--cuda-graph-max-bs-decode",
+    "1",
+    "--cuda-graph-max-bs-prefill",
+    "240",
+    "--chunked-prefill-size",
+    "4096",
+    "--max-prefill-tokens",
+    "4096",
+    "--prefill-decode-interval",
+    "16",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--image-processor-backend",
+    "pil",
+    "--speculative-algorithm",
+    "NEXTN",
+    "--speculative-num-steps",
+    "3",
+    "--speculative-eagle-topk",
+    "1",
+    "--speculative-num-draft-tokens",
+    "4",
+    "--speculative-token-map",
+    "/opt/sglang-exl3/tokenmaps/qwen36_hot32k_v2.pt",
+    "--disable-shared-experts-fusion"
+  ],
+  "env": {
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "HF_HUB_OFFLINE": "1",
+    "SGLANG_EXL3_PREFILL_FP16_ACC": "1",
+    "SGLANG_EXL3_VIT_MLP_CHUNK": "8192",
+    "SGLANG_EXL3_VIT_SDPA": "1",
+    "SGLANG_VLM_CACHE_SIZE_MB": "256"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "yeasah/Qwen3.6-35B-A3B-exl3",
+      "revision": "73da68ef827084d72c59936b4c2088c6580f4e2b",
+      "at": "/models/Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "plugin": {
+    "name": "Qwen3.6-35B-A3B",
+    "family": "qwen",
+    "format": "EXL3 · 3 bpw",
+    "engine": "sglang",
+    "servedName": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+    "sizeGb": 15.09,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 419114
+    },
+    "weights": [
+      {
+        "dir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 15.09
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rtx-3090-24gb": "qwen36-35b-a3b-exl3-3bpw-rtx3090-sglang-tp1"
+  }
+}

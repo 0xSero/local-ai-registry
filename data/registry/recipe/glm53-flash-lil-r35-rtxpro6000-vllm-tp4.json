@@ -5,9 +5,9 @@
     "tools": true,
     "vision": true
   },
-  "description": "Locally accepted LIL R35 engine: TP4, 400k input-plus-output context, 8 scheduler slots, native vision/video and DFlash2 K7. Published Docker package adds authentication and old-image pruning. Warm structured-number speeds below are not prose or agent throughput; R35 is slower than the repaired SGLang baseline.",
+  "description": "GLM-5.3-Flash NVFP4 (Local Inference Lab R35) on 4x RTX PRO 6000 Blackwell: vLLM TP4, B12X attention/MoE/linear, native MTP3 (probabilistic draft), FP8 KV pinned at 31 GiB/GPU (4,576,303-token pool), 400K context, 48 sequences, 8192 batched tokens, CUDA graphs 1-192, vision (64 images). The owner's production config after the blackwell-forge campaign (2026-09-25/26, K8).",
   "engine": {
-    "graph_mode": "FULL_AND_PIECEWISE; capture sizes 1 2 4 8 16 32 40 48 64",
+    "graph_mode": "FULL_AND_PIECEWISE; capture sizes 1 2 4 8 16 32 128 192",
     "name": "vllm",
     "version": "0.26.1rc0+glm53.r35.vllmde982a50"
   },
@@ -22,78 +22,81 @@
       "--mm-processor-device",
       "cpu",
       "--limit-mm-per-prompt",
-      "{\"image\":64,\"video\":1}"
+      "{\"image\":64,\"video\":1}",
+      "--kv-cache-memory-bytes",
+      "33285996544",
+      "--enable-prompt-tokens-details"
     ],
-    "container": {
-      "captured_at": "2026-09-13T15:56:24Z",
-      "compose_file": null,
-      "digest": "sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
-      "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
-      "reason": "runtime-digest-from-live-R35-container",
-      "runtime": "docker",
-      "source": [
-        {
-          "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
-          "kind": "local-acceptance",
-          "repository": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000",
-          "url": "https://github.com/0xSero/glm-5.3-flash-4x-rtx-pro-6000/blob/a327a391389f8a6c218861f1fca2fcd8786e4d36/README.md"
-        }
-      ],
-      "state": "digest-pinned"
-    },
     "container_port": 8000,
     "environment": {
       "CACHE_MODE": "vram",
-      "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 40 48 64",
+      "CUDAGRAPH_CAPTURE_SIZES": "1 2 4 8 16 32 128 192",
       "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "DCP": "1",
-      "DFLASH_DEPTH": "7",
       "DFLASH_MODEL": "/draft",
       "DFLASH_MODEL_REVISION": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
       "GPU_MEMORY_UTILIZATION": "0.93",
       "HF_HUB_OFFLINE": "1",
       "KV_CACHE_QUANT": "fp8_ds_mla",
-      "MAX_CUDAGRAPH_CAPTURE_SIZE": "64",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "192",
       "MAX_MODEL_LEN": "400000",
-      "MAX_NUM_BATCHED_TOKENS": "4096",
-      "MAX_NUM_SEQS": "8",
+      "MAX_NUM_BATCHED_TOKENS": "8192",
+      "MAX_NUM_SEQS": "48",
       "MODEL": "/model",
       "MODEL_REVISION": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+      "MTP_DEPTH": "3",
       "PORT": "8000",
       "PREFILL_COMPUTE_SHARE": "0.4",
       "PREFILL_SCHEDULE_INTERVAL": "1",
       "SERVED_MODEL_NAME": "glm-5.3-flash",
-      "SPECULATOR": "dflash2",
+      "SPECULATOR": "mtp",
       "TP": "4"
     },
     "host_port": 8000,
     "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5",
+    "ipc": "host",
     "kind": "docker",
     "mounts": [
       {
+        "provision": {
+          "repository": "local-inference-lab/GLM-5.3-Flash-NVFP4",
+          "revision": "46aaae8a82032f77100f2f03e9cc11b391df3b4d",
+          "size_gb": 199.387
+        },
         "read_only": true,
-        "source": "${MODEL_ROOT}/target",
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-LIL-NVFP4-46aaae8",
         "target": "/model"
       },
       {
         "provision": {
           "repository": "local-inference-lab/GLM-5.3-Flash-DFlash2",
           "revision": "dfa270d7eb8df37e0cd0d4420f8dd0bd24ffcd50",
-          "size_gb": 1.284743923
+          "size_gb": 1.285
         },
         "read_only": true,
-        "source": "${MODEL_ROOT}/draft",
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-LIL-DFlash2-MXFP8",
         "target": "/draft"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/glm53-flash-jit",
+        "target": "/cache"
       }
     ],
     "network_mode": "bridge",
-    "shm_size": "16g"
+    "shm_size": "32g"
   },
   "metadata": {
     "acceptance": {
+      "accepted_at": "2026-09-26T14:49:12Z",
       "completion": true,
+      "experiments": [
+        "K8-flash-cap-32-128"
+      ],
+      "harness": "blackwell-forge bench.py smoke (17 x 23 = 391, tool call) and coherence cells",
       "long_c8_input_tokens_per_request": 379951,
       "long_context_retrieval_tokens": 398064,
+      "note": "K8: smoke passed (391, tool call), vision 8/8 at 1024x768, coherence at 276,064 tokens; K5 (same config, full graph list) smoke passed.",
       "strict_json": true,
       "tools": true,
       "video": true,
@@ -147,12 +150,32 @@
       "971_tokens_c1_percent": -5.9,
       "971_tokens_c8_percent": -55.2
     },
+    "superseded_launch_20260926": {
+      "arguments": [
+        "/model",
+        "--mm-processor-device",
+        "cpu",
+        "--limit-mm-per-prompt",
+        "{\"image\":64,\"video\":1}"
+      ],
+      "image": "localinferencelab/vllm@sha256:7a425c6864b951bbc368111490a4b0ac69d8cd0dd4987075b2c7d40b753b1bf5"
+    },
     "validation_scope": "Existing Local Studio engine validated; standalone Docker gateway validated against it. Complete Compose orchestration configuration-checked, not cold-started over the occupied production GPUs."
   },
   "model_instance_id": "lil-glm53-flash-nvfp4--46aaae8a8203",
   "provenance": {
-    "captured_at": "2026-09-13T15:56:24Z",
+    "captured_at": "2026-09-26T14:49:12Z",
     "sources": [
+      {
+        "captured_at": "2026-09-26T14:49:12Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os controller recipe (the one serving production), read-only"
+      },
+      {
+        "captured_at": "2026-09-26T14:49:12Z",
+        "kind": "owner-ledger",
+        "path": "data/sources/pop-os/2026-09-26-blackwell-forge/ledger.jsonl"
+      },
       {
         "commit": "a327a391389f8a6c218861f1fca2fcd8786e4d36",
         "kind": "local-acceptance",
@@ -166,13 +189,14 @@
   "serving": {
     "decode_context_parallel": 1,
     "kv_cache_dtype": "fp8_ds_mla",
-    "kv_cache_tokens": 4055230,
-    "max_concurrency": 8,
+    "kv_cache_tokens": 4576303,
+    "max_concurrency": 48,
     "max_context_tokens": 400000,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
-    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep"
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-sweep",
+    "glm53-flash-lil-r35-rtxpro6000-vllm-tp4-forge-20260926"
   ],
-  "status": "validated"
+  "status": "candidate"
 }
