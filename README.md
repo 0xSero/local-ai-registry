@@ -1,19 +1,26 @@
 # Local AI registry
 
+**https://local.sybilsolutions.ai**
+
 The model to run on your GPU, and exactly how to run it. Every recipe here is the output of a run that passed six checks on that card: it loads, chats, reasons, calls tools, holds its context window, and decodes at 15 tok/s or more.
 
 ```
-cards/<vendor>/<card>.json                     a GPU: name, memory, how programs detect it
-engines/<profile>.json                         an engine: pinned image, arguments, config
-recipes/<vendor>/<card>/<model>.<engine>.<context>k.json
-                                               one recipe (~400 bytes): weights, engine, settings, proof
-dist/catalog.json                              everything above in one file, at most 3 picks per card
-plugin/v2/recipes.json                         the same, in the Omarchy Local AI plugin's format
-lab/                                           the tools that run, check and publish recipes
-docs/design.md                                 how it works and why
+registry/                      the source of truth, tiny
+  cards/<vendor>/<card>.json          a GPU: name, memory, how programs detect it
+  engines/<profile>.json              an engine: pinned image, arguments, config
+  recipes/<vendor>/<card>/<model>.<engine>.<context>k.json
+                                      one recipe (~400 bytes): weights, engine, settings, proof
+  models.json                         each model: family, release date, what it is for
+lab/            run, check and publish recipes (lab.py try | convert | render | check)
+dist/           catalog.json: everything above, rendered, at most 3 picks per GPU
+site/           local.sybilsolutions.ai and its API (static, on Cloudflare Pages)
+sdk/            js/ and python/: pick a recipe for a GPU, print the command
+app/            local-ai: run a recipe on any Linux, from a terminal or a status bar
+images/         the container images we build (gateway, tabbyapi-exl3, ...)
+plugin/         what the Omarchy Local AI plugin reads (paths are fixed)
+data/           everything the registry held before, as it was; nothing reads it
+docs/           design.md
 ```
-
-The data behind it (every model, build, hardware record, price, benchmark and community measurement) is in [local-ai-data](https://github.com/0xSero/local-ai-data).
 
 ## A recipe
 

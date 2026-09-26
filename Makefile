@@ -9,3 +9,4 @@ check:
 	python3 lab/lab.py check
 	python3 lab/catalog.py --check
 	python3 lab/export_plugin.py --check
+	sdk/test.sh

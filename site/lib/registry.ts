@@ -1,5 +1,6 @@
 // Everything the site shows comes from ../dist/catalog.json, built by lab/catalog.py.
 import catalog from "../../dist/catalog.json";
+import { steps as sdkSteps } from "../../sdk/js/index.js";
 
 export type Proof = {
   at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null;
@@ -72,34 +73,8 @@ export function role(r: Recipe, all: Recipe[]) {
   return "Alternative";
 }
 
-/** The exact steps to run a recipe by hand: weights, config, container. */
-export function steps(r: Recipe) {
-  const l = r.launch;
-  const out: { title: string; code: string }[] = [];
-  const mounts: string[] = [];
-  const dl: string[] = [];
-  for (const w of weightsList(l)) {
-    const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;
-    if (w.layout === "hub") { dl.push(`hf download ${w.repo} \\\n  --revision ${w.revision}`); mounts.push(`-v ~/.cache/huggingface:/root/.cache/huggingface`); }
-    else { dl.push(`hf download ${w.repo} \\\n  --revision ${w.revision} \\\n  --local-dir ${dir}`); mounts.push(`-v ${dir}:${w.at}:ro`); }
-  }
-  if (dl.length) out.push({ title: "Download the weights", code: dl.join("\n\n") });
-  if (l.config) {
-    out.push({ title: "Write the server config", code: `cat > ${r.slug}.yml <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
-    mounts.push(`-v $PWD/${r.slug}.yml:${l.config.at}:ro`);
-  }
-  const args: string[] = [];
-  for (let i = 0; i < l.args.length; i++) {
-    const a = l.args[i], b = l.args[i + 1];
-    if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${shq(b)}`); i++; } else args.push(shq(a));
-  }
-  const run = ["docker run --rm", GPU_FLAGS[l.backend ?? "nvidia"] ?? GPU_FLAGS.nvidia, `-p 8000:${l.port}`, ...(l.shm ? [`--shm-size ${l.shm}`] : []),
-    ...Object.entries(l.env).map(([k, v]) => `-e ${k}=${shq(v)}`), ...mounts, ...(l.entrypoint ? [`--entrypoint ${l.entrypoint}`] : []), l.image, ...args];
-  out.push({ title: "Start the server", code: run.join(" \\\n  ") });
-  return out;
-}
-const GPU_FLAGS: Record<string, string> = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "intel-xpu": "--device /dev/dri" };
-const shq = (s: string) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
+/** The exact steps to run a recipe by hand: the SDK's, so the site and every client say the same thing. */
+export const steps = (r: Recipe) => sdkSteps(r);
 
 export const stats = {
   gpus: cards.length,
