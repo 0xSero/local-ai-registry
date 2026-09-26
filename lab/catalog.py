@@ -37,9 +37,9 @@ def build(today=None):
             if model not in seen and len(picks) < 3:
                 picks.append(key)
                 seen.add(model)
-        out_cards[card] = {**{k: hw[k] for k in ("name", "vendor", "backend", "vram_gb", "match")}, "picks": picks}
+        out_cards[card] = {**{k: hw[k] for k in ("name", "vendor", "backend", "vram_gb", "bandwidth_gb_s", "match")}, "picks": picks}
     used = {k for c in out_cards.values() for k in c["picks"]}
-    body = {"schema": "local-ai-registry/catalog/3", "models": meta["models"], "cards": out_cards,
+    body = {"schema": "local-ai-registry/catalog/3", "models": meta["models"], "builds": meta.get("builds", {}), "cards": out_cards,
             "recipes": {k: v for k, v in sorted(recipes.items()) if k in used}}
     text = json.dumps(body, separators=(",", ":"), sort_keys=True)
     return json.dumps({**body, "sha256": hashlib.sha256(text.encode()).hexdigest()}, separators=(",", ":"), sort_keys=True) + "\n"
