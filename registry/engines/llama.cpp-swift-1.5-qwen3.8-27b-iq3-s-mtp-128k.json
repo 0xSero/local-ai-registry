@@ -1,0 +1,109 @@
+{
+  "id": "llama.cpp-swift-1.5-qwen3.8-27b-iq3-s-mtp-128k",
+  "engine": "llama.cpp",
+  "about": "Swift-1.5-Qwen3.8-27B (GGUF \u00b7 IQ3_S, MTP/NextN head in the same file) on Vulkan",
+  "image": "ghcr.io/ggml-org/llama.cpp@sha256:1086b8815273e566bc0f549bac1d6d2dc469e6409a952cca3f502e53d72877e7",
+  "backend": "amd-vulkan",
+  "port": 8080,
+  "entrypoint": null,
+  "args": [
+    "-m",
+    "/models/Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "131072",
+    "--n-gpu-layers",
+    "999",
+    "-b",
+    "2048",
+    "-ub",
+    "512",
+    "-t",
+    "4",
+    "--parallel",
+    "1",
+    "--cont-batching",
+    "--poll",
+    "0",
+    "--flash-attn",
+    "on",
+    "--kv-unified",
+    "--cache-type-k",
+    "q5_0",
+    "--cache-type-v",
+    "q4_1",
+    "--spec-type",
+    "draft-mtp",
+    "--spec-draft-n-max",
+    "3",
+    "--spec-draft-p-min",
+    "0.75",
+    "--spec-draft-type-k",
+    "q4_0",
+    "--spec-draft-type-v",
+    "q4_0",
+    "--reasoning",
+    "auto",
+    "--reasoning-format",
+    "deepseek",
+    "--reasoning-effort",
+    "xhigh",
+    "--reasoning-preserve",
+    "--jinja",
+    "--no-mmproj",
+    "--metrics"
+  ],
+  "env": {},
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "ukisai/Swift-1.5-Qwen3.8-27B-GSQ-RCO-GGUF",
+      "revision": "d74895bbe5db4bec1e0024e7cc87d59c02d7631a",
+      "at": "/models",
+      "layout": "dir",
+      "files": "Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "plugin": {
+    "name": "Swift-1.5-Qwen3.8-27B",
+    "family": "qwen",
+    "format": "GGUF \u00b7 IQ3_S + MTP",
+    "engine": "llama.cpp",
+    "servedName": "/models/Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf",
+    "sizeGb": 12.12,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "video": false,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 0
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 12.12
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rx-9070-xt-16gb": "swift15-qwen38-27b-iq3s-mtp-rx9070xt-llamacpp-vulkan"
+  }
+}

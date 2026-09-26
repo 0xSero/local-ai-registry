@@ -51,7 +51,7 @@ def pick(gpu, vram=None, all=False, cat=None):
     return rs if all else rs[0]
 
 
-GPU = {"nvidia": "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "intel-xpu": "--device /dev/dri"}
+GPU = {"nvidia": "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri"}
 
 
 def _q(s):
