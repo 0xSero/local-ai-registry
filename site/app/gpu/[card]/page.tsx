@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import RecipeCard, { ENGINE } from "@/components/RecipeCard";
-import { cards, card, picks, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup } from "@/lib/registry";
+import { cards, card, picks, lead, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup } from "@/lib/registry";
 
 type P = { params: Promise<{ card: string }> };
 export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
@@ -10,11 +10,11 @@ export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
 export async function generateMetadata({ params }: P): Promise<Metadata> {
   const c = card((await params).card);
   if (!c) return {};
-  const top = picks(c)[0];
+  const top = picks(lead(c))[0];
   const name = short(c.name);
   return {
     title: `${name} ${c.vram_gb} GB`,
-    description: top ? `Run ${model(top).name} on the ${name}: ${Math.round(top.proof[0].tps ?? 0)} tok/s, tested on the card. The top ${picks(c).length} recipes${c.setups.length > 1 ? ` for one card, more for ${c.setups.slice(1).map((s) => setupName(name, s.cards, s.machines)).join(", ")}` : ""}, and the exact commands.` : undefined,
+    description: top ? `Run ${model(top).name} on the ${name}: ${Math.round(top.proof[0].tps ?? 0)} tok/s, tested on the card. The top ${picks(lead(c)).length} recipes${c.setups.length > 1 ? ` for one card, more for ${c.setups.slice(1).map((s) => setupName(name, s.cards, s.machines)).join(", ")}` : ""}, and the exact commands.` : undefined,
   };
 }
 

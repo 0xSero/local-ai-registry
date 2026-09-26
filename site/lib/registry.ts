@@ -36,6 +36,8 @@ export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.ca
 const byKey = (keys: string[]) => keys.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
 export const picks = (c: Card | Setup) => byKey(c.picks);
 export const more = (c: Card | Setup) => byKey(c.more ?? []);
+/** The setup a card leads with: one card, or its smallest group when it only runs in one (4 × CMP 170HX). */
+export const lead = (c: Card): Card | Setup => (c.picks.length ? c : c.setups[0]);
 /** "RTX PRO 6000 Blackwell", "4 × RTX PRO 6000 Blackwell in one machine", "2 × DGX Spark GB10". */
 export function setupName(name: string, cards = 1, machines = 1) {
   if (machines > 1) return `${machines} × ${name}${cards > 1 ? `, ${cards} cards each` : ""}`;
