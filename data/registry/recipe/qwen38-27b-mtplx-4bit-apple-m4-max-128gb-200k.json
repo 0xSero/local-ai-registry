@@ -1,0 +1,99 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": null,
+    "tools": null,
+    "vision": true
+  },
+  "description": "Native macOS Qwen3.8-27B: 4-bit language/MTP weights, vision, Q4 KV, 204800-token configured window. Exact M4 Max 128 GB only; not a 24/32 GB or other-chip validation.",
+  "engine": {
+    "graph_mode": null,
+    "name": "mtplx",
+    "version": "2.12.0"
+  },
+  "facts": {},
+  "hardware_count": 1,
+  "hardware_id": "apple-m4-max-128gb",
+  "id": "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k",
+  "launch": {
+    "accelerator_backend": "metal",
+    "arguments": [
+      "${MODEL_ROOT}"
+    ],
+    "container": {
+      "captured_at": "2026-09-25T18:36:39.091373Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "commit-pinned-native-script",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T18:36:39.091373Z",
+          "kind": "acceptance-run",
+          "url": "https://github.com/0xSero/local-ai-registry"
+        }
+      ],
+      "state": "none"
+    },
+    "environment": {
+      "HF_HUB_DISABLE_IMPLICIT_TOKEN": "1",
+      "HF_HUB_DISABLE_TELEMETRY": "1",
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "host_port": 18198,
+    "kind": "script",
+    "script": {
+      "file": "https://raw.githubusercontent.com/swwwamo/local-ai-registry/692991860c48cd89f0d4a066a5eac273a8457d8c/scripts/serve_qwen38_mtplx.sh",
+      "interpreter": "bash"
+    }
+  },
+  "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-25T18:36:39.091373Z",
+      "harness": "scripts/accept_recipe.py native-script",
+      "served_model_id": "qwen38-27b-mtplx-4bit"
+    },
+    "native_runtime": {
+      "fan_control": "Apple default",
+      "gpu_cores": 40,
+      "mlx": "0.32.2",
+      "mlx_lm": "0.31.3",
+      "mtp_depth": 3,
+      "os": "macOS 27.0 (26A428)",
+      "python": "3.12.4",
+      "requirements_url": "https://raw.githubusercontent.com/swwwamo/local-ai-registry/692991860c48cd89f0d4a066a5eac273a8457d8c/scripts/mtplx-requirements.txt"
+    },
+    "validation_scope": "Only Apple M4 Max 128 GB. No claims for 24 GB, 32 GB, M1/M2/M3/M5/M6, reasoning, tools, video, or production catalog support.",
+    "workload_evidence": {
+      "scope": "Cold 200k input with distributed synthetic retrieval, generated image reading and actual MTP draft acceptance; fixed-order short depth sweep. No 24/32 GB fit claim.",
+      "url": "https://github.com/swwwamo/local-ai-registry/blob/98a8c1533a7dcd9fd54b68a3a5402966b873edbf/sources/qwen38-mtplx-m4-max-128gb/README.md"
+    }
+  },
+  "model_instance_id": "youssofal-qwen3-8-27b-mtplx-bare-speed--4bit",
+  "provenance": {
+    "captured_at": "2026-09-25T18:09:06.094123Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T18:09:06.094123Z",
+        "kind": "pinned-native-launch",
+        "url": "https://raw.githubusercontent.com/swwwamo/local-ai-registry/692991860c48cd89f0d4a066a5eac273a8457d8c/scripts/serve_qwen38_mtplx.sh"
+      }
+    ]
+  },
+  "recipe_source": "community-native-acceptance",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_precision": "q4",
+    "max_concurrency": 1,
+    "max_context_tokens": 204800,
+    "prefill_chunk_tokens": 4096
+  },
+  "speed_sweep_ids": [
+    "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k-acceptance",
+    "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k-mtp-depth-sweep",
+    "qwen38-27b-mtplx-4bit-apple-m4-max-128gb-200k-200k-vision-mtp"
+  ],
+  "status": "validated"
+}
