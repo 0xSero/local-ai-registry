@@ -1,0 +1,276 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": null,
+    "vision": false
+  },
+  "description": "Candidate bare-metal (non-docker) llama.cpp ROCm launch of Qwen3.8-27B GSQ-RCO IQ3_S with native MTP/NextN baked into the same GGUF, on one RX 7900 XTX 24GB. Adopted default profile fills the context window to 221,167 of 229,376 configured tokens (224K profile). A 240K profile (-c 245760) was measured as the current ceiling and is documented here as a context-only variant, not a separate recipe file. No accept_recipe.py acceptance run has been performed against a live server; speed_sweep_ids is empty and status cannot be validated until that evidence exists.",
+  "engine": {
+    "graph_mode": null,
+    "name": "llama.cpp",
+    "version": "b11160 (70c4e1582)"
+  },
+  "facts": {
+    "capabilities.tools": {
+      "note": "No tool-calling test was run against this launch; do not infer support from the base model family alone.",
+      "provenance": {
+        "captured_at": "2026-09-25T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T00:00:00Z",
+            "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+            "kind": "submitter-evidence",
+            "repository": "valcazar57/rx7900xtx-local-llm",
+            "url": "https://github.com/valcazar57/rx7900xtx-local-llm"
+          }
+        ]
+      },
+      "reason": "capability-not-verified",
+      "state": "unknown"
+    },
+    "serving.kv_cache_tokens": {
+      "provenance": {
+        "captured_at": "2026-09-25T00:00:00Z",
+        "sources": [
+          {
+            "captured_at": "2026-09-25T00:00:00Z",
+            "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+            "kind": "submitter-evidence",
+            "repository": "valcazar57/rx7900xtx-local-llm",
+            "url": "https://github.com/valcazar57/rx7900xtx-local-llm"
+          }
+        ]
+      },
+      "reason": "not reported by the llama-server API for this launch; derivable in principle from -c and the -ctk/-ctv quantization flags but not independently measured or recorded by the submitter",
+      "state": "unknown"
+    }
+  },
+  "hardware_count": 1,
+  "hardware_id": "rx-7900-xtx-24gb",
+  "id": "qwen38-27b-gsqrco-iq3s-mtp-rx7900xtx-llamacpp-224k",
+  "launch": {
+    "accelerator_backend": "amd-rocm",
+    "arguments": [
+      "-m",
+      "<path-to-gguf>",
+      "--port",
+      "8080",
+      "-c",
+      "229376",
+      "-ctk",
+      "q8_0",
+      "-ctv",
+      "q8_0",
+      "--temp",
+      "1.0",
+      "--top-p",
+      "0.95",
+      "--top-k",
+      "20",
+      "--min-p",
+      "0.0",
+      "-fa",
+      "on",
+      "-np",
+      "1",
+      "--ctx-checkpoints",
+      "4",
+      "-ngl",
+      "all",
+      "--spec-type",
+      "draft-mtp",
+      "--spec-draft-n-max",
+      "2",
+      "--reasoning-effort",
+      "medium"
+    ],
+    "build": {
+      "amd_target": "gfx1100",
+      "cmake_flags": [
+        "-DGGML_CUDA_FA_QUANTS=\"f16-f16;bf16-bf16;q8_0-q8_0;q8_0-q5_1;q8_0-q4_1;q4_0-q4_0\""
+      ],
+      "commit": "70c4e1582",
+      "note": "hip-kvmix custom build: adds FlashAttention K/V-quant kernel variants beyond the stock b11160 ROCm release via the above cmake flag. Build source lives in the (currently private) valcazar57/rx7900xtx-local-llm repository; commit is a short hash as recorded by the submitter, not a resolved 40-hex commit.",
+      "release_tag": "b11160",
+      "repository": "https://github.com/ggml-org/llama.cpp",
+      "rocm_version": "10",
+      "sha256": "3d8565952bcd74cd4e0d3be3a56221619c25da6176d3716972b75b1cc0a34128"
+    },
+    "container": {
+      "captured_at": "2026-09-25T00:00:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "bare-metal custom-built llama.cpp binary (ROCm hip-kvmix); no container is used",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-09-25T00:00:00Z",
+          "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+          "kind": "submitter-launch",
+          "repository": "valcazar57/rx7900xtx-local-llm",
+          "url": "https://github.com/valcazar57/rx7900xtx-local-llm"
+        }
+      ],
+      "state": "none"
+    },
+    "executable": "llama-server",
+    "host_port": 8080,
+    "kind": "native",
+    "model_entry": "<path-to-gguf>",
+    "network_mode": "localhost"
+  },
+  "metadata": {
+    "adopted_profile": "224k-q8q8-mtp",
+    "engine_binary_alternatives": {
+      "measured": {
+        "description": "Custom ROCm 10 build for gfx1100 adding extra FlashAttention K/V-quant kernel variants via -DGGML_CUDA_FA_QUANTS. This is the binary actually used for every measurement in this recipe.",
+        "sha256": "3d8565952bcd74cd4e0d3be3a56221619c25da6176d3716972b75b1cc0a34128",
+        "variant": "hip-kvmix"
+      },
+      "stock_official": {
+        "description": "Official upstream llama.cpp release binary for the same tag, provided here for comparison only. This recipe does not pin to it and no measurements in this recipe were produced with it.",
+        "sha256": "8c98a329346088d0cdd03195ae5864e29c9a8b11fc293397a723f8730e9492dc",
+        "variant": "llama-b11160-bin-ubuntu-rocm-10.0-x64"
+      }
+    },
+    "evidence_repository_status": "The evidence repository (valcazar57/rx7900xtx-local-llm) is currently private. Its content is described here from the submitter's own copy; it will be shared or made public alongside this contribution, or on request. Links to it will not resolve publicly until then.",
+    "longctx_retrieval_quality": {
+      "128k": {
+        "exact_match": "20/20"
+      },
+      "190k": {
+        "exact_match": "4/4",
+        "note": "190K coverage is explicitly incomplete: only 1 of 5 planned documents and 4 of 20 planned questions were run before the sweep was parked. This is not a completed 190K quality sweep and must not be read as one. The source repository's own aggregate figure of 44/44 exact match, 0 loop detections combines the completed 32K and 128K sweeps with this partial 190K slice; it is not evidence of a completed 190K sweep either.",
+        "status": "partial"
+      },
+      "32k": {
+        "exact_match": "20/20"
+      },
+      "beyond_190k": {
+        "note": "No retrieval-quality evidence exists beyond 190K; never inferred from the 224K/240K speed profiles, which measure throughput and VRAM only, not answer quality.",
+        "state": "unknown"
+      },
+      "source": {
+        "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+        "paths": [
+          "results/20260925-longctx-quality-200k/README.md",
+          "results/20260925-longctx-quality-200k/metadata-32k-128k.json",
+          "results/20260925-longctx-quality-200k/metadata-190k-doc0.json"
+        ],
+        "repository": "valcazar57/rx7900xtx-local-llm"
+      }
+    },
+    "profiles": {
+      "128k-ubatch-mtp-screening-reference": {
+        "generation_tok_s": {
+          "code": 27.7,
+          "copy": 36.0,
+          "essay": 30.6
+        },
+        "mtp_accept_rate_pct": 75,
+        "peak_vram_mib": 21648,
+        "prefill_tok_s": 552.6,
+        "role": "earlier screening pass at 128K used to pick ubatch/MTP settings; reference only, not the adopted profile",
+        "source": {
+          "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+          "paths": [
+            "results/20260925-ubatch-mtp-screening-128k/README.md",
+            "results/20260925-ubatch-mtp-screening-128k/summary-base-n2.jsonl"
+          ],
+          "repository": "valcazar57/rx7900xtx-local-llm"
+        }
+      },
+      "224k-q8q8-mtp": {
+        "context_tokens_configured": 229376,
+        "context_tokens_filled": 221167,
+        "evicted_slots": 0,
+        "generation_tok_s": {
+          "code": 18.7,
+          "copy": 25.1,
+          "essay": 22.3
+        },
+        "hotspot_temp_c": 98,
+        "peak_vram_gib_approx": 22.16,
+        "peak_vram_mib": 22700,
+        "power_cap_w": 272,
+        "prefill_tok_s": 421.7,
+        "role": "adopted default profile",
+        "source": {
+          "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+          "paths": [
+            "results/20260925-context-window-ladder/README.md",
+            "results/20260925-context-window-ladder/summary-224k.jsonl"
+          ],
+          "repository": "valcazar57/rx7900xtx-local-llm"
+        }
+      },
+      "240k-q8q8-mtp-ceiling": {
+        "context_tokens_configured": 245760,
+        "context_tokens_filled": 237551,
+        "evicted_slots": 0,
+        "generation_tok_s": {
+          "code": "18.7-18.8",
+          "copy": 24.4,
+          "essay": 22.5
+        },
+        "hotspot_temp_c": 101,
+        "peak_vram_gib_approx": 22.86,
+        "peak_vram_mib": 23407,
+        "prefill_tok_s": 409.7,
+        "role": "measured ceiling profile, context-only variant of the same launch (-c 245760 instead of 229376); not a separate recipe file",
+        "source": {
+          "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+          "paths": [
+            "results/20260925-context-window-ladder/README.md",
+            "results/20260925-context-window-ladder/summary-240k.jsonl"
+          ],
+          "repository": "valcazar57/rx7900xtx-local-llm"
+        }
+      }
+    }
+  },
+  "model_instance_id": "ista-daslab-qwen3-8-27b-gsq-rco-gguf--iq3-s-mtp",
+  "provenance": {
+    "captured_at": "2026-09-25T00:00:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-09-25T00:00:00Z",
+        "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+        "kind": "submitter-launch",
+        "repository": "valcazar57/rx7900xtx-local-llm",
+        "url": "https://github.com/valcazar57/rx7900xtx-local-llm"
+      },
+      {
+        "captured_at": "2026-09-25T00:00:00Z",
+        "commit": "72b8399c60b46f7f8f869c2061c40a7cc00e4d6f",
+        "kind": "submitter-evidence",
+        "paths": [
+          "results/20260925-context-window-ladder/README.md",
+          "results/20260925-context-window-ladder/summary-224k.jsonl",
+          "results/20260925-context-window-ladder/summary-240k.jsonl",
+          "results/20260925-ubatch-mtp-screening-128k/README.md",
+          "results/20260925-ubatch-mtp-screening-128k/summary-base-n2.jsonl",
+          "results/20260925-longctx-quality-200k/README.md",
+          "results/20260925-longctx-quality-200k/metadata-32k-128k.json",
+          "results/20260925-longctx-quality-200k/metadata-190k-doc0.json"
+        ],
+        "repository": "valcazar57/rx7900xtx-local-llm",
+        "url": "https://github.com/valcazar57/rx7900xtx-local-llm"
+      }
+    ]
+  },
+  "recipe_source": "valcazar57",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "api": "openai/v1",
+    "bind": "127.0.0.1:8080",
+    "kv_cache_tokens": null,
+    "max_concurrency": 1,
+    "max_context_tokens": 229376,
+    "tensor_parallel": 1
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}
