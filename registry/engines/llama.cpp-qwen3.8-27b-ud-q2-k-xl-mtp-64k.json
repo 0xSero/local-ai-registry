@@ -1,0 +1,92 @@
+{
+  "id": "llama.cpp-qwen3.8-27b-ud-q2-k-xl-mtp-64k",
+  "engine": "llama.cpp",
+  "about": "Qwen3.8-27B (GGUF \u00b7 UD-Q2_K_XL, MTP/NextN head in the same file)",
+  "image": "ghcr.io/ggml-org/llama.cpp@sha256:9e4536dfc7ec47fb9be2db36b25cca1eab45667509e3a1938356268d10d8d2cc",
+  "backend": "amd-rocm",
+  "port": 8080,
+  "entrypoint": null,
+  "args": [
+    "-m",
+    "/models/Qwen3.8-27B-UD-Q2_K_XL.gguf",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "65536",
+    "--cache-type-k",
+    "q8_0",
+    "--cache-type-v",
+    "q4_0",
+    "--spec-type",
+    "draft-mtp",
+    "--spec-draft-n-max",
+    "4",
+    "--n-gpu-layers",
+    "999",
+    "--flash-attn",
+    "on",
+    "--jinja",
+    "--parallel",
+    "1",
+    "--no-mmproj",
+    "--fit",
+    "off",
+    "--metrics",
+    "--threads",
+    "8"
+  ],
+  "env": {
+    "HSA_OVERRIDE_GFX_VERSION": "11.0.0"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.8-27B-GGUF",
+      "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+      "at": "/models",
+      "layout": "dir",
+      "files": "Qwen3.8-27B-UD-Q2_K_XL.gguf"
+    }
+  ],
+  "config": null,
+  "ctx": 65536,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "GGUF \u00b7 UD-Q2_K_XL + MTP",
+    "engine": "llama.cpp",
+    "servedName": "/models/Qwen3.8-27B-UD-Q2_K_XL.gguf",
+    "sizeGb": 9.829,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "video": false,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 65536,
+      "kvTokens": 0
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "Qwen3.8-27B-UD-Q2_K_XL.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 9.829
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rx-7600-xt-16gb": "qwen38-27b-ud-q2-k-xl-mtp-rx7600xt-llamacpp-rocm"
+  }
+}
