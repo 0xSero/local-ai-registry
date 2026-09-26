@@ -30,6 +30,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REG = ROOT / "registry"
 ENGINES, RECIPES, RUNS, CARDS = REG / "engines", REG / "recipes", ROOT / "lab" / "runs", REG / "cards"
+LAUNCHES = REG / "launches"  # launches frozen exactly as they were validated, one per recipe, until a lab run replaces them
 GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
 MIN_TPS = 15.0
 MAX_RECIPE_BYTES = 1024
@@ -45,7 +46,7 @@ def config_text(p):
     cfg = p.get("config")
     if not cfg:
         return None
-    return cfg["text"] if "text" in cfg else (ENGINES / cfg["file"]).read_text()
+    return cfg["text"] if "text" in cfg else profile_file(cfg["file"]).read_text()
 
 
 def pin(p):
@@ -57,10 +58,15 @@ def pin(p):
     return hashlib.sha256(json.dumps({**{k: p.get(k) for k in keys}, "config": config_text(p)}, sort_keys=True).encode()).hexdigest()
 
 
+def profile_file(name):
+    """A template profile in engines/, or a frozen launch in launches/."""
+    return next((d / name for d in (ENGINES, LAUNCHES) if (d / name).exists()), ENGINES / name)
+
+
 def profile(ref):
     """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
     name, _, digest = ref.partition("@")
-    p = json.loads((ENGINES / f"{name}.json").read_text())
+    p = json.loads(profile_file(f"{name}.json").read_text())
     if p.get("kind") == "host" or not p.get("image"):  # a host program, or an image built from a pinned commit
         if p.get("kind") == "host" and digest and digest != "host" and not pin(p).startswith(digest):
             raise SystemExit(f"{ref}: the profile now pins {pin(p)[:12]}; rerun the recipe")
@@ -79,9 +85,10 @@ def card(card_id):
 
 
 def recipe_path(r, launch):
-    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k[.<machines>x].json"""
+    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k[.<n>x].json, n = every card in the setup"""
     kind = profile(r["engine"]).get("engine", r["engine"].split("@")[0])
-    many = f".{launch['machines']}x" if launch.get("machines", 1) > 1 else ""  # several computers together
+    n = launch.get("machines", 1) * launch.get("cards", 1)
+    many = f".{n}x" if n > 1 else ""  # several cards, in one computer or across several
     return RECIPES / card(r["card"])["vendor"] / r["card"] / f"{r['model']}.{kind}.{launch['ctx'] // 1024}k{many}.json"
 
 

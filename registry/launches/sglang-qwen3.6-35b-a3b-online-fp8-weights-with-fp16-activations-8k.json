@@ -1,0 +1,83 @@
+{
+  "id": "sglang-qwen3.6-35b-a3b-online-fp8-weights-with-fp16-activations-8k",
+  "engine": "sglang",
+  "about": "Qwen3.6-35B-A3B as validated in qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2",
+  "image": "ghcr.io/0xsero/qwen36-b70-sglang@sha256:d027487a07e4391562b4460da72bc78008be129d44af540148787e02e3045c08",
+  "backend": "intel-xpu",
+  "port": 30000,
+  "entrypoint": null,
+  "args": [
+    "--model-path",
+    "Qwen/Qwen3.6-35B-A3B",
+    "--revision",
+    "995ad96eacd98c81ed38be0c5b274b04031597b0",
+    "--tp",
+    "2",
+    "--dtype",
+    "float16",
+    "--quantization",
+    "fp8",
+    "--load-format",
+    "layered_fp8",
+    "--attention-backend",
+    "intel_xpu",
+    "--trust-remote-code",
+    "--mem-fraction-static",
+    "0.9",
+    "--max-mamba-cache-size",
+    "64",
+    "--page-size",
+    "64",
+    "--mamba-scheduler-strategy",
+    "extra_buffer",
+    "--reasoning-parser",
+    "qwen3",
+    "--enable-cache-report",
+    "--enable-metrics",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface",
+    "LOAD_FORMAT": "layered_fp8",
+    "MEM_FRACTION_STATIC": "0.9",
+    "MODEL_PATH": "Qwen/Qwen3.6-35B-A3B",
+    "PORT": "30000",
+    "SGLANG_MAMBA_CONV_DTYPE": "float16",
+    "SGLANG_MAMBA_SSM_DTYPE": "float32",
+    "SGLANG_XPU_ENABLE_GRAPH": "1",
+    "SGLANG_XPU_ESIMD_DECODE": "1",
+    "SGLANG_XPU_ESIMD_MOE": "1",
+    "SGLANG_XPU_ESIMD_MOE_PREFILL": "1",
+    "SGLANG_XPU_FA_ESIMD_QKV": "1",
+    "SGLANG_XPU_GDN_ESIMD": "0",
+    "SGLANG_XPU_GDN_EXTEND_ESIMD": "0",
+    "SGLANG_XPU_GDN_FAST_PATH": "1",
+    "SGLANG_XPU_PREFILL_DPAS": "1",
+    "TP_SIZE": "2",
+    "ZE_AFFINITY_MASK": "0,1"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "Qwen/Qwen3.6-35B-A3B",
+      "revision": "995ad96eacd98c81ed38be0c5b274b04031597b0",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 8192,
+  "seqs": 1,
+  "vision": false,
+  "cards": 2,
+  "flags": [
+    "--ipc host",
+    "--security-opt seccomp=unconfined"
+  ],
+  "frozen_from": [
+    "qwen36-35b-a3b-layered-fp8-arcb70-sglang-tp2"
+  ]
+}

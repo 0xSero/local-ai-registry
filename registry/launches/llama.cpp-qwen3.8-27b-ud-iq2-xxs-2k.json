@@ -1,0 +1,63 @@
+{
+  "id": "llama.cpp-qwen3.8-27b-ud-iq2-xxs-2k",
+  "engine": "llama.cpp",
+  "about": "Qwen3.8-27B-GGUF as validated in qwen38-27b-ud-iq2-xxs-rtx4060-laptop-llamacpp-tp1",
+  "image": "ghcr.io/ggml-org/llama.cpp@sha256:87c812ce5a8955364c665229d0848e07a2cf38fbd387d83530bc4575a22ffaa1",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--device",
+    "CUDA0",
+    "--model",
+    "/models/Qwen3.8-27B-UD-IQ2_XXS.gguf",
+    "--alias",
+    "Qwen3.8-27B-GGUF",
+    "--ctx-size",
+    "2048",
+    "--parallel",
+    "1",
+    "--n-gpu-layers",
+    "999",
+    "--fit",
+    "off",
+    "--flash-attn",
+    "on",
+    "--no-mmproj",
+    "--jinja",
+    "--metrics",
+    "--perf",
+    "--threads",
+    "8",
+    "--threads-batch",
+    "8",
+    "--batch-size",
+    "128",
+    "--ubatch-size",
+    "64",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--reasoning-budget",
+    "0"
+  ],
+  "env": {},
+  "shm": null,
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.8-27B-GGUF",
+      "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+      "at": "/models",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 2048,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "qwen38-27b-ud-iq2-xxs-rtx4060-laptop-llamacpp-tp1"
+  ]
+}

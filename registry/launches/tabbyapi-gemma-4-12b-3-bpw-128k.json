@@ -1,0 +1,37 @@
+{
+  "id": "tabbyapi-gemma-4-12b-3-bpw-128k",
+  "engine": "tabbyapi",
+  "about": "Gemma-4-12B-it-EXL3-3bpw as validated in gemma-4-12b-it-exl3-3bpw-rtx2000ada-tabbyapi-tp1",
+  "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+  "backend": "nvidia",
+  "port": 5000,
+  "entrypoint": "/opt/venv/bin/python3",
+  "args": [
+    "main.py",
+    "--config",
+    "/app/config.yml"
+  ],
+  "env": {
+    "NVIDIA_VISIBLE_DEVICES": "all"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "turboderp/gemma-4-12B-it-exl3",
+      "revision": "38309570753c5fde71a818feb513b1e09a81fc18",
+      "at": "/workspace/models",
+      "layout": "dir"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--network host"
+  ],
+  "frozen_from": [
+    "gemma-4-12b-it-exl3-3bpw-rtx2000ada-tabbyapi-tp1"
+  ]
+}

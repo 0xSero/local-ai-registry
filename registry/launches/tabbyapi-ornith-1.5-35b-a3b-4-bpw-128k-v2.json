@@ -1,0 +1,40 @@
+{
+  "id": "tabbyapi-ornith-1.5-35b-a3b-4-bpw-128k-v2",
+  "engine": "tabbyapi",
+  "about": "Ornith-1.5-35B-A3B-EXL3-4bpw as validated in ornith15-35b-a3b-exl3-4bpw-rtx4090-tabbyapi-tp1",
+  "image": "ghcr.io/theroyallab/tabbyapi:cu13@sha256:ffa8388f310d3c8a2727c66d14a76bb663fdb99a2a49e68a43c3bebb5a3e53f1",
+  "backend": "nvidia",
+  "port": 5000,
+  "entrypoint": "/opt/venv/bin/python3",
+  "args": [
+    "main.py",
+    "--config",
+    "/app/config.yml"
+  ],
+  "env": {
+    "NVIDIA_VISIBLE_DEVICES": "all"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "ultimatechris/Ornith-1.5-35B-A3B-EXL3-4bpw",
+      "revision": "875ac67dae8e793770396908c575c507f4cd5f75",
+      "at": "/workspace/models",
+      "layout": "dir"
+    }
+  ],
+  "config": {
+    "at": "/app/config.yml",
+    "text": "network:\n  host: 127.0.0.1\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Ornith-1.5-35B-A3B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131073\n  cache_size: 532480\n  cache_mode: Q6\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 4\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
+  },
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--network host"
+  ],
+  "frozen_from": [
+    "ornith15-35b-a3b-exl3-4bpw-rtx4090-tabbyapi-tp1"
+  ]
+}

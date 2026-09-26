@@ -2,7 +2,7 @@
 """Bring in a recipe someone else published, exactly as they launch it, marked reported.
 
 Each input is data/reported/<source>/<repo>.json: the launches read from that source's repository, pinned
-to a commit. Every launch whose weights are not GGUF becomes a frozen profile in registry/engines/ and a
+to a commit. Every launch whose weights are not GGUF becomes a frozen launch in registry/launches/ and a
 recipe whose proof names the source and the numbers it reported. Our six gates have not run on it yet; a
 lab run on the card (`lab.py try ... --on endpoint`, by anyone who owns one) replaces the reported proof.
 
@@ -80,7 +80,7 @@ def main(files):
         if out.exists() and not json.loads(out.read_text())["proof"][0].get("reported"):
             print(f"skip {out.relative_to(lab.ROOT)}: a checked recipe is there")
             continue
-        (lab.ENGINES / f"{prof['id']}.json").write_text(json.dumps(prof, indent=2) + "\n")
+        (lab.LAUNCHES / f"{prof['id']}.json").write_text(json.dumps(prof, indent=2) + "\n")
         assert lab.recipe_path(recipe, lab.render(recipe)) == out, out
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(recipe, separators=(",", ":")) + "\n")

@@ -1,0 +1,59 @@
+{
+  "id": "sglang-lfm2.5-2.6b-bf16-128k-v5",
+  "engine": "sglang",
+  "about": "LiquidAI/LFM2.5-2.6B as validated in lfm25-26b-bf16-rtx4090-sglang-tp1",
+  "image": "lmsysorg/sglang:dev-cu12@sha256:c3479164c16d9a8ef33053914c07bfd372007c36c675f629095f2c925c7e7e30",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/opt/sglang/bin/python",
+  "args": [
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "LiquidAI/LFM2.5-2.6B",
+    "--revision",
+    "a334ee78cd38458bb71eda24109ac42dcec1309d",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--tp",
+    "1",
+    "--context-length",
+    "131072",
+    "--mem-fraction-static",
+    "0.903",
+    "--attention-backend",
+    "flashinfer",
+    "--max-running-requests",
+    "4",
+    "--cuda-graph-max-bs-decode",
+    "4",
+    "--enable-cache-report",
+    "--trust-remote-code",
+    "--reasoning-parser",
+    "qwen3-thinking",
+    "--tool-call-parser",
+    "lfm2"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "LiquidAI/LFM2.5-2.6B",
+      "revision": "a334ee78cd38458bb71eda24109ac42dcec1309d",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "lfm25-26b-bf16-rtx4090-sglang-tp1"
+  ]
+}

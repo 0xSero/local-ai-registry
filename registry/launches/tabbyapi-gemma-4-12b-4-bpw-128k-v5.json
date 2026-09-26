@@ -1,0 +1,37 @@
+{
+  "id": "tabbyapi-gemma-4-12b-4-bpw-128k-v5",
+  "engine": "tabbyapi",
+  "about": "Gemma-4-12B-it-EXL3-4bpw as validated in gemma412b-exl3-4bpw-rtx3090ti-tabbyapi-tp1",
+  "image": "ghcr.io/0xsero/tabbyapi-exl3@sha256:3d35e4979f5de7fd3b1621e4acd70035fa24ab78e941f4b569ab30fe1d1e7448",
+  "backend": "nvidia",
+  "port": 5000,
+  "entrypoint": "/opt/venv/bin/python3",
+  "args": [
+    "main.py",
+    "--config",
+    "/app/config.yml"
+  ],
+  "env": {
+    "NVIDIA_VISIBLE_DEVICES": "all"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "turboderp/gemma-4-12B-it-exl3",
+      "revision": "e8d17ffbe696accdba72a47dac858d7e880d709e",
+      "at": "/workspace/models",
+      "layout": "dir"
+    }
+  ],
+  "config": {
+    "at": "/app/config.yml",
+    "text": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /workspace/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Gemma-4-12B-it-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 131072\n  cache_mode: Q6\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [192]\n  chunk_size: 2048\n  output_chunking: true\n  max_batch_size: 2\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
+  },
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "gemma412b-exl3-4bpw-rtx3090ti-tabbyapi-tp1"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "id": "sglang-ornith-1.5-35b-a3b-nvfp4-128k-v2",
+  "engine": "sglang",
+  "about": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4 as validated in ornith15-35b-a3b-nvfp4-rtxpro4500-sglang-tp1",
+  "image": "lmsysorg/sglang:dev-cu13@sha256:6cd4635214f279e0a43019f88e3120d407567640a58aa7dcc0085e3d91402cc4",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/opt/sglang/bin/python",
+  "args": [
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+    "--revision",
+    "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+    "--tp",
+    "1",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--context-length",
+    "131072",
+    "--mem-fraction-static",
+    "0.90",
+    "--max-running-requests",
+    "4",
+    "--cuda-graph-max-bs-decode",
+    "4",
+    "--enable-cache-report",
+    "--trust-remote-code",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--kv-cache-dtype",
+    "fp8_e4m3",
+    "--attention-backend",
+    "flashinfer",
+    "--moe-runner-backend",
+    "flashinfer_cutlass"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "ornith-ai/Ornith-1.5-35B-A3B-NVFP4",
+      "revision": "0f0b1b59b879ccde1353e6ebd0fb10c204d4c544",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "frozen_from": [
+    "ornith15-35b-a3b-nvfp4-rtxpro4500-sglang-tp1"
+  ]
+}
