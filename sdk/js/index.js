@@ -41,14 +41,14 @@ const pairs = (a) => {
   return args;
 };
 
-/** A program on the host. One with pinned packages (MLX on Apple silicon) also downloads its weights, writes its
- *  launcher and raises the GPU wired-memory limit before it starts. */
+/** A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
+ *  its weights, writes its launcher and raises the GPU wired-memory limit before it starts. */
 function hostSteps(l) {
   const env = Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`);
-  if (!l.pip) return [{ title: "Install", code: install(l.install) }, { title: "Start the server", code: [...env, ...l.command.map(q)].join(" ") }];
-  const out = [{ title: "Install the engine", code: `python3 -m pip install ${l.pip.join(" ")}` }];
-  if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
-  if (l.config) out.push({ title: "Write the launcher", code: `cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
+  if (!l.pip && !l.weights?.length) return [{ title: "Install", code: install(l.install) }, { title: "Start the server", code: [...env, ...l.command.map(q)].join(" ") }];
+  const out = [l.pip ? { title: "Install the engine", code: `python3 -m pip install ${l.pip.map(q).join(" ")}` } : { title: "Install the engine", code: install(l.install) }];
+  if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo}${(w.files ?? []).map((f) => ` ${f}`).join("")} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
+  if (l.config) out.push({ title: "Write the launcher", code: `${l.config.at.includes("/") ? `mkdir -p ${l.config.at.replace(/\/[^/]*$/, "")}\n` : ""}cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
   if (l.sysctl) out.push({ title: "Raise the GPU memory limit (resets on reboot)", code: Object.entries(l.sysctl).map(([k, v]) => `sudo sysctl ${k}=${v}`).join("\n") });
   const run = [...env, l.command[0], ...pairs(l.command.slice(1))];
   out.push({ title: "Start the server", code: run.join(" \\\n  ") });
@@ -92,7 +92,9 @@ export function steps(r) {
 /** Getting a source: a pinned GitHub tree becomes a clone at that commit. */
 function install(url) {
   const m = url.match(/^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/tree\/([0-9a-f]{40})$/);
-  return m ? `git clone https://github.com/${m[1]}/${m[2]} && cd ${m[2]} && git checkout ${m[3]}` : `# ${url}`;
+  if (m) return `git clone https://github.com/${m[1]}/${m[2]} && cd ${m[2]} && git checkout ${m[3]}`;
+  const t = url.match(/^(https:\/\/\S+\/([\w.-]+\.tar\.gz))#sha256=([0-9a-f]{64})$/);  // a release archive, checked
+  return t ? `curl -L -o ${t[2]} ${t[1]}\necho '${t[3]}  ${t[2]}' | shasum -a 256 -c\ntar xzf ${t[2]}` : `# ${url}`;
 }
 
 /** All the steps as one shell script. */

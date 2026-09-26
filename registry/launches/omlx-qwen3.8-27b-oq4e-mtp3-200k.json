@@ -1,0 +1,43 @@
+{
+  "id": "omlx-qwen3.8-27b-oq4e-mtp3-200k",
+  "kind": "host",
+  "engine": "omlx",
+  "about": "Qwen3.8-27B (oQ4e 4-bit, Lightning MTP, 3 draft tokens) on oMLX 0.6.4; from #108 by BlivionIaG",
+  "command": [
+    "omlx",
+    "serve",
+    "--model-dir",
+    "models",
+    "--base-path",
+    "omlx-home",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000"
+  ],
+  "install": "python3 -m pip install 'https://github.com/jundot/omlx/releases/download/v0.6.4/omlx-0.6.4-cp313-cp313-macosx_15_0_universal2.whl' (oMLX 0.6.4, macOS on Apple silicon, Python 3.13)",
+  "pip": [
+    "omlx @ https://github.com/jundot/omlx/releases/download/v0.6.4/omlx-0.6.4-cp313-cp313-macosx_15_0_universal2.whl"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1"
+  },
+  "port": 8000,
+  "weights": [
+    {
+      "repo": "gcoli/Qwen3.8-27B-oQ4e-mtp",
+      "revision": "c41ed507f1b16320942a1e9ce340e71d2692dee2",
+      "at": "models/gcoli_Qwen3.8-27B-oQ4e-mtp",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": {
+    "at": "omlx-home/model_settings.json",
+    "text": "{\n  \"version\": 1,\n  \"models\": {\n    \"gcoli_Qwen3.8-27B-oQ4e-mtp\": {\n      \"mtp_enabled\": true,\n      \"mtp_num_draft_tokens\": 3\n    }\n  }\n}\n"
+  },
+  "ctx": 200000,
+  "seqs": 1,
+  "vision": false,
+  "backend": "metal"
+}
