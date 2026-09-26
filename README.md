@@ -12,7 +12,7 @@ registry/                      the source of truth, tiny
                                       one recipe (~400 bytes): weights, engine, settings, proof
   models.json                         each model: family, release date, what it is for
 lab/            run, check and publish recipes (lab.py try | convert | render | check)
-dist/           catalog.json: everything above, rendered, at most 3 picks per GPU
+dist/           catalog.json: everything above, rendered, at most 3 picks per GPU setup
 site/           local.sybilsolutions.ai and its API (static, on Cloudflare Pages)
 sdk/            js/ and python/: pick a recipe for a GPU, print the command
 app/            local-ai: run a recipe on any Linux, from a terminal or a status bar
@@ -62,4 +62,4 @@ python3 lab/lab.py try <repo>@<commit> --model <id> --engine tabbyapi-exl3 --car
 ## Using it
 
 - **Omarchy Local AI** reads `plugin/v2/recipes.json`.
-- **Anything else** reads `dist/catalog.json` (or https://local.sybilsolutions.ai/api/v2/catalog.json): `cards.<card>.picks` lists recipe keys, first one recommended, and `recipes.<key>.launch` is the rendered launch. The SDKs in `sdk/` do the matching for you.
+- **Anything else** reads `dist/catalog.json` (or https://local.sybilsolutions.ai/api/v2/catalog.json): `cards.<card>.picks` lists recipe keys for one card, first one recommended; `cards.<card>.setups` does the same for each setup (one card, several cards in one machine, several machines); and `recipes.<key>.launch` is the rendered launch. The SDKs in `sdk/` do the matching for you.

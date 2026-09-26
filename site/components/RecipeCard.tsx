@@ -14,7 +14,7 @@ export default function RecipeCard({ r, all }: { r: Recipe; all: Recipe[] }) {
     <article className="rc">
       <span className={`role ${which === "Recommended" ? "" : "alt"}`}>{which}</span>
       <div className="head"><Logo family={m.logo ?? m.family} /><span>{m.name}</span></div>
-      <div className="meta"><span>{format(r)}</span><span>{ENGINE[engineKind(r)] ?? engineKind(r)}</span><span>{ctxLabel(r.launch.ctx)} context</span>{r.launch.machines ? <span>{r.launch.machines} machines</span> : null}</div>
+      <div className="meta"><span>{format(r)}</span><span>{ENGINE[engineKind(r)] ?? engineKind(r)}</span><span>{ctxLabel(r.launch.ctx)} context</span>{r.launch.machines && r.launch.machines > 1 ? <span>{r.launch.machines} machines</span> : (r.launch.cards ?? 1) > 1 ? <span>{r.launch.cards} cards</span> : null}</div>
       {m.good_for && <p className="about"><span className="faint">Best for </span>{m.good_for}.</p>}
       <div className="numbers">
         <div><b>{p.tps ? `${Math.round(p.tps)} tok/s` : "–"}</b><span>decode</span></div>
