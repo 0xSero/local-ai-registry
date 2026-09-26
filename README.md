@@ -24,7 +24,7 @@ docs/           design.md
 
 ## A recipe
 
-`recipes/nvidia/rtx-3070-ti-8gb/qwen3.5-9b.tabbyapi.64k.json`:
+`registry/recipes/nvidia/rtx-3070-ti-8gb/qwen3.5-9b.tabbyapi.64k.json`:
 
 ```json
 {"model":"qwen3.5-9b","weights":"TheMelonGod/Qwen3.5-9B-exl3@22ef1303062e0f6d0b282440f8c1f685947f4938",
@@ -34,7 +34,7 @@ docs/           design.md
 ```
 
 - `weights`: a Hugging Face repo at a full commit.
-- `engine`: a profile in `engines/`, pinned to its image digest.
+- `engine`: a profile in `registry/engines/`, pinned to its image digest.
 - `set`: only the settings that differ from the profile's defaults.
 - `proof`: the latest passing runs. A proof marked `proxy` was run on the sibling card it names; one marked `legacy` passed the older acceptance (load and chat) and is waiting for a full run.
 
@@ -57,9 +57,9 @@ Recipes are never written by hand. Run one:
 python3 lab/lab.py try <repo>@<commit> --model <id> --engine tabbyapi-exl3 --card <card> --set ctx=65536 --set draft=mtp
 ```
 
-`try` rents the card on Vast (or RunPod, or `--on endpoint --endpoint <url>` for your own machine), runs the six checks, writes the recipe only if all pass, and destroys the machine. `lab.py convert <card>` re-runs a `legacy` recipe the same way. Then `make` and open a pull request; CI runs `make check`.
+`try` rents the card on Vast (or RunPod, or `--on endpoint --endpoint <url>` for your own machine), runs the six checks, writes the recipe only if all pass, and destroys the machine. `lab/campaign.py <plan>` runs many at once. `lab.py convert <card>` re-runs a `legacy` recipe the same way. Then `make` and open a pull request; CI runs `make check`.
 
 ## Using it
 
 - **Omarchy Local AI** reads `plugin/v2/recipes.json`.
-- **Anything else** reads `dist/catalog.json`: `cards.<card>.picks` lists recipe keys, first one recommended, and `recipes.<key>.launch` is the rendered launch.
+- **Anything else** reads `dist/catalog.json` (or https://local.sybilsolutions.ai/api/v2/catalog.json): `cards.<card>.picks` lists recipe keys, first one recommended, and `recipes.<key>.launch` is the rendered launch. The SDKs in `sdk/` do the matching for you.

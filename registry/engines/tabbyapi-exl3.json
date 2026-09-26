@@ -21,7 +21,8 @@
     "draft": "none",
     "think": "auto",
     "tools": "qwen3_coder",
-    "vision": false
+    "vision": false,
+    "vars": "{}"
   },
   "config": [
     "network: {host: 0.0.0.0, port: 5000, disable_auth: true, disable_fetch_requests: true, send_tracebacks: false, api_servers: [OAI], sse_ping_interval: 15}",
@@ -44,6 +45,7 @@
     "  reasoning: true",
     "  start_in_reasoning: ${think}",
     "  tool_format: ${tools}",
+    "  template_vars_default: ${vars}",
     "draft_model: ${draft_block}",
     "memory: {sysmem_recurrent_cache: 4096, sysmem_kv_cache: 0, cuda_malloc_async: true}"
   ],

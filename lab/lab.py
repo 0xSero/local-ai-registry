@@ -27,7 +27,6 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 REG = ROOT / "registry"
 ENGINES, RECIPES, RUNS, CARDS = REG / "engines", REG / "recipes", ROOT / "lab" / "runs", REG / "cards"
 GATES = ["load", "chat", "reasoning", "tools", "context", "speed"]
@@ -222,7 +221,7 @@ def save_logs(handle, recipe):
 
 
 def rented(recipe, launch, args):
-    import validate_rented as vr
+    import rent as vr  # Vast and RunPod: offers, create, poll, destroy
 
     class LabSpec(vr.Spec):
         def __init__(self):
