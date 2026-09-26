@@ -1,0 +1,81 @@
+{
+  "id": "vllm-qwen3.8-27b-nvfp4-976k-rtx-pro-6000-blackwell-96gb",
+  "engine": "vllm",
+  "about": "Qwen3.8-27B NVFP4 (unsloth) as miaai-lab runs it (MiaAI-Lab/Qwen3.8-27B-DGX-Spark-RTX-6000)",
+  "image": "vllm/vllm-openai:nightly-aarch64@sha256:2352b4a6a8f290967eed33fad5946c94c668479f6fa5816c13d26ef7aa13f889",
+  "backend": "nvidia",
+  "port": 8888,
+  "entrypoint": [
+    "vllm"
+  ],
+  "args": [
+    "serve",
+    "unsloth/Qwen3.8-27B-NVFP4",
+    "--served-model-name",
+    "qwen38-27b-unsloth-nvfp4",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8888",
+    "--tensor-parallel-size",
+    "1",
+    "--trust-remote-code",
+    "--quantization",
+    "compressed-tensors",
+    "--attention-backend",
+    "triton_attn",
+    "--gpu-memory-utilization",
+    "0.80",
+    "--max-model-len",
+    "1000000",
+    "--hf-overrides",
+    "{\"text_config\": {\"rope_parameters\": {\"mrope_interleaved\": true, \"mrope_section\": [11, 11, 10], \"rope_type\": \"yarn\", \"rope_theta\": 10000000, \"partial_rotary_factor\": 0.25, \"factor\": 4.0, \"original_max_position_embeddings\": 262144}}}",
+    "--max-num-seqs",
+    "4",
+    "--max-num-batched-tokens",
+    "8192",
+    "--enable-chunked-prefill",
+    "--enable-prefix-caching",
+    "--skip-mm-profiling",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--enable-auto-tool-choice",
+    "--media-io-kwargs",
+    "{\"video\": {\"num_frames\": -1}}",
+    "--speculative-config",
+    "{\"method\": \"mtp\", \"num_speculative_tokens\": 2}"
+  ],
+  "env": {
+    "VLLM_TARGET_DEVICE": "cuda",
+    "VLLM_FLOAT32_MATMUL_PRECISION": "high",
+    "CUTE_DSL_ARCH": "sm_121a",
+    "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+    "HF_HOME": "/root/.cache/huggingface",
+    "TRITON_CACHE_DIR": "/root/.triton",
+    "HF_TOKEN": "${HF_TOKEN:-}"
+  },
+  "shm": null,
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.8-27B-NVFP4",
+      "revision": "f0b7c9e722f5565102fff8481c99e4d86ae099c7",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 1000000,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "flags": [
+    "--network host",
+    "--ipc host",
+    "--privileged",
+    "--gpus all"
+  ],
+  "setup": "./download.sh pre-downloads into ./.cache/huggingface (HF_HUB_DISABLE_XET=1, 10 retries, HF_TOKEN read from ~/.bashrc); mounts ./.cache/huggingface -> /root/.cache/huggingface and ./.cache/triton -> /root/.triton.",
+  "source": "https://github.com/MiaAI-Lab/Qwen3.8-27B-DGX-Spark-RTX-6000/tree/608a48de75ba059fc9415947ad636a123935da15"
+}

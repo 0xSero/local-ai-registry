@@ -7,7 +7,6 @@
 """
 import json
 import re
-import shlex
 import sys
 import urllib.request
 
@@ -55,17 +54,24 @@ GPU = {"nvidia": "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri"
 
 
 def _q(s):
-    return s if re.fullmatch(r"[\w@%+=:,./-]+", s) else shlex.quote(s)
+    return s if re.fullmatch(r"[\w@%+=:,./-]+", s) else "'" + s.replace("'", "'\\''") + "'"  # the same quoting as the JS SDK
 
 
 def steps(r):
     """The steps to run a recipe by hand: download the weights, write the config, start the container."""
     l = r["launch"]
     name = (r.get("key") or r["model"]).split("/")[-1]
+    out = [{"title": "Set up first", "code": f"# {l['setup']}\n# Full instructions: {l.get('source')}"}] if l.get("setup") else []
     if l.get("kind") == "host":
-        return [{"title": "Install", "code": f"# {l['install']}"}, {"title": "Start the server", "code": " ".join(l["command"])}]
+        env = [f"{k}={_q(v)}" for k, v in (l.get("env") or {}).items()]
+        return out + [{"title": "Install", "code": _install(l["install"])}, {"title": "Start the server", "code": " ".join(env + [_q(c) for c in l["command"]])}]
+    image = l.get("image")
+    if l.get("build"):  # an image built from the source's Dockerfile at a pinned commit
+        image = f"local-ai/{name}"
+        files = (l["build"].get("dockerfile") or "Dockerfile").split(" + ")
+        out.append({"title": "Build the image", "code": "\n".join([_install(f"https://github.com/{l['build']['repo']}/tree/{l['build']['commit']}")] + [f"docker build -t {image} -f {d} ." for d in files])})
     ws = [w for w in (l["weights"] if isinstance(l["weights"], list) else [l["weights"]]) if w and w.get("repo")]
-    out, mounts, dl = [], [], []
+    mounts, dl = [], []
     for w in ws:
         d = f"~/models/{w['repo'].split('/')[1]}-{w['revision'][:8]}"
         if w.get("layout") == "hub":
@@ -79,7 +85,9 @@ def steps(r):
     if l.get("config"):
         out.append({"title": "Write the server config", "code": f"cat > {name}.yml <<'EOF'\n{l['config']['text'].rstrip()}\nEOF"})
         mounts.append(f"-v $PWD/{name}.yml:{l['config']['at']}:ro")
-    args, a = [], l["args"]
+    e = l.get("entrypoint")
+    ep = e if isinstance(e, list) else [e] if e else []
+    args, a = [], ep[1:] + l["args"]
     i = 0
     while i < len(a):
         if a[i].startswith("-") and i + 1 < len(a) and not a[i + 1].startswith("-"):
@@ -89,11 +97,17 @@ def steps(r):
     run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or [])
     run += [f"--shm-size {l['shm']}"] if l.get("shm") else []
     run += [f"-e {k}={_q(v)}" for k, v in (l.get("env") or {}).items()] + mounts
-    run += [f"--entrypoint {l['entrypoint']}"] if l.get("entrypoint") else []
+    run += [f"--entrypoint {_q(ep[0])}"] if ep else []
     m = l.get("machines")
     title = f"Start the server on each of the {m} machines (NODE_RANK 0 to {m - 1})" if m else "Start the server"
-    out.append({"title": title, "code": " \\\n  ".join(run + [l["image"]] + args)})
+    out.append({"title": title, "code": " \\\n  ".join(run + [image] + args)})
     return out
+
+
+def _install(url):
+    """Getting a source: a pinned GitHub tree becomes a clone at that commit."""
+    m = re.fullmatch(r"https://github\.com/([\w.-]+)/([\w.-]+)/tree/([0-9a-f]{40})", url)
+    return f"git clone https://github.com/{m[1]}/{m[2]} && cd {m[2]} && git checkout {m[3]}" if m else f"# {url}"
 
 
 def command(r):

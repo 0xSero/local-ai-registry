@@ -4,16 +4,17 @@ import { steps as sdkSteps } from "../../sdk/js/index.js";
 
 export type Proof = {
   at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null;
-  proxy?: string; legacy?: boolean; log?: string;
+  proxy?: string; legacy?: boolean; log?: string; reported?: boolean; src?: string; claims?: string;
 };
 export type Launch = {
   image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
   weights: { repo: string; revision: string; at: string; layout?: string } | { repo: string; revision: string; at: string; layout?: string }[];
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
+  kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
 };
 export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; card: string; proof: Proof[]; launch: Launch };
 export type Model = { family: string; name: string; released: string; reasoning: boolean; vision: boolean; about?: string; good_for?: string; logo?: string; hf?: string };
-export type Card = { id: string; name: string; vendor: string; backend: string; vram_gb: number; bandwidth_gb_s: number | null; picks: string[] };
+export type Card = { id: string; name: string; vendor: string; backend: string; vram_gb: number; bandwidth_gb_s: number | null; picks: string[]; more?: string[] };
 
 type Raw = { models: Record<string, Model>; builds: Record<string, { format: string; size_gb: number }>; cards: Record<string, Omit<Card, "id">>; recipes: Record<string, Omit<Recipe, "key" | "slug">> };
 const raw = catalog as unknown as Raw;
@@ -31,18 +32,22 @@ export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", in
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
 export const picks = (c: Card) => c.picks.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
+export const more = (c: Card) => (c.more ?? []).map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
 export const model = (r: Recipe): Model => models[r.model] ?? { family: "", name: r.model, released: "", reasoning: false, vision: false };
-export const engineKind = (r: Recipe) => r.slug.slice(r.model.length + 1, r.slug.lastIndexOf("."));
+export const engineKind = (r: Recipe) => r.slug.slice(r.model.length + 1).replace(/\.\d+k(\.\d+x)?$/, "");
 export const weightsList = (l: Launch) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
 /** What a recipe proved, in plain words. */
 export function status(r: Recipe) {
   const p = r.proof[0];
+  if (p.reported) return { label: `Reported by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on}`, tone: "dim", detail: `Published by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on} in ${p.src}${p.tps ? `, where it reports ${p.tps} tok/s` : ""}. Our six checks have not run on it yet.` };
   if (p.legacy) return { label: "Earlier check", tone: "dim", detail: "Passed the older check (loads and chats); a full six-check run is pending." };
   if (p.proxy) return { label: "Tested on a sibling", tone: "warm", detail: `No ${cardName(r.card)} is rentable; this ran on the ${cardName(p.proxy)}, the same chip family.` };
   return { label: "Tested on this card", tone: "ok", detail: `Passed all six checks on a real ${p.gpu ?? cardName(r.card)} on ${fmtDate(p.at)}.` };
 }
 export const gates = (r: Recipe) => new Set(r.proof[0].gates.split(" "));
+/** What a recipe can do: what our checks proved, or for a reported one what its publisher says. */
+export const claims = (r: Recipe) => new Set(r.proof[0].reported ? (r.proof[0].claims ?? "").split(" ") : r.proof[0].gates.split(" "));
 export const short = (name: string) => name.replace(/^(NVIDIA|AMD|Intel)\s+/i, "").replace(/^GeForce\s+/i, "").replace(/\s+(Generation|GPU)\b/gi, "").replace(/Laptop$/, "Laptop").trim();
 export const cardName = (id: string) => (card(id) ? short(card(id)!.name) : id);
 export const ctxLabel = (n: number) => (n >= 1024 ? `${Math.round(n / 1024)}K` : `${n}`);
@@ -81,6 +86,7 @@ export const steps = (r: Recipe) => sdkSteps(r);
 export const stats = {
   gpus: cards.length,
   recipes: recipes.length,
-  tested: recipes.filter((r) => !r.proof[0].legacy && !r.proof[0].proxy).length,
+  tested: recipes.filter((r) => !r.proof[0].legacy && !r.proof[0].proxy && !r.proof[0].reported).length,
+  reported: recipes.filter((r) => r.proof[0].reported).length,
   models: new Set(recipes.map((r) => r.model)).size,
 };

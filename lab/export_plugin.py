@@ -44,7 +44,8 @@ def build():
     hw = {}
     for card, c in sorted(cat["cards"].items()):
         # the plugin runs one plain container per card: no host programs, host IPC or networking, or several machines
-        ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines"))]
+        ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines", "build"))
+              and not cat["recipes"][k]["proof"][0].get("reported")]  # the plugin runs one plain container we have checked
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
     head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}

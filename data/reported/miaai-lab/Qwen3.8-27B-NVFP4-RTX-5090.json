@@ -1,0 +1,85 @@
+[
+ {
+  "model_id": "qwen3.8-27b",
+  "repo": "MiaAI-Lab/Qwen3.8-27B-NVFP4-RTX-5090",
+  "commit": "a5f9bff97796989b2f3629a2cf0d8335eca7a7e8",
+  "files": [
+   "README.md",
+   "start.sh",
+   "stop.sh"
+  ],
+  "model": "Qwen3.8-27B",
+  "hf_repo": "RadixArk/Qwen3.8-27B-NVFP4",
+  "hf_revision": null,
+  "format": "nvfp4",
+  "bpw": null,
+  "engine": "vllm",
+  "image": null,
+  "build": {
+   "dockerfile": null,
+   "base": "python venv: vllm==0.27.1, flashinfer-python>=0.6.13, nvidia-cutlass-dsl>=4.5.2",
+   "summary": "start.sh patches installed vllm/v1/attention/backends/turboquant_attn.py in place with a backport of vLLM PR #40914 (routes uniform K+1 MTP spec-verify batches through the TurboQuant decode kernel; fixes garbled output, vLLM issue #40880); keeps .pre40914.bak and refuses to run if the anchor is not found"
+  },
+  "card": "rtx-5090-32gb",
+  "machines": 1,
+  "gpus_per_machine": 1,
+  "entrypoint": [
+   ".venv/bin/vllm"
+  ],
+  "args": [
+   "serve",
+   "$HOME/models/RadixArk/Qwen3.8-27B-NVFP4",
+   "--served-model-name",
+   "qwen38-nvfp4",
+   "--host",
+   "0.0.0.0",
+   "--port",
+   "8888",
+   "--max-model-len",
+   "262144",
+   "--kv-cache-dtype",
+   "turboquant_4bit_nc",
+   "--kv-cache-memory-bytes",
+   "5905580032",
+   "--max-num-seqs",
+   "1",
+   "--max-num-batched-tokens",
+   "512",
+   "--gpu-memory-utilization",
+   "$GPU_UTIL",
+   "--attention-config.flash_attn_version=2",
+   "--enable-auto-tool-choice",
+   "--tool-call-parser",
+   "qwen3_xml",
+   "--reasoning-parser",
+   "qwen3",
+   "--speculative-config",
+   "{\"method\":\"mtp\",\"num_speculative_tokens\":3}"
+  ],
+  "env": {
+   "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+   "VLLM_USE_FLASHINFER_SAMPLER": "0"
+  },
+  "port": 8888,
+  "ctx": 262144,
+  "shm": null,
+  "flags": [],
+  "weights_mount": null,
+  "speculative": "MTP (in-checkpoint head), num_speculative_tokens 3",
+  "reasoning": true,
+  "tools": true,
+  "vision": false,
+  "tool_parser": "qwen3_xml",
+  "reasoning_parser": "qwen3",
+  "measured": {
+   "decode_tps": 160,
+   "prefill_tps": null,
+   "concurrency_notes": "max-num-seqs 1 by necessity (MTP + TurboQuant KV crashes with concurrency); 5.5 GiB KV pool = 286,466 tokens, 1.09x of 262k",
+   "source_line": "- **~160 tok/s** single-stream generation (MTP-3)"
+  },
+  "date": "2026-08-16",
+  "license": null,
+  "extra_setup": "Not Docker. start.sh: python3 -m venv .venv; pip install vllm==0.27.1 flashinfer-python>=0.6.13 nvidia-cutlass-dsl>=4.5.2; apply PR #40914 backport; snapshot_download RadixArk/Qwen3.8-27B-NVFP4 to MODEL_DIR (~22 GiB); if <Python.h> missing, installs uv CPython 3.14 and sets CC=~/.local/bin/cc-triton; GPU_UTIL auto = (free MiB - 820)/total clamped [0.80,0.98]; runs vllm serve with nohup, waits for /v1/models, then warms with a ~26K-token prefill. No CUDA toolkit needed.",
+  "notes": "0/15 garble-battery fails with patch (stock 0.27.1: 13/15). Vision not mentioned; not verified. Lower --max-model-len to raise --max-num-seqs (README table) but MTP+concurrency is flagged unstable. No LICENSE file."
+ }
+]

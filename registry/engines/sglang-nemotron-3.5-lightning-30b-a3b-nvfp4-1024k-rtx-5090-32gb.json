@@ -1,0 +1,65 @@
+{
+  "id": "sglang-nemotron-3.5-lightning-30b-a3b-nvfp4-1024k-rtx-5090-32gb",
+  "engine": "sglang",
+  "about": "NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 + DSpark draft as miaai-lab runs it (MiaAI-Lab/Nemotron3.5-Lightning-DGX-Spark-RTX-5090-6000-PRO)",
+  "image": "lmsysorg/sglang:dev-nemotron3-5-lightning@sha256:a04d9a1a7ffe371b05230aecab001d4ba2bfa0e5c137bc56409ecc4cbc3ac864",
+  "backend": "nvidia",
+  "port": 8888,
+  "entrypoint": null,
+  "args": [
+    "sglang",
+    "serve",
+    "--model-path",
+    "${MODEL_IN_CONTAINER}",
+    "--mamba-ssm-dtype",
+    "float16",
+    "--mem-fraction-static",
+    "0.40",
+    "--cuda-graph-max-bs-decode",
+    "2",
+    "--reasoning-parser",
+    "nemotron_3",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--speculative-algorithm",
+    "DSPARK",
+    "--speculative-draft-model-path",
+    "${DRAFT_IN_CONTAINER}",
+    "--speculative-dspark-block-size",
+    "3",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8888"
+  ],
+  "env": {
+    "HF_HOME": "/root/.cache/huggingface",
+    "HF_TOKEN": "${HF_TOKEN}"
+  },
+  "shm": "32g",
+  "weights": [
+    {
+      "repo": "nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4",
+      "revision": "bee7596271d1495f6992ae224aefde4410e816b8",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 1048576,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--network host",
+    "--ulimit memlock=-1:-1",
+    "--cap-add=IPC_LOCK",
+    "--ipc host",
+    "--gpus all",
+    "-v ${HF_HOME}:/root/.cache/huggingface",
+    "-v ${WORK_DIR}:/workspace",
+    "--workdir /workspace"
+  ],
+  "setup": "start.sh (or --download-only) downloads target + DSpark draft into $HF_HOME (~/.cache/huggingface) via hf/huggingface-cli or a docker fallback; container runs `sglang serve` with snapshot paths resolved from the HF cache.",
+  "source": "https://github.com/MiaAI-Lab/Nemotron3.5-Lightning-DGX-Spark-RTX-5090-6000-PRO/tree/38c16a403ea57f26f1828fa572270245ae51f01d"
+}
