@@ -35,6 +35,7 @@ const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filt
 /** The steps to run a recipe by hand: download the weights, write the config, start the container. */
 export function steps(r) {
   const l = r.launch, name = (r.key ?? r.model).split("/").pop();
+  if (l.kind === "host") return [{ title: "Install", code: `# ${l.install}` }, { title: "Start the server", code: l.command.join(" ") }];
   const out = [], mounts = [], dl = [];
   for (const w of weights(l)) {
     const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;
@@ -51,9 +52,9 @@ export function steps(r) {
     const a = l.args[i], b = l.args[i + 1];
     if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${q(b)}`); i++; } else args.push(q(a));
   }
-  const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.shm ? [`--shm-size ${l.shm}`] : []),
+  const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
     ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(l.entrypoint ? [`--entrypoint ${l.entrypoint}`] : []), l.image, ...args];
-  out.push({ title: "Start the server", code: run.join(" \\\n  ") });
+  out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.join(" \\\n  ") });
   return out;
 }
 

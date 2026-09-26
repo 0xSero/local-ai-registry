@@ -1,0 +1,37 @@
+{
+  "id": "llama.cpp-qwen3.8-27b-ud-q4-k-m-8k",
+  "engine": "llama.cpp",
+  "about": "Qwen3.8-27B-GGUF as validated in qwen3-8-27b-q4-k-m-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1",
+  "image": "ghcr.io/lemonade-sdk/lemonade-server:v11.9.0@sha256:7c780707cd695392a8680f557c7c1d55521383a71b1c4c5a9d9e6a226a1bee91",
+  "backend": "amd-rocm",
+  "port": 13305,
+  "entrypoint": "/opt/lemonade/lemond",
+  "args": [
+    "--host",
+    "0.0.0.0"
+  ],
+  "env": {},
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.8-27B-GGUF",
+      "revision": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+      "at": "/opt/lemonade/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": {
+    "at": "/opt/lemonade/.config/lemonade/config.json",
+    "text": "{\n  \"llamacpp\": {\n    \"backend\": \"rocm\",\n    \"prefer_system\": false,\n    \"rocm_args\": \"--flash-attn on -b 2048 -ub 512 -sm none --spec-type draft-mtp --spec-draft-n-max 3\",\n    \"rocm_bin\": \"b1323\"\n  },\n  \"rocm_channel\": \"nightly\"\n}\n"
+  },
+  "ctx": 8192,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--ipc host"
+  ],
+  "frozen_from": [
+    "qwen3-8-27b-q4-k-m-radeon-pro-w7800-48gb-llama-cpp-mtp-tp1"
+  ]
+}

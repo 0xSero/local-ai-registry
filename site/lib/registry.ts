@@ -56,7 +56,8 @@ export function format(r: Recipe) {
   const s = `${w?.repo ?? ""} ${w?.at ?? ""} ${r.engine} ${r.slug}`.toLowerCase();
   const bpw = s.match(/(\d(?:\.\d+)?)\s*-?bpw/) ?? s.match(/(\d)bpw/);
   if (s.includes("exl3")) return `EXL3${bpw ? ` ${Number(bpw[1])} bpw` : ""}`;
-  if (s.includes("q4-k-m") || s.includes("q4_k_m")) return "GGUF Q4_K_M";
+  const q = s.replace(/-/g, "_").match(/\b(iq\d_[a-z]+|q\d_k(?:_[msl])?|q\d_0)\b/);
+  if (q) return `GGUF ${q[1].toUpperCase()}`;
   if (s.includes("ptq1")) return "Ternary";
   if (s.includes("fp8")) return "FP8";
   if (s.includes("nvfp4")) return "NVFP4";

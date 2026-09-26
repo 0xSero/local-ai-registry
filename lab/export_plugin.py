@@ -43,8 +43,10 @@ def build():
     meta = json.loads((ROOT / "registry" / "models.json").read_text())
     hw = {}
     for card, c in sorted(cat["cards"].items()):
-        hw[card] = {"match": c["match"],
-                    "recipes": [entry(k, cat["recipes"][k], meta) for k in c["picks"]]}
+        # the plugin runs one plain container per card: no host programs, host IPC or networking, or several machines
+        ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines"))]
+        if ok:
+            hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
     head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}
     lines = ["{"] + [f'  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)},' for k, v in head.items()] + ['  "hardware": {']
     lines += [f'    {json.dumps(k)}: {json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' + ("," if i < len(hw) - 1 else "") for i, (k, v) in enumerate(hw.items())]
