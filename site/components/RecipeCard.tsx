@@ -17,9 +17,9 @@ export default function RecipeCard({ r, all }: { r: Recipe; all: Recipe[] }) {
       <div className="meta"><span>{format(r)}</span><span>{ENGINE[engineKind(r)] ?? engineKind(r)}</span><span>{ctxLabel(r.launch.ctx)} context</span></div>
       {m.good_for && <p className="about"><span className="faint">Best for </span>{m.good_for}.</p>}
       <div className="numbers">
-        <div><b>{p.tps ? `${Math.round(p.tps)}` : "–"}</b><span>tok/s decode</span></div>
-        <div><b>{p.prefill ? `${Math.round(p.prefill).toLocaleString("en-US")}` : "–"}</b><span>tok/s prefill</span></div>
-        <div><b>{ctxLabel(r.launch.ctx)}</b><span>tokens</span></div>
+        <div><b>{p.tps ? `${Math.round(p.tps)} tok/s` : "–"}</b><span>decode</span></div>
+        <div><b>{p.prefill ? `${Math.round(p.prefill).toLocaleString("en-US")} tok/s` : "–"}</b><span>prefill</span></div>
+        <div><b>{ctxLabel(r.launch.ctx)}</b><span>context</span></div>
       </div>
       <div className="chips">
         {[["reasoning", "Thinks"], ["tools", "Tools"], ["context", "Long context"]].map(([k, l]) => (

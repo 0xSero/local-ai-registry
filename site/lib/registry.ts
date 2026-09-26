@@ -69,7 +69,8 @@ export function role(r: Recipe, all: Recipe[]) {
   const fastest = [...all].sort((a, b) => (b.proof[0].tps ?? 0) - (a.proof[0].tps ?? 0))[0];
   if (fastest.key === r.key) return "Fastest";
   const longest = [...all].sort((a, b) => b.launch.ctx - a.launch.ctx)[0];
-  if (longest.key === r.key) return "Longest context";
+  if (longest.key === r.key && longest.launch.ctx > all[0].launch.ctx) return "Longest context";
+  if (model(r).family !== model(all[0]).family) return "Another family";
   return "Alternative";
 }
 
