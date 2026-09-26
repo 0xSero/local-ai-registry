@@ -14,11 +14,13 @@ for i, c in cat["cards"].items():
 js = subprocess.run(["node", "--input-type=module", "-e", """
 import { readFileSync } from "node:fs"; import { detect, steps } from "./sdk/js/index.js";
 const cat = JSON.parse(readFileSync("dist/catalog.json"));
-const out = {}; for (const [i, c] of Object.entries(cat.cards)) { const k = c.picks[0]; out[i] = [detect(cat, c.name, c.vram_gb), steps({ key: k, ...cat.recipes[k] })]; }
+const out = {}; for (const [i, c] of Object.entries(cat.cards)) out[i] = [detect(cat, c.name, c.vram_gb), [...c.picks, ...c.more].map((k) => steps({ key: k, ...cat.recipes[k] }))];
 console.log(JSON.stringify(out));"""], capture_output=True, text=True, check=True).stdout
-for i, (got, st) in json.loads(js).items():
-    k = cat["cards"][i]["picks"][0]
+n = 0
+for i, (got, sts) in json.loads(js).items():
     assert got == i, (i, got)
-    assert st == L.steps({"key": k, **cat["recipes"][k]}), f"js and python steps differ for {k}"
-print(f"sdk ok: {len(cat['cards'])} cards, js and python agree")
+    for k, st in zip(cat["cards"][i]["picks"] + cat["cards"][i]["more"], sts):
+        assert st == L.steps({"key": k, **cat["recipes"][k]}), f"js and python steps differ for {k}"
+        n += 1
+print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY

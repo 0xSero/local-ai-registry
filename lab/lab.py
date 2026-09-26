@@ -20,6 +20,7 @@ import hashlib
 import json
 import os
 import re
+import shlex
 import string
 import sys
 import time
@@ -43,9 +44,9 @@ def profile(ref):
     """`tabbyapi-exl3@0f83e6198dc3` -> the profile, checked against the digest prefix."""
     name, _, digest = ref.partition("@")
     p = json.loads((ENGINES / f"{name}.json").read_text())
-    if p.get("kind") == "host":  # a program on the host has no image to pin
+    if p.get("kind") == "host" or not p.get("image"):  # a host program, or an image built from a pinned commit
         return p
-    if digest and not p["image"].split("@sha256:")[1].startswith(digest):
+    if digest and "@sha256:" in p["image"] and not p["image"].split("@sha256:")[1].startswith(digest):
         raise SystemExit(f"{ref}: the profile's image is now {p['image']}; rerun the recipe")
     return p
 
@@ -59,9 +60,10 @@ def card(card_id):
 
 
 def recipe_path(r, launch):
-    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k.json"""
+    """recipes/<vendor>/<card>/<model>.<engine kind>.<context>k[.<machines>x].json"""
     kind = profile(r["engine"]).get("engine", r["engine"].split("@")[0])
-    return RECIPES / card(r["card"])["vendor"] / r["card"] / f"{r['model']}.{kind}.{launch['ctx'] // 1024}k.json"
+    many = f".{launch['machines']}x" if launch.get("machines", 1) > 1 else ""  # several computers together
+    return RECIPES / card(r["card"])["vendor"] / r["card"] / f"{r['model']}.{kind}.{launch['ctx'] // 1024}k{many}.json"
 
 
 def dirname(weights):
@@ -75,10 +77,11 @@ def render(recipe):
     if "defaults" not in p:  # a frozen profile: the launch exactly as it was validated
         cfg = p.get("config")
         if p.get("kind") == "host":  # a program on the host, not a container
-            return {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None, "weights": [],
-                    "config": None, "ctx": p["ctx"], "seqs": 1, "vision": False, "backend": p.get("backend"), "cards": 1}
+            return {"kind": "host", "command": p["command"], "install": p.get("install"), "env": p.get("env") or {}, "port": p["port"], "image": None,
+                    "weights": [], "config": None, "ctx": p["ctx"], "seqs": 1, "vision": p.get("vision", False), "backend": p.get("backend"), "cards": 1,
+                    **{k: p[k] for k in ("setup", "source") if k in p}}
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
-                **{k: p[k] for k in ("flags", "machines") if k in p},
+                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
@@ -86,13 +89,18 @@ def render(recipe):
     name = dirname(recipe["weights"])
     values = {**{k: str(v).lower() if isinstance(v, bool) else v for k, v in s.items()}, "name": name,
               "cache_tokens": int(s["ctx"]) * int(s["seqs"]) + 1024 * int(s["seqs"]),
-              "draft_block": "{draft_mode: mtp}" if s["draft"] == "mtp" else "{}"}
-    config = "\n".join(string.Template(line).substitute(values) for line in p["config"]) + "\n"
+              "draft_block": "{draft_mode: mtp}" if s.get("draft") == "mtp" else "{}"}
+    sub = lambda t: string.Template(t).substitute(values)
+    args = []
+    for a in p["args"]:  # an argument that is one whole ${setting} may hold several words, or none
+        args += shlex.split(sub(a)) if re.fullmatch(r"\$\{\w+\}", a) else [sub(a)]
+    config = "\n".join(sub(line) for line in p["config"]) + "\n" if p.get("config") else None
     repo, rev = recipe["weights"].split("@")
-    return {"image": p["image"], "entrypoint": p["entrypoint"], "args": p["args"], "port": p["port"], "shm": p["shm"],
-            "env": {}, "weights": {"repo": repo, "revision": rev, "at": string.Template(p["weights_at"]).substitute(name=name)},
-            "config": {"at": p["config_at"], "text": config, "sha256": hashlib.sha256(config.encode()).hexdigest()},
-            "ctx": int(s["ctx"]), "seqs": int(s["seqs"]), "vision": bool(s["vision"]), "backend": p["backend"]}
+    return {"image": p["image"], "entrypoint": p["entrypoint"], "args": args, "port": p["port"], "shm": p["shm"],
+            "env": {k: sub(v) for k, v in (p.get("env") or {}).items()},
+            "weights": {"repo": repo, "revision": rev, "at": sub(p["weights_at"])},
+            "config": {"at": p["config_at"], "text": config, "sha256": hashlib.sha256(config.encode()).hexdigest()} if config else None,
+            "ctx": int(s["ctx"]), "seqs": int(s["seqs"]), "vision": bool(s.get("vision", False)), "backend": p["backend"], "min_cuda": p.get("min_cuda")}
 
 
 # ----------------------------------------------------------------------------- the server under test
@@ -108,12 +116,14 @@ def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small c
 
 
 def count(endpoint, text):
-    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode)."""
-    try:
-        out, _ = call(endpoint, "/v1/token/encode", {"text": text}, timeout=120)
-        return int(out.get("length") or len(out.get("tokens") or [])), "tokenizer"
-    except Exception:
-        return len(text) // 4, "estimate"
+    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode; vLLM: /tokenize; SGLang: /v1/tokenize)."""
+    for path, body in (("/v1/token/encode", {"text": text}), ("/tokenize", {"prompt": text}), ("/v1/tokenize", {"prompt": text})):
+        try:
+            out, _ = call(endpoint, path, body, timeout=120)
+            return int(out.get("length") or out.get("count") or len(out.get("tokens") or [])), "tokenizer"
+        except Exception:
+            continue
+    return len(text) // 4, "estimate"
 
 
 def chat(endpoint, model, messages, **kw):
@@ -254,7 +264,7 @@ def rented(recipe, launch, args):
     def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
         return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
     LabSpec.onstart_script = onstart
-    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or (13.2 if "tabbyapi" in launch["image"] else 12.9), vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
+    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or launch.get("min_cuda") or 12.9, vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
     provider = vr.PROVIDERS[args.on](ns)
     spec = LabSpec()
     exclude = set()
@@ -324,7 +334,7 @@ def cmd_try(args):
         proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
     slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
     RUNS.mkdir(parents=True, exist_ok=True)
-    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": launch["config"]["sha256"]}
+    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch["config"] or {}).get("sha256")}
     text = json.dumps(run, indent=1, ensure_ascii=False)
     run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
     run_path.write_text(text + "\n")
@@ -410,7 +420,8 @@ def cmd_check(_):
             assert f.parent.name == r["card"] and f.parent.parent.name == c["vendor"], "path is not recipes/<vendor>/<card>/"
             launch = render(r)
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
-            need = {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+            need = set() if r["proof"][0].get("reported") else {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+            assert not r["proof"][0].get("reported") or r["proof"][0].get("src"), "a reported proof names its source"
             assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
             assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"
         except (AssertionError, KeyError, ValueError, SystemExit, FileNotFoundError) as e:
