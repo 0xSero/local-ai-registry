@@ -236,14 +236,16 @@ def gates(endpoint, launch):
     except (ValueError, KeyError):
         pass
     first = bool(calls) and calls[0]["function"]["name"] == "get_weather" and "paris" in str(args.get("city", "")).lower()
-    reply = ""
+    reply, second = "", {}
     if first:
         msgs += [{"role": "assistant", "content": c["message"].get("content") or "", "tool_calls": calls},
                  {"role": "tool", "tool_call_id": calls[0].get("id", "0"), "content": json.dumps({"city": "Paris", "temp_c": 17, "sky": "overcast"})}]
         c2, _, _ = chat(endpoint, served, msgs, tools=[tool])
         reply = c2["message"].get("content") or ""
+        second = {"finish": c2.get("finish_reason"), "calls_again": len(c2["message"].get("tool_calls") or []),
+                  "thinking_chars": len(c2["message"].get("reasoning_content") or c2["message"].get("reasoning") or "")}
     ok["tools"] = first and "17" in reply
-    ev["tools"] = {"call": calls[:1], "reply": reply[-200:]}
+    ev["tools"] = {"call": calls[:1], "reply": reply[-200:], **second}
     # context: a code planted near the end of a prompt that fills ~85% of the window
     target = int(launch["ctx"] * 0.85)
     filler = " ".join(f"Line {i}: the archive notes that shipment {i * 7 % 997} left dock {i % 13} on schedule." for i in range(target // 24))  # ~23.6 tokens a line (measured: 32,834 tokens from 1,473 lines)
