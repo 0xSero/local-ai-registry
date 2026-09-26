@@ -45,7 +45,8 @@ export default async function RecipePage({ params }: P) {
 
       <section>
         <span className="label">Run it</span>
-        <p className="dim" style={{ marginTop: 0 }}>With <a href="https://github.com/0xSero/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> it is one button. By hand, it is three steps: the weights, the config, the container. The server then answers on <code>http://localhost:8000/v1</code>.</p>
+        {p.reported ? <p className="dim" style={{ marginTop: 0 }}>This is the launch as {s.label.replace("Reported by ", "")} publishes it. Their repository has the full setup: <a href={r.launch.source} style={{ textDecoration: "underline" }}>{p.src} ›</a> The server then answers on <code>http://localhost:8000/v1</code>.</p> :
+        <p className="dim" style={{ marginTop: 0 }}>With <a href="https://github.com/0xSero/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> it is one button. By hand, it is three steps: the weights, the config, the container. The server then answers on <code>http://localhost:8000/v1</code>.</p>}
         <ol className="steps">
           {run.map((st, i) => (
             <li key={i}>
@@ -68,11 +69,12 @@ export default async function RecipePage({ params }: P) {
         <span className="label">Details</span>
         <dl className="kv">
           <dt>Weights</dt><dd>{!w ? "inside the image" : <a href={`https://huggingface.co/${w.repo}/tree/${w.revision}`}>{w.repo} @ {w.revision.slice(0, 10)} ›</a>}</dd>
-          <dt>Image</dt><dd>{r.launch.image ?? "none: a program on the host"}</dd>
+          <dt>Image</dt><dd>{r.launch.build ? <a href={`https://github.com/${r.launch.build.repo}/tree/${r.launch.build.commit}`}>built from {r.launch.build.repo} @ {r.launch.build.commit.slice(0, 10)} ›</a> : r.launch.image ?? "none: a program on the host"}</dd>
+          {r.launch.source && <><dt>Source</dt><dd><a href={r.launch.source}>{r.launch.source.replace("https://github.com/", "").replace("/tree/", " @ ").slice(0, 60)} ›</a></dd></>}
           <dt>Engine profile</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/engines/${r.engine.split("@")[0]}.json`}>{r.engine.split("@")[0]} ›</a></dd>
           <dt>Recipe file</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/recipes/${r.key}.json`}>registry/recipes/{r.key}.json ›</a></dd>
           {m.released && <><dt>Model released</dt><dd>{fmtDate(m.released)}</dd></>}
-          <dt>Tested</dt><dd>{p.on === "legacy" ? "earlier acceptance" : `${p.on}${p.gpu ? `, ${p.gpu}` : ""}`}{p.proxy ? ` (sibling: ${cardName(p.proxy)})` : ""}</dd>
+          <dt>Tested</dt><dd>{p.reported ? `not yet by us; reported by ${p.on}` : p.on === "legacy" ? "earlier acceptance" : `${p.on}${p.gpu ? `, ${p.gpu}` : ""}`}{p.proxy ? ` (sibling: ${cardName(p.proxy)})` : ""}</dd>
         </dl>
       </section>
     </main>

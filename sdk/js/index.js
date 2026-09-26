@@ -28,7 +28,7 @@ export async function pick({ gpu, vram, all = false }, cat) {
   return all ? rs : rs[0];
 }
 
-const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "intel-xpu": "--device /dev/dri" };
+const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
@@ -44,12 +44,13 @@ const pairs = (a) => {
 /** A program on the host. One with pinned packages (MLX on Apple silicon) also downloads its weights, writes its
  *  launcher and raises the GPU wired-memory limit before it starts. */
 function hostSteps(l) {
-  if (!l.pip) return [{ title: "Install", code: `# ${l.install}` }, { title: "Start the server", code: l.command.join(" ") }];
+  const env = Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`);
+  if (!l.pip) return [{ title: "Install", code: install(l.install) }, { title: "Start the server", code: [...env, ...l.command.map(q)].join(" ") }];
   const out = [{ title: "Install the engine", code: `python3 -m pip install ${l.pip.join(" ")}` }];
   if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
   if (l.config) out.push({ title: "Write the launcher", code: `cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
   if (l.sysctl) out.push({ title: "Raise the GPU memory limit (resets on reboot)", code: Object.entries(l.sysctl).map(([k, v]) => `sudo sysctl ${k}=${v}`).join("\n") });
-  const run = [...Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`), l.command[0], ...pairs(l.command.slice(1))];
+  const run = [...env, l.command[0], ...pairs(l.command.slice(1))];
   out.push({ title: "Start the server", code: run.join(" \\\n  ") });
   return out;
 }
@@ -57,8 +58,15 @@ function hostSteps(l) {
 /** The steps to run a recipe by hand: download the weights, write the config, start the container. */
 export function steps(r) {
   const l = r.launch, name = (r.key ?? r.model).split("/").pop();
-  if (l.kind === "host") return hostSteps(l);
-  const out = [], mounts = [], dl = [];
+  const out = l.setup ? [{ title: "Set up first", code: `# ${l.setup}\n# Full instructions: ${l.source}` }] : [];
+  if (l.kind === "host") return [...out, ...hostSteps(l)];
+  let image = l.image;
+  if (l.build) {  // an image built from the source's Dockerfile at a pinned commit
+    image = `local-ai/${name}`;
+    const files = (l.build.dockerfile ?? "Dockerfile").split(" + ");
+    out.push({ title: "Build the image", code: [install(`https://github.com/${l.build.repo}/tree/${l.build.commit}`), ...files.map((d) => `docker build -t ${image} -f ${d} .`)].join("\n") });
+  }
+  const mounts = [], dl = [];
   for (const w of weights(l)) {
     const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;
     if (w.layout === "hub") { dl.push(`hf download ${w.repo} \\\n  --revision ${w.revision}`); mounts.push("-v ~/.cache/huggingface:/root/.cache/huggingface"); }
@@ -69,15 +77,22 @@ export function steps(r) {
     out.push({ title: "Write the server config", code: `cat > ${name}.yml <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
     mounts.push(`-v $PWD/${name}.yml:${l.config.at}:ro`);
   }
-  const args = [];
-  for (let i = 0; i < l.args.length; i++) {
-    const a = l.args[i], b = l.args[i + 1];
+  const ep = Array.isArray(l.entrypoint) ? l.entrypoint : l.entrypoint ? [l.entrypoint] : [];
+  const all = [...ep.slice(1), ...l.args], args = [];
+  for (let i = 0; i < all.length; i++) {
+    const a = all[i], b = all[i + 1];
     if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${q(b)}`); i++; } else args.push(q(a));
   }
   const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
-    ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(l.entrypoint ? [`--entrypoint ${l.entrypoint}`] : []), l.image, ...args];
+    ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
   out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.join(" \\\n  ") });
   return out;
+}
+
+/** Getting a source: a pinned GitHub tree becomes a clone at that commit. */
+function install(url) {
+  const m = url.match(/^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/tree\/([0-9a-f]{40})$/);
+  return m ? `git clone https://github.com/${m[1]}/${m[2]} && cd ${m[2]} && git checkout ${m[3]}` : `# ${url}`;
 }
 
 /** All the steps as one shell script. */

@@ -5,7 +5,7 @@
     "tools": true,
     "vision": false
   },
-  "description": "Validated GLM-5.3 EXL3/TR3 3.0 bpw recipe on four RTX PRO 6000 Blackwell 96 GB GPUs with TP4/DCP4, MTP3, quantized KV cache, full and piecewise CUDA graphs, an 800k context envelope, and uncapped C1-C3 matched-window measurements.",
+  "description": "GLM-5.3 EXL3 TR3 3.0 bpw on 4x RTX PRO 6000 Blackwell: vLLM r17 (voipmonitor infernal-invocation), TP4/DCP4 ag_rs, NCCL allreduce (the owner's entrypoint wrapper, shipped here as an asset and run with bash), MTP3 probabilistic draft, NVFP4 MLA KV + FP8 rope, 11 GiB KV/rank = 1,359,616-token pool, 320K context, 8 sequences, 2048-token batches, prefill schedule interval 2. The owner's production config after campaigns F1 (2026-09-25) and G1 (2026-09-26).",
   "engine": {
     "graph_mode": "full-and-piecewise",
     "name": "vllm",
@@ -150,73 +150,64 @@
   "launch": {
     "accelerator_backend": "nvidia",
     "arguments": [
+      "/opt/local-ai/glm53-tuned-entrypoint.sh",
       "--default-chat-template-kwargs",
       "{\"reasoning_effort\":\"none\"}",
       "--attention-config",
       "{\"indexer_kv_dtype\":\"fp8\"}",
       "--kv-cache-memory-bytes",
-      "8589934592"
+      "11811160064",
+      "--prefill-schedule-interval",
+      "2",
+      "--enable-prompt-tokens-details"
     ],
-    "container": {
-      "captured_at": "2026-09-01T04:00:19Z",
-      "compose_file": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-compose.yml",
-      "digest": "sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
-      "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
-      "reason": "published-oci-manifest-and-compose-launch-captured-during-accepted-sweep",
-      "runtime": "docker",
-      "source": [
-        {
-          "captured_at": "2026-09-01T04:00:19Z",
-          "kind": "runtime-identity",
-          "url": "https://github.com/0xSero/local-ai-registry/blob/main/docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json"
-        }
-      ],
-      "state": "digest-pinned"
-    },
     "container_port": 8000,
-    "entrypoint": "/usr/local/bin/serve-infernal-invocation.sh",
+    "entrypoint": "/bin/bash",
     "environment": {
       "ASYNC_SCHEDULING": "0",
       "B12X_PCIE_DMA": "0",
-      "CUDA_DEVICE_MAX_CONNECTIONS": "1",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
       "DCP": "4",
-      "DCP_A2A_LARGE_BACKEND": "ag_rs",
-      "DCP_BACKEND": "a2a",
+      "DCP_BACKEND": "ag_rs",
+      "DCP_CKV_GATHER": "auto",
       "DCP_CKV_GATHER_MAX_TOKENS": "262144",
-      "DCP_CKV_PREFETCH_DEPTH": "0",
-      "DCP_CKV_PREFETCH_WORKSPACE_MIB": "0",
-      "F8_DMA": "0",
+      "DCP_CKV_PREFETCH_DEPTH": "auto",
+      "DCP_INDEXER_SHARDS": "auto",
+      "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+      "DCP_QUERY_SPLIT": "auto",
+      "DCP_TOPK_OWNER_MERGE": "auto",
       "GPU_MEMORY_UTILIZATION": "0.98",
-      "GRAPH": "12",
+      "GRAPH": "32",
       "INSTANTTENSOR_BACKEND": "BUFFERED",
       "INSTANTTENSOR_COPY": "0",
       "KV_CACHE_DTYPE": "nvfp4_ds_mla",
-      "KV_FP8_ROPE": "0",
+      "KV_FP8_ROPE": "1",
       "LMCACHE_MODE": "off",
       "LOAD_FORMAT": "instanttensor",
-      "MAX_BATCHED_TOKENS": "3072",
-      "MAX_MODEL_LEN": "800000",
-      "MAX_NUM_SEQS": "3",
+      "MAX_BATCHED_TOKENS": "2048",
+      "MAX_MODEL_LEN": "327680",
+      "MAX_NUM_SEQS": "8",
       "MODEL": "/model",
       "MODEL_FAMILY": "glm52-exl3",
       "MOE_BACKEND": "b12x",
       "MOE_MODE": "a16",
       "MTP": "3",
-      "MTP_DRAFT_SAMPLE_METHOD": "greedy",
+      "MTP_DRAFT_SAMPLE_METHOD": "probabilistic",
       "MTP_MOE_BACKEND": "triton",
       "PCIE_CALIBRATION": "off",
+      "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
       "QUANTIZATION": "exl3",
       "SERVED_MODEL_NAME": "glm-5.3",
       "TP": "4",
       "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
       "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
       "VLLM_EXL3_PREFILL_CAPACITY": "2048",
-      "VLLM_EXL3_PREFILL_CHUNK": "128",
-      "VLLM_EXL3_PREFILL_TRELLIS": "1",
-      "VLLM_EXL3_TRELLIS_BLOCK_M": "8",
-      "VLLM_EXL3_TRELLIS_MAX_M": "16",
-      "VLLM_EXL3_TRELLIS_MIN_M": "1",
-      "VLLM_NVFP4_MLA_DYNAMIC_SCALE": "0"
+      "VLLM_EXL3_TRELLIS_MAX_M": "64",
+      "VLLM_LONG_PREFILL_TOKEN_THRESHOLD": "4096",
+      "VLLM_MAX_LONG_PARTIAL_PREFILLS": "1",
+      "VLLM_MAX_NUM_PARTIAL_PREFILLS": "2",
+      "VLLM_USE_B12X_DCP_A2A": "0"
     },
     "host_port": 8000,
     "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
@@ -224,26 +215,40 @@
     "kind": "docker",
     "mounts": [
       {
+        "provision": {
+          "repository": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
+          "revision": "ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe",
+          "size_gb": 316.42
+        },
         "read_only": true,
         "source": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
         "target": "/model"
       },
       {
-        "provision": {
-          "repository": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
-          "revision": "ffb7770ea91f088eaf7eeef90ca2ed6b26dc70fe",
-          "size_gb": 316.42026932
-        },
         "read_only": true,
-        "source": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
-        "target": "/models"
+        "source": "asset/glm53-tuned-entrypoint.sh",
+        "target": "/opt/local-ai/glm53-tuned-entrypoint.sh"
       }
     ],
     "network_mode": "bridge",
     "shm_size": "32g"
   },
   "metadata": {
+    "acceptance": {
+      "accepted_at": "2026-09-26T03:16:51Z",
+      "experiments": [
+        "G1-glm53-psi2",
+        "F1-glm53-freeze"
+      ],
+      "harness": "blackwell-forge bench.py smoke (17 x 23 = 391, tool call) and coherence cells",
+      "note": "G1: smoke passed (391, tool call). F1 (same launch without prefill interval 2): coherence to 235,774 tokens, 48 + 96 replayed agent turns with tools, 0 fails."
+    },
     "acceptance_evidence": "docs/notes/glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-20260901.json",
+    "image_wrapper": {
+      "base": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+      "entrypoint_asset": "asset/glm53-tuned-entrypoint.sh",
+      "note": "Production runs a local image built FROM the base with only this script added as ENTRYPOINT; here the base image runs the same script via /bin/bash."
+    },
     "quality_sidecars": {
       "arithmetic": true,
       "reasoning_request": true,
@@ -264,12 +269,34 @@
       "kv_cache_memory_bytes_per_rank": 8589934592,
       "max_num_batched_tokens": 3072,
       "max_num_seqs": 3
+    },
+    "superseded_launch_20260926": {
+      "arguments": [
+        "--default-chat-template-kwargs",
+        "{\"reasoning_effort\":\"none\"}",
+        "--attention-config",
+        "{\"indexer_kv_dtype\":\"fp8\"}",
+        "--kv-cache-memory-bytes",
+        "8589934592"
+      ],
+      "entrypoint": "/usr/local/bin/serve-infernal-invocation.sh",
+      "image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0"
     }
   },
   "model_instance_id": "davidsyoung-glm-5-3-exl3-tr3-3-0bpw--3-0-bpw",
   "provenance": {
-    "captured_at": "2026-09-01T04:00:19Z",
+    "captured_at": "2026-09-26T03:16:51Z",
     "sources": [
+      {
+        "captured_at": "2026-09-26T03:16:51Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os controller recipe (the one serving production), read-only"
+      },
+      {
+        "captured_at": "2026-09-26T03:16:51Z",
+        "kind": "owner-ledger",
+        "path": "data/sources/pop-os/2026-09-26-blackwell-forge/ledger.jsonl"
+      },
       {
         "captured_at": "2026-09-01T04:00:19Z",
         "kind": "validated-runtime-recipe",
@@ -281,18 +308,19 @@
   "schema_version": "local-ai-registry/v1",
   "serving": {
     "data_context_parallel": 4,
-    "explicit_kv_cache_bytes_per_rank": 8589934592,
-    "kv_cache_tokens": 862975,
-    "max_concurrency": 3,
-    "max_context_tokens": 800000,
-    "max_num_batched_tokens": 3072,
-    "max_num_seqs": 3,
+    "explicit_kv_cache_bytes_per_rank": 11811160064,
+    "kv_cache_tokens": 1359616,
+    "max_concurrency": 8,
+    "max_context_tokens": 327680,
+    "max_num_batched_tokens": 2048,
+    "max_num_seqs": 8,
     "tensor_parallel": 4
   },
   "speed_sweep_ids": [
     "discord-sweep-1539055561419653282",
     "discord-sweep-1539055561616924722",
-    "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep"
+    "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4-sweep",
+    "glm-5-3-exl3-tr3-3-0bpw-rtx-pro-6000-blackwell-96gb-vllm-tp4-forge-20260926"
   ],
   "status": "candidate"
 }
