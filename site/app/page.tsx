@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag } from "@/lib/registry";
 
 export default function Home() {
-  const vendors = ["nvidia", "amd", "intel"];
+  const vendors = ["nvidia", "amd", "intel", "apple"].filter((v) => cards.some((c) => c.vendor === v));
   return (
     <main>
       <div className="hero">
