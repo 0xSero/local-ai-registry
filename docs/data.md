@@ -2,6 +2,16 @@
 
 A recipe is only as good as the run behind it. There are three ways a recipe gets here, from strongest to weakest proof, and one rule: **no GGUF**. New recipes use EXL3 (ExLlamaV3, or SGLang with EXL3 kernels), or NVFP4, FP8 and AWQ on vLLM or SGLang.
 
+## GGUF
+
+- **NVIDIA and Intel: none in production.** Every NVIDIA card runs EXL3 (TabbyAPI or SGLang-EXL3) or NVFP4/FP8 (vLLM, SGLang), and the Arc Pro B70 runs EXL3 through vLLM on XPU. The GGUF recipes they had are kept in `data/archive/gguf-recipes/`.
+- **AMD: GGUF only until a ROCm run passes.** Nobody rents Radeon cards (neither Vast nor RunPod lists any), so these need an owner: vLLM or SGLang on ROCm with FP8/AWQ weights, through `lab.py try --on endpoint`. The MI300X is the one AMD card RunPod rents.
+- **Ranking:** a GGUF recipe never outranks another recipe on the same card (`catalog.py`).
+
+## Where the cards are
+
+Vast has most consumer and pro NVIDIA cards, some only on unverified hosts (`--any-host`; the gates are the same). RunPod adds the RTX PRO 4000/4500/6000 and the MI300X, and needs Docker Hub images (vLLM, SGLang). Neither has AMD Radeon, Intel Arc, laptops, the RTX 2000 Ada or the DGX Spark: those take `--on endpoint` from an owner, or a `proxy` from a sibling card (`lab.py proxy`).
+
 ## 1. The lab rents the card (tested)
 
 `lab/lab.py try` rents the card on Vast, runs the six gates and writes the recipe only if all pass. It takes any template engine profile:
