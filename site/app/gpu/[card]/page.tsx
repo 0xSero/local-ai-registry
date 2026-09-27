@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import RecipeCard, { ENGINE } from "@/components/RecipeCard";
-import { cards, card, picks, lead, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup } from "@/lib/registry";
+import HardwareSpecs from "@/components/HardwareSpecs";
+import { cards, card, picks, lead, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup, specs, bare } from "@/lib/registry";
 
 type P = { params: Promise<{ card: string }> };
-export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
+export const generateStaticParams = () => [...cards, ...bare].map((c) => ({ card: c.id }));
 
 export async function generateMetadata({ params }: P): Promise<Metadata> {
-  const c = card((await params).card);
-  if (!c) return {};
+  const id = (await params).card, c = card(id), h = specs(id);
+  if (!c) return h ? { title: `${short(h.name)} ${h.vram_gb} GB`, description: `${short(h.name)}: ${h.memory.map((r) => r[1]).join(", ")}. No recipe yet.` } : {};
   const top = picks(lead(c))[0];
   const name = short(c.name);
   return {
@@ -19,8 +20,20 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
 }
 
 export default async function Gpu({ params }: P) {
-  const c = card((await params).card);
-  if (!c) notFound();
+  const id = (await params).card, c = card(id), h = specs(id);
+  if (!c && !h) notFound();
+  if (!c) return (
+    <main>
+      <Link href="/#gpus" className="back">‹ all GPUs</Link>
+      <h1 className="title">{short(h!.name)}</h1>
+      <div className="dim">{VENDOR[h!.vendor]} · {h!.vram_gb} GB{h!.bandwidth_gb_s ? ` · ${h!.bandwidth_gb_s} GB/s` : ""}</div>
+      <section>
+        <span className="label">Recipes</span>
+        <p className="dim">No recipe for this {h!.kind === "discrete" ? "card" : "chip"} yet. The lab adds one when it can rent the hardware or an owner runs the checks on theirs.</p>
+      </section>
+      <HardwareSpecs h={h!} />
+    </main>
+  );
   const many = c.setups.length > 1;
   return (
     <main>
@@ -33,6 +46,7 @@ export default async function Gpu({ params }: P) {
         </nav>
       )}
       {c.setups.map((s) => <SetupSection key={anchor(s)} s={s} name={short(c.name)} many={many} />)}
+      {h && <HardwareSpecs h={h} />}
     </main>
   );
 }
