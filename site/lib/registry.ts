@@ -30,7 +30,7 @@ export const recipes: Recipe[] = Object.entries(raw.recipes).map(([key, r]) => (
 
 function vendorRank(v: string) { return ["nvidia", "amd", "intel"].indexOf(v); }
 
-export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel" };
+export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple" };
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
 const byKey = (keys: string[]) => keys.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
