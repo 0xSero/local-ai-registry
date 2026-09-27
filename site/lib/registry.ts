@@ -1,5 +1,6 @@
 // Everything the site shows comes from ../dist/catalog.json, built by lab/catalog.py.
 import catalog from "../../dist/catalog.json";
+import hardwareFile from "../../dist/hardware.json";
 import { steps as sdkSteps } from "../../sdk/js/index.js";
 
 export type Proof = {
@@ -28,7 +29,19 @@ export const cards: Card[] = Object.entries(raw.cards)
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 export const recipes: Recipe[] = Object.entries(raw.recipes).map(([key, r]) => ({ key, slug: key.split("/").pop()!, ...r }));
 
-function vendorRank(v: string) { return ["nvidia", "amd", "intel"].indexOf(v); }
+function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple"].indexOf(v); }
+
+/** A spec sheet from data/registry/hardware, built into ../dist/hardware.json by lab/hardware.py. */
+export type Specs = {
+  name: string; vendor: string; kind: string; family: string; vram_gb: number; bandwidth_gb_s: number | null; products: string[];
+  memory: [string, string][]; compute: [string, string][]; tflops: [string, number | null, number | null][]; price: [string, string][];
+  listings: { what: string; price: string; at: string; publisher: string; url: string }[]; sources: { publisher: string; url: string; at: string }[];
+};
+const specsById = (hardwareFile as unknown as { hardware: Record<string, Specs> }).hardware;
+export const specs = (id: string): Specs | undefined => specsById[id];
+/** Hardware with a spec sheet but no recipe yet, sorted like the cards. */
+export const bare = Object.entries(specsById).filter(([id]) => !raw.cards[id]).map(([id, h]) => ({ id, ...h }))
+  .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 
 export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple" };
 export const card = (id: string) => cards.find((c) => c.id === id);
@@ -102,6 +115,7 @@ export const steps = (r: Recipe) => sdkSteps(r);
 
 export const stats = {
   gpus: cards.length,
+  hardware: cards.length + bare.length,
   recipes: recipes.length,
   tested: recipes.filter((r) => !r.proof[0].legacy && !r.proof[0].proxy && !r.proof[0].reported).length,
   reported: recipes.filter((r) => r.proof[0].reported).length,
