@@ -73,7 +73,7 @@ GPUS = {
     "rtx-6000-ada-48gb": {"runpod": ["NVIDIA RTX 6000 Ada Generation"], "vast": "RTX 6000Ada"},
     "rtx-a6000-48gb": {"runpod": ["NVIDIA RTX A6000"], "vast": "RTX A6000"},
     "rtx-pro-4000-blackwell-24gb": {"runpod": ["NVIDIA RTX PRO 4000 Blackwell"], "vast": "RTX PRO 4000"},
-    "rtx-pro-4500-blackwell-32gb": {"runpod": ["NVIDIA RTX PRO 4500 Blackwell", "NVIDIA RTX PRO 4500 Blackwell Server Edition"], "vast": "RTX PRO 4500"},
+    "rtx-pro-4500-blackwell-32gb": {"runpod": ["NVIDIA RTX PRO 4500 Blackwell"], "vast": "RTX PRO 4500"},
     "rtx-pro-6000-blackwell-96gb": {"runpod": ["NVIDIA RTX PRO 6000 Blackwell Workstation Edition", "NVIDIA RTX PRO 6000 Blackwell Server Edition"], "vast": "RTX PRO 6000 WS"},
 }
 
@@ -201,7 +201,8 @@ class RunPod:
     def call(self, method, path, body=None, timeout=60):
         data = json.dumps(body).encode() if body is not None else None
         request = urllib.request.Request(f"{self.API}{path}", data=data, method=method, headers={
-            "Authorization": f"Bearer {self.key()}", "Content-Type": "application/json"})
+            "Authorization": f"Bearer {self.key()}", "Content-Type": "application/json",
+            "User-Agent": "local-ai-lab/1"})  # Cloudflare in front of RunPod blocks the urllib default (error 1010)
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 raw = response.read()
@@ -262,6 +263,7 @@ class Vast:
         if not shutil.which("vastai"):
             raise SystemExit("vastai CLI not found: `uv tool install vastai` and put the key in ~/.config/vastai/vast_api_key")
         self.min_inet = args.vast_min_inet
+        self.verified = "any" if getattr(args, "vast_any_host", False) else "true"  # unverified hosts: for cards verified hosts never offer
         self.min_cuda = args.vast_min_cuda
         self.max_price = args.vast_max_price
 
@@ -307,7 +309,7 @@ class Vast:
         # cuda_max_good is the host driver's CUDA ceiling; the image's NVIDIA_REQUIRE_CUDA floor must be at or below it
         # (12.9 for the pinned sglang cu12 image; 13.0 for vllm-openai and sglang dev-cu13; 13.2 for tabbyapi cu13 and
         # the attested tabbyapi-exl3). Older drivers cannot init the image (12.4 hosts fail llama.cpp too).
-        query = (f"num_gpus=1 rentable=true verified=true gpu_name={name} gpu_ram>={lo} "  # the <= side is applied below: the server reads it in MB
+        query = (f"num_gpus=1 rentable=true verified={self.verified} gpu_name={name} gpu_ram>={lo} "  # the <= side is applied below: the server reads it in MB
                  f"inet_down>={self.min_inet} disk_space>={spec.disk + 5} reliability>0.9 cuda_max_good>={self.min_cuda} "
                  f"dph_total<={self.max_price} "  # the campaign ceiling; a card with no offer under it is reported, never rented above it
                  f"geolocation notin [CN]")  # hosts that cannot reach Hugging Face never finish the weights download

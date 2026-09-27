@@ -38,7 +38,8 @@ def build(today=None):
         recipes[key] = {**r, "launch": lab.render(r), "profile": str(lab.profile_file(r["engine"].split("@")[0] + ".json").relative_to(ROOT))}
         # a lab recipe ranks above a legacy one, and a legacy one above one reported by its publisher
         mf = (fam.get(m["family"], len(fam)), -dt.date.fromisoformat(m["released"]).toordinal()) if m else (len(fam), 0)
-        rank = (old, *mf)
+        gguf = r["engine"].startswith("llama") or "gguf" in r["weights"].lower()  # GGUF only where nothing else runs yet
+        rank = (gguf, old, *mf)
         launch = recipes[key]["launch"]
         setup = (launch.get("cards") or 1, launch.get("machines") or 1)
         cards.setdefault(r["card"], {}).setdefault(setup, []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
