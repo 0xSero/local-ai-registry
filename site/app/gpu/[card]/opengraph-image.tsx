@@ -1,11 +1,17 @@
 import { og, size } from "@/lib/og";
-import { cards, card, picks, lead, model, format, ctxLabel, short, setupTag } from "@/lib/registry";
+import { cards, card, picks, lead, model, format, ctxLabel, short, setupTag, specs, bare } from "@/lib/registry";
 export { size };
 export const contentType = "image/png";
 export const dynamic = "force-static";
-export const generateStaticParams = () => cards.map((c) => ({ card: c.id }));
+export const generateStaticParams = () => [...cards, ...bare].map((c) => ({ card: c.id }));
 export default async function Image({ params }: { params: Promise<{ card: string }> }) {
-  const c = card((await params).card)!;
+  const id = (await params).card, c = card(id);
+  if (!c) {
+    const h = specs(id)!;
+    const top = h.tflops.find((t) => t[0] === "FP16" || t[0] === "BF16");
+    return og({ kicker: `${h.vram_gb} GB`, title: short(h.name), sub: "No recipe yet · spec sheet", logo: false,
+      stats: [[h.bandwidth_gb_s ? h.bandwidth_gb_s.toLocaleString("en-US") : "–", "GB/s"], [top?.[1] ? `${Math.round(top[1])}` : "–", "FP16 TFLOPS"], [h.price.find((p) => p[0] !== "Availability")?.[1] ?? "–", "price"]] });
+  }
   const s = lead(c);
   const top = picks(s)[0];
   const m = model(top);

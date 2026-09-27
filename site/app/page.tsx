@@ -1,19 +1,19 @@
 import Link from "next/link";
 import Picker from "@/components/Picker";
 import Logo from "@/components/Logo";
-import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag } from "@/lib/registry";
+import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag, bare } from "@/lib/registry";
 
 export default function Home() {
-  const vendors = ["nvidia", "amd", "intel"];
+  const vendors = ["nvidia", "amd", "intel", "apple"].filter((v) => cards.some((c) => c.vendor === v) || bare.some((h) => h.vendor === v));
   return (
     <main>
       <div className="hero">
         <div className="label" style={{ marginBottom: 18 }}>Local AI registry</div>
         <h1>The model to run on your GPU, and exactly how.</h1>
         <p>Pick your card. You get the three best models it can run, how fast each one goes, and the command that starts it. A tested recipe was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace. Below the top three, each card lists every other recipe we know of, including ones published by others, marked as reported until our checks run.</p>
-        <Picker options={cards.map((c) => ({ id: c.id, name: short(c.name), vendor: c.vendor, vram: c.vram_gb }))} />
+        <Picker options={[...cards, ...bare].map((c) => ({ id: c.id, name: short(c.name), vendor: c.vendor, vram: c.vram_gb }))} />
         <div className="facts">
-          <span><b>{stats.gpus}</b> GPUs</span><span><b>{stats.recipes}</b> recipes</span>
+          <span><b>{stats.hardware}</b> GPUs and chips</span><span><b>{stats.gpus}</b> with recipes</span><span><b>{stats.recipes}</b> recipes</span>
           <span><b>{stats.tested}</b> tested on the real card</span><span><b>{stats.reported}</b> reported</span>
         </div>
       </div>
@@ -38,6 +38,11 @@ export default function Home() {
                 );
               })}
             </div>
+            {bare.some((h) => h.vendor === v) && (
+              <p className="dim" style={{ fontSize: 13, marginTop: 12, lineHeight: 1.8 }}>
+                No recipe yet: {bare.filter((h) => h.vendor === v).map((h, i) => <span key={h.id}>{i ? " · " : ""}<Link href={`/gpu/${h.id}`}>{short(h.name)}</Link></span>)}
+              </p>
+            )}
           </div>
         ))}
       </section>
