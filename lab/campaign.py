@@ -13,6 +13,8 @@ ap.add_argument("--engine", default="tabbyapi-exl3")
 ap.add_argument("--max-price", default="2.0")
 ap.add_argument("--min-cuda", default="13.0")
 ap.add_argument("--min-inet", default="300")
+ap.add_argument("--disk", default="90")
+ap.add_argument("--any-host", action="store_true", help="vast: also unverified hosts")
 a = ap.parse_args()
 todo = []
 for line in Path(a.plan).read_text().splitlines():
@@ -24,7 +26,7 @@ for line in Path(a.plan).read_text().splitlines():
     if lab.recipe_path(r, lab.render({**r, "set": {k: int(v) if v.isdigit() else v for k, v in r["set"].items()}})).exists():
         print(f"skip {card} {model}: recipe exists"); continue
     todo.append((card, model, ["python3", str(lab.ROOT / "lab" / "lab.py"), "try", weights, "--model", model, "--engine", a.engine, "--card", card,
-                               "--max-price", a.max_price, "--min-cuda", a.min_cuda, "--min-inet", a.min_inet, "--disk", "90"] + [x for s in sets for x in ("--set", s)]))
+                               "--max-price", a.max_price, "--min-cuda", a.min_cuda, "--min-inet", a.min_inet, "--disk", a.disk] + (["--any-host"] if a.any_host else []) + [x for s in sets for x in ("--set", s)]))
 running = []
 while todo or running:
     while todo and len(running) < a.jobs:

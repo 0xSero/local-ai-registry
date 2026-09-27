@@ -306,7 +306,7 @@ def rented(recipe, launch, args):
     def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
         return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
     LabSpec.onstart_script = onstart
-    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or launch.get("min_cuda") or 12.9, vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk)
+    ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or launch.get("min_cuda") or 12.9, vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk, vast_any_host=getattr(args, "any_host", False))
     provider = vr.PROVIDERS[args.on](ns)
     spec = LabSpec()
     exclude = set()
@@ -444,7 +444,7 @@ def cmd_proxy(args):
     for f in sorted(RECIPES.glob(f"*/{args.sibling}/*.json")):
         r = json.loads(f.read_text())
         p = r["proof"][0]
-        if p.get("legacy") or p.get("proxy"):
+        if p.get("legacy") or p.get("proxy") or p.get("reported"):  # only our own lab runs carry over
             continue
         r = {**r, "card": args.card, "proof": [{**p, "proxy": args.sibling}]}
         out = recipe_path(r, render(r))
@@ -506,6 +506,7 @@ def main():
     t.add_argument("--min-inet", type=int, default=500, help="vast: minimum host downlink, Mbps")
     t.add_argument("--max-price", type=float, default=1.5)
     t.add_argument("--disk", type=int, default=60)
+    t.add_argument("--any-host", action="store_true", help="vast: also unverified hosts (the gates are the same; for cards verified hosts never offer)")
     t.add_argument("--dry-run", action="store_true")
     cv = sub.add_parser("convert")
     cv.add_argument("card")
