@@ -152,13 +152,17 @@ def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small c
 
 
 def count(endpoint, text):
-    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode; vLLM: /tokenize; SGLang: /v1/tokenize)."""
-    for path, body in (("/v1/token/encode", {"text": text}), ("/tokenize", {"prompt": text}), ("/v1/tokenize", {"prompt": text})):
+    """Tokens in text, from the server's tokenizer when it has one (TabbyAPI: /v1/token/encode; vLLM: /tokenize;
+    SGLang: /v1/tokenize; llama-server: /tokenize with `content`, which answers `prompt` with an empty list)."""
+    for path, body in (("/v1/token/encode", {"text": text}), ("/tokenize", {"prompt": text}), ("/v1/tokenize", {"prompt": text}),
+                       ("/tokenize", {"content": text})):
         try:
             out, _ = call(endpoint, path, body, timeout=120)
-            return int(out.get("length") or out.get("count") or len(out.get("tokens") or [])), "tokenizer"
+            n = int(out.get("length") or out.get("count") or len(out.get("tokens") or []))
         except Exception:
             continue
+        if n or not text:  # no tokens for a non-empty text is a request the server did not understand
+            return n, "tokenizer"
     return len(text) // 4, "estimate"
 
 
