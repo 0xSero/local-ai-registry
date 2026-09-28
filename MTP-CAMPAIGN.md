@@ -184,5 +184,10 @@ run rented at $1.99/h, above the $1/h ceiling, because `validate_rented.py` had 
    moved a long way since `de896528` (306 commits by other sessions, and its history looks rewritten), so a
    rebase will be needed before any PR.
 3. Decide on the cu12 image path for the RTX 2000 Ada / 4070 SUPER / 3080 12 GB.
-4. The plugin: `make sync REGISTRY=$PWD/../registry-v6 REGISTRY_REF=mtp-campaign` on branch `v6` reads this
-   branch's `plugin/v2/recipes.json` (36 hardware ids, 94 recipes) once you are happy with it.
+4. The plugin sync is **deliberately not committed**. Running
+   `make sync REGISTRY=$PWD/../registry-v6 REGISTRY_REF=mtp-campaign` on branch `v6` does apply cleanly, but it
+   takes the vendored catalog from 38 card kinds down to 36: this branch predates `rx-7600-xt-16gb` and
+   `rx-9070-xt-16gb`, which reached `origin/main` while the campaign was running. Syncing now would delete two
+   AMD cards from the plugin. Rebase this branch on current `origin/main` first, re-run
+   `python3 scripts/export_plugin_v2.py --out plugin/v2/recipes.json`, then sync. The plugin working tree was
+   left untouched at 38 card kinds.
