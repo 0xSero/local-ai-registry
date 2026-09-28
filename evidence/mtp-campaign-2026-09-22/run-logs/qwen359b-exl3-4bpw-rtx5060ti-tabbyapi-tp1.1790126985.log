@@ -1,0 +1,16 @@
+[01:29:45] attempt 1: renting RTX 5060 Ti (vast), image ghcr.io/0xsero/tabbyapi-exl3
+[01:29:47] vast 52150686 created, 0.1773888888888889 /h, gpu RTX 5060 Ti
+[01:30:10] vast status: 4af393826573: Pull complete
+[01:31:50] waiting for /v1/models (122s, vast loading 4af393826573: Pull complete, container up)
+[01:32:01] vast status: 19ecffd1183d: Download complete
+[01:32:34] vast status: ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1
+[01:32:45] vast status: success, running ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1
+[01:33:40] server healthy after 232s at http://158.181.52.18:43167
+server is healthy; serving model id: Qwen3.5-9B-EXL3-6hb-4bpw
+dialects through the gateway: chat, messages, responses
+acceptance measurements: decode 108.2 tok/s (client_post_first_token_estimate), ttft 546 ms over 3 samples
+PROMOTED qwen359b-exl3-4bpw-rtx5060ti-tabbyapi-tp1 to validated with evidence qwen359b-exl3-4bpw-rtx5060ti-tabbyapi-tp1-acceptance
+next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR
+[01:35:04] PROMOTED qwen359b-exl3-4bpw-rtx5060ti-tabbyapi-tp1 (validated on vast RTX 5060 Ti)
+[01:35:05] vast 52150686 destroyed
+[01:35:05] approx cost: 0.02 (5 min at 0.177/h)

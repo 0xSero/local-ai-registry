@@ -1,0 +1,501 @@
+(EngineCore pid=425) INFO 09-23 01:14:27 [weight_utils.py:890] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=425) Loading safetensors checkpoint shards:   0% Completed | 0/5 [00:00<?, ?it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  20% Completed | 1/5 [00:00<00:01,  2.67it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  40% Completed | 2/5 [00:01<00:01,  1.51it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  60% Completed | 3/5 [00:02<00:01,  1.23it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  80% Completed | 4/5 [00:03<00:00,  1.09it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards: 100% Completed | 5/5 [00:03<00:00,  1.22it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards: 100% Completed | 5/5 [00:03<00:00,  1.26it/s]
+(EngineCore pid=425) 
+(EngineCore pid=425) INFO 09-23 01:14:31 [default_loader.py:430] Loading weights took 4.06 seconds
+(EngineCore pid=425) INFO 09-23 01:14:35 [gpu_model_runner.py:5332] Loading drafter model...
+(EngineCore pid=425) INFO 09-23 01:14:35 [kernel.py:306] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=425) WARNING 09-23 01:14:35 [vllm.py:1757] max_num_scheduled_tokens is set to 2048 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens or max_num_seqs.
+[rank0]:[W923 01:14:35.510539707 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 2104492032, total: 25298141184).
+[rank0]:[W923 01:14:35.577719611 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 770703360, total: 25298141184).
+[rank0]:[W923 01:14:35.577847837 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 770703360, total: 25298141184).
+(EngineCore pid=425) ERROR 09-23 01:14:36 [gpu_model_runner.py:5403] Failed to load model - not enough GPU memory. Try lowering --gpu-memory-utilization to free memory for weights, increasing --tensor-parallel-size, or using --quantization. See https://docs.vllm.ai/en/latest/configuration/conserving_memory/ for more tips. (original error: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1593257 has 22.83 GiB memory in us
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349] EngineCore failed to start.
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349] Traceback (most recent call last):
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1318, in run_engine_core
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1074, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     super().__init__(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 132, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/abstract.py", line 109, in __init__
+(EngineCore pid=425) Process EngineCore:
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self._init_executor()
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/uniproc_executor.py", line 68, in _init_executor
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.driver_worker.load_model()
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 442, in load_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5404, in load_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     raise e
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5334, in load_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.drafter.load_model(self.model)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1338, in load_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.model = self._get_model()
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]                  ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1323, in _get_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     model = get_model(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]             ^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return loader.load_model(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/base_loader.py", line 55, in load_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     model = initialize_model(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/utils.py", line 62, in initialize_model
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/compilation/decorators.py", line 383, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     old_init(self, *args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5_mtp.py", line 244, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.lm_head = ParallelLMHead(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]                    ^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 552, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     super().__init__(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 325, in __init__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     self.quant_method.create_weights(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 50, in create_weights
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     torch.empty(
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_device.py", line 122, in __torch_function__
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:14:36 [core.py:1349] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1593257 has 22.83 GiB memory in use. Of the allocated memory 22.46 GiB is allocated by PyTorch, and 67.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentat
+(EngineCore pid=425) Traceback (most recent call last):
+(EngineCore pid=425)   File "/usr/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+(EngineCore pid=425)     self.run()
+(EngineCore pid=425)   File "/usr/lib/python3.12/multiprocessing/process.py", line 108, in run
+(EngineCore pid=425)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1353, in run_engine_core
+(EngineCore pid=425)     raise e
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1318, in run_engine_core
+(EngineCore pid=425)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=425)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1074, in __init__
+(EngineCore pid=425)     super().__init__(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 132, in __init__
+(EngineCore pid=425)     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=425)                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/abstract.py", line 109, in __init__
+(EngineCore pid=425)     self._init_executor()
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/uniproc_executor.py", line 68, in _init_executor
+(EngineCore pid=425)     self.driver_worker.load_model()
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 442, in load_model
+(EngineCore pid=425)     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5404, in load_model
+(EngineCore pid=425)     raise e
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5334, in load_model
+(EngineCore pid=425)     self.drafter.load_model(self.model)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1338, in load_model
+(EngineCore pid=425)     self.model = self._get_model()
+(EngineCore pid=425)                  ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1323, in _get_model
+(EngineCore pid=425)     model = get_model(
+(EngineCore pid=425)             ^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(EngineCore pid=425)     return loader.load_model(
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/base_loader.py", line 55, in load_model
+(EngineCore pid=425)     model = initialize_model(
+(EngineCore pid=425)             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/utils.py", line 62, in initialize_model
+(EngineCore pid=425)     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=425)             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/compilation/decorators.py", line 383, in __init__
+(EngineCore pid=425)     old_init(self, *args, **kwargs)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5_mtp.py", line 244, in __init__
+(EngineCore pid=425)     self.lm_head = ParallelLMHead(
+(EngineCore pid=425)                    ^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 552, in __init__
+(EngineCore pid=425)     super().__init__(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 325, in __init__
+(EngineCore pid=425)     self.quant_method.create_weights(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 50, in create_weights
+(EngineCore pid=425)     torch.empty(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_device.py", line 122, in __torch_function__
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1593257 has 22.83 GiB memory in use. Of the allocated memory 22.46 GiB is allocated by PyTorch, and 67.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://
+[rank0]:[W923 01:14:37.121624037 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=1) INFO 09-23 01:14:38 [utils.py:612] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=1) Traceback (most recent call last):
+(APIServer pid=1)   File "/usr/local/bin/vllm", line 10, in <module>
+(APIServer pid=1)     sys.exit(main())
+(APIServer pid=1)              ^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/main.py", line 97, in main
+(APIServer pid=1)     args.dispatch_function(args)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/serve.py", line 152, in cmd
+(APIServer pid=1)     uvloop.run(run_server(args))
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=1)     return __asyncio.run(
+(APIServer pid=1)            ^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 195, in run
+(APIServer pid=1)     return runner.run(main)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+(APIServer pid=1)     return self._loop.run_until_complete(task)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=1)     return await main
+(APIServer pid=1)            ^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 764, in run_server
+(APIServer pid=1)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 778, in run_server_worker
+(APIServer pid=1)     async with build_async_engine_client(
+(APIServer pid=1)                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 132, in build_async_engine_client
+(APIServer pid=1)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=1)                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 168, in build_async_engine_client_from_engine_args
+(APIServer pid=1)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=1)                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 220, in from_vllm_config
+(APIServer pid=1)     return cls(
+(APIServer pid=1)            ^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 149, in __init__
+(APIServer pid=1)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=1)                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 139, in make_async_mp_client
+(APIServer pid=1)     return AsyncMPClient(*client_args)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 987, in __init__
+(APIServer pid=1)     super().__init__(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 609, in __init__
+(APIServer pid=1)     with launch_core_engines(
+(APIServer pid=1)          ^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+(APIServer pid=1)     next(self.gen)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1194, in launch_core_engines
+(APIServer pid=1)     wait_for_engine_startup(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+WARNING 09-23 01:15:01 [argparse_utils.py:257] With `vllm serve`, you should provide the model as a positional argument or in a config file instead of via the `--model` option. The `--model` option will be removed in a future version.
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345] 
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.27.1
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345]   █▄█▀ █     █     █     █  model   cyankiwi/Qwen3.8-27B-AWQ-INT4
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:345] 
+(APIServer pid=1) INFO 09-23 01:15:01 [api_utils.py:273] non-default args: {'model_tag': 'cyankiwi/Qwen3.8-27B-AWQ-INT4', 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_xml', 'model': 'cyankiwi/Qwen3.8-27B-AWQ-INT4', 'revision': '63768c10df38c0395e12ef49edac1bd539eaeeea', 'max_model_len': 40960, 'served_model_name': ['Qwen3.8-27B'], 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.97, 'kv_cache_dtype': 'fp8', 'max_num_seqs': 2, 'speculative_config': {'method': 'mtp', 'num_sp
+(APIServer pid=1) INFO 09-23 01:15:02 [model.py:645] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=1) INFO 09-23 01:15:02 [model.py:1883] Using max model len 40960
+(APIServer pid=1) [ERROR] `min_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(APIServer pid=1) [ERROR] `max_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(APIServer pid=1) INFO 09-23 01:15:06 [cache.py:296] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(APIServer pid=1) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=1) INFO 09-23 01:15:07 [model.py:645] Resolved architecture: Qwen3_5MTP
+(APIServer pid=1) INFO 09-23 01:15:07 [model.py:1883] Using max model len 262144
+(APIServer pid=1) WARNING 09-23 01:15:07 [registry.py:117] Model cyankiwi/Qwen3.8-27B-AWQ-INT4 is treated as multimodal but has no registered multimodal processor; running in text-only mode.
+(APIServer pid=1) INFO 09-23 01:15:07 [model.py:842] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) INFO 09-23 01:15:07 [speculative.py:1157] Overriding draft model max model len from 262144 to 40960
+(APIServer pid=1) INFO 09-23 01:15:07 [kernel.py:306] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(APIServer pid=1) WARNING 09-23 01:15:07 [vllm.py:1757] max_num_scheduled_tokens is set to 2048 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens or max_num_seqs.
+(APIServer pid=1) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=425) INFO 09-23 01:15:28 [core.py:121] Initializing a V1 LLM engine (v0.27.1) with config: model='cyankiwi/Qwen3.8-27B-AWQ-INT4', speculative_config=SpeculativeConfig(method='mtp', model='cyankiwi/Qwen3.8-27B-AWQ-INT4', num_spec_tokens=1), tokenizer='cyankiwi/Qwen3.8-27B-AWQ-INT4', skip_tokenizer_init=False, tokenizer_mode=auto, revision=63768c10df38c0395e12ef49edac1bd539eaeeea, tokenizer_revision=63768c10df38c0395e12ef49edac1bd539eaeeea, trust_remote_code=False, dtype=torch.bflo
+(EngineCore pid=425) [ERROR] `min_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(EngineCore pid=425) [ERROR] `max_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(EngineCore pid=425) INFO 09-23 01:15:31 [parallel_state.py:1640] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.17.0.10:39023 backend=nccl
+(EngineCore pid=425) INFO 09-23 01:15:31 [parallel_state.py:1977] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=425) INFO 09-23 01:15:31 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=425) WARNING 09-23 01:15:31 [__init__.py:205] min_p and logit_bias parameters won't work with speculative decoding.
+(EngineCore pid=425) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=425) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=425) INFO 09-23 01:15:40 [gpu_model_runner.py:5308] Starting to load model cyankiwi/Qwen3.8-27B-AWQ-INT4...
+(EngineCore pid=425) INFO 09-23 01:15:41 [cuda.py:541] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(EngineCore pid=425) INFO 09-23 01:15:41 [mm_encoder_attention.py:375] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(EngineCore pid=425) INFO 09-23 01:15:41 [compressed_tensors_wNa16.py:137] Using MarlinLinearKernel for CompressedTensorsWNA16
+(EngineCore pid=425) INFO 09-23 01:15:41 [qwen_gdn_linear_attn.py:150] Using Triton/FLA GDN prefill kernel (requested=auto, head_k_dim=128).
+(EngineCore pid=425) INFO 09-23 01:15:41 [cuda.py:482] Using FLASHINFER attention backend out of potential backends: ['FLASHINFER', 'TRITON_ATTN'].
+(EngineCore pid=425) INFO 09-23 01:15:41 [weight_utils.py:867] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 19.57 GiB. Available RAM: 107.84 GiB.
+(EngineCore pid=425) INFO 09-23 01:15:41 [weight_utils.py:890] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=425) Loading safetensors checkpoint shards:   0% Completed | 0/5 [00:00<?, ?it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  20% Completed | 1/5 [00:00<00:01,  2.51it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  40% Completed | 2/5 [00:01<00:01,  1.59it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  60% Completed | 3/5 [00:02<00:01,  1.27it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards:  80% Completed | 4/5 [00:03<00:00,  1.16it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards: 100% Completed | 5/5 [00:03<00:00,  1.29it/s]
+(EngineCore pid=425) Loading safetensors checkpoint shards: 100% Completed | 5/5 [00:03<00:00,  1.33it/s]
+(EngineCore pid=425) 
+(EngineCore pid=425) INFO 09-23 01:15:45 [default_loader.py:430] Loading weights took 3.86 seconds
+(EngineCore pid=425) INFO 09-23 01:15:49 [gpu_model_runner.py:5332] Loading drafter model...
+(EngineCore pid=425) INFO 09-23 01:15:49 [kernel.py:306] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=425) WARNING 09-23 01:15:49 [vllm.py:1757] max_num_scheduled_tokens is set to 2048 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens or max_num_seqs.
+[rank0]:[W923 01:15:49.572737590 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 2104492032, total: 25298141184).
+[rank0]:[W923 01:15:49.638543145 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 770703360, total: 25298141184).
+[rank0]:[W923 01:15:49.638668372 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 2543845376 bytes (free: 770703360, total: 25298141184).
+(EngineCore pid=425) ERROR 09-23 01:15:50 [gpu_model_runner.py:5403] Failed to load model - not enough GPU memory. Try lowering --gpu-memory-utilization to free memory for weights, increasing --tensor-parallel-size, or using --quantization. See https://docs.vllm.ai/en/latest/configuration/conserving_memory/ for more tips. (original error: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1597864 has 22.83 GiB memory in us
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349] EngineCore failed to start.
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349] Traceback (most recent call last):
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1318, in run_engine_core
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) Process EngineCore:
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1074, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     super().__init__(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 132, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/abstract.py", line 109, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self._init_executor()
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/uniproc_executor.py", line 68, in _init_executor
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.driver_worker.load_model()
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 442, in load_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5404, in load_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     raise e
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5334, in load_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.drafter.load_model(self.model)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1338, in load_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.model = self._get_model()
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]                  ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1323, in _get_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     model = get_model(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]             ^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return loader.load_model(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/base_loader.py", line 55, in load_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     model = initialize_model(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/utils.py", line 62, in initialize_model
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/compilation/decorators.py", line 383, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     old_init(self, *args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5_mtp.py", line 244, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.lm_head = ParallelLMHead(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]                    ^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 552, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     super().__init__(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 325, in __init__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     self.quant_method.create_weights(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 50, in create_weights
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     torch.empty(
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_device.py", line 122, in __torch_function__
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]     return func(*args, **kwargs)
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) ERROR 09-23 01:15:50 [core.py:1349] torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1597864 has 22.83 GiB memory in use. Of the allocated memory 22.46 GiB is allocated by PyTorch, and 67.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentat
+(EngineCore pid=425) Traceback (most recent call last):
+(EngineCore pid=425)   File "/usr/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+(EngineCore pid=425)     self.run()
+(EngineCore pid=425)   File "/usr/lib/python3.12/multiprocessing/process.py", line 108, in run
+(EngineCore pid=425)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1353, in run_engine_core
+(EngineCore pid=425)     raise e
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1318, in run_engine_core
+(EngineCore pid=425)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=425)                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1074, in __init__
+(EngineCore pid=425)     super().__init__(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 132, in __init__
+(EngineCore pid=425)     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=425)                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/abstract.py", line 109, in __init__
+(EngineCore pid=425)     self._init_executor()
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/uniproc_executor.py", line 68, in _init_executor
+(EngineCore pid=425)     self.driver_worker.load_model()
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 442, in load_model
+(EngineCore pid=425)     self.model_runner.load_model(load_dummy_weights=load_dummy_weights)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5404, in load_model
+(EngineCore pid=425)     raise e
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 5334, in load_model
+(EngineCore pid=425)     self.drafter.load_model(self.model)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1338, in load_model
+(EngineCore pid=425)     self.model = self._get_model()
+(EngineCore pid=425)                  ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/spec_decode/llm_base_proposer.py", line 1323, in _get_model
+(EngineCore pid=425)     model = get_model(
+(EngineCore pid=425)             ^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/__init__.py", line 140, in get_model
+(EngineCore pid=425)     return loader.load_model(
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/base_loader.py", line 55, in load_model
+(EngineCore pid=425)     model = initialize_model(
+(EngineCore pid=425)             ^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/model_loader/utils.py", line 62, in initialize_model
+(EngineCore pid=425)     model = model_class(vllm_config=vllm_config, prefix=prefix)
+(EngineCore pid=425)             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/compilation/decorators.py", line 383, in __init__
+(EngineCore pid=425)     old_init(self, *args, **kwargs)
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/models/qwen3_5_mtp.py", line 244, in __init__
+(EngineCore pid=425)     self.lm_head = ParallelLMHead(
+(EngineCore pid=425)                    ^^^^^^^^^^^^^^^
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 552, in __init__
+(EngineCore pid=425)     super().__init__(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 325, in __init__
+(EngineCore pid=425)     self.quant_method.create_weights(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/vocab_parallel_embedding.py", line 50, in create_weights
+(EngineCore pid=425)     torch.empty(
+(EngineCore pid=425)   File "/usr/local/lib/python3.12/dist-packages/torch/utils/_device.py", line 122, in __torch_function__
+(EngineCore pid=425)     return func(*args, **kwargs)
+(EngineCore pid=425)            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=425) torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.37 GiB. GPU 0 has a total capacity of 23.56 GiB of which 735.00 MiB is free. Process 1597864 has 22.83 GiB memory in use. Of the allocated memory 22.46 GiB is allocated by PyTorch, and 67.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://
+[rank0]:[W923 01:15:51.135026817 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=1) INFO 09-23 01:15:52 [utils.py:612] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=1) Traceback (most recent call last):
+(APIServer pid=1)   File "/usr/local/bin/vllm", line 10, in <module>
+(APIServer pid=1)     sys.exit(main())
+(APIServer pid=1)              ^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/main.py", line 97, in main
+(APIServer pid=1)     args.dispatch_function(args)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/serve.py", line 152, in cmd
+(APIServer pid=1)     uvloop.run(run_server(args))
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=1)     return __asyncio.run(
+(APIServer pid=1)            ^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 195, in run
+(APIServer pid=1)     return runner.run(main)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+(APIServer pid=1)     return self._loop.run_until_complete(task)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=1)     return await main
+(APIServer pid=1)            ^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 764, in run_server
+(APIServer pid=1)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 778, in run_server_worker
+(APIServer pid=1)     async with build_async_engine_client(
+(APIServer pid=1)                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 132, in build_async_engine_client
+(APIServer pid=1)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=1)                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/openai/api_server.py", line 168, in build_async_engine_client_from_engine_args
+(APIServer pid=1)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=1)                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 220, in from_vllm_config
+(APIServer pid=1)     return cls(
+(APIServer pid=1)            ^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 149, in __init__
+(APIServer pid=1)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=1)                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 139, in make_async_mp_client
+(APIServer pid=1)     return AsyncMPClient(*client_args)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 987, in __init__
+(APIServer pid=1)     super().__init__(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 609, in __init__
+(APIServer pid=1)     with launch_core_engines(
+(APIServer pid=1)          ^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+(APIServer pid=1)     next(self.gen)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1194, in launch_core_engines
+(APIServer pid=1)     wait_for_engine_startup(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1253, in wait_for_engine_startup
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+WARNING 09-23 01:16:17 [argparse_utils.py:257] With `vllm serve`, you should provide the model as a positional argument or in a config file instead of via the `--model` option. The `--model` option will be removed in a future version.
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345] 
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.27.1
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345]   █▄█▀ █     █     █     █  model   cyankiwi/Qwen3.8-27B-AWQ-INT4
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:345] 
+(APIServer pid=1) INFO 09-23 01:16:17 [api_utils.py:273] non-default args: {'model_tag': 'cyankiwi/Qwen3.8-27B-AWQ-INT4', 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_xml', 'model': 'cyankiwi/Qwen3.8-27B-AWQ-INT4', 'revision': '63768c10df38c0395e12ef49edac1bd539eaeeea', 'max_model_len': 40960, 'served_model_name': ['Qwen3.8-27B'], 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.97, 'kv_cache_dtype': 'fp8', 'max_num_seqs': 2, 'speculative_config': {'method': 'mtp', 'num_sp
+(APIServer pid=1) INFO 09-23 01:16:18 [model.py:645] Resolved architecture: Qwen3_5ForConditionalGeneration
+(APIServer pid=1) INFO 09-23 01:16:18 [model.py:1883] Using max model len 40960
+(APIServer pid=1) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=1) [ERROR] `min_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(APIServer pid=1) [ERROR] `max_frames` is part of Qwen3VLVideoProcessorInitKwargs, but not documented. Make sure to add it to the docstring of the function in /usr/local/lib/python3.12/dist-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py.
+(APIServer pid=1) INFO 09-23 01:16:22 [cache.py:296] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(APIServer pid=1) INFO 09-23 01:16:23 [model.py:645] Resolved architecture: Qwen3_5MTP
+(APIServer pid=1) INFO 09-23 01:16:23 [model.py:1883] Using max model len 262144
+(APIServer pid=1) WARNING 09-23 01:16:23 [registry.py:117] Model cyankiwi/Qwen3.8-27B-AWQ-INT4 is treated as multimodal but has no registered multimodal processor; running in text-only mode.
+(APIServer pid=1) INFO 09-23 01:16:23 [model.py:842] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) INFO 09-23 01:16:23 [speculative.py:1157] Overriding draft model max model len from 262144 to 40960
+(APIServer pid=1) INFO 09-23 01:16:23 [kernel.py:306] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(APIServer pid=1) WARNING 09-23 01:16:23 [vllm.py:1757] max_num_scheduled_tokens is set to 2048 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens or max_num_seqs.
+(APIServer pid=1) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+

@@ -1,0 +1,301 @@
+ -- CPU split experts (worker, dynamic): model.language_model.layers.15.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.16.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.17.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.18.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.19.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.20.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.21.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.22.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.23.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.24.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.25.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.26.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.27.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.28.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.29.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.30.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.31.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.32.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.33.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.34.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.35.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.36.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.37.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.38.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.39.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.40.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.41.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.42.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.43.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.44.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.45.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.46.mlp [384..512) of 512
+Loading vision modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 30/30 0:00:00
+Loading model modules  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━     92% 49/53 0:00:01
+Traceback (most recent call last):
+  File "/app/main.py", line 232, in <module>
+    entrypoint()
+  File "/app/main.py", line 228, in entrypoint
+    asyncio.run(entrypoint_async())
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/app/main.py", line 83, in entrypoint_async
+    await model.load_model(
+  File "/app/common/model.py", line 245, in load_model
+    async for _ in load_model_gen(model_path, **kwargs):
+  File "/app/common/model.py", line 219, in load_model_gen
+    async for module, modules in load_status:
+  File "/app/backends/exllamav3/model.py", line 839, in load_gen
+    async for value in iterate_in_threadpool(generator):
+  File "/app/common/concurrency.py", line 30, in iterate_in_threadpool
+    yield await asyncio.to_thread(gen_next, generator)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/common/concurrency.py", line 20, in gen_next
+    return next(generator)
+           ^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 61, in generator_context
+    response = gen.send(request)
+               ^^^^^^^^^^^^^^^^^
+  File "/app/backends/exllamav3/model.py", line 968, in load_model_sync
+    for value in self.model.load_gen(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model.py", line 581, in load_gen
+    yield from self._load_autosplit(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model_ls.py", line 274, in _load_autosplit
+    raise RuntimeError("Insufficient VRAM in split for model and cache")
+RuntimeError: Insufficient VRAM in split for model and cache
+Fetching 23 files:   0%|          | 0/23 [00:00<?, ?it/s]Fetching 23 files: 100%|██████████| 23/23 [00:00<00:00, 1820.75it/s]
+04:24:52.115 INFO:     Using config file /app/config.yml
+04:24:53.123 WARNING:  No sampler override preset is configured
+                       (sampling.override_preset), so sampling parameters have
+                       no fallback values. Requests that omit them run
+                       untruncated: temperature 1.0, top_k 0, top_p 1.0, min_p
+                       0. Set override_preset to safe_defaults unless this is
+                       intentional.
+04:24:53.125 INFO:     exllamav3 version: 1.5.1
+04:24:54.497 INFO:     Loading n-gram embeddings into system RAM (ngram_ram).
+04:24:54.500 WARNING:  Draft model is disabled because a model name wasn't
+                       provided. Please check your config.yml!
+04:24:54.500 INFO:     Disabling GPU split because one GPU is in use.
+04:24:54.500 INFO:     Context: max_seq_len 262,144 tokens (configured),
+                       cache_size 262,656 tokens
+04:24:54.555 INFO:     Using template "chat_template" for chat completions.
+04:24:54.555 INFO:     Response parsing: tool format qwen3_coder (config),
+                       reasoning tags  thinking </think> (config)
+04:24:56.103 INFO:     Loading model
+                       /workspace/models/Qwen3.8-Flash-Next-EXL3-205bpw-H4
+                       (manual GPU split)
+ -- CPU split experts (worker, dynamic): model.language_model.layers.0.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.1.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.2.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.3.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.4.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.5.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.6.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.7.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.8.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.9.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.10.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.11.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.12.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.13.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.14.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.15.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.16.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.17.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.18.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.19.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.20.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.21.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.22.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.23.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.24.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.25.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.26.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.27.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.28.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.29.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.30.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.31.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.32.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.33.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.34.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.35.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.36.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.37.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.38.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.39.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.40.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.41.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.42.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.43.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.44.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.45.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.46.mlp [384..512) of 512
+Loading vision modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 30/30 0:00:00
+Loading model modules  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━     92% 49/53 0:00:01
+Traceback (most recent call last):
+  File "/app/main.py", line 232, in <module>
+    entrypoint()
+  File "/app/main.py", line 228, in entrypoint
+    asyncio.run(entrypoint_async())
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/app/main.py", line 83, in entrypoint_async
+    await model.load_model(
+  File "/app/common/model.py", line 245, in load_model
+    async for _ in load_model_gen(model_path, **kwargs):
+  File "/app/common/model.py", line 219, in load_model_gen
+    async for module, modules in load_status:
+  File "/app/backends/exllamav3/model.py", line 839, in load_gen
+    async for value in iterate_in_threadpool(generator):
+  File "/app/common/concurrency.py", line 30, in iterate_in_threadpool
+    yield await asyncio.to_thread(gen_next, generator)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/common/concurrency.py", line 20, in gen_next
+    return next(generator)
+           ^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 61, in generator_context
+    response = gen.send(request)
+               ^^^^^^^^^^^^^^^^^
+  File "/app/backends/exllamav3/model.py", line 968, in load_model_sync
+    for value in self.model.load_gen(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model.py", line 581, in load_gen
+    yield from self._load_autosplit(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model_ls.py", line 274, in _load_autosplit
+    raise RuntimeError("Insufficient VRAM in split for model and cache")
+RuntimeError: Insufficient VRAM in split for model and cache
+Fetching 23 files:   0%|          | 0/23 [00:00<?, ?it/s]Fetching 23 files: 100%|██████████| 23/23 [00:00<00:00, 1787.62it/s]
+04:25:16.261 INFO:     Using config file /app/config.yml
+04:25:17.265 WARNING:  No sampler override preset is configured
+                       (sampling.override_preset), so sampling parameters have
+                       no fallback values. Requests that omit them run
+                       untruncated: temperature 1.0, top_k 0, top_p 1.0, min_p
+                       0. Set override_preset to safe_defaults unless this is
+                       intentional.
+04:25:17.267 INFO:     exllamav3 version: 1.5.1
+04:25:18.614 INFO:     Loading n-gram embeddings into system RAM (ngram_ram).
+04:25:18.617 WARNING:  Draft model is disabled because a model name wasn't
+                       provided. Please check your config.yml!
+04:25:18.617 INFO:     Disabling GPU split because one GPU is in use.
+04:25:18.618 INFO:     Context: max_seq_len 262,144 tokens (configured),
+                       cache_size 262,656 tokens
+04:25:18.674 INFO:     Using template "chat_template" for chat completions.
+04:25:18.674 INFO:     Response parsing: tool format qwen3_coder (config),
+                       reasoning tags  thinking </think> (config)
+04:25:20.219 INFO:     Loading model
+                       /workspace/models/Qwen3.8-Flash-Next-EXL3-205bpw-H4
+                       (manual GPU split)
+ -- CPU split experts (worker, dynamic): model.language_model.layers.0.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.1.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.2.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.3.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.4.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.5.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.6.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.7.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.8.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.9.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.10.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.11.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.12.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.13.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.14.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.15.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.16.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.17.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.18.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.19.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.20.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.21.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.22.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.23.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.24.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.25.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.26.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.27.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.28.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.29.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.30.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.31.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.32.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.33.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.34.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.35.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.36.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.37.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.38.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.39.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.40.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.41.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.42.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.43.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.44.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.45.mlp [384..512) of 512
+ -- CPU split experts (worker, dynamic): model.language_model.layers.46.mlp [384..512) of 512
+Loading vision modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 30/30 0:00:00
+Loading model modules  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━     92% 49/53 0:00:01
+Traceback (most recent call last):
+  File "/app/main.py", line 232, in <module>
+    entrypoint()
+  File "/app/main.py", line 228, in entrypoint
+    asyncio.run(entrypoint_async())
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/app/main.py", line 83, in entrypoint_async
+    await model.load_model(
+  File "/app/common/model.py", line 245, in load_model
+    async for _ in load_model_gen(model_path, **kwargs):
+  File "/app/common/model.py", line 219, in load_model_gen
+    async for module, modules in load_status:
+  File "/app/backends/exllamav3/model.py", line 839, in load_gen
+    async for value in iterate_in_threadpool(generator):
+  File "/app/common/concurrency.py", line 30, in iterate_in_threadpool
+    yield await asyncio.to_thread(gen_next, generator)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/threads.py", line 25, in to_thread
+    return await loop.run_in_executor(None, func_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/common/concurrency.py", line 20, in gen_next
+    return next(generator)
+           ^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 61, in generator_context
+    response = gen.send(request)
+               ^^^^^^^^^^^^^^^^^
+  File "/app/backends/exllamav3/model.py", line 968, in load_model_sync
+    for value in self.model.load_gen(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model.py", line 581, in load_gen
+    yield from self._load_autosplit(
+  File "/opt/venv/lib/python3.12/site-packages/exllamav3/model/model_ls.py", line 274, in _load_autosplit
+    raise RuntimeError("Insufficient VRAM in split for model and cache")
+RuntimeError: Insufficient VRAM in split for model and cache
+

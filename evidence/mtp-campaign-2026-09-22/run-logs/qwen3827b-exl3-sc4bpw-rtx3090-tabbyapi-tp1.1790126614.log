@@ -1,0 +1,18 @@
+[01:23:34] attempt 1: renting RTX 3090 (vast), image ghcr.io/0xsero/tabbyapi-exl3
+[01:23:37] vast 52150227 created, 0.14759259259259258 /h, gpu RTX 3090
+[01:24:00] vast status: ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1: Pulling from 0xsero/tabbyapi-exl3
+[01:24:11] vast status: 4af393826573: Pull complete
+[01:25:39] waiting for /v1/models (122s, vast loading 4af393826573: Pull complete, container up)
+[01:26:01] vast status: 19ecffd1183d: Verifying Checksum
+19ecffd1183d: Download complete
+[01:26:35] vast status: success, running ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df2525a7d1a69733e12fc8e25cbc5bc319a8a3ad1
+[01:27:42] waiting for /v1/models (245s, vast running success, running ghcr.io/0xsero/tabbyapi-exl3@sha256:0f83e6198dc3be2561652d8df25, container up)
+[01:28:15] server healthy after 278s at http://151.237.25.16:26148
+server is healthy; serving model id: Qwen3.8-27B-EXL3-SC4bpw-H5
+dialects through the gateway: chat, messages, responses
+acceptance measurements: decode 68.9 tok/s (client_post_first_token_estimate), ttft 1031 ms over 3 samples
+PROMOTED qwen3827b-exl3-sc4bpw-rtx3090-tabbyapi-tp1 to validated with evidence qwen3827b-exl3-sc4bpw-rtx3090-tabbyapi-tp1-acceptance
+next: python3 scripts/curate_registry.py --index-only && python3 scripts/format_registry.py && make check, then commit and open a PR
+[01:29:34] PROMOTED qwen3827b-exl3-sc4bpw-rtx3090-tabbyapi-tp1 (validated on vast RTX 3090)
+[01:29:35] vast 52150227 destroyed
+[01:29:35] approx cost: 0.01 (6 min at 0.148/h)
