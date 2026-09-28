@@ -1,0 +1,167 @@
+{
+ "rtx-3090-ti-24gb/qwen3.5-9b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-3090-ti-24gb/qwen3.6-35b-a3b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-3090-ti-24gb/qwen3.8-27b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)",
+  "head_to_head": {
+   "weights": "turboderp/Qwen3.8-27B-exl3@4acd9ad5af224ec9e8815a54d71a033f378a7e9d",
+   "evidence": "rtx-3090-ti-24gb.qwen3.8-27b.compare.20260927T195439.json",
+   "c": {
+    "1": {
+     "prefill": [
+      1.099,
+      1.217,
+      1.938
+     ],
+     "decode_per_stream": [
+      0.893,
+      1.008,
+      1.246
+     ],
+     "decode_aggregate": [
+      0.428,
+      0.765,
+      1.376
+     ]
+    },
+    "2": {
+     "prefill": [
+      1.094,
+      1.156,
+      1.357
+     ],
+     "decode_per_stream": [
+      0.898,
+      1.295,
+      1.657
+     ],
+     "decode_aggregate": [
+      0.357,
+      1.384,
+      4.68
+     ]
+    },
+    "4": {
+     "prefill": [
+      1.094,
+      1.118,
+      1.169
+     ],
+     "decode_per_stream": [
+      0.656,
+      1.11,
+      2.415
+     ],
+     "decode_aggregate": [
+      0.626,
+      1.185,
+      2.733
+     ]
+    },
+    "8": {
+     "prefill": [
+      1.12,
+      1.145,
+      1.168
+     ],
+     "decode_per_stream": [
+      1.837,
+      3.152,
+      9.577
+     ],
+     "decode_aggregate": [
+      0.511,
+      1.148,
+      2.692
+     ]
+    }
+   },
+   "result": "SGLang faster on prefill at c1-c8 and per-stream decode at c8; no significant difference elsewhere (95% CI of B/A spans 1)"
+  }
+ },
+ "rtx-4090-24gb/qwen3.5-9b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-4090-24gb/qwen3.6-35b-a3b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-4090-24gb/qwen3.8-27b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5070-ti-16gb/qwen3.5-9b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5070-ti-16gb/qwen3.6-35b-a3b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5070-ti-16gb/qwen3.8-27b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5090-32gb/qwen3.5-9b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5090-32gb/qwen3.6-35b-a3b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-5090-32gb/qwen3.8-27b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-pro-6000-blackwell-96gb/qwen3.5-9b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-pro-6000-blackwell-96gb/qwen3.6-35b-a3b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ },
+ "rtx-pro-6000-blackwell-96gb/qwen3.8-27b": {
+  "engine": "sglang",
+  "over": "tabbyapi",
+  "at": "2026-09-27",
+  "why": "owner decision: Qwen runs on SGLang with the 0xSero EXL3 kernels (sglang-exl3-multiarch), 262K context, fp8 KV; each card's recipe is the highest bit rate that passed the six gates (lab/runs/sweep/)"
+ }
+}
