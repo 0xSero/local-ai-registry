@@ -56,6 +56,30 @@ People publish working launches with measured numbers. `lab/import_reported.py` 
 
 The first source is [MiaAI-Lab](https://github.com/MiaAI-Lab): 36 repositories, 78 launches, 63 recipes after keeping the fastest variant per file name (43 on the DGX Spark, the rest on the RTX 5090, PRO 6000, 6000 Ada and the 16 GB cards). Left out: GGUF launches, an abliterated build, and one launch with no stated card. `data/reported/miaai-lab/ENGINES.md` describes their engines (an ExLlamaV3 fork with an aarch64 build for GB10 and DSpark/DFlash2 drafts, sparkring, tool-eval-bench).
 
+## Swapping engines (ExLlamaV3 to SGLang-EXL3)
+
+A card's pick changes engine only after a controlled head-to-head on that card (`lab/compare.py`); until then a
+lab-template SGLang-EXL3 recipe ranks below the ExLlamaV3 one for the same model.
+
+- **Controls.** Both arms passed the six gates, with the same weights (repo@revision), context window and number of
+  requests served at once (at least 8, so no level queues). They use the same sampling and seed and the same prompts
+  in the same order. Both run on the same rented machine: A runs and is destroyed, then B is rented on that machine.
+  compare.py refuses a pair that differs in any of these.
+- **Workload.**
+  - Prefill: 5 waves per level of cold prompts with a unique random prefix.
+  - Decode: 3 waves per level of your own agent sessions (`~/tuning-kit/omp_replay_corpus.jsonl`), replayed turn by
+    turn with tools and thinking and no output cap.
+  - Levels: C = 1, 2, 4, 8.
+  - Tokens are counted with the model's tokenizer on the client.
+  - The corpus stays private; it goes only to the rented host.
+- **Decision.** A bootstrap 95% confidence interval of median(B)/median(A) for prefill, per-stream decode and
+  aggregate decode at each level. B replaces A only if every interval is above 1.0, with no failed request.
+  - The verdict and intervals go to `registry/prefer.json`; `catalog.py` reads it.
+  - Every sample goes to `lab/runs/`.
+- **Why.** An unmatched first run on the 3090 Ti (different bpw; SGLang serving one request at a time, TabbyAPI two)
+  looked like a clear SGLang decode win. It was a queueing artifact. Two runs of the same engine on one GPU also
+  differed by up to 80% in aggregate decode, so single numbers decide nothing.
+
 ## Next
 
 - Run the MiaAI-Lab Spark launches through `try --on endpoint`, starting with the three picks.

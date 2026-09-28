@@ -27,6 +27,7 @@ def build(today=None):
     today = today or dt.date.today()
     meta = json.loads((ROOT / "registry" / "models.json").read_text())
     fam = {f: i for i, f in enumerate(meta["families"])}
+    prefer = json.loads((lab.REG / "prefer.json").read_text()) if (lab.REG / "prefer.json").exists() else {}
     cards, recipes = {}, {}
     for f in sorted(lab.RECIPES.rglob("*.json")):
         r = json.loads(f.read_text())
@@ -39,7 +40,13 @@ def build(today=None):
         # a lab recipe ranks above a legacy one, and a legacy one above one reported by its publisher
         mf = (fam.get(m["family"], len(fam)), -dt.date.fromisoformat(m["released"]).toordinal()) if m else (len(fam), 0)
         gguf = r["engine"].startswith("llama") or "gguf" in r["weights"].lower()  # GGUF only where nothing else runs yet
-        rank = (gguf, old, *mf)
+        exl3 = "exl3" in (r["weights"] + r["engine"]).lower()  # within a model, EXL3 first
+        # an engine swap needs a head-to-head on the card (lab/compare.py): until then a lab-template SGLang-EXL3 recipe
+        # stays below the ExLlamaV3 one for the same model, and after a win the loser goes below
+        won = (prefer.get(f"{r['card']}/{r['model']}") or {}).get("engine")
+        kind = lab.profile(r["engine"]).get("engine")
+        demoted = (won and kind != won and kind in ("sglang", "tabbyapi", "exllamav3")) or (not won and r["engine"].startswith("sglang-exl3@"))
+        rank = (gguf, old, *mf, bool(demoted), not exl3)
         launch = recipes[key]["launch"]
         setup = (launch.get("cards") or 1, launch.get("machines") or 1)
         cards.setdefault(r["card"], {}).setdefault(setup, []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))

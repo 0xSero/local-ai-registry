@@ -124,7 +124,7 @@ def render(recipe):
     s = {**p["defaults"], **recipe.get("set", {})}
     name = dirname(recipe["weights"])
     values = {**{k: str(v).lower() if isinstance(v, bool) else v for k, v in s.items()}, "name": name,
-              "cache_tokens": int(s["ctx"]) * int(s["seqs"]) + 1024 * int(s["seqs"]),
+              "cache_tokens": int(s.get("pool") or int(s["ctx"]) * int(s["seqs"]) + 1024 * int(s["seqs"])),
               "draft_block": "{draft_mode: mtp}" if s.get("draft") == "mtp" else "{}"}
     sub = lambda t: string.Template(t).substitute(values)
     args = []
@@ -278,8 +278,9 @@ def save_logs(handle, recipe):
         log(f"could not save the container log: {e}")
 
 
-def rented(recipe, launch, args):
-    import rent as vr  # Vast and RunPod: offers, create, poll, destroy
+def lab_spec(recipe, launch, args):
+    """What a rented host runs: the image, provisioning (weights, config file) and then the engine's argv."""
+    import rent as vr
 
     class LabSpec(vr.Spec):
         def __init__(self):
@@ -302,13 +303,19 @@ def rented(recipe, launch, args):
                     raise SystemExit(f"weights layout {w.get('layout')} cannot be provisioned on a rented host yet")
                 self.provision.append(("weights", w["at"], (w["repo"], w["revision"])))
 
-    real_onstart = vr.Spec.onstart_script
-    def onstart(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
-        return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", real_onstart(self))
-    LabSpec.onstart_script = onstart
+        def onstart_script(self):  # HF_HUB_OFFLINE=1 in a recipe is for the engine; the download before it must reach the Hub
+            return re.sub(r"(?<![\w/.-])([\w/.-]*python3?) -c ", r"env HF_HUB_OFFLINE=0 \1 -c ", vr.Spec.onstart_script(self))
+    return LabSpec()
+
+
+def rented(recipe, launch, args):
+    import rent as vr  # Vast and RunPod: offers, create, poll, destroy
+    spec = lab_spec(recipe, launch, args)
     ns = argparse.Namespace(vast_min_inet=args.min_inet, vast_min_cuda=args.min_cuda or launch.get("min_cuda") or 12.9, vast_max_price=args.max_price, cloud="COMMUNITY", disk=args.disk, vast_any_host=getattr(args, "any_host", False))
     provider = vr.PROVIDERS[args.on](ns)
-    spec = LabSpec()
+    if getattr(args, "machine", None):  # compare.py: the machine the other engine just ran on
+        every = provider.offers
+        provider.offers = lambda spec, exclude: [o for o in every(spec, set()) if o.get("machine_id") == args.machine]
     exclude = set()
     for attempt in range(1, 3):
         handle = provider.create(spec, exclude)
@@ -328,7 +335,8 @@ def rented(recipe, launch, args):
                     raise SystemExit("not ready within an hour")
                 time.sleep(10)
             log(f"ready after {int(time.monotonic() - t0)}s at {handle['endpoint']}")
-            return handle["endpoint"], {"on": args.on, "gpu": handle.get("gpu"), "host": handle.get("host"), "cost_h": handle.get("cost")}, \
+            return handle["endpoint"], {"on": args.on, "gpu": handle.get("gpu"), "host": handle.get("host"), "cost_h": handle.get("cost"),
+                                        "handle": handle, "provider": provider}, \
                 lambda: (save_logs(handle, recipe), provider.destroy(handle))
         except vr.StartStalled as stall:
             save_logs(handle, recipe)
@@ -388,7 +396,7 @@ def cmd_try(args):
         proof["proxy"] = f"{args.proxy_gpu}, memory capped to the card"
     slug = f"{args.model}.{p['id']}.{launch['ctx'] // 1024}k"
     RUNS.mkdir(parents=True, exist_ok=True)
-    run = {"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch["config"] or {}).get("sha256")}
+    run = {"recipe": recipe, "where": {k: v for k, v in where.items() if k not in ("handle", "provider")}, "passed": passed, "proof": proof, "evidence": evidence, "launch_config_sha256": (launch["config"] or {}).get("sha256")}
     text = json.dumps(run, indent=1, ensure_ascii=False)
     run_path = RUNS / f"{args.card}.{slug}.{at.strftime('%Y%m%dT%H%M%S')}.json"
     run_path.write_text(text + "\n")
@@ -425,7 +433,7 @@ def cmd_convert(args):
     at = dt.datetime.now(dt.timezone.utc)
     proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
     RUNS.mkdir(parents=True, exist_ok=True)
-    text = json.dumps({"recipe": recipe, "where": where, "passed": passed, "proof": proof, "evidence": evidence}, indent=1, ensure_ascii=False)
+    text = json.dumps({"recipe": recipe, "where": {k: v for k, v in where.items() if k not in ("handle", "provider")}, "passed": passed, "proof": proof, "evidence": evidence}, indent=1, ensure_ascii=False)
     (RUNS / f"{args.card}.{f.stem}.{at.strftime('%Y%m%dT%H%M%S')}.json").write_text(text + "\n")
     proof["log"] = "sha256:" + hashlib.sha256(text.encode()).hexdigest()[:16]
     log(f"gates: {evidence['ok']}  decode {proof['tps']} tok/s, prefill {proof['prefill']} tok/s")
