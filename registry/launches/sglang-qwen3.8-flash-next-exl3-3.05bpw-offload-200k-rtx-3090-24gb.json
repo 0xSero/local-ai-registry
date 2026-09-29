@@ -1,9 +1,9 @@
 {
   "id": "sglang-qwen3.8-flash-next-exl3-3.05bpw-offload-200k-rtx-3090-24gb",
   "engine": "sglang",
-  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one RTX 3090: experts in pinned RAM behind a GPU expert cache, n-gram table on NVMe (trellis-serve 61846cb)",
-  "image": "ghcr.io/0xsero/sglang-exl3-flashnext@sha256:293ef6bdb0d1a8d33f993a2df4ff53a4a3cd0f4bbacf68ca716ae3e4306ed9c3",
-  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/36563486678",
+  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one RTX 3090: experts in pinned RAM behind a GPU expert cache, n-gram table on NVMe (trellis-serve ft-vision 1e72b25, text + images)",
+  "image": "ghcr.io/0xsero/sglang-exl3-flashnext@sha256:86f673e630856c98c301b2731de3e1a0fe7639a3e12a7626abaea24a18e0eb5a",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/36563705095",
   "backend": "nvidia",
   "port": 30100,
   "entrypoint": "/opt/entrypoint.sh",
@@ -58,7 +58,11 @@
     "SGLANG_EXL3_OFFLOAD_FUSED": "1",
     "SGLANG_EXL3_OFFLOAD_COMPACT_PARTS": "1",
     "SGLANG_EXL3_MOE_PREFILL_FP16_ACC": "1",
-    "SGLANG_EXL3_NGRAM_TIER": "nvme"
+    "SGLANG_EXL3_NGRAM_TIER": "nvme",
+    "SGLANG_EXL3_VISION": "1",
+    "SGLANG_EXL3_MM_FAST_CPU": "1",
+    "SGLANG_EXL3_VIT_SDPA": "1",
+    "SGLANG_EXL3_VIT_MLP_CHUNK": "8192"
   },
   "shm": "64g",
   "weights": [
@@ -73,19 +77,19 @@
   "config": null,
   "ctx": 204800,
   "seqs": 1,
-  "vision": false,
+  "vision": true,
   "cards": 1,
   "needs": {
     "host_ram_gb": 75,
     "disk_gb": 85.14,
     "fast_storage": "nvme"
   },
-  "setup": "NEEDS: 1x RTX 3090 24 GB (the server takes the whole card: 21.2 GiB at ready, 23.2 GiB after load; the expert cache auto-sizes to free VRAM, so nothing else may use the GPU); 75 GB of free system RAM (measured as the drop in MemAvailable at ready with local-ai-recipe-kit tools/memwatch.sh, which is what the plugin checks; the processes' own RSS sums to 68 GB: scheduler 63.4 + launcher 2.0 + detokenizer 1.7 + tokenizer helper 0.75; of it, page-locked: 45.8 GB routed experts + 8 GB n-gram row cache + 1.18 GB token embedding); 85.14 GB for the weights on a LOCAL NVMe SSD (52.3 GB of shards are read once at load; the 32.6 GB n-gram table is random-read with O_DIRECT while serving, so no network or tmpfs filesystem). Text only (vision is a follow-up). Launch = trellis-serve cuda/scripts/serve_flashnext_3090.sh at 61846cb (INT043 freeze) plus --reasoning-parser qwen3 --tool-call-parser qwen3_coder, which the measured runs did not have, and a bridge network with --shm-size 64g where the measured runs used --ipc=host --ulimit memlock=-1. First start JIT-compiles the n-gram NVMe extension (~1 min, nvcc is in the image). Measured on omarchy (PCIe 4.0 x16, 26.2 GB/s pinned host-to-device): prefill 4k 2,092 / 32k 2,848 tok/s, decode 63.7 @0 / 62.4 @32k tok/s, needle 196,376 tokens PASS; a rented 3090 with 14-16 GB/s host-to-device decoded 53.2 tok/s (V001b), so PCIe bandwidth matters. SGLANG_EXL3_NGRAM_TIER=pinned keeps the n-gram table in RAM instead (+24.6 GB RAM, no NVMe needed).",
-  "source": "https://github.com/0xSero/trellis-serve/tree/61846cbfd15be7d8eb215b1af98dda22fd221c8d",
+  "setup": "NEEDS: 1x RTX 3090 24 GB (the server takes the whole card: 21,562 MiB at ready, 24,026 MiB peak with a 4096x4096 image; the expert cache auto-sizes to free VRAM, so nothing else may use the GPU); 75 GB of free system RAM (measured system-wide MemAvailable drop at server ready; process peaks: scheduler 63.4 GB RSS + launcher 2.0 + detokenizer 1.7; page-locked: 45.8 GB routed experts + 8 GB n-gram row cache + 1.18 GB token embedding); 85.14 GB for the weights on a LOCAL NVMe SSD (52.3 GB of shards read once at load; the 32.6 GB n-gram table is random-read with O_DIRECT while serving, so no network or tmpfs filesystem). Text and images (256x256 to 4096x4096 tested; EXL3 ViT decoded to bf16 at load, CPU preprocessing, SDPA ViT attention, ViT MLP chunk 8192). Launch = trellis-serve cuda/scripts/serve_flashnext_3090.sh at 1e72b25 plus --reasoning-parser qwen3 --tool-call-parser qwen3_coder (not in the measured runs), on a bridge network with --shm-size 64g where the measured runs used --ipc=host --ulimit memlock=-1. First start JIT-compiles the n-gram NVMe extension (~1 min). Protocol sweep VIS010 (omarchy, PCIe 4.0 x16, 26.2 GB/s host-to-device): prefill 8k 2,627.5 / 16k 2,785.0 / 32k 2,846.0 / 64k 2,824.3 tok/s; decode aggregate C1 62.70 / C2 77.44 / C3 84.76 / C4 79.31 tok/s, C1 at 32k context 62.50. Quality vs stock exllamav3: text panel top-1 0.99067 / KL 0.000956; vision gate top-1 0.9729 / KL 0.00825, 8/8 answers correct. Context 204,800, KV pool 209,984 tokens fp8. A rented 3090 with 14-16 GB/s host-to-device decoded 53.2 tok/s (V001b): PCIe bandwidth matters. SGLANG_EXL3_NGRAM_TIER=pinned keeps the n-gram table in RAM instead (+24.6 GB RAM, no NVMe needed).",
+  "source": "https://github.com/0xSero/trellis-serve/tree/1e72b250cb529c6d81bf11b88740d9a0b22f62de",
   "plugin": {
     "name": "Qwen3.8-Flash-Next",
     "family": "qwen",
-    "format": "EXL3 · 3.05 bpw (experts in RAM, n-gram table on NVMe)",
+    "format": "EXL3 · 3.05 bpw, vision (experts in RAM, n-gram table on NVMe)",
     "engine": "sglang",
     "servedName": "flashnext",
     "sizeGb": 85.14,
@@ -95,7 +99,7 @@
       "chat": true,
       "reasoning": false,
       "tools": false,
-      "vision": false
+      "vision": true
     },
     "serving": {
       "ctxTokens": 204800,
