@@ -44,10 +44,10 @@ docs/           design.md
 A launch that keeps weights in system RAM or reads them from disk while serving also states what the host needs besides the card, and the plugin offers it only where the machine has it:
 
 ```json
-"needs": {"host_ram_gb": 68, "disk_gb": 85.14, "fast_storage": "nvme"}
+"needs": {"host_ram_gb": 75, "disk_gb": 85.14, "fast_storage": "nvme"}
 ```
 
-`host_ram_gb` is the free system RAM the server takes (measured peak), `disk_gb` the space for the weights, and `fast_storage: "nvme"` means the weights directory must be on a local NVMe SSD. `lab.py check` validates it; `plugin/v2/recipes.json` carries it.
+`host_ram_gb` is the free system RAM the server takes: how far MemAvailable falls from before the start to its lowest point while the lab gates run (not the weight file sizes; the plugin compares it with MemAvailable), `disk_gb` the space for the weights, and `fast_storage: "nvme"` means the weights directory must be on a local NVMe SSD. `lab.py check` validates it; `plugin/v2/recipes.json` carries it.
 
 ## Running a recipe
 
