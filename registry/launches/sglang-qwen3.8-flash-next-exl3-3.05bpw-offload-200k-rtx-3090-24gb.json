@@ -1,0 +1,122 @@
+{
+  "id": "sglang-qwen3.8-flash-next-exl3-3.05bpw-offload-200k-rtx-3090-24gb",
+  "engine": "sglang",
+  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one RTX 3090: experts in pinned RAM behind a GPU expert cache, n-gram table on NVMe (trellis-serve ft-vision 1e72b25, text + images)",
+  "image": "ghcr.io/0xsero/sglang-exl3-flashnext@sha256:ce47df25cee7ff235d8bfdf3e79e3828aa11bee3624db3ce121ebc79a8375dd3",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/36572531401",
+  "backend": "nvidia",
+  "port": 30100,
+  "entrypoint": "/opt/entrypoint.sh",
+  "args": [
+    "python3",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+    "--quantization",
+    "exl3",
+    "--trust-remote-code",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30100",
+    "--served-model-name",
+    "flashnext",
+    "--disable-shared-experts-fusion",
+    "--kv-cache-dtype",
+    "fp8_e4m3",
+    "--context-length",
+    "204800",
+    "--mem-fraction-static",
+    "0.88",
+    "--chunked-prefill-size",
+    "8192",
+    "--max-running-requests",
+    "4",
+    "--cuda-graph-max-bs-decode",
+    "8",
+    "--cuda-graph-backend-prefill",
+    "disabled",
+    "--max-mamba-cache-size",
+    "16",
+    "--max-total-tokens",
+    "210000",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "SGLANG_EXL3_MODEL_PATH": "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+    "SGLANG_EXL3_MOE_OFFLOAD": "gpu_cache",
+    "EXL3_MOE_CPU_THREADS": "24",
+    "SGLANG_EXL3_EXPERT_CACHE_GB": "auto",
+    "SGLANG_EXL3_EMBED_HOST": "1",
+    "SGLANG_EXL3_OFFLOAD_STAGING_PARTS": "4",
+    "SGLANG_EXL3_OFFLOAD_FUSED": "1",
+    "SGLANG_EXL3_OFFLOAD_COMPACT_PARTS": "1",
+    "SGLANG_EXL3_MOE_PREFILL_FP16_ACC": "1",
+    "SGLANG_EXL3_NGRAM_TIER": "nvme",
+    "SGLANG_EXL3_VISION": "1",
+    "SGLANG_EXL3_MM_FAST_CPU": "1",
+    "SGLANG_EXL3_VIT_SDPA": "1",
+    "SGLANG_EXL3_VIT_MLP_CHUNK": "8192"
+  },
+  "shm": "64g",
+  "weights": [
+    {
+      "repo": "turboderp/Qwen3.8-Flash-Next-exl3",
+      "revision": "69e33439ae950f17bcbe95c98f117d80f759ab6d",
+      "at": "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 204800,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 75,
+    "disk_gb": 85.14,
+    "fast_storage": "nvme"
+  },
+  "setup": "NEEDS: 1x RTX 3090 24 GB (the server takes the whole card: 21,562 MiB at ready, 24,026 MiB peak with a 4096x4096 image; the expert cache auto-sizes to free VRAM, so nothing else may use the GPU); 75 GB of free system RAM (measured system-wide MemAvailable drop at server ready; process peaks: scheduler 63.4 GB RSS + launcher 2.0 + detokenizer 1.7; page-locked: 45.8 GB routed experts + 8 GB n-gram row cache + 1.18 GB token embedding); 85.14 GB for the weights on a LOCAL NVMe SSD (52.3 GB of shards read once at load; the 32.6 GB n-gram table is random-read with O_DIRECT while serving, so no network or tmpfs filesystem). Text and images (256x256 to 4096x4096 tested; EXL3 ViT decoded to bf16 at load, CPU preprocessing, SDPA ViT attention, ViT MLP chunk 8192). Launch = trellis-serve cuda/scripts/serve_flashnext_3090.sh at 1e72b25 plus --reasoning-parser qwen3 --tool-call-parser qwen3_coder (not in the measured runs), on a bridge network with --shm-size 64g where the measured runs used --ipc=host --ulimit memlock=-1. First start JIT-compiles the n-gram NVMe extension (~1 min). Protocol sweep VIS010 (omarchy, PCIe 4.0 x16, 26.2 GB/s host-to-device): prefill 8k 2,627.5 / 16k 2,785.0 / 32k 2,846.0 / 64k 2,824.3 tok/s; decode aggregate C1 62.70 / C2 77.44 / C3 84.76 / C4 79.31 tok/s, C1 at 32k context 62.50. Quality vs stock exllamav3: text panel top-1 0.99067 / KL 0.000956; vision gate top-1 0.9729 / KL 0.00825, 8/8 answers correct. Context 204,800, KV pool 209,984 tokens fp8. A rented 3090 with 14-16 GB/s host-to-device decoded 53.2 tok/s (V001b): PCIe bandwidth matters. SGLANG_EXL3_NGRAM_TIER=pinned keeps the n-gram table in RAM instead (+24.6 GB RAM, no NVMe needed).",
+  "source": "https://github.com/0xSero/trellis-serve/tree/1e72b250cb529c6d81bf11b88740d9a0b22f62de",
+  "plugin": {
+    "name": "Qwen3.8-Flash-Next",
+    "family": "qwen",
+    "format": "EXL3 · 3.05 bpw, vision (experts in RAM, n-gram table on NVMe)",
+    "engine": "sglang",
+    "servedName": "flashnext",
+    "sizeGb": 85.14,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": false,
+      "tools": false,
+      "vision": true
+    },
+    "serving": {
+      "ctxTokens": 204800,
+      "kvTokens": 209984
+    },
+    "weights": [
+      {
+        "dir": "turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 85.14
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rtx-3090-24gb": "qwen38flashnext-exl3-3.05bpw-offload-rtx3090-sglang-tp1"
+  }
+}
