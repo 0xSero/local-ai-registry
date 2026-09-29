@@ -46,8 +46,10 @@ def build(today=None):
         won = (prefer.get(f"{r['card']}/{r['model']}") or {}).get("engine")
         kind = lab.profile(r["engine"]).get("engine")
         demoted = (won and kind != won and kind in ("sglang", "tabbyapi", "exllamav3")) or (not won and r["engine"].startswith("sglang-exl3@"))
-        rank = (gguf, old, *mf, bool(demoted), not exl3)
+        # a recipe that needs more of the host than the card (RAM, disk: `needs`) never leads a card: it follows the ones
+        # every machine with the card can run, and the plugin offers it only where the host has what it needs
         launch = recipes[key]["launch"]
+        rank = (gguf, bool(launch.get("needs")), old, *mf, bool(demoted), not exl3)
         setup = (launch.get("cards") or 1, launch.get("machines") or 1)
         cards.setdefault(r["card"], {}).setdefault(setup, []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
     out_cards = {}
