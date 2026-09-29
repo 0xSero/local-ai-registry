@@ -106,7 +106,7 @@ def render(recipe):
             out = {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None,
                    "weights": p.get("weights") or [], "config": None, "ctx": p["ctx"], "seqs": p.get("seqs", 1),
                    "vision": p.get("vision", False), "backend": p.get("backend"), "cards": 1,
-                   "env": p.get("env") or {}, **{k: p[k] for k in ("setup", "source") if k in p}}
+                   "env": p.get("env") or {}, **{k: p[k] for k in ("setup", "source", "needs") if k in p}}
             # MLX on Apple silicon: pinned packages, a launcher file, its environment, and a GPU wired-memory limit that
             # follows the card's unified memory
             out.update({k: p[k] for k in ("pip",) if p.get(k)})
@@ -117,7 +117,7 @@ def render(recipe):
                 out["sysctl"] = {"iogpu.wired_limit_mb": card(recipe["card"])["vram_gb"] * 1024 - p["wired_limit_reserve_mb"]}
             return out
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
-                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source") if k in p},
+                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}

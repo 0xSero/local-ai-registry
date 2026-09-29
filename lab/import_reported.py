@@ -44,7 +44,7 @@ def freeze(v, source):
                 "seqs": 1, "vision": bool(v.get("vision")), "backend": "nvidia"}
     else:
         prof = {"engine": v["engine"], "about": f"{v['model']} as {source} runs it ({v['repo']})",
-                "image": v.get("image"), "backend": "nvidia", "port": v["port"], "entrypoint": v.get("entrypoint"), "args": v.get("args") or [],
+                "image": v.get("image"), "backend": v.get("backend", "nvidia"), "port": v["port"], "entrypoint": v.get("entrypoint"), "args": v.get("args") or [],
                 "env": v.get("env") or {}, "shm": v.get("shm"), "weights": weights, "config": None, "ctx": ctx, "seqs": 1,
                 "vision": bool(v.get("vision")), "cards": v.get("gpus_per_machine") or 1}
         if not prof["image"]:  # built from the source's Dockerfile at the pinned commit
@@ -55,6 +55,8 @@ def freeze(v, source):
         prof["machines"] = v["machines"]
     if v.get("extra_setup"):
         prof["setup"] = v["extra_setup"]
+    if v.get("needs"):  # what the host needs besides the card (RAM, disk), for launches that offload to it
+        prof["needs"] = v["needs"]
     prof = {"id": name, **prof, "source": src}
     digest = "host" if prof.get("kind") else prof["image"].split("@sha256:")[1][:12] if prof["image"] and "@sha256:" in prof["image"] else "unpinned" if prof["image"] else "build"
     claims = " ".join(k for k in ("reasoning", "tools", "vision") if v.get(k))
