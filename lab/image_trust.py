@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Verify newly introduced image digests; existing pins are not retroactively trusted."""
+import argparse
+import json
+import re
+import subprocess
+
+BUILDERS = {
+    "ghcr.io/0xsero/exl3xpu": ("0xSero/exl3xpu", "release-image.yml", "main"),
+    "ghcr.io/ggml-org/llama.cpp": ("ggml-org/llama.cpp", "docker.yml", "master"),
+    **{f"ghcr.io/0xsero/{name}": ("0xSero/local-ai-images", "release-image.yml", "main")
+       for name in ("gateway", "sglang-exl3", "tabbyapi-exl3")},
+}
+PATHS = ["registry/engines", "registry/launches", "plugin/v2/recipes.json"]
+
+
+def git(*args):
+    return subprocess.check_output(["git", *args], text=True)
+
+
+def images(ref):
+    found = set()
+    def visit(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key == "image" and isinstance(child, str):
+                    found.add(re.sub(r":[^/@]+(?=@sha256:)", "", child))
+                else:
+                    visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+    for path in git("ls-tree", "-r", "--name-only", ref, "--", *PATHS).splitlines():
+        if path.endswith(".json"):
+            visit(json.loads(git("show", f"{ref}:{path}")))
+    return found
+
+
+def verify(image, run=subprocess.run):
+    match = re.fullmatch(r"([^@]+)@sha256:[0-9a-f]{64}", image)
+    if not match or match[1] not in BUILDERS:
+        raise ValueError(f"No approved pinned builder for {image}; publish through an approved workflow")
+    repo, workflow, branch = BUILDERS[match[1]]
+    run(["gh", "attestation", "verify", "oci://" + image, "--repo", repo,
+         "--signer-workflow", f"{repo}/.github/workflows/{workflow}",
+         "--source-ref", "refs/heads/" + branch, "--deny-self-hosted-runners"],
+        check=True, timeout=120)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base", required=True)
+    parser.add_argument("--head", default="HEAD")
+    args = parser.parse_args()
+    # A missing base must fail closed, not silently grandfather new images.
+    added = images(args.head) - images(args.base)
+    for image in sorted(added):
+        verify(image)
+    print(f"Image trust: verified {len(added)} new image(s); unchanged pins are grandfathered")
+
+
+if __name__ == "__main__":
+    main()
