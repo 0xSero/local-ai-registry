@@ -34,7 +34,7 @@ A proof may carry:
 - `legacy: true`: the recipe passed the older acceptance (load and chat only). `lab.py convert` re-runs it through all six gates.
 - `reported: true`: someone else published the launch and its numbers (`src` names their repo at a commit; `claims` what they say it does). `lab/import_reported.py` brings these in from `data/reported/<source>/`. Our gates have not run; a lab run replaces it.
 
-A recipe for several computers ends in `.<n>x` and its profile says `machines: n`. A profile may also name `flags` (host networking or IPC), a `build` (an image built from a source's Dockerfile at a commit), `setup` (what the source needs outside the container), `needs` (what the host needs besides the card, for launches that offload weights to it: `ram_gb` of free system RAM, `disk_gb` and `disk`, e.g. a local NVMe SSD) and `source`.
+A recipe for several computers ends in `.<n>x` and its profile says `machines: n`. A profile may also name `flags` (host networking or IPC), a `build` (an image built from a source's Dockerfile at a commit), `setup` (what the source needs outside the container), `needs` (what the host needs besides the card, for launches that offload weights to it: `host_ram_gb` of free system RAM, `disk_gb` for the weights, `fast_storage: "nvme"` when they must be on a local NVMe SSD; validated by `lab.py check`, exported to the plugin) and `source`.
 
 A new proof from another host on the same recipe confirms it.
 
