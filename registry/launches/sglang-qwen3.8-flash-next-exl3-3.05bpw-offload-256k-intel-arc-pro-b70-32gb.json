@@ -1,9 +1,9 @@
 {
   "id": "sglang-qwen3.8-flash-next-exl3-3.05bpw-offload-256k-intel-arc-pro-b70-32gb",
   "engine": "sglang",
-  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one Arc Pro B70: experts in USM host RAM behind a device expert cache, n-gram table on NVMe (trellis-serve 13f7ac1)",
-  "image": "ghcr.io/0xsero/sglang-exl3-xpu-flashnext@sha256:26f5b8e8b372c4401f25ef93306c064f5c9b8d64e4ec99775b375dcafdf9f3de",
-  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/36549682759",
+  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one Arc Pro B70: experts in USM host RAM behind a device expert cache, n-gram table on NVMe (trellis-serve ft-xpu-vision 72fd2d4, text + images)",
+  "image": "ghcr.io/0xsero/sglang-exl3-xpu-flashnext@sha256:bce2f9ad6fd07113f75e091559882e81d68b6aeffb10f37f1f417d0881889a10",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/36566990963",
   "backend": "intel-xpu",
   "port": 30250,
   "entrypoint": "/opt/entrypoint.sh",
@@ -63,7 +63,8 @@
     "EXL3_QSA_DENSE_BYTES": "134217728",
     "EXL3_QSA_ROWS": "64",
     "EXL3_TORCH_MEM_FRACTION": "0.95",
-    "TORCHINDUCTOR_COMPILE_THREADS": "1"
+    "TORCHINDUCTOR_COMPILE_THREADS": "1",
+    "EXL3_VISION": "1"
   },
   "shm": "64g",
   "weights": [
@@ -78,19 +79,19 @@
   "config": null,
   "ctx": 262144,
   "seqs": 1,
-  "vision": false,
+  "vision": true,
   "cards": 1,
   "needs": {
     "host_ram_gb": 68,
     "disk_gb": 85.14,
     "fast_storage": "nvme"
   },
-  "setup": "NEEDS: 1x Intel Arc Pro B70 32 GB (the server takes the whole card: 31.85 GiB resident at peak, 9,000 expert slots = 15.61 GiB); 68 GB of free system RAM (measured peak 67.26 GB at load, 64.93 GB steady: 45.8 GB routed experts + 8 GB n-gram row cache in USM host memory + ~10.6 GB process RSS); 85.14 GB for the weights on a LOCAL NVMe SSD (the 32.6 GB n-gram table is random-read with O_DIRECT while serving; 29.5 GB were read during one full speed sweep). Text only (vision is a follow-up). Launch = trellis-serve xpu/scripts/serve_flashnext_b70.sh at 13f7ac1 with the X008 final settings plus --reasoning-parser qwen3 --tool-call-parser qwen3_coder (not in the measured runs), on a bridge network with --shm-size 64g where the measured runs used --network host --ipc=host. Measured on B70 #0 (omarchy): prefill 4k 1,152-1,162 / 32k 836-837 tok/s, decode 35.3-35.4 @31 / 33.7 @32k tok/s, gate top-1 98.93 % / KL 0.00116. Known gap: rare single-position logit spikes in teacher-forced scoring on XPU (greedy output unaffected); EXL3_SYNC_LOGITS=1 needs trellis-serve 67437fb or later.",
-  "source": "https://github.com/0xSero/trellis-serve/tree/13f7ac16da227e52d6a5cdc93426cdf1d448b7c3",
+  "setup": "NEEDS: 1x Intel Arc Pro B70 32 GB (the server takes the whole card: 31.85 GiB resident at peak; 9,000 expert slots = 15.61 GiB); 68 GB of free system RAM (measured peak 67.26 GB at load, 64.93 GB steady: 45.8 GB routed experts + 8 GB n-gram row cache in USM host memory + ~10.6 GB process RSS); 85.14 GB for the weights on a LOCAL NVMe SSD (the 32.6 GB n-gram table is random-read with O_DIRECT while serving). Text and images (256x256 to 4096x4096 tested; EXL3 ViT on XPU kernels). Serves ONE request at a time: concurrent requests queue (C2-C4 aggregate stays ~32.6 tok/s). Launch = trellis-serve xpu/scripts/serve_flashnext_b70.sh at 72fd2d4 with the XVIS20 settings plus --reasoning-parser qwen3 --tool-call-parser qwen3_coder (not in the measured runs), on a bridge network with --shm-size 64g where the measured runs used --network host --ipc=host. Protocol sweep XVIS20 (B70 #0, omarchy): prefill 8k 1,026.6 / 16k 945.4 / 32k 798.1 / 64k 600.3 tok/s; decode C1 32.52 tok/s (C2 32.61 / C3 32.60 / C4 32.66 aggregate), C1 at 32k context 31.85. Quality vs stock exllamav3: text panel top-1 0.9893 / KL 0.00121; vision gate top-1 0.9761 / KL 0.0085, 8/8 answers correct. Context 262,144, KV pool 270,336 tokens fp8.",
+  "source": "https://github.com/0xSero/trellis-serve/tree/72fd2d4ca8e8de3fce03ab09e3ed1692957c2f8c",
   "plugin": {
     "name": "Qwen3.8-Flash-Next",
     "family": "qwen",
-    "format": "EXL3 · 3.05 bpw (experts in RAM, n-gram table on NVMe)",
+    "format": "EXL3 · 3.05 bpw, vision (experts in RAM, n-gram table on NVMe)",
     "engine": "sglang",
     "servedName": "flashnext",
     "sizeGb": 85.14,
@@ -100,7 +101,7 @@
       "chat": true,
       "reasoning": false,
       "tools": false,
-      "vision": false
+      "vision": true
     },
     "serving": {
       "ctxTokens": 262144,
