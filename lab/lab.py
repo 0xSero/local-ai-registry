@@ -474,6 +474,20 @@ def cmd_render(args):
     return 0
 
 
+NEEDS = {"host_ram_gb": (int, float), "disk_gb": (int, float), "fast_storage": str}
+
+
+def check_needs(n):
+    """`needs`: what the host must have besides the card, for launches that keep weights in system RAM or read them
+    from disk while serving. host_ram_gb = free system RAM the server takes (measured peak), disk_gb = space for the
+    weights, fast_storage = "nvme" when the weights directory must be on a local NVMe SSD (random reads at runtime)."""
+    assert isinstance(n, dict) and set(n) <= set(NEEDS) and {"host_ram_gb", "disk_gb"} <= set(n), f"needs keys {sorted(n)}"
+    for k, v in n.items():
+        assert isinstance(v, NEEDS[k]) and not isinstance(v, bool), f"needs.{k} is {type(v).__name__}"
+    assert n["host_ram_gb"] > 0 and n["disk_gb"] > 0, "needs sizes must be positive"
+    assert n.get("fast_storage", "nvme") == "nvme", "needs.fast_storage is nvme or absent"
+
+
 def cmd_check(_):
     bad = []
     for f in sorted(RECIPES.rglob("*.json")):
@@ -486,6 +500,8 @@ def cmd_check(_):
             assert f.parent.name == r["card"] and f.parent.parent.name == c["vendor"], "path is not recipes/<vendor>/<card>/"
             launch = render(r)
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
+            if "needs" in launch:
+                check_needs(launch["needs"])
             need = set() if r["proof"][0].get("reported") else {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
             assert not r["proof"][0].get("reported") or r["proof"][0].get("src"), "a reported proof names its source"
             assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"

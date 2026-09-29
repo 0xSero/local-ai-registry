@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """plugin/v2/recipes.json for the Omarchy Local AI plugin (schema omarchy-local-ai/recipes/2), generated from
-dist/catalog.json: each card's picks, recommended first. Recipes validated before the lab keep their original ids,
+dist/catalog.json: each card's picks, recommended first, then any other recipe that states host `needs` (RAM, disk)
+for the plugin to offer only where the machine has them. Recipes validated before the lab keep their original ids,
 so running deployments stay recognised. `--check` fails if it is stale. Standard library only."""
 import json, subprocess, sys
 from pathlib import Path
@@ -25,7 +26,8 @@ def entry(key, r, meta):
                 "sizeGb": x["sizeGb"], "cards": L.get("cards", 1), "image": L["image"], "minDriver": x["minDriver"], "weights": weights,
                 "asset": {"name": x["asset"], "mountPath": L["config"]["at"], "text": L["config"]["text"]} if L["config"] else None,
                 "scratch": x["scratch"], "launch": {"entrypoint": L["entrypoint"], "arguments": L["args"], "environment": L["env"], "port": L["port"], "shm": L["shm"]},
-                "serving": x["serving"], "capabilities": {**x["capabilities"], **{k: v for k, v in caps.items() if v}}}
+                "serving": x["serving"], "capabilities": {**x["capabilities"], **{k: v for k, v in caps.items() if v}},
+                **({"needs": L["needs"]} if L.get("needs") else {})}
     m = meta["models"][r["model"]]
     b = meta["builds"][r["weights"]]
     name = L["weights"]["at"].rsplit("/", 1)[1]
@@ -44,11 +46,17 @@ def build():
     hw = {}
     for card, c in sorted(cat["cards"].items()):
         # the plugin runs one plain container per card: no host programs, host IPC or networking, or several machines
-        ok = [k for k in c["picks"] if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines", "build"))
+        # the picks, then any other recipe that states host `needs`: the plugin offers those only on a machine with
+        # that much free RAM and disk (e.g. experts offloaded to system RAM, tables read from NVMe)
+        keys = c["picks"] + [k for k in c["more"] if cat["recipes"][k]["launch"].get("needs")]
+        ok = [k for k in keys if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines", "build"))
               and not cat["recipes"][k]["proof"][0].get("reported")  # the plugin runs one plain container we have checked
               and ("defaults" in lab.profile(cat["recipes"][k]["engine"]) or "plugin" in lab.profile(cat["recipes"][k]["engine"]))]  # and can describe
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
+            for e in hw[card]["recipes"]:  # a needs block reaches the plugin only in the checked shape
+                if "needs" in e:
+                    lab.check_needs(e["needs"])
     head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}
     lines = ["{"] + [f'  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)},' for k, v in head.items()] + ['  "hardware": {']
     lines += [f'    {json.dumps(k)}: {json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' + ("," if i < len(hw) - 1 else "") for i, (k, v) in enumerate(hw.items())]
