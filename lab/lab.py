@@ -419,9 +419,10 @@ def cmd_try(args):
 
 
 def cmd_convert(args):
-    files = [f for f in RECIPES.glob(f"*/{args.card}/*.json") if json.loads(f.read_text())["proof"][0].get("legacy")]
+    files = [f for f in sorted(RECIPES.glob(f"*/{args.card}/*.json")) if json.loads(f.read_text())["proof"][0].get("legacy")
+             and (not args.recipe or f.stem == args.recipe)]
     if not files:
-        raise SystemExit(f"{args.card} has no legacy recipe")
+        raise SystemExit(f"{args.card} has no legacy recipe" + (f" {args.recipe}" if args.recipe else ""))
     f = files[0]
     recipe = json.loads(f.read_text())
     launch = render(recipe)
@@ -538,6 +539,7 @@ def main():
     t.add_argument("--dry-run", action="store_true")
     cv = sub.add_parser("convert")
     cv.add_argument("card")
+    cv.add_argument("--recipe", help="which legacy recipe of the card (its file name without .json); default the first")
     cv.add_argument("--on", default="vast", choices=["vast", "runpod", "endpoint"])
     cv.add_argument("--endpoint")
     cv.add_argument("--gpu")
