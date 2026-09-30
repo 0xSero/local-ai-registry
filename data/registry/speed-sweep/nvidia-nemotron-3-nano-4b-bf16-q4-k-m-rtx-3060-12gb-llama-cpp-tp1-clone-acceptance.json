@@ -1,0 +1,147 @@
+{
+  "accepted_at": "2026-09-30T03:09:20.227669Z",
+  "id": "nvidia-nemotron-3-nano-4b-bf16-q4-k-m-rtx-3060-12gb-llama-cpp-tp1-clone-acceptance",
+  "measured_at": "2026-09-30T03:08:55.361928Z",
+  "metrics": {
+    "concurrency": 1,
+    "latest_point_at": "2026-09-30T03:08:55.361928Z",
+    "max_context_tokens": 274,
+    "peak_generation_tps": 95.7,
+    "peak_prompt_tps": 82.1,
+    "point_count": 1
+  },
+  "recipe_id": "nvidia-nemotron-3-nano-4b-bf16-q4-k-m-rtx-3060-12gb-llama-cpp-tp1-clone",
+  "rows": [
+    {
+      "concurrency": 1,
+      "context_tokens": 274,
+      "decode_method": "timings.predicted_per_second",
+      "decode_tok_s": 95.7,
+      "decode_tok_s_per_stream": 95.7,
+      "measurements": [
+        {
+          "client_decode_ms": 6706.480662000104,
+          "client_decode_tok_s": 95.87741058336776,
+          "decode_method": "timings.predicted_per_second",
+          "decode_tok_s": 95.72725919309215,
+          "elapsed_ms": 7023.684462001256,
+          "finish_reason": "stop",
+          "prompt_tokens": 274,
+          "response_model_ids": [
+            "lmstudio-community/NVIDIA-Nemotron-3-Nano-4B-GGUF:Q4_K_M"
+          ],
+          "server_decode_tok_s": 95.72725919309215,
+          "server_prefill_tok_s": 903.7922992937887,
+          "started_at": "2026-09-30T03:08:55.361928Z",
+          "timings": {
+            "cache_n": 0,
+            "predicted_ms": 6717.0,
+            "predicted_n": 644,
+            "predicted_per_second": 95.72725919309215,
+            "predicted_per_token_ms": 10.446345256609643,
+            "prompt_ms": 303.167,
+            "prompt_n": 274,
+            "prompt_per_second": 903.7922992937887,
+            "prompt_per_token_ms": 1.106448905109489
+          },
+          "tokens": 644,
+          "ttft_ms": 306.35952900047414,
+          "usage": {
+            "completion_tokens": 644,
+            "prompt_tokens": 274,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 918
+          }
+        },
+        {
+          "client_decode_ms": 9027.581253998505,
+          "client_decode_tok_s": 95.70669880343821,
+          "decode_method": "timings.predicted_per_second",
+          "decode_tok_s": 95.59555644414183,
+          "elapsed_ms": 9152.735814001062,
+          "finish_reason": "stop",
+          "prompt_tokens": 274,
+          "response_model_ids": [
+            "lmstudio-community/NVIDIA-Nemotron-3-Nano-4B-GGUF:Q4_K_M"
+          ],
+          "server_decode_tok_s": 95.59555644414183,
+          "server_prefill_tok_s": 82.0950660865282,
+          "started_at": "2026-09-30T03:09:02.385736Z",
+          "timings": {
+            "cache_n": 270,
+            "predicted_ms": 9038.077,
+            "predicted_n": 865,
+            "predicted_per_second": 95.59555644414183,
+            "predicted_per_token_ms": 10.460737268518518,
+            "prompt_ms": 48.724,
+            "prompt_n": 4,
+            "prompt_per_second": 82.0950660865282,
+            "prompt_per_token_ms": 12.181
+          },
+          "tokens": 865,
+          "ttft_ms": 114.1849590021593,
+          "usage": {
+            "completion_tokens": 865,
+            "prompt_tokens": 274,
+            "prompt_tokens_details": {
+              "cached_tokens": 270
+            },
+            "total_tokens": 1139
+          }
+        },
+        {
+          "client_decode_ms": 8560.312442001305,
+          "client_decode_tok_s": 95.90771429927614,
+          "decode_method": "timings.predicted_per_second",
+          "decode_tok_s": 95.79035795958372,
+          "elapsed_ms": 8686.684718999459,
+          "finish_reason": "stop",
+          "prompt_tokens": 274,
+          "response_model_ids": [
+            "lmstudio-community/NVIDIA-Nemotron-3-Nano-4B-GGUF:Q4_K_M"
+          ],
+          "server_decode_tok_s": 95.79035795958372,
+          "server_prefill_tok_s": 81.53115509263978,
+          "started_at": "2026-09-30T03:09:11.538585Z",
+          "timings": {
+            "cache_n": 270,
+            "predicted_ms": 8570.8,
+            "predicted_n": 822,
+            "predicted_per_second": 95.79035795958372,
+            "predicted_per_token_ms": 10.4394640682095,
+            "prompt_ms": 49.061,
+            "prompt_n": 4,
+            "prompt_per_second": 81.53115509263978,
+            "prompt_per_token_ms": 12.26525
+          },
+          "tokens": 822,
+          "ttft_ms": 115.58764700021129,
+          "usage": {
+            "completion_tokens": 822,
+            "prompt_tokens": 274,
+            "prompt_tokens_details": {
+              "cached_tokens": 270
+            },
+            "total_tokens": 1096
+          }
+        }
+      ],
+      "output_tokens": 822,
+      "peak_vram_gb": null,
+      "prefill_tok_s": 82.1,
+      "samples": 3,
+      "status": "accepted",
+      "ttft_ms_p50": 115.6
+    }
+  ],
+  "schema_version": "local-ai-registry/v1",
+  "source": {
+    "commit": null,
+    "kind": "acceptance-run",
+    "paths": null,
+    "repository": null,
+    "url": "https://github.com/0xSero/local-ai-registry"
+  }
+}
