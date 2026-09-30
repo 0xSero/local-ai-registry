@@ -1,0 +1,38 @@
+{
+  "id": "tabbyapi-ornith-1.5-9b-4bpw-128k",
+  "engine": "tabbyapi",
+  "about": "Ornith-1.5-9B-EXL3-4bpw as validated in ornith-1-5-9b-exl3-4bpw-rtx3090-tabbyapi-tp1",
+  "image": "ghcr.io/theroyallab/tabbyapi@sha256:1c13dd17416660856e9962aeee8498827f0acd604eb36795128a03ddfe03c6ef",
+  "backend": "nvidia",
+  "port": 5000,
+  "entrypoint": "/opt/venv/bin/python3",
+  "args": [
+    "main.py",
+    "--config",
+    "/app/config.yml"
+  ],
+  "env": {},
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "ultimatechris/Ornith-1.5-9B-EXL3-4bpw",
+      "revision": "8d1e89ef430f9ba3a12789b198abf1385670ceb0",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": {
+    "at": "/app/config.yml",
+    "text": "network:\n  host: 0.0.0.0\n  port: 5000\n  disable_auth: true\n  disable_fetch_requests: true\n  send_tracebacks: false\n  api_servers: [\"OAI\"]\n  sse_ping_interval: 15\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n  log_chat_completion_requests: false\n\nmodel:\n  model_dir: /opt/models\n  inline_model_loading: false\n  use_dummy_models: false\n  model_name: Ornith-1.5-9B-EXL3-4bpw\n  backend: exllamav3\n  max_seq_len: 131072\n  cache_size: 132096\n  cache_mode: Q4\n  tensor_parallel: false\n  gpu_split_auto: true\n  autosplit_reserve: [512]\n  chunk_size: 1024\n  output_chunking: true\n  max_batch_size: 2\n  vision: true\n  vision_offload: true\n  reasoning: true\n  start_in_reasoning: always\n  reasoning_start_token: \" thinking\"\n  reasoning_end_token: \"</think>\"\n  template_vars_default:\n    enable_thinking: true\n  tool_format: qwen3_coder\n\ndraft_model:\n  draft_mode: disabled\n\nsampling:\n  override_preset:\n\nmemory:\n  sysmem_recurrent_cache: 4096\n  sysmem_kv_cache: 0\n  cuda_malloc_async: true\n"
+  },
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "flags": [
+    "--ipc host"
+  ],
+  "frozen_from": [
+    "ornith-1-5-9b-exl3-4bpw-rtx3090-tabbyapi-tp1"
+  ]
+}
