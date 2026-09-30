@@ -12,7 +12,7 @@ registry/                      the source of truth, tiny
   recipes/<vendor>/<card>/<model>.<engine>.<context>k[.<n>x].json   (n = cards in the setup)
                                       one recipe (~400 bytes): weights, engine, settings, proof
   models.json                         each model: family, release date, what it is for
-lab/            run, check and publish recipes (lab.py try | convert | render | check)
+lab/            run, check and publish recipes (lab.py try | convert | render | check); digest.py: the Monday report
 dist/           catalog.json: everything above, rendered, at most 3 picks per GPU setup
 site/           local.sybilsolutions.ai and its API (static, on Cloudflare Pages)
 sdk/            js/ and python/: pick a recipe for a GPU, print the command

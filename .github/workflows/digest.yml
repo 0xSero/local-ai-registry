@@ -1,0 +1,28 @@
+name: Digest
+
+# Report only: one comment on Linear HOM-174 each Monday with what is waiting, CI, releases, upstream, the site,
+# and whether every pinned image and weights revision still resolves. See lab/digest.py.
+on:
+  schedule:
+    - cron: "0 7 * * 1"  # Monday 07:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Post the digest to Linear HOM-174
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: python3 lab/digest.py
