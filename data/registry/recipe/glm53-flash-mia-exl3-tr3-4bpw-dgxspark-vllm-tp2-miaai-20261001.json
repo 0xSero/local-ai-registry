@@ -1,0 +1,114 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "engine": {
+    "graph_mode": "CUDA graphs (ENFORCE_EAGER=0)",
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {},
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "glm53-flash-mia-exl3-tr3-4bpw-dgxspark-vllm-tp2-miaai-20261001",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "non-container-launch-kind: the launcher script starts its own containers; image under script.image",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-image-inspect",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/manifest.json"
+        }
+      ],
+      "state": "none"
+    },
+    "container_port": 8888,
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "env": [
+        "sources/fleet-backup-2026-10-01/spark-2384/launcher/glm-recipe.env"
+      ],
+      "file": "start.sh",
+      "local_patches": [
+        "sources/fleet-backup-2026-10-01/spark-2384/launcher/glm-recipe.local.diff"
+      ],
+      "nodes": "head spark-2384, worker spark-2822",
+      "steps": [
+        "./start.sh"
+      ],
+      "upstream": "https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/tree/775a58b704924b13cf5c38de97559b3630f67bbf"
+    },
+    "script_image": {
+      "compose_file": null,
+      "digest": null,
+      "image": "ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3-instanttensor",
+      "reason": "host image ids differ (spark-2384 and spark-2822 sha256:03d16e82..., spark-557f sha256:ef9f5013..., spark-de5c sha256:0d9140f3...); the public tag resolved to sha256:447114ee77d14c9b4732ee23978ada2a0ee9027868a231d6fd42700a8b25be1d on 2026-10-01; which one served is not recorded",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-images",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/manifest.json"
+        }
+      ],
+      "state": "unpinned"
+    }
+  },
+  "metadata": {
+    "fleet_backup": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "host": "spark-2384",
+      "manifest": "sources/fleet-backup-2026-10-01/manifest.json",
+      "published_sha256": "bd885e416d49eaf4a751400d36db0d713cd6afb5bd031d24baa410b4cdf1e6eb",
+      "raw_sha256": "292230bebccc263f593815600d5617e3b046780ae9af79277cf44c72117f68d5",
+      "source_file": "sources/fleet-backup-2026-10-01/spark-2384/live-overlay--home-local-studio-data-model-index-json.json",
+      "source_id": "glm-5.3-flash",
+      "source_kind": "live-overlay"
+    },
+    "forwarder": "Local Studio overlay entry glm-5.3-flash on spark-2384 is adopt-only (local/ls-adopt-forward:1 forwards :8000 to this launcher's :8888).",
+    "limits": "Revision mismatch: the launcher .env pins MODEL_REVISION=25a44fdbf16862a46b7cc9921142c6c81350af2f, whose local snapshot is 3 KB; the 175.7 GB weights on disk are refs/main 9eaebb7c4e96d983dcd538e18624622ba5b820a8 (the model-instance revision used here). Which revision was served is not recorded. Image not pinned (see launch.container). Local diff only makes the API host configurable.",
+    "measured_by_owner": "single-stream decode 32.8 tok/s with GLM53_ADAPTIVE_K=ema and GLM53_DENSE_FP8=dense,kda (owner note in the saved overlay; no registry run)",
+    "upstream_reported": "data/reported/miaai-lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks.json"
+  },
+  "model_instance_id": "mia-ailab-glm-5-3-flash-exl3-tr3-4bpw--exl3-tr3-4bpw",
+  "provenance": {
+    "captured_at": "2026-10-01T23:19:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "live-controller-recipe",
+        "note": "spark-2384 saved controller configuration, read-only capture",
+        "path": "sources/fleet-backup-2026-10-01/spark-2384/live-overlay--home-local-studio-data-model-index-json.json",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/spark-2384/live-overlay--home-local-studio-data-model-index-json.json"
+      },
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "upstream-repository",
+        "url": "https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks/tree/775a58b704924b13cf5c38de97559b3630f67bbf"
+      }
+    ]
+  },
+  "recipe_source": "0xsero-fleet-backup",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8",
+    "max_concurrency": 4,
+    "max_context_tokens": 500000,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

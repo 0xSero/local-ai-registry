@@ -1,0 +1,168 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": false
+  },
+  "engine": {
+    "graph_mode": "FULL_AND_PIECEWISE",
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-flash-0731-fp8-rtxpro6000-vllm-tp4-popos-20261001",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "compose": {
+      "build_context": [
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/.env.example",
+          "raw_sha256": "1a8a380abba39d2b05d291d5ee54e7518991dd558d823287e5b1a2b979c0e3fb"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/.github/workflows/validate.yml",
+          "raw_sha256": "aba838ea7a5aed4fcd7783c5f57ed40432f5996623f69a432904e08de02c7ab7"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/.gitignore",
+          "raw_sha256": "ce3ec52905acda40ebad67926482f5c2e6cb8a652497135201794a51fcca040a"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/Dockerfile",
+          "raw_sha256": "dd4cbe95bcba6f689b18282e9d6b46a058c1b685034b0b3e51191a45688978ff"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/README.md",
+          "raw_sha256": "4b6e3c07dec140fd5d2a477b5dc8873df37bff3b41d7c82ed965de8672add032"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/compose.yaml",
+          "raw_sha256": "007cdeb2405468ac539591e5a310dd7204d38abc002c2c1d9941794b72565c32"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/recipe.template.json",
+          "raw_sha256": "02c1a9fc3e588df5f7bb4b99ba0c87c3c99495c6dd5c6cc8ae366e86253166ec"
+        },
+        {
+          "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/up",
+          "raw_sha256": "d8b5c9f7f616416994aca8792bb335ca9c6214e02e36709573624bb0a9f083d6"
+        }
+      ],
+      "command": "env MODEL_DIR=${MODEL_ROOT}/DeepSeek-V4-Flash-0731 CACHE_DIR=${MODEL_ROOT}/cache_deepseek_v4_flash_0731 NVIDIA_VISIBLE_DEVICES=GPU-<uuid>\\,GPU-<uuid>\\,GPU-<uuid>\\,GPU-<uuid> /usr/bin/docker compose -f ${HOME}/ai/blackwell/4x-6000-pro-ds4-flash-0731/compose.yaml up",
+      "file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/compose.yaml",
+      "variables": {
+        "CACHE_DIR": "${MODEL_ROOT}/cache_deepseek_v4_flash_0731",
+        "MODEL_DIR": "${MODEL_ROOT}/DeepSeek-V4-Flash-0731",
+        "NVIDIA_VISIBLE_DEVICES": "four GPU UUIDs"
+      }
+    },
+    "container": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "compose_file": "sources/fleet-backup-2026-10-01/pop-os/build/4x-6000-pro-ds4-flash-0731/compose.yaml",
+      "digest": null,
+      "image": "deepseek-v4-flash-0731:exact-20260812",
+      "reason": "local image id sha256:e3f4a1d4da50084a46c2267b70a71e9facc9031fbae0665953cb40c850ed3e35 built from the captured compose build context; not published",
+      "runtime": "docker-compose",
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-image-inspect",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/pop-os/images/deepseek-v4-flash-0731_exact-20260812.json"
+        }
+      ],
+      "state": "indirect"
+    },
+    "container_port": 8000,
+    "environment": {
+      "B12X_DENSE_SPLITK_TURBO": "1",
+      "B12X_MLA_SM120_PREFILL_F16_ROPE": "1",
+      "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+      "CUTE_DSL_ARCH": "sm_120a",
+      "HF_HUB_OFFLINE": "1",
+      "NCCL_IB_DISABLE": "1",
+      "NCCL_P2P_DISABLE": "1",
+      "NCCL_P2P_LEVEL": "SYS",
+      "NCCL_PROTO": "LL,LL128,Simple",
+      "NVIDIA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_CACHE_ROOT": "/cache",
+      "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+      "VLLM_USE_B12X_FP8_GEMM": "0",
+      "VLLM_USE_B12X_MOE": "1",
+      "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+      "VLLM_USE_V2_MODEL_RUNNER": "1"
+    },
+    "host_port": 8000,
+    "image": "deepseek-v4-flash-0731:exact-20260812",
+    "kind": "docker-compose",
+    "mounts": [
+      {
+        "provision": {
+          "repository": "deepseek-ai/DeepSeek-V4-Flash-0731",
+          "revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062"
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/DeepSeek-V4-Flash-0731",
+        "target": "/model"
+      },
+      {
+        "read_only": false,
+        "source": "${MODEL_ROOT}/cache_deepseek_v4_flash_0731",
+        "target": "/cache"
+      }
+    ],
+    "provenance": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "config": "sources/fleet-backup-2026-10-01/pop-os/images/deepseek-v4-flash-0731_exact-20260812.json",
+      "note": "local image built from the compose build context below (tag deepseek-v4-flash-0731:exact-20260812); not published"
+    }
+  },
+  "metadata": {
+    "fleet_backup": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "host": "pop-os",
+      "manifest": "sources/fleet-backup-2026-10-01/manifest.json",
+      "published_sha256": "0c5990e633ae5e9dc2300412f7aba21ac70ee708f787f838ce351a2fc154f001",
+      "raw_sha256": "ab447fb4005fc7ae2a8f545557fec95a1fe3fecbd46b85d2e598737f85ae6e16",
+      "source_file": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+      "source_id": "deepseek-v4-flash",
+      "source_kind": "live-overlay"
+    },
+    "limits": "The compose file publishes the port on 127.0.0.1 and uses ipc: host (as saved). Local image; rebuild from the captured build context, whose Dockerfile pins its own base. Differs from deepseek-v4-flash-0731-fp8-rtxpro6000-vllm-tp4 (2026-08-27): 8 sequences instead of 5. The owner's saved label 'locked-exact-docker-bundle' is not registry acceptance.",
+    "previous_record": "deepseek-v4-flash-0731-fp8-rtxpro6000-vllm-tp4",
+    "speculative": {
+      "draft_sample_method": "probabilistic",
+      "method": "dspark",
+      "moe_backend": "b12x",
+      "num_speculative_tokens": 5
+    },
+    "validation_status_saved": "locked-exact-docker-bundle"
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-flash-0731--fp8",
+  "provenance": {
+    "captured_at": "2026-10-01T23:19:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os saved controller configuration, read-only capture",
+        "path": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero-fleet-backup",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8_ds_mla",
+    "kv_cache_tokens": 5345692,
+    "max_concurrency": 8,
+    "max_context_tokens": 1048576,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

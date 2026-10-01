@@ -1,0 +1,20 @@
+name: deepseek-v4-flash-0731
+
+services:
+  inference:
+    image: deepseek-v4-flash-0731:exact-20260812
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: deepseek-v4-flash-0731
+    restart: "no"
+    gpus: all
+    ipc: host
+    shm_size: 32gb
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - "${MODEL_DIR:?Set MODEL_DIR to the downloaded DeepSeek checkpoint}:/model:ro"
+      - "${CACHE_DIR:?Set CACHE_DIR to a writable compilation cache}:/cache:rw"
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "${NVIDIA_VISIBLE_DEVICES:?Set NVIDIA_VISIBLE_DEVICES to four GPU UUIDs}"

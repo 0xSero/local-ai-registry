@@ -1,0 +1,1316 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "id": "deepseek-v4-flash",
+      "name": "DeepSeek-V4-Flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "bfloat16",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "B12X_DENSE_SPLITK_TURBO": "1",
+          "B12X_MLA_SM120_PREFILL_F16_ROPE": "1",
+          "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+          "CUTE_DSL_ARCH": "sm_120a",
+          "HF_HUB_OFFLINE": "1",
+          "NCCL_IB_DISABLE": "1",
+          "NCCL_P2P_DISABLE": "1",
+          "NCCL_P2P_LEVEL": "SYS",
+          "NCCL_PROTO": "LL,LL128,Simple",
+          "NVIDIA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "TRANSFORMERS_OFFLINE": "1",
+          "VLLM_CACHE_ROOT": "/cache",
+          "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+          "VLLM_USE_B12X_FP8_GEMM": "0",
+          "VLLM_USE_B12X_MOE": "1",
+          "VLLM_USE_B12X_SPARSE_INDEXER": "1",
+          "VLLM_USE_V2_MODEL_RUNNER": "1"
+        },
+        "extra_args": {
+          "async_scheduling": true,
+          "block_size": 256,
+          "container_name": "deepseek-v4-flash-0731",
+          "cuda_graphs": "FULL_AND_PIECEWISE",
+          "decode_context_parallel_size": 1,
+          "enable_chunked_prefill": true,
+          "gpu_kv_cache_tokens": 5345692,
+          "image": "deepseek-v4-flash-0731:exact-20260812",
+          "launch_command": "env MODEL_DIR=${MODEL_ROOT}/DeepSeek-V4-Flash-0731 CACHE_DIR=${MODEL_ROOT}/cache_deepseek_v4_flash_0731 NVIDIA_VISIBLE_DEVICES=GPU-<uuid>\\,GPU-<uuid>\\,GPU-<uuid>\\,GPU-<uuid> /usr/bin/docker compose -f ${HOME}/ai/blackwell/4x-6000-pro-ds4-flash-0731/compose.yaml up",
+          "launch_wrapper": "controller-owned foreground Docker Compose process",
+          "max_cudagraph_capture_size": 48,
+          "max_num_batched_tokens": 8192,
+          "maximum_concurrency_at_1m": 5.1,
+          "speculative": {
+            "draft_sample_method": "probabilistic",
+            "method": "dspark",
+            "moe_backend": "b12x",
+            "num_speculative_tokens": 5
+          },
+          "tags": [
+            "deepseek-v4",
+            "flash",
+            "0731",
+            "tp4",
+            "dspark",
+            "b12x",
+            "fp8-ds-mla",
+            "1m-context",
+            "cuda-graphs"
+          ],
+          "validation_status": "locked-exact-docker-bundle"
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8_ds_mla",
+        "max_model_len": 1048576,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/DeepSeek-V4-Flash-0731",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": "/usr/bin/docker",
+        "quantization": "deepseek_v4_fp8",
+        "reasoning_parser": "deepseek_v4",
+        "runtime": {
+          "kind": "system",
+          "label": "Controller-owned Compose wrapper for the locked DS4 SparkInfer runtime",
+          "ref": "/usr/bin/docker"
+        },
+        "served_model_name": "DeepSeek-V4-Flash-0731",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "high",
+        "tool_call_parser": "deepseek_v4",
+        "trust_remote_code": true,
+        "vision": false
+      }
+    },
+    {
+      "id": "gemma-4-31b-it",
+      "name": "Gemma-4-31B-it",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "bfloat16",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_HOME": "/usr/local/cuda",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "FLASHINFER_DISABLE_VERSION_CHECK": "1",
+          "GLOO_SOCKET_IFNAME": "lo",
+          "HF_HOME": "${MODEL_ROOT}/hf",
+          "NCCL_IB_DISABLE": "1",
+          "NCCL_P2P_DISABLE": "1",
+          "NCCL_SOCKET_IFNAME": "lo",
+          "OMP_NUM_THREADS": "8",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+          "SAFETENSORS_FAST_GPU": "1",
+          "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+          "VLLM_ATTENTION_BACKEND": "FLASHINFER",
+          "VLLM_USE_V1": "1"
+        },
+        "extra_args": {
+          "disable-custom-all-reduce": true,
+          "enable-chunked-prefill": true,
+          "enable-prefix-caching": true,
+          "model-loader-extra-config": "{\"enable_multithread_load\": true, \"num_threads\": 16}",
+          "speculative_config": {
+            "model": "${MODEL_ROOT}/google/gemma-4-31B-it-assistant",
+            "num_speculative_tokens": 4
+          },
+          "visible-devices": "0,1,2,3"
+        },
+        "gpu_memory_utilization": 0.92,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 16,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/google/gemma-4-31B-it",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "gemma4",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "gemma-4-31b-it",
+        "tensor_parallel_size": 2,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "gemma4",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "gemma-4-31b-it-nvfp4",
+      "name": "Gemma-4-31B-IT NVFP4",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "auto",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>"
+        },
+        "extra_args": {
+          "description": "NVIDIA Gemma-4-31B-IT NVFP4 ModelOpt checkpoint.",
+          "disable-custom-all-reduce": true,
+          "enable-chunked-prefill": true,
+          "enable-prefix-caching": true,
+          "model-loader-extra-config": "{\"enable_multithread_load\": true, \"num_threads\": 16}",
+          "tags": [
+            "gemma",
+            "nvfp4",
+            "modelopt"
+          ]
+        },
+        "gpu_memory_utilization": 0.92,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/nvidia/Gemma-4-31B-IT-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "modelopt",
+        "reasoning_parser": "gemma4",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "gemma-4-31b-it-nvfp4",
+        "tensor_parallel_size": 2,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "gemma4",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "glm-5.2",
+      "name": "GLM-5.2",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "ASYNC_SCHEDULING": "0",
+          "B12X_PCIE_DMA": "0",
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+          "DCP": "4",
+          "DCP_BACKEND": "ag_rs",
+          "DCP_CKV_GATHER": "auto",
+          "DCP_CKV_GATHER_MAX_TOKENS": "16384",
+          "DCP_CKV_PREFETCH_DEPTH": "auto",
+          "DCP_INDEXER_SHARDS": "auto",
+          "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+          "DCP_QUERY_SPLIT": "auto",
+          "DCP_TOPK_OWNER_MERGE": "auto",
+          "GPU_MEMORY_UTILIZATION": "0.95",
+          "GRAPH": "56",
+          "KV_FP8_ROPE": "1",
+          "LMCACHE_MODE": "off",
+          "MAX_BATCHED_TOKENS": "3072",
+          "MAX_MODEL_LEN": "262144",
+          "MAX_NUM_SEQS": "8",
+          "MODEL": "/model",
+          "MODEL_FAMILY": "glm52-exl3",
+          "MTP": "6",
+          "MTP_DRAFT_SAMPLE_METHOD": "greedy",
+          "MTP_MOE_BACKEND": "triton",
+          "NVIDIA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "PCIE_CALIBRATION": "off",
+          "SERVED_MODEL_NAME": "glm-5.2",
+          "TP": "4",
+          "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+          "VLLM_USE_B12X_DCP_A2A": "0"
+        },
+        "extra_args": {
+          "async_scheduling": false,
+          "container_name": "glm-5.2",
+          "cuda_graph_capture_sizes": [
+            7,
+            14,
+            21,
+            28,
+            35,
+            42,
+            49,
+            56
+          ],
+          "cuda_graphs": "FULL_AND_PIECEWISE",
+          "dcp_comm_backend": "ag_rs",
+          "dcp_kv_cache_interleave_size": 1,
+          "decode_context_parallel_size": 4,
+          "description": "Operational 262,144-token profile cloned from the validated MTP6 TP4/DCP4 GLM-5.2 recipe: EXL3 TR3 3.0bpw, NVFP4 DSA MLA KV, NCCL ag_rs, full/piecewise CUDA graphs, 250 W per GPU. The 850k validated recipe is retained as glm-5.2-850k-validated.",
+          "gpu_kv_cache_tokens_floor": 850000,
+          "image": "voipmonitor/vllm:gilded-gnosis-v20-vllmb46c3aa-si35aebc6-fi801d57a-cu132-20260730-r12@sha256:bcd65c13076b00cf7804001ce70085453de958b082897b9674a26d9fab4d436a",
+          "launch_command": "docker run --rm --name glm-5.2 --gpus all --ipc host --shm-size 32g -p 127.0.0.1:8000:8000 -v ${MODEL_ROOT}/GLM-5.2-EXL3-TR3-3.0bpw:/model:ro -v ${MODEL_ROOT}/cache_glm52_exl3_text:/cache:rw -e MTP_DRAFT_SAMPLE_METHOD=greedy -e MTP_MOE_BACKEND=triton -e SERVED_MODEL_NAME=glm-5.2 -e VLLM_ENABLE_PCIE_ALLREDUCE=0 -e DCP_INDEXER_SHARDS=auto -e GPUS=0,1,2,3 -e MTP=6 -e GRAPH=56 -e KV_FP8_ROPE=1 -e LMCACHE_MODE=off -e DCP_BACKEND=ag_rs -e GPU_MEMORY_UTILIZATION=0.95 -e DCP_KV_CACHE_INTERLEAVE_SIZE=1 -e PCIE_CALIBRATION=off -e VLLM_USE_B12X_DCP_A2A=0 -e DCP_TOPK_OWNER_MERGE=auto -e DCP_CKV_GATHER_MAX_TOKENS=16384 -e DCP=4 -e MODEL=/model -e MAX_BATCHED_TOKENS=3072 -e MAX_MODEL_LEN=262144 -e DCP_CKV_GATHER=auto -e CUDA_VISIBLE_DEVICES=0,1,2,3 -e DCP_QUERY_SPLIT=auto -e B12X_PCIE_DMA=0 -e MODEL_FAMILY=glm52-exl3 -e DCP_CKV_PREFETCH_DEPTH=auto -e TP=4 -e NVIDIA_VISIBLE_DEVICES=GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid> -e MAX_NUM_SEQS=8 -e ASYNC_SCHEDULING=0 --entrypoint /bin/bash voipmonitor/vllm:gilded-gnosis-v20-vllmb46c3aa-si35aebc6-fi801d57a-cu132-20260730-r12@sha256:bcd65c13076b00cf7804001ce70085453de958b082897b9674a26d9fab4d436a -lc 'mkdir -p /tmp/glm52-candidate && cp /usr/local/bin/serve-glm52-v19.sh /usr/local/bin/serve-glm52-v16.sh /usr/local/bin/glm52-pcie-runtime-env.sh /usr/local/bin/glm52-dcp-prefill-policy.sh /usr/local/bin/glm52-pcie-calibration.py /tmp/glm52-candidate/ && sed -i \"s|exec /usr/local/bin/serve-glm52-v16.sh|exec /tmp/glm52-candidate/serve-glm52-v16.sh|\" /tmp/glm52-candidate/serve-glm52-v19.sh && sed -i \"s/export VLLM_ENABLE_PCIE_ALLREDUCE=1/export VLLM_ENABLE_PCIE_ALLREDUCE=0/\" /tmp/glm52-candidate/glm52-pcie-runtime-env.sh && export GLM52_SERVER=/tmp/glm52-candidate/serve-glm52-v19.sh && exec /usr/local/bin/serve-gilded-gnosis.sh'",
+          "launch_wrapper": "host-process Docker command for the current controller custom-command contract; original ${HOME}/glm52-r12-candidate/start.sh remains immutable",
+          "max_num_batched_tokens": 3072,
+          "mtp": {
+            "draft_sample_method": "greedy",
+            "layer_78_quantization": "EXL3 Trellis TR3 3.0bpw",
+            "moe_backend": "triton",
+            "tokens": 6
+          },
+          "power_limit_w_per_gpu": 250,
+          "source_recipe_id": "glm-5.2-exl3",
+          "source_recipe_sha256": "35f07eeadddd08bdc0732f3d97d246a300faf65258b4fa6b8ac3513f7e4dde49",
+          "tags": [
+            "250w",
+            "262144-context",
+            "cuda-graphs",
+            "dcp4",
+            "exl3",
+            "glm-5.2",
+            "mtp6",
+            "nccl-auto",
+            "nvfp4-ds-mla-kv",
+            "operational",
+            "r12",
+            "tp4",
+            "validated"
+          ],
+          "thermal_limits": {
+            "cpu_c": 82,
+            "gpu_c": 78
+          },
+          "validated_gpu_kv_cache_tokens": 935998,
+          "validated_long_throughput_tok_s": {
+            "c1": 188.1317,
+            "c2": 292.65,
+            "c4": 403.8167
+          },
+          "validation_status": "validated"
+        },
+        "gpu_memory_utilization": 0.95,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "nvfp4_ds_mla",
+        "max_model_len": 262144,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/GLM-5.2-EXL3-TR3-3.0bpw",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "exl3",
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "system",
+          "label": "Host Docker wrapper for controller custom-command compatibility",
+          "ref": "/usr/bin/docker"
+        },
+        "served_model_name": "glm-5.2",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "high",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": false
+      }
+    },
+    {
+      "id": "hy3",
+      "name": "Hy3 (Tencent FP8)",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "FLASHINFER_DISABLE_VERSION_CHECK": "1",
+          "GLOO_SOCKET_IFNAME": "lo",
+          "HF_HOME": "${MODEL_ROOT}/hf",
+          "LD_LIBRARY_PATH": "${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cu13/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cublas/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_cupti/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_nvrtc/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cuda_runtime/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cudnn/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cufft/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cufile/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/curand/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusolver/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusparse/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/cusparselt/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nccl/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvjitlink/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvshmem/lib:${HOME}/.venvs/vllm-0.22.0/lib/python3.10/site-packages/nvidia/nvtx/lib:",
+          "NCCL_IB_DISABLE": "1",
+          "NCCL_P2P_DISABLE": "0",
+          "NCCL_P2P_LEVEL": "PIX",
+          "NCCL_SOCKET_IFNAME": "lo",
+          "OMP_NUM_THREADS": "8",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+          "SAFETENSORS_FAST_GPU": "1",
+          "TORCH_NCCL_ASYNC_ERROR_HANDLING": "1",
+          "TORCH_NCCL_BLOCKING_WAIT": "1",
+          "VLLM_USE_V1": "1"
+        },
+        "extra_args": {
+          "description": "Official Tencent Hy3, FP8 checkpoint (tencent/Hy3-FP8, 101 shards, ~300 GB). hy_v3 architecture: 80L, hidden 4096, 192 routed experts / 8 per-tok + 1 shared, GQA 64H/8KVH, vocab 120832, MTP n=1. Served on vLLM 0.22.0 (native hy_v3 tool + reasoning parsers and HYV3MTPModel spec-decode). That venv bundles CUDA 13, so its nvidia/*/lib dirs are injected via LD_LIBRARY_PATH (box only has CUDA 12.8/12.9). 4x RTX PRO 6000 Blackwell, TP4, 200k, fp8 KV cache, chunked prefill, MTP=1.",
+          "enable_chunked_prefill": true,
+          "max_num_batched_tokens": 32768,
+          "speculative_config": {
+            "method": "mtp",
+            "num_speculative_tokens": 1
+          },
+          "tags": [
+            "hy3",
+            "tencent",
+            "fp8",
+            "hy_v3",
+            "moe",
+            "blackwell",
+            "mtp",
+            "200k"
+          ]
+        },
+        "gpu_memory_utilization": 0.92,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 200000,
+        "max_num_seqs": 16,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Hy3-FP8",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": "${HOME}/.venvs/vllm-0.22.0/bin/python",
+        "quantization": null,
+        "reasoning_parser": "hy_v3",
+        "runtime": {
+          "kind": "system",
+          "ref": "${HOME}/.venvs/vllm-0.22.0/bin/python"
+        },
+        "served_model_name": "hy3",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "default",
+        "tool_call_parser": "hy_v3",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "lfm25-8b-a1b",
+      "name": "LFM2.5-8B-A1B",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "description": "Local LFM2.5-8B-A1B recipe.",
+          "tags": [
+            "lfm",
+            "moe"
+          ]
+        },
+        "gpu_memory_utilization": 0.88,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 128000,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/LFM2.5-8B-A1B",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": null,
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm/vllm-openai:v0.24.0"
+        },
+        "served_model_name": "lfm2.5-8b-a1b",
+        "tensor_parallel_size": 1,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "lfm2",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "mimo-v2.5",
+      "name": "MiMo-V2.5",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>"
+        },
+        "extra_args": {
+          "attention_backend": "triton",
+          "chunked_prefill_size": 16384,
+          "cuda-graph-max-bs": 8,
+          "disable_piecewise_cuda_graph": true,
+          "fp8_gemm_backend": "triton",
+          "mm_attention_backend": "triton_attn",
+          "moe_runner_backend": "triton",
+          "page_size": 64,
+          "watchdog_timeout": 3600
+        },
+        "gpu_memory_utilization": 0.92,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 2048,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/MiMo-V2.5",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": "${HOME}/launch_mimo_v25_studio.sh",
+        "quantization": null,
+        "reasoning_parser": "mimo",
+        "runtime": {
+          "kind": "system",
+          "ref": "${HOME}/launch_mimo_v25_studio.sh"
+        },
+        "served_model_name": "MiMo-V2.5",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "mimo",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "minimax-m3",
+      "name": "MiniMax-M3",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True"
+        },
+        "extra_args": {
+          "benchmarks": {
+            "aggregate_3way_tok_s": 206,
+            "max_model_len": 250000,
+            "single_stream_tok_s": 86.9
+          },
+          "chunked-prefill-size": 4096,
+          "concurrency": "4 sessions share the ~643K-token KV pool (validated: 4x ~157K = 630K simultaneously, all retrieved correctly)",
+          "cuda-graph-backend-decode": "full",
+          "cuda-graph-backend-prefill": "disabled",
+          "description": "lukealonso/MiniMax-M3-NVFP4 (246B NVFP4) on 4x RTX PRO 6000 Blackwell (SM120). SGLang harness from 0xSero/minimax-m3-nvfp4-sglang. Launcher: ${HOME}/launch_minimax_m3_nvfp4_studio.sh (docker foreground; appended args ignored). Patched image minimax-m3-sglang:dev-cu13-minimax-m3-patched (built on first launch). Tuned like the MXFP4 minimax-m3-sm120 recipe: ctx 250000, max-running-requests 3 (3-way concurrency), multimodal ON (image+video) via --enable-multimodal, --limit-mm-data-per-request {image:4,video:1} to avoid worst-case video profiling headroom (SGLang analogue of vLLM --skip-mm-profiling). quant modelopt_fp4, kv bfloat16, moe flashinfer_cutlass, cuda-graph decode=full prefill=disabled, chunked-prefill 4096, max-prefill-tokens 16384, mem-fraction-static 0.95. Do NOT add --disable-cuda-graphs or --enforce-eager.",
+          "docker_container": "minimax-m3-sglang",
+          "enable-multimodal": true,
+          "key_fixes": [
+            "hidden_act silu->swigluoai (config): dense MLP + shared experts need clamped SwiGLU (alpha=1.702, limit=7.0); plain silu caused total garbage.",
+            "sparse_disable_index_value per sparse layer: lightning indexer has no value/output proj; otherwise index_v/index_o_proj left NaN -> garbage attention.",
+            "quant ignore list block_sparse_moe->mlp: shared experts ship BF16, must not be quantized to fp4.",
+            "moe_layer_freq derived from mlp_layer_types: dense layers 0-2.",
+            "loader: gate/up/down_proj->w1/w3/w2, indexer->index_, e_score_correction_bias rename, fused gate_up_proj split.",
+            "loader: vision tower remap model.vision_tower.layers->vision_tower.vision_model.encoder.layers, embeddings.proj->patch_embedding, multi_modal_projector.merge_linear->patch_merge_mlp.linear.",
+            "clamped-SwiGLU plumbed into flashinfer cutlass fp4 MoE via swiglu_alpha/beta/limit (patch_modelopt_moe.py)."
+          ],
+          "limit-mm-data-per-request": {
+            "image": 4,
+            "video": 1
+          },
+          "max-prefill-tokens": 16384,
+          "max_context_architectural": 1048576,
+          "max_context_practical": 643659,
+          "moe-runner-backend": "flashinfer_cutlass",
+          "repo": "https://github.com/0xSero/minimax-m3-nvfp4-sglang",
+          "tags": [
+            "minimax",
+            "m3",
+            "nvfp4",
+            "sglang",
+            "sm120",
+            "modelopt_fp4"
+          ],
+          "validation_20260615": {
+            "code_gen": "valid Python, unit tests pass",
+            "concurrent_sessions": 4,
+            "long_output_coherent_tokens": 12000,
+            "needle_retrieval_tokens": 155000,
+            "single_stream_tok_s": 87.3
+          },
+          "verified": "2026-06-15: WORKING. Coherent text, reasoning+tool-call parsers, image+video all validated on 4x RTX PRO 6000 (SM120)."
+        },
+        "gpu_memory_utilization": 0.95,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "bfloat16",
+        "max_model_len": 640000,
+        "max_num_seqs": 4,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/MiniMax-M3-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": "${HOME}/launch_minimax_m3_nvfp4_studio.sh",
+        "quantization": "modelopt_fp4",
+        "reasoning_parser": "minimax-m3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "minimax-m3-sglang:dev-cu13-minimax-m3-patched"
+        },
+        "served_model_name": "minimax-m3",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "disabled",
+        "tool_call_parser": "minimax-m3",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "nemotron-3-ultra",
+      "name": "Nemotron-3-Ultra",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "ENABLE_CHUNKED_PREFILL": "1",
+          "ENABLE_MAMBA_CACHE_STOCHASTIC_ROUNDING": "1",
+          "ENABLE_MTP": "1",
+          "ENABLE_PREFIX_CACHING": "1",
+          "ENFORCE_EAGER": "0",
+          "GLOO_SOCKET_IFNAME": "lo",
+          "GPU_MEMORY_UTILIZATION": "0.97",
+          "MAMBA_BACKEND": "flashinfer",
+          "MAMBA_CACHE_PHILOX_ROUNDS": "5",
+          "MAX_MODEL_LEN": "262144",
+          "MAX_NUM_BATCHED_TOKENS": "1024",
+          "MAX_NUM_SEQS": "2",
+          "MOE_BACKEND": "auto",
+          "NCCL_CUMEM_HOST_ENABLE": "0",
+          "NCCL_DEBUG": "WARN",
+          "NCCL_IB_DISABLE": "1",
+          "NCCL_MNNVL_ENABLE": "0",
+          "NCCL_NVLS_ENABLE": "0",
+          "NCCL_P2P_DISABLE": "1",
+          "NCCL_P2P_LEVEL": "PIX",
+          "NCCL_SOCKET_IFNAME": "lo",
+          "NVIDIA_TF32_OVERRIDE": "1",
+          "OMP_NUM_THREADS": "8",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+          "RUN_FOREGROUND": "1",
+          "SAFETENSORS_FAST_GPU": "1",
+          "TORCH_NCCL_ASYNC_ERROR_HANDLING": "1",
+          "TORCH_NCCL_BLOCKING_WAIT": "1",
+          "VLLM_ALLOW_LONG_MAX_MODEL_LEN": "1",
+          "VLLM_ALLREDUCE_USE_SYMM_MEM": "0",
+          "VLLM_DISABLE_PYNCCL": "0",
+          "VLLM_ENGINE_READY_TIMEOUT_S": "1800",
+          "VLLM_FLASHINFER_ALLREDUCE_BACKEND": "trtllm",
+          "VLLM_FLASHINFER_MOE_BACKEND": "latency",
+          "VLLM_LOGGING_LEVEL": "INFO",
+          "VLLM_SKIP_P2P_CHECK": "0",
+          "VLLM_USE_FLASHINFER_MOE_FP4": "1",
+          "VLLM_USE_FLASHINFER_MOE_FP8": "1",
+          "VLLM_WORKER_MULTIPROC_METHOD": "spawn"
+        },
+        "extra_args": {
+          "benchmarks": {
+            "131072_cached": {
+              "decode_tok_s": 76.5,
+              "prompt_tokens": 131128,
+              "ttft_s": 9.664
+            },
+            "131072_cold": {
+              "decode_tok_s": 101.5,
+              "prompt_tokens": 131128,
+              "ttft_s": 81.924
+            },
+            "261000_cached": {
+              "decode_tok_s": 81.7,
+              "prompt_tokens": 261056,
+              "ttft_s": 9.712
+            },
+            "261000_cold": {
+              "decode_tok_s": 120.7,
+              "prompt_tokens": 261056,
+              "ttft_s": 165.331
+            },
+            "32768_cold": {
+              "decode_tok_s": 102.4,
+              "ttft_s": 22.935
+            },
+            "512": {
+              "decode_tok_s": 84.4,
+              "prompt_tokens": 564,
+              "ttft_s": 0.565
+            },
+            "63328_cache_test_20260611": {
+              "cold_s": 39.06,
+              "warm_s": 1.07
+            }
+          },
+          "description": "Full mamba-cache config re-verified 2026-06-11: flashinfer mamba backend + fp16 SSM cache with stochastic rounding (philox 5) + prefix caching (mamba_cache_mode auto=all) + MTP. MOE_BACKEND must stay auto: model is mixed-quant (NVFP4 main MoE rejects triton, unquantized MTP-draft MoE rejects marlin). Do NOT set MAMBA_CACHE_MODE, LINEAR_BACKEND, or ATTENTION_BACKEND.",
+          "disable-custom-all-reduce": true,
+          "enable-chunked-prefill": true,
+          "enable-expert-parallel": true,
+          "enable-mamba-cache-stochastic-rounding": true,
+          "enable-prefix-caching": true,
+          "last_verified": "2026-06-11T00:58:00Z",
+          "launch_command": "${HOME}/launch_nemotron_ultra_vllm_022.sh restart",
+          "limitations": "With mamba prefix caching on, KV pool is 376,988 tokens (1.44x at 262k) vs 1,048,576 (4.00x) without - each 4480-token attention block carries an SSM-state snapshot. Two full 262k prompts cannot be resident simultaneously. Concurrent Partial Prefill unsupported.",
+          "mamba-backend": "flashinfer",
+          "mamba-cache-philox-rounds": 5,
+          "mamba-ssm-cache-dtype": "float16",
+          "max-num-batched-tokens": 1024,
+          "model-loader-extra-config": {
+            "enable_multithread_load": true,
+            "num_threads": 96
+          },
+          "speculative_config": {
+            "method": "nemotron_h_mtp",
+            "num_speculative_tokens": 5
+          },
+          "torch_version": "2.11.0+cu128",
+          "verified_kv_cache_tokens": 376988,
+          "verified_log": "${MODEL_ROOT}/logs/nemotron-3-ultra/vllm-022-262k-mtp-c2-20260611T004945Z.log",
+          "verified_max_concurrency_at_262144": 1.44,
+          "vllm_version": "0.22.0"
+        },
+        "gpu_memory_utilization": 0.97,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 262144,
+        "max_num_seqs": 2,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Nemotron-3-Ultra",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "modelopt_mixed",
+        "reasoning_parser": "nemotron_v3",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "nemotron-3-ultra",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "nex-n2-pro-nvfp4",
+      "name": "Nex-N2-Pro NVFP4",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+          "SPEC_ALGO": "NEXTN",
+          "SPEC_NUM_DRAFT_TOKENS": "4"
+        },
+        "extra_args": {
+          "benchmarks_20260611": {
+            "cold_103k_prefill_s": 35.2,
+            "decode_tok_s_baseline": 72.6,
+            "decode_tok_s_nextn_code": 81.1,
+            "decode_tok_s_nextn_essay": 93.6,
+            "decode_tok_s_nextn_prose": 89.2,
+            "warm_103k_ttft_s": 1.07
+          },
+          "description": "Nex-N2-Pro (Qwen3.5-397B-A17B) NVFP4 via nex-agi sglang FORK image nexagi/sglang:v0.5.12 per official guide. Launcher: ${HOME}/launch_nex_n2_pro_studio.sh (docker; appended args ignored). Guide-exact: reasoning-parser qwen3, tool-call-parser qwen3_coder, mamba-scheduler-strategy extra_buffer. Deviations: tp=4 single-node (guide=2node tp16), port 8000 (guide 30000), quant modelopt_fp4 (NVFP4 quant, not in guide), ctx 262144 + mem 0.9 + max_seqs 8 (tunable). Sampling: temp 0.7 top_p 0.95 top_k 40. | 2026-06-11: NEXTN MTP spec decode (grafted Qwen base mtp head) verified: decode 72.6->81-94 tok/s, output content-checked clean. NGRAM tried earlier and reverted (corrupted output).",
+          "last_verified": "2026-06-11T05:30:00Z",
+          "mamba-scheduler-strategy": "extra_buffer",
+          "speculative": {
+            "accept_len_observed": 2.3,
+            "algorithm": "NEXTN",
+            "draft_source": "mtp.* head grafted from Qwen/Qwen3.5-397B-A17B base (NVFP4 quant shipped without it); model-mtp.safetensors (13.19GB bf16) + index.json patched, backup model.safetensors.index.json.bak-pre-mtp-20260611",
+            "eagle_topk": 1,
+            "num_draft_tokens": 4,
+            "num_steps": 3,
+            "warning": "NGRAM corrupts output on this fork+hybrid arch - never enable. NEXTN content-verified 2026-06-11 (reasoning/tool-calls/creative all clean)."
+          }
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 262144,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Nex-N2-Pro-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": "${HOME}/launch_nex_n2_pro_studio.sh",
+        "quantization": "modelopt_fp4",
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "system",
+          "ref": "${HOME}/launch_nex_n2_pro_studio.sh"
+        },
+        "served_model_name": "nex-n2-pro",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen36-27b-int4-autoround",
+      "name": "Qwen3.6-27B INT4 AutoRound",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "auto",
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "description": "Local Qwen3.6-27B INT4 AutoRound recipe.",
+          "language-model-only": true,
+          "tags": [
+            "qwen",
+            "autoround",
+            "int4"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 262144,
+        "max_num_seqs": 1,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3.6-27B-int4-AutoRound",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen3.6-27b-int4",
+        "tensor_parallel_size": 1,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen36-27b-int8-autoround",
+      "name": "Qwen3.6-27B INT8 AutoRound",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "auto",
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "description": "Local Qwen3.6-27B INT8 AutoRound/GPTQ-compatible recipe.",
+          "language-model-only": true,
+          "tags": [
+            "qwen",
+            "autoround",
+            "int8"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 262144,
+        "max_num_seqs": 1,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3.6-27B-INT8-AutoRound",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen3.6-27b-int8",
+        "tensor_parallel_size": 1,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "step37-flash-fp8-vllm",
+      "name": "Step 3.7 Flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "auto",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>"
+        },
+        "extra_args": {
+          "default_chat_template_kwargs": {
+            "reasoning_effort": "low"
+          },
+          "description": "StepFun Step 3.7 Flash FP8 via vllm/vllm-openai:stepfun37 on four RTX PRO 6000 Blackwell GPUs. CUDA graphs enabled, 262144-token context, max_num_seqs 4, max_num_batched_tokens 8192, and MTP speculative decoding with 6 draft tokens. The model rejects 8 speculative tokens because Step MTP n_predict=3 requires divisibility by 3.",
+          "env_vars": {
+            "VLLM_ENABLE_V1_MULTIPROCESSING": "0"
+          },
+          "launch_command": "docker run --rm \\\n  --name step37-flash-fp8-vllm \\\n  --gpus '\"device=0,1,2,3\"' \\\n  --ipc=host \\\n  --shm-size=64g \\\n  --ulimit memlock=-1 \\\n  --ulimit stack=67108864 \\\n  --network host \\\n  -v ${MODEL_ROOT}/Step-3.7-Flash-FP8:/model:ro \\\n  -v ${MODEL_ROOT}/hf:/root/.cache/huggingface \\\n  -e CUDA_VISIBLE_DEVICES=0,1,2,3 \\\n  -e CUDA_DEVICE_ORDER=PCI_BUS_ID \\\n  -e HF_HOME=/root/.cache/huggingface \\\n  -e OMP_NUM_THREADS=8 \\\n  -e SAFETENSORS_FAST_GPU=1 \\\n  -e NCCL_P2P_DISABLE=1 \\\n  -e NCCL_IB_DISABLE=1 \\\n  -e NCCL_SOCKET_IFNAME=lo \\\n  -e GLOO_SOCKET_IFNAME=lo \\\n  -e NCCL_DEBUG=WARN \\\n  -e NCCL_CUMEM_HOST_ENABLE=0 \\\n  -e PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \\\n  -e VLLM_LOGGING_LEVEL=INFO \\\n  -e VLLM_ENABLE_V1_MULTIPROCESSING=0 \\\n  vllm/vllm-openai:stepfun37 \\\n  --model /model \\\n    --host 0.0.0.0 \\\n    --port 8000 \\\n    --served-model-name step-3.7-flash \\\n    --tensor-parallel-size 4 \\\n    --enable-expert-parallel \\\n    --disable-cascade-attn \\\n    --reasoning-parser step3p5 \\\n    --enable-auto-tool-choice \\\n    --tool-call-parser step3p5 \\\n    --speculative_config '{\"method\":\"mtp\",\"num_speculative_tokens\":6}' \\\n    --default-chat-template-kwargs '{\"reasoning_effort\":\"low\"}' \\\n    --trust-remote-code \\\n    --max-model-len 262144 \\\n    --gpu-memory-utilization 0.90 \\\n    --max-num-seqs 4 \\\n    --max-num-batched-tokens 8192 \\\n    --disable-custom-all-reduce",
+          "metadata": {
+            "capabilities": {
+              "image": true,
+              "vision": true
+            },
+            "input": [
+              "text",
+              "image"
+            ],
+            "multimodal": true,
+            "reasoning": true,
+            "vision": true
+          },
+          "speculative_config": {
+            "method": "mtp",
+            "num_speculative_tokens": 6
+          }
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 262144,
+        "max_num_seqs": 4,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Step-3.7-Flash-FP8",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "step3p5",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "step-3.7-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "step3p5",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "step37-flash-nvfp4-vllm",
+      "name": "Step 3.7 Flash NVFP4",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "auto",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>"
+        },
+        "extra_args": {
+          "description": "Existing Step 3.7 Flash NVFP4 Docker launcher, corrected to use GPU devices 0,1,2,3.",
+          "launch_command": "${HOME}/scripts/home-root/launchers/launch_step37_nvfp4_vllm_studio.sh",
+          "tags": [
+            "step",
+            "nvfp4",
+            "modelopt"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "127.0.0.1",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 8192,
+        "max_num_seqs": 1,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Step-3.7-Flash-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "modelopt",
+        "reasoning_parser": "step3p5",
+        "runtime": {
+          "kind": "managed_venv",
+          "ref": "vllm"
+        },
+        "served_model_name": "step3p7-flash-nvfp4",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "step3p5",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "glm-5.3",
+      "name": "glm-5.3",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "ASYNC_SCHEDULING": "0",
+          "B12X_PCIE_DMA": "0",
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+          "DCP": "4",
+          "DCP_BACKEND": "ag_rs",
+          "DCP_CKV_GATHER": "auto",
+          "DCP_CKV_GATHER_MAX_TOKENS": "262144",
+          "DCP_CKV_PREFETCH_DEPTH": "auto",
+          "DCP_INDEXER_SHARDS": "auto",
+          "DCP_KV_CACHE_INTERLEAVE_SIZE": "1",
+          "DCP_QUERY_SPLIT": "auto",
+          "DCP_TOPK_OWNER_MERGE": "auto",
+          "GPU_MEMORY_UTILIZATION": "0.98",
+          "GRAPH": "32",
+          "INSTANTTENSOR_BACKEND": "BUFFERED",
+          "INSTANTTENSOR_COPY": "0",
+          "KV_CACHE_DTYPE": "nvfp4_ds_mla",
+          "KV_FP8_ROPE": "1",
+          "LMCACHE_MODE": "off",
+          "LOAD_FORMAT": "instanttensor",
+          "MAX_BATCHED_TOKENS": "2048",
+          "MAX_MODEL_LEN": "327680",
+          "MAX_NUM_SEQS": "8",
+          "MODEL": "/model",
+          "MODEL_FAMILY": "glm52-exl3",
+          "MOE_BACKEND": "b12x",
+          "MOE_MODE": "a16",
+          "MTP": "3",
+          "MTP_DRAFT_SAMPLE_METHOD": "probabilistic",
+          "MTP_MOE_BACKEND": "triton",
+          "PCIE_CALIBRATION": "off",
+          "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
+          "QUANTIZATION": "exl3",
+          "SERVED_MODEL_NAME": "glm-5.3",
+          "TP": "4",
+          "VLLM_B12X_GLM_NOPE_NVFP4": "1",
+          "VLLM_ENABLE_PCIE_ALLREDUCE": "0",
+          "VLLM_ENGINE_READY_TIMEOUT_S": "3600",
+          "VLLM_EXL3_PREFILL_CAPACITY": "2048",
+          "VLLM_EXL3_TRELLIS_MAX_M": "64",
+          "VLLM_LONG_PREFILL_TOKEN_THRESHOLD": "4096",
+          "VLLM_MAX_LONG_PARTIAL_PREFILLS": "1",
+          "VLLM_MAX_NUM_PARTIAL_PREFILLS": "2",
+          "VLLM_USE_B12X_DCP_A2A": "0"
+        },
+        "extra_args": {
+          "acceptance": {
+            "artifact_kld_status": "pending",
+            "capacity": {
+              "explicit_kv_bytes": 8589934592,
+              "kv_cache_tokens": 862975,
+              "operational_concurrency_at_250k": 3
+            },
+            "correctness": {
+              "concurrency_3": [
+                "ALPHA",
+                "BETA",
+                "GAMMA"
+              ],
+              "single": "STABLE-323"
+            },
+            "identity": {
+              "context": 800000,
+              "cuda_graphs": "FULL_AND_PIECEWISE 4/8/12",
+              "enforce_eager": false,
+              "indexer_kv": "fp8",
+              "kv": "nvfp4_ds_mla",
+              "load_format": "instanttensor",
+              "parallelism": "tp4-dcp4",
+              "quantization": "exl3",
+              "runtime": "infernal-invocation-r17",
+              "speculation": "mtp3"
+            },
+            "served_model_id": "glm-5.3",
+            "stability_screen": {
+              "c3_pressure_peak_running": 2,
+              "c3_pressure_peak_waiting": 2,
+              "client_cancel_released_kv": true,
+              "container_restarts": 0,
+              "engine_errors": 0,
+              "long_context_c1_http": 200,
+              "oom_killed": false,
+              "peak_observed_kv_percent": 34.6
+            },
+            "studio_status_running": true,
+            "timestamp": "2026-08-31T22:41:06Z"
+          },
+          "base_image": "voipmonitor/vllm:infernal-invocation-vllmc53cc73-b12xc0a44a1-fi1ac6942-cu133-torch213-20260817-r17@sha256:c5e96c5bcc5a073f7ce6b56173d88538de3a416900cff97c88b4bf7967fe1dc0",
+          "benchmarks_f1": {
+            "blended_c4_plus_32k_prefill": {
+              "decode_agg": 63,
+              "max_stall_ms": 1089
+            },
+            "coherence_needle_pass": [
+              1024,
+              8192,
+              34000,
+              119000,
+              230000
+            ],
+            "decode_aggregate": {
+              "c2": 119.9,
+              "c4": 169.2,
+              "c8": 223.6,
+              "c8_at_32k": 212.9
+            },
+            "decode_c1": {
+              "code": 88.2,
+              "prose": 81.1,
+              "prose_at_32k": 75.4,
+              "thinking_on_prose": 80.6
+            },
+            "omp_replay": {
+              "c4": {
+                "decode_per_stream": 43.9,
+                "fails": 0,
+                "requests": 48,
+                "ttft_ms_p50": 892,
+                "ttft_ms_p95": 3651
+              },
+              "c8": {
+                "decode_per_stream": 15.7,
+                "fails": 0
+              }
+            },
+            "prefill_cold_tok_s": {
+              "115k": 1810,
+              "235k": 1690,
+              "32k": 1896,
+              "8k": 1998
+            },
+            "protocol": "~/tuning/bench.py on pop-os, temp 1.0 top-p 0.95, EOS respected, no max_tokens, unique cold prompts, 30 s windows; per-stream p50 / aggregate tok/s; power cap 275 W/GPU",
+            "soak_c8_10min": {
+              "agg_mean": 196.7,
+              "drift_pct_excluding_ramp": 1.4,
+              "fails": 0,
+              "loops": 0,
+              "peak_vram_gb_per_gpu": 94.6
+            }
+          },
+          "container_name": "local-studio-llm",
+          "cuda_graph_capture_sizes": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32
+          ],
+          "cuda_graphs": "FULL_AND_PIECEWISE",
+          "description": "GLM-5.3 EXL3/TR3 3.0bpw, TP4/DCP4 (ag_rs), NCCL allreduce, MTP3 probabilistic draft, NVFP4 MLA KV + FP8 rope, 11 GiB KV/rank = 1,359,616-token pool, 320K context, 8 seqs, 2048-token prefill chunks. Tuned 2026-09-25 (campaign F1): C1 prose 49->81 tok/s, C8 224 agg, coherence to 230K.",
+          "image": "local/glm53-exl3-r17:tuned-f1@sha256:1bcb83c677d5d6f8c4022abd0ceafea3fbfd185d1dee44e44016c299acc499e7",
+          "launch_command": "--default-chat-template-kwargs '{\"reasoning_effort\":\"none\"}' --attention-config '{\"indexer_kv_dtype\":\"fp8\"}' --kv-cache-memory-bytes 11811160064 --prefill-schedule-interval 2",
+          "measured_kv_cache_tokens": 1359616,
+          "model_repository": "davidsyoung/GLM-5.3-EXL3-TR3-3.0bpw",
+          "mounts": [
+            "${HOME}/.cache/forge-glm53-jit:/cache:rw"
+          ],
+          "quant_quality": {
+            "artifact_kld_status": "pending",
+            "qualified_sibling_nvfp4": "3.25bpw NVFP4 KLD 0.035741 local and 0.036661 CN3"
+          },
+          "speculative": {
+            "draft_sample_method": "probabilistic",
+            "method": "mtp",
+            "moe_backend": "triton",
+            "tokens": 3
+          },
+          "studio_proxy_acceptance": {
+            "concurrency": 3,
+            "container_restart_count": 0,
+            "oom_killed": false,
+            "responses": [
+              "STUDIO_PROXY_ONE_OK",
+              "STUDIO_PROXY_TWO_OK",
+              "STUDIO_PROXY_THREE_OK"
+            ],
+            "route": "authenticated-controller-proxy",
+            "timestamp": "2026-09-01T13:04:40.266Z"
+          },
+          "tags": [
+            "glm-5.3",
+            "exl3-3.0bpw",
+            "tp4",
+            "dcp4",
+            "ag_rs",
+            "nccl",
+            "mtp3-probabilistic",
+            "nvfp4-kv",
+            "fp8-rope",
+            "1.36m-kv-pool",
+            "320k",
+            "c8",
+            "validated-f1"
+          ],
+          "tuning_ladder": "E000 registry 49.1 -> E001 ag_rs+NCCL+MTP6 63.1 -> E004 MTP4 prob 75.0 -> E007 MTP3 prob 81.0 -> E011/E012b KV 10->11 GiB with 2048 chunk (pool 988K->1.36M). Rejected: b12x oneshot AR (-20%), mxfp8 dense overlay (0%), async sched (0%), MTP6 greedy/prob, DFlash2 K7 (57), 12 GiB KV/1024 chunk (-20% prefill, kept as alt).",
+          "validation_status": "validated-campaign-F1"
+        },
+        "gpu_memory_utilization": 0.98,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "nvfp4_ds_mla",
+        "max_model_len": 327680,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/GLM-5.3-EXL3-TR3-3.0bpw",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "exl3",
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "label": "r17 infernal-invocation + NCCL-allreduce entrypoint wrapper (tuning campaign 2026-09-25, F1)",
+          "ref": "local/glm53-exl3-r17:tuned-f1"
+        },
+        "served_model_name": "glm-5.3",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "none",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": false
+      }
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "glm-5.3-flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "bfloat16",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "HF_HUB_OFFLINE": "1"
+        },
+        "extra_args": {
+          "description": "NVIDIA official nvidia/GLM-5.3-Flash-NVFP4 @da920bb (modelopt 0.47 NVFP4 experts+dense MLP, BF16 attn/MTP/vision, FP8 KV) on stock vLLM image vllm/vllm-openai:glm53-flash-x86_64-cu130 (@sha256:0674a3ea, vLLM 0.28.1rc1.dev580+g385dce36b, transformers 5.16.1). Flags per NVIDIA README (EP + EP weight filter, multithread load, 8192 batched tokens, chunked prefill, gmu 0.90) + native MTP3 + vision (64 images, CPU mm processor). TP4, 400k context, 48 seqs. UNTESTED until the 2026-09-30 night launch (~/tuning/nvfp4-nvidia-test.sh). Previous LIL R35 recipe backed up in ~/tuning/restore/.",
+          "history_image_limit": 8,
+          "launch_command": "/model --served-model-name glm-5.3-flash --host 0.0.0.0 --port 8000 --tensor-parallel-size 4 --enable-expert-parallel --enable-ep-weight-filter --max-model-len 400000 --max-num-seqs 48 --gpu-memory-utilization 0.90 --kv-cache-dtype fp8 --reasoning-parser glm45 --tool-call-parser glm47 --enable-auto-tool-choice --model-loader-extra-config '{\"enable_multithread_load\": true, \"num_threads\": 128}' --max-num-batched-tokens 8192 --enable-chunked-prefill --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":3}' --mm-processor-device cpu --limit-mm-per-prompt '{\"image\":64,\"video\":1}'",
+          "mounts": [
+            "${HOME}/.cache/glm53-nvidia-stock:/root/.cache:rw"
+          ],
+          "tags": [
+            "glm",
+            "5.3-flash",
+            "nvfp4",
+            "nvidia-modelopt",
+            "vllm",
+            "stock-image",
+            "mtp3",
+            "400k",
+            "vision",
+            "untested"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 400000,
+        "max_num_seqs": 48,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4-nvidia",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm/vllm-openai@sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86"
+        },
+        "served_model_name": "glm-5.3-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "auto",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": false,
+        "vision": true
+      }
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "name": "Deepseek-v4.1-Flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "BLOCK_SIZE": "256",
+          "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+          "DCP_SIZE": "1",
+          "DSPARK_ADAPTIVE_VERIFICATION": "1",
+          "ENGRAM_DISK_PREFETCH_MAX_TOKENS": "256",
+          "ENGRAM_DISK_RESIDENT_SCALES": "1",
+          "ENGRAM_TABLE_MEMORY": "disk",
+          "GPU_MEMORY_UTILIZATION": "0.95",
+          "HF_HUB_OFFLINE": "1",
+          "HOST": "0.0.0.0",
+          "MAX_CUDAGRAPH_CAPTURE_SIZE": "288",
+          "MAX_MODEL_LEN": "524288",
+          "MAX_NUM_BATCHED_TOKENS": "4096",
+          "MAX_NUM_SEQS": "48",
+          "MAX_PARALLEL_PREFILLS": "1",
+          "MODEL_PATH": "/models",
+          "OMP_NUM_THREADS": "8",
+          "PORT": "8000",
+          "PREFILL_COMPUTE_SHARE": "0.4",
+          "SERVED_MODEL_NAME": "deepseek-v4.1-flash",
+          "SWA_BLOCK_SIZE": "128",
+          "TP_SIZE": "4",
+          "TRANSFORMERS_OFFLINE": "1",
+          "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+        },
+        "extra_args": {
+          "description": "Local Inference Lab vLLM jovian-judgement r38 (image digest f41ca8bb, local tag only switches the entrypoint to serve-ds41-jovian.sh). TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 adaptive, Engram tables read from disk, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Converted in place from the SGLang recipe on 2026-09-18 after GPU OOM crashes in the SGLang low-ratio indexer; SGLang version saved as studio-recipe-SGLANG-before-vllm-r38-20260918.json. 2026-09-30: Engram disk resident scales + prefetch 256 tokens (E1: C1 prose +8%, cold prefill +20-33%, mixed decode +9%).",
+          "docker_security_opt": [
+            "seccomp=${HOME}/deepseek-v41-work/vllm-r38/seccomp-default-plus-io_uring.json"
+          ],
+          "docker_ulimit": [
+            "memlock=-1",
+            "stack=67108864"
+          ],
+          "launch_command": "--served-model-name deepseek-v4.1-flash --kv-cache-memory-bytes 8589934592 --speculative-config '{\"method\": \"dspark\", \"num_speculative_tokens\": 5, \"draft_tensor_parallel_size\": 4, \"attention_backend\": \"B12X\", \"draft_sample_method\": \"greedy\", \"rejection_sample_method\": \"standard\", \"enable_adaptive_verification\": true}'",
+          "mounts": [
+            "${HOME}/.cache/ds41-jovian-r38:/cache:rw"
+          ],
+          "source_repository": "https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000",
+          "tags": [
+            "deepseek-v4.1",
+            "512k",
+            "vision",
+            "dspark",
+            "vllm",
+            "b12x",
+            "jovian-judgement-r38",
+            "sm120"
+          ]
+        },
+        "gpu_memory_utilization": 0.95,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 524288,
+        "max_num_seqs": 48,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/DeepSeek-V4.1-Flash",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "deepseek_v41",
+        "runtime": {
+          "kind": "docker",
+          "label": "Local Inference Lab vLLM jovian-judgement r38 (sha256:f41ca8bb), DS4.1 entrypoint",
+          "ref": "local/ds41-jovian:r38-f41ca8bb"
+        },
+        "served_model_name": "deepseek-v4.1-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "deepseek_v41",
+        "trust_remote_code": false,
+        "vision": true
+      }
+    }
+  ],
+  "host": "pop-os",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/projects/vllm/lmvllm/data/model-index.json",
+  "source_kind": "live-overlay"
+}

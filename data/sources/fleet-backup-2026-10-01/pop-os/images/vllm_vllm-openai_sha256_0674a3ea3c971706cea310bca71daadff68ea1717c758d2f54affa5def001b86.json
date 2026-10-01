@@ -1,0 +1,534 @@
+{
+  "Config": {
+    "Cmd": null,
+    "Entrypoint": [
+      "vllm",
+      "serve"
+    ],
+    "Env": [
+      "PATH=/usr/local/cuda/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "NVARCH=x86_64",
+      "NVIDIA_REQUIRE_CUDA=cuda>=13.0 brand=unknown,driver>=535,driver<536 brand=grid,driver>=535,driver<536 brand=tesla,driver>=535,driver<536 brand=nvidia,driver>=535,driver<536 brand=quadro,driver>=535,driver<536 brand=quadrortx,driver>=535,driver<536 brand=nvidiartx,driver>=535,driver<536 brand=vapps,driver>=535,driver<536 brand=vpc,driver>=535,driver<536 brand=vcs,driver>=535,driver<536 brand=vws,driver>=535,driver<536 brand=cloudgaming,driver>=535,driver<536 brand=unknown,driver>=550,driver<551 brand=grid,driver>=550,driver<551 brand=tesla,driver>=550,driver<551 brand=nvidia,driver>=550,driver<551 brand=quadro,driver>=550,driver<551 brand=quadrortx,driver>=550,driver<551 brand=nvidiartx,driver>=550,driver<551 brand=vapps,driver>=550,driver<551 brand=vpc,driver>=550,driver<551 brand=vcs,driver>=550,driver<551 brand=vws,driver>=550,driver<551 brand=cloudgaming,driver>=550,driver<551 brand=unknown,driver>=565,driver<566 brand=grid,driver>=565,driver<566 brand=tesla,driver>=565,driver<566 brand=nvidia,driver>=565,driver<566 brand=quadro,driver>=565,driver<566 brand=quadrortx,driver>=565,driver<566 brand=nvidiartx,driver>=565,driver<566 brand=vapps,driver>=565,driver<566 brand=vpc,driver>=565,driver<566 brand=vcs,driver>=565,driver<566 brand=vws,driver>=565,driver<566 brand=cloudgaming,driver>=565,driver<566 brand=unknown,driver>=570,driver<571 brand=grid,driver>=570,driver<571 brand=tesla,driver>=570,driver<571 brand=nvidia,driver>=570,driver<571 brand=quadro,driver>=570,driver<571 brand=quadrortx,driver>=570,driver<571 brand=nvidiartx,driver>=570,driver<571 brand=vapps,driver>=570,driver<571 brand=vpc,driver>=570,driver<571 brand=vcs,driver>=570,driver<571 brand=vws,driver>=570,driver<571 brand=cloudgaming,driver>=570,driver<571 brand=unknown,driver>=575,driver<576 brand=grid,driver>=575,driver<576 brand=tesla,driver>=575,driver<576 brand=nvidia,driver>=575,driver<576 brand=quadro,driver>=575,driver<576 brand=quadrortx,driver>=575,driver<576 brand=nvidiartx,driver>=575,driver<576 brand=vapps,driver>=575,driver<576 brand=vpc,driver>=575,driver<576 brand=vcs,driver>=575,driver<576 brand=vws,driver>=575,driver<576 brand=cloudgaming,driver>=575,driver<576",
+      "NV_CUDA_CUDART_VERSION=13.0.96-1",
+      "CUDA_VERSION=13.0.2",
+      "LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64",
+      "NVIDIA_VISIBLE_DEVICES=all",
+      "NVIDIA_DRIVER_CAPABILITIES=compute,utility",
+      "DEBIAN_FRONTEND=noninteractive",
+      "CUDA_HOME=/usr/local/cuda",
+      "UV_HTTP_TIMEOUT=500",
+      "UV_INDEX_STRATEGY=unsafe-best-match",
+      "UV_LINK_MODE=copy",
+      "UV_PYTHON_INSTALL_DIR=/opt/uv/python",
+      "UV_CACHE_DIR=/opt/uv/cache",
+      "UV_OVERRIDE=/etc/uv-overrides.txt",
+      "VLLM_ENABLE_CUDA_COMPATIBILITY=0",
+      "TORCH_CUDA_ARCH_LIST=7.5 8.0 8.6 8.9 9.0 10.0 12.0",
+      "VLLM_USAGE_SOURCE=production-docker-image",
+      "VLLM_BUILD_COMMIT=385dce36bcee42309924a5ece951a96db3dce7f2",
+      "VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b",
+      "VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/6303",
+      "VLLM_IMAGE_TAG=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2"
+    ],
+    "Labels": {
+      "ai.vllm.build.commit": "385dce36bcee42309924a5ece951a96db3dce7f2",
+      "ai.vllm.build.pipeline": "019d130e-464e-4ff7-b84b-492992c0c06b",
+      "ai.vllm.build.url": "https://buildkite.com/vllm/release-v2/builds/6303",
+      "ai.vllm.image.tag": "vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2",
+      "maintainer": "NVIDIA CORPORATION <<email>>",
+      "org.opencontainers.image.ref.name": "ubuntu",
+      "org.opencontainers.image.revision": "385dce36bcee42309924a5ece951a96db3dce7f2",
+      "org.opencontainers.image.source": "https://github.com/vllm-project/vllm",
+      "org.opencontainers.image.url": "https://buildkite.com/vllm/release-v2/builds/6303",
+      "org.opencontainers.image.version": "vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2"
+    },
+    "WorkingDir": "/vllm-workspace"
+  },
+  "Created": "2026-09-09T05:22:02.954314903Z",
+  "Id": "sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86",
+  "RepoDigests": [
+    "vllm/vllm-openai@sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86"
+  ],
+  "history": [
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "ENTRYPOINT [\"vllm\" \"serve\"]",
+      "CreatedSince": "3 weeks ago",
+      "ID": "sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "LABEL org.opencontainers.image.source=https://github.com/vllm-project/vllm org.opencontainers.image.revision=385dce36bcee42309924a5ece951a96db3dce7f2 org.opencontainers.image.version=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2 org.opencontainers.image.url=https://buildkite.com/vllm/release-v2/builds/6303 ai.vllm.build.commit=385dce36bcee42309924a5ece951a96db3dce7f2 ai.vllm.build.pipeline=019d130e-464e-4ff7-b84b-492992c0c06b ai.vllm.build.url=https://buildkite.com/vllm/release-v2/builds/6303 ai.vllm.image.tag=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "ENV VLLM_BUILD_COMMIT=385dce36bcee42309924a5ece951a96db3dce7f2 VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/6303 VLLM_IMAGE_TAG=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "ENV VLLM_USAGE_SOURCE=production-docker-image",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "RUN |14 TARGETPLATFORM=linux/amd64 INSTALL_KV_CONNECTORS=true INSTALL_RUBIN_PRERELEASE=false TRITON_INSTALL_FROM_SOURCE_REPO= CUDA_VERSION=13.0.2 VLLM_BUILD_COMMIT=385dce36bcee42309924a5ece951a96db3dce7f2 VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/6303 VLLM_IMAGE_TAG=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= torch_cuda_arch_list=7.5 8.0 8.6 8.9 9.0 10.0 12.0 /bin/sh -c if [ -n \"${TRITON_INSTALL_FROM_SOURCE_REPO}\" ]; then         CUDA_MAJOR_MINOR=$(echo \"${CUDA_VERSION}\" | cut -d. -f1,2);         if [ \"${INSTALL_RUBIN_PRERELEASE}\" = \"true\" ]; then             case \"${CUDA_MAJOR_MINOR}\" in                 13.4|13.5)                     TRITON_SYSTEM_PTXAS_PATH=/usr/local/cuda/bin/ptxas                     TRITON_EXPECTED_PTXAS_VERSION=\"${CUDA_MAJOR_MINOR}\"                         bash /tmp/install_triton_from_source.sh                             /tmp/triton-source-dist                             /tmp/triton-source-wheel.sha256                     ;;                 *)                     echo \"Unsupported Rubin CUDA version: ${CUDA_MAJOR_MINOR}\" >&2;                     exit 1                     ;;             esac;         else             bash /tmp/install_triton_from_source.sh                 /tmp/triton-source-dist                 /tmp/triton-source-wheel.sha256;         fi;     fi     && rm -f         /tmp/install_triton_from_source.sh         /tmp/triton-source-wheel.sha256 # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "8.19kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "COPY tools/install_triton_from_source.sh /tmp/install_triton_from_source.sh # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "COPY /tmp/triton_from_source_workspace/dist/wheel.sha256 /tmp/triton-source-wheel.sha256 # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:02+02:00",
+      "CreatedBy": "RUN |14 TARGETPLATFORM=linux/amd64 INSTALL_KV_CONNECTORS=true INSTALL_RUBIN_PRERELEASE=false TRITON_INSTALL_FROM_SOURCE_REPO= CUDA_VERSION=13.0.2 VLLM_BUILD_COMMIT=385dce36bcee42309924a5ece951a96db3dce7f2 VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/6303 VLLM_IMAGE_TAG=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= torch_cuda_arch_list=7.5 8.0 8.6 8.9 9.0 10.0 12.0 /bin/sh -c if [ \"${INSTALL_RUBIN_PRERELEASE}\" = \"true\" ]; then         echo \"Installing Rubin prerelease requirements...\"         && uv pip install --system             -r /tmp/vllm-requirements/rubin-prerelease.txt;     fi # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "8.19kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:22:01+02:00",
+      "CreatedBy": "RUN |14 TARGETPLATFORM=linux/amd64 INSTALL_KV_CONNECTORS=true INSTALL_RUBIN_PRERELEASE=false TRITON_INSTALL_FROM_SOURCE_REPO= CUDA_VERSION=13.0.2 VLLM_BUILD_COMMIT=385dce36bcee42309924a5ece951a96db3dce7f2 VLLM_BUILD_PIPELINE=019d130e-464e-4ff7-b84b-492992c0c06b VLLM_BUILD_URL=https://buildkite.com/vllm/release-v2/builds/6303 VLLM_IMAGE_TAG=vllm/vllm-openai:nightly-385dce36bcee42309924a5ece951a96db3dce7f2 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= torch_cuda_arch_list=7.5 8.0 8.6 8.9 9.0 10.0 12.0 /bin/sh -c CUDA_MAJOR=\"${CUDA_VERSION%%.*}\";     CUDA_VERSION_DASH=$(echo $CUDA_VERSION | cut -d. -f1,2 | tr '.' '-');     CUDA_HOME=/usr/local/cuda;     BUILD_PKGS=\"libcusparse-dev-${CUDA_VERSION_DASH}                 libcublas-dev-${CUDA_VERSION_DASH}                 libcusolver-dev-${CUDA_VERSION_DASH}\";     if [ \"$INSTALL_KV_CONNECTORS\" = \"true\" ]; then         uv pip install --system -r /tmp/kv_connectors.txt --no-build || (             apt-get update -y &&             apt-get install -y --no-install-recommends --allow-change-held-packages ${BUILD_PKGS} &&             uv pip install --system -r /tmp/kv_connectors.txt --no-build-isolation &&             apt-get purge -y ${BUILD_PKGS} &&             rm -rf /var/lib/apt/lists/*         );         MOONCAKE_VERSION=$(python3 -c \"import importlib.metadata as m; print(m.version('mooncake-transfer-engine'))\" 2>/dev/null || true) &&         if [ \"${CUDA_MAJOR}\" = \"13\" ] && [ -n \"${MOONCAKE_VERSION}\" ]; then             uv pip uninstall --system mooncake-transfer-engine 2>/dev/null || true;             uv pip install --system \"mooncake-transfer-engine-cuda13==${MOONCAKE_VERSION}\";         fi;     fi # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "1.22GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ENV TORCH_CUDA_ARCH_LIST=7.5 8.0 8.6 8.9 9.0 10.0 12.0",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG torch_cuda_arch_list=7.5 8.0 8.6 8.9 9.0 10.0 11.0 12.0",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ENV UV_HTTP_TIMEOUT=500",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG PIP_EXTRA_INDEX_URL UV_EXTRA_INDEX_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG PIP_INDEX_URL UV_INDEX_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG VLLM_IMAGE_TAG",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG VLLM_BUILD_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG VLLM_BUILD_PIPELINE",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG VLLM_BUILD_COMMIT",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG CUDA_VERSION",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG TRITON_INSTALL_FROM_SOURCE_REPO",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG INSTALL_RUBIN_PRERELEASE",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG INSTALL_KV_CONNECTORS=false",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "ARG TARGETPLATFORM",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "COPY ./vllm/collect_env.py . # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "45.1kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:54+02:00",
+      "CreatedBy": "COPY benchmarks benchmarks # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "1.63MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "COPY examples examples # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "2.23MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "ENV LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "RUN |8 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl PIP_KEYRING_PROVIDER=disabled UV_KEYRING_PROVIDER=disabled PYTORCH_NIGHTLY= /bin/sh -c uv pip install --system ep_kernels/dist/*.whl --verbose         --extra-index-url ${PYTORCH_CUDA_INDEX_BASE_URL}/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.') # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "41.4MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "COPY /tmp/ep_kernels_workspace/dist/wheels.sha256 /tmp/ep-kernels-wheels.sha256 # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:53+02:00",
+      "CreatedBy": "RUN |8 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl PIP_KEYRING_PROVIDER=disabled UV_KEYRING_PROVIDER=disabled PYTORCH_NIGHTLY= /bin/sh -c . /etc/environment && uv pip list # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "4.1kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:52+02:00",
+      "CreatedBy": "RUN |8 PIP_INDEX_URL= UV_INDEX_URL= PIP_EXTRA_INDEX_URL= UV_EXTRA_INDEX_URL= PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl PIP_KEYRING_PROVIDER=disabled UV_KEYRING_PROVIDER=disabled PYTORCH_NIGHTLY= /bin/sh -c if [ \"${PYTORCH_NIGHTLY}\" = \"1\" ]; then         echo \"Installing torch nightly...\"         && uv pip install --system $(cat torch_lib_versions.txt | xargs) --pre         --index-url ${PYTORCH_CUDA_INDEX_BASE_URL}/nightly/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.')         && echo \"Installing vLLM...\"         && uv pip install --system dist/*.whl --verbose         --extra-index-url ${PYTORCH_CUDA_INDEX_BASE_URL}/nightly/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.');     else         echo \"Installing vLLM...\"         && uv pip install --system dist/*.whl --verbose         --extra-index-url ${PYTORCH_CUDA_INDEX_BASE_URL}/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.');     fi # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "771MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:21:47+02:00",
+      "CreatedBy": "COPY /workspace/dist/wheel.sha256 /tmp/vllm-wheel.sha256 # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:08:37+02:00",
+      "CreatedBy": "COPY /workspace/torch_lib_versions.txt torch_lib_versions.txt # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "ARG PYTORCH_NIGHTLY",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "ARG PIP_KEYRING_PROVIDER UV_KEYRING_PROVIDER",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "ARG PYTORCH_CUDA_INDEX_BASE_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "ARG PIP_EXTRA_INDEX_URL UV_EXTRA_INDEX_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "ARG PIP_INDEX_URL UV_INDEX_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:37+02:00",
+      "CreatedBy": "RUN |14 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl FLASHINFER_VERSION=0.6.18 GDRCOPY_CUDA_VERSION=12.8 GDRCOPY_OS_VERSION=Ubuntu24_04 TARGETPLATFORM=linux/amd64 TIMM_VERSION=>=1.0.17 RUNAI_MODEL_STREAMER_VERSION=>=0.15.7 /bin/sh -c uv pip install --system accelerate 'modelscope<1.38'         \"timm${TIMM_VERSION}\" \"runai-model-streamer[s3,gcs,azure]${RUNAI_MODEL_STREAMER_VERSION}\" # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "229MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:35+02:00",
+      "CreatedBy": "ARG RUNAI_MODEL_STREAMER_VERSION=>=0.15.7",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:35+02:00",
+      "CreatedBy": "ARG TIMM_VERSION=>=1.0.17",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:35+02:00",
+      "CreatedBy": "RUN |12 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl FLASHINFER_VERSION=0.6.18 GDRCOPY_CUDA_VERSION=12.8 GDRCOPY_OS_VERSION=Ubuntu24_04 TARGETPLATFORM=linux/amd64 /bin/sh -c set -eux;     if [ \"${INSTALL_RUBIN_PRERELEASE}\" = \"true\" ] && ldconfig -p | grep -q 'libgdrapi\\.so'; then         true;     else         case \"${TARGETPLATFORM}\" in           linux/arm64) UUARCH=\"aarch64\" ;;           linux/amd64) UUARCH=\"x64\" ;;           *) echo \"Unsupported TARGETPLATFORM: ${TARGETPLATFORM}\" >&2; exit 1 ;;         esac;         /tmp/install_gdrcopy.sh             \"${GDRCOPY_OS_VERSION}\" \"${GDRCOPY_CUDA_VERSION}\" \"${UUARCH}\";     fi;     rm /tmp/install_gdrcopy.sh # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "2.62MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:30+02:00",
+      "CreatedBy": "COPY tools/install_gdrcopy.sh /tmp/install_gdrcopy.sh # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:29+02:00",
+      "CreatedBy": "ARG TARGETPLATFORM",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:29+02:00",
+      "CreatedBy": "ARG GDRCOPY_OS_VERSION=Ubuntu24_04",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:29+02:00",
+      "CreatedBy": "ARG GDRCOPY_CUDA_VERSION=12.8",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:29+02:00",
+      "CreatedBy": "RUN |9 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl FLASHINFER_VERSION=0.6.18 /bin/sh -c if [ \"${INSTALL_RUBIN_PRERELEASE}\" != \"true\" ]; then         uv pip install --system flashinfer-jit-cache==${FLASHINFER_VERSION}             --index-url https://flashinfer.ai/whl/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.');     fi # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "1.59GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:15+02:00",
+      "CreatedBy": "ARG FLASHINFER_VERSION=0.6.18",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:07:15+02:00",
+      "CreatedBy": "RUN |8 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py PYTORCH_CUDA_INDEX_BASE_URL=https://download.pytorch.org/whl /bin/sh -c if [ \"${INSTALL_RUBIN_PRERELEASE}\" = \"true\" ] &&         [ ! -f /tmp/vllm-requirements/rubin-prerelease.txt ]; then         echo \"INSTALL_RUBIN_PRERELEASE=true requires requirements/rubin-prerelease.txt\" >&2;         exit 1;     fi &&     if [ \"$(echo $CUDA_VERSION | cut -d. -f1)\" = \"12\" ]; then         sed -i 's/^nvidia-cutlass-dsl\\[cu13\\]/nvidia-cutlass-dsl/' /tmp/requirements-cuda.txt;         sed -i 's/^humming-kernels\\[cu13\\]/humming-kernels[cu12]/' /tmp/requirements-cuda.txt;     fi &&     if [ \"${INSTALL_RUBIN_PRERELEASE}\" = \"true\" ]; then         uv pip install --system             -r /tmp/vllm-requirements/rubin-prerelease.txt         && sed -Ei '/^[[:space:]]*(torch|torchvision|torchaudio)[[:space:]]*==/Id'             /tmp/requirements-cuda.txt         && uv pip install --system -r /tmp/requirements-cuda.txt         && uv pip install --system             -r /tmp/vllm-requirements/rubin-prerelease.txt         && printf '%s\\n'             \"/usr/local/lib/python${PYTHON_VERSION}/dist-packages/nvpl/lib\"             > /etc/ld.so.conf.d/vllm-rubin-python.conf         && ldconfig;     else         uv pip install --system             -r /tmp/requirements-cuda.txt             --extra-index-url ${PYTORCH_CUDA_INDEX_BASE_URL}/cu$(echo $CUDA_VERSION | cut -d. -f1,2 | tr -d '.');     fi &&     rm /tmp/requirements-cuda.txt /tmp/common.txt # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "14GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:58+02:00",
+      "CreatedBy": "COPY requirements/cuda.txt /tmp/requirements-cuda.txt # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:58+02:00",
+      "CreatedBy": "COPY requirements/common.txt /tmp/common.txt # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:58+02:00",
+      "CreatedBy": "ARG PYTORCH_CUDA_INDEX_BASE_URL",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:58+02:00",
+      "CreatedBy": "ENV VLLM_ENABLE_CUDA_COMPATIBILITY=0",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:58+02:00",
+      "CreatedBy": "RUN |7 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py /bin/sh -c chmod 0755 /usr/local/bin/vllm-nonroot-entrypoint.sh # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "20.5kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:57+02:00",
+      "CreatedBy": "COPY docker/entrypoints/vllm-nonroot-entrypoint.sh /usr/local/bin/vllm-nonroot-entrypoint.sh # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "20.5kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:57+02:00",
+      "CreatedBy": "RUN |7 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py /bin/sh -c useradd --uid 2000 --gid 0 --create-home --home-dir /home/vllm         --shell /bin/bash vllm     && mkdir -p /home/vllm/.cache /home/vllm/.config     && chown -R 2000:0 /home/vllm     && chmod -R g+rwX /home/vllm     && chgrp 0 /etc/passwd /etc/group     && chmod g=u /etc/passwd /etc/group # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "77.8kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:56+02:00",
+      "CreatedBy": "ENV UV_OVERRIDE=/etc/uv-overrides.txt",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:56+02:00",
+      "CreatedBy": "RUN |7 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py /bin/sh -c CUDA_MAJOR=$(echo $CUDA_VERSION | cut -d. -f1) &&     if [ -n \"$NCCL_VERSION\" ]; then         echo \"nvidia-nccl-cu${CUDA_MAJOR}==${NCCL_VERSION}\"             > /etc/uv-overrides.txt;     else         touch /etc/uv-overrides.txt;     fi # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "12.3kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-09-09T07:05:55+02:00",
+      "CreatedBy": "RUN |7 INSTALL_RUBIN_PRERELEASE=false CUDA_VERSION=13.0.2 PYTHON_VERSION=3.12 NCCL_VERSION=2.30.7 DEADSNAKES_MIRROR_URL= DEADSNAKES_GPGKEY_URL= GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py /bin/sh -c mkdir -p \"${UV_PYTHON_INSTALL_DIR}\" \"${UV_CACHE_DIR}\"     && chgrp -R 0 /opt/uv     && chmod -R g+rwX,a+rX /opt/uv # buildkit",
+      "CreatedSince": "3 weeks ago",
+      "ID": "<missing>",
+      "Size": "20.5kB"
+    }
+  ]
+}

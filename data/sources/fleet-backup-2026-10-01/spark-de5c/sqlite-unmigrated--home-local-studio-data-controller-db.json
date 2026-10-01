@@ -1,0 +1,95 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "backend": "vllm",
+      "dtype": null,
+      "enable_auto_tool_choice": true,
+      "env_vars": null,
+      "extra_args": {
+        "async-scheduling": true,
+        "enable-chunked-prefill": true,
+        "enable-prefix-caching": true,
+        "max-num-batched-tokens": 8192,
+        "metadata": {
+          "external_service": "deepseek-v4-flash-dspark.service",
+          "pair_head": "spark-de5c",
+          "vision": false
+        },
+        "moe-backend": "flashinfer_b12x",
+        "tokenizer-mode": "deepseek_v4"
+      },
+      "gpu_memory_utilization": 0.74,
+      "host": "0.0.0.0",
+      "id": "deepseek-v4-flash-dspark-0731",
+      "kv_cache_dtype": "nvfp4_ds_mla",
+      "max_model_len": 500000,
+      "max_num_seqs": 6,
+      "max_thinking_tokens": null,
+      "model_path": "${HOME}/models/deepseek-ai/DeepSeek-V4-Flash-0731",
+      "name": "DeepSeek V4 Flash 0731",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": "modelopt_gb10_hybrid",
+      "reasoning_parser": "deepseek_v4",
+      "runtime": {
+        "kind": "docker",
+        "label": "DS4 Flash 0731 proven",
+        "ref": "local/dspark-vllm-gx10:proven-0731"
+      },
+      "served_model_name": "deepseek-v4-flash-dspark",
+      "tensor_parallel_size": 2,
+      "thinking_mode": "low",
+      "tool_call_parser": "deepseek_v4",
+      "trust_remote_code": true,
+      "vision": false
+    },
+    {
+      "backend": "vllm",
+      "dtype": null,
+      "enable_auto_tool_choice": true,
+      "env_vars": null,
+      "extra_args": {
+        "enable-chunked-prefill": true,
+        "enable-prefix-caching": true,
+        "kv-cache-memory-bytes": "3G",
+        "max-num-batched-tokens": 4096,
+        "metadata": {
+          "external_service": "gemma4-vl.service",
+          "pair_head": "spark-de5c",
+          "vision": true
+        }
+      },
+      "gpu_memory_utilization": 0.115,
+      "host": "127.0.0.1",
+      "id": "gemma-4-12b-vision-sidecar",
+      "kv_cache_dtype": "auto",
+      "max_model_len": 65536,
+      "max_num_seqs": 2,
+      "max_thinking_tokens": null,
+      "model_path": "${HOME}/.cache/huggingface/hub/models--coolthor--gemma-4-12B-it-NVFP4A16/snapshots/a41d03a7788b1de9b8a4081a4240a3b4d9f6d17c",
+      "name": "Gemma 4 12B Vision",
+      "pipeline_parallel_size": 1,
+      "port": 8891,
+      "python_path": null,
+      "quantization": null,
+      "reasoning_parser": null,
+      "runtime": {
+        "kind": "docker",
+        "label": "Gemma 4 Vision proven",
+        "ref": "local/gemma4-vl:proven"
+      },
+      "served_model_name": "gemma-4-12b-it",
+      "tensor_parallel_size": 1,
+      "thinking_mode": "off",
+      "tool_call_parser": "gemma4",
+      "trust_remote_code": true,
+      "vision": true
+    }
+  ],
+  "host": "spark-de5c",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/local-studio-data/controller.db",
+  "source_kind": "sqlite-unmigrated"
+}

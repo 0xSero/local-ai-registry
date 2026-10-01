@@ -1,0 +1,32 @@
+ start.sh | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+diff --git a/start.sh b/start.sh
+index 4a76b26..cb59896 100755
+--- a/start.sh
++++ b/start.sh
+@@ -1645,7 +1645,7 @@ say() { echo "[glm53-exl3-head] $*"; }
+ 
+ ARGS=(
+     --served-model-name "${SERVED_MODEL_NAME}"
+-    --host 0.0.0.0
++    --host ${API_HOST:-0.0.0.0}
+     --port "${PORT}"
+     --tensor-parallel-size "${TP}"
+     --nnodes "${NNODES}"
+@@ -1724,7 +1724,7 @@ say() { echo "[glm53-exl3-worker] $*"; }
+ 
+ ARGS=(
+     --served-model-name "${SERVED_MODEL_NAME}"
+-    --host 0.0.0.0
++    --host ${API_HOST:-0.0.0.0}
+     --port "${PORT}"
+     --tensor-parallel-size "${TP}"
+     --nnodes "${NNODES}"
+@@ -2126,6 +2126,7 @@ launch_cluster() {
+         -e NCCL_IB_GID_INDEX="$HEAD_GID" \
+         -e VLLM_HOST_IP="$HEAD_IP" \
+         -e SERVED_MODEL_NAME="$SERVED_MODEL_NAME" \
++        -e API_HOST="${API_HOST:-0.0.0.0}" \
+         -e PORT="$PORT" -e TP="$TP" -e NNODES="$NNODES" \
+         -e HEAD_IP="$HEAD_IP" -e MASTER_PORT="$MASTER_PORT" \
+         -e QUANTIZATION="$QUANTIZATION" \

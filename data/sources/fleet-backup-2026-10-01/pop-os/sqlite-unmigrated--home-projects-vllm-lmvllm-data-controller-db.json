@@ -1,0 +1,219 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "backend": "llamacpp",
+      "dtype": "auto",
+      "enable_auto_tool_choice": false,
+      "env_vars": null,
+      "extra_args": {
+        "description": "Local Qwen3.6-35B-A3B GGUF recipe for llama.cpp.",
+        "n_gpu_layers": -1,
+        "tags": [
+          "qwen",
+          "gguf",
+          "llamacpp"
+        ]
+      },
+      "gpu_memory_utilization": 0.9,
+      "host": "127.0.0.1",
+      "id": "qwen36-35b-a3b-gguf",
+      "kv_cache_dtype": "auto",
+      "max_model_len": 32768,
+      "max_num_seqs": 1,
+      "max_thinking_tokens": null,
+      "model_path": "${HOME}/models/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf",
+      "name": "Qwen3.6-35B-A3B GGUF",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": null,
+      "reasoning_parser": null,
+      "runtime": {
+        "kind": "binary",
+        "ref": "llama-server"
+      },
+      "served_model_name": "qwen3.6-35b-a3b-gguf",
+      "tensor_parallel_size": 1,
+      "thinking_mode": "conservative",
+      "tool_call_parser": null,
+      "trust_remote_code": false,
+      "vision": null
+    },
+    {
+      "backend": "sglang",
+      "dtype": null,
+      "enable_auto_tool_choice": true,
+      "env_vars": {
+        "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+        "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
+        "NVIDIA_VISIBLE_DEVICES": "GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>",
+        "TORCH_CUDA_ARCH_LIST": "12.0a"
+      },
+      "extra_args": {
+        "benchmarks": {
+          "health_endpoint_200": true,
+          "uncapped_coherence_stop": true
+        },
+        "container_name": "glm-5.3-flash-sglang-sm120",
+        "description": "Validated live 2026-08-26 on 4x RTX PRO 6000 Blackwell (SM120): flashinfer_cutlass MoE (native sm120 kernels; flashinfer_cutedsl is majors-[10]-only and cannot run here), DSA attention flashinfer_sparse_mla, triton KDA linear attention, fp8_e4m3 KV pool 3,789,184 tok/rank, NEXTN MTP5. Bundle: github.com/0xSero/glm53-flash-nvfp4-sm120-exact-docker; registry instance glm53-flash-nvfp4-rtxpro6000-sglang-tp4.",
+        "launch_command": "${HOME}/glm53-flash-deploy/launch-studio.sh",
+        "throughput_tok_s_single_stream": {
+          "default_max_effort": 208,
+          "reasoning_effort_low": 143
+        },
+        "validation_status": "validated-live-2026-08-26"
+      },
+      "gpu_memory_utilization": 0.9,
+      "host": "127.0.0.1",
+      "id": "glm53-flash-nvfp4-rtxpro6000-sglang-tp4",
+      "kv_cache_dtype": "fp8_e4m3",
+      "max_model_len": 1048576,
+      "max_num_seqs": 8,
+      "max_thinking_tokens": null,
+      "model_path": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+      "name": "GLM-5.3 Flash NVFP4 SM120 SGLang",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": "modelopt_fp4",
+      "reasoning_parser": "glm45",
+      "runtime": {
+        "kind": "system",
+        "label": "Host Docker wrapper for the exact-docker GLM-5.3-Flash bundle (foreground)",
+        "ref": "${HOME}/glm53-flash-deploy/launch-studio.sh"
+      },
+      "served_model_name": "glm-5.3-flash",
+      "tensor_parallel_size": 4,
+      "thinking_mode": "conservative",
+      "tool_call_parser": "glm47",
+      "trust_remote_code": false,
+      "vision": true
+    },
+    {
+      "backend": "sglang",
+      "dtype": null,
+      "enable_auto_tool_choice": false,
+      "env_vars": {
+        "SGLANG_EXL3_MAX_BATCH_TOKENS": "256"
+      },
+      "extra_args": {
+        "description": "Private controller handoff for the TP4 GLM-5.3 Flash EXL3 Q4 runtime. CUDA graphs are required; full serving quality validation remains pending an aligned BF16 KLD reference.",
+        "metadata": {
+          "cuda_graphs_required": true,
+          "kv_cache_note": "FP8 E4M3; the DSA path does not support NVFP4 KV cache.",
+          "quality_state": "runtime-tested-quality-pending",
+          "runtime_state": "controller-adopted"
+        },
+        "tags": [
+          "glm-5.3",
+          "exl3",
+          "q4",
+          "tp4",
+          "fp8-kv",
+          "cuda-graphs"
+        ]
+      },
+      "gpu_memory_utilization": 0.8,
+      "host": "127.0.0.1",
+      "id": "glm-5.3-flash-exl3-q4",
+      "kv_cache_dtype": "fp8_e4m3",
+      "max_model_len": 262144,
+      "max_num_seqs": 1,
+      "max_thinking_tokens": null,
+      "model_path": "${MODEL_ROOT}/GLM-5.3-Flash-EXL3-Q4",
+      "name": "GLM-5.3 Flash EXL3 Q4",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": "exl3",
+      "reasoning_parser": "glm45",
+      "runtime": {
+        "kind": "docker",
+        "ref": "glm53-flash-sglang-exl3:stage-20260827-r6"
+      },
+      "served_model_name": "glm-5.3-flash-exl3-q4",
+      "tensor_parallel_size": 4,
+      "thinking_mode": "conservative",
+      "tool_call_parser": "glm47",
+      "trust_remote_code": false,
+      "vision": true
+    },
+    {
+      "backend": "sglang",
+      "dtype": null,
+      "enable_auto_tool_choice": true,
+      "env_vars": {
+        "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+        "FLASHINFER_CUDA_ARCH_LIST": "12.0f",
+        "TORCH_CUDA_ARCH_LIST": "12.0a"
+      },
+      "extra_args": {
+        "benchmarks": {
+          "concurrency_1": {
+            "latency_seconds": 28.1,
+            "output_tok_s": 282.21,
+            "output_tokens": 7943,
+            "prompts": 32
+          },
+          "concurrency_8": {
+            "latency_seconds": 102.7,
+            "output_tok_s": 808.53,
+            "output_tokens": 83014,
+            "output_tokens_per_minute": 48511.8,
+            "prompts": 256
+          },
+          "mtp_control_tok_s": {
+            "concurrency_1": 217,
+            "concurrency_8": 598.13
+          },
+          "protocol": "DFlash publisher-style GSM8K batch, temperature 1.0, top_p 0.95, 4096 output-token budget"
+        },
+        "container_name": "glm-5.3-flash-dflash2-sm120",
+        "description": "GLM-5.3-Flash with an NVFP4 target and BF16 DFlash2 draft on 4x RTX PRO 6000 Blackwell. TP4/EP4, vision and video inputs enabled, an 8-token speculative block, FP8 KV cache, SM120-compatible kernels, and decode CUDA graphs. No eager mode and no operator power-limit changes.",
+        "draft_model": "incoai/GLM-5.3-Flash-DFlash2",
+        "draft_model_revision": "7d74cdd881ed7e32c31175984a67823127b66cfe",
+        "image": "glm53-flash-nvfp4-sglang:dflash2-glm53-current-sm120-v3",
+        "image_digest": "sha256:c27c4c3b1e4756ddddd54310ea04bd75f0f782e17ee3fe1514befd95c48cc725",
+        "launch_command": "${HOME}/glm53-dflash2-build-v3/launch-studio-dflash2.sh",
+        "sglang_revision": "aa8c950a3df62b6642c4ea60a93a5e3eb1a1450e",
+        "speculative": {
+          "algorithm": "DFLASH",
+          "block_size": 8,
+          "draft_precision": "BF16"
+        },
+        "target_model_revision": "9e0d74e3cef17f634e84fb8e2223707e02616290",
+        "validation_status": "runtime-and-throughput-validated-2026-08-28"
+      },
+      "gpu_memory_utilization": 0.9,
+      "host": "127.0.0.1",
+      "id": "glm53-flash-nvfp4-dflash2-rtxpro6000-sglang-tp4",
+      "kv_cache_dtype": "fp8_e4m3",
+      "max_model_len": 1048576,
+      "max_num_seqs": 8,
+      "max_thinking_tokens": null,
+      "model_path": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4",
+      "name": "GLM-5.3-Flash",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": "modelopt_fp4",
+      "reasoning_parser": "glm45",
+      "runtime": {
+        "kind": "system",
+        "label": "Corrected upstream GLM-5.3 DFlash2 branch with validated SM120 target patches",
+        "ref": "${HOME}/glm53-dflash2-build-v3/launch-studio-dflash2.sh"
+      },
+      "served_model_name": "glm-5.3-flash-dflash",
+      "tensor_parallel_size": 4,
+      "thinking_mode": "conservative",
+      "tool_call_parser": "glm47",
+      "trust_remote_code": false,
+      "vision": true
+    }
+  ],
+  "host": "pop-os",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/projects/vllm/lmvllm/data/controller.db",
+  "source_kind": "sqlite-unmigrated"
+}

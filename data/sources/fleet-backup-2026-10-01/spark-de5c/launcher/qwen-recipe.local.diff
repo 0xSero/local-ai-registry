@@ -1,0 +1,15 @@
+ start.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/start.sh b/start.sh
+index 83ddbf9..29edb8d 100755
+--- a/start.sh
++++ b/start.sh
+@@ -1090,7 +1090,7 @@ docker run \
+     $MODEL_ID \
+     $VLLM_ARGS_STR \
+     --node-rank 0 \
+-    --host 0.0.0.0 \
++    --host ${API_HOST:-0.0.0.0} \
+     --port $PORT
+ LAUNCH_EOF
+     # Same reasoning as the worker script above: mktemp's 0600 is already right,

@@ -1,0 +1,390 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "id": "glm-4.7",
+      "name": "GLM-4.7 REAP AWQ-4bit",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "enable_chunked_prefill": true,
+          "enable_prefix_caching": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 202752,
+        "max_num_seqs": 4,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/GLM-4.7-REAP-218B-A32B-AWQ-4bit",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "glm-4.7",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "glm-4.7-flash",
+      "name": "GLM-4.7-Flash AWQ-8bit",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "enable_chunked_prefill": true,
+          "enable_prefix_caching": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 202752,
+        "max_num_seqs": 16,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/GLM-4.7-Flash-AWQ-8bit",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "glm-4.7-flash",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "intellect-3",
+      "name": "INTELLECT-3 AWQ-8bit",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "enable_chunked_prefill": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 131072,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/INTELLECT-3-AWQ-8bit",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "deepseek_r1",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "intellect-3",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "hermes",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "minimax-m2.5",
+      "name": "MiniMax M2.5 AWQ-4bit",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "VLLM_ATTENTION_BACKEND": "TRITON_FLASH_ATTN"
+        },
+        "extra_args": {
+          "enable_expert_parallel": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.85,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 196608,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Minimax-M2.5-BF16-INT4-AWQ",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "minimax_m2_append_think",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "minimax-m2.5",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "minimax_m2",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "minimax-m2.7",
+      "name": "MiniMax M2.7 FP8",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "VLLM_ATTENTION_BACKEND": "TRITON_FLASH_ATTN"
+        },
+        "extra_args": {
+          "enable_expert_parallel": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.85,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 196608,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/MiniMax-M2.7",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "fp8",
+        "reasoning_parser": "minimax_m2_append_think",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "minimax-m2.7",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "minimax_m2",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen3-235b",
+      "name": "Qwen3-235B-A22B INT4-W4A16",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "enable_chunked_prefill": true,
+          "enable_expert_parallel": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 262144,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3-235B-A22B-Instruct-2507-INT4-W4A16",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "deepseek_r1",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen3-235b",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen3-coder-next-awq8-vllm",
+      "name": "Qwen3-Coder-Next AWQ-8bit (vLLM 256K)",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {},
+        "extra_args": {
+          "enable_chunked_prefill": true,
+          "enable_prefix_caching": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 4,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3-Coder-Next-AWQ-8bit",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "compressed-tensors",
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen3-coder-next-awq8",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen35-122b-awq8",
+      "name": "Qwen3.5-122B",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "default_chat_template_kwargs": {
+            "enable_thinking": true
+          },
+          "enable-chunked-prefill": true,
+          "enable-prefix-caching": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3.5-122B-A10B-AWQ-8bit",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen35-122b",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen35-reap-212b-w4a16",
+      "name": "Qwen-3.5-Plus   |    212B",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": null,
+        "extra_args": {
+          "default_chat_template_kwargs": {
+            "enable_thinking": true
+          },
+          "enable-chunked-prefill": true,
+          "enable-expert-parallel": true,
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 200000,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Qwen3.5-REAP-212B-A17B-W4A16",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "qwen35-212b",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "step-3.5-flash-int4",
+      "name": "Step-3.5-Flash INT4 AutoRound",
+      "serve": {
+        "backend": "vllm",
+        "dtype": "half",
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CUDA_VISIBLE_DEVICES": "0,1,2,3,4,5,6,7"
+        },
+        "extra_args": {
+          "disable-cascade-attn": true,
+          "disable-custom-all-reduce": true,
+          "enable-expert-parallel": true,
+          "hf-overrides": "{\"num_nextn_predict_layers\":1}",
+          "target_node_id": null
+        },
+        "gpu_memory_utilization": 0.82,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 32768,
+        "max_num_seqs": 1,
+        "max_thinking_tokens": null,
+        "model_path": "${MODEL_ROOT}/Step-3.5-Flash-int4-AutoRound",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "step3p5",
+        "runtime": {
+          "kind": "docker",
+          "ref": "vllm"
+        },
+        "served_model_name": "step-3.5-flash",
+        "tensor_parallel_size": 8,
+        "thinking_mode": "conservative",
+        "tool_call_parser": "step3p5",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    }
+  ],
+  "host": "omarchy",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/projects/vllm-studio/data/model-index.json",
+  "source_kind": "other-overlay"
+}

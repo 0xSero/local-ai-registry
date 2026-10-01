@@ -1,0 +1,145 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "engine": {
+    "graph_mode": "breakable CUDA graphs, capture up to 288",
+    "name": "vllm",
+    "version": "Local Inference Lab vLLM jovian-judgement-community-20260914-r38"
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4-popos-20261001",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "--served-model-name",
+      "deepseek-v4.1-flash",
+      "--kv-cache-memory-bytes",
+      "8589934592",
+      "--speculative-config",
+      "{\"method\": \"dspark\", \"num_speculative_tokens\": 5, \"draft_tensor_parallel_size\": 4, \"attention_backend\": \"B12X\", \"draft_sample_method\": \"greedy\", \"rejection_sample_method\": \"standard\", \"enable_adaptive_verification\": true}"
+    ],
+    "container": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": "local/ds41-jovian:r38-f41ca8bb",
+      "reason": "local image id sha256:049a86e3987d036ce81dce5072c65dcd43eb05f4383ceaa76cdc55d4387169b8, not published; base localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00 plus entrypoint serve-ds41-jovian.sh",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-image-inspect",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/pop-os/images/local_ds41-jovian_r38-f41ca8bb.json"
+        }
+      ],
+      "state": "mutable"
+    },
+    "container_port": 8000,
+    "environment": {
+      "BLOCK_SIZE": "256",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "DCP_SIZE": "1",
+      "DSPARK_ADAPTIVE_VERIFICATION": "1",
+      "ENGRAM_DISK_PREFETCH_MAX_TOKENS": "256",
+      "ENGRAM_DISK_RESIDENT_SCALES": "1",
+      "ENGRAM_TABLE_MEMORY": "disk",
+      "GPU_MEMORY_UTILIZATION": "0.95",
+      "HF_HUB_OFFLINE": "1",
+      "HOST": "0.0.0.0",
+      "MAX_CUDAGRAPH_CAPTURE_SIZE": "288",
+      "MAX_MODEL_LEN": "524288",
+      "MAX_NUM_BATCHED_TOKENS": "4096",
+      "MAX_NUM_SEQS": "48",
+      "MAX_PARALLEL_PREFILLS": "1",
+      "MODEL_PATH": "/models",
+      "OMP_NUM_THREADS": "8",
+      "PORT": "8000",
+      "PREFILL_COMPUTE_SHARE": "0.4",
+      "SERVED_MODEL_NAME": "deepseek-v4.1-flash",
+      "SWA_BLOCK_SIZE": "128",
+      "TP_SIZE": "4",
+      "TRANSFORMERS_OFFLINE": "1",
+      "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+    },
+    "host_port": 8000,
+    "image": "local/ds41-jovian:r38-f41ca8bb",
+    "kind": "docker",
+    "mounts": [
+      {
+        "provision": {
+          "repository": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "revision": "fb2764a5cf321eaa5070ca8f9e892818f477c16d",
+          "size_gb": 510.312
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/DeepSeek-V4.1-Flash",
+        "target": "/models"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/ds41-jovian-r38",
+        "target": "/cache"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "base_image": "localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00",
+      "captured_at": "2026-10-01T23:19:00Z",
+      "config": "sources/fleet-backup-2026-10-01/pop-os/images/local_ds41-jovian_r38-f41ca8bb.json",
+      "note": "local image (not published); its only change over localinferencelab/vllm@sha256:f41ca8bb10bb3a125a50340d70d39ad4b7f5605f3fcb661bc992ed0bc4701a00 is the entrypoint /usr/local/bin/serve-ds41-jovian.sh (owner note; image history captured)"
+    },
+    "security_opt": [
+      "seccomp=${HOME}/deepseek-v41-work/vllm-r38/seccomp-default-plus-io_uring.json"
+    ],
+    "ulimits": [
+      "memlock=-1",
+      "stack=67108864"
+    ]
+  },
+  "metadata": {
+    "description": "Local Inference Lab vLLM jovian-judgement r38 (image digest f41ca8bb, local tag only switches the entrypoint to serve-ds41-jovian.sh). TP4, B12X attention/MoE/linear, FP8 KV, DSpark K7 adaptive, Engram tables read from disk, 524,288 context, 4096 batched tokens, 16 sequences, breakable CUDA graphs. Converted in place from the SGLang recipe on 2026-09-18 after GPU OOM crashes in the SGLang low-ratio indexer; SGLang version saved as studio-recipe-SGLANG-before-vllm-r38-20260918.json. 2026-09-30: Engram disk resident scales + prefetch 256 tokens (E1: C1 prose +8%, cold prefill +20-33%, mixed decode +9%).",
+    "fleet_backup": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "host": "pop-os",
+      "manifest": "sources/fleet-backup-2026-10-01/manifest.json",
+      "published_sha256": "10cdaef2ae5ddc6460effb61fde4f1033bebb28918258b79fb208090e23f0ed3",
+      "raw_sha256": "dd1496ec273fd0b37b2e5855e4e34085fbd8de68b6af3380f9ff7f51faf68d4b",
+      "source_file": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+      "source_id": "deepseek-v4.1-flash",
+      "source_kind": "live-overlay"
+    },
+    "limits": "Local image: reproducing it needs serve-ds41-jovian.sh, which lives only inside the image (not captured as a file). The saved description says 16 sequences while the saved environment sets MAX_NUM_SEQS=48; the environment is what the controller launches. Differs from deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4 (2026-09-26): 48 sequences, CUDA graph capture 288, Engram disk resident scales and 256-token prefetch.",
+    "previous_record": "deepseek-v4-1-flash-fp8-rtxpro6000-vllm-tp4",
+    "seccomp_profile": "sources/fleet-backup-2026-10-01/pop-os/files/deepseek-v41-work_vllm-r38_seccomp-default-plus-io_uring.json",
+    "source_repository": "https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000"
+  },
+  "model_instance_id": "deepseek-ai-deepseek-v4-1-flash--fp8",
+  "provenance": {
+    "captured_at": "2026-10-01T23:19:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os saved controller configuration, read-only capture",
+        "path": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json"
+      }
+    ]
+  },
+  "recipe_source": "0xsero-fleet-backup",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8",
+    "max_concurrency": 48,
+    "max_context_tokens": 524288,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

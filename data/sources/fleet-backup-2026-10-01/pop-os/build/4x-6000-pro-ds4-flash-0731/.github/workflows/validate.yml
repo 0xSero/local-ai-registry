@@ -1,0 +1,28 @@
+name: Validate locked deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON and shell syntax
+        run: |
+          jq -e . recipe.template.json >/dev/null
+          bash -n up
+      - name: Validate Compose expansion
+        env:
+          MODEL_DIR: /tmp/deepseek-model
+          CACHE_DIR: /tmp/deepseek-cache
+          NVIDIA_VISIBLE_DEVICES: GPU-<uuid>,GPU-<uuid>,GPU-<uuid>,GPU-<uuid>
+        run: docker compose -f compose.yaml config >/dev/null
+      - name: Verify pinned runtime manifest
+        run: |
+          docker manifest inspect \
+            voipmonitor/vllm:eldritch-enlightenment-ds4dspark-v9-ve72ad00-b12x57422ad-cu132-20260703@sha256:937db99d072fe089be6d9d88c356e5e2540243389bc7669ecf57a102f637c15e \
+            >/dev/null

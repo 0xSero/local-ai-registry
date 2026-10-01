@@ -1,0 +1,117 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": null
+  },
+  "facts": {},
+  "hardware_count": 2,
+  "hardware_id": "dgx-spark-gb10-128gb",
+  "id": "qwen38-flash-next-nvfp4-dgxspark-vllm-tp2-miaai-20261001",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "container": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "compose_file": null,
+      "digest": null,
+      "image": null,
+      "reason": "non-container-launch-kind: the launcher script starts its own containers; image under script.image",
+      "runtime": null,
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-image-inspect",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/manifest.json"
+        }
+      ],
+      "state": "none"
+    },
+    "container_port": 8888,
+    "host_port": 8888,
+    "ipc": "host",
+    "kind": "script",
+    "network_mode": "host",
+    "script": {
+      "env": [
+        "sources/fleet-backup-2026-10-01/spark-de5c/launcher/qwen-recipe.env"
+      ],
+      "file": "start.sh",
+      "last_head_launch": [
+        "sources/fleet-backup-2026-10-01/spark-de5c/launcher/qwen-recipe.last_head_launch.sh"
+      ],
+      "local_patches": [
+        "sources/fleet-backup-2026-10-01/spark-de5c/launcher/qwen-recipe.local.diff"
+      ],
+      "nodes": "head spark-de5c, worker spark-557f",
+      "steps": [
+        "./start.sh"
+      ],
+      "upstream": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks/tree/d2f54b78c0d2f9d74ac61aa56200e3c40fac3f22"
+    },
+    "script_image": {
+      "compose_file": null,
+      "digest": "sha256:fc120ece0a388cc0aa1caad4a9f1cd92113484ab7ec2fd0efadd62585be05bf8",
+      "image": "vllm/vllm-openai@sha256:fc120ece0a388cc0aa1caad4a9f1cd92113484ab7ec2fd0efadd62585be05bf8",
+      "reason": "Docker Hub tag qwen38-flash-next resolves to this index digest (checked 2026-10-01) and spark-557f holds it; spark-de5c's containerd store lists the tag as sha256:a9c416666e9669b4a779386f1a8619c8a8316b45afe2398dc9cd18335374f4c9 (relation to the index not verified)",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-images",
+          "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/manifest.json"
+        }
+      ],
+      "state": "known"
+    }
+  },
+  "metadata": {
+    "fleet_backup": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "host": "spark-de5c",
+      "manifest": "sources/fleet-backup-2026-10-01/manifest.json",
+      "published_sha256": "63e01f8866a81713f046222f97fb1f45b7de1a33f7cc9ebd2757db70aacacbe6",
+      "raw_sha256": "d10a4fb3d37502f29aee16fb3453ae08b46bca0fae8ecc44e58a2618abdd9cb5",
+      "source_file": "sources/fleet-backup-2026-10-01/spark-de5c/live-overlay--home-local-studio-data-model-index-json.json",
+      "source_id": "qwen3.8-next-flash",
+      "source_kind": "live-overlay"
+    },
+    "forwarder": "Local Studio overlay entry qwen3.8-next-flash on spark-de5c is adopt-only (local/ls-adopt-forward:1 forwards :8000 to this launcher's :8888).",
+    "limits": "The worker's checkout (spark-557f) is at 2c86a1d05f93c8d3a68146a321d417ffa4ca5039, not the head's d2f54b78c0d2f9d74ac61aa56200e3c40fac3f22; the head's .last_head_launch.sh is the exact last head command. Local diff only makes the API host configurable.",
+    "measured_by_owner": "decode 39.9 tok/s prose, 57.3 code, 68.5 structured with MTP=3 (owner note in the saved overlay; no registry run)",
+    "upstream_reported": "data/reported/miaai-lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks.json"
+  },
+  "model_instance_id": "nvidia-qwen3-8-flash-next-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-10-01T23:19:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "live-controller-recipe",
+        "note": "spark-de5c saved controller configuration, read-only capture",
+        "path": "sources/fleet-backup-2026-10-01/spark-de5c/live-overlay--home-local-studio-data-model-index-json.json",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/spark-de5c/live-overlay--home-local-studio-data-model-index-json.json"
+      },
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "upstream-repository",
+        "url": "https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Dual-DGX-Sparks/tree/d2f54b78c0d2f9d74ac61aa56200e3c40fac3f22"
+      }
+    ]
+  },
+  "recipe_source": "0xsero-fleet-backup",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8",
+    "max_concurrency": 8,
+    "max_context_tokens": 262144,
+    "tensor_parallel": 2
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

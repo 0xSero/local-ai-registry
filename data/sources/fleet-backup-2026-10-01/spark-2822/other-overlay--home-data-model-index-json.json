@@ -1,0 +1,217 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "id": "glm-5.3-flash",
+      "name": "GLM-5.3-Flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CONTEXT_LENGTH": "524288",
+          "DIST_INIT_ADDR": "<fabric-ip>:27000",
+          "DRAFT_PATH": "${HOME}/models/GLM-5.3-Flash-DFlash2",
+          "EP_SIZE": "4",
+          "NCCL_CROSS_NIC": "0",
+          "NCCL_IB_HCA": "rocep1s0f1",
+          "NCCL_NET": "IB",
+          "NCCL_SOCKET_IFNAME": "enp1s0f1np1",
+          "NNODES": "4",
+          "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+          "SPEC_ADAPTIVE": "0",
+          "SPEC_ALGO": "DFLASH2",
+          "SPEC_DFLASH_BLOCK": "7",
+          "SPEC_DRAFT_ATTN": "flashinfer",
+          "TORCH_COMPILE_DISABLE": "0",
+          "TP_SIZE": "4"
+        },
+        "extra_args": {
+          "description": "Four-Spark GLM-5.3-Flash NVFP4 using the Tech2Wild vLLM SM121 stack with DFlash2-7, 12 GiB fixed FP8 KV per rank, unconditional GB10 page-cache hygiene, one active sequence, 2K prefill batches, and full-and-piecewise CUDA graphs. Serves 524,288 context on :8000 through the controller on :8080.",
+          "launch_command": "/usr/bin/bash -lc 'chmod +x ${HOME}/glm53-vllm-512k/studio-up.sh && exec ${HOME}/glm53-vllm-512k/studio-up.sh'",
+          "metadata": {
+            "head": "spark-2822",
+            "kv_cache_memory_bytes": 12884901888,
+            "measured_kv_tokens": 1816492,
+            "profile": "${HOME}/glm53-vllm-512k/launch-rank.sh",
+            "spec": "DFlash2 block 7"
+          },
+          "tags": [
+            "glm-5.3-flash",
+            "nvfp4",
+            "dgx-spark",
+            "tp4",
+            "vllm",
+            "dflash2",
+            "512k"
+          ]
+        },
+        "gpu_memory_utilization": 0.85,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 524288,
+        "max_num_seqs": 1,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/models/GLM-5.3-Flash-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "modelopt_fp4",
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v11-dflash2"
+        },
+        "served_model_name": "glm-5.3-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "enabled",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": true
+      }
+    },
+    {
+      "id": "glm-5.3-flash-nvfp4-4x-spark",
+      "name": "GLM-5.3 Flash NVFP4 (4x Spark, 1M)",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {
+          "CONTEXT_LENGTH": "1048576",
+          "DIST_INIT_ADDR": "<fabric-ip>:27000",
+          "EP_SIZE": "4",
+          "NCCL_CROSS_NIC": "1",
+          "NCCL_IB_HCA": "rocep1s0f1,roceP2p1s0f1",
+          "NCCL_NET": "IB",
+          "NCCL_SOCKET_IFNAME": "enp1s0f1np1",
+          "NNODES": "4",
+          "SGLANG_GLM53_ONLINE_FP8_LINEAR": "1",
+          "TORCH_COMPILE_DISABLE": "1",
+          "TP_SIZE": "4"
+        },
+        "extra_args": {
+          "description": "Fastest measured four-Spark GLM-5.3-Flash NVFP4. SGLang TP4/EP4, 1M context, online FP8 dense linears, CUDA graphs, adaptive NEXTN. Thinking-on C1 essay 59 tok/s (2026-08-27). Graphs stay on. Do not send max_tokens.",
+          "launch_command": "/usr/bin/bash -lc 'chmod +x ${HOME}/glm-5.3-flash-sglang-sm121/scripts/studio-up-tp4.sh && exec ${HOME}/glm-5.3-flash-sglang-sm121/scripts/studio-up-tp4.sh'",
+          "metadata": {
+            "measured_c1_thinking_on_tok_s": 59.08,
+            "measured_kv_tokens": 5675840,
+            "profile": "profiles/tp4.env"
+          },
+          "tags": [
+            "glm-5.3-flash",
+            "nvfp4",
+            "dgx-spark",
+            "tp4",
+            "sglang",
+            "1m"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 1048576,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/models/GLM-5.3-Flash-NVFP4",
+        "pipeline_parallel_size": 1,
+        "port": 8888,
+        "python_path": null,
+        "quantization": "modelopt_fp4",
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "lmsysorg/sglang:glm-5.3-flash"
+        },
+        "served_model_name": "glm-5.3-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "enabled",
+        "tool_call_parser": "glm47",
+        "trust_remote_code": true,
+        "vision": null
+      }
+    },
+    {
+      "id": "qwen3.8-27b",
+      "name": "Qwen3.8-27B · 4x DGX Spark",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": false,
+        "env_vars": {
+          "LOCAL_STUDIO_CLUSTER": "sparks-tp4"
+        },
+        "extra_args": {
+          "attention_backend": "flashinfer",
+          "chunked_prefill_size": 8192,
+          "cuda_graph_max_bs_decode": 4,
+          "description": "Controller-owned four-node SGLang TP4 launch across spark-2822, spark-2384, spark-557f, and spark-de5c. Native 262144 context, FP8 KV with runtime headroom for large prefills, DSpark speculative decoding, CUDA graphs enabled for prefill and decode, Qwen3 reasoning, qwen3_coder tool parsing, and native image/video input. The controller-owned orchestration container launches, health-monitors, proxies, and evicts every rank as one lifecycle.",
+          "enable_cache_report": true,
+          "enable_torch_compile": true,
+          "launch_command": "/usr/local/bin/orchestrate",
+          "mamba_full_memory_ratio": 4.21,
+          "mamba_radix_cache_strategy": "extra_buffer_lazy",
+          "mamba_ssm_dtype": "bfloat16",
+          "max_mamba_cache_size": 16,
+          "metadata": {
+            "draft": "RadixArk/Qwen3.8-27B-DSpark",
+            "head_node": "spark-2822",
+            "image_digest": "sha256:febfb971c7352570fc445c466ebd6ffc9d896024958e544a60f2137fd85856b1",
+            "nodes": 4,
+            "source_repo": "https://github.com/MiaAI-Lab/Qwen3.8-27B-SGLang-DGX-Spark",
+            "tensor_parallel": 4,
+            "weights": "RadixArk/Qwen3.8-27B-NVFP4-BF16-LMHead"
+          },
+          "num_continuous_decode_steps": 2,
+          "sampling_defaults": "model",
+          "speculative_algorithm": "DSPARK",
+          "speculative_draft_model_path": "RadixArk/Qwen3.8-27B-DSpark",
+          "speculative_draft_model_quantization": "unquant",
+          "speculative_dspark_block_size": 7,
+          "speculative_num_draft_tokens": 8,
+          "tags": [
+            "qwen3.8-27b",
+            "nvfp4",
+            "sglang",
+            "dgx-spark-tp4",
+            "dspark",
+            "256k",
+            "fp8-kv",
+            "cuda-graphs",
+            "vision",
+            "video",
+            "tool-calling",
+            "reasoning"
+          ],
+          "torch_compile_max_bs": 4
+        },
+        "gpu_memory_utilization": 0.7,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 4,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/models/Qwen3.8-27B-NVFP4-BF16-LMHead",
+        "pipeline_parallel_size": 1,
+        "port": 8888,
+        "python_path": null,
+        "quantization": "modelopt_fp4",
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "local/qwen38-tp4-orchestrator:2"
+        },
+        "served_model_name": "qwen3.8-27b-sglang",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "enabled",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": true
+      }
+    }
+  ],
+  "host": "spark-2822",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/data/model-index.json",
+  "source_kind": "other-overlay"
+}

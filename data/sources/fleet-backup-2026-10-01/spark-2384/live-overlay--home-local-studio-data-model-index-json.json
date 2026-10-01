@@ -1,0 +1,173 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "id": "qwen3.8-27b",
+      "name": "Qwen3.8-27B",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": false,
+        "env_vars": {},
+        "extra_args": {
+          "attention_backend": "flashinfer",
+          "chunked_prefill_size": 8192,
+          "description": "Qwen3.8-27B NVFP4 (dense BF16 lm_head) on SGLang, single DGX Spark GB10. Recipe from MiaAI-Lab/Qwen3.8-27B-SGLang-DGX-Spark (MTP 3/1/4): native 262144-token context (256K, YaRN off), FP8 KV cache, GDN bf16 state pool 40 slots / 10 concurrent, 8192-token prefill chunks, flashinfer attention. Native VLM: vision tower live, image+video input. Thinking on by default (--reasoning-parser qwen3), tool calls via qwen3_coder parser. Serves on :8000 through the Local Studio controller on :8080.",
+          "disable_prefill_cuda_graph": true,
+          "enable_cache_report": true,
+          "mamba_full_memory_ratio": 4.21,
+          "mamba_radix_cache_strategy": "extra_buffer_lazy",
+          "mamba_ssm_dtype": "bfloat16",
+          "max_mamba_cache_size": 40,
+          "metadata": {
+            "engine": "sglang-mtp-3-1-4",
+            "head_node": "spark-2822",
+            "quant": "nvfp4-bf16-lmhead",
+            "source_repo": "https://github.com/MiaAI-Lab/Qwen3.8-27B-SGLang-DGX-Spark",
+            "weights": "RadixArk/Qwen3.8-27B-NVFP4-BF16-LMHead"
+          },
+          "sampling_defaults": "model",
+          "speculative_algorithm": "EAGLE",
+          "speculative_eagle_topk": 1,
+          "speculative_num_draft_tokens": 4,
+          "speculative_num_steps": 3,
+          "tags": [
+            "qwen3.8-27b",
+            "nvfp4",
+            "sglang",
+            "dgx-spark",
+            "mtp",
+            "256k",
+            "vision",
+            "video",
+            "tool-calling",
+            "reasoning"
+          ]
+        },
+        "gpu_memory_utilization": 0.9,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8_e4m3",
+        "max_model_len": 262144,
+        "max_num_seqs": 10,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/models/Qwen3.8-27B-NVFP4-BF16-LMHead",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "qwen3",
+        "runtime": {
+          "kind": "docker",
+          "ref": "local/qwen38-sglang-serve:1"
+        },
+        "served_model_name": "qwen3.8-27b-sglang",
+        "tensor_parallel_size": 1,
+        "thinking_mode": "enabled",
+        "tool_call_parser": "qwen3_coder",
+        "trust_remote_code": true,
+        "vision": true
+      }
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "name": "deepseek-v4.1-flash",
+      "serve": {
+        "backend": "sglang",
+        "dtype": null,
+        "enable_auto_tool_choice": true,
+        "env_vars": {},
+        "extra_args": {
+          "description": "DeepSeek-V4.1-Flash native (MXFP4 experts, FP8 dense) on 4x DGX Spark, TP4/EP2 over RoCE (both rails): knapcio profile @a544a0f1 (SGLang dsv4.1 f80c91a4b + LIL RoCEnante all-reduce, DSpark k5 with folded sampling, shared-expert pad, chunked indexer, Engram prefetch), Engram tables packed on each Spark NVMe, 1,048,576 context, 8M-token KV pool, 16 requests, 4096-token chunks, vision. Measured single-request decode 83 tok/s code (87 at temp 0), 41-45 prose. Stack: ~/NewModels/dsv41-active; the recipe launches local/dsv41-4xspark-orchestrator:1, which starts or adopts it over a restricted ssh key and forwards :8000; evicting stops all four nodes.",
+          "tags": [
+            "1m",
+            "4x-spark",
+            "deepseek-v4.1",
+            "dgx-spark",
+            "dspark",
+            "ep2",
+            "knapcio",
+            "nvme-engram",
+            "rocenante",
+            "sglang",
+            "tp4",
+            "vision"
+          ]
+        },
+        "gpu_memory_utilization": 0.8,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "auto",
+        "max_model_len": 1048576,
+        "max_num_seqs": 8,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/work/deepseek-v41-exl3/source",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": null,
+        "reasoning_parser": "deepseek-v41",
+        "runtime": {
+          "kind": "docker",
+          "ref": "local/dsv41-4xspark-orchestrator:1"
+        },
+        "served_model_name": "deepseek-v4.1-flash",
+        "tensor_parallel_size": 4,
+        "thinking_mode": "enabled",
+        "tool_call_parser": "deepseekv41",
+        "trust_remote_code": true,
+        "vision": true
+      }
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "glm-5.3-flash",
+      "serve": {
+        "backend": "vllm",
+        "dtype": null,
+        "enable_auto_tool_choice": false,
+        "env_vars": {
+          "LISTEN_PORT": "8000",
+          "UPSTREAM": "<tailnet-ip>:8888"
+        },
+        "extra_args": {
+          "description": "GLM-5.3-Flash EXL3/TR3-4bpw on 2x DGX Spark (spark-2384 head + spark-2822 worker), vLLM TP2 over ConnectX, fp8_ds_mla KV, DFlash2 k=7 speculator, 500,000 context, 720,046-token KV pool. GLM53_ADAPTIVE_K=ema and GLM53_DENSE_FP8=dense,kda are enabled: measured single-stream decode 32.8 tok/s (95.2 ms/step, 3.12 tokens/step), up from 24.9 with both off. ADOPT-ONLY recipe: the model is launched and owned by the MiaAI launcher at ~/glm-recipe; this container only forwards :8000 to the running server on <tailnet-ip>:8888. Evicting stops the forward, not the model.",
+          "tags": [
+            "2x-spark",
+            "glm-5.3-flash",
+            "exl3",
+            "dflash2",
+            "vllm",
+            "tp2",
+            "adopt-only",
+            "500k"
+          ]
+        },
+        "gpu_memory_utilization": 0.88,
+        "host": "0.0.0.0",
+        "kv_cache_dtype": "fp8",
+        "max_model_len": 500000,
+        "max_num_seqs": 16,
+        "max_thinking_tokens": null,
+        "model_path": "${HOME}/.cache/huggingface/hub/models--Mia-AiLab--GLM-5.3-Flash-EXL3-TR3-4bpw",
+        "pipeline_parallel_size": 1,
+        "port": 8000,
+        "python_path": null,
+        "quantization": "exl3",
+        "reasoning_parser": "glm45",
+        "runtime": {
+          "kind": "docker",
+          "ref": "local/ls-adopt-forward:1"
+        },
+        "served_model_name": "glm-5.3-flash",
+        "tensor_parallel_size": 2,
+        "thinking_mode": "conservative",
+        "tool_call_parser": null,
+        "trust_remote_code": true,
+        "vision": true
+      }
+    }
+  ],
+  "host": "spark-2384",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/local-studio/data/model-index.json",
+  "source_kind": "live-overlay"
+}

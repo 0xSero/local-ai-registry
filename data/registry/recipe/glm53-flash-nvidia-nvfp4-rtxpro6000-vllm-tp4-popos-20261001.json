@@ -1,0 +1,153 @@
+{
+  "capabilities": {
+    "chat": true,
+    "reasoning": true,
+    "tools": true,
+    "vision": true
+  },
+  "engine": {
+    "graph_mode": null,
+    "name": "vllm",
+    "version": "0.28.1rc1.dev580+g385dce36b (owner note; image vllm/vllm-openai:glm53-flash-x86_64-cu130)"
+  },
+  "facts": {},
+  "hardware_count": 4,
+  "hardware_id": "rtx-pro-6000-blackwell-96gb",
+  "id": "glm53-flash-nvidia-nvfp4-rtxpro6000-vllm-tp4-popos-20261001",
+  "launch": {
+    "accelerator_backend": "nvidia",
+    "arguments": [
+      "/model",
+      "--served-model-name",
+      "glm-5.3-flash",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--tensor-parallel-size",
+      "4",
+      "--enable-expert-parallel",
+      "--enable-ep-weight-filter",
+      "--max-model-len",
+      "400000",
+      "--max-num-seqs",
+      "48",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--kv-cache-dtype",
+      "fp8",
+      "--reasoning-parser",
+      "glm45",
+      "--tool-call-parser",
+      "glm47",
+      "--enable-auto-tool-choice",
+      "--model-loader-extra-config",
+      "{\"enable_multithread_load\": true, \"num_threads\": 128}",
+      "--max-num-batched-tokens",
+      "8192",
+      "--enable-chunked-prefill",
+      "--speculative-config",
+      "{\"method\":\"mtp\",\"num_speculative_tokens\":3}",
+      "--mm-processor-device",
+      "cpu",
+      "--limit-mm-per-prompt",
+      "{\"image\":64,\"video\":1}"
+    ],
+    "container": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "compose_file": null,
+      "digest": "sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86",
+      "image": "vllm/vllm-openai@sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86",
+      "reason": "public Docker Hub digest of tag glm53-flash-x86_64-cu130; present on the host",
+      "runtime": "docker",
+      "source": [
+        {
+          "captured_at": "2026-10-01T23:19:00Z",
+          "kind": "host-docker-image-inspect",
+          "url": "https://hub.docker.com/r/vllm/vllm-openai/tags?name=glm53-flash-x86_64-cu130"
+        }
+      ],
+      "state": "digest-pinned"
+    },
+    "container_port": 8000,
+    "environment": {
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "HF_HUB_OFFLINE": "1"
+    },
+    "host_port": 8000,
+    "image": "vllm/vllm-openai@sha256:0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86",
+    "kind": "docker",
+    "mounts": [
+      {
+        "provision": {
+          "repository": "nvidia/GLM-5.3-Flash-NVFP4",
+          "revision": "da920bb0b9f4a06727223a349e55468e38352348",
+          "size_gb": 204.476
+        },
+        "read_only": true,
+        "source": "${MODEL_ROOT}/GLM-5.3-Flash-NVFP4-nvidia",
+        "target": "/model"
+      },
+      {
+        "read_only": false,
+        "source": "${CACHE_ROOT}/glm53-nvidia-stock",
+        "target": "/root/.cache"
+      }
+    ],
+    "network_mode": "bridge",
+    "provenance": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "config": "sources/fleet-backup-2026-10-01/pop-os/images/vllm_vllm-openai_sha256_0674a3ea3c971706cea310bca71daadff68ea1717c758d2f54affa5def001b86.json",
+      "note": "tag glm53-flash-x86_64-cu130 resolves to this digest on Docker Hub (checked 2026-10-01); image present on host",
+      "url": "https://hub.docker.com/r/vllm/vllm-openai/tags?name=glm53-flash-x86_64-cu130"
+    }
+  },
+  "metadata": {
+    "description": "NVIDIA official nvidia/GLM-5.3-Flash-NVFP4 @da920bb (modelopt 0.47 NVFP4 experts+dense MLP, BF16 attn/MTP/vision, FP8 KV) on stock vLLM image vllm/vllm-openai:glm53-flash-x86_64-cu130 (@sha256:0674a3ea, vLLM 0.28.1rc1.dev580+g385dce36b, transformers 5.16.1). Flags per NVIDIA README (EP + EP weight filter, multithread load, 8192 batched tokens, chunked prefill, gmu 0.90) + native MTP3 + vision (64 images, CPU mm processor). TP4, 400k context, 48 seqs. UNTESTED until the 2026-09-30 night launch (~/tuning/nvfp4-nvidia-test.sh). Previous LIL R35 recipe backed up in ~/tuning/restore/.",
+    "fleet_backup": {
+      "captured_at": "2026-10-01T23:19:00Z",
+      "host": "pop-os",
+      "manifest": "sources/fleet-backup-2026-10-01/manifest.json",
+      "published_sha256": "aeb527c424279e647bf550832bb9908def86e161087b17dddf60d00189d40a66",
+      "raw_sha256": "c623bfe0c75475e21019d0501b3fa93d27caf646de220d2b01dea2a139000597",
+      "source_file": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+      "source_id": "glm-5.3-flash",
+      "source_kind": "live-overlay"
+    },
+    "limits": "Owner's own note marks this configuration UNTESTED until the 2026-09-30 night launch; no acceptance run is recorded in the registry. ipc/shm settings come from the Local Studio controller's docker launcher defaults and are not part of the saved configuration. The controller-side history_image_limit (8) is not an engine flag.",
+    "local_studio": {
+      "history_image_limit": 8,
+      "reasoning_parser": "glm45",
+      "thinking_mode": "auto",
+      "tool_call_parser": "glm47"
+    }
+  },
+  "model_instance_id": "nvidia-glm-5-3-flash-nvfp4--nvfp4",
+  "provenance": {
+    "captured_at": "2026-10-01T23:19:00Z",
+    "sources": [
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "live-controller-recipe",
+        "note": "pop-os saved controller configuration, read-only capture",
+        "path": "sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json",
+        "url": "https://github.com/0xSero/local-ai-registry/blob/backup/fleet-recipes-hom202/data/sources/fleet-backup-2026-10-01/pop-os/live-overlay--home-projects-vllm-lmvllm-data-model-index-json.json"
+      },
+      {
+        "captured_at": "2026-10-01T23:19:00Z",
+        "kind": "huggingface-api",
+        "url": "https://huggingface.co/api/models/nvidia/GLM-5.3-Flash-NVFP4/revision/da920bb0b9f4a06727223a349e55468e38352348"
+      }
+    ]
+  },
+  "recipe_source": "0xsero-fleet-backup",
+  "schema_version": "local-ai-registry/v1",
+  "serving": {
+    "kv_cache_dtype": "fp8",
+    "max_concurrency": 48,
+    "max_context_tokens": 400000,
+    "tensor_parallel": 4
+  },
+  "speed_sweep_ids": [],
+  "status": "candidate"
+}

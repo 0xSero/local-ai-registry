@@ -1,0 +1,658 @@
+{
+  "Config": {
+    "Cmd": [
+      "serve",
+      "/model",
+      "--served-model-name",
+      "DeepSeek-V4-Flash-0731",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "--trust-remote-code",
+      "--tensor-parallel-size",
+      "4",
+      "--decode-context-parallel-size",
+      "1",
+      "--kv-cache-dtype",
+      "fp8_ds_mla",
+      "--moe-backend",
+      "b12x",
+      "--load-format",
+      "safetensors",
+      "-cc.pass_config.fuse_allreduce_rms=True",
+      "--gpu-memory-utilization",
+      "0.90",
+      "--max-model-len",
+      "1048576",
+      "--max-num-seqs",
+      "8",
+      "--max-num-batched-tokens",
+      "8192",
+      "--block-size",
+      "256",
+      "--max-cudagraph-capture-size",
+      "48",
+      "--async-scheduling",
+      "--enable-chunked-prefill",
+      "--enable-auto-tool-choice",
+      "--tokenizer-mode",
+      "deepseek_v4",
+      "--tool-call-parser",
+      "deepseek_v4",
+      "--reasoning-parser",
+      "deepseek_v4",
+      "--speculative-config",
+      "{\"method\":\"dspark\",\"num_speculative_tokens\":5,\"moe_backend\":\"b12x\",\"draft_sample_method\":\"probabilistic\"}"
+    ],
+    "Entrypoint": [
+      "/opt/venv/bin/vllm"
+    ],
+    "Env": [
+      "PATH=/opt/venv/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "NVARCH=x86_64",
+      "NVIDIA_REQUIRE_CUDA=cuda>=13.2 brand=unknown,driver>=535,driver<536 brand=grid,driver>=535,driver<536 brand=tesla,driver>=535,driver<536 brand=nvidia,driver>=535,driver<536 brand=quadro,driver>=535,driver<536 brand=quadrortx,driver>=535,driver<536 brand=nvidiartx,driver>=535,driver<536 brand=vapps,driver>=535,driver<536 brand=vpc,driver>=535,driver<536 brand=vcs,driver>=535,driver<536 brand=vws,driver>=535,driver<536 brand=cloudgaming,driver>=535,driver<536 brand=unknown,driver>=570,driver<571 brand=grid,driver>=570,driver<571 brand=tesla,driver>=570,driver<571 brand=nvidia,driver>=570,driver<571 brand=quadro,driver>=570,driver<571 brand=quadrortx,driver>=570,driver<571 brand=nvidiartx,driver>=570,driver<571 brand=vapps,driver>=570,driver<571 brand=vpc,driver>=570,driver<571 brand=vcs,driver>=570,driver<571 brand=vws,driver>=570,driver<571 brand=cloudgaming,driver>=570,driver<571 brand=unknown,driver>=580,driver<581 brand=grid,driver>=580,driver<581 brand=tesla,driver>=580,driver<581 brand=nvidia,driver>=580,driver<581 brand=quadro,driver>=580,driver<581 brand=quadrortx,driver>=580,driver<581 brand=nvidiartx,driver>=580,driver<581 brand=vapps,driver>=580,driver<581 brand=vpc,driver>=580,driver<581 brand=vcs,driver>=580,driver<581 brand=vws,driver>=580,driver<581 brand=cloudgaming,driver>=580,driver<581 brand=unknown,driver>=590,driver<591 brand=grid,driver>=590,driver<591 brand=tesla,driver>=590,driver<591 brand=nvidia,driver>=590,driver<591 brand=quadro,driver>=590,driver<591 brand=quadrortx,driver>=590,driver<591 brand=nvidiartx,driver>=590,driver<591 brand=vapps,driver>=590,driver<591 brand=vpc,driver>=590,driver<591 brand=vcs,driver>=590,driver<591 brand=vws,driver>=590,driver<591 brand=cloudgaming,driver>=590,driver<591",
+      "NV_CUDA_CUDART_VERSION=13.2.75-1",
+      "CUDA_VERSION=13.2.1",
+      "LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64",
+      "NVIDIA_VISIBLE_DEVICES=all",
+      "NVIDIA_DRIVER_CAPABILITIES=compute,utility",
+      "NV_CUDA_LIB_VERSION=13.2.1-1",
+      "NV_NVTX_VERSION=13.2.75-1",
+      "NV_LIBNPP_VERSION=13.1.0.48-1",
+      "NV_LIBNPP_PACKAGE=libnpp-13-2=13.1.0.48-1",
+      "NV_LIBCUSPARSE_VERSION=12.7.10.1-1",
+      "NV_LIBCUBLAS_PACKAGE_NAME=libcublas-13-2",
+      "NV_LIBCUBLAS_VERSION=13.4.0.1-1",
+      "NV_LIBCUBLAS_PACKAGE=libcublas-13-2=13.4.0.1-1",
+      "NVIDIA_PRODUCT_NAME=CUDA",
+      "NV_CUDA_CUDART_DEV_VERSION=13.2.75-1",
+      "NV_NVML_DEV_VERSION=13.2.82-1",
+      "NV_LIBCUSPARSE_DEV_VERSION=12.7.10.1-1",
+      "NV_LIBNPP_DEV_VERSION=13.1.0.48-1",
+      "NV_LIBNPP_DEV_PACKAGE=libnpp-dev-13-2=13.1.0.48-1",
+      "NV_LIBCUBLAS_DEV_VERSION=13.4.0.1-1",
+      "NV_LIBCUBLAS_DEV_PACKAGE_NAME=libcublas-dev-13-2",
+      "NV_LIBCUBLAS_DEV_PACKAGE=libcublas-dev-13-2=13.4.0.1-1",
+      "NV_CUDA_NSIGHT_COMPUTE_VERSION=13.2.1-1",
+      "NV_CUDA_NSIGHT_COMPUTE_DEV_PACKAGE=cuda-nsight-compute-13-2=13.2.1-1",
+      "LIBRARY_PATH=/usr/local/cuda/lib64/stubs",
+      "NV_CUDNN_VERSION=9.20.0.48-1",
+      "NV_CUDNN_PACKAGE_NAME=libcudnn9-cuda-13",
+      "NV_CUDNN_PACKAGE=libcudnn9-cuda-13=9.20.0.48-1",
+      "NV_CUDNN_PACKAGE_DEV=libcudnn9-dev-cuda-13=9.20.0.48-1",
+      "NV_CUDNN_PACKAGE_DEV_HEADERS=libcudnn9-headers-cuda-13=9.20.0.48-1",
+      "LANG=C.UTF-8",
+      "LC_ALL=C.UTF-8",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "PYTHONUNBUFFERED=1",
+      "PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "NCCL_LOCAL_INFERENCE_PATH=/opt/libnccl-local-inference.so.2.30.4",
+      "NCCL_PR2127_PATH=/opt/libnccl-local-inference.so.2.30.4",
+      "VLLM_NCCL_SO_PATH=/opt/libnccl-local-inference.so.2.30.4",
+      "VIRTUAL_ENV=/opt/venv",
+      "CUDA_DEVICE_ORDER=PCI_BUS_ID",
+      "TORCH_CUDA_ARCH_LIST=12.0a",
+      "FLASHINFER_CUDA_ARCH_LIST=12.0f",
+      "FLASHINFER_LOCAL_VERSION=cu132",
+      "FLASHINFER_DISABLE_VERSION_CHECK=1",
+      "HF_HOME=/root/.cache/huggingface",
+      "TRITON_CACHE_DIR=/cache/jit/triton",
+      "TORCH_EXTENSIONS_DIR=/cache/jit/torch_extensions",
+      "VLLM_CACHE_DIR=/cache/jit/vllm",
+      "FLASHINFER_WORKSPACE_BASE=/cache/jit/flashinfer",
+      "TVM_FFI_CACHE_DIR=/cache/jit/tvm-ffi",
+      "XDG_CACHE_HOME=/cache/jit",
+      "LD_PRELOAD=/opt/libnccl-local-inference.so.2.30.4",
+      "NCCL_IB_DISABLE=1",
+      "NCCL_P2P_LEVEL=SYS",
+      "NCCL_PROTO=LL,LL128,Simple",
+      "VLLM_ENABLE_PCIE_ALLREDUCE=0",
+      "VLLM_PCIE_ALLREDUCE_BACKEND=cpp",
+      "VLLM_CPP_AR_1STAGE_NCCL_CUTOFF=56KB",
+      "VLLM_CPP_AR_IGNORE_CUTOFF_MAX_ROWS=0",
+      "VLLM_RTX6K_FUSED_ALLREDUCE_ADD=0",
+      "VLLM_RTX6K_FUSED_ALLREDUCE_ADD_END_BARRIER=0",
+      "VLLM_DISABLE_SHARED_EXPERTS_STREAM=0",
+      "VLLM_MEMORY_PROFILE_INCLUDE_ATTN=1",
+      "VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1",
+      "VLLM_DISABLED_KERNELS=MarlinFP8ScaledMMLinearKernel",
+      "CUDA_VISIBLE_DEVICES=0,1,2,3",
+      "CUTE_DSL_ARCH=sm_120a",
+      "VLLM_USE_V2_MODEL_RUNNER=1",
+      "VLLM_USE_B12X_MOE=1",
+      "VLLM_USE_B12X_SPARSE_INDEXER=1",
+      "VLLM_USE_B12X_FP8_GEMM=0",
+      "B12X_DENSE_SPLITK_TURBO=1",
+      "B12X_MLA_SM120_PREFILL_F16_ROPE=1",
+      "NCCL_P2P_DISABLE=1",
+      "VLLM_CACHE_ROOT=/cache",
+      "HF_HUB_OFFLINE=1",
+      "TRANSFORMERS_OFFLINE=1"
+    ],
+    "Labels": {
+      "com.docker.compose.image.builder": "classic",
+      "com.nvidia.cudnn.version": "9.20.0.48-1",
+      "local-inference.b12x.branch": "codex/ds4dspark-v9-b12x-20260703",
+      "local-inference.b12x.commit": "57422ad9042773165fa0d4e71ae6442fc26b48c9",
+      "local-inference.b12x.runtime_version": "source",
+      "local-inference.cublas.version": "13.4.1.2-1",
+      "local-inference.cuda.compat.version": "595.71.05-1ubuntu1",
+      "local-inference.cuda.version": "13.2.1",
+      "local-inference.cudnn.version": "9.22.0.52-1",
+      "local-inference.deepgemm.branch": "nv_dev",
+      "local-inference.deepgemm.commit": "2073ddb2814892014c33ef4cd1c7d4c148baf1fe",
+      "local-inference.flashinfer.branch": "25dd814e03791e370f96c3148242f0dc8de504ac",
+      "local-inference.flashinfer.commit": "25dd814e03791e370f96c3148242f0dc8de504ac",
+      "local-inference.nccl.branch": "canonical/cu132-nccl2304-amd-noxml",
+      "local-inference.nccl.repo": "local-inference-lab/nccl-canonical",
+      "local-inference.nccl.version": "2.30.4",
+      "local-inference.torch.version": "2.12.0+cu132",
+      "local-inference.triton_kernels.branch": "",
+      "local-inference.triton_kernels.commit": "",
+      "local-inference.vllm.branch": "codex/eldritch-ds4dspark-v9-20260703",
+      "local-inference.vllm.commit": "e72ad0057b5f382abb40bec1f9d731f6a22600d9",
+      "local-inference.vllm.patch_file": "",
+      "local-inference.vllm.patch_sha256": "",
+      "local-inference.vllm.patch_url": "",
+      "local-inference.vllm.repo": "https://github.com/local-inference-lab/vllm.git",
+      "maintainer": "NVIDIA CORPORATION <<email>>",
+      "org.opencontainers.image.base.digest": "sha256:937db99d072fe089be6d9d88c356e5e2540243389bc7669ecf57a102f637c15e",
+      "org.opencontainers.image.description": "Clean CUDA 13.2.1 vLLM+B12X image with PyTorch 2.12 cu132, patched NCCL 2.30.4, FlashInfer git, DeepGEMM, B12X and selected vLLM branch",
+      "org.opencontainers.image.model": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "org.opencontainers.image.model.revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062",
+      "org.opencontainers.image.recipe.context": "1048576",
+      "org.opencontainers.image.recipe.model_id": "DeepSeek-V4-Flash-0731",
+      "org.opencontainers.image.title": "DeepSeek V4 Flash 0731 exact SparkInfer runtime",
+      "org.opencontainers.image.version": "24.04"
+    },
+    "WorkingDir": "/"
+  },
+  "Created": "2026-08-12T17:20:48.908864691+02:00",
+  "Id": "sha256:e3f4a1d4da50084a46c2267b70a71e9facc9031fbae0665953cb40c850ed3e35",
+  "RepoDigests": [
+    "deepseek-v4-flash-0731@sha256:e3f4a1d4da50084a46c2267b70a71e9facc9031fbae0665953cb40c850ed3e35"
+  ],
+  "history": [
+    {
+      "Comment": "",
+      "CreatedAt": "2026-08-12T17:20:48+02:00",
+      "CreatedBy": "/bin/bash -euxo pipefail -c #(nop)  LABEL com.docker.compose.image.builder=classic",
+      "CreatedSince": "7 weeks ago",
+      "ID": "sha256:e3f4a1d4da50084a46c2267b70a71e9facc9031fbae0665953cb40c850ed3e35",
+      "Size": "0B"
+    },
+    {
+      "Comment": "",
+      "CreatedAt": "2026-08-12T17:12:19+02:00",
+      "CreatedBy": "/bin/bash -euxo pipefail -c #(nop)  CMD [\"serve\" \"/model\" \"--served-model-name\" \"DeepSeek-V4-Flash-0731\" \"--host\" \"0.0.0.0\" \"--port\" \"8000\" \"--trust-remote-code\" \"--tensor-parallel-size\" \"4\" \"--decode-context-parallel-size\" \"1\" \"--kv-cache-dtype\" \"fp8_ds_mla\" \"--moe-backend\" \"b12x\" \"--load-format\" \"safetensors\" \"-cc.pass_config.fuse_allreduce_rms=True\" \"--gpu-memory-utilization\" \"0.90\" \"--max-model-len\" \"1048576\" \"--max-num-seqs\" \"8\" \"--max-num-batched-tokens\" \"8192\" \"--block-size\" \"256\" \"--max-cudagraph-capture-size\" \"48\" \"--async-scheduling\" \"--enable-chunked-prefill\" \"--enable-auto-tool-choice\" \"--tokenizer-mode\" \"deepseek_v4\" \"--tool-call-parser\" \"deepseek_v4\" \"--reasoning-parser\" \"deepseek_v4\" \"--speculative-config\" \"{\\\"method\\\":\\\"dspark\\\",\\\"num_speculative_tokens\\\":5,\\\"moe_backend\\\":\\\"b12x\\\",\\\"draft_sample_method\\\":\\\"probabilistic\\\"}\"]",
+      "CreatedSince": "7 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "",
+      "CreatedAt": "2026-08-12T17:12:09+02:00",
+      "CreatedBy": "/bin/bash -euxo pipefail -c #(nop)  ENTRYPOINT [\"/opt/venv/bin/vllm\"]",
+      "CreatedSince": "7 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "",
+      "CreatedAt": "2026-08-12T17:12:04+02:00",
+      "CreatedBy": "/bin/bash -euxo pipefail -c #(nop)  ENV CUDA_VISIBLE_DEVICES=0,1,2,3 CUTE_DSL_ARCH=sm_120a VLLM_USE_V2_MODEL_RUNNER=1 VLLM_USE_B12X_MOE=1 VLLM_USE_B12X_SPARSE_INDEXER=1 VLLM_USE_B12X_FP8_GEMM=0 B12X_DENSE_SPLITK_TURBO=1 B12X_MLA_SM120_PREFILL_F16_ROPE=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 NCCL_P2P_LEVEL=SYS NCCL_PROTO=LL,LL128,Simple VLLM_ENABLE_PCIE_ALLREDUCE=0 VLLM_CACHE_ROOT=/cache HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1",
+      "CreatedSince": "7 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "",
+      "CreatedAt": "2026-08-12T17:11:56+02:00",
+      "CreatedBy": "/bin/bash -euxo pipefail -c #(nop)  LABEL org.opencontainers.image.title=DeepSeek V4 Flash 0731 exact SparkInfer runtime org.opencontainers.image.base.digest=sha256:937db99d072fe089be6d9d88c356e5e2540243389bc7669ecf57a102f637c15e org.opencontainers.image.model=deepseek-ai/DeepSeek-V4-Flash-0731 org.opencontainers.image.model.revision=7872f01b1d1fe23eabc4c98b48bffcef5a386062 org.opencontainers.image.recipe.context=1048576 org.opencontainers.image.recipe.model_id=DeepSeek-V4-Flash-0731",
+      "CreatedSince": "7 weeks ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "LABEL org.opencontainers.image.description=Clean CUDA 13.2.1 vLLM+B12X image with PyTorch 2.12 cu132, patched NCCL 2.30.4, FlashInfer git, DeepGEMM, B12X and selected vLLM branch local-inference.cuda.version=13.2.1 local-inference.cuda.compat.version=595.71.05-1ubuntu1 local-inference.cublas.version=13.4.1.2-1 local-inference.cudnn.version=9.22.0.52-1 local-inference.torch.version=2.12.0+cu132 local-inference.nccl.repo=local-inference-lab/nccl-canonical local-inference.nccl.branch=canonical/cu132-nccl2304-amd-noxml local-inference.nccl.version=2.30.4 local-inference.vllm.repo=https://github.com/local-inference-lab/vllm.git local-inference.vllm.branch=codex/eldritch-ds4dspark-v9-20260703 local-inference.vllm.commit=e72ad0057b5f382abb40bec1f9d731f6a22600d9 local-inference.vllm.patch_url= local-inference.vllm.patch_sha256= local-inference.vllm.patch_file= local-inference.b12x.branch=codex/ds4dspark-v9-b12x-20260703 local-inference.b12x.commit=57422ad9042773165fa0d4e71ae6442fc26b48c9 local-inference.b12x.runtime_version=source local-inference.flashinfer.branch=25dd814e03791e370f96c3148242f0dc8de504ac local-inference.flashinfer.commit=25dd814e03791e370f96c3148242f0dc8de504ac local-inference.deepgemm.branch=nv_dev local-inference.deepgemm.commit=2073ddb2814892014c33ef4cd1c7d4c148baf1fe local-inference.triton_kernels.branch= local-inference.triton_kernels.commit=",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG CUDA_COMPAT_13_2_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG CUDNN_CUDA13_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG CUBLAS_CUDA13_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG TRITON_KERNELS_COMMIT",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG TRITON_KERNELS_REF",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG DEEPGEMM_COMMIT",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG DEEPGEMM_REF",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG FLASHINFER_COMMIT",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG FLASHINFER_REF",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG B12X_COMMIT",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG B12X_REF",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_PATCH_FILE",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_PATCH_SHA256",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_PATCH_URL",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_COMMIT",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_REF",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "ARG VLLM_REPO",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "CMD [\"/usr/local/bin/run-kimi26-vllm\"]",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "WORKDIR /",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:34+02:00",
+      "CreatedBy": "RUN |1 HUMMING_KERNELS_SPEC=humming-kernels[cu13]==0.1.6 /bin/bash -euxo pipefail -c mkdir -p /cache/jit/triton /cache/jit/torch_extensions /cache/jit/vllm /cache/jit/flashinfer  && strings /opt/libnccl-local-inference.so.2.30.4 | grep -F \"NCCL version 2.30.4 compiled with CUDA 13.2\"  && /usr/local/bin/verify-vllm-b12x-cu132 /opt/vllm  && python - <<'PY'\nimport torch, flashinfer, vllm\nimport deep_gemm\nprint(\"torch\", torch.__version__, torch.version.cuda)\nprint(\"torch nccl\", torch.cuda.nccl.version())\nprint(\"flashinfer\", getattr(flashinfer, \"__version__\", \"unknown\"))\nprint(\"deep_gemm\", getattr(deep_gemm, \"__version__\", \"unknown\"))\nprint(\"vllm\", getattr(vllm, \"__version__\", \"unknown\"))\nassert torch.__version__.startswith(\"2.12.0+cu132\")\nassert torch.version.cuda == \"13.2\"\nPY # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "61.4kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:19+02:00",
+      "CreatedBy": "ENV VIRTUAL_ENV=/opt/venv PATH=/opt/venv/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin CUDA_DEVICE_ORDER=PCI_BUS_ID TORCH_CUDA_ARCH_LIST=12.0a FLASHINFER_CUDA_ARCH_LIST=12.0f FLASHINFER_LOCAL_VERSION=cu132 FLASHINFER_DISABLE_VERSION_CHECK=1 HF_HOME=/root/.cache/huggingface TRITON_CACHE_DIR=/cache/jit/triton TORCH_EXTENSIONS_DIR=/cache/jit/torch_extensions VLLM_CACHE_DIR=/cache/jit/vllm FLASHINFER_WORKSPACE_BASE=/cache/jit/flashinfer TVM_FFI_CACHE_DIR=/cache/jit/tvm-ffi XDG_CACHE_HOME=/cache/jit NCCL_LOCAL_INFERENCE_PATH=/opt/libnccl-local-inference.so.2.30.4 NCCL_PR2127_PATH=/opt/libnccl-local-inference.so.2.30.4 VLLM_NCCL_SO_PATH=/opt/libnccl-local-inference.so.2.30.4 LD_PRELOAD=/opt/libnccl-local-inference.so.2.30.4 NCCL_IB_DISABLE=1 NCCL_P2P_LEVEL=SYS NCCL_PROTO=LL,LL128,Simple VLLM_ENABLE_PCIE_ALLREDUCE=1 VLLM_PCIE_ALLREDUCE_BACKEND=cpp VLLM_CPP_AR_1STAGE_NCCL_CUTOFF=56KB VLLM_CPP_AR_IGNORE_CUTOFF_MAX_ROWS=0 VLLM_RTX6K_FUSED_ALLREDUCE_ADD=0 VLLM_RTX6K_FUSED_ALLREDUCE_ADD_END_BARRIER=0 VLLM_DISABLE_SHARED_EXPERTS_STREAM=0 VLLM_MEMORY_PROFILE_INCLUDE_ATTN=1 VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=1 VLLM_DISABLED_KERNELS=MarlinFP8ScaledMMLinearKernel",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:19+02:00",
+      "CreatedBy": "RUN |1 HUMMING_KERNELS_SPEC=humming-kernels[cu13]==0.1.6 /bin/bash -euxo pipefail -c cublas=\"$(readlink -f /usr/lib/x86_64-linux-gnu/libcublas/13/libcublas.so.13)\"  && cublas_lt=\"$(readlink -f /usr/lib/x86_64-linux-gnu/libcublas/13/libcublasLt.so.13)\"  && cublas_name=\"$(basename \"${cublas}\")\"  && cublas_lt_name=\"$(basename \"${cublas_lt}\")\"  && test -f \"${cublas}\"  && test -f \"${cublas_lt}\"  && for cuda_libdir in /usr/local/cuda/targets/x86_64-linux/lib /usr/local/cuda-13.2/targets/x86_64-linux/lib; do       if [[ -d \"${cuda_libdir}\" ]]; then         cuda_libdir=\"$(readlink -f \"${cuda_libdir}\")\";         rm -f \"${cuda_libdir}\"/libcublas.so \"${cuda_libdir}\"/libcublas.so.13 \"${cuda_libdir}\"/libcublas.so.13.*;         rm -f \"${cuda_libdir}\"/libcublasLt.so \"${cuda_libdir}\"/libcublasLt.so.13 \"${cuda_libdir}\"/libcublasLt.so.13.*;         ln -s \"${cublas}\" \"${cuda_libdir}/${cublas_name}\";         ln -s \"${cublas_name}\" \"${cuda_libdir}/libcublas.so.13\";         ln -s libcublas.so.13 \"${cuda_libdir}/libcublas.so\";         ln -s \"${cublas_lt}\" \"${cuda_libdir}/${cublas_lt_name}\";         ln -s \"${cublas_lt_name}\" \"${cuda_libdir}/libcublasLt.so.13\";         ln -s libcublasLt.so.13 \"${cuda_libdir}/libcublasLt.so\";       fi;     done  && ldconfig # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "90.1kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:19+02:00",
+      "CreatedBy": "RUN |1 HUMMING_KERNELS_SPEC=humming-kernels[cu13]==0.1.6 /bin/bash -euxo pipefail -c printf '%s\\n'       'torch==2.12.0+cu132'       'torchvision==0.27.0+cu132'       'cuda-bindings==13.2.0'       'cuda-python==13.2.0'       'nvidia-cuda-cccl==13.2.75'       'nvidia-cuda-crt==13.2.78'       'nvidia-cuda-nvcc==13.2.78'       'nvidia-cuda-tileiras==13.2.78'       'nvidia-nvjitlink==13.2.78'       'nvidia-nvvm==13.2.78'       'nvidia-cutlass-dsl==4.5.2'       'nvidia-cutlass-dsl-libs-base==4.5.2'       'nvidia-cutlass-dsl-libs-cu13==4.5.2'       > /tmp/torch-cu132-constraints.txt  && /opt/venv/bin/python -m pip install --upgrade       --index-url https://download.pytorch.org/whl/cu132       --extra-index-url https://pypi.org/simple       --constraint /tmp/torch-cu132-constraints.txt       \"cuda-bindings==13.2.0\"       \"cuda-python==13.2.0\"       \"numba==0.65.0\"       \"quack-kernels>=0.3.3\"       \"${HUMMING_KERNELS_SPEC}\"       \"nvidia-cuda-tileiras==13.2.78\"       \"nvidia-nvjitlink==13.2.78\"       \"cuda-tile>=1.4.0\"       \"tilelang==0.1.9\"       \"tokenspeed-mla==0.1.2\"       \"nvidia-cutlass-dsl[cu13]==4.5.2\"       \"transformers>=5.5.1\"       \"apache-tvm-ffi==0.1.9\"       \"fastsafetensors>=0.3.2\"  && /opt/venv/bin/python -m pip check # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "1.25GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:06+02:00",
+      "CreatedBy": "ARG HUMMING_KERNELS_SPEC=humming-kernels[cu13]==0.1.4",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:06+02:00",
+      "CreatedBy": "COPY /usr/local/bin/verify-vllm-b12x-cu132 /usr/local/bin/verify-vllm-b12x-cu132 # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "20.5kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:06+02:00",
+      "CreatedBy": "COPY /usr/local/bin/serve-*.sh /usr/local/bin/ # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "102kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:06+02:00",
+      "CreatedBy": "COPY /usr/local/bin/run-kimi26-vllm /usr/local/bin/run-kimi26-vllm # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "20.5kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:06+02:00",
+      "CreatedBy": "COPY /usr/local/bin/run-glm51-vllm /usr/local/bin/run-glm51-vllm # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "24.6kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:05+02:00",
+      "CreatedBy": "COPY /opt/vllm /opt/vllm # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "1.64GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:05+02:00",
+      "CreatedBy": "COPY /opt/venv /opt/venv # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "8.15GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-07-03T18:16:05+02:00",
+      "CreatedBy": "SHELL [/bin/bash -euxo pipefail -c]",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:59:28+02:00",
+      "CreatedBy": "LABEL org.opencontainers.image.description=Reusable CUDA 13.2.1 vLLM+B12X system base with latest CUDA 13.2-compatible cuBLAS/cuDNN overlays and patched NCCL 2.30.4 local-inference.cuda.version=13.2.1 local-inference.cuda.compat.version=595.71.05-1ubuntu1 local-inference.cublas.version=13.4.1.2-1 local-inference.cudnn.version=9.22.0.52-1 local-inference.nccl.repo=local-inference-lab/nccl-canonical local-inference.nccl.branch=canonical/cu132-nccl2304-amd-noxml local-inference.nccl.version=2.30.4",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:59:28+02:00",
+      "CreatedBy": "ENV NCCL_LOCAL_INFERENCE_PATH=/opt/libnccl-local-inference.so.2.30.4 NCCL_PR2127_PATH=/opt/libnccl-local-inference.so.2.30.4 VLLM_NCCL_SO_PATH=/opt/libnccl-local-inference.so.2.30.4",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:59:28+02:00",
+      "CreatedBy": "COPY /build/nccl/build/lib/libnccl.so.2.30.4 /opt/libnccl-local-inference.so.2.30.4 # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "225MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:19+02:00",
+      "CreatedBy": "RUN |6 PYTHON_VERSION=3.12 NCCL_SONAME=libnccl.so.2.30.4 CUBLAS_CUDA13_VERSION=13.4.1.2-1 CUDNN_CUDA13_VERSION=9.22.0.52-1 CUDA_COMPAT_13_2_VERSION=595.71.05-1ubuntu1 DEBIAN_FRONTEND=noninteractive /bin/bash -euxo pipefail -c update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1  && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VERSION} 1 # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "61.4kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "RUN |6 PYTHON_VERSION=3.12 NCCL_SONAME=libnccl.so.2.30.4 CUBLAS_CUDA13_VERSION=13.4.1.2-1 CUDNN_CUDA13_VERSION=9.22.0.52-1 CUDA_COMPAT_13_2_VERSION=595.71.05-1ubuntu1 DEBIAN_FRONTEND=noninteractive /bin/bash -euxo pipefail -c cublas=\"$(readlink -f /usr/lib/x86_64-linux-gnu/libcublas/13/libcublas.so.13)\"  && cublas_lt=\"$(readlink -f /usr/lib/x86_64-linux-gnu/libcublas/13/libcublasLt.so.13)\"  && cublas_name=\"$(basename \"${cublas}\")\"  && cublas_lt_name=\"$(basename \"${cublas_lt}\")\"  && test -f \"${cublas}\"  && test -f \"${cublas_lt}\"  && for cuda_libdir in /usr/local/cuda/targets/x86_64-linux/lib /usr/local/cuda-${CUDA_VERSION}/targets/x86_64-linux/lib; do       if [[ -d \"${cuda_libdir}\" ]]; then         cuda_libdir=\"$(readlink -f \"${cuda_libdir}\")\";         rm -f \"${cuda_libdir}\"/libcublas.so \"${cuda_libdir}\"/libcublas.so.13 \"${cuda_libdir}\"/libcublas.so.13.*;         rm -f \"${cuda_libdir}\"/libcublasLt.so \"${cuda_libdir}\"/libcublasLt.so.13 \"${cuda_libdir}\"/libcublasLt.so.13.*;         ln -s \"${cublas}\" \"${cuda_libdir}/${cublas_name}\";         ln -s \"${cublas_name}\" \"${cuda_libdir}/libcublas.so.13\";         ln -s libcublas.so.13 \"${cuda_libdir}/libcublas.so\";         ln -s \"${cublas_lt}\" \"${cuda_libdir}/${cublas_lt_name}\";         ln -s \"${cublas_lt_name}\" \"${cuda_libdir}/libcublasLt.so.13\";         ln -s libcublasLt.so.13 \"${cuda_libdir}/libcublasLt.so\";       fi;     done  && ldconfig # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "90.1kB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "RUN |6 PYTHON_VERSION=3.12 NCCL_SONAME=libnccl.so.2.30.4 CUBLAS_CUDA13_VERSION=13.4.1.2-1 CUDNN_CUDA13_VERSION=9.22.0.52-1 CUDA_COMPAT_13_2_VERSION=595.71.05-1ubuntu1 DEBIAN_FRONTEND=noninteractive /bin/bash -euxo pipefail -c for attempt in {1..5}; do       if apt-get update; then break; fi;       if [[ \"${attempt}\" == \"5\" ]]; then exit 1; fi;       rm -rf /var/lib/apt/lists/*;       sleep $((attempt * 10));     done     && apt-get install -y --allow-change-held-packages --no-install-recommends     python${PYTHON_VERSION}     python${PYTHON_VERSION}-dev     python${PYTHON_VERSION}-venv     python3-pip     git     git-lfs     wget     curl     ca-certificates     build-essential     cmake     ninja-build     ccache     libprotobuf-dev     protobuf-compiler     pkg-config     patchelf     libssl-dev     libffi-dev     libjpeg-dev     libpng-dev     libgomp1     numactl     libnuma-dev     libibverbs-dev     pciutils     cuda-compat-13-2=${CUDA_COMPAT_13_2_VERSION}     libcublas13-cuda-13=${CUBLAS_CUDA13_VERSION}     libcublas13-dev-cuda-13=${CUBLAS_CUDA13_VERSION}     cublas-cuda-13=${CUBLAS_CUDA13_VERSION}     libcudnn9-cuda-13=${CUDNN_CUDA13_VERSION}     libcudnn9-dev-cuda-13=${CUDNN_CUDA13_VERSION}     libcudnn9-headers-cuda-13=${CUDNN_CUDA13_VERSION}     libcudnn9-static-cuda-13=${CUDNN_CUDA13_VERSION}     && ldconfig     && rm -rf /var/lib/apt/lists/* # buildkit",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "4.43GB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "SHELL [/bin/bash -euxo pipefail -c]",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG DEBIAN_FRONTEND=noninteractive",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG CUDA_COMPAT_13_2_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG CUDNN_CUDA13_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG CUBLAS_CUDA13_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG NCCL_SONAME",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-06-27T19:57:18+02:00",
+      "CreatedBy": "ARG PYTHON_VERSION",
+      "CreatedSince": "3 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "RUN |1 TARGETARCH=amd64 /bin/sh -c apt-get update && apt-get install -y --no-install-recommends     ${NV_CUDNN_PACKAGE}     ${NV_CUDNN_PACKAGE_DEV}     ${NV_CUDNN_PACKAGE_DEV_HEADERS}     && apt-mark hold ${NV_CUDNN_PACKAGE_NAME}     && rm -rf /var/lib/apt/lists/* # buildkit",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "486MB"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "LABEL com.nvidia.cudnn.version=9.20.0.48-1",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "LABEL maintainer=NVIDIA CORPORATION <<email>>",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ARG TARGETARCH",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ENV NV_CUDNN_PACKAGE_DEV_HEADERS=libcudnn9-headers-cuda-13=9.20.0.48-1",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ENV NV_CUDNN_PACKAGE_DEV=libcudnn9-dev-cuda-13=9.20.0.48-1",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ENV NV_CUDNN_PACKAGE=libcudnn9-cuda-13=9.20.0.48-1",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ENV NV_CUDNN_PACKAGE_NAME=libcudnn9-cuda-13",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    },
+    {
+      "Comment": "buildkit.dockerfile.v0",
+      "CreatedAt": "2026-04-17T18:24:02+02:00",
+      "CreatedBy": "ENV NV_CUDNN_VERSION=9.20.0.48-1",
+      "CreatedSince": "5 months ago",
+      "ID": "<missing>",
+      "Size": "0B"
+    }
+  ]
+}

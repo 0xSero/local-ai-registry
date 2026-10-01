@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+# Build the locked image, install its Local Studio recipe, and launch it only
+# when the controller is not already serving this exact model.
+set -Eeuo pipefail
+
+readonly repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly compose_file="${repo_dir}/compose.yaml"
+readonly recipe_file="${repo_dir}/recipe.template.json"
+readonly recipe_id="deepseek-v4-flash"
+readonly served_model_name="DeepSeek-V4-Flash-0731"
+
+if [[ -f "${repo_dir}/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${repo_dir}/.env"
+  set +a
+fi
+
+model_dir="${MODEL_DIR:?Set MODEL_DIR to the DeepSeek-V4-Flash-0731 checkpoint directory}"
+cache_dir="${CACHE_DIR:-${repo_dir}/.runtime-cache}"
+gpu_uuids="${NVIDIA_VISIBLE_DEVICES:-}"
+
+fail() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+require() {
+  command -v "$1" >/dev/null 2>&1 || fail "required command not found: $1"
+}
+
+controller_key() {
+  if [[ -n "${LOCAL_STUDIO_API_KEY:-}" ]]; then
+    printf '%s' "${LOCAL_STUDIO_API_KEY}"
+    return
+  fi
+
+  local pid candidate
+  while IFS= read -r pid; do
+    [[ -r "/proc/${pid}/environ" ]] || continue
+    candidate="$(tr '\0' '\n' <"/proc/${pid}/environ" 2>/dev/null | sed -n 's/^LOCAL_STUDIO_API_KEY=<redacted>' | head -n 1 || true)"
+    if [[ -n "${candidate}" ]]; then
+      printf '%s' "${candidate}"
+      return
+    fi
+  done < <(pgrep -f 'lmvllm/controller/src/main\.ts' || true)
+
+  return 1
+}
+
+controller_url() {
+  local key="$1" candidate status tailnet_ip
+  if [[ -n "${LOCAL_STUDIO_CONTROLLER_URL:-}" ]]; then
+    candidate="${LOCAL_STUDIO_CONTROLLER_URL}"
+    status="$(curl -fsS --max-time 10 -H "Authorization: Bearer ${key}" "${candidate}/status" 2>/dev/null || true)"
+    [[ -n "${status}" ]] && { printf '%s' "${candidate}"; return; }
+  fi
+
+  for candidate in http://127.0.0.1:8080; do
+    status="$(curl -fsS --max-time 10 -H "Authorization: Bearer ${key}" "${candidate}/status" 2>/dev/null || true)"
+    [[ -n "${status}" ]] && { printf '%s' "${candidate}"; return; }
+  done
+
+  if command -v tailscale >/dev/null 2>&1; then
+    tailnet_ip="$(tailscale ip -4 2>/dev/null | head -n 1 || true)"
+    if [[ -n "${tailnet_ip}" ]]; then
+      candidate="http://${tailnet_ip}:8080"
+      status="$(curl -fsS --max-time 10 -H "Authorization: Bearer ${key}" "${candidate}/status" 2>/dev/null || true)"
+      [[ -n "${status}" ]] && { printf '%s' "${candidate}"; return; }
+    fi
+  fi
+
+  return 1
+}
+
+require docker
+require jq
+require curl
+require pgrep
+require nvidia-smi
+[[ -f "${recipe_file}" ]] || fail "recipe template missing: ${recipe_file}"
+[[ -f "${model_dir}/config.json" ]] || fail "model checkpoint is missing: ${model_dir}"
+[[ -f "${model_dir}/model.safetensors.index.json" ]] || fail "model index is missing: ${model_dir}"
+[[ "$(find "${model_dir}" -maxdepth 1 -type f -name 'model-*-of-00048.safetensors' | wc -l | tr -d ' ')" == "48" ]] || fail "expected 48 model shards in ${model_dir}"
+
+if [[ -z "${gpu_uuids}" ]]; then
+  gpu_uuids="$(nvidia-smi --query-gpu=uuid --format=csv,noheader | paste -sd, -)"
+fi
+[[ "$(awk -F, '{print NF}' <<<"${gpu_uuids}")" == "4" ]] || fail "this locked profile requires exactly four GPU UUIDs"
+
+mkdir -p "${cache_dir}"
+export MODEL_DIR="${model_dir}"
+export CACHE_DIR="${cache_dir}"
+export NVIDIA_VISIBLE_DEVICES="${gpu_uuids}"
+
+docker compose -f "${compose_file}" config >/dev/null
+docker compose -f "${compose_file}" build --pull=false
+
+api_key="$(controller_key || true)"
+[[ -n "${api_key}" ]] || fail "Local Studio API key unavailable; export LOCAL_STUDIO_API_KEY and retry"
+api_url="$(controller_url "${api_key}" || true)"
+[[ -n "${api_url}" ]] || fail "Local Studio controller is unavailable; export LOCAL_STUDIO_CONTROLLER_URL and retry"
+
+launch_command="$(printf 'env MODEL_DIR=%q CACHE_DIR=%q NVIDIA_VISIBLE_DEVICES=%q /usr/bin/docker compose -f %q up' "${model_dir}" "${cache_dir}" "${gpu_uuids}" "${compose_file}")"
+recipe_payload="$(jq --arg model_dir "${model_dir}" --arg gpu_uuids "${gpu_uuids}" --arg launch_command "${launch_command}" '
+  .model_path = $model_dir
+  | .env_vars.NVIDIA_VISIBLE_DEVICES = $gpu_uuids
+  | .extra_args.launch_command = $launch_command
+' "${recipe_file}")"
+
+curl -fsS --max-time 20 \
+  -X PUT \
+  -H "Authorization: Bearer ${api_key}" \
+  -H 'Content-Type: application/json' \
+  --data-binary "${recipe_payload}" \
+  "${api_url}/recipes/${recipe_id}" >/dev/null
+
+status="$(curl -fsS --max-time 20 -H "Authorization: Bearer ${api_key}" "${api_url}/status")"
+running="$(jq -r '.running' <<<"${status}")"
+active_model="$(jq -r '.process.served_model_name // empty' <<<"${status}")"
+
+if [[ "${running}" == "true" && "${active_model}" == "${served_model_name}" ]]; then
+  curl -fsS --max-time 20 http://127.0.0.1:8000/health >/dev/null
+  printf 'already healthy: %s on port 8000\n' "${served_model_name}"
+  exit 0
+fi
+
+if [[ "${running}" == "true" ]]; then
+  fail "controller is serving ${active_model:-another model}; refusing to replace it"
+fi
+
+curl -fsS --max-time 30 \
+  -X POST \
+  -H "Authorization: Bearer ${api_key}" \
+  "${api_url}/launch/${recipe_id}" >/dev/null
+
+for _ in {1..60}; do
+  status="$(curl -fsS --max-time 20 -H "Authorization: Bearer ${api_key}" "${api_url}/status")"
+  running="$(jq -r '.running' <<<"${status}")"
+  active_model="$(jq -r '.process.served_model_name // empty' <<<"${status}")"
+  if [[ "${running}" == "true" && "${active_model}" == "${served_model_name}" ]] && curl -fsS --max-time 20 http://127.0.0.1:8000/health >/dev/null; then
+    printf 'healthy: %s on port 8000\n' "${served_model_name}"
+    exit 0
+  fi
+  sleep 5
+done
+
+fail "controller did not report a healthy ${served_model_name} within five minutes"

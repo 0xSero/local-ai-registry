@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd ${HOME}/3bit-glm-52/moet
+export STOP_EXISTING=${STOP_EXISTING:-1}
+export DETACH=${DETACH:-0}
+export IMAGE=${IMAGE:-vllm-moet-sm120:v024-nvfp4kv}
+export MODEL_DIR=${MODEL_DIR:-${MODEL_ROOT}/GLM-5.2-NVFP4}
+export CACHE_DIR=${CACHE_DIR:-${MODEL_ROOT}/cache_glm52_moet_fp8_20260709}
+export CONTAINER=${CONTAINER:-glm52-nvfp4-moet}
+export PORT=${PORT:-8000}
+export SERVED_MODEL_NAME=${SERVED_MODEL_NAME:-glm-5.2-flash}
+export MAX_MODEL_LEN=${MAX_MODEL_LEN:-327680}
+export KV_CACHE_DTYPE=${KV_CACHE_DTYPE:-fp8}
+export MAX_NUM_SEQS=${MAX_NUM_SEQS:-1}
+export MAX_NUM_BATCHED_TOKENS=${MAX_NUM_BATCHED_TOKENS:-2048}
+export GPU_MEMORY_UTILIZATION=${GPU_MEMORY_UTILIZATION:-0.95}
+export MOE_W2_DELTA_GB=${MOE_W2_DELTA_GB:-0}
+unset MOE_W2_BASE_CACHE_GB
+export MOE_W2_GATE=${MOE_W2_GATE:-0}
+exec ./launch_glm52_nvfp4_moet.sh

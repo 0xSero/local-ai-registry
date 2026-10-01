@@ -1,0 +1,85 @@
+{
+  "captured_at": "2026-10-01T23:19:00Z",
+  "entries": [
+    {
+      "backend": "llamacpp",
+      "dtype": null,
+      "enable_auto_tool_choice": false,
+      "env_vars": {
+        "CUDA_SCALE_LAUNCH_QUEUES": "4x",
+        "GGML_CUDA_PEER_MAX_BATCH_SIZE": "1024"
+      },
+      "extra_args": {
+        "batch-size": 4096,
+        "cache-reuse": 256,
+        "flash-attn": "on",
+        "n_gpu_layers": 999,
+        "parallel": 1,
+        "perf": true,
+        "ubatch-size": 768
+      },
+      "gpu_memory_utilization": 0.9,
+      "host": "0.0.0.0",
+      "id": "gpt-oss-120b",
+      "kv_cache_dtype": "auto",
+      "max_model_len": 131072,
+      "max_num_seqs": 256,
+      "max_thinking_tokens": null,
+      "model_path": "${MODEL_ROOT}/gpt-oss-120b-Q8/Q8_0/gpt-oss-120b-Q8_0-00001-of-00002.gguf",
+      "name": "GPT-OSS-120B Q8_0",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": null,
+      "reasoning_parser": null,
+      "served_model_name": "gpt-oss-120b",
+      "target_node_id": null,
+      "tensor_parallel_size": 1,
+      "thinking_mode": "conservative",
+      "tool_call_parser": null,
+      "trust_remote_code": true
+    },
+    {
+      "backend": "llamacpp",
+      "dtype": null,
+      "enable_auto_tool_choice": false,
+      "env_vars": {
+        "CUDA_SCALE_LAUNCH_QUEUES": "4x",
+        "GGML_CUDA_PEER_MAX_BATCH_SIZE": "1024"
+      },
+      "extra_args": {
+        "batch-size": 4096,
+        "cache-reuse": 256,
+        "flash-attn": "on",
+        "n_gpu_layers": 999,
+        "parallel": 1,
+        "perf": true,
+        "ubatch-size": 768
+      },
+      "gpu_memory_utilization": 0.9,
+      "host": "0.0.0.0",
+      "id": "qwen3-coder-next",
+      "kv_cache_dtype": "auto",
+      "max_model_len": 262144,
+      "max_num_seqs": 256,
+      "max_thinking_tokens": null,
+      "model_path": "${MODEL_ROOT}/Qwen3-Coder-Next-GGUF/Q8_0/Qwen3-Coder-Next-Q8_0-00001-of-00004.gguf",
+      "name": "Qwen3-Coder-Next Q8_0",
+      "pipeline_parallel_size": 1,
+      "port": 8000,
+      "python_path": null,
+      "quantization": null,
+      "reasoning_parser": null,
+      "served_model_name": "qwen3-coder-next",
+      "target_node_id": null,
+      "tensor_parallel_size": 1,
+      "thinking_mode": "conservative",
+      "tool_call_parser": null,
+      "trust_remote_code": true
+    }
+  ],
+  "host": "omarchy",
+  "sanitized": "placeholders: ${HOME} ${MODEL_ROOT} <tailnet-ip> <lan-ip> <fabric-ip> GPU-<uuid> <user> <email>; secrets replaced by <redacted> at capture",
+  "source": "${HOME}/projects/vllm-studio/data/controller.db",
+  "source_kind": "sqlite-unmigrated"
+}
