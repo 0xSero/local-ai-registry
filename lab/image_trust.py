@@ -9,7 +9,7 @@ BUILDERS = {
     "ghcr.io/0xsero/exl3xpu": ("0xSero/exl3xpu", "release-image.yml", "main"),
     "ghcr.io/ggml-org/llama.cpp": ("ggml-org/llama.cpp", "docker.yml", "master"),
     **{f"ghcr.io/0xsero/{name}": ("0xSero/local-ai-images", "release-image.yml", "main")
-       for name in ("gateway", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
+       for name in ("gateway", "glm53-flash-offload", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
 }
 PATHS = ["registry/engines", "registry/launches", "plugin/v2/recipes.json"]
 
