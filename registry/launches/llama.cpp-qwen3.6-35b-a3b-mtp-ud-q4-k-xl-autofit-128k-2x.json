@@ -1,0 +1,69 @@
+{
+  "id": "llama.cpp-qwen3.6-35b-a3b-mtp-ud-q4-k-xl-autofit-128k-2x",
+  "engine": "llama.cpp",
+  "about": "Qwen3.6-35B-A3B (MoE, 3B active) UD-Q4_K_XL with its MTP head across two 12 GB cards: layer split, no --n-gpu-layers so llama.cpp's auto-fit keeps a few expert tensors in system RAM (all-GPU does not fit at 128K), q8_0 KV, MTP draft 3, Qwen's recommended sampling. Measured on 2x RTX 3060 12GB.",
+  "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b11146@sha256:52192a23c7b258044463aebba78826cdff39a7393b713edc313324b343a7b836",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--model",
+    "/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+    "--split-mode",
+    "layer",
+    "--cache-type-k",
+    "q8_0",
+    "--cache-type-v",
+    "q8_0",
+    "--load-mode",
+    "none",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "131072",
+    "--flash-attn",
+    "on",
+    "--parallel",
+    "1",
+    "--jinja",
+    "--no-mmproj",
+    "--metrics",
+    "--spec-type",
+    "draft-mtp",
+    "--spec-draft-n-max",
+    "3",
+    "--temp",
+    "1.0",
+    "--top-p",
+    "0.95",
+    "--top-k",
+    "20",
+    "--min-p",
+    "0.0"
+  ],
+  "env": {
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+    "GGML_CUDA_ALLREDUCE": "internal"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "revision": "5bc3e238d916f48a861bac2f8a1990a0e9b7e98d",
+      "at": "/models",
+      "layout": "dir",
+      "files": "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf"
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": false,
+  "cards": 2,
+  "needs": {
+    "host_ram_gb": 8.83,
+    "disk_gb": 22.85
+  }
+}
