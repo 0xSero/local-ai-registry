@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "unsloth/Qwen3.8-27B-GGUF@4ca720788d1e01f1bff70c033e0d0028fd02e502",
+  "engine": "llama.cpp-qwen3.8-27b-ud-q4-k-xl-tensor-mtp-128k-2x@52192a23c7b2",
+  "set": {},
+  "card": "rtx-3060-12gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "RTX 3060"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-01",
+  "on": "owner",
+  "gpu": "RTX 3060",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 56.0,
+  "prefill": 497,
+  "served": "/models/Qwen3.8-27B-UD-Q4_K_XL.gguf"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 140,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "id": "LUaEIUh536hgu8JijL020Zd6YTnplW39"
+    }
+   ],
+   "reply": "It's currently **17°C (63°F)** in Paris with **overcast** skies.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 132
+  },
+  "context": {
+   "prompt_tokens": 106294,
+   "seconds": 213.8,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 12568,
+   "seconds_total": 217.6
+  }
+ },
+ "launch_config_sha256": null
+}
