@@ -37,3 +37,13 @@ Before adding anything under `registry/recipes`:
 6. Run the registry's endpoint acceptance with the audited configuration. Generate the recipe through the lab tooling only after all required gates pass; then regenerate and check the catalog.
 
 The existing catalog remains unchanged until these gates are met.
+
+## Published dependency-image receipt
+
+The ARM64 build succeeded in [workflow run 36937550729](https://github.com/0xSero/local-ai-images/actions/runs/36937550729) at source revision `d356084b1afb2f2f825986b28b07fa4b66df0a31`. GitHub build-attestation verification passed, and an anonymous manifest read returned the ARM64 image:
+
+```text
+ghcr.io/0xsero/step5-spark-runtime@sha256:09c8b6893af160588bf22c865e5acf03e7537322252162aa01d1a401737537cc
+```
+
+This digest pins the dependency foundation only. Target-device CUDA smoke is pending; no included serving bundle, full-model quality, vision-answer or speed acceptance is implied. The image is intentionally absent from validated engine/recipe entries.
