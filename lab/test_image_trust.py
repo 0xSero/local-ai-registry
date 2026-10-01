@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 import tempfile
 import subprocess
@@ -35,17 +36,32 @@ class ImageTrustTest(unittest.TestCase):
             finally:
                 os.chdir(old)
 
-    def test_verification_binds_subject_publisher_workflow_and_branch(self):
+    def identity(self, image):
         run = Mock()
-        image = "ghcr.io/0xsero/gateway@sha256:" + "a" * 64
         verify(image, run)
         args, kwargs = run.call_args
-        self.assertEqual(args[0], ["gh", "attestation", "verify", "oci://" + image,
-            "--repo", "0xSero/local-ai-images", "--signer-workflow",
-            "0xSero/local-ai-images/.github/workflows/release-image.yml",
-            "--source-ref", "refs/heads/main", "--deny-self-hosted-runners"])
+        self.assertEqual(args[0][:5], ["gh", "attestation", "verify", "oci://" + image, "--repo"])
+        self.assertIn("--deny-self-hosted-runners", args[0])
         self.assertTrue(kwargs["check"])
         self.assertEqual(kwargs["timeout"], 120)
+        return args[0][5], re.compile(args[0][args[0].index("--cert-identity-regex") + 1])
+
+    def test_verification_binds_publisher_workflow_and_branch(self):
+        repo, identity = self.identity("ghcr.io/0xsero/gateway@sha256:" + "a" * 64)
+        self.assertEqual(repo, "0xSero/local-ai-images")
+        base = "https://github.com/0xSero/local-ai-images/.github/workflows/release-image.yml@"
+        self.assertTrue(identity.search(base + "refs/heads/main"))
+        for ref in ["refs/heads/image/x", "refs/tags/b1", "refs/heads/main2"]:
+            self.assertFalse(identity.search(base + ref), ref)
+        self.assertFalse(identity.search("https://github.com/0xSero/local-ai-images/.github/workflows/other.yml@refs/heads/main"))
+
+    def test_llamacpp_release_tags_and_master_pass_but_other_refs_do_not(self):
+        _, identity = self.identity("ghcr.io/ggml-org/llama.cpp@sha256:" + "a" * 64)
+        base = "https://github.com/ggml-org/llama.cpp/.github/workflows/docker.yml@"
+        for ref in ["refs/heads/master", "refs/tags/b11146"]:
+            self.assertTrue(identity.search(base + ref), ref)
+        for ref in ["refs/heads/main", "refs/heads/feature", "refs/tags/b11146-evil", "refs/tags/v1", "refs/heads/master/x"]:
+            self.assertFalse(identity.search(base + ref), ref)
 
     def test_unapproved_or_mutable_images_fail_before_network(self):
         for image in ["ghcr.io/0xsero/gateway:latest", "evil/gateway@sha256:" + "a" * 64]:
