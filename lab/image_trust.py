@@ -5,13 +5,11 @@ import json
 import re
 import subprocess
 
-# image -> (repo, workflow, source ref as a regex). llama.cpp publishes its release images (server-cuda12-bNNNN) from the
-# release tag, and its nightly images from master; both are the upstream docker.yml on the upstream repo.
 BUILDERS = {
-    "ghcr.io/0xsero/exl3xpu": ("0xSero/exl3xpu", "release-image.yml", "refs/heads/main"),
-    "ghcr.io/ggml-org/llama.cpp": ("ggml-org/llama.cpp", "docker.yml", "refs/(?:heads/master|tags/b[0-9]+)"),
-    **{f"ghcr.io/0xsero/{name}": ("0xSero/local-ai-images", "release-image.yml", "refs/heads/main")
-       for name in ("gateway", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
+    "ghcr.io/0xsero/exl3xpu": ("0xSero/exl3xpu", "release-image.yml", "main"),
+    "ghcr.io/ggml-org/llama.cpp": ("ggml-org/llama.cpp", "docker.yml", "master"),
+    **{f"ghcr.io/0xsero/{name}": ("0xSero/local-ai-images", "release-image.yml", "main")
+       for name in ("gateway", "glm53-flash-offload", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
 }
 PATHS = ["registry/engines", "registry/launches", "plugin/v2/recipes.json"]
 
@@ -42,10 +40,10 @@ def verify(image, run=subprocess.run):
     match = re.fullmatch(r"([^@]+)@sha256:[0-9a-f]{64}", image)
     if not match or match[1] not in BUILDERS:
         raise ValueError(f"No approved pinned builder for {image}; publish through an approved workflow")
-    repo, workflow, ref = BUILDERS[match[1]]
-    identity = f"^https://github.com/{re.escape(repo)}/\\.github/workflows/{re.escape(workflow)}@{ref}$"
+    repo, workflow, branch = BUILDERS[match[1]]
     run(["gh", "attestation", "verify", "oci://" + image, "--repo", repo,
-         "--cert-identity-regex", identity, "--deny-self-hosted-runners"],
+         "--signer-workflow", f"{repo}/.github/workflows/{workflow}",
+         "--source-ref", "refs/heads/" + branch, "--deny-self-hosted-runners"],
         check=True, timeout=120)
 
 
