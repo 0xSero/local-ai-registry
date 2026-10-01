@@ -47,11 +47,11 @@
   "vision": false,
   "cards": 1,
   "needs": {
-    "host_ram_gb": 235.0,
+    "host_ram_gb": 238.0,
     "disk_gb": 125.3,
     "fast_storage": "nvme"
   },
-  "setup": "NEEDS: 1x RTX 3090 24 GB (the expert cache takes all free VRAM after load: ~22.7 GiB at ready, nothing else may use the GPU); ~235 GB of free system RAM (measured MemAvailable drop at ready 228.9 GB (G067) / 234.4 GB (C056): two 114.2 GB copies of all routed experts, one pinned for GPU zero-copy reads, one block-contiguous for the CPU tier); an x86-64 CPU with AVX2+FMA+F16C and ~24 physical cores (CPU tier threads auto-sized: one per physical core minus 2); 125.3 GB of weights on a local NVMe SSD (read once at load, ~2 min from page cache). Measured on: EPYC 7443P 24C, 8-channel DDR4 503 GiB, PCIe 4.0 x16, Samsung 990 PRO, driver 610.57. The image entrypoint holds the defaults (GLM53_MODE=fast = campaign run G067: expert-cache reserve 1.5 GB, prefill staging 2 x 2.6 GB, elastic 10 GB, CPU tier, fused hyper-connection sites, fast tier split, side-stream shared expert, exact Triton autotune pins); the README run adds --ulimit memlock=-1. Protocol sweep (P2): prefill 8k 710 / 32k 951 tok/s; decode aggregate C1 28.15 / C2 31.57 / C4 33.98 tok/s, C1 at 32k 26.89. Quality: teacher-forced panel vs stock exllamav3 top-1 1.0000 / KL 0 (prefill path); decode with the CPU tier is NOT exact: paired check mean KL 0.0053 (p99 0.086), top-1 0.977 vs the exact GPU-only path (fix in progress; this recipe stays candidate/reported until it lands). GLM53_MODE=exact (no CPU tier, ~119 GB RAM, bit-exact): prefill 697 / 945, decode ~12.6 tok/s. Text only, OpenAI tool calls parsed from GLM's <tool_call> format. Kit target: github.com/0xSero/local-ai-recipe-kit targets/glm-5.3-flash-offload.md.",
+  "setup": "NEEDS: 1x RTX 3090 24 GB (the expert cache takes all free VRAM after load: ~22.7 GiB at ready, nothing else may use the GPU); ~238 GB of free system RAM (measured MemAvailable drop to its lowest point 237.7 GB in the image smoke P001, 228.9-234.4 GB at ready in G067/C056: two 114.2 GB copies of all routed experts, one pinned for GPU zero-copy reads, one block-contiguous for the CPU tier); an x86-64 CPU with AVX2+FMA+F16C and ~24 physical cores (CPU tier threads auto-sized: one per physical core minus 2); 125.3 GB of weights on a local NVMe SSD (read once at load, ~2 min from page cache). Measured on: EPYC 7443P 24C, 8-channel DDR4 503 GiB, PCIe 4.0 x16, Samsung 990 PRO, driver 610.57. The image entrypoint holds the defaults (GLM53_MODE=fast = campaign run G067: expert-cache reserve 1.5 GB, prefill staging 2 x 2.6 GB, elastic 10 GB, CPU tier, fused hyper-connection sites, fast tier split, side-stream shared expert, exact Triton autotune pins); the README run adds --ulimit memlock=-1, but this launch (no ulimit flag) also loaded and served on driver 610.57. Protocol sweep (P2): prefill 8k 710 / 32k 951 tok/s; decode aggregate C1 28.15 / C2 31.57 / C4 33.98 tok/s, C1 at 32k 26.89. Quality: teacher-forced panel vs stock exllamav3 top-1 1.0000 / KL 0 (prefill path); decode with the CPU tier is NOT exact: paired check mean KL 0.0053 (p99 0.086), top-1 0.977 vs the exact GPU-only path (fix in progress; this recipe stays candidate/reported until it lands). GLM53_MODE=exact (no CPU tier, ~119 GB RAM, bit-exact): prefill 697 / 945, decode ~12.6 tok/s. Text only, OpenAI tool calls parsed from GLM's <tool_call> format. Kit target: github.com/0xSero/local-ai-recipe-kit targets/glm-5.3-flash-offload.md. Image smoke P001 (this digest, clean anonymous pull, bridge network, RTX 3090): panel 1.0000 / KL 0; prefill 8k 707 / 32k 953; decode C1 29.03 / C2 31.38 / C4 34.88, C1 at 32k 27.85; ready after 141 s. Lab gates on this launch: load chat reasoning tools context pass (context prompt 93,437 tokens); speed gate 14.4 tok/s over its first 30 s, run right after the 93k context gate: a long prefill empties 10.9 GB of expert-cache slots and decode runs slower until they re-warm (27.6 tok/s over the same 4,453-token answer). Raw: github.com/0xSero/glm53-flash-offload results/P001-image-smoke.",
   "source": "https://github.com/0xSero/glm53-flash-offload/tree/c4b9160bdbd3bdbda9b2d50b763332c8580280fb",
   "plugin": {
     "name": "GLM-5.3-Flash",
@@ -64,8 +64,8 @@
     "scratch": null,
     "capabilities": {
       "chat": true,
-      "reasoning": false,
-      "tools": false,
+      "reasoning": true,
+      "tools": true,
       "vision": false,
       "video": false
     },
