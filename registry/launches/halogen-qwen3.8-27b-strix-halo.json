@@ -1,0 +1,75 @@
+{
+  "id": "halogen-qwen3.8-27b-strix-halo",
+  "engine": "halogen",
+  "about": "Halogen server running Qwen3.8-27B on a Ryzen AI Max (Radeon 8060S) from unified RAM; OpenAI chat API on port 8731",
+  "image": "ghcr.io/peonist-ai/halogen@sha256:dc0a39a0016d6cfc58a197978febaafdf8d28403f724ded6111d98b5fb7ac0ea",
+  "provenance": "https://github.com/peonist-ai/halogen-server",
+  "backend": "amd-rocm",
+  "port": 8731,
+  "entrypoint": null,
+  "args": [],
+  "env": {
+    "HALOGEN_TOKENIZER": "/models/tokenizer"
+  },
+  "shm": null,
+  "weights": [
+    {
+      "repo": "peonist-ai/halogen-qwen3.8-27b",
+      "revision": "800ec932fc4a83ddd18b83d293cfd147946e77f9",
+      "at": "/models",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--device /dev/kfd",
+    "--device /dev/dri",
+    "--ipc host",
+    "--ulimit memlock=-1:-1",
+    "--security-opt seccomp=unconfined"
+  ],
+  "needs": {
+    "host_ram_gb": 21,
+    "disk_gb": 35.87
+  },
+  "setup": "NEEDS: a Ryzen AI Max (Radeon 8050S/8060S) with 128 GB of unified RAM; amd-smi reports the BIOS carve-out (512 MiB) as VRAM, so matching goes by GPU name and host RAM, not VRAM. The container needs /dev/kfd, /dev/dri, host IPC, unlimited memlock and unconfined seccomp (upstream Halogen requirements); group access to the render nodes goes in by host GID because the image defines no video/render groups. host_ram_gb is the system-wide MemAvailable drop at server ready, measured on Arch/Omarchy with ROCm from /opt/rocm. host_ram_gb is 21 (MemAvailable drop idle->ready; the weights beyond it serve from evictable unified-memory page cache).",
+  "source": "https://github.com/peonist-ai/halogen-server",
+  "plugin": {
+    "name": "Qwen3.8-27B",
+    "family": "qwen",
+    "format": "Halogen \u00b7 unified RAM",
+    "engine": "halogen",
+    "servedName": "halogen-qwen3.8-27b",
+    "sizeGb": 35.87,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 263168
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 35.87
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "radeon-8060s-128gb": "halogen-qwen38-27b-strix-halo"
+  }
+}
