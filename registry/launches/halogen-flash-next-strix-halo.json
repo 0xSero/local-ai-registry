@@ -2,14 +2,15 @@
   "id": "halogen-flash-next-strix-halo",
   "engine": "halogen",
   "about": "Halogen Flash-Next server running Qwen3.8-Flash-Next on a Ryzen AI Max (Radeon 8060S) from unified RAM; OpenAI chat API on port 8731",
-  "image": "ghcr.io/peonist-ai/halogen-flash-server@sha256:f3f99aa48f3a051f18da9ee24b333ca108fe745773fd036a365fe1875871d0be",
+  "image": "ghcr.io/peonist-ai/halogen-flash-server@sha256:3b81e378561a41fac0e1c213d9482f33e59606654669919b1ea15014c0c0d211",
   "provenance": "https://github.com/peonist-ai/halogen-flash-server",
   "backend": "amd-rocm",
   "port": 8731,
   "entrypoint": null,
   "args": [],
   "env": {
-    "HALOGEN_TOKENIZER": "/models/tokenizer"
+    "HALOGEN_TOKENIZER": "/models/tokenizer",
+    "HALOGEN_KV_POOL_POSITIONS": "262144"
   },
   "shm": null,
   "weights": [
@@ -42,7 +43,7 @@
   "plugin": {
     "name": "Qwen3.8-Flash-Next",
     "family": "qwen",
-    "format": "Halogen \u00b7 unified RAM",
+    "format": "Halogen · unified RAM",
     "engine": "halogen",
     "servedName": "halogen-qwen3.8-flash-next",
     "sizeGb": 131.6,
