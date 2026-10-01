@@ -46,4 +46,4 @@ The ARM64 build succeeded in [workflow run 36937550729](https://github.com/0xSer
 ghcr.io/0xsero/step5-spark-runtime@sha256:09c8b6893af160588bf22c865e5acf03e7537322252162aa01d1a401737537cc
 ```
 
-This digest pins the dependency foundation only. Target-device CUDA smoke is pending; no included serving bundle, full-model quality, vision-answer or speed acceptance is implied. The image is intentionally absent from validated engine/recipe entries.
+This digest pins the dependency foundation only. An anonymous digest pull, dependency check and CUDA tensor smoke passed on a DGX Spark (GB10, PyTorch 2.13.0+cu130, CUDA 13.0), with zero model calls; no included serving bundle, full-model quality, vision-answer or speed acceptance is implied. The image is intentionally absent from validated engine/recipe entries.
