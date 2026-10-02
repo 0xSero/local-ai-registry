@@ -2,12 +2,8 @@
   "id": "vllm-deepseek-v4.1-flash-exl3-3.0bpw-offload-256k-rtx-3090-24gb",
   "engine": "vllm",
   "about": "DeepSeek-V4.1-Flash EXL3 3.0bpw on one RTX 3090: all routed experts pinned in RAM, staged-DMA prefill with FP16 GEMM for busy experts, AVX2 CPU tier for decode misses, elastic VRAM expert cache, Engram tables mmap'd from NVMe (dsv41-flash-offload 2e9da5e, campaign run D119)",
-  "image": null,
-  "build": {
-    "repo": "0xSero/dsv41-flash-offload",
-    "commit": "2e9da5ecdab37c232c2da887e25c33a99da738d3",
-    "dockerfile": "docker/Dockerfile"
-  },
+  "image": "ghcr.io/0xsero/dsv41-flash-offload@sha256:964fb0a1e0f94fb307b757b39067e731fb9fa086b8e5c09d97eaf5639cc52d99",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/37001039815",
   "backend": "nvidia",
   "port": 8000,
   "entrypoint": "/opt/dsv41/docker/entrypoint.sh",
@@ -47,10 +43,6 @@
     "HF_HUB_OFFLINE": "1"
   },
   "shm": "8g",
-  "flags": [
-    "--cap-add IPC_LOCK",
-    "--ulimit memlock=-1:-1"
-  ],
   "weights": [
     {
       "repo": "Mia-AiLab/DeepSeek-V4.1-Flash-EXL3-3.0bpw",
