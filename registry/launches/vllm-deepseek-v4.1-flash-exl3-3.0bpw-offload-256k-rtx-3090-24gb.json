@@ -1,0 +1,88 @@
+{
+  "id": "vllm-deepseek-v4.1-flash-exl3-3.0bpw-offload-256k-rtx-3090-24gb",
+  "engine": "vllm",
+  "about": "DeepSeek-V4.1-Flash EXL3 3.0bpw on one RTX 3090: all routed experts pinned in RAM, staged-DMA prefill with FP16 GEMM for busy experts, AVX2 CPU tier for decode misses, elastic VRAM expert cache, Engram tables mmap'd from NVMe (dsv41-flash-offload 5776abf, campaign run D118)",
+  "image": null,
+  "build": {
+    "repo": "0xSero/dsv41-flash-offload",
+    "commit": "5776abf615c0155a1546f02336b9237a2b526ee8",
+    "dockerfile": "docker/Dockerfile"
+  },
+  "backend": "nvidia",
+  "port": 8000,
+  "entrypoint": "/opt/dsv41/docker/entrypoint.sh",
+  "args": [
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8000",
+    "--served-model-name",
+    "deepseek-v4.1-flash",
+    "--max-model-len",
+    "262144",
+    "--kv-cache-memory",
+    "4831838208",
+    "--max-num-batched-tokens",
+    "16384",
+    "--max-num-seqs",
+    "4",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "deepseek_v41",
+    "--reasoning-parser",
+    "deepseek_v41"
+  ],
+  "env": {
+    "DSV41_MODEL_ROOT": "/models",
+    "DSV41_PACK": "/models/DSV41-EXL3-3090-D010",
+    "DSV41_MAX_MODEL_LEN": "262144",
+    "DSV41_KV_CACHE_BYTES": "4831838208",
+    "DSV41_EC": "1",
+    "DSV41_EC_ELASTIC": "1",
+    "DSV41_EC_MARGIN_MB": "900",
+    "DSV41_CPU_TIER": "1",
+    "EXL3_HOST_DMA": "1",
+    "EXL3_DMA_GEMM": "1",
+    "VLLM_EXL3_FAT_THRESHOLD": "32",
+    "HF_HUB_OFFLINE": "1"
+  },
+  "shm": "8g",
+  "flags": [
+    "--cap-add IPC_LOCK",
+    "--ulimit memlock=-1:-1"
+  ],
+  "weights": [
+    {
+      "repo": "Mia-AiLab/DeepSeek-V4.1-Flash-EXL3-3.0bpw",
+      "revision": "c5534b90602b4090980a1c3ded1eb3b4d99a38d5",
+      "at": "/models/Mia-DeepSeek-V4.1-Flash-EXL3-3.0bpw",
+      "layout": "dir",
+      "files": null
+    },
+    {
+      "repo": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "revision": "2cba9e42aa026125f3ed06c6d98c1db82f7ca027",
+      "at": "/models/DeepSeek-V4.1-Flash-engram",
+      "layout": "dir",
+      "files": [
+        "config.json",
+        "model.safetensors.index.json",
+        "inference/engram.py",
+        "model-00047-of-00048.safetensors",
+        "model-00048-of-00048.safetensors"
+      ]
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 4,
+  "vision": false,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 231.0,
+    "disk_gb": 425.3,
+    "fast_storage": "nvme"
+  },
+  "setup": "NEEDS: 1x RTX 3090 24 GB (the VRAM expert mirror cache takes the VRAM left after load minus 900 MB; nothing else may use the GPU); ~231 GB (215 GiB) of free system RAM (MemAvailable fell 213.8 / 210.8 / 209.9 / 211.0 GB from container start to ready in campaign runs D030 / D061 / D107 / D117, all routed experts pinned: 190.5 GiB; the lowest point under the lab gates is not measured, the entrypoint requires 215 GiB); an x86-64 CPU with AVX2+FMA+F16C and >= 24 cores (CPU expert tier pinned to cores 2-23, 22 threads: DSV41_CT_CPUS / DSV41_CT_THREADS); 425 GB on a local NVMe SSD (Mia EXL3 3.0bpw 219.3 GB + the two Engram shards of deepseek-ai/DeepSeek-V4.1-Flash 203.1 GB, read on demand while serving + a 2.9 GB overlay pack); run with --cap-add IPC_LOCK --ulimit memlock=-1. ONE-TIME PACK: with both weight dirs under one root mounted read-write at /models, run the image with the single argument `prepare` (GPU, a few minutes): it builds /models/DSV41-EXL3-3090-D010 (symlinks into the two weight dirs, FP16 wo_a and compressor/indexer projections, text-only V4.1 config, host-plan.json) and checks it against the measured pack's sha256 (pack/expected-sha256.json); serving then mounts /models read-only. IMAGE: not published yet; build docker/Dockerfile of the source at this commit (pins lazymio/vllm-backport v0.13.0 by digest + Ampere V4.1 patches fae324ae + exllamav3 5be88657 + vllm-exl3 d3cfd394, runtime patches checked against the measured runs' sha256 receipts). ghcr.io/0xsero/dsv41-flash-offload from 0xSero/local-ai-images#12 replaces this build with a digest + provenance after merge and a release-image run on main. MEASURED (campaign, P2 sweep: prefill = median of 3 random-token prompts; decode = greedy to natural end, aggregate, median of 2 rounds; all at --max-model-len 65536, KV 1 GiB fp8; EPYC 7443P, 503 GiB DDR4, PCIe 4.0 x16, 990 PRO): D117 = this launch's sources and flags with the non-elastic cache (captured 2026-10-02T12:41+02:00, sweep still running): prefill 8k 575.2 / 32k 765.5 tok/s, decode C1 15.55, C2 17.74 agg (results/D117/sweep.json); D061 (prefill path only) 565.2 / 744.9 (results/D061/sweep.json); D107 (1,024-token chunks, best decode) C1 21.34 / C2 26.27 / C4 28.30 agg, prefill 96.9 / 98.6 (results/D107/sweep.json); D030 baseline (zero-copy experts, no CPU tier) prefill 93.4 / 95.8, decode C1 4.10 (results/D030/sweep.json). D118 = this launch (DSV41_EC_ELASTIC=1): PENDING. QUALITY: prefill of the staged-DMA path vs the D026 full-vocabulary reference (12 prompts, 416 positions): top-1 0.9856, mean KL 0.0068 nats, median 2.8e-6 - fails the campaign's inherited guard (top-1 >= 0.988, KL <= 0.00103); EXL3_DMA_GEMM=0 is the slower segmented path (results/D061/fidelity-verdict.json). NOT VALIDATED: --max-model-len 262144 with --kv-cache-memory 4.5 GiB (at 16k chunks 1 GiB sized to 65,974 tokens); the lab gates (load chat reasoning tools context speed) have not run; the deepseek_v41 tool and reasoning parsers are configured, not verified on this stack. Reproduce the measured config with DSV41_MAX_MODEL_LEN=65536 DSV41_KV_CACHE_BYTES=1073741824.",
+  "source": "https://github.com/0xSero/dsv41-flash-offload/tree/5776abf615c0155a1546f02336b9237a2b526ee8"
+}
