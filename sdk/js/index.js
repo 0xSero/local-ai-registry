@@ -28,7 +28,7 @@ export async function pick({ gpu, vram, all = false }, cat) {
   return all ? rs : rs[0];
 }
 
-const GPU = { nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
+const GPU = { cpu: "", nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
@@ -51,7 +51,7 @@ function hostSteps(l) {
   if (l.config) out.push({ title: "Write the launcher", code: `${l.config.at.includes("/") ? `mkdir -p ${l.config.at.replace(/\/[^/]*$/, "")}\n` : ""}cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
   if (l.sysctl) out.push({ title: "Raise the GPU memory limit (resets on reboot)", code: Object.entries(l.sysctl).map(([k, v]) => `sudo sysctl ${k}=${v}`).join("\n") });
   const run = [...env, l.command[0], ...pairs(l.command.slice(1))];
-  out.push({ title: "Start the server", code: run.join(" \\\n  ") });
+  out.push({ title: "Start the server", code: run.filter(Boolean).join(" \\\n  ") });
   return out;
 }
 
@@ -85,7 +85,7 @@ export function steps(r) {
   }
   const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
     ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
-  out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.join(" \\\n  ") });
+  out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.filter(Boolean).join(" \\\n  ") });
   return out;
 }
 
