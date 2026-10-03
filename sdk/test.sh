@@ -3,7 +3,7 @@
 set -e
 cd "$(dirname "$0")/.."
 python3 - <<'PY'
-import json, subprocess, sys
+import json, shlex, subprocess, sys
 sys.path.insert(0, "sdk/python")
 import local_ai_registry as L
 cat = json.load(open("dist/catalog.json"))
@@ -24,6 +24,15 @@ for i, (got, sts) in json.loads(js).items():
         if cat["recipes"][k]["launch"].get("backend") == "cpu":
             command = st[-1]["code"]
             assert "--gpus" not in command and "--device" not in command, f"CPU launch requires a GPU for {k}"
+        launch = cat["recipes"][k]["launch"]
+        weights = launch.get("weights") or []
+        weights = weights if isinstance(weights, list) else [weights]
+        downloads = [shlex.split(cmd.replace("\\\n", "")) for step in st if step["title"] == "Download the weights" for cmd in step["code"].split("\n\n")]
+        for w, argv in zip(weights, downloads):
+            files = w.get("files") or []
+            files = files if isinstance(files, list) else [files]
+            assert argv[:3] == ["hf", "download", w["repo"]], (k, argv)
+            assert argv[3:argv.index("--revision")] == files, f"download ignores selected files for {k}"
         n += 1
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY

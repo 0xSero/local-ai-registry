@@ -30,6 +30,7 @@ export async function pick({ gpu, vram, all = false }, cat) {
 
 const GPU = { cpu: "", nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
+const files = (w) => (Array.isArray(w.files) ? w.files : w.files ? [w.files] : []).map((f) => ` ${q(f)}`).join("");
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
 const pairs = (a) => {
@@ -47,7 +48,7 @@ function hostSteps(l) {
   const env = Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`);
   if (!l.pip && !l.weights?.length) return [{ title: "Install", code: install(l.install) }, { title: "Start the server", code: [...env, ...l.command.map(q)].join(" ") }];
   const out = [l.pip ? { title: "Install the engine", code: `python3 -m pip install ${l.pip.map(q).join(" ")}` } : { title: "Install the engine", code: install(l.install) }];
-  if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo}${(w.files ?? []).map((f) => ` ${f}`).join("")} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
+  if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo}${files(w)} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
   if (l.config) out.push({ title: "Write the launcher", code: `${l.config.at.includes("/") ? `mkdir -p ${l.config.at.replace(/\/[^/]*$/, "")}\n` : ""}cat > ${l.config.at} <<'EOF'\n${l.config.text.trimEnd()}\nEOF` });
   if (l.sysctl) out.push({ title: "Raise the GPU memory limit (resets on reboot)", code: Object.entries(l.sysctl).map(([k, v]) => `sudo sysctl ${k}=${v}`).join("\n") });
   const run = [...env, l.command[0], ...pairs(l.command.slice(1))];
@@ -69,8 +70,8 @@ export function steps(r) {
   const mounts = [], dl = [];
   for (const w of weights(l)) {
     const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;
-    if (w.layout === "hub") { dl.push(`hf download ${w.repo} \\\n  --revision ${w.revision}`); mounts.push("-v ~/.cache/huggingface:/root/.cache/huggingface"); }
-    else { dl.push(`hf download ${w.repo} \\\n  --revision ${w.revision} \\\n  --local-dir ${dir}`); mounts.push(`-v ${dir}:${w.at}:ro`); }
+    if (w.layout === "hub") { dl.push(`hf download ${w.repo}${files(w)} \\\n  --revision ${w.revision}`); mounts.push("-v ~/.cache/huggingface:/root/.cache/huggingface"); }
+    else { dl.push(`hf download ${w.repo}${files(w)} \\\n  --revision ${w.revision} \\\n  --local-dir ${dir}`); mounts.push(`-v ${dir}:${w.at}:ro`); }
   }
   if (dl.length) out.push({ title: "Download the weights", code: dl.join("\n\n") });
   if (l.config) {
