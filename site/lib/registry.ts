@@ -5,7 +5,7 @@ import { steps as sdkSteps } from "../../sdk/js/index.js";
 
 export type Proof = {
   at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null;
-  proxy?: string; legacy?: boolean; log?: string; reported?: boolean; src?: string; claims?: string;
+  proxy?: string; legacy?: boolean; log?: string; reported?: boolean; src?: string; claims?: string; note?: string;
 };
 export type Launch = {
   image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
@@ -70,7 +70,7 @@ export const weightsList = (l: Launch) => (Array.isArray(l.weights) ? l.weights 
 /** What a recipe proved, in plain words. */
 export function status(r: Recipe) {
   const p = r.proof[0];
-  if (p.reported) return { label: `Reported by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on}`, tone: "dim", detail: `Published by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on} in ${p.src}${p.tps ? `, where it reports ${p.tps} tok/s` : ""}. Our six checks have not run on it yet.` };
+  if (p.reported) return { label: `Reported by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on}`, tone: "dim", detail: `Published by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on} in ${p.src}${p.tps ? `, where it reports ${p.tps} tok/s` : ""}. Our six checks have not run on it yet.${p.note ? ` ${p.note}` : ""}` };
   if (p.legacy) return { label: "Earlier check", tone: "dim", detail: "Passed the older check (loads and chats); a full six-check run is pending." };
   if (p.proxy) return { label: "Tested on a sibling", tone: "warm", detail: `No ${cardName(r.card)} is rentable; this ran on the ${cardName(p.proxy)}, the same chip family.` };
   return { label: "Tested on this card", tone: "ok", detail: `Passed all six checks on a real ${p.gpu ?? cardName(r.card)} on ${fmtDate(p.at)}.` };
