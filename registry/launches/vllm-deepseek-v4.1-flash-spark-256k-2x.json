@@ -2,7 +2,7 @@
   "id": "vllm-deepseek-v4.1-flash-spark-256k-2x",
   "engine": "vllm",
   "about": "DeepSeek-V4.1-Flash-Spark: DeepSeek-V4.1-Flash with EXL3 routed experts, vLLM TP2 across two DGX Sparks over RoCE (0xSero/local-ai-images deepseek-v4.1-flash-spark)",
-  "image": "ghcr.io/0xsero/deepseek-v4.1-flash-spark@sha256:5668e35e5ee021da4b9ce88a1964caf0e082e8ca01d81d1d64b6213a55c6add5",
+  "image": "ghcr.io/0xsero/deepseek-v4.1-flash-spark@sha256:3cbc8ec016f5fbfc82eba3480de12399cbce31e7b76aa3108b8fe8246c42a79d",
   "backend": "nvidia",
   "port": 8000,
   "entrypoint": [
@@ -141,5 +141,6 @@
   ],
   "machines": 2,
   "setup": "Head (rank 0, API) + worker (rank 1, --headless, same args with NODE_RANK=1) containers over the CX7 RoCE fabric (--nnodes 2, mp executor). Set NODE_RANK, HEAD_IP, NODE_IP, CX7_IF and CX7_IB on each node; NODE_IP must be its reachable fabric IP. Both nodes download the pinned 0xSero/DeepSeek-V4.1-Flash-Spark repository to local NVMe and mount it at /model. This public repository includes the native checkpoint, Engram parts and EXL3 banks; no separate full upstream checkpoint is needed. After download, run bash ~/models/DeepSeek-V4.1-Flash-Spark-08ac8b3d/reassemble.sh once on each node to reconstruct and sha256-check the two Engram shards. Allow about 665 GB for download plus reassembly, in addition to image/cache space; after a successful check the .partNN files may be deleted, leaving about 462 GB. The plan is /model/exl3/plan/J268-ho-v31-K5n.json; its qdir is qn:q31:q31s relative to --workdir /model/exl3. Mount a persistent /cache for b12x and RoCE JIT caches. The source repository includes a host memory guard to stop containers before a GB10 unified-memory OOM. Load about 12 minutes. CANDIDATE: the earlier S018 lab run used the original local full-checkpoint layout and the unattested host image; the final published layout and approved CI image still require a fresh six-gate run.",
-  "source": "https://github.com/0xSero/local-ai-images/tree/main/deepseek-v4.1-flash-spark"
+  "source": "https://github.com/0xSero/local-ai-images/tree/main/deepseek-v4.1-flash-spark",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/37138684406"
 }
