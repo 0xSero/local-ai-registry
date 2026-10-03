@@ -29,7 +29,7 @@ export const cards: Card[] = Object.entries(raw.cards)
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 export const recipes: Recipe[] = Object.entries(raw.recipes).map(([key, r]) => ({ key, slug: key.split("/").pop()!, ...r }));
 
-function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple"].indexOf(v); }
+function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple", "cpu"].indexOf(v); }
 
 /** A spec sheet from data/registry/hardware, built into ../dist/hardware.json by lab/hardware.py. */
 export type Specs = {
@@ -43,7 +43,8 @@ export const specs = (id: string): Specs | undefined => specsById[id];
 export const bare = Object.entries(specsById).filter(([id]) => !raw.cards[id]).map(([id, h]) => ({ id, ...h }))
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 
-export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple" };
+export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple", cpu: "CPU" };
+export const memoryLabel = (c: { vendor: string; vram_gb: number }) => c.vendor === "cpu" ? "System RAM" : `${c.vram_gb} GB`;
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
 const byKey = (keys: string[]) => keys.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);

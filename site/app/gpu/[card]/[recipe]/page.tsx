@@ -35,7 +35,7 @@ export default async function RecipePage({ params }: P) {
       <Viewed event="recipe_viewed" props={{ gpu: cid, recipe: r.key, model: r.model }} />
       <Link href={`/gpu/${cid}`} className="back">‹ {cardName(cid)}</Link>
       <h1 className="title"><Logo family={m.logo ?? m.family} size={28} />{m.name}</h1>
-      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {setupOf(r).name} · {setupOf(r).vram_gb} GB</div>
+      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {setupOf(r).name} · {c.vendor === "cpu" ? "System RAM" : `${setupOf(r).vram_gb} GB`}</div>
       {m.about && <p style={{ maxWidth: "70ch", marginTop: 22 }}>{m.about}</p>}
 
       <section className="grid cols-4">
