@@ -57,6 +57,10 @@ def _q(s):
     return s if re.fullmatch(r"[\w@%+=:,./-]+", s) else "'" + s.replace("'", "'\\''") + "'"  # the same quoting as the JS SDK
 
 
+def _value(s):
+    return '"' + s + '"' if re.fullmatch(r"\$\{[A-Z_][A-Z0-9_]*\}", s) else _q(s)
+
+
 def _files(w):
     fs = w.get("files") or []
     return "".join(" " + _q(f) for f in (fs if isinstance(fs, list) else [fs]))
@@ -65,7 +69,7 @@ def _files(w):
 def _host_steps(l):
     """A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
     its weights, writes its launcher and raises the GPU wired-memory limit before it starts."""
-    env = [f"{k}={_q(v)}" for k, v in (l.get("env") or {}).items()]
+    env = [f"{k}={_value(v)}" for k, v in (l.get("env") or {}).items()]
     if not l.get("pip") and not l.get("weights"):
         return [{"title": "Install", "code": _install(l["install"])}, {"title": "Start the server", "code": " ".join(env + [_q(c) for c in l["command"]])}]
     out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(_q(x) for x in l["pip"]) if l.get("pip") else _install(l["install"])}]
@@ -130,9 +134,9 @@ def steps(r):
     i = 0
     while i < len(a):
         if a[i].startswith("-") and i + 1 < len(a) and not a[i + 1].startswith("-"):
-            args.append(f"{a[i]} {_q(a[i + 1])}"); i += 2
+            args.append(f"{a[i]} {_value(a[i + 1])}"); i += 2
         else:
-            args.append(_q(a[i])); i += 1
+            args.append(_value(a[i])); i += 1
     if l.get("prepare"):
         prep = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
                 f"-v {prepared}:{l['prepare']['at']}"] + mounts
@@ -142,7 +146,7 @@ def steps(r):
         mounts.insert(0, f"-v {prepared}:{l['prepare']['at']}:ro")
     run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or [])
     run += [f"--shm-size {l['shm']}"] if l.get("shm") else []
-    run += [f"-e {k}={_q(v)}" for k, v in (l.get("env") or {}).items()] + mounts
+    run += [f"-e {k}={_value(v)}" for k, v in (l.get("env") or {}).items()] + mounts
     run += [f"--entrypoint {_q(ep[0])}"] if ep else []
     m = l.get("machines")
     title = f"Start the server on each of the {m} machines (NODE_RANK 0 to {m - 1})" if m else "Start the server"
