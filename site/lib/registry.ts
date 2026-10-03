@@ -9,7 +9,7 @@ export type Proof = {
 };
 export type Launch = {
   image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
-  weights: { repo: string; revision: string; at: string; layout?: string } | { repo: string; revision: string; at: string; layout?: string }[];
+  weights: { repo: string; revision: string; at: string; layout?: string; files?: string | string[] | null } | { repo: string; revision: string; at: string; layout?: string; files?: string | string[] | null }[];
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
   kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
 };

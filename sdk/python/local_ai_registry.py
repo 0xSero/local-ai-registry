@@ -57,6 +57,11 @@ def _q(s):
     return s if re.fullmatch(r"[\w@%+=:,./-]+", s) else "'" + s.replace("'", "'\\''") + "'"  # the same quoting as the JS SDK
 
 
+def _files(w):
+    fs = w.get("files") or []
+    return "".join(" " + _q(f) for f in (fs if isinstance(fs, list) else [fs]))
+
+
 def _host_steps(l):
     """A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
     its weights, writes its launcher and raises the GPU wired-memory limit before it starts."""
@@ -66,7 +71,7 @@ def _host_steps(l):
     out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(_q(x) for x in l["pip"]) if l.get("pip") else _install(l["install"])}]
     if l.get("weights"):
         out.append({"title": "Download the weights", "code": "\n\n".join(
-            f"hf download {w['repo']}{''.join(' ' + f for f in w.get('files') or [])} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}"
+            f"hf download {w['repo']}{_files(w)} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}"
             for w in l["weights"])})
     if l.get("config"):
         at = l["config"]["at"]
@@ -108,10 +113,10 @@ def steps(r):
     for w in ws:
         d = f"~/models/{w['repo'].split('/')[1]}-{w['revision'][:8]}"
         if w.get("layout") == "hub":
-            dl.append(f"hf download {w['repo']} \\\n  --revision {w['revision']}")
+            dl.append(f"hf download {w['repo']}{_files(w)} \\\n  --revision {w['revision']}")
             mounts.append("-v ~/.cache/huggingface:/root/.cache/huggingface")
         else:
-            dl.append(f"hf download {w['repo']} \\\n  --revision {w['revision']} \\\n  --local-dir {d}")
+            dl.append(f"hf download {w['repo']}{_files(w)} \\\n  --revision {w['revision']} \\\n  --local-dir {d}")
             mounts.append(f"-v {d}:{w['at']}:ro")
     if dl:
         out.append({"title": "Download the weights", "code": "\n\n".join(dl)})
