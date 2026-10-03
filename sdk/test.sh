@@ -21,6 +21,9 @@ for i, (got, sts) in json.loads(js).items():
     assert got == i, (i, got)
     for k, st in zip([k for s in cat["cards"][i]["setups"] for k in s["picks"] + s["more"]], sts):
         assert st == L.steps({"key": k, **cat["recipes"][k]}), f"js and python steps differ for {k}"
+        if cat["recipes"][k]["launch"].get("backend") == "cpu":
+            command = st[-1]["code"]
+            assert "--gpus" not in command and "--device" not in command, f"CPU launch requires a GPU for {k}"
         n += 1
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY

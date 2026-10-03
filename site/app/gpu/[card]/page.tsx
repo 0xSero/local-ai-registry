@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import RecipeCard, { ENGINE } from "@/components/RecipeCard";
 import HardwareSpecs from "@/components/HardwareSpecs";
-import { cards, card, picks, lead, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup, specs, bare } from "@/lib/registry";
+import { cards, card, picks, lead, more, model, format, engineKind, ctxLabel, status, VENDOR, short, setupName, Setup, specs, bare, memoryLabel } from "@/lib/registry";
 
 type P = { params: Promise<{ card: string }> };
 export const generateStaticParams = () => [...cards, ...bare].map((c) => ({ card: c.id }));
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
   const top = picks(lead(c))[0];
   const name = short(c.name);
   return {
-    title: `${name} ${c.vram_gb} GB`,
+    title: `${name} · ${memoryLabel(c)}`,
     description: top ? `Run ${model(top).name} on the ${name}: ${Math.round(top.proof[0].tps ?? 0)} tok/s, tested on the card. The top ${picks(lead(c)).length} recipes${c.setups.length > 1 ? ` for one card, more for ${c.setups.slice(1).map((s) => setupName(name, s.cards, s.machines)).join(", ")}` : ""}, and the exact commands.` : undefined,
   };
 }
@@ -24,7 +24,7 @@ export default async function Gpu({ params }: P) {
   if (!c && !h) notFound();
   if (!c) return (
     <main>
-      <Link href="/#gpus" className="back">‹ all GPUs</Link>
+      <Link href="/#gpus" className="back">‹ all hardware</Link>
       <h1 className="title">{short(h!.name)}</h1>
       <div className="dim">{VENDOR[h!.vendor]} · {h!.vram_gb} GB{h!.bandwidth_gb_s ? ` · ${h!.bandwidth_gb_s} GB/s` : ""}</div>
       <section>
@@ -37,9 +37,9 @@ export default async function Gpu({ params }: P) {
   const many = c.setups.length > 1;
   return (
     <main>
-      <Link href="/#gpus" className="back">‹ all GPUs</Link>
+      <Link href="/#gpus" className="back">‹ all hardware</Link>
       <h1 className="title">{short(c.name)}</h1>
-      <div className="dim">{VENDOR[c.vendor]} · {c.vram_gb} GB{c.bandwidth_gb_s ? ` · ${c.bandwidth_gb_s} GB/s` : ""}</div>
+      <div className="dim">{VENDOR[c.vendor]} · {memoryLabel(c)}{c.bandwidth_gb_s ? ` · ${c.bandwidth_gb_s} GB/s` : ""}</div>
       {many && (
         <nav className="dim" style={{ marginTop: 14 }}>
           {c.setups.map((s, i) => <span key={i}>{i ? " · " : ""}<a href={`#${anchor(s)}`}>{setupName(short(c.name), s.cards, s.machines)}</a></span>)}

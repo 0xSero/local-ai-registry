@@ -17,7 +17,7 @@ export default function Picker({ options }: { options: Option[] }) {
   return (
     <div className="picker">
       <input
-        placeholder="Your GPU: RTX 3090, 4060 Ti 16GB, Arc B70, RX 7600 XT..."
+        placeholder="Your GPU or CPU: RTX 3090, Arc B70, x86-64 AVX2..."
         value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); setI(0); }}
         onFocus={() => setOpen(true)} onBlur={() => setTimeout(() => setOpen(false), 150)}
         onKeyDown={(e) => {
@@ -25,13 +25,13 @@ export default function Picker({ options }: { options: Option[] }) {
           if (e.key === "ArrowUp") { setI(Math.max(i - 1, 0)); e.preventDefault(); }
           if (e.key === "Enter" && hits[i]) go(hits[i]);
         }}
-        aria-label="Find your GPU"
+        aria-label="Find your GPU or CPU"
       />
       {open && hits.length > 0 && (
         <ul>
           {hits.map((o, n) => (
             <li key={o.id}><a href={`/gpu/${o.id}`} aria-selected={n === i} onMouseDown={(e) => { e.preventDefault(); go(o); }}>
-              <span>{o.name}</span><span className="dim">{o.vram} GB</span></a></li>
+              <span>{o.name}</span><span className="dim">{o.vendor === "cpu" ? "System RAM" : `${o.vram} GB`}</span></a></li>
           ))}
         </ul>
       )}
