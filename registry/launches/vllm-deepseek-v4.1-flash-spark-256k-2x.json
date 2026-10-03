@@ -142,9 +142,10 @@
     "--privileged",
     "--shm-size 32g",
     "--ulimit memlock=-1",
-    "--device /dev/infiniband"
+    "--device /dev/infiniband",
+    "--workdir /spark/exl3"
   ],
   "machines": 2,
-  "setup": "Head (rank 0, API) + worker (rank 1, --headless, same args with NODE_RANK=1) containers over the CX7 RoCE fabric (--nnodes 2, mp executor); VLLM_HOST_IP/NODE_IP = each node's fabric IP (the head must not advertise a WiFi/LAN IP the worker cannot reach), CX7_IF/CX7_IB = that node's fabric netdev and RoCE HCAs. Both nodes need both weight repos locally: the native deepseek-ai/DeepSeek-V4.1-Flash checkpoint (510 GB; attention, shared experts and the Engram tables, read from disk at runtime, so local NVMe) and the private 0xSero/DeepSeek-V4.1-Flash-Spark EXL3 expert banks + plan (ST_EXL3_PLAN). Mount a persistent /cache (b12x and RoCE JIT caches) or the first start recompiles. A host memory guard (spark/memguard.sh in the image repo) stops the containers before a GB10 unified-memory OOM wedges the host. Load ~12 min.",
-  "source": "https://github.com/0xSero/local-ai-images/tree/image/deepseek-v4.1-flash-spark/deepseek-v4.1-flash-spark"
+  "setup": "Head (rank 0, API) + worker (rank 1, --headless, same args with NODE_RANK=1) containers over the CX7 RoCE fabric (--nnodes 2, mp executor); VLLM_HOST_IP/NODE_IP = each node's fabric IP (the head must not advertise a WiFi/LAN IP the worker cannot reach), CX7_IF/CX7_IB = that node's fabric netdev and RoCE HCAs. Both nodes need both weight repos on local NVMe: the native deepseek-ai/DeepSeek-V4.1-Flash checkpoint (510 GB, mounted at /model: attention, shared experts and the Engram tables, read from disk at runtime) and 0xSero/DeepSeek-V4.1-Flash-Spark (462 GB, mounted at /spark: EXL3 expert banks under exl3/qn, exl3/q31, exl3/q31s and the plan exl3/plan/J268-ho-v31-K5n.json = ST_EXL3_PLAN). After downloading the Spark repo, run ./reassemble.sh once in its directory: it rebuilds the two Engram shards model-00005/00006-of-00006.safetensors from their .partNN files (HF caps files at 50 GB) and sha256-checks them; the parts can then be deleted. The plan's qdir (qn:q31:q31s) is relative, so the container must start in /spark/exl3 (--workdir /spark/exl3, already in the flags). Mount a persistent /cache (b12x and RoCE JIT caches) or the first start recompiles. A host memory guard (deepseek-v4.1-flash-spark/spark/memguard.sh in 0xSero/local-ai-images) stops the containers before a GB10 unified-memory OOM wedges the host. Load ~12 min.",
+  "source": "https://github.com/0xSero/local-ai-images/tree/main/deepseek-v4.1-flash-spark"
 }
