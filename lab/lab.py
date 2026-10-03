@@ -117,7 +117,7 @@ def render(recipe):
                 out["sysctl"] = {"iogpu.wired_limit_mb": card(recipe["card"])["vram_gb"] * 1024 - p["wired_limit_reserve_mb"]}
             return out
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
-                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs") if k in p},
+                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs", "prepare") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
@@ -284,6 +284,8 @@ def save_logs(handle, recipe):
 
 def lab_spec(recipe, launch, args):
     """What a rented host runs: the image, provisioning (weights, config file) and then the engine's argv."""
+    if launch.get("prepare"):
+        raise SystemExit("prepare this model using the SDK steps first, then validate with --on endpoint")
     import rent as vr
 
     class LabSpec(vr.Spec):

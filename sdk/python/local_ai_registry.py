@@ -109,6 +109,7 @@ def steps(r):
         files = (l["build"].get("dockerfile") or "Dockerfile").split(" + ")
         out.append({"title": "Build the image", "code": "\n".join([_install(f"https://github.com/{l['build']['repo']}/tree/{l['build']['commit']}")] + [f"docker build -t {image} -f {d} ." for d in files])})
     ws = [w for w in (l["weights"] if isinstance(l["weights"], list) else [l["weights"]]) if w and w.get("repo")]
+    prepared = f"~/models/{name}-prepared-{image[-12:]}"
     mounts, dl = [], []
     for w in ws:
         d = f"~/models/{w['repo'].split('/')[1]}-{w['revision'][:8]}"
@@ -132,6 +133,13 @@ def steps(r):
             args.append(f"{a[i]} {_q(a[i + 1])}"); i += 2
         else:
             args.append(_q(a[i])); i += 1
+    if l.get("prepare"):
+        prep = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
+                f"-v {prepared}:{l['prepare']['at']}"] + mounts
+        prep += [f"--entrypoint {_q(ep[0])}"] if ep else []
+        prep += [image] + [_q(x) for x in l["prepare"]["args"]]
+        out.append({"title": "Prepare the model (first start)", "code": f"mkdir -p {prepared}\n" + " \\\n  ".join(x for x in prep if x)})
+        mounts.insert(0, f"-v {prepared}:{l['prepare']['at']}:ro")
     run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or [])
     run += [f"--shm-size {l['shm']}"] if l.get("shm") else []
     run += [f"-e {k}={_q(v)}" for k, v in (l.get("env") or {}).items()] + mounts

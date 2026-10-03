@@ -67,6 +67,7 @@ export function steps(r) {
     const files = (l.build.dockerfile ?? "Dockerfile").split(" + ");
     out.push({ title: "Build the image", code: [install(`https://github.com/${l.build.repo}/tree/${l.build.commit}`), ...files.map((d) => `docker build -t ${image} -f ${d} .`)].join("\n") });
   }
+  const prepared = `~/models/${name}-prepared-${image.slice(-12)}`;
   const mounts = [], dl = [];
   for (const w of weights(l)) {
     const dir = `~/models/${w.repo.split("/")[1]}-${w.revision.slice(0, 8)}`;
@@ -83,6 +84,12 @@ export function steps(r) {
   for (let i = 0; i < all.length; i++) {
     const a = all[i], b = all[i + 1];
     if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${q(b)}`); i++; } else args.push(q(a));
+  }
+  if (l.prepare) {
+    const prep = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
+      `-v ${prepared}:${l.prepare.at}`, ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...l.prepare.args.map(q)];
+    out.push({ title: "Prepare the model (first start)", code: `mkdir -p ${prepared}\n` + prep.filter(Boolean).join(" \\\n  ") });
+    mounts.unshift(`-v ${prepared}:${l.prepare.at}:ro`);
   }
   const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
     ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
