@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "lfm2.5-2.6b",
+  "weights": "LiquidAI/LFM2.5-2.6B-GGUF@84022ce711b28455e8c4fc364ce68c00cf995875",
+  "engine": "llama.cpp-lfm2.5-2.6b-qad-q4-0-8k-cpu-docker@23fd59bc5e5b",
+  "set": {},
+  "card": "x86-64-avx2-cpu"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "AMD EPYC 7443P CPU, six threads, 4 GiB container cap, no GPU"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-03",
+  "on": "owner",
+  "gpu": "AMD EPYC 7443P CPU, six threads, 4 GiB container cap, no GPU",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 38.2,
+  "prefill": 84,
+  "served": "LFM2.5-2.6B-GGUF"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "Red, Blue, Yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 279,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "id": "iEpwHXrBufKyulWdP4CPryWHoZUPblTf"
+    }
+   ],
+   "reply": "The current weather in Paris is **17°C** with **overcast** skies.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 242
+  },
+  "context": {
+   "prompt_tokens": 5552,
+   "seconds": 66.0,
+   "content": "\n58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 8168,
+   "seconds_total": 242.9
+  }
+ },
+ "launch_config_sha256": null
+}

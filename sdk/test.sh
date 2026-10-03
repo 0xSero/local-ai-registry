@@ -3,7 +3,7 @@
 set -e
 cd "$(dirname "$0")/.."
 python3 - <<'PY'
-import json, subprocess, sys
+import json, shlex, subprocess, sys
 sys.path.insert(0, "sdk/python")
 import local_ai_registry as L
 cat = json.load(open("dist/catalog.json"))
@@ -21,6 +21,27 @@ for i, (got, sts) in json.loads(js).items():
     assert got == i, (i, got)
     for k, st in zip([k for s in cat["cards"][i]["setups"] for k in s["picks"] + s["more"]], sts):
         assert st == L.steps({"key": k, **cat["recipes"][k]}), f"js and python steps differ for {k}"
+        if cat["recipes"][k]["launch"].get("backend") == "cpu":
+            command = st[-1]["code"]
+            assert "--gpus" not in command and "--device" not in command, f"CPU launch requires a GPU for {k}"
+        launch = cat["recipes"][k]["launch"]
+        weights = launch.get("weights") or []
+        weights = weights if isinstance(weights, list) else [weights]
+        downloads = [shlex.split(cmd.replace("\\\n", "")) for step in st if step["title"] == "Download the weights" for cmd in step["code"].split("\n\n")]
+        for w, argv in zip(weights, downloads):
+            files = w.get("files") or []
+            files = files if isinstance(files, list) else [files]
+            assert argv[:3] == ["hf", "download", w["repo"]], (k, argv)
+            assert argv[3:argv.index("--revision")] == files, f"download ignores selected files for {k}"
+        if launch.get("prepare"):
+            prep = next(s["code"] for s in st if s["title"] == "Prepare the model (first start)")
+            argv = shlex.split(prep.split("\n", 1)[1].replace("\\\n", ""))
+            image_index = argv.index(launch["image"])
+            assert argv[image_index + 1:] == launch["prepare"]["args"], k
+            mounts = [argv[i + 1] for i, arg in enumerate(argv) if arg == "-v"]
+            output = next(m for m in mounts if m.endswith(":" + launch["prepare"]["at"]))
+            assert output + ":ro" in st[-1]["code"], f"prepared model missing from serving mounts for {k}"
+            assert all(m.endswith(":ro") for m in mounts if m != output), f"preparation can modify input weights for {k}"
         n += 1
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY

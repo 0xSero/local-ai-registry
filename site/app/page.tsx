@@ -1,16 +1,16 @@
 import Link from "next/link";
 import Picker from "@/components/Picker";
 import Logo from "@/components/Logo";
-import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag, bare } from "@/lib/registry";
+import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag, bare, memoryLabel } from "@/lib/registry";
 
 export default function Home() {
-  const vendors = ["nvidia", "amd", "intel", "apple"].filter((v) => cards.some((c) => c.vendor === v) || bare.some((h) => h.vendor === v));
+  const vendors = ["nvidia", "amd", "intel", "apple", "cpu"].filter((v) => cards.some((c) => c.vendor === v) || bare.some((h) => h.vendor === v));
   return (
     <main>
       <div className="hero">
         <div className="label" style={{ marginBottom: 18 }}>Local AI registry</div>
-        <h1>The model to run on your GPU, and exactly how.</h1>
-        <p>Pick your card. You get the three best models it can run, how fast each one goes, and the command that starts it. A tested recipe was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace. Below the top three, each card lists every other recipe we know of, including ones published by others, marked as reported until our checks run.</p>
+        <h1>The model to run on your GPU or CPU, and exactly how.</h1>
+        <p>Pick your hardware. You get the three best models it can run, how fast each one goes, and the command that starts it. A tested recipe was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace. Below the top three, each card lists every other recipe we know of, including ones published by others, marked as reported until our checks run.</p>
         <Picker options={[...cards, ...bare].map((c) => ({ id: c.id, name: short(c.name), vendor: c.vendor, vram: c.vram_gb }))} />
         <div className="facts">
           <span><b>{stats.hardware}</b> GPUs and chips</span><span><b>{stats.gpus}</b> with recipes</span><span><b>{stats.recipes}</b> recipes</span>
@@ -30,7 +30,7 @@ export default function Home() {
                 return (
                   <Link key={c.id} href={`/gpu/${c.id}`} className="row">
                     <span className="gpu-name">{short(c.name)}{!c.picks.length && <span className="faint"> · {setupTag(c.setups[0])}</span>}{c.setups.length > 1 && <span className="faint"> · also {c.setups.slice(1).map(setupTag).join(", ")}</span>}</span>
-                    <span className="gpu-mem dim">{c.vram_gb} GB</span>
+                    <span className="gpu-mem dim">{memoryLabel(c)}</span>
                     {top && <span className="gpu-model"><Logo family={m.logo ?? m.family} size={16} />{m.name}<span className="faint">{format(top)}</span></span>}
                     <span className="gpu-speed"><span className="bar"><i style={{ width: `${Math.min(100, tps / 1.8)}%` }} /></span><span>{tps ? Math.round(tps) : "–"}<span className="faint"> tok/s</span></span></span>
                     <span className="dim">›</span>
