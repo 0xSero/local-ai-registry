@@ -30,6 +30,7 @@ export async function pick({ gpu, vram, all = false }, cat) {
 
 const GPU = { cpu: "", nvidia: "--gpus all", "amd-rocm": "--device /dev/kfd --device /dev/dri", "amd-vulkan": "--device /dev/dri", "intel-xpu": "--device /dev/dri" };
 const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
+const value = (s) => /^\$\{[A-Z_][A-Z0-9_]*\}$/.test(s) ? `"${s}"` : q(s);
 const files = (w) => (Array.isArray(w.files) ? w.files : w.files ? [w.files] : []).map((f) => ` ${q(f)}`).join("");
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
 
@@ -45,7 +46,7 @@ const pairs = (a) => {
 /** A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
  *  its weights, writes its launcher and raises the GPU wired-memory limit before it starts. */
 function hostSteps(l) {
-  const env = Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${q(v)}`);
+  const env = Object.entries(l.env ?? {}).map(([k, v]) => `${k}=${value(v)}`);
   if (!l.pip && !l.weights?.length) return [{ title: "Install", code: install(l.install) }, { title: "Start the server", code: [...env, ...l.command.map(q)].join(" ") }];
   const out = [l.pip ? { title: "Install the engine", code: `python3 -m pip install ${l.pip.map(q).join(" ")}` } : { title: "Install the engine", code: install(l.install) }];
   if (l.weights?.length) out.push({ title: "Download the weights", code: l.weights.map((w) => `hf download ${w.repo}${files(w)} \\\n  --revision ${w.revision} \\\n  --local-dir ${w.at}`).join("\n\n") });
@@ -64,7 +65,8 @@ export function steps(r) {
   let image = l.image;
   if (l.build) {  // an image built from the source's Dockerfile at a pinned commit
     image = `local-ai/${name}`;
-    const files = (l.build.dockerfile ?? "Dockerfile").split(" + ");
+    const value = (s) => /^\$\{[A-Z_][A-Z0-9_]*\}$/.test(s) ? `"${s}"` : q(s);
+const files = (l.build.dockerfile ?? "Dockerfile").split(" + ");
     out.push({ title: "Build the image", code: [install(`https://github.com/${l.build.repo}/tree/${l.build.commit}`), ...files.map((d) => `docker build -t ${image} -f ${d} .`)].join("\n") });
   }
   const prepared = `~/models/${name}-prepared-${image.slice(-12)}`;
@@ -83,7 +85,7 @@ export function steps(r) {
   const all = [...ep.slice(1), ...l.args], args = [];
   for (let i = 0; i < all.length; i++) {
     const a = all[i], b = all[i + 1];
-    if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${q(b)}`); i++; } else args.push(q(a));
+    if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${value(b)}`); i++; } else args.push(value(a));
   }
   if (l.prepare) {
     const prep = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
@@ -92,7 +94,7 @@ export function steps(r) {
     mounts.unshift(`-v ${prepared}:${l.prepare.at}:ro`);
   }
   const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
-    ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${q(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
+    ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${value(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
   out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.filter(Boolean).join(" \\\n  ") });
   return out;
 }

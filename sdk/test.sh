@@ -3,7 +3,7 @@
 set -e
 cd "$(dirname "$0")/.."
 python3 - <<'PY'
-import json, shlex, subprocess, sys
+import json, os, shlex, subprocess, sys
 sys.path.insert(0, "sdk/python")
 import local_ai_registry as L
 cat = json.load(open("dist/catalog.json"))
@@ -43,5 +43,20 @@ for i, (got, sts) in json.loads(js).items():
             assert output + ":ro" in st[-1]["code"], f"prepared model missing from serving mounts for {k}"
             assert all(m.endswith(":ro") for m in mounts if m != output), f"preparation can modify input weights for {k}"
         n += 1
+# Execute only a synthetic command against a shell function, never the Docker daemon.
+fixture = {"model": "node-template", "launch": {"image": "example.invalid/server:fixture", "backend": "cpu",
+    "weights": [], "port": 8000, "args": ["--node-rank", "${NODE_RANK}", "--literal", "$(printf executed)"],
+    "env": {"VLLM_HOST_IP": "${NODE_IP}", "NOTE": "${NOTE}"}}}
+py_steps = L.steps(fixture)
+js_steps = json.loads(subprocess.run(["node", "--input-type=module", "-e",
+    'import {readFileSync} from "node:fs"; import {steps} from "./sdk/js/index.js"; console.log(JSON.stringify(steps(JSON.parse(readFileSync(0,"utf8")))));'],
+    input=json.dumps(fixture), capture_output=True, text=True, check=True).stdout)
+assert py_steps == js_steps
+script = 'docker() { printf "%s\\n" "$@"; };\n' + py_steps[-1]["code"]
+argv = subprocess.run(["sh", "-c", script], env={**os.environ, "NODE_RANK": "1", "NODE_IP": "192.0.2.1", "NOTE": "$(printf injected)"},
+    capture_output=True, text=True, check=True).stdout.splitlines()
+assert argv[argv.index("--node-rank") + 1] == "1", argv
+assert "VLLM_HOST_IP=192.0.2.1" in argv, argv
+assert "NOTE=$(printf injected)" in argv and argv[-1] == "$(printf executed)", argv
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY
