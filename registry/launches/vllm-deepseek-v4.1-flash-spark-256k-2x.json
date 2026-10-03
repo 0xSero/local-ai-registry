@@ -105,7 +105,7 @@
     "VLLM_HOST_IP": "${NODE_IP}",
     "B12X_COMPILE_CACHE_DIR": "/cache/b12x",
     "XDG_CACHE_HOME": "/cache",
-    "ST_EXL3_PLAN": "/spark/exl3/plan/J268-ho-v31-K5n.json",
+    "ST_EXL3_PLAN": "/model/exl3/plan/J268-ho-v31-K5n.json",
     "ST_EXL3_PREFILL": "st",
     "ST_EXL3_PREFILL_MIN_ROWS": "1",
     "VLLM_ENABLE_ROCE_ALLREDUCE": "1",
@@ -118,15 +118,9 @@
   "shm": "32g",
   "weights": [
     {
-      "repo": "deepseek-ai/DeepSeek-V4.1-Flash",
-      "revision": "fb2764a5cf321eaa5070ca8f9e892818f477c16d",
-      "at": "/model",
-      "layout": "dir"
-    },
-    {
       "repo": "0xSero/DeepSeek-V4.1-Flash-Spark",
       "revision": "08ac8b3defc9a239ba0baf51059687c689406519",
-      "at": "/spark",
+      "at": "/model",
       "layout": "dir"
     }
   ],
@@ -143,9 +137,9 @@
     "--shm-size 32g",
     "--ulimit memlock=-1",
     "--device /dev/infiniband",
-    "--workdir /spark/exl3"
+    "--workdir /model/exl3"
   ],
   "machines": 2,
-  "setup": "Head (rank 0, API) + worker (rank 1, --headless, same args with NODE_RANK=1) containers over the CX7 RoCE fabric (--nnodes 2, mp executor); VLLM_HOST_IP/NODE_IP = each node's fabric IP (the head must not advertise a WiFi/LAN IP the worker cannot reach), CX7_IF/CX7_IB = that node's fabric netdev and RoCE HCAs. Both nodes need both weight repos on local NVMe: the native deepseek-ai/DeepSeek-V4.1-Flash checkpoint (510 GB, mounted at /model: attention, shared experts and the Engram tables, read from disk at runtime) and 0xSero/DeepSeek-V4.1-Flash-Spark (462 GB, mounted at /spark: EXL3 expert banks under exl3/qn, exl3/q31, exl3/q31s and the plan exl3/plan/J268-ho-v31-K5n.json = ST_EXL3_PLAN). After downloading the Spark repo, run ./reassemble.sh once in its directory: it rebuilds the two Engram shards model-00005/00006-of-00006.safetensors from their .partNN files (HF caps files at 50 GB) and sha256-checks them; the parts can then be deleted. The plan's qdir (qn:q31:q31s) is relative, so the container must start in /spark/exl3 (--workdir /spark/exl3, already in the flags). Mount a persistent /cache (b12x and RoCE JIT caches) or the first start recompiles. A host memory guard (deepseek-v4.1-flash-spark/spark/memguard.sh in 0xSero/local-ai-images) stops the containers before a GB10 unified-memory OOM wedges the host. Load ~12 min.",
+  "setup": "Head (rank 0, API) + worker (rank 1, --headless, same args with NODE_RANK=1) containers over the CX7 RoCE fabric (--nnodes 2, mp executor). Set NODE_RANK, HEAD_IP, NODE_IP, CX7_IF and CX7_IB on each node; NODE_IP must be its reachable fabric IP. Both nodes download the pinned 0xSero/DeepSeek-V4.1-Flash-Spark repository to local NVMe and mount it at /model. This public repository includes the native checkpoint, Engram parts and EXL3 banks; no separate full upstream checkpoint is needed. After download, run bash ~/models/DeepSeek-V4.1-Flash-Spark-08ac8b3d/reassemble.sh once on each node to reconstruct and sha256-check the two Engram shards. Allow about 665 GB for download plus reassembly, in addition to image/cache space; after a successful check the .partNN files may be deleted, leaving about 462 GB. The plan is /model/exl3/plan/J268-ho-v31-K5n.json; its qdir is qn:q31:q31s relative to --workdir /model/exl3. Mount a persistent /cache for b12x and RoCE JIT caches. The source repository includes a host memory guard to stop containers before a GB10 unified-memory OOM. Load about 12 minutes. CANDIDATE: the earlier S018 lab run used the original local full-checkpoint layout and the unattested host image; the final published layout and approved CI image still require a fresh six-gate run.",
   "source": "https://github.com/0xSero/local-ai-images/tree/main/deepseek-v4.1-flash-spark"
 }
