@@ -29,12 +29,13 @@ export default async function RecipePage({ params }: P) {
   const p = r.proof[0];
   const w = weightsList(r.launch)[0];
   const run = steps(r);
+  const source = r.launch.source ?? (p.reported && p.src ? `https://github.com/${p.src.replace("@", "/tree/")}` : undefined);
   return (
     <main>
       <Viewed event="recipe_viewed" props={{ gpu: cid, recipe: r.key, model: r.model }} />
       <Link href={`/gpu/${cid}`} className="back">‹ {cardName(cid)}</Link>
       <h1 className="title"><Logo family={m.logo ?? m.family} size={28} />{m.name}</h1>
-      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {setupOf(r).name} · {setupOf(r).vram_gb} GB</div>
+      <div className="dim">{format(r)} · {engineKind(r)} · {ctxLabel(r.launch.ctx)} context · {setupOf(r).name} · {c.vendor === "cpu" ? "System RAM" : `${setupOf(r).vram_gb} GB`}</div>
       {m.about && <p style={{ maxWidth: "70ch", marginTop: 22 }}>{m.about}</p>}
 
       <section className="grid cols-4">
@@ -46,8 +47,8 @@ export default async function RecipePage({ params }: P) {
 
       <section>
         <span className="label">Run it</span>
-        {p.reported ? <p className="dim" style={{ marginTop: 0 }}>This is the launch as {s.label.replace("Reported by ", "")} publishes it. Their repository has the full setup: <a href={r.launch.source} style={{ textDecoration: "underline" }}>{p.src} ›</a> The server then answers on <code>http://localhost:8000/v1</code>.</p> :
-        <p className="dim" style={{ marginTop: 0 }}>With <a href="https://github.com/0xSero/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> it is one button. By hand, it is three steps: the weights, the config, the container. The server then answers on <code>http://localhost:8000/v1</code>.</p>}
+        {p.reported ? <p className="dim" style={{ marginTop: 0 }}>This is the launch as {s.label.replace("Reported by ", "")} publishes it. Their repository has the full setup: <a href={source} style={{ textDecoration: "underline" }}>{p.src} ›</a> The server then answers on <code>http://localhost:8000/v1</code>.</p> :
+        <p className="dim" style={{ marginTop: 0 }}>Follow the steps below to download and run this recipe. <a href="https://github.com/0xSero/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> lists the recipes it can launch on your hardware. The server then answers on <code>http://localhost:8000/v1</code>.</p>}
         <ol className="steps">
           {run.map((st, i) => (
             <li key={i}>
@@ -71,7 +72,7 @@ export default async function RecipePage({ params }: P) {
         <dl className="kv">
           <dt>Weights</dt><dd>{!w ? "inside the image" : <a href={`https://huggingface.co/${w.repo}/tree/${w.revision}`}>{w.repo} @ {w.revision.slice(0, 10)} ›</a>}</dd>
           <dt>Image</dt><dd>{r.launch.build ? <a href={`https://github.com/${r.launch.build.repo}/tree/${r.launch.build.commit}`}>built from {r.launch.build.repo} @ {r.launch.build.commit.slice(0, 10)} ›</a> : r.launch.image ?? "none: a program on the host"}</dd>
-          {r.launch.source && <><dt>Source</dt><dd><a href={r.launch.source}>{r.launch.source.replace("https://github.com/", "").replace("/tree/", " @ ").slice(0, 60)} ›</a></dd></>}
+          {source && <><dt>Source</dt><dd><a href={source}>{source.replace("https://github.com/", "").replace("/tree/", " @ ").slice(0, 60)} ›</a></dd></>}
           <dt>{r.profile.startsWith("registry/launches/") ? "Launch" : "Engine profile"}</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/${r.profile}`}>{r.engine.split("@")[0]} ›</a></dd>
           <dt>Recipe file</dt><dd><a href={`https://github.com/0xSero/local-ai-registry/blob/main/registry/recipes/${r.key}.json`}>registry/recipes/{r.key}.json ›</a></dd>
           {m.released && <><dt>Model released</dt><dd>{fmtDate(m.released)}</dd></>}

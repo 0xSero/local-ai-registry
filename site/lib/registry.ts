@@ -5,13 +5,13 @@ import { steps as sdkSteps } from "../../sdk/js/index.js";
 
 export type Proof = {
   at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null;
-  proxy?: string; legacy?: boolean; log?: string; reported?: boolean; src?: string; claims?: string;
+  proxy?: string; legacy?: boolean; log?: string; reported?: boolean; src?: string; claims?: string; note?: string;
 };
 export type Launch = {
   image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
-  weights: { repo: string; revision: string; at: string; layout?: string } | { repo: string; revision: string; at: string; layout?: string }[];
+  weights: { repo: string; revision: string; at: string; layout?: string; files?: string | string[] | null } | { repo: string; revision: string; at: string; layout?: string; files?: string | string[] | null }[];
   config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; cards?: number; backend?: string | null;
-  kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
+  prepare?: { at: string; args: string[] }; kind?: string; machines?: number; build?: { repo: string; commit: string }; setup?: string; source?: string; install?: string;
 };
 export type Recipe = { key: string; slug: string; model: string; weights: string; engine: string; profile: string; card: string; proof: Proof[]; launch: Launch };
 export type Model = { family: string; name: string; released: string; reasoning: boolean; vision: boolean; about?: string; good_for?: string; logo?: string; hf?: string };
@@ -29,7 +29,7 @@ export const cards: Card[] = Object.entries(raw.cards)
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 export const recipes: Recipe[] = Object.entries(raw.recipes).map(([key, r]) => ({ key, slug: key.split("/").pop()!, ...r }));
 
-function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple"].indexOf(v); }
+function vendorRank(v: string) { return ["nvidia", "amd", "intel", "apple", "cpu"].indexOf(v); }
 
 /** A spec sheet from data/registry/hardware, built into ../dist/hardware.json by lab/hardware.py. */
 export type Specs = {
@@ -43,7 +43,8 @@ export const specs = (id: string): Specs | undefined => specsById[id];
 export const bare = Object.entries(specsById).filter(([id]) => !raw.cards[id]).map(([id, h]) => ({ id, ...h }))
   .sort((a, b) => vendorRank(a.vendor) - vendorRank(b.vendor) || b.vram_gb - a.vram_gb || a.name.localeCompare(b.name));
 
-export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple" };
+export const VENDOR: Record<string, string> = { nvidia: "NVIDIA", amd: "AMD", intel: "Intel", apple: "Apple", cpu: "CPU" };
+export const memoryLabel = (c: { vendor: string; vram_gb: number }) => c.vendor === "cpu" ? "System RAM" : `${c.vram_gb} GB`;
 export const card = (id: string) => cards.find((c) => c.id === id);
 export const recipe = (cardId: string, slug: string) => recipes.find((r) => r.card === cardId && r.slug === slug);
 const byKey = (keys: string[]) => keys.map((k) => recipes.find((r) => r.key === k)!).filter(Boolean);
@@ -70,7 +71,7 @@ export const weightsList = (l: Launch) => (Array.isArray(l.weights) ? l.weights 
 /** What a recipe proved, in plain words. */
 export function status(r: Recipe) {
   const p = r.proof[0];
-  if (p.reported) return { label: `Reported by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on}`, tone: "dim", detail: `Published by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on} in ${p.src}${p.tps ? `, where it reports ${p.tps} tok/s` : ""}. Our six checks have not run on it yet.` };
+  if (p.reported) return { label: `Reported by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on}`, tone: "dim", detail: `Published by ${p.on === "miaai-lab" ? "MiaAI-Lab" : p.on} in ${p.src}${p.tps ? `, where it reports ${p.tps} tok/s` : ""}. Our six checks have not run on it yet.${p.note ? ` ${p.note}` : ""}` };
   if (p.legacy) return { label: "Earlier check", tone: "dim", detail: "Passed the older check (loads and chats); a full six-check run is pending." };
   if (p.proxy) return { label: "Tested on a sibling", tone: "warm", detail: `No ${cardName(r.card)} is rentable; this ran on the ${cardName(p.proxy)}, the same chip family.` };
   return { label: "Tested on this card", tone: "ok", detail: `Passed all six checks on a real ${p.gpu ?? cardName(r.card)} on ${fmtDate(p.at)}.` };

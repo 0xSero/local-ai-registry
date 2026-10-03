@@ -11,7 +11,7 @@ BUILDERS = {
     "ghcr.io/0xsero/exl3xpu": ("0xSero/exl3xpu", "release-image.yml", "refs/heads/main"),
     "ghcr.io/ggml-org/llama.cpp": ("ggml-org/llama.cpp", "docker.yml", "refs/(?:heads/master|tags/b[0-9]+)"),
     **{f"ghcr.io/0xsero/{name}": ("0xSero/local-ai-images", "release-image.yml", "refs/heads/main")
-       for name in ("dsv41-flash-offload", "gateway", "glm53-flash-offload", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
+       for name in ("deepseek-v4.1-flash-spark", "dsv41-flash-offload", "gateway", "glm53-flash-offload", "sglang-exl3", "sglang-exl3-flashnext", "sglang-exl3-xpu-flashnext", "tabbyapi-exl3")},
 }
 PATHS = ["registry/engines", "registry/launches", "plugin/v2/recipes.json"]
 
