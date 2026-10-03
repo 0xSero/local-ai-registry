@@ -284,6 +284,8 @@ def save_logs(handle, recipe):
 
 def lab_spec(recipe, launch, args):
     """What a rented host runs: the image, provisioning (weights, config file) and then the engine's argv."""
+    if launch.get("prepare"):
+        raise SystemExit("prepare this model using the SDK steps first, then validate with --on endpoint")
     import rent as vr
 
     class LabSpec(vr.Spec):
