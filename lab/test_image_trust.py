@@ -47,13 +47,14 @@ class ImageTrustTest(unittest.TestCase):
         return args[0][5], re.compile(args[0][args[0].index("--cert-identity-regex") + 1])
 
     def test_verification_binds_publisher_workflow_and_branch(self):
-        repo, identity = self.identity("ghcr.io/0xsero/gateway@sha256:" + "a" * 64)
-        self.assertEqual(repo, "0xSero/local-ai-images")
-        base = "https://github.com/0xSero/local-ai-images/.github/workflows/release-image.yml@"
-        self.assertTrue(identity.search(base + "refs/heads/main"))
-        for ref in ["refs/heads/image/x", "refs/tags/b1", "refs/heads/main2"]:
-            self.assertFalse(identity.search(base + ref), ref)
-        self.assertFalse(identity.search("https://github.com/0xSero/local-ai-images/.github/workflows/other.yml@refs/heads/main"))
+        for name in ("gateway", "deepseek-v4.1-flash-spark"):
+            repo, identity = self.identity(f"ghcr.io/0xsero/{name}@sha256:" + "a" * 64)
+            self.assertEqual(repo, "0xSero/local-ai-images")
+            base = "https://github.com/0xSero/local-ai-images/.github/workflows/release-image.yml@"
+            self.assertTrue(identity.search(base + "refs/heads/main"))
+            for ref in ["refs/heads/image/x", "refs/tags/b1", "refs/heads/main2"]:
+                self.assertFalse(identity.search(base + ref), ref)
+            self.assertFalse(identity.search("https://github.com/0xSero/local-ai-images/.github/workflows/other.yml@refs/heads/main"))
 
     def test_llamacpp_release_tags_and_master_pass_but_other_refs_do_not(self):
         _, identity = self.identity("ghcr.io/ggml-org/llama.cpp@sha256:" + "a" * 64)
