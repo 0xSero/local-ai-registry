@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "qwen3.8-flash-next",
+  "weights": "peonist-ai/halogen-qwen3.8-flash-next@aea24edbbea1e889df62b62f9d40a8b4e574671c",
+  "engine": "halogen-flash-next-strix-halo@0c61bf84ac22",
+  "set": {},
+  "card": "radeon-8060s-128gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "Radeon 8060S"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-04",
+  "on": "owner",
+  "gpu": "Radeon 8060S",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 38.3,
+  "prefill": 1538,
+  "served": "halogen-qwen3.8-flash-next"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "red, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 122,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_ba1151170a8d4d86859afaea",
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "It's currently **17°C** in Paris with **overcast** skies.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 87
+  },
+  "context": {
+   "prompt_tokens": 213612,
+   "seconds": 138.9,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 5611,
+   "seconds_total": 164.7
+  }
+ },
+ "launch_config_sha256": null
+}

@@ -28,16 +28,13 @@
   "cards": 1,
   "flags": [
     "--device /dev/kfd",
-    "--device /dev/dri",
-    "--ipc host",
-    "--ulimit memlock=-1:-1",
-    "--security-opt seccomp=unconfined"
+    "--device /dev/dri"
   ],
   "needs": {
     "host_ram_gb": 21,
     "disk_gb": 35.87
   },
-  "setup": "NEEDS: a Ryzen AI Max (Radeon 8060S) with 128 GB of unified RAM; amd-smi reports the BIOS carve-out (512 MiB) as VRAM, so matching goes by GPU name and host RAM, not VRAM. The container needs /dev/kfd, /dev/dri, host IPC, unlimited memlock and unconfined seccomp (upstream Halogen requirements); group access to the render nodes goes in by host GID because the image defines no video/render groups. host_ram_gb is the system-wide MemAvailable drop at server ready, measured on Arch/Omarchy with ROCm from /opt/rocm. host_ram_gb is 21 (MemAvailable drop idle->ready; the weights beyond it serve from evictable unified-memory page cache).",
+  "setup": "NEEDS: a Ryzen AI Max (Radeon 8060S) with 128 GB of unified RAM; amd-smi reports the BIOS carve-out (512 MiB) as VRAM, so matching goes by GPU name and host RAM, not VRAM. The container needs /dev/kfd and /dev/dri with group access to the render nodes by host GID (the image defines no video/render groups); the engine loads and passes every gate under the default seccomp profile, private IPC and the default memlock limit, so no privileged options remain. host_ram_gb is the system-wide MemAvailable drop at server ready, measured on Arch/Omarchy with ROCm from /opt/rocm. host_ram_gb is 21 (MemAvailable drop idle->ready; the weights beyond it serve from evictable unified-memory page cache).",
   "source": "https://github.com/peonist-ai/halogen-server",
   "plugin": {
     "name": "Qwen3.8-27B",

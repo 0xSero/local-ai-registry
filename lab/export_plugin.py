@@ -25,8 +25,7 @@ def entry(key, r, meta):
         return {"id": rid, "name": x["name"], "family": x["family"], "format": x["format"], "engine": x["engine"], "servedName": x["servedName"],
                 "sizeGb": x["sizeGb"], "cards": L.get("cards", 1), "image": L["image"], "minDriver": x["minDriver"], "weights": weights,
                 "asset": {"name": x["asset"], "mountPath": L["config"]["at"], "text": L["config"]["text"]} if L["config"] else None,
-                "scratch": x["scratch"], "launch": {"entrypoint": L["entrypoint"], "arguments": L["args"], "environment": L["env"], "port": L["port"], "shm": L["shm"],
-                                                     **({"flags": L["flags"]} if L.get("flags") else {})},
+                "scratch": x["scratch"], "launch": {"entrypoint": L["entrypoint"], "arguments": L["args"], "environment": L["env"], "port": L["port"], "shm": L["shm"]},
                 "serving": x["serving"], "capabilities": {**x["capabilities"], **{k: v for k, v in caps.items() if v}},
                 **({"needs": L["needs"]} if L.get("needs") else {})}
     m = meta["models"][r["model"]]
@@ -50,9 +49,7 @@ def build():
         # the picks, then any other recipe that states host `needs`: the plugin offers those only on a machine with
         # that much free RAM and disk (e.g. experts offloaded to system RAM, tables read from NVMe)
         keys = c["picks"] + [k for k in c["more"] if cat["recipes"][k]["launch"].get("needs")]
-        # container flags (devices, ipc, memlock, seccomp) ride along from the registry-vetted
-        # launch; host programs and multi-machine setups stay out of the plugin
-        ok = [k for k in keys if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "machines", "build"))
+        ok = [k for k in keys if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines", "build"))
               and not cat["recipes"][k]["proof"][0].get("reported")  # the plugin runs one plain container we have checked
               and ("defaults" in lab.profile(cat["recipes"][k]["engine"]) or "plugin" in lab.profile(cat["recipes"][k]["engine"]))]  # and can describe
         if ok:
