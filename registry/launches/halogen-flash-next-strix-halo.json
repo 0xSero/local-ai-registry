@@ -1,0 +1,73 @@
+{
+  "id": "halogen-flash-next-strix-halo",
+  "engine": "halogen",
+  "about": "Halogen Flash-Next server running Qwen3.8-Flash-Next on a Ryzen AI Max (Radeon 8060S) from unified RAM; OpenAI chat API on port 8731",
+  "image": "ghcr.io/peonist-ai/halogen-flash-server@sha256:0c61bf84ac22308a53f5d1ca6b86806702d7039e5ebc51cae4c66621b92fe04a",
+  "provenance": "https://github.com/peonist-ai/halogen-flash-server",
+  "backend": "amd-rocm",
+  "port": 8731,
+  "entrypoint": null,
+  "args": [],
+  "env": {
+    "HALOGEN_TOKENIZER": "/models/tokenizer",
+    "HALOGEN_KV_POOL_POSITIONS": "262144"
+  },
+  "shm": null,
+  "weights": [
+    {
+      "repo": "peonist-ai/halogen-qwen3.8-flash-next",
+      "revision": "aea24edbbea1e889df62b62f9d40a8b4e574671c",
+      "at": "/models",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "flags": [
+    "--device /dev/kfd",
+    "--device /dev/dri"
+  ],
+  "needs": {
+    "host_ram_gb": 36,
+    "disk_gb": 131.6
+  },
+  "setup": "NEEDS: a Ryzen AI Max (Radeon 8060S) with 128 GB of unified RAM; amd-smi reports the BIOS carve-out (512 MiB) as VRAM, so matching goes by GPU name and host RAM, not VRAM. The ~130 GB repository downloads in full, sidecars included. The container needs /dev/kfd and /dev/dri with group access to the render nodes by host GID (the image defines no video/render groups); 0.16.2 loads and passes every gate under the default seccomp profile, private IPC and the default memlock limit, so no privileged options remain. host_ram_gb is the system-wide MemAvailable drop at server ready, measured on Arch/Omarchy with ROCm from /opt/rocm. Measured on this card: prefill 401 tok/s; fresh decode 33 tok/s (30 s stream window); first token ~270 s after a cold start while the engine autotunes (one-time); after a 213k-token turn decode degrades to ~8 tok/s until restart. host_ram_gb is 36 (MemAvailable drop idle->ready; the weights beyond it serve from evictable unified-memory page cache).",
+  "source": "https://github.com/peonist-ai/halogen-flash-server",
+  "plugin": {
+    "name": "Qwen3.8-Flash-Next",
+    "family": "qwen",
+    "format": "Halogen \u00b7 unified RAM",
+    "engine": "halogen",
+    "servedName": "halogen-qwen3.8-flash-next",
+    "sizeGb": 131.6,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 263168
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 131.6
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "radeon-8060s-128gb": "halogen-flash-next-strix-halo"
+  }
+}
