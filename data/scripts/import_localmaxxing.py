@@ -88,7 +88,7 @@ def _explicit_positive_integers(command, options):
     values = set()
     option_pattern = "|".join(re.escape(option) for option in options)
     for match in re.finditer(
-        rf"(?:^|\s)(?:{option_pattern})(?:=|\s+)(\d+)\b",
+        rf"(?:^|\s)(?:{option_pattern})(?:=|\s+)(\d+)(?=\s|$)",
         command,
         re.IGNORECASE,
     ):

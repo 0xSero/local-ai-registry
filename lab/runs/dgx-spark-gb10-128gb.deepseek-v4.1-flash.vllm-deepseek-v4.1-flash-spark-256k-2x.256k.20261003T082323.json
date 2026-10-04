@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "deepseek-v4.1-flash",
+  "weights": "0xSero/DeepSeek-V4.1-Flash-Spark@84b6b9d926aee8e0351bdfdbfb4d55b62df4099a",
+  "engine": "vllm-deepseek-v4.1-flash-spark-256k-2x@5668e35e5ee0",
+  "set": {},
+  "card": "dgx-spark-gb10-128gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "2x DGX Spark (GB10)"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-03",
+  "on": "owner",
+  "gpu": "2x DGX Spark (GB10)",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 20.5,
+  "prefill": 1758,
+  "served": "deepseek-v4.1-flash"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 56,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "chatcmpl-tool-ac8dc3d3eec53de5",
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "Right now in Paris: **17°C** with an **overcast** sky.\n\nLet me know if you'd like the weather for anywhere else.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 42
+  },
+  "context": {
+   "prompt_tokens": 175457,
+   "seconds": 99.8,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 1071,
+   "seconds_total": 53.0
+  }
+ },
+ "launch_config_sha256": null
+}

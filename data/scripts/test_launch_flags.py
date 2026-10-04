@@ -27,10 +27,20 @@ class ServerCapacityTests(unittest.TestCase):
     def test_no_flag(self):
         self.assertIsNone(server_capacity(row("vllm serve model")))
 
+    def test_comma_does_not_end_an_integer_token(self):
+        self.assertIsNone(server_capacity(row("--parallel 16,384")))
+        self.assertEqual(server_capacity(row("--parallel 16384")), 16384)
+
 
 class ServerContextLimitTests(unittest.TestCase):
     def test_single_direct_flag(self):
         self.assertEqual(server_context_limit(row("--max-model-len 32768")), 32768)
+
+    def test_comma_does_not_end_an_integer_token(self):
+        self.assertIsNone(server_context_limit(row("--ctx-size 32,768")))
+        self.assertIsNone(server_context_limit(row("--max-model-len 128,000")))
+        self.assertEqual(server_context_limit(row("--ctx-size 32768")), 32768)
+        self.assertEqual(server_context_limit(row("--max-model-len 128000")), 128000)
 
     def test_conflicting_direct_flags_reject(self):
         self.assertIsNone(
