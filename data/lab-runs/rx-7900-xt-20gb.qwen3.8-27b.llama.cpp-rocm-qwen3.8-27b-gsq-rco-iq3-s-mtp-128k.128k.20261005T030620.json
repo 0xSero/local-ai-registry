@@ -1,0 +1,68 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF@d562806dbafae37109975e970aae91b43e73b440",
+  "engine": "llama.cpp-rocm-qwen3.8-27b-gsq-rco-iq3-s-mtp-128k@595a97ee3be5",
+  "set": {},
+  "card": "rx-7900-xt-20gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "AMD Radeon RX 7900 XT"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-05",
+  "on": "owner",
+  "gpu": "AMD Radeon RX 7900 XT",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 42.7,
+  "prefill": 472,
+  "served": "qwen3.8-27b"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "Red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 44,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "id": "6sH5FRj9tO79InnTVqGuyCQRIpBuF1SI"
+    }
+   ],
+   "reply": "Here's the current weather in **Paris**:\n\n- 🌡️ **Temperature:** 17°C\n- ☁️ **Sky:** Overcast\n\nIt's a cool, cloudy day in Paris right now. You might want to bring a light jacket!",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 62
+  },
+  "context": {
+   "prompt_tokens": 106252,
+   "seconds": 224.9,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 1007,
+   "seconds_total": 24.3
+  }
+ },
+ "launch_config_sha256": null
+}
