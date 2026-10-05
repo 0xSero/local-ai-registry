@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-05",
+  "hardware": "NVIDIA GeForce RTX 3090, 24 GiB; one GPU used for inference",
+  "weights": "mrq/Qwen3.8-27B-pi-exl3-3.00bpw@3412e8c5a6cafdc75924fd52e339dee72de88285",
+  "source": "bytkim/Qwen3.8-27B-pi@34d3f21045f7b41453e66c39e137cfc818a603ce",
+  "launch_profile": "registry/launches/sglang-qwen3.8-27b-pi-exl3-3bpw-mtp-vision-200k.json",
+  "published_evidence": {
+    "conversion-provenance": "https://huggingface.co/mrq/Qwen3.8-27B-pi-exl3-3.00bpw/resolve/3412e8c5a6cafdc75924fd52e339dee72de88285/conversion-provenance.json",
+    "validation": "https://huggingface.co/mrq/Qwen3.8-27B-pi-exl3-3.00bpw/resolve/3412e8c5a6cafdc75924fd52e339dee72de88285/validation.json",
+    "benchmark": "https://huggingface.co/mrq/Qwen3.8-27B-pi-exl3-3.00bpw/resolve/3412e8c5a6cafdc75924fd52e339dee72de88285/benchmark.json"
+  },
+  "vision_fixture": {
+    "canvas": {
+      "width": 320,
+      "height": 160,
+      "background": "white"
+    },
+    "shapes": [
+      {
+        "kind": "rectangle",
+        "bounds": [
+          20,
+          20,
+          135,
+          140
+        ],
+        "fill": "red"
+      },
+      {
+        "kind": "ellipse",
+        "bounds": [
+          185,
+          20,
+          300,
+          140
+        ],
+        "fill": "blue"
+      }
+    ],
+    "prompt": "What color is the rectangle on the left? Answer with one color word.",
+    "request": {
+      "temperature": 0,
+      "max_tokens": 32,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "result": {
+      "test": "vision_color_fixture",
+      "passed": true,
+      "answer": "Red",
+      "usage": {
+        "prompt_tokens": 101,
+        "total_tokens": 103,
+        "completion_tokens": 2,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "image_tokens": 72
+        },
+        "reasoning_tokens": 0
+      }
+    }
+  },
+  "scope": "The vision fixture and published Pi read/edit tests are capability smoke checks, not model-quality benchmarks. The six-gate registry validation is recorded separately."
+}

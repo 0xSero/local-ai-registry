@@ -1,0 +1,69 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b-pi",
+  "weights": "mrq/Qwen3.8-27B-pi-exl3-3.00bpw@3412e8c5a6cafdc75924fd52e339dee72de88285",
+  "engine": "sglang-qwen3.8-27b-pi-exl3-3bpw-mtp-vision-200k@c8922bd7256c",
+  "set": {},
+  "card": "rtx-3090-24gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "RTX 3090"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-05",
+  "on": "owner",
+  "gpu": "RTX 3090",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 132.1,
+  "prefill": 816,
+  "served": "bytkim-Qwen3.8-27B-pi-exl3-3.00bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nred, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 139,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_0fab73e4f62d4dc8b1eac1f7",
+     "index": 0,
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "\n\nThe weather in Paris right now is **17°C (63°F)** with **overcast** skies.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 88
+  },
+  "context": {
+   "prompt_tokens": 166667,
+   "seconds": 204.2,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 13266,
+   "seconds_total": 92.8
+  }
+ },
+ "launch_config_sha256": null
+}
