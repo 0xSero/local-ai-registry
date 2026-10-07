@@ -1,0 +1,108 @@
+{
+  "id": "exllamav3-glm-5.3-flash-exl3-3.05bpw-nvme-55g-128k-rtx-3090-24gb",
+  "engine": "exllamav3-nvme",
+  "about": "GLM-5.3-Flash EXL3 3.05bpw on one RTX 3090 inside 55 GiB of host RAM: routed experts read with O_DIRECT from a packed NVMe store into an exclusive pinned RAM tier and an elastic GPU expert cache, AVX2 CPU lane for cold RAM-resident decode picks (glm53-flash-offload 9269860, GLM53_MODE=nvme, campaign run N119 S3b2)",
+  "image": "ghcr.io/0xsero/glm53-flash-offload@sha256:82eef823f95b89fcb14b8379d45315d3a632aaa054fb04e3418b62a3ec2ff1ff",
+  "provenance": "https://github.com/0xSero/local-ai-images/actions/runs/37592054786",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/opt/glm53/docker/entrypoint.sh",
+  "args": [
+    "-m",
+    "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+    "-cs",
+    "131072",
+    "--max-batch-size",
+    "8",
+    "-chunk_size",
+    "8192",
+    "-ambs",
+    "4",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--served-name",
+    "glm-5.3-flash"
+  ],
+  "env": {
+    "GLM53_MODE": "nvme",
+    "GLM53_EC_MAX_SLOTS": "1376",
+    "GLM53_MODEL_DIR": "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+    "GLM53_MODEL_DOWNLOAD": "0",
+    "GLM53_NV_STORE_DIR": "/nvx",
+    "HF_HUB_OFFLINE": "1"
+  },
+  "shm": "1g",
+  "weights": [
+    {
+      "repo": "turboderp/GLM-5.3-Flash-exl3",
+      "revision": "332ab457b709b7ba30dd9a448be5de03b80a7ac9",
+      "at": "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 4,
+  "vision": false,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 59.1,
+    "disk_gb": 242.6,
+    "fast_storage": "nvme"
+  },
+  "resources": {
+    "memoryBytes": 59055800320,
+    "memorySwapBytes": 59055800320,
+    "memlockUnlimited": true
+  },
+  "prepare": {
+    "at": "/nvx",
+    "args": [
+      "pack-store"
+    ],
+    "verifyArgs": [
+      "verify-store"
+    ],
+    "gpu": false,
+    "sizeGb": 117.33
+  },
+  "setup": "NEEDS: 1x RTX 3090 24 GB (expert cache capped at 1,376 slots by GLM53_EC_MAX_SLOTS so a desktop on the same GPU cannot run the CUDA graphs out of memory); the container is capped at 55 GiB of host RAM (resources: --memory 55g --memory-swap 55g, swap off inside the cap; the RAM tier is sized from the cap: 4,831 experts = 42.5 GiB; memory.peak 51.1-51.3 GiB measured) and runs with --ulimit memlock=-1 (the RAM tier is cudaHostRegister'ed); an x86-64 CPU with AVX2+FMA+F16C and >= 40 logical CPUs: nv2 pins its threads (CPU lane 2-23, main thread 24, controller 25, 16 NVMe readers 26-39) and the entrypoint refuses to start if they are outside the container's cpuset (set GLM53_NV_CPU_CPUS / GLM53_MAIN_CPUS / GLM53_NV_CTL_CPU / GLM53_NV_READER_CPUS otherwise); disk: the 125.3 GB checkpoint (only its non-expert weights are read) plus the 117.3 GB packed expert store on a local NVMe filesystem that supports O_DIRECT (xfs, ext4), read at ~7 GB/s on average while serving (20.2 TB over the 46-minute S3b2 sweep; measured on 4x Samsung 9100 PRO md RAID0 xfs; one drive is not measured). PREPARE (once, CPU only): the image's `pack-store` packs the routed experts (42 layers x 288 x 9.44 MB) from the read-only checkpoint into /nvx/glm53_flash_exl3_3.05bpw_experts.bin + .json, re-reads every record with O_DIRECT and checks its sha256, and byte-compares a sample against the checkpoint; `verify-store` repeats the sha256 re-read (11 s on the measured array). Serving mounts /nvx read-only. MEASURED (README '55 GB NVMe mode', campaign arm S3b2, sweep.py --template glm --prefill 8192 32768 --conc 1 2 4, natural completions, EPYC 7443P, 503 GiB DDR4, PCIe 4.0 x16, driver 610.57): prefill 8k 583 / 32k 812 tok/s; decode C1 14.85, C2 15.62 agg, C4 16.27 agg, C1 at 32k 13.46 tok/s. Image smoke P003 of this digest on a busier host (desktop stream on the GPU, a B70 job running): 545.3 / 767.4, decode 13.70 / 14.38 / 15.24, 32k C1 12.40; ready after 76 s. QUALITY: prefill / teacher-forced panel top-1 1.0000, KL 0 (2,154 positions); decode not exact (CPU lane): paired KL 0.0047 (p99 0.082), top-1 0.986; GLM53_MODE=nvme-exact is bit-exact at ~8.3 tok/s. Text only; OpenAI tool calls parsed from GLM's <tool_call> format. Raw: github.com/0xSero/glm53-flash-offload results/N119-S3b2-55g and results/P003-nvme-image-smoke.",
+  "source": "https://github.com/0xSero/glm53-flash-offload/tree/bf218b80e0a99c20512fc1bb458c1fcacbff730d",
+  "plugin": {
+    "name": "GLM-5.3-Flash",
+    "family": "glm",
+    "format": "EXL3 · 3.05 bpw (55 GB RAM, experts on NVMe)",
+    "engine": "exllamav3",
+    "servedName": "glm-5.3-flash",
+    "sizeGb": 125.3,
+    "minDriver": "580.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 131072
+    },
+    "weights": [
+      {
+        "dir": "turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 125.3
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rtx-3090-24gb": "glm53flash-exl3-3.05bpw-nvme55g-rtx3090-exllamav3-tp1"
+  }
+}
