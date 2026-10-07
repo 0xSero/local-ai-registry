@@ -38,6 +38,8 @@ def entry(key, r, meta):
                 **({"needs": L["needs"]} if L.get("needs") else {}),
                 **({"prepare": L["prepare"]} if L.get("prepare") else {}),
                 **({"resources": L["resources"]} if L.get("resources") else {})}
+    if "defaults" not in p:
+        return derived(key, r, meta, p, L, caps)
     m = meta["models"][r["model"]]
     b = meta["builds"][r["weights"]]
     name = L["weights"]["at"].rsplit("/", 1)[1]
@@ -50,12 +52,47 @@ def entry(key, r, meta):
             "serving": {"ctxTokens": L["ctx"], "kvTokens": L["ctx"] * L["seqs"] + 1024 * L["seqs"]}, "capabilities": caps}
 
 
+def derived(key, r, meta, p, L, caps):
+    """A frozen launch without a plugin block, described from what the lab accepted: the launch as it ran, and the
+    model and build it names in registry/models.json. Weights keep their layout (a folder, or a Hugging Face cache)."""
+    m, b = meta["models"][r["model"]], meta["builds"][r["weights"]]
+    ws = L["weights"] if isinstance(L["weights"], list) else [L["weights"]]
+    weights = []
+    for w in ws:
+        if w.get("layout") == "hub":
+            weights.append({"repository": w["repo"], "revision": w["revision"], "sizeGb": b["size_gb"], "layout": "hub", "mountPath": w["at"], "files": ""})
+        else:
+            files = w.get("files") or []
+            weights.append({"repository": w["repo"], "revision": w["revision"], "sizeGb": b["size_gb"], "layout": "dir",
+                            "mountPath": w["at"].rsplit("/", 1)[0], "dir": w["at"].rsplit("/", 1)[1], "files": ",".join(files if isinstance(files, list) else [files])})
+    args = L["args"] or []
+    flag = lambda *names: next((args[i + 1] for i, a in enumerate(args[:-1]) if a in names), None)
+    served = flag("--served-model-name", "--alias", "--model-name") or (ws[0]["at"].rsplit("/", 1)[1] if ws else flag("--model", "-m", "--model-path") or r["model"])
+    return {"id": f"{Path(key).name}.{r['card']}", "name": m["name"], "family": m["family"], "format": b["format"], "engine": p["engine"],
+            "servedName": served, "sizeGb": b["size_gb"], "cards": L.get("cards", 1), "image": L["image"], "minDriver": MIN_DRIVER.get(p["engine"], ""),
+            "weights": weights,
+            "asset": {"name": f"{Path(key).name}.config.yml", "mountPath": L["config"]["at"], "text": L["config"]["text"]} if L["config"] else None,
+            "scratch": None, "launch": {"entrypoint": L["entrypoint"], "arguments": args, "environment": L["env"], "port": L["port"], "shm": L["shm"]},
+            "serving": {"ctxTokens": L["ctx"], "kvTokens": L["ctx"] * L["seqs"] + 1024 * L["seqs"]}, "capabilities": caps,
+            **({"needs": L["needs"]} if L.get("needs") else {})}
+
+
+def describable(r):
+    """The plugin can describe a recipe whose launch has a plugin block or template defaults, or whose model and build
+    registry/models.json knows (and whose image is pinned by digest)."""
+    p = lab.profile(r["engine"])
+    if "defaults" in p or "plugin" in p:
+        return True
+    meta = json.loads((ROOT / "registry" / "models.json").read_text())
+    return (r.get("model") in meta["models"] and r.get("weights") in meta["builds"] and "@sha256:" in (p.get("image") or "")
+            and bool(lab.render(r)["weights"]))
+
+
 def eligible(r, version):
     L = r["launch"]
     if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("reported") or r["proof"][0].get("withdrawn"):
         return False
-    p = lab.profile(r["engine"])
-    if "defaults" not in p and "plugin" not in p:
+    if not describable(r):
         return False
     if L.get("prepare") or L.get("resources"):
         if version == 2:
@@ -76,6 +113,8 @@ def build(version=2):
         # that much free RAM and disk (e.g. experts offloaded to system RAM, tables read from NVMe)
         # and, from the rest, the first recipe of each model the picks do not have, so every validated model reaches the
         # card once and the list does not repeat a model in a weaker setting
+        # then each multi-card setup on one machine, its own picks and models the same way
+        multi = [k for st in c.get("setups", []) if st["cards"] > 1 and st["machines"] == 1 for k in st["picks"] + st["more"]]
         ok = [k for k in c["picks"] if eligible(cat["recipes"][k], version)]
         names = {entry(k, cat["recipes"][k], meta)["name"] for k in ok}
         for k in c["more"]:
@@ -86,6 +125,16 @@ def build(version=2):
             if r["launch"].get("needs") or name not in names:
                 ok.append(k)
                 names.add(name)
+        for n in sorted({cat["recipes"][k]["launch"].get("cards", 1) for k in multi}):
+            seen = set()
+            for k in multi:
+                r = cat["recipes"][k]
+                if r["launch"].get("cards", 1) != n or k in ok or not eligible(r, version):
+                    continue
+                name = entry(k, r, meta)["name"]
+                if name not in seen:
+                    ok.append(k)
+                    seen.add(name)
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
             for e in hw[card]["recipes"]:  # a needs block reaches the plugin only in the checked shape
