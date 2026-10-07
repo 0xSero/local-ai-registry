@@ -1,0 +1,51 @@
+{
+  "id": "tensorfold-glm-5.3-flash-4bit-mtp-526k",
+  "kind": "host",
+  "engine": "tensorfold",
+  "about": "GLM-5.3-Flash (MLX \u00b7 4-bit, native MTP) on TensorFold v0.6.0 with --context 524288 --parallel 4 under launchctl on Apple M5 Ultra 256GB",
+  "command": [
+    "tensorfold",
+    "serve",
+    "Vontra/GLM-5.3-Flash-MLX-4bit-MTP",
+    "--name",
+    "glm-5.3-flash-mlx-4bit-mtp",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--context",
+    "524288",
+    "--max-tokens",
+    "32768",
+    "--temperature",
+    "1.0",
+    "--top-p",
+    "0.95",
+    "--no-update-check",
+    "--parallel",
+    "4"
+  ],
+  "install": "pip install --force-reinstall git+https://github.com/ashhart/TensorFold.git@c4646171139ee8a3c38103eaa1699dad226ec12b",
+  "pip": [
+    "tensorfold @ git+https://github.com/ashhart/TensorFold.git@c4646171139ee8a3c38103eaa1699dad226ec12b"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "0",
+    "TENSORFOLD_MEMORY_LIMIT_GB": "210"
+  },
+  "port": 8080,
+  "weights": [
+    {
+      "repo": "Vontra/GLM-5.3-Flash-MLX-4bit-MTP",
+      "revision": "76add2a341a1cd90ad0e86bb69839ea9c35827c6",
+      "at": "${HOME}/.cache/huggingface/hub/models--Vontra--GLM-5.3-Flash-MLX-4bit-MTP/snapshots/76add2a341a1cd90ad0e86bb69839ea9c35827c6/",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 524288,
+  "seqs": 4,
+  "vision": false,
+  "backend": "metal"
+}
