@@ -22,12 +22,13 @@ jobs:
         run: |
           python3 -m unittest discover -s lab -p test_image_trust.py
           python3 -m unittest discover -s lab -p test_digest.py
+          python3 -m unittest discover -s lab -p test_offload_contract.py
           python3 lab/image_trust.py --base "$IMAGE_BASE"
       - name: Recipes are well-formed, pinned, in the right place and proven
         run: python3 lab/lab.py check
       - name: dist/catalog.json is current
         run: python3 lab/catalog.py --check
-      - name: plugin/v2/recipes.json is current
+      - name: plugin v2 and v3 recipes are current
         run: python3 lab/export_plugin.py --check
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
