@@ -80,6 +80,12 @@ def derived(key, r, meta, p, L, caps):
             **({"needs": L["needs"]} if L.get("needs") else {})}
 
 
+def mounts_ok(e):
+    """The plugin's own rule: no input is mounted at, or above, where a prepared pack is mounted."""
+    out = (e.get("prepare") or {}).get("at")
+    return not out or not any(out == w["mountPath"] or out.startswith(w["mountPath"].rstrip("/") + "/") for w in e["weights"])
+
+
 def describable(r):
     """The plugin can describe a recipe whose launch has a plugin block or template defaults, or whose model and build
     registry/models.json knows (and whose image is pinned by digest)."""
@@ -93,7 +99,9 @@ def describable(r):
 
 def eligible(r, version):
     L = r["launch"]
-    if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("reported") or r["proof"][0].get("withdrawn"):
+    # a recipe its publisher reported (not yet run by the lab) is exported too, flagged `reported`, so the plugin can
+    # say so; one withdrawn is not
+    if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("withdrawn"):
         return False
     if not describable(r):
         return False
@@ -101,7 +109,7 @@ def eligible(r, version):
         if version == 2:
             return False  # old plugins silently ignore these fields
         lab.check_execution(L)
-        if r["proof"][0].get("launch_sha256") != lab.launch_hash(L):
+        if not r["proof"][0].get("reported") and r["proof"][0].get("launch_sha256") != lab.launch_hash(L):
             return False  # acceptance must bind the whole typed launch
     return True
 
@@ -138,8 +146,10 @@ def build(version=2):
                 if name not in seen:
                     ok.append(k)
                     seen.add(name)
+        # the plugin refuses a whole catalog for one recipe it cannot run, so none such leaves here
+        ok = [k for k in ok if mounts_ok(entry(k, cat["recipes"][k], meta))]
         if ok:
-            hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
+            hw[card] = {"match": c["match"], "recipes": [dict(entry(k, cat["recipes"][k], meta), **({"reported": True} if cat["recipes"][k]["proof"][0].get("reported") else {})) for k in ok]}
             for e in hw[card]["recipes"]:  # a needs block reaches the plugin only in the checked shape
                 if "resources" in e:
                     e["launch"]["resources"] = e.pop("resources")
