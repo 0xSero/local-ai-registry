@@ -3,7 +3,7 @@
 dist/catalog.json: each card's picks, recommended first, then each validated model the picks lack (its first recipe),
 and any other recipe that states host `needs` (RAM, disk) for the plugin to offer only where the machine has them. Recipes validated before the lab keep their original ids,
 so running deployments stay recognised. `--check` fails if it is stale. Standard library only."""
-import json, sys
+import json, re, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lab
@@ -81,7 +81,10 @@ def derived(key, r, meta, p, L, caps):
 
 
 def mounts_ok(e):
-    """The plugin's own rule: no input is mounted at, or above, where a prepared pack is mounted."""
+    """The plugin's own rules: an id it accepts (a-z, 0-9, dots and dashes, at most 64), and no input mounted at, or
+    above, where a prepared pack is mounted."""
+    if not re.fullmatch(r"[a-z0-9][a-z0-9.-]{0,63}", e["id"]):
+        return False
     out = (e.get("prepare") or {}).get("at")
     return not out or not any(out == w["mountPath"] or out.startswith(w["mountPath"].rstrip("/") + "/") for w in e["weights"])
 
@@ -146,7 +149,7 @@ def build(version=2):
                 if name not in seen:
                     ok.append(k)
                     seen.add(name)
-        # the plugin refuses a whole catalog for one recipe it cannot run, so none such leaves here
+        # the plugin refuses a whole catalog for one recipe it cannot take, so none such leaves here
         ok = [k for k in ok if mounts_ok(entry(k, cat["recipes"][k], meta))]
         if ok:
             hw[card] = {"match": c["match"], "recipes": [dict(entry(k, cat["recipes"][k], meta), **({"reported": True} if cat["recipes"][k]["proof"][0].get("reported") else {})) for k in ok]}
