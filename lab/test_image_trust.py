@@ -66,6 +66,12 @@ class ImageTrustTest(unittest.TestCase):
             self.assertFalse(identity.search(base + "other.yml@refs/heads/main"))
             self.assertFalse(identity.search("https://github.com/sybil-solutions/exl3xpu/.github/workflows/release-image.yml@refs/heads/main"))
 
+    def test_legacy_proof_comes_from_oci_after_repository_transfer(self):
+        for namespace, expected in (("0xsero", True), ("sybil-solutions", False)):
+            run = Mock()
+            verify(f"ghcr.io/{namespace}/gateway@sha256:" + "a" * 64, run)
+            self.assertEqual("--bundle-from-oci" in run.call_args.args[0], expected)
+
     def test_llamacpp_release_tags_and_master_pass_but_other_refs_do_not(self):
         _, identity = self.identity("ghcr.io/ggml-org/llama.cpp@sha256:" + "a" * 64)
         base = "https://github.com/ggml-org/llama.cpp/.github/workflows/docker.yml@"
