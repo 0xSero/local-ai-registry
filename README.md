@@ -36,6 +36,11 @@ docs/           design.md
 
 - `weights`: a Hugging Face repo at a full commit.
 - `engine`: a profile in `registry/engines/`, pinned to its image digest.
+
+A launch with a reproducible failure can be withdrawn by prepending a proof with
+`withdrawn: true`, its source URL and reason. Catalogs and plugin exports omit it;
+historical proofs and recipe IDs stay in source. Requalify the exact launch with
+a fresh passing lab proof before offering it again.
 - `set`: only the settings that differ from the profile's defaults.
 - `proof`: the latest passing runs. A proof marked `proxy` was run on the sibling card it names; one marked `legacy` passed the older acceptance (load and chat) and is waiting for a full run.
 

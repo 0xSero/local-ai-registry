@@ -31,6 +31,8 @@ def build(today=None):
     cards, recipes = {}, {}
     for f in sorted(lab.RECIPES.rglob("*.json")):
         r = json.loads(f.read_text())
+        if r["proof"][0].get("withdrawn"):
+            continue  # retain historical proofs in source, but do not offer a withdrawn launch
         m = meta["models"].get(r["model"])
         old = 2 if r["proof"][0].get("reported") else 1 if r["proof"][0].get("legacy") else 0
         if old != 1 and (not m or m["family"] not in fam or (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]):
