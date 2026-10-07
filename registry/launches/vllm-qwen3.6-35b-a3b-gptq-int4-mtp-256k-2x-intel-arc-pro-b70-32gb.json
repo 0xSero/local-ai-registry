@@ -1,0 +1,101 @@
+{
+  "id": "vllm-qwen3.6-35b-a3b-gptq-int4-mtp-256k-2x-intel-arc-pro-b70-32gb",
+  "engine": "vllm",
+  "about": "Qwen3.6-35B-A3B GPTQ Int4 with its MTP head (4 draft tokens) on two Intel Arc Pro B70 (tensor parallel 2): Intel's llm-scaler vLLM 0.26.1 for XPU, XPU graphs on, fp8 KV, vision on, 262K context",
+  "image": "intel/llm-scaler-vllm@sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b",
+  "provenance": "https://hub.docker.com/r/intel/llm-scaler-vllm (tag 0.26.0-b2, vLLM 0.26.1.dev0+g568afb3a1.xpu)",
+  "backend": "intel-xpu",
+  "port": 8000,
+  "entrypoint": "bash",
+  "args": [
+    "-c",
+    "mkdir -p /dev/dri/by-path && for r in /dev/dri/renderD*; do ln -sf \"../${r##*/}\" \"/dev/dri/by-path/pci-$(basename \"$(readlink -f \"/sys/class/drm/${r##*/}/device\")\")-render\"; done; source /opt/intel/oneapi/setvars.sh --force && source /opt/intel/oneapi/ccl/2021.15/env/vars.sh --force && exec vllm serve \"$@\"",
+    "--",
+    "/models",
+    "--served-model-name",
+    "qwen3.6-35b-a3b",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8000",
+    "--dtype",
+    "float16",
+    "--max-model-len",
+    "262144",
+    "--max-num-seqs",
+    "4",
+    "--kv-cache-dtype",
+    "fp8",
+    "--max-num-batched-tokens",
+    "8192",
+    "--kv-cache-memory",
+    "3865470566",
+    "--block-size",
+    "64",
+    "--tensor-parallel-size",
+    "2",
+    "--trust-remote-code",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--reasoning-parser",
+    "qwen3",
+    "--speculative-config",
+    "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1",
+    "VLLM_XPU_ENABLE_XPU_GRAPH": "1"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4",
+      "revision": "00a66983516f8f8057741221277eed4141c9e431",
+      "at": "/models",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 4,
+  "vision": true,
+  "cards": 2,
+  "setup": "NOT ACCEPTED: written so the two-card variant is plugin-eligible once a lab run passes; never run (the second B70 on omarchy, 0000:c3:00.0, is parked after a PCIe incident). Ship it only if a lab run beats the one-card recipe (qwen3.6-35b-a3b.vllm.256k on intel-arc-pro-b70-32gb: decode 98.9 tok/s, prefill 1609 tok/s). Same image, weights and entrypoint as the one-card launch: both passed render nodes are linked under /dev/dri/by-path for oneCCL, whose pidfd handle exchange falls back to drmfd without extra capabilities (seen in the one-card run), so no --ipc host, SYS_PTRACE or seccomp flags are used; shm 16g covers the shared memory --ipc host provided in the older SGLang TP=2 launch. TP=3 is not offered: 16 attention heads do not split three ways.",
+  "source": "https://huggingface.co/palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4/tree/00a66983516f8f8057741221277eed4141c9e431",
+  "plugin": {
+    "name": "Qwen3.6-35B-A3B",
+    "family": "qwen",
+    "format": "GPTQ · Int4 (MTP)",
+    "engine": "vllm",
+    "servedName": "qwen3.6-35b-a3b",
+    "sizeGb": 24.46,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 262144
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 24.46
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "intel-arc-pro-b70-32gb": "qwen36-35b-a3b-gptq-int4-mtp-arcb70-vllm-tp2"
+  }
+}
