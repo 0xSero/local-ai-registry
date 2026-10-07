@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """plugin/v2 and plugin/v3 recipes for Omarchy Local AI, generated from
-dist/catalog.json: each card's picks, recommended first, then any other recipe that states host `needs` (RAM, disk)
-for the plugin to offer only where the machine has them. Recipes validated before the lab keep their original ids,
+dist/catalog.json: each card's picks, recommended first, then each validated model the picks lack (its first recipe),
+and any other recipe that states host `needs` (RAM, disk) for the plugin to offer only where the machine has them. Recipes validated before the lab keep their original ids,
 so running deployments stay recognised. `--check` fails if it is stale. Standard library only."""
 import json, sys
 from pathlib import Path
@@ -74,8 +74,18 @@ def build(version=2):
         # the plugin runs one plain container per card: no host programs, host IPC or networking, or several machines
         # the picks, then any other recipe that states host `needs`: the plugin offers those only on a machine with
         # that much free RAM and disk (e.g. experts offloaded to system RAM, tables read from NVMe)
-        keys = c["picks"] + [k for k in c["more"] if cat["recipes"][k]["launch"].get("needs")]
-        ok = [k for k in keys if eligible(cat["recipes"][k], version)]
+        # and, from the rest, the first recipe of each model the picks do not have, so every validated model reaches the
+        # card once and the list does not repeat a model in a weaker setting
+        ok = [k for k in c["picks"] if eligible(cat["recipes"][k], version)]
+        names = {entry(k, cat["recipes"][k], meta)["name"] for k in ok}
+        for k in c["more"]:
+            r = cat["recipes"][k]
+            if not eligible(r, version):
+                continue
+            name = entry(k, r, meta)["name"]
+            if r["launch"].get("needs") or name not in names:
+                ok.append(k)
+                names.add(name)
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
             for e in hw[card]["recipes"]:  # a needs block reaches the plugin only in the checked shape
