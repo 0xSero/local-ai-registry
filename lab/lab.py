@@ -508,18 +508,20 @@ def cmd_render(args):
     return 0
 
 
-NEEDS = {"host_ram_gb": (int, float), "disk_gb": (int, float), "fast_storage": str}
+NEEDS = {"host_ram_gb": (int, float), "disk_gb": (int, float), "fast_storage": str, "cpus": int}
 
 
 def check_needs(n):
     """`needs`: what the host must have besides the card, for launches that keep weights in system RAM or read them
     from disk while serving. host_ram_gb = free system RAM the server takes (measured peak), disk_gb = space for the
-    weights, fast_storage = "nvme" when the weights directory must be on a local NVMe SSD (random reads at runtime)."""
+    weights, fast_storage = "nvme" when the weights directory must be on a local NVMe SSD (random reads at runtime), cpus = the
+    CPU threads the engine pins work to (plugin >= 6.11 says the machine is too small below that)."""
     assert isinstance(n, dict) and set(n) <= set(NEEDS) and {"host_ram_gb", "disk_gb"} <= set(n), f"needs keys {sorted(n)}"
     for k, v in n.items():
         assert isinstance(v, NEEDS[k]) and not isinstance(v, bool), f"needs.{k} is {type(v).__name__}"
     assert n["host_ram_gb"] > 0 and n["disk_gb"] > 0, "needs sizes must be positive"
     assert n.get("fast_storage", "nvme") == "nvme", "needs.fast_storage is nvme or absent"
+    assert n.get("cpus", 1) > 0, "needs.cpus counts CPU threads the engine pins work to"
 
 
 def cmd_check(_):
