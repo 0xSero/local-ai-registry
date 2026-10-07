@@ -1,6 +1,6 @@
 # images
 
-These are retained historical build definitions. New images are built and published by [local-ai-images](https://github.com/sybil-solutions/local-ai-images) using its `release-image` workflow (Actions → release-image → Run, give the directory and a tag). All four definitions below are preserved there. The registry's duplicate `images` workflow is disabled; historical package digests and their signer identities remain valid. A reviewed profile in `registry/engines/` pins the resulting digest after its required acceptance gates. New builds carry provenance and a build attestation; enable an SBOM when it fits the attestation size limit:
+These are retained historical build definitions. New images are built and published by [local-ai-images](https://github.com/sybil-solutions/local-ai-images) using its `release-image` workflow (Actions → release-image → Run, give the directory and a tag). All four definitions below are preserved there. The registry's duplicate `images` workflow is disabled; historical package digests and their signer identities remain unchanged. A reviewed profile in `registry/engines/` pins the resulting digest after its required acceptance gates. New builds carry provenance and a build attestation; enable an SBOM when it fits the attestation size limit:
 
     gh attestation verify oci://ghcr.io/sybil-solutions/<image>@sha256:<digest> --repo sybil-solutions/local-ai-images
 
