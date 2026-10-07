@@ -52,7 +52,7 @@ def entry(key, r, meta):
 
 def eligible(r, version):
     L = r["launch"]
-    if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("reported"):
+    if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("reported") or r["proof"][0].get("withdrawn"):
         return False
     p = lab.profile(r["engine"])
     if "defaults" not in p and "plugin" not in p:
