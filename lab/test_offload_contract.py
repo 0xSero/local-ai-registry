@@ -51,6 +51,14 @@ class OffloadContractTest(unittest.TestCase):
         self.profile['resources'] = self.resources
         self.assertEqual(self.build(3, stale=True)['hardware'], {})
 
+    def test_withdrawal_overrides_historical_acceptance(self):
+        with patch.object(lab, 'profile', return_value=self.profile):
+            r = {'engine': 'fixture', 'card': 'test', 'proof': [
+                {'withdrawn': True}, {'gates': 'load chat reasoning tools context speed'}]}
+            r['launch'] = lab.render(r)
+            for version in (2, 3):
+                self.assertFalse(export.eligible(r, version))
+
     def test_input_mount_cannot_mask_output(self):
         self.profile['prepare'] = {**self.prepare, 'at': '/models/raw/pack'}
         with self.assertRaisesRegex(AssertionError, 'masks'):
