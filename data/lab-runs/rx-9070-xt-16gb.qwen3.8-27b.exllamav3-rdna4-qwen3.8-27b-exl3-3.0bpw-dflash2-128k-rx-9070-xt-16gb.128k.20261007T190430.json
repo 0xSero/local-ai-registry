@@ -2,7 +2,7 @@
  "recipe": {
   "model": "qwen3.8-27b",
   "weights": "turboderp/Qwen3.8-27B-exl3@6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
-  "engine": "exllamav3-rdna4-qwen3.8-27b-exl3-3.0bpw-dflash2-128k-rx-9070-xt-16gb@eb5a4d1fbf1f",
+  "engine": "exllamav3-rdna4-qwen3.8-27b-exl3-3.0bpw-dflash2-128k-rx-9070-xt-16gb@7f81041eedae",
   "set": {},
   "card": "rx-9070-xt-16gb"
  },
@@ -15,9 +15,10 @@
   "at": "2026-10-07",
   "on": "owner",
   "gpu": "AMD Radeon RX 9070 XT 16GB (owner: Fedora 44, ROCm 7.1.1, gfx1201)",
+  "launch_sha256": "ebd59e7fefdcb0ff6eb61bc5127d7f295ab27cfee2c40084ce0724b81a86fdae",
   "gates": "load chat reasoning tools context speed",
-  "tps": 120.5,
-  "prefill": 961,
+  "tps": 115.6,
+  "prefill": 967,
   "served": "Qwen3.8-27B-EXL3-3.0bpw"
  },
  "evidence": {
@@ -34,13 +35,13 @@
    "finish": "stop"
   },
   "reasoning": {
-   "thinking_chars": 152,
+   "thinking_chars": 118,
    "content": "\n\n391"
   },
   "tools": {
    "call": [
     {
-     "id": "call_b3b95f159d1f42b896910359",
+     "id": "call_b32ac87489c047af8c6ef050",
      "function": {
       "name": "get_weather",
       "arguments": "{\"city\": \"Paris\"}"
@@ -49,20 +50,20 @@
      "index": 0
     }
    ],
-   "reply": "\n\nRight now in **Paris**, the weather is **overcast** with a temperature of **17°C** (about 63°F). It's a cool, cloudy day — you might want to bring a light jacket!",
+   "reply": "\n\nIt's currently **17°C (63°F)** and **overcast** in Paris.",
    "finish": "stop",
    "calls_again": 0,
-   "thinking_chars": 113
+   "thinking_chars": 158
   },
   "context": {
    "prompt_tokens": 106294,
-   "seconds": 110.6,
+   "seconds": 109.9,
    "content": "\n\n58213"
   },
   "speed": {
    "window_s": 30,
-   "tokens_total": 13495,
-   "seconds_total": 112.1
+   "tokens_total": 12831,
+   "seconds_total": 104.3
   }
  },
  "launch_config_sha256": null

@@ -6,7 +6,7 @@
   "command": [
     "serve/run_tabby.sh"
   ],
-  "install": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/eea87958ae24f277b7acb22b1a0b9d631417ca1a",
+  "install": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/92901a8a5c5dc51d9dad172059266c7053e6fe9d",
   "env": {},
   "port": 8096,
   "weights": [
@@ -27,6 +27,6 @@
   "seqs": 3,
   "vision": true,
   "backend": "amd-rocm",
-  "setup": "Not Docker; Linux on an RX 9070 / 9070 XT (gfx1201). setup/ builds a venv with PyTorch 2.13 (ROCm 7.2 wheels), clones upstream exllamav3 dev at 0662fac and applies patches/exllamav3-rdna4.patch (gfx12 WMMA multi-row GEMV, HIP graph re-instantiation, GQA split-decode attention, Gated DeltaNet accepted-input replay, 16/32-row batched verify), installs upstream TabbyAPI at 2fd6cc7 unpatched, and requantizes the bf16 DFlash2 draft to 3.0 bpw (setup/requant_draft.sh, a few minutes on the GPU). Needs system ROCm 7.x plus a host gcc; tested on Fedora 44 with ROCm 7.1.1. Serves 128K context shared by up to 3 concurrent requests; vision encoder kept in system RAM. Peaks around 16.1 GiB of the card's 16.",
-  "source": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/eea87958ae24f277b7acb22b1a0b9d631417ca1a"
+  "setup": "Not Docker; Linux on an RX 9070 / 9070 XT (gfx1201). setup/ builds a venv with PyTorch 2.13 (ROCm 7.2 wheels), clones upstream exllamav3 dev at 0662fac and applies patches/exllamav3-rdna4.patch (gfx12 WMMA multi-row GEMV, HIP graphs off as upstream now defaults on ROCm (96838c9 backported), GQA split-decode attention, Gated DeltaNet accepted-input replay, 16/32-row batched verify), installs upstream TabbyAPI at 2fd6cc7 unpatched, and requantizes the bf16 DFlash2 draft to 3.0 bpw (setup/requant_draft.sh, a few minutes on the GPU). Needs system ROCm 7.x plus a host gcc; tested on Fedora 44 with ROCm 7.1.1. Serves 128K context shared by up to 3 concurrent requests; vision encoder kept in system RAM. Peaks around 16.1 GiB of the card's 16.",
+  "source": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/92901a8a5c5dc51d9dad172059266c7053e6fe9d"
 }
