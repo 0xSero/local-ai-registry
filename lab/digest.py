@@ -22,10 +22,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ME = "0xSero"
-REPOS = ["local-ai-registry", "omarchy-local-ai", "local-ai-images", "local-ai-recipe-kit", "trellis-serve", "exl3xpu",
-         "sglang-exl3"]  # sglang-exl3 is private: the workflow token cannot read it, so it is noted as skipped
+OWNER = "sybil-solutions"
+REPOS = ["local-ai-registry", "omarchy-local-ai", "local-ai-images", "local-ai-recipe-kit", "trellis-serve",
+         "exl3xpu", "sglang-exl3", "glm53-flash-offload", "dsv41-flash-offload",
+         "qwen38-flash-next-b70-offload", "moetier", "ai-data-extraction"]
 PLUGIN = "omarchy-local-ai"
-MARKETPLACE = "omacom/omarchy-plugin-marketplace/issues/8530"  # its body names the plugin commit being verified
+MARKETPLACE = "omacom/omarchy-plugin-marketplace/issues/9821"
 UPSTREAM, UPSTREAM_PR = "omacom/omarchy", 13036
 SITE = "https://local.sybilsolutions.ai"
 LINEAR_ISSUE = "HOM-174"
@@ -78,7 +80,7 @@ def readable():
     found, notes = {}, []
     for repo in REPOS:
         try:
-            found[repo] = gh(f"repos/{ME}/{repo}")["default_branch"]
+            found[repo] = gh(f"repos/{OWNER}/{repo}")["default_branch"]
         except LookupError as e:
             notes.append(f"- {repo}: skipped, not readable with this token ({e})")
     return found, notes
@@ -88,10 +90,10 @@ def readable():
 def community(repos):
     lines = []
     for repo in repos:
-        full = f"{ME}/{repo}"
+        full = f"{OWNER}/{repo}"
         for it in gh(f"repos/{full}/issues?state=open&per_page=100"):
             who = it["user"]["login"]
-            if who == ME or it["user"]["type"] == "Bot":  # dependabot and other bots
+            if it["user"]["type"] == "Bot":  # dependabot and other bots
                 continue
             n, pr = it["number"], "pull_request" in it
             said = [it] + gh(f"repos/{full}/issues/{n}/comments?per_page=100")
@@ -100,9 +102,11 @@ def community(repos):
                 said += [{**r, "created_at": r["submitted_at"]} for r in gh(f"repos/{full}/pulls/{n}/reviews?per_page=100")
                          if r.get("submitted_at")]
             said = [s for s in said if s.get("user") and s["user"]["type"] != "Bot"]
-            theirs = max(s["created_at"] for s in said if s["user"]["login"] != ME)
+            theirs = max((s["created_at"] for s in said if s["user"]["login"] != ME), default=it["created_at"])
             wait = days(theirs)
-            if any(s["user"]["login"] == ME and s["created_at"] > theirs for s in said):
+            if who == ME and not any(s["user"]["login"] != ME for s in said):
+                state = "owner delivery item, see linked release evidence"
+            elif any(s["user"]["login"] == ME and s["created_at"] > theirs for s in said):
                 state = "0xSero replied last"
             elif wait > WAIT_DAYS:
                 state = flag(f"waiting {wait:.1f}d for 0xSero")
@@ -119,14 +123,14 @@ def community(repos):
             waiting = ", ".join(f"[{b}]({rs[0]['html_url']}) by @{a} ({len(rs)}, newest {days(rs[0]['created_at']):.0f}d)"
                                 for (b, a), rs in branches.items())
             lines.append(f"- {repo}: {flag(f'{len(runs)} PR workflow runs in action_required')}: {waiting}")
-    return lines or ["- nothing open from anyone else"]
+    return lines or ["- no open delivery or community items"]
 
 
 def ci(repos):
     lines = []
     for repo, branch in repos.items():
         latest = {}  # workflow name -> its newest completed run on the default branch
-        for run in gh(f"repos/{ME}/{repo}/actions/runs?branch={branch}&status=completed&per_page=50")["workflow_runs"]:
+        for run in gh(f"repos/{OWNER}/{repo}/actions/runs?branch={branch}&status=completed&per_page=50")["workflow_runs"]:
             latest.setdefault(run["name"], run)
         bad = [r for r in latest.values() if r["conclusion"] not in ("success", "skipped", "neutral")]
         if not latest:
@@ -140,9 +144,9 @@ def ci(repos):
 
 
 def releases():
-    rel = gh(f"repos/{ME}/{PLUGIN}/releases/latest")
+    rel = gh(f"repos/{OWNER}/{PLUGIN}/releases/latest")
     tag = rel["tag_name"]
-    sha = gh(f"repos/{ME}/{PLUGIN}/commits/{tag}")["sha"]
+    sha = gh(f"repos/{OWNER}/{PLUGIN}/commits/{tag}")["sha"]
     issue = gh(f"repos/{MARKETPLACE}")
     target = re.search(r"### Target commit\s+([0-9a-f]{7,40})", issue["body"] or "")
     market = f"[marketplace #{issue['number']}]({issue['html_url']}) ({issue['state']})"
@@ -152,7 +156,7 @@ def releases():
     elif sha.startswith(target[1]):
         lines.append(f"- {market} verifies {target[1][:7]}, the latest release")
     else:
-        behind = gh(f"repos/{ME}/{PLUGIN}/compare/{target[1]}...{sha}")["ahead_by"]
+        behind = gh(f"repos/{OWNER}/{PLUGIN}/compare/{target[1]}...{sha}")["ahead_by"]
         lines.append(f"- {market} verifies {target[1][:7]}: {flag(f'{behind} commits behind {tag}')}")
     return lines
 
@@ -188,11 +192,11 @@ def site():
 
 # ----------------------------------------------------------------------------- recipe drift
 def pins():
-    """Every ghcr.io/0xsero image digest in registry/ and the plugin export, and every Hugging Face weights pin in registry/."""
+    """Every historical or org GHCR image digest in registry/ and the plugin export, and every Hugging Face weights pin in registry/."""
     images, weights = set(), set()
     for f in sorted([*(ROOT / "registry").rglob("*.json"), ROOT / "plugin" / "v2" / "recipes.json"]):
         text = f.read_text()
-        images |= set(re.findall(r"ghcr\.io/0xsero/([\w.-]+?)(?::[\w.-]+)?@sha256:([0-9a-f]{64})", text))
+        images |= set(re.findall(r"ghcr\.io/((?:0xsero|sybil-solutions)/[\w.-]+?)(?::[\w.-]+)?@sha256:([0-9a-f]{64})", text))
         if f.parts[-2] == "v2":
             continue
 
@@ -224,10 +228,10 @@ def retry(check):
 
 def image_missing(pin):
     name, digest = pin
-    status, token = fetch(f"https://ghcr.io/token?scope=repository:0xsero/{name}:pull")
+    status, token = fetch(f"https://ghcr.io/token?scope=repository:{name}:pull")
     if status != 200:
         return status, "no anonymous pull token (private or deleted package)"
-    status, _ = fetch(f"https://ghcr.io/v2/0xsero/{name}/manifests/sha256:{digest}", method="HEAD",
+    status, _ = fetch(f"https://ghcr.io/v2/{name}/manifests/sha256:{digest}", method="HEAD",
                       headers={"Authorization": f"Bearer {token['token']}", "Accept": MANIFESTS})
     return None if status == 200 else (status, "manifest not found")
 
@@ -247,10 +251,10 @@ def drift():
         results = list(pool.map(lambda job: job[0](job[1]), jobs))
     bad_images = [(p, r) for p, r in results[:len(images)] if r]
     bad_weights = [(p, r) for p, r in results[len(images):] if r]
-    lines = [f"- images: {len(images) - len(bad_images)}/{len(images)} ghcr.io/0xsero digests resolve",
+    lines = [f"- images: {len(images) - len(bad_images)}/{len(images)} GHCR digests resolve",
              f"- weights: {len(weights) - len(bad_weights)}/{len(weights)} Hugging Face pins resolve"]
     for (name, digest), (status, why) in bad_images:
-        lines.append(f"  - {flag(f'ghcr.io/0xsero/{name}@sha256:{digest[:12]}')}: HTTP {status}, {why}")
+        lines.append(f"  - {flag(f'ghcr.io/{name}@sha256:{digest[:12]}')}: HTTP {status}, {why}")
     for (repo, rev), (status, why) in bad_weights:
         at = f"@{rev[:12]}" if rev else ""
         lines.append(f"  - {flag(f'{repo}{at}')} ([hf](https://huggingface.co/{repo})): HTTP {status}, {why}")
@@ -268,7 +272,7 @@ def section(title, make, *args):
 
 def digest():
     repos, skipped = readable()
-    body = [*section("Community items waiting", lambda: community(repos) + skipped),
+    body = [*section("Open delivery and community items", lambda: community(repos) + skipped),
             *section("CI (latest default-branch run per workflow)", ci, repos),
             *section("Releases", releases),
             *section("Upstream", upstream),

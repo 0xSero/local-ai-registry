@@ -56,6 +56,16 @@ class ImageTrustTest(unittest.TestCase):
                 self.assertFalse(identity.search(base + ref), ref)
             self.assertFalse(identity.search("https://github.com/0xSero/local-ai-images/.github/workflows/other.yml@refs/heads/main"))
 
+    def test_org_successors_use_only_the_canonical_main_publisher(self):
+        for name in ("gateway", "glm53-flash-offload", "dsv41-flash-offload", "exl3xpu"):
+            repo, identity = self.identity(f"ghcr.io/sybil-solutions/{name}@sha256:" + "a" * 64)
+            self.assertEqual(repo, "sybil-solutions/local-ai-images")
+            base = "https://github.com/sybil-solutions/local-ai-images/.github/workflows/"
+            self.assertTrue(identity.search(base + "release-image.yml@refs/heads/main"))
+            self.assertFalse(identity.search(base + "release-image.yml@refs/heads/feature"))
+            self.assertFalse(identity.search(base + "other.yml@refs/heads/main"))
+            self.assertFalse(identity.search("https://github.com/sybil-solutions/exl3xpu/.github/workflows/release-image.yml@refs/heads/main"))
+
     def test_llamacpp_release_tags_and_master_pass_but_other_refs_do_not(self):
         _, identity = self.identity("ghcr.io/ggml-org/llama.cpp@sha256:" + "a" * 64)
         base = "https://github.com/ggml-org/llama.cpp/.github/workflows/docker.yml@"
