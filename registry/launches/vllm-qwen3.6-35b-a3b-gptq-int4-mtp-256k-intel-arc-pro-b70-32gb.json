@@ -1,0 +1,99 @@
+{
+  "id": "vllm-qwen3.6-35b-a3b-gptq-int4-mtp-256k-intel-arc-pro-b70-32gb",
+  "engine": "vllm",
+  "about": "Qwen3.6-35B-A3B GPTQ Int4 with its MTP head (4 draft tokens) on one Intel Arc Pro B70: Intel's llm-scaler vLLM 0.26.1 for XPU, XPU graphs on, fp8 KV, vision on, 262K context",
+  "image": "intel/llm-scaler-vllm@sha256:52218ad85513ab6686d4c090c83c2bd8c5b02423c63aa4dabd41837fe641fe3b",
+  "provenance": "https://hub.docker.com/r/intel/llm-scaler-vllm (tag 0.26.0-b2, vLLM 0.26.1.dev0+g568afb3a1.xpu)",
+  "backend": "intel-xpu",
+  "port": 8000,
+  "entrypoint": "bash",
+  "args": [
+    "-c",
+    "mkdir -p /dev/dri/by-path && for r in /dev/dri/renderD*; do ln -sf \"../${r##*/}\" \"/dev/dri/by-path/pci-$(basename \"$(readlink -f \"/sys/class/drm/${r##*/}/device\")\")-render\"; done; source /opt/intel/oneapi/setvars.sh --force && source /opt/intel/oneapi/ccl/2021.15/env/vars.sh --force && exec vllm serve \"$@\"",
+    "--",
+    "/models",
+    "--served-model-name",
+    "qwen3.6-35b-a3b",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8000",
+    "--dtype",
+    "float16",
+    "--max-model-len",
+    "262144",
+    "--max-num-seqs",
+    "4",
+    "--kv-cache-dtype",
+    "fp8",
+    "--max-num-batched-tokens",
+    "8192",
+    "--kv-cache-memory",
+    "3865470566",
+    "--block-size",
+    "64",
+    "--trust-remote-code",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_coder",
+    "--reasoning-parser",
+    "qwen3",
+    "--speculative-config",
+    "{\"method\":\"mtp\",\"num_speculative_tokens\":4}"
+  ],
+  "env": {
+    "HF_HUB_OFFLINE": "1",
+    "VLLM_XPU_ENABLE_XPU_GRAPH": "1"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4",
+      "revision": "00a66983516f8f8057741221277eed4141c9e431",
+      "at": "/models",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 4,
+  "vision": true,
+  "cards": 1,
+  "setup": "NEEDS: one Intel Arc Pro B70 32 GB, only its render node passed in (no --ipc host, no seccomp or capability flags). The entrypoint is the image's own (oneAPI + oneCCL env, then vllm serve) preceded by one step: it links each passed render node under /dev/dri/by-path/pci-<bdf>-render inside the container, because oneCCL's single-rank init (vLLM XPU worker all_reduce) opens /dev/dri/by-path and fails with 'opendir failed: could not open device directory' when only the render node is passed. VLLM_XPU_ENABLE_XPU_GRAPH=1: decode 86 tok/s with XPU graphs vs 30.5 tok/s eager on the same launch (C1, 600-word story, natural end; MTP mean acceptance length 4.5-4.7). Memory on the card: weights 22.63 GiB (GPTQ Int4 + MTP head + vision tower), XPU graphs 2.3 GiB, fp8 KV 3.89 GiB = 298,645 tokens. First request after start is slow (~25 s to first token: one-time compile). Measured on omarchy (EPYC 7443P, Arc Pro B70 at 0000:84:00.0, xe driver).",
+  "source": "https://huggingface.co/palmfuture/Qwen3.6-35B-A3B-GPTQ-Int4/tree/00a66983516f8f8057741221277eed4141c9e431",
+  "plugin": {
+    "name": "Qwen3.6-35B-A3B",
+    "family": "qwen",
+    "format": "GPTQ · Int4 (MTP)",
+    "engine": "vllm",
+    "servedName": "qwen3.6-35b-a3b",
+    "sizeGb": 24.46,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 275417
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 24.46
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "intel-arc-pro-b70-32gb": "qwen36-35b-a3b-gptq-int4-mtp-arcb70-vllm-tp1"
+  }
+}
