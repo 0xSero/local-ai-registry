@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""plugin/v2/recipes.json for the Omarchy Local AI plugin (schema omarchy-local-ai/recipes/2), generated from
+"""plugin/v2 and plugin/v3 recipes for Omarchy Local AI, generated from
 dist/catalog.json: each card's picks, recommended first, then any other recipe that states host `needs` (RAM, disk)
 for the plugin to offer only where the machine has them. Recipes validated before the lab keep their original ids,
 so running deployments stay recognised. `--check` fails if it is stale. Standard library only."""
-import json, subprocess, sys
+import json, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import lab
 
 ROOT = lab.ROOT
-OUT = ROOT / "plugin" / "v2" / "recipes.json"
-GATEWAY = "ghcr.io/0xsero/gateway@sha256:d9743fcca4a9b8dd7f8fa18945ce6e5026f00dcab50b0727edd51690b88d4f32"
+GATEWAY = "ghcr.io/sybil-solutions/gateway@sha256:1f8249a5af07981b7eb37f1af02d2377c30a151918840646c202b16627e02d5a"
 MIN_DRIVER = {"tabbyapi": "575.0", "sglang": "580.0", "vllm": "580.0", "llama.cpp": "535.0"}
 
 
@@ -20,14 +19,25 @@ def entry(key, r, meta):
     caps = {"chat": True, "reasoning": "reasoning" in r["proof"][0]["gates"], "tools": "tools" in r["proof"][0]["gates"], "vision": L["vision"]}
     if "plugin" in p:  # a launch frozen from a validated recipe: its own export fields
         x = p["plugin"]
+        assert len(L["weights"]) == len(x["weights"]), "plugin input mounts do not match the accepted launch"
         rid = p["ids"].get(r["card"]) or f"{Path(key).name}.{r['card']}"
-        weights = [{"repository": w["repo"], "revision": w["revision"], **xw} for w, xw in zip(L["weights"], x["weights"])]
+        if L.get("prepare") or L.get("resources"):
+            for w, xw in zip(L["weights"], x["weights"]):
+                assert set(xw) <= {"sizeGb", "layout", "mountPath", "dir", "files"}, "plugin cannot override pinned inputs"
+                assert xw["layout"] == w.get("layout", "dir"), "plugin input layout changed"
+                assert xw["mountPath"].rstrip("/") + ("/" + xw["dir"] if xw.get("dir") else "") == w["at"], "plugin input location changed"
+                files = w.get("files") or []
+                files = files if isinstance(files, list) else [files]
+                assert sorted(filter(None, (xw.get("files") or "").split(","))) == sorted(files), "plugin input files changed"
+        weights = [{**xw, "repository": w["repo"], "revision": w["revision"]} for w, xw in zip(L["weights"], x["weights"])]
         return {"id": rid, "name": x["name"], "family": x["family"], "format": x["format"], "engine": x["engine"], "servedName": x["servedName"],
                 "sizeGb": x["sizeGb"], "cards": L.get("cards", 1), "image": L["image"], "minDriver": x["minDriver"], "weights": weights,
                 "asset": {"name": x["asset"], "mountPath": L["config"]["at"], "text": L["config"]["text"]} if L["config"] else None,
                 "scratch": x["scratch"], "launch": {"entrypoint": L["entrypoint"], "arguments": L["args"], "environment": L["env"], "port": L["port"], "shm": L["shm"]},
                 "serving": x["serving"], "capabilities": {**x["capabilities"], **{k: v for k, v in caps.items() if v}},
-                **({"needs": L["needs"]} if L.get("needs") else {})}
+                **({"needs": L["needs"]} if L.get("needs") else {}),
+                **({"prepare": L["prepare"]} if L.get("prepare") else {}),
+                **({"resources": L["resources"]} if L.get("resources") else {})}
     m = meta["models"][r["model"]]
     b = meta["builds"][r["weights"]]
     name = L["weights"]["at"].rsplit("/", 1)[1]
@@ -40,7 +50,23 @@ def entry(key, r, meta):
             "serving": {"ctxTokens": L["ctx"], "kvTokens": L["ctx"] * L["seqs"] + 1024 * L["seqs"]}, "capabilities": caps}
 
 
-def build():
+def eligible(r, version):
+    L = r["launch"]
+    if any(L.get(x) for x in ("kind", "flags", "machines", "build")) or r["proof"][0].get("reported"):
+        return False
+    p = lab.profile(r["engine"])
+    if "defaults" not in p and "plugin" not in p:
+        return False
+    if L.get("prepare") or L.get("resources"):
+        if version == 2:
+            return False  # old plugins silently ignore these fields
+        lab.check_execution(L)
+        if r["proof"][0].get("launch_sha256") != lab.launch_hash(L):
+            return False  # acceptance must bind the whole typed launch
+    return True
+
+
+def build(version=2):
     cat = json.loads((ROOT / "dist" / "catalog.json").read_text())
     meta = json.loads((ROOT / "registry" / "models.json").read_text())
     hw = {}
@@ -49,27 +75,32 @@ def build():
         # the picks, then any other recipe that states host `needs`: the plugin offers those only on a machine with
         # that much free RAM and disk (e.g. experts offloaded to system RAM, tables read from NVMe)
         keys = c["picks"] + [k for k in c["more"] if cat["recipes"][k]["launch"].get("needs")]
-        ok = [k for k in keys if not any(cat["recipes"][k]["launch"].get(x) for x in ("kind", "flags", "machines", "build"))
-              and not cat["recipes"][k]["proof"][0].get("reported")  # the plugin runs one plain container we have checked
-              and ("defaults" in lab.profile(cat["recipes"][k]["engine"]) or "plugin" in lab.profile(cat["recipes"][k]["engine"]))]  # and can describe
+        ok = [k for k in keys if eligible(cat["recipes"][k], version)]
         if ok:
             hw[card] = {"match": c["match"], "recipes": [entry(k, cat["recipes"][k], meta) for k in ok]}
             for e in hw[card]["recipes"]:  # a needs block reaches the plugin only in the checked shape
+                if "resources" in e:
+                    e["launch"]["resources"] = e.pop("resources")
                 if "needs" in e:
                     lab.check_needs(e["needs"])
-    head = {"schemaVersion": "omarchy-local-ai/recipes/2", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}
+    head = {"schemaVersion": f"omarchy-local-ai/recipes/{version}", "registryCommit": None, "generatedAt": None, "gateway": {"image": GATEWAY}}
     lines = ["{"] + [f'  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)},' for k, v in head.items()] + ['  "hardware": {']
     lines += [f'    {json.dumps(k)}: {json.dumps(v, ensure_ascii=False, separators=(",", ":"))}' + ("," if i < len(hw) - 1 else "") for i, (k, v) in enumerate(hw.items())]
     return "\n".join(lines + ["  }", "}"]) + "\n"
 
 
 if __name__ == "__main__":
-    text = build()
-    if "--check" in sys.argv:
-        ok = OUT.exists() and OUT.read_text() == text
-        print("plugin/v2/recipes.json is current" if ok else "plugin/v2/recipes.json is stale: run lab/export_plugin.py")
-        sys.exit(0 if ok else 1)
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(text)
-    json.loads(text)
-    print(f"wrote {OUT.relative_to(ROOT)}: {len(text)} bytes")
+    ok = True
+    for version in (2, 3):
+        out = ROOT / "plugin" / f"v{version}" / "recipes.json"
+        text = build(version)
+        if "--check" in sys.argv:
+            current = out.exists() and out.read_text() == text
+            print(f"{out.relative_to(ROOT)} is " + ("current" if current else "stale: run lab/export_plugin.py"))
+            ok = ok and current
+        else:
+            out.parent.mkdir(parents=True, exist_ok=True)
+            out.write_text(text)
+            json.loads(text)
+            print(f"wrote {out.relative_to(ROOT)}: {len(text)} bytes")
+    sys.exit(0 if ok else 1)

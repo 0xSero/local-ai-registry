@@ -33,6 +33,11 @@ const q = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}
 const value = (s) => /^\$\{[A-Z_][A-Z0-9_]*\}$/.test(s) ? `"${s}"` : q(s);
 const files = (w) => (Array.isArray(w.files) ? w.files : w.files ? [w.files] : []).map((f) => ` ${q(f)}`).join("");
 const weights = (l) => (Array.isArray(l.weights) ? l.weights : [l.weights]).filter((w) => w && w.repo);
+const resources = (l) => {
+  const r = l.resources ?? {};
+  return [...(r.memoryBytes ? [`--memory ${r.memoryBytes}`] : []), ...(r.memorySwapBytes ? [`--memory-swap ${r.memorySwapBytes}`] : []),
+    ...(r.memlockUnlimited ? ['--ulimit memlock=-1:-1'] : []), ...(r.ipcLock ? ['--cap-add IPC_LOCK'] : [])];
+};
 
 const pairs = (a) => {
   const args = [];
@@ -88,12 +93,16 @@ const files = (l.build.dockerfile ?? "Dockerfile").split(" + ");
     if (a.startsWith("-") && b !== undefined && !b.startsWith("-")) { args.push(`${a} ${value(b)}`); i++; } else args.push(value(a));
   }
   if (l.prepare) {
-    const prep = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
-      `-v ${prepared}:${l.prepare.at}`, ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...l.prepare.args.map(q)];
+    const options = [...(l.flags ?? []), ...resources(l), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
+      ...Object.entries(l.env ?? {}).filter(([k]) => k !== 'NVIDIA_VISIBLE_DEVICES').map(([k, v]) => `-e ${k}=${value(v)}`), ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : [])];
+    const prep = ["docker run --rm", l.prepare.gpu === false ? "" : GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
+      ...options, `-v ${prepared}:${l.prepare.at}`, ...mounts, image, ...[...ep.slice(1), ...l.prepare.args].map(q)];
     out.push({ title: "Prepare the model (first start)", code: `mkdir -p ${prepared}\n` + prep.filter(Boolean).join(" \\\n  ") });
     mounts.unshift(`-v ${prepared}:${l.prepare.at}:ro`);
+    if (l.prepare.verifyArgs) out.push({ title: "Verify the prepared model", code: ['docker run --rm', '--user "$(id -u):$(id -g)"', '-e HOME=/tmp',
+      ...options, ...mounts, image, ...[...ep.slice(1), ...l.prepare.verifyArgs].map(q)].join(' ') });
   }
-  const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
+  const run = ["docker run --rm", GPU[l.backend ?? "nvidia"] ?? GPU.nvidia, `-p 8000:${l.port}`, ...(l.flags ?? []), ...resources(l), ...(l.shm ? [`--shm-size ${l.shm}`] : []),
     ...Object.entries(l.env ?? {}).map(([k, v]) => `-e ${k}=${value(v)}`), ...mounts, ...(ep.length ? [`--entrypoint ${q(ep[0])}`] : []), image, ...args];
   out.push({ title: l.machines ? `Start the server on each of the ${l.machines} machines (NODE_RANK 0 to ${l.machines - 1})` : "Start the server", code: run.filter(Boolean).join(" \\\n  ") });
   return out;
