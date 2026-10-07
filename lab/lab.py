@@ -536,10 +536,14 @@ def cmd_check(_):
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
             if "needs" in launch:
                 check_needs(launch["needs"])
+            p = r["proof"][0]
             if launch.get("resources") or "verifyArgs" in (launch.get("prepare") or {}):
                 check_execution(launch)
-                assert r["proof"][0].get("launch_sha256") == launch_hash(launch), "typed launch changed since acceptance; rerun the recipe"
-            need = set() if r["proof"][0].get("reported") else {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+                if not p.get("withdrawn"):
+                    assert p.get("launch_sha256") == launch_hash(launch), "typed launch changed since acceptance; rerun the recipe"
+            if "withdrawn" in p:
+                assert p["withdrawn"] is True and p.get("src") and p.get("reason"), "withdrawal needs source and reason"
+            need = set() if p.get("reported") or p.get("withdrawn") else {"load", "chat"} if p.get("legacy") else set(GATES)
             assert not r["proof"][0].get("reported") or r["proof"][0].get("src"), "a reported proof names its source"
             assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
             assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"
