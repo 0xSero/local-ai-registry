@@ -52,6 +52,7 @@ def verify(image, run=subprocess.run):
     repo, workflow, ref = BUILDERS[match[1]]
     identity = f"^https://github.com/{re.escape(repo)}/\\.github/workflows/{re.escape(workflow)}@{ref}$"
     run(["gh", "attestation", "verify", "oci://" + image, "--repo", repo,
+         *(["--bundle-from-oci"] if match[1].startswith("ghcr.io/0xsero/") else []),
          "--cert-identity-regex", identity, "--deny-self-hosted-runners"],
         check=True, timeout=120)
 
