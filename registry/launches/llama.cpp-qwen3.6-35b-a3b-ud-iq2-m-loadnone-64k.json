@@ -1,0 +1,62 @@
+{
+ "id": "llama.cpp-qwen3.6-35b-a3b-ud-iq2-m-loadnone-64k",
+ "engine": "llama.cpp",
+ "about": "Qwen3.6-35B-A3B (MoE, 3B active) UD-IQ2_M on one 6 GB card: --load-mode none keeps the whole 11.5 GB model in host RAM and is the difference between a usable and an unusable server here. With the default mmap load the CPU-resident expert tensors are page-faulted from NVMe on every token: measured 0.035 tok/s on a cold cache and 38 tok/s once warm. --load-mode none costs ~12 GB of host RAM and serves 36.4 tok/s from the first request. No --n-gpu-layers, so llama.cpp auto-fits what fits in 5.2 GB of free VRAM and leaves the rest on the CPU; that beat every pinned layer count tried (8/12/16 -> 24.8/26.1/27.6 tok/s, 20 and 24 OOM). q8_0 KV, 65536 context on one slot. Measured on an RTX 3050 6GB (PCIe 4.0 x8, H2D 13.1 GB/s, Ryzen 5 7600X, 30 GB RAM).",
+ "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b10481@sha256:b2497f8834f5ecb4e38530f6bf2734b8e0be107ff48e4720145911c86930f2ce",
+ "backend": "nvidia",
+ "port": 8080,
+ "entrypoint": "/app/llama-server",
+ "args": [
+  "--model",
+  "/models/Qwen3.6-35B-A3B-UD-IQ2_M.gguf",
+  "--host",
+  "0.0.0.0",
+  "--port",
+  "8080",
+  "--ctx-size",
+  "65536",
+  "--load-mode",
+  "none",
+  "--flash-attn",
+  "on",
+  "--cache-type-k",
+  "q8_0",
+  "--cache-type-v",
+  "q8_0",
+  "--jinja",
+  "--no-mmproj",
+  "--metrics",
+  "--parallel",
+  "1",
+  "--temp",
+  "1.0",
+  "--top-p",
+  "0.95",
+  "--top-k",
+  "20",
+  "--min-p",
+  "0.0"
+ ],
+ "env": {
+  "CUDA_DEVICE_ORDER": "PCI_BUS_ID"
+ },
+ "shm": "16g",
+ "weights": [
+  {
+   "repo": "unsloth/Qwen3.6-35B-A3B-GGUF",
+   "revision": "a483e9e6cbd595906af30beda3187c2663a1118c",
+   "at": "/models",
+   "layout": "dir",
+   "files": "Qwen3.6-35B-A3B-UD-IQ2_M.gguf"
+  }
+ ],
+ "config": null,
+ "ctx": 65536,
+ "seqs": 1,
+ "vision": false,
+ "cards": 1,
+ "needs": {
+  "host_ram_gb": 12.0,
+  "disk_gb": 11.53
+ }
+}
