@@ -28,13 +28,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/models">Models</Link>
               <Link href="/docs">How it works</Link>
               <Link href="/docs#api">API</Link>
-              <a href="https://github.com/0xSero/local-ai-registry">GitHub</a>
+              <a href="https://github.com/sybil-solutions/local-ai-registry">GitHub</a>
             </nav>
           </header>
           {children}
           <footer className="foot">
             <span>Tested recipes passed six checks on the hardware. Community results are marked as reported.</span>
-            <span><a href="https://github.com/0xSero/local-ai-registry">github.com/0xSero/local-ai-registry</a> · <a href="https://github.com/0xSero/omarchy-local-ai">Omarchy Local AI</a></span>
+            <span><a href="https://github.com/sybil-solutions/local-ai-registry">github.com/sybil-solutions/local-ai-registry</a> · <a href="https://github.com/sybil-solutions/omarchy-local-ai">Omarchy Local AI</a></span>
           </footer>
         </div>
         <PostHog />
