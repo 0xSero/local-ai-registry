@@ -1,0 +1,32 @@
+{
+  "id": "exllamav3-rdna4-qwen3.8-27b-exl3-3.0bpw-dflash2-128k-rx-9070-xt-16gb",
+  "kind": "host",
+  "engine": "exllamav3",
+  "about": "Qwen3.8-27B EXL3 3.0 bpw + DFlash2 speculative decoding (3.0 bpw draft) on TabbyAPI, with RDNA4 kernels and DeltaNet accepted-input replay for gfx1201; from parth-thakre/exl3-rdna4-recipe",
+  "command": [
+    "serve/run_tabby.sh"
+  ],
+  "install": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/92901a8a5c5dc51d9dad172059266c7053e6fe9d",
+  "env": {},
+  "port": 8096,
+  "weights": [
+    {
+      "repo": "turboderp/Qwen3.8-27B-exl3",
+      "revision": "6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+      "at": "models/Qwen3.8-27B-EXL3-3.0bpw",
+      "layout": "dir"
+    },
+    {
+      "repo": "incoai/Qwen3.8-27B-DFlash2",
+      "revision": "015e795645c74b1a0eeef3b570031fb62e769bc5",
+      "at": "models/Qwen3.8-27B-DFlash2-bf16",
+      "layout": "dir"
+    }
+  ],
+  "ctx": 131072,
+  "seqs": 3,
+  "vision": true,
+  "backend": "amd-rocm",
+  "setup": "Not Docker; Linux on an RX 9070 / 9070 XT (gfx1201). setup/ builds a venv with PyTorch 2.13 (ROCm 7.2 wheels), clones upstream exllamav3 dev at 0662fac and applies patches/exllamav3-rdna4.patch (gfx12 WMMA multi-row GEMV, HIP graphs off as upstream now defaults on ROCm (96838c9 backported), GQA split-decode attention, Gated DeltaNet accepted-input replay, 16/32-row batched verify), installs upstream TabbyAPI at 2fd6cc7 unpatched, and requantizes the bf16 DFlash2 draft to 3.0 bpw (setup/requant_draft.sh, a few minutes on the GPU). Needs system ROCm 7.x plus a host gcc; tested on Fedora 44 with ROCm 7.1.1. Serves 128K context shared by up to 3 concurrent requests; vision encoder kept in system RAM. Peaks around 16.1 GiB of the card's 16.",
+  "source": "https://github.com/parth-thakre/exl3-rdna4-recipe/tree/92901a8a5c5dc51d9dad172059266c7053e6fe9d"
+}

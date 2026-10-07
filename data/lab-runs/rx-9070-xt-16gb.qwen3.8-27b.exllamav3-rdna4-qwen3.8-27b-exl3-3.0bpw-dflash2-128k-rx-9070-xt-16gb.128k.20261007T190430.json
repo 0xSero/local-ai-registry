@@ -1,0 +1,70 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+  "engine": "exllamav3-rdna4-qwen3.8-27b-exl3-3.0bpw-dflash2-128k-rx-9070-xt-16gb@7f81041eedae",
+  "set": {},
+  "card": "rx-9070-xt-16gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "AMD Radeon RX 9070 XT 16GB (owner: Fedora 44, ROCm 7.1.1, gfx1201)"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-07",
+  "on": "owner",
+  "gpu": "AMD Radeon RX 9070 XT 16GB (owner: Fedora 44, ROCm 7.1.1, gfx1201)",
+  "launch_sha256": "ebd59e7fefdcb0ff6eb61bc5127d7f295ab27cfee2c40084ce0724b81a86fdae",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 115.6,
+  "prefill": 967,
+  "served": "Qwen3.8-27B-EXL3-3.0bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 118,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_b32ac87489c047af8c6ef050",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     },
+     "type": "function",
+     "index": 0
+    }
+   ],
+   "reply": "\n\nIt's currently **17°C (63°F)** and **overcast** in Paris.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 158
+  },
+  "context": {
+   "prompt_tokens": 106294,
+   "seconds": 109.9,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 12831,
+   "seconds_total": 104.3
+  }
+ },
+ "launch_config_sha256": null
+}
