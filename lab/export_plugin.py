@@ -63,8 +63,11 @@ def derived(key, r, meta, p, L, caps):
             weights.append({"repository": w["repo"], "revision": w["revision"], "sizeGb": b["size_gb"], "layout": "hub", "mountPath": w["at"], "files": ""})
         else:
             files = w.get("files") or []
+            # weights at /models itself mount there, with no folder of their own
+            parent, _, leaf = w["at"].rstrip("/").rpartition("/")
+            mount, folder = (parent, leaf) if parent else (w["at"].rstrip("/"), "")
             weights.append({"repository": w["repo"], "revision": w["revision"], "sizeGb": b["size_gb"], "layout": "dir",
-                            "mountPath": w["at"].rsplit("/", 1)[0], "dir": w["at"].rsplit("/", 1)[1], "files": ",".join(files if isinstance(files, list) else [files])})
+                            "mountPath": mount, "dir": folder, "files": ",".join(files if isinstance(files, list) else [files])})
     args = L["args"] or []
     flag = lambda *names: next((args[i + 1] for i, a in enumerate(args[:-1]) if a in names), None)
     served = flag("--served-model-name", "--alias", "--model-name") or (ws[0]["at"].rsplit("/", 1)[1] if ws else flag("--model", "-m", "--model-path") or r["model"])
