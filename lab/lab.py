@@ -541,7 +541,8 @@ def cmd_check(_):
             p = r["proof"][0]
             if launch.get("resources") or "verifyArgs" in (launch.get("prepare") or {}):
                 check_execution(launch)
-                if not p.get("withdrawn"):
+                # a reported proof is its publisher's run, not an acceptance: there is no lab hash to bind
+                if not p.get("withdrawn") and not p.get("reported"):
                     assert p.get("launch_sha256") == launch_hash(launch), "typed launch changed since acceptance; rerun the recipe"
             if "withdrawn" in p:
                 assert p["withdrawn"] is True and p.get("src") and p.get("reason"), "withdrawal needs source and reason"
