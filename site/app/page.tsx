@@ -1,51 +1,155 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import Picker from "@/components/Picker";
-import Logo from "@/components/Logo";
-import { cards, picks, lead, model, format, ctxLabel, stats, VENDOR, short, setupTag, bare, memoryLabel } from "@/lib/registry";
+import Copy from "@/components/Copy";
+import copy from "@/lib/landing/copy.json";
+import logos from "@/lib/landing/logos.json";
+import { stats } from "@/lib/registry";
+import s from "./landing.module.css";
 
-export default function Home() {
-  const vendors = ["nvidia", "amd", "intel", "apple", "cpu"].filter((v) => cards.some((c) => c.vendor === v) || bare.some((h) => h.vendor === v));
+// The landing page. Every word comes from lib/landing/copy.json, the text written in the brand page's form;
+// the links are fixed here.
+const X = "https://x.com/0xSero";
+const PLUGIN = "https://github.com/sybil-solutions/omarchy-local-ai";
+const INSTALL = `omarchy plugin add ${PLUGIN} --enable`;
+const REGISTRY = "https://github.com/sybil-solutions/local-ai-registry";
+const NAV: Record<string, string> = { models: "/models/", hardware: "/hardware/", videos: "#videos", "how it works": "#how", contribute: "#contribute", github: PLUGIN, docs: "/docs/", api: "/docs/#api" };
+const GROUP_LINK: Record<string, string> = { gpuLogos: "/hardware/", modLogos: "/models/" };
+
+type Logo = { name: string; wordmark: boolean; body: string };
+const LOGOS = logos as Record<string, Logo>;
+
+export const metadata: Metadata = {
+  title: { absolute: `${copy.word}: ${copy.sHead}` },
+  description: copy.sSub ?? undefined,
+};
+
+const list = (v: string | null) => String(v ?? "").split(",").map((x) => x.trim()).filter(Boolean);
+
+function XIcon() {
   return (
-    <main>
-      <div className="hero">
-        <div className="label" style={{ marginBottom: 18 }}>Local AI registry</div>
-        <h1>The model to run on your GPU or CPU, and exactly how.</h1>
-        <p>Pick your hardware. You get the three best models it can run, how fast each one goes, and the command that starts it. A tested recipe was run on the card and passed six checks: it loads, answers, thinks, calls tools, holds its context window and keeps pace. Below the top three, each card lists every other recipe we know of, including ones published by others, marked as reported until our checks run.</p>
-        <Picker options={[...cards, ...bare].map((c) => ({ id: c.id, name: short(c.name), vendor: c.vendor, vram: c.vram_gb }))} />
-        <div className="facts">
-          <span><b>{stats.hardware}</b> GPUs and chips</span><span><b>{stats.gpus}</b> with recipes</span><span><b>{stats.recipes}</b> recipes</span>
-          <span><b>{stats.tested}</b> tested on the real card</span><span><b>{stats.reported}</b> reported</span>
+    <svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" className={s.xicon}>
+      <path fill="currentColor" d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z" />
+    </svg>
+  );
+}
+
+function Play({ big }: { big?: boolean }) {
+  return (
+    <span className={big ? `${s.play} ${s.playBig}` : s.play} aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" /></svg>
+    </span>
+  );
+}
+
+function BrandLogo({ k }: { k: string }) {
+  const L = LOGOS[k];
+  if (!L) return null;
+  // The Intel and AMD glyphs are wordmarks with empty space above and below, so they are drawn larger and show no name.
+  const scale = L.wordmark ? (k === "amd" ? 3.6 : 2.4) : 1;
+  return (
+    <span className={s.logo} title={L.name}>
+      <svg viewBox="0 0 24 24" fill="currentColor" fillRule="evenodd" style={{ height: `${scale}em`, margin: `${-(scale - 1) / 2}em 0` }} dangerouslySetInnerHTML={{ __html: L.body }} />
+      {!L.wordmark && <span>{L.name}</span>}
+    </span>
+  );
+}
+
+function Thumb({ title, meta, href, img, big }: { title?: string | null; meta?: string | null; href: string; img?: string | null; big?: boolean }) {
+  return (
+    <a href={href} className={s.thumb} target="_blank" rel="noreferrer">
+      <span className={s.frame}>
+        {img ? <img src={`/landing/videos/${img}.jpg`} alt="" className={s.poster} loading="lazy" /> : <img src="/landing/hands.svg" alt="" />}
+        <Play big={big} />
+        {meta && <span className={s.meta}>{meta}</span>}
+      </span>
+      {title && <span className={s.thumbTitle}>{title}</span>}
+    </a>
+  );
+}
+
+export default function Landing() {
+  const groups = ([["gpuTitle", "gpuLogos"], ["harTitle", "harLogos"], ["modTitle", "modLogos"]] as const)
+    .map(([t, l]) => ({ title: copy[t], keys: list(copy[l]).filter((k) => LOGOS[k]), href: GROUP_LINK[l] }))
+    .filter((g) => g.keys.length);
+  const C = copy as Record<string, string | null>;
+  const steps = [1, 2, 3, 4, 5, 6].map((i) => [C[`s${i}t`], C[`s${i}d`]]).filter(([t]) => t);
+  const videos = [1, 2, 3, 4, 5, 6].map((i) => ({ title: C[`v${i}t`], meta: C[`v${i}m`], href: C[`v${i}u`] ?? X, img: C[`v${i}i`] })).filter((v) => v.title);
+  const ways = [1, 2, 3].map((i) => ({ t: C[`c${i}t`], d: C[`c${i}d`], l: C[`c${i}l`], u: C[`c${i}u`] })).filter((w) => w.t);
+
+  return (
+    <div className={s.page}>
+      <header className={s.nav}>
+        <Link href="/" className={s.word}>{copy.word}</Link>
+        <nav>
+          {list(copy.sNav).map((label) => {
+            const href = NAV[label.toLowerCase()] ?? "#";
+            return href.startsWith("http") ? <a key={label} href={href}>{label}</a> : <Link key={label} href={href}>{label}</Link>;
+          })}
+          {copy.sFollow && <a href={X} className={s.btn}><XIcon />{copy.sFollow}</a>}
+        </nav>
+      </header>
+
+      <section className={s.hero}>
+        <h1>{copy.sHead}</h1>
+        {copy.sSub && <p>{copy.sSub}</p>}
+        <div className={s.cmd}>
+          <span className={s.prompt}>$</span>
+          <code title={INSTALL}>{copy.sCmd}</code>
+          <Copy text={INSTALL} event="install_copied" props={{ from: "landing" }} />
         </div>
+      </section>
+
+      <div className={s.art}>
+        <img src="/landing/hands.svg" alt="Two hands drawn in dots, reaching for each other" />
+        {copy.credit && <span className={s.credit}>{copy.credit}</span>}
       </div>
 
-      <section id="gpus">
-        {vendors.map((v) => (
-          <div key={v} style={{ marginTop: v === "nvidia" ? 0 : 40 }}>
-            <span className="label" style={{ display: "block", marginBottom: 14 }}>{VENDOR[v]}</span>
-            <div className="gpus">
-              {cards.filter((c) => c.vendor === v).map((c) => {
-                const top = picks(lead(c))[0];
-                const m = top && model(top);
-                const tps = top?.proof[0].tps ?? 0;
-                return (
-                  <Link key={c.id} href={`/gpu/${c.id}`} className="row">
-                    <span className="gpu-name">{short(c.name)}{!c.picks.length && <span className="faint"> · {setupTag(c.setups[0])}</span>}{c.setups.length > 1 && <span className="faint"> · also {c.setups.slice(1).map(setupTag).join(", ")}</span>}</span>
-                    <span className="gpu-mem dim">{memoryLabel(c)}</span>
-                    {top && <span className="gpu-model"><Logo family={m.logo ?? m.family} size={16} />{m.name}<span className="faint">{format(top)}</span></span>}
-                    <span className="gpu-speed"><span className="bar"><i style={{ width: `${Math.min(100, tps / 1.8)}%` }} /></span><span>{tps ? Math.round(tps) : "–"}<span className="faint"> tok/s</span></span></span>
-                    <span className="dim">›</span>
-                  </Link>
-                );
-              })}
-            </div>
-            {bare.some((h) => h.vendor === v) && (
-              <p className="dim" style={{ fontSize: 13, marginTop: 12, lineHeight: 1.8 }}>
-                No recipe yet: {bare.filter((h) => h.vendor === v).map((h, i) => <span key={h.id}>{i ? " · " : ""}<Link href={`/gpu/${h.id}`}>{short(h.name)}</Link></span>)}
-              </p>
-            )}
+      <div className={s.demo}><Thumb meta={C.sDemo} href={C.sDemoUrl ?? X} img={C.sDemoImg} big /></div>
+
+      <section className={s.supported}>
+        {copy.supLabel && <div className={s.label}>{copy.supLabel}</div>}
+        {groups.map((g) => (
+          <div key={g.title ?? g.keys[0]} className={s.group}>
+            {g.href ? <Link href={g.href} className={s.groupTitle}>{g.title}</Link> : <span className={s.groupTitle}>{g.title}</span>}
+            <div className={s.logos}>{g.keys.map((k) => <BrandLogo key={k} k={k} />)}</div>
           </div>
         ))}
       </section>
-    </main>
+
+      <section id="videos" className={s.section}>
+        <div className={s.head}><span className={s.label}>{copy.sWatch}</span><a href={X} className={s.more}>{copy.sWatchLink}</a></div>
+        <div className={s.videos}>{videos.map((v) => <Thumb key={v.href} {...v} />)}</div>
+      </section>
+
+      <section id="how" className={s.section}>
+        <div className={s.head}><span className={s.label}>{copy.sHow}</span>
+          <Link href="/hardware/" className={s.more}>{stats.gpus} GPUs with recipes · {stats.recipes} recipes · {stats.tested} tested on the card</Link></div>
+        <div className={s.steps}>
+          {steps.map(([t, d], i) => (
+            <div key={i} className={s.step}><span className={s.num}>0{i + 1}</span><h3>{t}</h3><p>{d}</p></div>
+          ))}
+        </div>
+      </section>
+
+      {C.cHead && (
+        <section id="contribute" className={s.section}>
+          <div className={s.head}><span className={s.label}>{C.cHead}</span><a href={REGISTRY} className={s.more}>{C.cBtn} →</a></div>
+          {C.cText && <p className={s.lede}>{C.cText}</p>}
+          <div className={s.ways}>
+            {ways.map((w) => (
+              <a key={w.t} href={w.u ?? REGISTRY} className={s.way}><h3>{w.t}</h3><p>{w.d}</p>{w.l && <span>{w.l}</span>}</a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className={`${s.section} ${s.follow}`}>
+        <span className={s.label}>{copy.sXHead}</span>
+        {copy.sXText && <p>{copy.sXText}</p>}
+        <a href={X} className={s.btn}><XIcon />{copy.sXBtn}</a>
+      </section>
+
+      <footer className={s.foot}><a href={X}>{copy.sFooter}</a></footer>
+    </div>
   );
 }
