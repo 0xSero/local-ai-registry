@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
-import Link from "next/link";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import PostHog from "@/components/PostHog";
 import { stats } from "@/lib/registry";
 import "./globals.css";
 
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500"] });
+const sans = Geist({ subsets: ["latin"], variable: "--font-sans", weight: ["400", "500", "600"] });
 const SITE = "https://local.sybilsolutions.ai";
 
 export const metadata: Metadata = {
@@ -16,27 +16,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/** The page shell: fonts and analytics. The landing page (/) draws its own header; the registry pages share theirs in (registry)/layout.tsx. */
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={mono.variable}>
+    <html lang="en" className={`${mono.variable} ${sans.variable}`}>
       <body>
-        <div className="wrap">
-          <header className="top">
-            <Link href="/" className="brand"><b>LOCAL AI</b><span>registry</span></Link>
-            <nav className="nav">
-              <Link href="/#gpus">Hardware</Link>
-              <Link href="/models">Models</Link>
-              <Link href="/docs">How it works</Link>
-              <Link href="/docs#api">API</Link>
-              <a href="https://github.com/sybil-solutions/local-ai-registry">GitHub</a>
-            </nav>
-          </header>
-          {children}
-          <footer className="foot">
-            <span>Tested recipes passed six checks on the hardware. Community results are marked as reported.</span>
-            <span><a href="https://github.com/sybil-solutions/local-ai-registry">github.com/sybil-solutions/local-ai-registry</a> · <a href="https://github.com/sybil-solutions/omarchy-local-ai">Omarchy Local AI</a></span>
-          </footer>
-        </div>
+        {children}
         <PostHog />
         {/* Cloudflare Web Analytics: page views and Core Web Vitals, no cookies */}
         <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9e30875864824920804a1f95dd926025"}' />
