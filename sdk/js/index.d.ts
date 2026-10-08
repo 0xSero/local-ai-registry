@@ -1,5 +1,6 @@
 export type Launch = { image: string; entrypoint: string | null; args: string[]; env: Record<string, string>; port: number; shm: string | null;
-  prepare?: { at: string; args: string[] }; weights: Weights | Weights[]; config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; backend?: string | null; cards?: number };
+  prepare?: { at: string; args: string[]; verifyArgs?: string[]; gpu?: boolean; sizeGb?: number }; resources?: { memoryBytes?: number; memorySwapBytes?: number; memlockUnlimited?: boolean; ipcLock?: boolean };
+  weights: Weights | Weights[]; config: { at: string; text: string } | null; ctx: number; seqs: number; vision: boolean; backend?: string | null; cards?: number };
 export type Weights = { repo: string; revision: string; at: string; layout?: string; files?: string | string[] | null };
 export type Proof = { at: string; on: string; gpu?: string | null; gates: string; tps: number | null; prefill?: number | null; proxy?: string; legacy?: boolean };
 export type Recipe = { key?: string; model: string; weights: string; engine: string; card: string; proof: Proof[]; launch: Launch };

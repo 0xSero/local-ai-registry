@@ -24,7 +24,7 @@ export default async function Gpu({ params }: P) {
   if (!c && !h) notFound();
   if (!c) return (
     <main>
-      <Link href="/#gpus" className="back">‹ all hardware</Link>
+      <Link href="/hardware/#gpus" className="back">‹ all hardware</Link>
       <h1 className="title">{short(h!.name)}</h1>
       <div className="dim">{VENDOR[h!.vendor]} · {h!.vram_gb} GB{h!.bandwidth_gb_s ? ` · ${h!.bandwidth_gb_s} GB/s` : ""}</div>
       <section>
@@ -37,7 +37,7 @@ export default async function Gpu({ params }: P) {
   const many = c.setups.length > 1;
   return (
     <main>
-      <Link href="/#gpus" className="back">‹ all hardware</Link>
+      <Link href="/hardware/#gpus" className="back">‹ all hardware</Link>
       <h1 className="title">{short(c.name)}</h1>
       <div className="dim">{VENDOR[c.vendor]} · {memoryLabel(c)}{c.bandwidth_gb_s ? ` · ${c.bandwidth_gb_s} GB/s` : ""}</div>
       {many && (

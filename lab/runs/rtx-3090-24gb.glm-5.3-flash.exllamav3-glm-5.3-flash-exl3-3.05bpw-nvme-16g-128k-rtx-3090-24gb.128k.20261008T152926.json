@@ -1,0 +1,69 @@
+{
+ "recipe": {
+  "model": "glm-5.3-flash",
+  "weights": "turboderp/GLM-5.3-Flash-exl3@332ab457b709b7ba30dd9a448be5de03b80a7ac9",
+  "engine": "exllamav3-glm-5.3-flash-exl3-3.05bpw-nvme-16g-128k-rtx-3090-24gb@4732a063fa9e",
+  "set": {},
+  "card": "rtx-3090-24gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "RTX 3090"
+ },
+ "passed": false,
+ "proof": {
+  "at": "2026-10-08",
+  "on": "owner",
+  "gpu": "RTX 3090",
+  "launch_sha256": "70baf530a2f23745121420c98f84fbd9b4d19fea5a19a03f613c8ec320308117",
+  "gates": "load chat reasoning tools context",
+  "tps": 13.1,
+  "prefill": 1006,
+  "served": "glm-5.3-flash"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": false
+  },
+  "chat": {
+   "content": "red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 43,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_dc137c9bea6a490baf6d5134",
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "The weather in Paris right now is **17°C** with **overcast skies**. 🌥️",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 70
+  },
+  "context": {
+   "prompt_tokens": 93437,
+   "seconds": 92.9,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 3867,
+   "seconds_total": 333.1
+  }
+ },
+ "launch_config_sha256": null
+}

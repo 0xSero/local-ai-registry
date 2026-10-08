@@ -117,7 +117,7 @@ def render(recipe):
                 out["sysctl"] = {"iogpu.wired_limit_mb": card(recipe["card"])["vram_gb"] * 1024 - p["wired_limit_reserve_mb"]}
             return out
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
-                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs", "prepare") if k in p},
+                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs", "prepare", "resources") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
@@ -140,6 +140,37 @@ def render(recipe):
 
 
 # ----------------------------------------------------------------------------- the server under test
+def launch_hash(launch):
+    return hashlib.sha256(json.dumps(launch, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
+def check_execution(launch):
+    """The typed container contract. Legacy manual prepare commands remain outside the plugin export."""
+    assert isinstance(launch.get("env", {}), dict) and all(isinstance(k, str) and re.fullmatch(r"[A-Z_][A-Z0-9_]*", k) and isinstance(v, str) and "\0" not in v for k, v in launch.get("env", {}).items()), "invalid environment"
+    assert isinstance(launch.get("args", []), list) and all(isinstance(x, str) and "\0" not in x for x in launch.get("args", [])), "invalid arguments"
+    resources = launch.get("resources", {})
+    assert isinstance(resources, dict) and set(resources) <= {"memoryBytes", "memorySwapBytes", "memlockUnlimited", "ipcLock"}, "unknown resource"
+    for key in ("memoryBytes", "memorySwapBytes"):
+        if key in resources:
+            assert type(resources[key]) is int and 0 < resources[key] <= 2**53 - 1, f"invalid {key}"
+    if "memorySwapBytes" in resources:
+        assert "memoryBytes" in resources and resources["memorySwapBytes"] >= resources["memoryBytes"], "swap total must include memory"
+    for key in ("memlockUnlimited", "ipcLock"):
+        if key in resources:
+            assert type(resources[key]) is bool, f"invalid {key}"
+    p = launch.get("prepare")
+    if p is None:
+        return
+    assert isinstance(p, dict) and set(p) == {"at", "args", "verifyArgs", "gpu", "sizeGb"}, "prepare requires at, args, verifyArgs, gpu, sizeGb"
+    assert re.fullmatch(r"/(models|nvx|prepared)(/[A-Za-z0-9_.-]+)*", p["at"]) and ".." not in p["at"], "invalid prepared mount"
+    for key in ("args", "verifyArgs"):
+        assert isinstance(p[key], list) and p[key] and all(isinstance(x, str) and "\0" not in x for x in p[key]), f"invalid prepare.{key}"
+    assert type(p["gpu"]) is bool and type(p["sizeGb"]) in (int, float) and 0 < p["sizeGb"] < 100000, "invalid preparation budget"
+    weights = launch["weights"] if isinstance(launch["weights"], list) else [launch["weights"]]
+    for w in weights:
+        assert w["at"] != p["at"] and not p["at"].startswith(w["at"].rstrip("/") + "/"), "input mount masks prepared output"
+
+
 def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small card takes a while; never cut an answer short
     headers = {"Content-Type": "application/json"}
     if os.environ.get("LAB_API_KEY"):  # an owner's server behind a keyed gateway
@@ -284,8 +315,8 @@ def save_logs(handle, recipe):
 
 def lab_spec(recipe, launch, args):
     """What a rented host runs: the image, provisioning (weights, config file) and then the engine's argv."""
-    if launch.get("prepare"):
-        raise SystemExit("prepare this model using the SDK steps first, then validate with --on endpoint")
+    if launch.get("prepare") or launch.get("resources"):
+        raise SystemExit("run this typed model using the SDK steps first, then validate with --on endpoint")
     import rent as vr
 
     class LabSpec(vr.Spec):
@@ -387,7 +418,7 @@ def cmd_try(args):
     finally:
         stop()
     at = dt.datetime.now(dt.timezone.utc)
-    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
+    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), "launch_sha256": launch_hash(launch), **proof}
     if args.proxy_gpu and args.on == "endpoint":
         # an owner's larger machine standing in for this card: nothing caps its memory, so the proof states the
         # measured peak against the card's GPU budget, and a run over budget writes no recipe
@@ -438,7 +469,7 @@ def cmd_convert(args):
     finally:
         stop()
     at = dt.datetime.now(dt.timezone.utc)
-    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), **proof}
+    proof = {"at": at.strftime("%Y-%m-%d"), "on": where["on"], "gpu": where.get("gpu"), "launch_sha256": launch_hash(launch), **proof}
     RUNS.mkdir(parents=True, exist_ok=True)
     text = json.dumps({"recipe": recipe, "where": {k: v for k, v in where.items() if k not in ("handle", "provider")}, "passed": passed, "proof": proof, "evidence": evidence}, indent=1, ensure_ascii=False)
     (RUNS / f"{args.card}.{f.stem}.{at.strftime('%Y%m%dT%H%M%S')}.json").write_text(text + "\n")
@@ -477,18 +508,20 @@ def cmd_render(args):
     return 0
 
 
-NEEDS = {"host_ram_gb": (int, float), "disk_gb": (int, float), "fast_storage": str}
+NEEDS = {"host_ram_gb": (int, float), "disk_gb": (int, float), "fast_storage": str, "cpus": int}
 
 
 def check_needs(n):
     """`needs`: what the host must have besides the card, for launches that keep weights in system RAM or read them
     from disk while serving. host_ram_gb = free system RAM the server takes (measured peak), disk_gb = space for the
-    weights, fast_storage = "nvme" when the weights directory must be on a local NVMe SSD (random reads at runtime)."""
+    weights, fast_storage = "nvme" when the weights directory must be on a local NVMe SSD (random reads at runtime), cpus = the
+    CPU threads the engine pins work to (plugin >= 6.11 says the machine is too small below that)."""
     assert isinstance(n, dict) and set(n) <= set(NEEDS) and {"host_ram_gb", "disk_gb"} <= set(n), f"needs keys {sorted(n)}"
     for k, v in n.items():
         assert isinstance(v, NEEDS[k]) and not isinstance(v, bool), f"needs.{k} is {type(v).__name__}"
     assert n["host_ram_gb"] > 0 and n["disk_gb"] > 0, "needs sizes must be positive"
     assert n.get("fast_storage", "nvme") == "nvme", "needs.fast_storage is nvme or absent"
+    assert n.get("cpus", 1) > 0, "needs.cpus counts CPU threads the engine pins work to"
 
 
 def cmd_check(_):
@@ -505,7 +538,15 @@ def cmd_check(_):
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
             if "needs" in launch:
                 check_needs(launch["needs"])
-            need = set() if r["proof"][0].get("reported") else {"load", "chat"} if r["proof"][0].get("legacy") else set(GATES)
+            p = r["proof"][0]
+            if launch.get("resources") or "verifyArgs" in (launch.get("prepare") or {}):
+                check_execution(launch)
+                # a reported proof is its publisher's run, not an acceptance: there is no lab hash to bind
+                if not p.get("withdrawn") and not p.get("reported"):
+                    assert p.get("launch_sha256") == launch_hash(launch), "typed launch changed since acceptance; rerun the recipe"
+            if "withdrawn" in p:
+                assert p["withdrawn"] is True and p.get("src") and p.get("reason"), "withdrawal needs source and reason"
+            need = set() if p.get("reported") or p.get("withdrawn") else {"load", "chat"} if p.get("legacy") else set(GATES)
             assert not r["proof"][0].get("reported") or r["proof"][0].get("src"), "a reported proof names its source"
             assert need <= set(r["proof"][0]["gates"].split()), "latest proof lacks a gate"
             assert f.stat().st_size <= MAX_RECIPE_BYTES, f"{f.stat().st_size} bytes"

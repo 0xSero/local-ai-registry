@@ -36,6 +36,11 @@ docs/           design.md
 
 - `weights`: a Hugging Face repo at a full commit.
 - `engine`: a profile in `registry/engines/`, pinned to its image digest.
+
+A launch with a reproducible failure can be withdrawn by prepending a proof with
+`withdrawn: true`, its source URL and reason. Catalogs and plugin exports omit it;
+historical proofs and recipe IDs stay in source. Requalify the exact launch with
+a fresh passing lab proof before offering it again.
 - `set`: only the settings that differ from the profile's defaults.
 - `proof`: the latest passing runs. A proof marked `proxy` was run on the sibling card it names; one marked `legacy` passed the older acceptance (load and chat) and is waiting for a full run.
 
@@ -49,6 +54,28 @@ A launch that keeps weights in system RAM or reads them from disk while serving 
 
 `host_ram_gb` is the free system RAM the server takes: how far MemAvailable falls from before the start to its lowest point while the lab gates run (not the weight file sizes; the plugin compares it with MemAvailable), `disk_gb` the space for the weights, and `fast_storage: "nvme"` means the weights directory must be on a local NVMe SSD. `lab.py check` validates it; `plugin/v2/recipes.json` carries it.
 
+## Prepared weights and container resources
+
+The v3 plugin contract carries `prepare: {at, args, verifyArgs, gpu, sizeGb}` and
+`resources: {memoryBytes, memorySwapBytes, memlockUnlimited, ipcLock}`. Preparation
+uses the serving image, environment and resource limits. Raw inputs remain read-only;
+verification mounts every input and generated output read-only and receives no GPU.
+`memorySwapBytes` is Docker's total memory plus swap limit; equal memory and swap
+values disable swap. Arbitrary Docker flags remain excluded from plugin exports.
+
+The plugin stages generated packs privately, verifies them with the pinned image,
+and publishes them atomically under a hash of the complete preparation contract.
+It verifies every reuse. Stop retains completed packs; Forget removes only managed,
+unused downloads. Disk eligibility counts missing generated output separately from
+verified raw inputs. The by-hand SDK steps carry these same resource and verification
+arguments; they do not implement the plugin's managed lifecycle.
+
+Typed launches require a passing proof bound to the full rendered `launch_sha256`.
+Changing the image, inputs, environment, resources or preparation requires new
+acceptance evidence. v2 excludes any recipe requiring preparation or typed resources
+rather than silently dropping those requirements. This contract adds no new qualified
+hardware recipes by itself; fidelity, exact-image lab gates and promotion remain separate.
+
 ## Running a recipe
 
 Every program runs one the same way:
@@ -56,7 +83,7 @@ Every program runs one the same way:
 1. Download the weights at the pinned commit.
 2. Write the config file.
 3. Start the image on a bridge network with the card passed through (`--gpus` on NVIDIA, the render node on AMD and Intel).
-4. Put the [gateway](https://github.com/0xSero/local-ai-images) in front, which serves the OpenAI, Anthropic and Responses APIs.
+4. Put the [gateway](https://github.com/sybil-solutions/local-ai-images) in front, which serves the OpenAI, Anthropic and Responses APIs.
 
 ## Adding or updating a recipe
 
@@ -70,5 +97,5 @@ python3 lab/lab.py try <repo>@<commit> --model <id> --engine tabbyapi-exl3 --car
 
 ## Using it
 
-- **Omarchy Local AI** reads `plugin/v2/recipes.json`.
+- **Omarchy Local AI 6.10+** reads `plugin/v3/recipes.json`; older versions retain the independent v2 export and cache.
 - **Anything else** reads `dist/catalog.json` (or https://local.sybilsolutions.ai/api/v2/catalog.json): `cards.<card>.picks` lists recipe keys for one card, first one recommended; `cards.<card>.setups` does the same for each setup (one card, several cards in one machine, several machines); and `recipes.<key>.launch` is the rendered launch. The SDKs in `sdk/` do the matching for you.

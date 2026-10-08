@@ -66,6 +66,12 @@ def _files(w):
     return "".join(" " + _q(f) for f in (fs if isinstance(fs, list) else [fs]))
 
 
+def _resources(l):
+    r = l.get('resources') or {}
+    return ([f"--memory {r['memoryBytes']}"] if r.get('memoryBytes') else []) + ([f"--memory-swap {r['memorySwapBytes']}"] if r.get('memorySwapBytes') else []) + \
+        (['--ulimit memlock=-1:-1'] if r.get('memlockUnlimited') else []) + (['--cap-add IPC_LOCK'] if r.get('ipcLock') else [])
+
+
 def _host_steps(l):
     """A program on the host. One with pinned packages or weights (MLX, oMLX or llama.cpp on Apple silicon) also downloads
     its weights, writes its launcher and raises the GPU wired-memory limit before it starts."""
@@ -138,13 +144,16 @@ def steps(r):
         else:
             args.append(_value(a[i])); i += 1
     if l.get("prepare"):
-        prep = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), '--user "$(id -u):$(id -g)"', "-e HOME=/tmp",
-                f"-v {prepared}:{l['prepare']['at']}"] + mounts
-        prep += [f"--entrypoint {_q(ep[0])}"] if ep else []
-        prep += [image] + [_q(x) for x in l["prepare"]["args"]]
+        options = list(l.get('flags') or []) + _resources(l) + ([f"--shm-size {l['shm']}"] if l.get('shm') else [])
+        options += [f"-e {k}={_value(v)}" for k, v in (l.get('env') or {}).items() if k != 'NVIDIA_VISIBLE_DEVICES']
+        options += [f"--entrypoint {_q(ep[0])}"] if ep else []
+        prep = ["docker run --rm", "" if l['prepare'].get('gpu') is False else GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), '--user "$(id -u):$(id -g)"', "-e HOME=/tmp"]
+        prep += options + [f"-v {prepared}:{l['prepare']['at']}"] + mounts + [image] + [_q(x) for x in ep[1:] + l["prepare"]["args"]]
         out.append({"title": "Prepare the model (first start)", "code": f"mkdir -p {prepared}\n" + " \\\n  ".join(x for x in prep if x)})
         mounts.insert(0, f"-v {prepared}:{l['prepare']['at']}:ro")
-    run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or [])
+        if l['prepare'].get('verifyArgs'):
+            out.append({'title': 'Verify the prepared model', 'code': ' '.join(['docker run --rm', '--user "$(id -u):$(id -g)"', '-e HOME=/tmp'] + options + mounts + [image] + [_q(x) for x in ep[1:] + l['prepare']['verifyArgs']])})
+    run = ["docker run --rm", GPU.get(l.get("backend") or "nvidia", GPU["nvidia"]), f"-p 8000:{l['port']}"] + list(l.get("flags") or []) + _resources(l)
     run += [f"--shm-size {l['shm']}"] if l.get("shm") else []
     run += [f"-e {k}={_value(v)}" for k, v in (l.get("env") or {}).items()] + mounts
     run += [f"--entrypoint {_q(ep[0])}"] if ep else []

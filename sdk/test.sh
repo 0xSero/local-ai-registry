@@ -58,5 +58,28 @@ argv = subprocess.run(["sh", "-c", script], env={**os.environ, "NODE_RANK": "1",
 assert argv[argv.index("--node-rank") + 1] == "1", argv
 assert "VLLM_HOST_IP=192.0.2.1" in argv, argv
 assert "NOTE=$(printf injected)" in argv and argv[-1] == "$(printf executed)", argv
+# Typed offload commands preserve execution constraints in both SDKs.
+fixture = {"model": "typed-pack", "launch": {"image": "example.invalid/server@sha256:" + "a"*64,
+    "backend": "nvidia", "weights": [{"repo": "fixture/raw", "revision": "b"*40, "at": "/models/raw"}],
+    "port": 8000, "args": ["serve"], "entrypoint": ["python3", "/engine.py"], "shm": "8g",
+    "env": {"MODE": "exact", "NVIDIA_VISIBLE_DEVICES": "all"},
+    "resources": {"memoryBytes": 59055800320, "memorySwapBytes": 59055800320, "memlockUnlimited": True, "ipcLock": True},
+    "prepare": {"at": "/models", "args": ["prepare"], "verifyArgs": ["verify-pack"], "gpu": False, "sizeGb": 117}}}
+py_steps = L.steps(fixture)
+js_steps = json.loads(subprocess.run(["node", "--input-type=module", "-e",
+    'import {readFileSync} from "node:fs"; import {steps} from "./sdk/js/index.js"; console.log(JSON.stringify(steps(JSON.parse(readFileSync(0,"utf8")))));'],
+    input=json.dumps(fixture), capture_output=True, text=True, check=True).stdout)
+assert py_steps == js_steps
+for step in py_steps[1:]:
+    argv = shlex.split(step['code'].split("\n", 1)[-1].replace("\\\n", "")) if step['title'].startswith('Prepare') else shlex.split(step['code'].replace("\\\n", ""))
+    assert "59055800320" in argv and "memlock=-1:-1" in argv and "IPC_LOCK" in argv
+    assert "MODE=exact" in argv and "8g" in argv and "python3" in argv
+    assert argv[argv.index(fixture['launch']['image'])+1:] == ["/engine.py", {"Prepare the model (first start)": "prepare", "Verify the prepared model": "verify-pack", "Start the server": "serve"}[step['title']]]
+    mounts = [argv[i+1] for i, value in enumerate(argv) if value == '-v']
+    assert any(m.endswith(':/models/raw:ro') for m in mounts)
+    if step['title'] != 'Start the server':
+        assert '--gpus' not in argv and '--device' not in argv and 'NVIDIA_VISIBLE_DEVICES=all' not in argv
+    if step['title'] == 'Verify the prepared model':
+        assert all(m.endswith(':ro') for m in mounts)
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
 PY
