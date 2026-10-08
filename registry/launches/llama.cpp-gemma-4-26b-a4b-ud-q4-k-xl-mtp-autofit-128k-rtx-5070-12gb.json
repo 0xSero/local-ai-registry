@@ -1,0 +1,110 @@
+{
+  "id": "llama.cpp-gemma-4-26b-a4b-ud-q4-k-xl-mtp-autofit-128k-rtx-5070-12gb",
+  "engine": "llama.cpp",
+  "about": "Gemma 4 26B-A4B (MoE, 4B active) UD-Q4_K_XL with vision (mmproj F16) and its MTP draft head on one 12 GB card, experts in system RAM: llama.cpp's auto-fit keeps attention, the 131,072-token q8_0 KV, the vision projector and as many experts as fit on the GPU and the remaining expert tensors in pinned host RAM (--load-mode none). --fit-target 2560 leaves room for the MTP draft context, which auto-fit cannot measure (at the default 1024 MiB margin the first drafted decode fails with a CUDA allocation error). --cache-ram 0 turns off the host prompt cache. Thinking on via enable_thinking, Gemma's recommended sampling. Measured on one RTX 5070 12GB (PCIe 5.0 x16), Core Ultra 9 285, 32 GB DDR5: 10.3 GB VRAM peak, 14.5 GB MemAvailable drop. Same launch at 262,144 tokens: decode 29.7 tok/s, prefill 1,090 tok/s, 11.1 GB VRAM, 16.4 GB drop at ready.",
+  "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b11146@sha256:52192a23c7b258044463aebba78826cdff39a7393b713edc313324b343a7b836",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--model",
+    "/models/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf",
+    "--mmproj",
+    "/models/mmproj-F16.gguf",
+    "--spec-type",
+    "draft-mtp",
+    "--model-draft",
+    "/models/mtp-gemma-4-26B-A4B-it.gguf",
+    "--spec-draft-n-max",
+    "3",
+    "--cache-type-k",
+    "q8_0",
+    "--cache-type-v",
+    "q8_0",
+    "--load-mode",
+    "none",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "131072",
+    "--fit-target",
+    "2560",
+    "--flash-attn",
+    "on",
+    "--parallel",
+    "1",
+    "--jinja",
+    "--cache-ram",
+    "0",
+    "--metrics",
+    "--chat-template-kwargs",
+    "{\"enable_thinking\":true}",
+    "--temp",
+    "1.0",
+    "--top-p",
+    "0.95",
+    "--top-k",
+    "64"
+  ],
+  "env": {
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "unsloth/gemma-4-26B-A4B-it-GGUF",
+      "revision": "c099eb48e663fd284577b04978a94ffccb261841",
+      "at": "/models",
+      "layout": "dir",
+      "files": [
+        "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf",
+        "mmproj-F16.gguf",
+        "mtp-gemma-4-26B-A4B-it.gguf"
+      ]
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 1,
+  "vision": true,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 14.6,
+    "disk_gb": 18.67,
+    "fast_storage": "nvme"
+  },
+  "plugin": {
+    "name": "Gemma 4 26B A4B",
+    "family": "gemma",
+    "format": "GGUF \u00b7 UD-Q4_K_XL + MTP, vision (experts in RAM)",
+    "engine": "llama.cpp",
+    "servedName": "/models/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf",
+    "sizeGb": 18.666,
+    "minDriver": "535.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": true,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 131072
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf,mmproj-F16.gguf,mtp-gemma-4-26B-A4B-it.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 18.666
+      }
+    ],
+    "asset": null
+  },
+  "ids": {}
+}
