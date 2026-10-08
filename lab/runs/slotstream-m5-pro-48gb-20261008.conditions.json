@@ -1,0 +1,72 @@
+{
+  "run": "apple-m5-pro-48gb.qwen3.8-flash-next.slotstream-qwen3.8-flash-next-4bit-32k.32k.20261008T161700.json",
+  "platform": {
+    "chip": "Apple M5 Pro",
+    "gpu_cores": 20,
+    "unified_memory_gib": 48,
+    "macos": "26.6.2",
+    "power": "AC",
+    "weights_storage": "internal NVMe SSD"
+  },
+  "configuration": {
+    "slotstream": "0.2.28",
+    "process_budget_gb": 29,
+    "context_tokens": 32768,
+    "reasoning_effort": "medium",
+    "draft_depth": 2
+  },
+  "memory": {
+    "method": "vm_stat sampled every 2 s; reclaimable = (Pages free + Pages purgeable + File-backed pages) * page size / 1e9. Decimal GB. Global swap counters include other apps.",
+    "start": {
+      "at": 1791476013.60416,
+      "reclaimable_gb": 35.051585536,
+      "swapins": 116440,
+      "swapouts": 387034
+    },
+    "end": {
+      "at": 1791476221.977997,
+      "reclaimable_gb": 35.334995968,
+      "swapins": 116484,
+      "swapouts": 387034
+    },
+    "minimum_reclaimable_gb": 10.938580992,
+    "peak_reclaimable_drop_gb": 24.113004544,
+    "swapins_delta": 44,
+    "swapouts_delta": 0,
+    "lab_exit_code": 0,
+    "needs_host_ram_gb": 24,
+    "needs_rounding": "Peak reclaimable decline rounded to the nearest whole GB. The launch separately requires 32 GB reclaimable before starting its 29 GB process budget."
+  },
+  "speed_stream": {
+    "finish_chunk": {
+      "id": "chatcmpl-67235169-3440-4B4E-8D38-475C6C19248C",
+      "object": "chat.completion.chunk",
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "delta": {},
+          "index": 0
+        }
+      ],
+      "created": 1791476161,
+      "model": "qwen3.8-flash-next:4bit"
+    },
+    "done_seen": true,
+    "answer_words": 613,
+    "answer_sha256": "8b00f29556d428e02722a63d7ed5d425967bafdc2917d57f1b8d5661422c2367",
+    "errors": []
+  },
+  "earlier_trials": [
+    {
+      "process_budget_gb": 21,
+      "reasoning_effort": "xhigh (template default)",
+      "run": "apple-m5-pro-48gb.qwen3.8-flash-next.slotstream-qwen3.8-flash-next-4bit-32k.32k.20261008T160431.json",
+      "result": "Five gates passed; speed failed at 13.1 tok/s. The stream reached 8192 tokens; its finish_reason was not captured."
+    },
+    {
+      "process_budget_gb": 29,
+      "reasoning_effort": "xhigh (template default)",
+      "result": "Stopped during the speed request before completion to change the default to medium. No acceptance or speed result is claimed."
+    }
+  ]
+}

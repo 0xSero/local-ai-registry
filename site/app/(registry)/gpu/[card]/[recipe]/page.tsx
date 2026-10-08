@@ -29,6 +29,7 @@ export default async function RecipePage({ params }: P) {
   const p = r.proof[0];
   const w = weightsList(r.launch)[0];
   const run = steps(r);
+  const endpoint = `http://localhost:${r.launch.kind === "host" ? r.launch.port : 8000}/v1`;
   const source = r.launch.source ?? (p.reported && p.src ? `https://github.com/${p.src.replace("@", "/tree/")}` : undefined);
   return (
     <main>
@@ -47,8 +48,8 @@ export default async function RecipePage({ params }: P) {
 
       <section>
         <span className="label">Run it</span>
-        {p.reported ? <p className="dim" style={{ marginTop: 0 }}>This is the launch as {s.label.replace("Reported by ", "")} publishes it. Their repository has the full setup: <a href={source} style={{ textDecoration: "underline" }}>{p.src} ›</a> The server then answers on <code>http://localhost:8000/v1</code>.</p> :
-        <p className="dim" style={{ marginTop: 0 }}>Follow the steps below to download and run this recipe. <a href="https://github.com/sybil-solutions/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> lists the recipes it can launch on your hardware. The server then answers on <code>http://localhost:8000/v1</code>.</p>}
+        {p.reported ? <p className="dim" style={{ marginTop: 0 }}>This is the launch as {s.label.replace("Reported by ", "")} publishes it. Their repository has the full setup: <a href={source} style={{ textDecoration: "underline" }}>{p.src} ›</a> The server then answers on <code>{endpoint}</code>.</p> :
+        <p className="dim" style={{ marginTop: 0 }}>Follow the steps below to download and run this recipe. <a href="https://github.com/sybil-solutions/omarchy-local-ai" style={{ textDecoration: "underline" }}>Omarchy Local AI</a> lists the recipes it can launch on your hardware. The server then answers on <code>{endpoint}</code>.</p>}
         <ol className="steps">
           {run.map((st, i) => (
             <li key={i}>
