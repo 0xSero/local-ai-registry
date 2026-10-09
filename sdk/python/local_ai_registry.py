@@ -79,6 +79,8 @@ def _host_steps(l):
     if not l.get("pip") and not l.get("weights"):
         return [{"title": "Install", "code": _install(l["install"])}, {"title": "Start the server", "code": " ".join(env + [_q(c) for c in l["command"]])}]
     out = [{"title": "Install the engine", "code": "python3 -m pip install " + " ".join(_q(x) for x in l["pip"]) if l.get("pip") else _install(l["install"])}]
+    if l.get("pip") and re.fullmatch(r"https://\S+\.tar\.gz#sha256=[0-9a-f]{64}", l.get("install") or ""):
+        out.append({"title": "Install the native engine", "code": _install(l["install"])})
     if l.get("weights"):
         out.append({"title": "Download the weights", "code": "\n\n".join(
             f"hf download {w['repo']}{_files(w)} \\\n  --revision {w['revision']} \\\n  --local-dir {w['at']}"

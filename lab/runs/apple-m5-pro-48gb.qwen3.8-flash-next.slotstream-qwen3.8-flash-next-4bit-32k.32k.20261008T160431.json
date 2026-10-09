@@ -1,0 +1,69 @@
+{
+ "recipe": {
+  "model": "qwen3.8-flash-next",
+  "weights": "carloslfu/Qwen3.8-Flash-Next-MLX-4bit@e9d552f83de4665d243d5c9cf73201a1ca6c16d7",
+  "engine": "slotstream-qwen3.8-flash-next-4bit-32k@0a076cf58eb5",
+  "set": {},
+  "card": "apple-m5-pro-48gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "Apple M5 Pro (20-core GPU), 48 GB unified memory"
+ },
+ "passed": false,
+ "proof": {
+  "at": "2026-10-08",
+  "on": "owner",
+  "gpu": "Apple M5 Pro (20-core GPU), 48 GB unified memory",
+  "launch_sha256": "f5a9d3df88d7da21de077ca0107b9327cc9f6a0591da32b6bd1cc5603d77478b",
+  "gates": "load chat reasoning tools context",
+  "tps": 13.1,
+  "prefill": 163,
+  "served": "qwen3.8-flash-next:4bit"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": false
+  },
+  "chat": {
+   "content": "red, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 135,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "type": "function",
+     "id": "call_1706DE5B94D2486D89CCB4FB5FE76E27"
+    }
+   ],
+   "reply": "It’s currently **17°C** and **overcast** in Paris.",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 63
+  },
+  "context": {
+   "prompt_tokens": 25782,
+   "seconds": 157.7,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 8192,
+   "seconds_total": 651.3
+  }
+ },
+ "launch_config_sha256": "83c1cef95244095f9f3e8ed17a9e93ca169a6d2814940535ff56c8039ca44552"
+}

@@ -82,4 +82,16 @@ for step in py_steps[1:]:
     if step['title'] == 'Verify the prepared model':
         assert all(m.endswith(':ro') for m in mounts)
 print(f"sdk ok: {len(cat['cards'])} cards, {n} recipes, js and python agree")
+# A native binary and its Python adapter both need installation.
+fixture = {"model": "native-fixture", "launch": {"kind": "host", "pip": ["tokenizers==0.22.2"],
+    "install": "https://example.invalid/engine.tar.gz#sha256=" + "a" * 64,
+    "command": ["python3", "adapter.py"], "weights": [], "config": {"at": "adapter.py", "text": "print('ready')"}}}
+py_steps = L.steps(fixture)
+js_steps = json.loads(subprocess.run(["node", "--input-type=module", "-e",
+    'import {readFileSync} from "node:fs"; import {steps} from "./sdk/js/index.js"; console.log(JSON.stringify(steps(JSON.parse(readFileSync(0,"utf8")))));'],
+    input=json.dumps(fixture), capture_output=True, text=True, check=True).stdout)
+assert py_steps == js_steps
+assert "pip install tokenizers==0.22.2" in py_steps[0]["code"]
+assert "shasum -a 256 -c" in py_steps[1]["code"] and "tar xzf" in py_steps[1]["code"]
+assert py_steps[2]["title"] == "Write the launcher"
 PY
