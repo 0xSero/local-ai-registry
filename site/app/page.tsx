@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Copy from "@/components/Copy";
+import HowAnim from "@/components/HowAnim";
 import copy from "@/lib/landing/copy.json";
 import logos from "@/lib/landing/logos.json";
 import { stats } from "@/lib/registry";
@@ -33,9 +34,9 @@ function XIcon() {
   );
 }
 
-function Play({ big }: { big?: boolean }) {
+function Play() {
   return (
-    <span className={big ? `${s.play} ${s.playBig}` : s.play} aria-hidden="true">
+    <span className={s.play} aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z" /></svg>
     </span>
   );
@@ -54,12 +55,12 @@ function BrandLogo({ k }: { k: string }) {
   );
 }
 
-function Thumb({ title, meta, href, img, big }: { title?: string | null; meta?: string | null; href: string; img?: string | null; big?: boolean }) {
+function Thumb({ title, meta, href, img }: { title?: string | null; meta?: string | null; href: string; img?: string | null }) {
   return (
     <a href={href} className={s.thumb} target="_blank" rel="noreferrer">
       <span className={s.frame}>
         {img ? <img src={`/landing/videos/${img}.jpg`} alt="" className={s.poster} loading="lazy" /> : <img src="/landing/hands.svg" alt="" />}
-        <Play big={big} />
+        <Play />
         {meta && <span className={s.meta}>{meta}</span>}
       </span>
       {title && <span className={s.thumbTitle}>{title}</span>}
@@ -104,16 +105,16 @@ export default function Landing() {
         {copy.credit && <span className={s.credit}>{copy.credit}</span>}
       </div>
 
-      <div className={s.demo}><Thumb meta={C.sDemo} href={C.sDemoUrl ?? X} img={C.sDemoImg} big /></div>
-
       <section className={s.supported}>
-        {copy.supLabel && <div className={s.label}>{copy.supLabel}</div>}
-        {groups.map((g) => (
-          <div key={g.title ?? g.keys[0]} className={s.group}>
-            {g.href ? <Link href={g.href} className={s.groupTitle}>{g.title}</Link> : <span className={s.groupTitle}>{g.title}</span>}
-            <div className={s.logos}>{g.keys.map((k) => <BrandLogo key={k} k={k} />)}</div>
-          </div>
-        ))}
+        {copy.supLabel && <div className={s.supHead}><span className={s.label}>{copy.supLabel}</span></div>}
+        <div className={s.supBar}>
+          {groups.map((g) => (
+            <div key={g.title ?? g.keys[0]} className={s.group}>
+              {g.href ? <Link href={g.href} className={s.groupTitle}>{g.title}</Link> : <span className={s.groupTitle}>{g.title}</span>}
+              {g.keys.map((k) => <BrandLogo key={k} k={k} />)}
+            </div>
+          ))}
+        </div>
       </section>
 
       <section id="videos" className={s.section}>
@@ -126,7 +127,7 @@ export default function Landing() {
           <Link href="/hardware/" className={s.more}>{stats.gpus} GPUs with recipes · {stats.recipes} recipes · {stats.tested} tested on the card</Link></div>
         <div className={s.steps}>
           {steps.map(([t, d], i) => (
-            <div key={i} className={s.step}><span className={s.num}>0{i + 1}</span><h3>{t}</h3><p>{d}</p></div>
+            <div key={i} className={s.step}><HowAnim step={i} /><span className={s.num}>0{i + 1}</span><h3>{t}</h3><p>{d}</p></div>
           ))}
         </div>
       </section>
