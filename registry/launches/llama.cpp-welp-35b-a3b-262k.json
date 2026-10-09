@@ -1,0 +1,51 @@
+{
+  "id": "llama.cpp-welp-35b-a3b-262k",
+  "engine": "llama.cpp",
+  "about": "Welp-35B-A3B (Qwen3.6-35B-A3B in 13.2 GB), full 262k context with a q4_0 KV cache, as in the model card",
+  "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b11146@sha256:52192a23c7b258044463aebba78826cdff39a7393b713edc313324b343a7b836",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--hf-repo",
+    "quaedra/Welp-35B-A3B-GGUF",
+    "--hf-file",
+    "Welp-35B-A3B.gguf",
+    "--n-gpu-layers",
+    "99",
+    "--flash-attn",
+    "on",
+    "--ctx-size",
+    "262144",
+    "--cache-type-k",
+    "q4_0",
+    "--cache-type-v",
+    "q4_0",
+    "--ubatch-size",
+    "256",
+    "--parallel",
+    "1",
+    "--jinja",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080"
+  ],
+  "env": {
+    "LLAMA_CACHE": "/root/.cache/huggingface"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "quaedra/Welp-35B-A3B-GGUF",
+      "revision": "3e4a3adbda8df07d2889978170d9955c2e59fb7a",
+      "at": "/root/.cache/huggingface",
+      "layout": "hub"
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1
+}
