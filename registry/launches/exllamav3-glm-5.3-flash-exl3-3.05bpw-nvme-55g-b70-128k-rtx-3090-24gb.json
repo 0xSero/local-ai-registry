@@ -1,0 +1,127 @@
+{
+  "id": "exllamav3-glm-5.3-flash-exl3-3.05bpw-nvme-55g-b70-128k-rtx-3090-24gb",
+  "engine": "exllamav3-nvme-b70",
+  "about": "GLM-5.3-Flash EXL3 3.05bpw on one RTX 3090 inside 55 GiB of host RAM plus one Intel Arc Pro B70 as a second GPU expert tier: the 55 GiB NVMe mode (glm53-flash-offload afdf390 = v4.5-b70, GLM53_MODE=nvme) with GLM53_B70=1; a companion container on the B70 (glm53-b70-expert-server) holds 3,000 routed experts and computes their decode picks (campaign N137). CANDIDATE: no plugin runs a companion yet",
+  "image": "ghcr.io/sybil-solutions/glm53-flash-offload@sha256:8e95f5f9f5e2373d5a80c556cdbc24ae5be8e63dd9f1520bdeb0bc0d02bc5fc5",
+  "provenance": "https://github.com/sybil-solutions/local-ai-images/actions/runs/37883462672",
+  "backend": "nvidia",
+  "port": 30000,
+  "entrypoint": "/opt/glm53/docker/entrypoint.sh",
+  "args": [
+    "-m",
+    "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+    "-cs",
+    "131072",
+    "--max-batch-size",
+    "8",
+    "-chunk_size",
+    "8192",
+    "-ambs",
+    "4",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--served-name",
+    "glm-5.3-flash"
+  ],
+  "env": {
+    "GLM53_MODE": "nvme",
+    "GLM53_EC_MAX_SLOTS": "1376",
+    "GLM53_MODEL_DIR": "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+    "GLM53_MODEL_DOWNLOAD": "0",
+    "GLM53_NV_STORE_DIR": "/nvx",
+    "HF_HUB_OFFLINE": "1",
+    "GLM53_B70": "1",
+    "GLM53_B70_RING": "/run/local-ai/shared/b70.ring"
+  },
+  "shm": "1g",
+  "weights": [
+    {
+      "repo": "turboderp/GLM-5.3-Flash-exl3",
+      "revision": "332ab457b709b7ba30dd9a448be5de03b80a7ac9",
+      "at": "/models/turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 131072,
+  "seqs": 4,
+  "vision": false,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 76.3,
+    "disk_gb": 242.6,
+    "fast_storage": "nvme",
+    "cpus": 40
+  },
+  "resources": {
+    "memoryBytes": 59055800320,
+    "memorySwapBytes": 59055800320,
+    "memlockUnlimited": true
+  },
+  "prepare": {
+    "at": "/nvx",
+    "args": [
+      "pack-store"
+    ],
+    "verifyArgs": [
+      "verify-store"
+    ],
+    "gpu": false,
+    "sizeGb": 117.33
+  },
+  "setup": "CANDIDATE (not in the plugin catalog: the plugin runs one container per recipe today). NEEDS: one RTX 3090 24 GB and one Intel Arc Pro B70 32 GB in the same machine, plus everything the 55 GiB NVMe launch needs (exllamav3-glm-5.3-flash-exl3-3.05bpw-nvme-55g-128k-rtx-3090-24gb: 55 GiB cap, memlock unlimited, AVX2+FMA+F16C, >= 40 CPUs, the 117.3 GB packed store from `pack-store` on local NVMe). COMPANION: glm53-b70-expert-server on the B70 (one render node, ZE_AFFINITY_MASK=0, 16 GiB cap = memoryBytes = memorySwapBytes, memlock unlimited, no network) starts FIRST; it uses prepare.at (the same prepared /nvx pack, read-only; it does not read the model weights) and creates the ring /run/local-ai/shared/b70.ring in the tmpfs dir shared with the engine. The engine (GLM53_B70=1) waits for the ring inside its own start (up to GLM53_B70_WAIT_S = 180 s, then refuses), sends the server the 3,000 experts that follow its VRAM set by routing score at warm-up (28.4 GB loaded from /nvx in ~5 s), drops them from the RAM tier, and masks their decode picks on the 3090; the CPU worker posts them to the B70 and adds the B70's rows to its partial. Prefill keeps the staged path (exact). MEASURED (omarchy, 2026-10-09, campaign N137, same session, image v4.2-nvme + this serving code mounted, sweep --template glm, natural completions; EPYC 7443P, 503 GiB DDR4, PCIe 4.0, 4x Samsung 9100 PRO RAID0, B70 at 0000:48:00.0): tier off / on: prefill 8k 657 / 648-658, 32k 966 / 968-974 tok/s; decode C1 17.48 / 26.40-26.61, C2 17.84 / 30.34-30.63 agg, C4 19.11 / 33.00-33.54 agg, 32k C1 16.28 / 24.60-24.92, 32k C2 17.35 / 29.09 tok/s; 120 GiB cap (all experts in RAM) 8k C1/C2/C4 22.09/23.32/24.64 -> 28.51/34.55/39.99. QUALITY: teacher-forced panel top-1 1.0000, KL 0 (2,154 positions); paired decode-KL vs the exact GPU path 0.0034 (p99 0.064), top-1 0.988 (the shipped nvme mode: 0.0070 / 0.980); B70 expert outputs vs fp64 rel L2 0.0013-0.0015 on 48 real experts. Images: engine v4.5-b70 (local-ai-images run 37883462672), companion glm53-b70-expert-server:v1 (run 37883460041, built from the same commit). Not yet lab-run (six gates) on these digests; the numbers are the owner's campaign runs (reported).",
+  "source": "https://github.com/sybil-solutions/glm53-flash-offload/tree/afdf39062a3f8aa3497c5013b2993ac017f54822",
+  "plugin": {
+    "name": "GLM-5.3-Flash",
+    "family": "glm",
+    "format": "EXL3 \u00b7 3.05 bpw (55 GB RAM, experts on NVMe + Arc Pro B70)",
+    "engine": "exllamav3",
+    "servedName": "glm-5.3-flash",
+    "sizeGb": 125.3,
+    "minDriver": "580.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 131072,
+      "kvTokens": 131072
+    },
+    "weights": [
+      {
+        "dir": "turboderp-GLM-5.3-Flash-exl3-3.05bpw",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 125.3
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rtx-3090-24gb": "glm53flash-exl3-3.05bpw-nvme55g-b70-rtx3090-exllamav3-tp1"
+  },
+  "companion": {
+    "hw": "intel-arc-pro-b70-32gb",
+    "cards": 1,
+    "image": "ghcr.io/sybil-solutions/glm53-b70-expert-server@sha256:6cc0980556ee859cef1175cb0df2a3e73d29f30d51d2c6c7bad80ea90047f9f3",
+    "environment": {
+      "ZE_AFFINITY_MASK": "0",
+      "GLM53_B70_RING": "/run/local-ai/shared/b70.ring",
+      "GLM53_NV_STORE": "/nvx/glm53_flash_exl3_3.05bpw_experts.bin"
+    },
+    "arguments": [],
+    "resources": {
+      "memoryBytes": 17179869184,
+      "memorySwapBytes": 17179869184,
+      "memlockUnlimited": true
+    }
+  }
+}

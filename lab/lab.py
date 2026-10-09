@@ -117,7 +117,7 @@ def render(recipe):
                 out["sysctl"] = {"iogpu.wired_limit_mb": card(recipe["card"])["vram_gb"] * 1024 - p["wired_limit_reserve_mb"]}
             return out
         return {"image": p["image"], "entrypoint": p.get("entrypoint"), "args": p["args"], "port": p["port"], "shm": p.get("shm"),
-                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs", "prepare", "resources") if k in p},
+                **{k: p[k] for k in ("flags", "machines", "build", "setup", "source", "needs", "prepare", "resources", "companion") if k in p},
                 "env": p.get("env") or {}, "weights": p["weights"],
                 "config": {**cfg, "sha256": hashlib.sha256(cfg["text"].encode()).hexdigest()} if cfg else None,
                 "ctx": p["ctx"], "seqs": p.get("seqs", 1), "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1)}
@@ -169,6 +169,30 @@ def check_execution(launch):
     weights = launch["weights"] if isinstance(launch["weights"], list) else [launch["weights"]]
     for w in weights:
         assert w["at"] != p["at"] and not p["at"].startswith(w["at"].rstrip("/") + "/"), "input mount masks prepared output"
+
+
+COMPANION = {"hw", "cards", "image", "entrypoint", "environment", "arguments", "resources", "shm"}
+SHARED_DIR = "/run/local-ai/shared"
+
+
+def check_companion(c):
+    """`companion`: a second container on a card of another kind in the same machine, started before the engine (e.g. a
+    B70 expert server next to an RTX 3090 engine). It gets the engine's read-only weights and pack mounts and a tmpfs dir
+    shared with the engine at SHARED_DIR; the recipe never names host paths. No plugin runs these yet: the exporter keeps
+    launches with a companion out of the plugin catalog (candidates)."""
+    assert isinstance(c, dict) and set(c) <= COMPANION and {"hw", "cards", "image"} <= set(c), f"companion keys {sorted(c)}"
+    card(c["hw"])  # a known card id
+    assert type(c["cards"]) is int and 1 <= c["cards"] <= 8, "companion.cards"
+    assert isinstance(c["image"], str) and "@sha256:" in c["image"], "companion image must be pinned by digest"
+    sub = {"env": c.get("environment", {}), "args": c.get("arguments", []), "resources": c.get("resources", {})}
+    if c.get("entrypoint") is not None:
+        assert isinstance(c["entrypoint"], str) and "\0" not in c["entrypoint"], "companion.entrypoint"
+    if c.get("shm") is not None:
+        assert isinstance(c["shm"], str) and re.fullmatch(r"\d+[kmg]", c["shm"]), "companion.shm"
+    check_execution(sub)
+    for v in list(sub["env"].values()) + sub["args"]:
+        if v.startswith("/") and not re.match(r"/(models|nvx|prepared|run/local-ai/shared)(/|$)", v):
+            raise AssertionError(f"companion names a host-looking path {v!r}; use the shared dir {SHARED_DIR}")
 
 
 def call(endpoint, path, body=None, timeout=3600):  # a 128k prompt on a small card takes a while; never cut an answer short
@@ -538,6 +562,8 @@ def cmd_check(_):
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
             if "needs" in launch:
                 check_needs(launch["needs"])
+            if "companion" in launch:
+                check_companion(launch["companion"])
             p = r["proof"][0]
             if launch.get("resources") or "verifyArgs" in (launch.get("prepare") or {}):
                 check_execution(launch)
