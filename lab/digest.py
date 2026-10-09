@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ME = "0xSero"
 OWNER = "sybil-solutions"
-REPOS = ['deepseek-v4.1-flash-4x-rtx-pro-6000', 'deepseek-v4.1-flash-h200', 'dsv41-flash-offload', 'exl3xpu', 'framework-research', 'glm53-flash-offload', 'local-ai-images', 'local-ai-recipe-kit', 'local-ai-registry', 'moet', 'moetier', 'omarchy-local-ai', 'qwen36-b70', 'qwen38-3090-sglang', 'qwen38-b70', 'qwen38-flash-next-b70-offload', 'sglang-exl3', 'sglang-moet', 'sovereign-trellis', 'trellis-serve', 'ai-data-extraction']
+REPOS = ['deepseek-v4.1-flash-4x-rtx-pro-6000', 'deepseek-v4.1-flash-h200', 'dsv41-flash-offload', 'exl3xpu', 'framework-research', 'glm-flash-lite', 'local-ai-images', 'local-ai-recipe-kit', 'local-ai-registry', 'moet', 'moetier', 'omarchy-local-ai', 'qwen36-b70', 'qwen38-3090-sglang', 'qwen38-b70', 'qwen38-flash-next-b70-offload', 'sglang-exl3', 'sglang-moet', 'sovereign-trellis', 'trellis-serve', 'ai-data-extraction']
 PLUGIN = "omarchy-local-ai"
 MARKETPLACE = "omacom/omarchy-plugin-marketplace/issues/10396"
 UPSTREAM, UPSTREAM_PR = "omacom/omarchy", 13036
