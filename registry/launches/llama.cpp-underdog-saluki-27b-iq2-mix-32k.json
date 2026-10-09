@@ -1,0 +1,83 @@
+{
+  "id": "llama.cpp-underdog-saluki-27b-iq2-mix-32k",
+  "engine": "llama.cpp",
+  "about": "Underdog Saluki 27B 1.0 (GGUF · IQ2-mix) on the official llama.cpp b11146 CUDA image, one 32K text request",
+  "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b11146@sha256:52192a23c7b258044463aebba78826cdff39a7393b713edc313324b343a7b836",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--model",
+    "/models/Underdog-Saluki-27B-1.0-IQ2-mix.gguf",
+    "--alias",
+    "underdog-saluki-27b-1.0",
+    "--ctx-size",
+    "32768",
+    "--parallel",
+    "1",
+    "--n-gpu-layers",
+    "999",
+    "--fit",
+    "off",
+    "--flash-attn",
+    "on",
+    "--no-mmproj",
+    "--jinja",
+    "--reasoning-format",
+    "deepseek",
+    "--metrics",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080"
+  ],
+  "env": {},
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "ConwayResearch/Underdog-Saluki-27B-1.0",
+      "revision": "1336c0b5d74dfe6ad7f793577092f5effd9f97c6",
+      "at": "/models",
+      "layout": "dir",
+      "files": "Underdog-Saluki-27B-1.0-IQ2-mix.gguf"
+    }
+  ],
+  "config": null,
+  "ctx": 32768,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "plugin": {
+    "name": "Underdog Saluki 27B 1.0",
+    "family": "qwen",
+    "format": "GGUF · IQ2-mix",
+    "engine": "llama.cpp",
+    "servedName": "underdog-saluki-27b-1.0",
+    "sizeGb": 7.898369152,
+    "minDriver": "570.124.06",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false
+    },
+    "serving": {
+      "ctxTokens": 32768,
+      "kvTokens": 32768
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "Underdog-Saluki-27B-1.0-IQ2-mix.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 7.898369152
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "rtx-5080-16gb": "underdog-saluki-27b-1.0.llama.cpp.32k.rtx-5080-16gb"
+  }
+}

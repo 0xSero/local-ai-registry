@@ -1,0 +1,69 @@
+{
+ "recipe": {
+  "model": "underdog-saluki-27b-1.0",
+  "weights": "ConwayResearch/Underdog-Saluki-27B-1.0@1336c0b5d74dfe6ad7f793577092f5effd9f97c6",
+  "engine": "llama.cpp-underdog-saluki-27b-iq2-mix-32k@52192a23c7b2",
+  "set": {},
+  "card": "rtx-5080-16gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "RTX 5080"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-09",
+  "on": "owner",
+  "gpu": "RTX 5080",
+  "launch_sha256": "2013ce05071f94f7d8493ef5cfaf5641022bc4c5c4d8681b6440377e9962e57b",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 73.3,
+  "prefill": 1553,
+  "served": "underdog-saluki-27b-1.0"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "Red, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 130,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "id": "9z98MISLz3waV2f7gzWsF4z8P6S44amn"
+    }
+   ],
+   "reply": "It's currently **17°C** in Paris, with **overcast** skies. 🌥️",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 296
+  },
+  "context": {
+   "prompt_tokens": 25782,
+   "seconds": 16.6,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 7922,
+   "seconds_total": 110.9
+  }
+ },
+ "launch_config_sha256": null
+}
