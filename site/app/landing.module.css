@@ -27,26 +27,28 @@
 .art img { display: block; width: 100%; height: auto; }
 .credit { display: block; text-align: right; padding: 8px 48px 0; font-size: 12px; color: var(--faint); }
 
-.demo { max-width: 1040px; margin: 48px auto 0; padding: 0 24px; }
 .thumb { display: block; }
 .frame { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 16 / 9; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
 .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
 .frame img.poster { opacity: .82; filter: grayscale(.25); transition: opacity .15s; }
 .thumb:hover img.poster { opacity: 1; }
-.demo .frame img { object-fit: contain; }
 .meta { position: absolute; left: 12px; bottom: 12px; right: 12px; width: fit-content; max-width: calc(100% - 24px); font-size: 12px; color: var(--text); background: var(--bg); padding: 4px 8px; border-radius: 3px; }
 .thumbTitle { display: block; font-family: var(--sans); font-size: 16px; margin-top: 12px; }
 .play { position: relative; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--crimson); background: var(--bg); display: flex; align-items: center; justify-content: center; }
 .play svg { width: 36%; height: 36%; fill: var(--crimson); }
-.playBig { width: 76px; height: 76px; }
 .thumb:hover .play { background: #1f1f1f; }
 
 .label { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--text); }
-.supported { max-width: 1280px; margin: 0 auto; padding: 72px 48px 0; }
-.supported > .label { text-align: center; margin-bottom: 18px; }
-.group { display: flex; align-items: center; gap: 40px; padding: 18px 0; }
-.groupTitle { width: 220px; flex: none; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
-.logos { display: flex; flex-wrap: wrap; align-items: center; gap: 22px 40px; color: var(--muted); font-size: 19px; }
+.supported { max-width: 1440px; margin: 0 auto; padding: 72px 48px 0; }
+/* the label sits on a hairline, the three groups share one row split by short rules, as in the listing preview */
+.supHead { display: flex; align-items: center; gap: 18px; }
+.supHead::before, .supHead::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.supHead .label { font-size: 12px; }
+.supBar { display: flex; align-items: center; justify-content: space-between; gap: 18px 0; padding: 22px 0 0; }
+.group { display: flex; align-items: center; gap: 16px; color: var(--muted); font-size: 13.5px; white-space: nowrap; }
+.group + .group { padding-left: 24px; margin-left: 24px; border-left: 1px solid var(--line); }
+.groupTitle { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); }
+a.groupTitle:hover { color: var(--text); }
 .logo { display: inline-flex; align-items: center; gap: .45em; }
 .logo svg { height: 1em; width: auto; display: block; }
 .logo span { font-family: var(--sans); font-weight: 600; font-size: .9em; letter-spacing: -0.01em; white-space: nowrap; }
@@ -75,6 +77,13 @@
 
 .foot { margin-top: 96px; padding: 28px 48px 40px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
+/* too narrow for one row: each group gets its own row, still split by hairlines */
+@media (max-width: 1240px) {
+  .supBar { flex-direction: column; align-items: stretch; gap: 0; }
+  .group { flex-wrap: wrap; gap: 14px 18px; padding: 16px 0; white-space: normal; }
+  .group + .group { padding-left: 0; margin-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .groupTitle { width: 104px; }
+}
 @media (max-width: 860px) {
   .nav { padding: 18px 16px; flex-wrap: wrap; }
   .nav nav { gap: 16px; flex-wrap: wrap; }
@@ -82,8 +91,7 @@
   .hero p { font-size: 17px; }
   .cmd { font-size: 12px; gap: 10px; padding-left: 12px; }
   .credit, .supported, .section { padding-left: 16px; padding-right: 16px; }
-  .group { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .logos { font-size: 16px; gap: 16px 24px; }
+  .groupTitle { width: 100%; }
   .videos { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; gap: 28px; }
   .step, .step:nth-child(3n+1) { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); }
