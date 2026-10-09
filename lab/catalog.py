@@ -38,7 +38,10 @@ def build(today=None):
         if old != 1 and (not m or m["family"] not in fam or (today - dt.date.fromisoformat(m["released"])).days > meta["max_age_days"]):
             continue
         key = str(f.relative_to(lab.RECIPES).with_suffix(""))
-        recipes[key] = {**r, "launch": lab.render(r), "profile": str(lab.profile_file(r["engine"].split("@")[0] + ".json").relative_to(ROOT))}
+        launch = lab.render(r)
+        if launch.get("companion"):
+            continue  # a second container on a card of another kind: a registry candidate, never a one-card recipe
+        recipes[key] = {**r, "launch": launch, "profile": str(lab.profile_file(r["engine"].split("@")[0] + ".json").relative_to(ROOT))}
         # a lab recipe ranks above a legacy one, and a legacy one above one reported by its publisher
         mf = (fam.get(m["family"], len(fam)), -dt.date.fromisoformat(m["released"]).toordinal()) if m else (len(fam), 0)
         gguf = r["engine"].startswith("llama") or "gguf" in r["weights"].lower()  # GGUF only where nothing else runs yet
@@ -50,7 +53,6 @@ def build(today=None):
         demoted = (won and kind != won and kind in ("sglang", "tabbyapi", "exllamav3")) or (not won and r["engine"].startswith("sglang-exl3@"))
         # a recipe that needs more of the host than the card (RAM, disk: `needs`) never leads a card: it follows the ones
         # every machine with the card can run, and the plugin offers it only where the host has what it needs
-        launch = recipes[key]["launch"]
         rank = (gguf, bool(launch.get("needs")), old, *mf, bool(demoted), not exl3)
         setup = (launch.get("cards") or 1, launch.get("machines") or 1)
         cards.setdefault(r["card"], {}).setdefault(setup, []).append((*rank, -(r["proof"][0]["tps"] or 0), r["model"], key))
