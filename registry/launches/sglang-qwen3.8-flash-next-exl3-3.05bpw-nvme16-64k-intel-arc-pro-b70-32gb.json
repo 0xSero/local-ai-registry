@@ -1,0 +1,135 @@
+{
+  "id": "sglang-qwen3.8-flash-next-exl3-3.05bpw-nvme16-64k-intel-arc-pro-b70-32gb",
+  "engine": "sglang-nvme16",
+  "about": "Qwen3.8-Flash-Next EXL3 3.05bpw_h5_ng5 on one Intel Arc Pro B70 inside 16 GiB of host RAM: routed experts read with O_DIRECT from a packed NVMe store into a 2 GB RAM tier behind an 8,000-slot device-managed VRAM expert cache, staged NVMe prefill, SYCL sparse attention (qwen38-flash-next-b70-offload, QWEN_B70_MODE=nvme16, campaign run N130)",
+  "image": "ghcr.io/sybil-solutions/qwen38-flash-next-b70-offload@sha256:d30df691d6ab890b95f7c6179e4b677a0d759018e39b20e93bf0efdb8780450c",
+  "provenance": "https://github.com/sybil-solutions/local-ai-images/actions/runs/37800188997",
+  "backend": "intel-xpu",
+  "port": 30000,
+  "entrypoint": "/opt/qwen-b70/serve/entrypoint.sh",
+  "args": [
+    "python3",
+    "-m",
+    "sglang.launch_server",
+    "--model-path",
+    "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+    "--quantization",
+    "exl3",
+    "--trust-remote-code",
+    "--device",
+    "xpu",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "30000",
+    "--served-model-name",
+    "flashnext",
+    "--disable-shared-experts-fusion",
+    "--kv-cache-dtype",
+    "fp8_e4m3",
+    "--context-length",
+    "65536",
+    "--mem-fraction-static",
+    "0.85",
+    "--chunked-prefill-size",
+    "8192",
+    "--max-total-tokens",
+    "131072",
+    "--max-running-requests",
+    "4",
+    "--dtype",
+    "bfloat16",
+    "--max-mamba-cache-size",
+    "32",
+    "--cuda-graph-backend-decode",
+    "full",
+    "--cuda-graph-bs-decode",
+    "1",
+    "2",
+    "4",
+    "--reasoning-parser",
+    "qwen3",
+    "--tool-call-parser",
+    "qwen3_coder"
+  ],
+  "env": {
+    "QWEN_B70_MODE": "nvme16",
+    "ZE_AFFINITY_MASK": "0",
+    "HF_HUB_OFFLINE": "1",
+    "EXL3_MODEL_PATH": "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+    "EXL3_NVTIER_STORE": "/nvx/qwen_experts.bin"
+  },
+  "shm": "8g",
+  "weights": [
+    {
+      "repo": "turboderp/Qwen3.8-Flash-Next-exl3",
+      "revision": "69e33439ae950f17bcbe95c98f117d80f759ab6d",
+      "at": "/models/turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+      "layout": "dir",
+      "files": null
+    }
+  ],
+  "config": null,
+  "ctx": 65536,
+  "seqs": 4,
+  "vision": false,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 16.0,
+    "disk_gb": 130.9,
+    "fast_storage": "nvme",
+    "cpus": 8
+  },
+  "resources": {
+    "memoryBytes": 17179869184,
+    "memorySwapBytes": 17179869184,
+    "memlockUnlimited": true
+  },
+  "prepare": {
+    "at": "/nvx",
+    "args": [
+      "pack-store"
+    ],
+    "verifyArgs": [
+      "verify-store"
+    ],
+    "gpu": false,
+    "sizeGb": 45.8
+  },
+  "setup": "NEEDS: 1x Intel Arc Pro B70 32 GB (xe driver), passed in as its render node only (ZE_AFFINITY_MASK=0 selects the one visible device; pass only the chosen card's /dev/dri/renderD node, not the whole /dev/dri, on hosts with several Intel GPUs); the container is capped at 16 GiB (resources: --memory 16g --memory-swap 16g, swap off inside the cap; RAM expert tier 2 GB), --ulimit memlock=-1, --shm-size 8g; 8 CPU threads (measured with --cpuset-cpus pinned to 8 threads); disk: the 85.1 GB checkpoint (non-expert weights read at load, the 32.6 GB n-gram table random-read with O_DIRECT while serving) plus the 45.8 GB packed expert store on a local NVMe filesystem that supports O_DIRECT (xfs, ext4), measured on 4x Samsung 9100 PRO md RAID0 xfs (reads 0.3-2.3 GB/s during decode, 4-6 GB/s during prefill). PREPARE (once, CPU only): `pack-store` packs the routed experts (48 x 512 x 1.86 MB) from the read-only checkpoint into /nvx/qwen_experts.bin + qwen_experts.json and byte-compares 64 records read back with O_DIRECT; `verify-store` repeats the check. The server probes the store and O_DIRECT on /nvx before it starts and serves /nvx read-only. The VRAM expert cache starts empty: the first answer after start can be poor; send a warm-up request. MEASURED: image d30df691 on omarchy (B70 0000:48:00.0, EPYC 7443P, container on 8 CPUs, 4x Samsung 9100 PRO RAID0, another job on the box), distinct prompts per stream, natural completions: 8k prefill 1,064 / 1,085 / 1,234 tok/s at 1 / 2 / 4 streams, decode 29.3 / 39.3 / 49.2 tok/s total; 32k prefill 1,126 / 1,296, decode 29.7 / 40.1; in-run anon + shmem peak 14.3 GiB of the 16 GiB cap, no swap (stopping the container triggers one teardown OOM kill after the last request). Campaign run N130 f16 (same code, mounted): 8k C1 29.2 / C2 38.7 / C4 52.6, 32k C1 30.6 / C2 41.3, prefill 1,139-1,332. QUALITY: not exact: decode masks expert picks that are in neither VRAM nor RAM (weight 0) and fills them in the background; paired decode-vs-prefill KL 0.055 nats, top-1 0.938 (32 GiB mode on the same items: 0.021 / 0.963); teacher-forced reference panel vs exllamav3 top-1 0.985, KL 0.0030 (same as the 32 GiB mode, 0.984 / 0.0028). Text only. Raw: github.com/sybil-solutions/qwen38-flash-next-b70-offload docs/results.md, results/n130.",
+  "source": "https://github.com/sybil-solutions/qwen38-flash-next-b70-offload/tree/2f108fbe52c4173c3acf63f66bf64a9b12580619",
+  "plugin": {
+    "name": "Qwen3.8-Flash-Next",
+    "family": "qwen",
+    "format": "EXL3 · 3.05 bpw (16 GB RAM, experts on NVMe)",
+    "engine": "sglang",
+    "servedName": "flashnext",
+    "sizeGb": 85.14,
+    "minDriver": "",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 65536,
+      "kvTokens": 131072
+    },
+    "weights": [
+      {
+        "dir": "turboderp-Qwen3.8-Flash-Next-exl3-3.05bpw_h5_ng5",
+        "files": "",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 85.14
+      }
+    ],
+    "asset": null
+  },
+  "ids": {
+    "intel-arc-pro-b70-32gb": "qwen38flashnext-exl3-3.05bpw-nvme16g-b70-sglang-tp1"
+  }
+}
