@@ -108,7 +108,8 @@ def render(recipe):
             out = {"kind": "host", "command": p["command"], "install": p.get("install"), "port": p["port"], "image": None,
                    "weights": p.get("weights") or [], "config": None, "ctx": p["ctx"], "seqs": p.get("seqs", 1),
                    "vision": p.get("vision", False), "backend": p.get("backend"), "cards": p.get("cards", 1),
-                   "env": p.get("env") or {}, **{k: p[k] for k in ("machines", "setup", "source", "needs") if k in p}}
+                   "env": p.get("env") or {}, **{k: p[k] for k in ("setup", "source", "needs") if k in p},
+                   **({"machines": p["machines"]} if p.get("machines", 1) != 1 else {})}  # one machine is the default and stays out
             # MLX on Apple silicon: pinned packages, a launcher file, its environment, and a GPU wired-memory limit that
             # follows the card's unified memory
             out.update({k: p[k] for k in ("pip",) if p.get(k)})
@@ -562,9 +563,9 @@ def cmd_check(_):
             assert f.parent.name == r["card"] and f.parent.parent.name == c["vendor"], "path is not recipes/<vendor>/<card>/"
             launch = render(r)
             assert f == recipe_path(r, launch), f"file name should be {recipe_path(r, launch).name}"
-            if launch.get("kind") == "host":  # one program on one machine; several machines need a container launch
+            if launch.get("kind") == "host":  # the SDK's host steps start one program on one machine
                 assert type(launch["cards"]) is int and launch["cards"] >= 1, "host cards must be a whole number of cards"
-                assert launch.get("machines", 1) == 1, "a host program runs on one machine; several machines need a container launch"
+                assert launch.get("machines", 1) == 1, "multi-machine host launches are not supported by the current SDK; use a container launch"
             if "needs" in launch:
                 check_needs(launch["needs"])
             if "companion" in launch:

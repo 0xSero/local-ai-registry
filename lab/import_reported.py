@@ -33,7 +33,8 @@ def freeze(v, source):
         weights.append({"repo": v["hf_repo"], "revision": rev, "at": v["weights_mount"], "layout": v.get("weights_layout", "dir")})
     ctx = int(v.get("ctx") or 0)
     name = slug(v["engine"], v["model_id"], v["format"], f"{v['bpw']}bpw" if v.get("bpw") else None, f"{ctx // 1024}k",
-                f"{v['machines']}x" if v.get("machines", 1) > 1 else None, v["card"] if v["card"] != "dgx-spark-gb10-128gb" else None)
+                f"{v['machines']}x" if v.get("machines", 1) > 1 else None,
+                f"{v['gpus_per_machine']}cards" if (v.get("gpus_per_machine") or 1) > 1 else None, v["card"] if v["card"] != "dgx-spark-gb10-128gb" else None)
     src = f"https://github.com/{v['repo']}/tree/{v['commit']}"
     b = v.get("build") or {}
     ep = v.get("entrypoint")
@@ -78,6 +79,10 @@ def main(files):
             made = freeze(v, Path(f).parent.name)
             if made and (made[0] not in best or (made[2]["proof"][0]["tps"] or 0) > (best[made[0]][2]["proof"][0]["tps"] or 0)):
                 best[made[0]] = made
+    ids = {}  # two different launches under one profile id would overwrite each other's file
+    for _, prof, _ in best.values():
+        if ids.setdefault(prof["id"], prof) != prof:
+            raise SystemExit(f"profile {prof['id']} names two different launches; nothing written")
     for out, prof, recipe in best.values():
         if out.exists() and not json.loads(out.read_text())["proof"][0].get("reported"):
             print(f"skip {out.relative_to(lab.ROOT)}: a checked recipe is there")
