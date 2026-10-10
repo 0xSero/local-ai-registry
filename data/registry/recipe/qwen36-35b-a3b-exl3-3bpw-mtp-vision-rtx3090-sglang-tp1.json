@@ -180,11 +180,48 @@
       "model_id_matches": true,
       "served_model_id": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
     },
+    "headroom": {
+      "card_mib": 24576,
+      "peak_pct": 92.8,
+      "peak_vram_mib": 22802
+    },
     "quantization": {
       "engine_integration": "sglang-exl3 plugin (0xSero/sglang-exl3)",
       "format": "exl3",
       "kernel": ""
     },
+    "tuning": [
+      {
+        "result": "cold prefill 5,558 / 5,481 / 4,657 tok/s at 4k/16k/32k; 4096^2 image OOM in the ViT MLP killed the server",
+        "step": "35B recipe argv on the v0.7.0 plugin (p35A_base)",
+        "verdict": "baseline"
+      },
+      {
+        "result": "6,256 / 6,064 / 5,057 (+9-13 %; routed experts run on the grouped MoE kernel, not the dense path)",
+        "step": "SGLANG_EXL3_PREFILL_FP16_ACC=1 (p35B)",
+        "verdict": "kept"
+      },
+      {
+        "result": "16k 6,715 / 32k 5,597; C1 prose 253.3, C2 prose 401.9 agg, C1 code 350.1, C2 code 559.0 (recipe 251.9 / 388.5 / 352.1); 4096^2 still HTTP 500 (fast image processor on the GPU)",
+        "step": "+ VIT_SDPA, VIT_MLP_CHUNK 8192, VLM cache 256 MB, prefill graphs 240, chunk 4096, --prefill-decode-interval 16 (p35C)",
+        "verdict": "kept"
+      },
+      {
+        "result": "4096^2 image read, TTFT 15.0 s",
+        "step": "--image-processor-backend pil (p35D)",
+        "verdict": "kept"
+      },
+      {
+        "result": "ladder OK to 257,962; G0 C1/C2 ctx0 and C1/32k clean; C2/32k long-form: ~26k-token greedy outputs, accept 0.96 (LOOP)",
+        "step": "C2 launch, protocol acceptance (accept35_v070)",
+        "verdict": "C2 claim rejected at 32K"
+      },
+      {
+        "result": "pool 390,170 -> 419,114; all gates pass",
+        "step": "C1 launch (max-running 1, mamba cache 5)",
+        "verdict": "kept"
+      }
+    ],
     "vision_standard": {
       "max_area_accepted": [
         37748736,
@@ -456,44 +493,7 @@
         "previous_pixels": 16777216
       }
     },
-    "weights_subdir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5",
-    "tuning": [
-      {
-        "step": "35B recipe argv on the v0.7.0 plugin (p35A_base)",
-        "result": "cold prefill 5,558 / 5,481 / 4,657 tok/s at 4k/16k/32k; 4096^2 image OOM in the ViT MLP killed the server",
-        "verdict": "baseline"
-      },
-      {
-        "step": "SGLANG_EXL3_PREFILL_FP16_ACC=1 (p35B)",
-        "result": "6,256 / 6,064 / 5,057 (+9-13 %; routed experts run on the grouped MoE kernel, not the dense path)",
-        "verdict": "kept"
-      },
-      {
-        "step": "+ VIT_SDPA, VIT_MLP_CHUNK 8192, VLM cache 256 MB, prefill graphs 240, chunk 4096, --prefill-decode-interval 16 (p35C)",
-        "result": "16k 6,715 / 32k 5,597; C1 prose 253.3, C2 prose 401.9 agg, C1 code 350.1, C2 code 559.0 (recipe 251.9 / 388.5 / 352.1); 4096^2 still HTTP 500 (fast image processor on the GPU)",
-        "verdict": "kept"
-      },
-      {
-        "step": "--image-processor-backend pil (p35D)",
-        "result": "4096^2 image read, TTFT 15.0 s",
-        "verdict": "kept"
-      },
-      {
-        "step": "C2 launch, protocol acceptance (accept35_v070)",
-        "result": "ladder OK to 257,962; G0 C1/C2 ctx0 and C1/32k clean; C2/32k long-form: ~26k-token greedy outputs, accept 0.96 (LOOP)",
-        "verdict": "C2 claim rejected at 32K"
-      },
-      {
-        "step": "C1 launch (max-running 1, mamba cache 5)",
-        "result": "pool 390,170 -> 419,114; all gates pass",
-        "verdict": "kept"
-      }
-    ],
-    "headroom": {
-      "peak_vram_mib": 22802,
-      "card_mib": 24576,
-      "peak_pct": 92.8
-    }
+    "weights_subdir": "Qwen3.6-35B-A3B-EXL3-3.00bpw-H5"
   },
   "model_instance_id": "yeasah-qwen3-6-35b-a3b-exl3--3-00bpw-h5",
   "provenance": {
