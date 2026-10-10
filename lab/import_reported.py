@@ -33,7 +33,8 @@ def freeze(v, source):
         weights.append({"repo": v["hf_repo"], "revision": rev, "at": v["weights_mount"], "layout": v.get("weights_layout", "dir")})
     ctx = int(v.get("ctx") or 0)
     name = slug(v["engine"], v["model_id"], v["format"], f"{v['bpw']}bpw" if v.get("bpw") else None, f"{ctx // 1024}k",
-                f"{v['machines']}x" if v.get("machines", 1) > 1 else None, v["card"] if v["card"] != "dgx-spark-gb10-128gb" else None)
+                f"{v['machines']}x" if v.get("machines", 1) > 1 else None,
+                f"{v['gpus_per_machine']}cards" if (v.get("gpus_per_machine") or 1) > 1 else None, v["card"] if v["card"] != "dgx-spark-gb10-128gb" else None)
     src = f"https://github.com/{v['repo']}/tree/{v['commit']}"
     b = v.get("build") or {}
     ep = v.get("entrypoint")
@@ -42,6 +43,8 @@ def freeze(v, source):
         prof = {"kind": "host", "engine": v["engine"], "about": f"{v['model']} as {source} runs it ({v['repo']})",
                 "command": ep + (v.get("args") or []), "env": v.get("env") or {}, "install": src, "port": v["port"], "ctx": ctx,
                 "seqs": 1, "vision": bool(v.get("vision")), "backend": "nvidia"}
+        if (v.get("gpus_per_machine") or 1) > 1:  # one card is the default and stays out of the profile
+            prof["cards"] = v["gpus_per_machine"]
     else:
         prof = {"engine": v["engine"], "about": f"{v['model']} as {source} runs it ({v['repo']})",
                 "image": v.get("image"), "backend": "nvidia", "port": v["port"], "entrypoint": v.get("entrypoint"), "args": v.get("args") or [],
@@ -62,9 +65,9 @@ def freeze(v, source):
     recipe = {"model": v["model_id"], "weights": f"{v['hf_repo']}@{rev}", "engine": f"{name}@{digest}", "set": {}, "card": v["card"],
               "proof": [{"at": v.get("date"), "on": source, "src": f"{v['repo']}@{v['commit'][:12]}", "gates": "", "claims": claims,
                          "tps": m.get("decode_tps"), "prefill": m.get("prefill_tps"), "reported": True}]}
-    launch = {"ctx": ctx, "machines": v.get("machines") or 1}
+    n = (v.get("machines") or 1) * (prof.get("cards") or 1)  # every card in the setup, as lab.recipe_path counts them
     kind = v["engine"]
-    many = f".{launch['machines']}x" if launch["machines"] > 1 else ""
+    many = f".{n}x" if n > 1 else ""
     out = lab.RECIPES / lab.card(v["card"])["vendor"] / v["card"] / f"{v['model_id']}.{kind}.{ctx // 1024}k{many}.json"
     return out, prof, recipe
 
@@ -76,6 +79,10 @@ def main(files):
             made = freeze(v, Path(f).parent.name)
             if made and (made[0] not in best or (made[2]["proof"][0]["tps"] or 0) > (best[made[0]][2]["proof"][0]["tps"] or 0)):
                 best[made[0]] = made
+    ids = {}  # two different launches under one profile id would overwrite each other's file
+    for _, prof, _ in best.values():
+        if ids.setdefault(prof["id"], prof) != prof:
+            raise SystemExit(f"profile {prof['id']} names two different launches; nothing written")
     for out, prof, recipe in best.values():
         if out.exists() and not json.loads(out.read_text())["proof"][0].get("reported"):
             print(f"skip {out.relative_to(lab.ROOT)}: a checked recipe is there")

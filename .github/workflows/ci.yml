@@ -23,6 +23,7 @@ jobs:
           python3 -m unittest discover -s lab -p test_image_trust.py
           python3 -m unittest discover -s lab -p test_digest.py
           python3 -m unittest discover -s lab -p test_offload_contract.py
+          python3 -m unittest discover -s lab -p test_host_topology.py
           python3 lab/image_trust.py --base "$IMAGE_BASE"
       - name: Recipes are well-formed, pinned, in the right place and proven
         run: python3 lab/lab.py check
