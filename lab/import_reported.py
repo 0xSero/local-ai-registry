@@ -42,6 +42,8 @@ def freeze(v, source):
         prof = {"kind": "host", "engine": v["engine"], "about": f"{v['model']} as {source} runs it ({v['repo']})",
                 "command": ep + (v.get("args") or []), "env": v.get("env") or {}, "install": src, "port": v["port"], "ctx": ctx,
                 "seqs": 1, "vision": bool(v.get("vision")), "backend": "nvidia"}
+        if (v.get("gpus_per_machine") or 1) > 1:  # one card is the default and stays out of the profile
+            prof["cards"] = v["gpus_per_machine"]
     else:
         prof = {"engine": v["engine"], "about": f"{v['model']} as {source} runs it ({v['repo']})",
                 "image": v.get("image"), "backend": "nvidia", "port": v["port"], "entrypoint": v.get("entrypoint"), "args": v.get("args") or [],
@@ -62,9 +64,9 @@ def freeze(v, source):
     recipe = {"model": v["model_id"], "weights": f"{v['hf_repo']}@{rev}", "engine": f"{name}@{digest}", "set": {}, "card": v["card"],
               "proof": [{"at": v.get("date"), "on": source, "src": f"{v['repo']}@{v['commit'][:12]}", "gates": "", "claims": claims,
                          "tps": m.get("decode_tps"), "prefill": m.get("prefill_tps"), "reported": True}]}
-    launch = {"ctx": ctx, "machines": v.get("machines") or 1}
+    n = (v.get("machines") or 1) * (prof.get("cards") or 1)  # every card in the setup, as lab.recipe_path counts them
     kind = v["engine"]
-    many = f".{launch['machines']}x" if launch["machines"] > 1 else ""
+    many = f".{n}x" if n > 1 else ""
     out = lab.RECIPES / lab.card(v["card"])["vendor"] / v["card"] / f"{v['model_id']}.{kind}.{ctx // 1024}k{many}.json"
     return out, prof, recipe
 
