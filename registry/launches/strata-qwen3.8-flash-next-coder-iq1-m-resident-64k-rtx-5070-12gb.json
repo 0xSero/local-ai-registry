@@ -1,0 +1,42 @@
+{
+  "id": "strata-qwen3.8-flash-next-coder-iq1-m-resident-64k-rtx-5070-12gb",
+  "kind": "host",
+  "engine": "strata",
+  "about": "Qwen3.8-Flash-Next Coder (ISTA-DASLab GSQ-RCO IQ1_M: 256 of each layer's 512 experts kept, stored like IQ3_S) on one 12 GB card with Strata 0.1.40 (github.com/Niko1221/Strata): a VRAM expert cache auto-sized from free VRAM, the experts the GPU does not hold page-locked in RAM (low-RAM resident mode, no file reads while serving once warm), the 29 GB n-gram lookup shard read from the SSD, MTP speculative decoding (4 drafts) from the original checkpoint's MTP layer, int8 KV, 64K window.",
+  "command": [
+    ".venv/bin/python",
+    "serve/server.py",
+    "--engine",
+    "strata",
+    "--config",
+    "strata-coder-iq1_m.json",
+    "--port",
+    "8080"
+  ],
+  "install": "git clone https://github.com/Niko1221/Strata && git -C Strata checkout 82f46a8c8f475f001ad76d92f58f4a4f8ffb0253 && cd Strata && ./setup.sh --family coder --context 65536 --vision no --low-ram resident --build --no-start --yes (compiles engine 0.1.40 for sm_120; engine/strata sha256 d1c8fc79180c936d8c9e6f69271d4ccd6a77104f49a7094869329bd04baba387; setup downloads the pinned GGUF shards, builds the pack and fetches the MTP layer, and writes strata-coder-iq1_m.json)",
+  "env": {},
+  "port": 8080,
+  "weights": [
+    {
+      "repo": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-Coder-GGUF",
+      "revision": "5348543e0147355ac9cbcb031184a3546350988e",
+      "at": "../Strata-data/models/coder-IQ1_M",
+      "layout": "dir",
+      "files": [
+        "IQ1_M/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+        "IQ1_M/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00002-of-00002.gguf"
+      ]
+    }
+  ],
+  "ctx": 65536,
+  "seqs": 1,
+  "vision": false,
+  "backend": "nvidia",
+  "source": "https://github.com/Niko1221/Strata/tree/82f46a8c8f475f001ad76d92f58f4a4f8ffb0253",
+  "needs": {
+    "host_ram_gb": 18.6,
+    "disk_gb": 80.0,
+    "fast_storage": "nvme"
+  },
+  "setup": "NEEDS: one 12 GB NVIDIA card (sm_120 build), 32 GB RAM, ~80 GB on a local NVMe SSD (55 GB GGUF + 25 GB pack + MTP layer). Strata sizes the page-locked expert set at start from MemAvailable minus 4 GiB (at most 19.11 GiB for this model) and reads the experts it could not pin from the GGUF through the OS file cache: measured 19.85 GiB pinned at 51.4 tok/s and 15.78 GiB pinned at 50.4 tok/s (Strata's own token counts; the lab's speed gate estimates tokens as chars/4 because Strata has no tokenize endpoint, so its tps reads ~30% low). MemAvailable dropped 18.6 GB from start through the gates (swap grew 7.5 GB as the kernel made room). VRAM: 11.7 GB peak; Strata warns only ~215 MiB stays free with the desktop on the same GPU."
+}

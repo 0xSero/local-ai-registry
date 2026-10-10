@@ -1,0 +1,101 @@
+{
+  "id": "llama.cpp-qwen3.6-35b-a3b-mtp-ud-q4-k-xl-autofit-256k-rtx-5070-12gb",
+  "engine": "llama.cpp",
+  "about": "Qwen3.6-35B-A3B (MoE, 3B active) UD-Q4_K_XL with its MTP head on one 12 GB card, experts in system RAM: no --n-gpu-layers, so llama.cpp's auto-fit keeps attention, shared weights, the 262,144-token q8_0 KV (only 10 of 40 layers hold KV) and as many experts as fit on the GPU, and the remaining expert tensors in pinned host RAM (--load-mode none); --cache-ram 0 turns off the host prompt cache (default 8 GiB), which otherwise grows past what a 32 GB desktop has free. MTP draft 3, Qwen's recommended sampling. Measured on one RTX 5070 12GB (PCIe 5.0 x16), Core Ultra 9 285, 32 GB DDR5: 10.7 GB VRAM peak, 20.2 GB MemAvailable drop. Same launch with --load-mode mmap (experts paged from NVMe, 4.6 GB drop): decode 38.9 tok/s but prefill 388 tok/s instead of 873.",
+  "image": "ghcr.io/ggml-org/llama.cpp:server-cuda12-b11146@sha256:52192a23c7b258044463aebba78826cdff39a7393b713edc313324b343a7b836",
+  "backend": "nvidia",
+  "port": 8080,
+  "entrypoint": "/app/llama-server",
+  "args": [
+    "--model",
+    "/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+    "--cache-type-k",
+    "q8_0",
+    "--cache-type-v",
+    "q8_0",
+    "--load-mode",
+    "none",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8080",
+    "--ctx-size",
+    "262144",
+    "--flash-attn",
+    "on",
+    "--parallel",
+    "1",
+    "--jinja",
+    "--no-mmproj",
+    "--cache-ram",
+    "0",
+    "--metrics",
+    "--spec-type",
+    "draft-mtp",
+    "--spec-draft-n-max",
+    "3",
+    "--temp",
+    "1.0",
+    "--top-p",
+    "0.95",
+    "--top-k",
+    "20",
+    "--min-p",
+    "0.0"
+  ],
+  "env": {
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID"
+  },
+  "shm": "16g",
+  "weights": [
+    {
+      "repo": "unsloth/Qwen3.6-35B-A3B-MTP-GGUF",
+      "revision": "5bc3e238d916f48a861bac2f8a1990a0e9b7e98d",
+      "at": "/models",
+      "layout": "dir",
+      "files": "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf"
+    }
+  ],
+  "config": null,
+  "ctx": 262144,
+  "seqs": 1,
+  "vision": false,
+  "cards": 1,
+  "needs": {
+    "host_ram_gb": 20.2,
+    "disk_gb": 22.85,
+    "fast_storage": "nvme"
+  },
+  "plugin": {
+    "name": "Qwen3.6-35B-A3B",
+    "family": "qwen",
+    "format": "GGUF \u00b7 UD-Q4_K_XL + MTP (experts in RAM)",
+    "engine": "llama.cpp",
+    "servedName": "/models/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+    "sizeGb": 22.854,
+    "minDriver": "535.0",
+    "scratch": null,
+    "capabilities": {
+      "chat": true,
+      "reasoning": true,
+      "tools": true,
+      "vision": false,
+      "video": false
+    },
+    "serving": {
+      "ctxTokens": 262144,
+      "kvTokens": 262144
+    },
+    "weights": [
+      {
+        "dir": "",
+        "files": "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf",
+        "layout": "dir",
+        "mountPath": "/models",
+        "sizeGb": 22.854
+      }
+    ],
+    "asset": null
+  },
+  "ids": {}
+}
