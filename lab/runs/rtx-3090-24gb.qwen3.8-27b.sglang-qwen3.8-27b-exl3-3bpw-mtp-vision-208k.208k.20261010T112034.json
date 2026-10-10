@@ -1,0 +1,70 @@
+{
+ "recipe": {
+  "model": "qwen3.8-27b",
+  "weights": "turboderp/Qwen3.8-27B-exl3@6fe61ad620abfe97c5b49f9722c2bceeea4ccc28",
+  "engine": "sglang-qwen3.8-27b-exl3-3bpw-mtp-vision-208k@c8922bd7256c",
+  "set": {},
+  "card": "rtx-3090-24gb"
+ },
+ "where": {
+  "on": "owner",
+  "gpu": "NVIDIA GeForce RTX 3090"
+ },
+ "passed": true,
+ "proof": {
+  "at": "2026-10-10",
+  "on": "owner",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "launch_sha256": "2b142b3f49a4a49e72e7887052b59bb95ca0cf14dd9c706fb3764c74fcf05c6c",
+  "gates": "load chat reasoning tools context speed",
+  "tps": 85.1,
+  "prefill": 786,
+  "served": "turboderp-Qwen3.8-27B-exl3-3.00bpw"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "chat": {
+   "content": "\n\nRed, blue, yellow",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 118,
+   "content": "\n\n391"
+  },
+  "tools": {
+   "call": [
+    {
+     "id": "call_edf4d30b33f8472a84b86a5c",
+     "index": 0,
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\": \"Paris\"}"
+     }
+    }
+   ],
+   "reply": "\n\nIt's currently **17°C (63°F)** in Paris, with **overcast** skies. You might want a light jacket!",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 159
+  },
+  "context": {
+   "prompt_tokens": 173372,
+   "seconds": 220.5,
+   "content": "\n\n58213"
+  },
+  "speed": {
+   "window_s": 30,
+   "tokens_total": 10815,
+   "seconds_total": 122.6
+  }
+ },
+ "launch_config_sha256": null
+}
